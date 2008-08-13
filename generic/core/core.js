@@ -5,7 +5,7 @@ var _wrs_temporalImage;
 
 /**
  * Cross-browser addEventListener/attachEvent function.
- * @param object element Element Target
+ * @param object element Element target
  * @param event event Event
  * @param function func Function to run
  */
@@ -20,7 +20,10 @@ function wrs_addEvent(element, event, func) {
 
 /**
  * Adds iframe events.
- *  @param object iframe Target
+ * @param object iframe Target
+ * @param function doubleClickHandler Function to run when user double clicks the iframe
+ * @param function mousedownHandler Function to run when user mousedowns the iframe
+ * @param function mouseupHandler Function to run when user mouseups the iframe
  */
 function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
 	if (doubleClickHandler) {
@@ -79,7 +82,7 @@ function wrs_mathmlEncode(input) {
 }
 
 /**
- * Converts special symbols to entities.
+ * Converts special symbols (> 128) to entities.
  * @param string mathml
  * @return string
  */
@@ -224,6 +227,7 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
  * Converts mathml to img object.
  * @param object creator Object with "createElement" method
  * @param string mathml Mathml code
+ * @return object
  */
 function wrs_mathmlToImgObject(creator, mathml) {
 	var imageSrc = wrs_createImageSrc(mathml);
@@ -247,21 +251,21 @@ function wrs_mathmlToImgObject(creator, mathml) {
  * @return string
  */
 function wrs_createImageSrc(mathml) {
-	var socket = wrs_createSocket();
+	var httpRequest = wrs_createHttpRequest();
 	
-	if (socket) {
+	if (httpRequest) {
 		var data = 'mml=' + wrs_urlencode(mathml);
 		
 		if (_wrs_conf_createimagePath.substr(0, 1) == '/') {
-			socket.open('POST', _wrs_conf_createimagePath, false);
+			httpRequest.open('POST', _wrs_conf_createimagePath, false);
 		}
 		else {
-			socket.open('POST', _wrs_currentPath + _wrs_conf_createimagePath, false);
+			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createimagePath, false);
 		}
 		
-		socket.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		socket.send(data);
-		return socket.responseText;
+		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		httpRequest.send(data);
+		return httpRequest.responseText;
 	}
 	else {
 		alert('Your browser is not compatible with technology AJAX. Please, use the latest version of Mozilla Firefox.');
@@ -270,12 +274,13 @@ function wrs_createImageSrc(mathml) {
 }
 
 /**
- * Converts appletCode to img object.
+ * Converts applet code to img object.
  * @param object creator Object with "createElement" method
  * @param string appletCode Applet code
  * @param string image Base 64 image stream
  * @param int imageWidth Image width
  * @param int imageHeight Image height
+ * @return object
  */
 function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, imageHeight) {
 	var imageSrc = wrs_createImageCASSrc(image);
@@ -301,21 +306,21 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
  * @return string
  */
 function wrs_createImageCASSrc(image) {
-	var socket = wrs_createSocket();
+	var httpRequest = wrs_createHttpRequest();
 	
-	if (socket) {
+	if (httpRequest) {
 		var data = 'image=' + wrs_urlencode(image);
 		
 		if (_wrs_conf_createcasimagePath.substr(0, 1) == '/') {
-			socket.open('POST', _wrs_conf_createcasimagePath, false);
+			httpRequest.open('POST', _wrs_conf_createcasimagePath, false);
 		}
 		else {
-			socket.open('POST', _wrs_currentPath + _wrs_conf_createcasimagePath, false);
+			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createcasimagePath, false);
 		}
 		
-		socket.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		socket.send(data);
-		return socket.responseText;
+		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		httpRequest.send(data);
+		return httpRequest.responseText;
 	}
 	else {
 		alert('Your browser is not compatible with technology AJAX. Please, use the latest version of Mozilla Firefox.');
@@ -325,7 +330,7 @@ function wrs_createImageCASSrc(image) {
 
 /**
  * URL encode function
- * @param string clearString
+ * @param string clearString Input 
  * @return string
  */
 function wrs_urlencode(clearString) {
@@ -354,10 +359,10 @@ function wrs_urlencode(clearString) {
 }
 
 /**
- * Cross-browser socket creation.
+ * Cross-browser httpRequest creation.
  * @return object
  */
-function wrs_createSocket() {
+function wrs_createHttpRequest() {
 	try {
 		return new ActiveXObject('Msxml2.XMLHTTP');
 	}
@@ -385,10 +390,4 @@ function wrs_createObject(objectCode) {
 	var container = document.createElement('span');
 	container.innerHTML = objectCode;
 	return container.firstChild;
-}
-
-function wrs_createCode(object) {
-	var container = document.createElement('span');
-	container.appendChild(object);
-	return container.innerHTML;
 }
