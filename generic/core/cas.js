@@ -8,7 +8,7 @@ function htmlentities(input) {
 function getMathmlFromAppletCode(appletCode) {
 	var appletObject = opener.wrs_createObject(appletCode);
 	
-	var params = appletObject.getElementsByTagName('param');
+	var params = appletObject.childNodes;
 	
 	for (var i = 0; i < params.length; ++i) {
 		if (params[i].name == 'xmlinitialtext') {

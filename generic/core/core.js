@@ -105,57 +105,60 @@ function wrs_mathmlEntities(mathml) {
  * @param object iframe Target
  * @param string mathml Mathml code
  */
-function wrs_updateFormula(iframe, mathml) {
-	if (iframe && mathml) {
-		iframe.contentWindow.focus();
-		var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml);
-		
-		if (_wrs_isNewElement) {
-			if (document.selection) {
-				var range = iframe.contentWindow.document.selection.createRange();
+function wrs_updateFormula(iframe, mathml) {	
+	try {
+		if (iframe && mathml) {
+			iframe.contentWindow.focus();
+			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml);
+			
+			if (_wrs_isNewElement) {
+				if (document.selection) {
+					var range = iframe.contentWindow.document.selection.createRange();
+					
+					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
+
+					if (range.parentElement) {
+						var temporalImg = range.parentElement();
+
+						with (temporalImg) {
+							title = imgObject.title;
+							className = imgObject.className;
+							setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
+							setAttribute('align', imgObject.getAttribute('align'));
+						}
+					}
+				}
+				else {
+					var sel = iframe.contentWindow.getSelection();
+					try {
+						var range = sel.getRangeAt(0);
+					}
+					catch (e) {
+						var range = iframe.contentWindow.document.createRange();
+					}
+					
+					sel.removeAllRanges();
+					range.deleteContents();
 				
-				iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
-
-				if (range.parentElement) {
-					var temporalImg = range.parentElement();
-
-					with (temporalImg) {
-						title = imgObject.title;
-						className = imgObject.className;
-						setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
-						setAttribute('align', imgObject.getAttribute('align'));
+					var node = range.startContainer;
+					var pos = range.startOffset;
+					
+					if (node.nodeType == 3) {
+						node = node.splitText(pos);
+						node.parentNode.insertBefore(imgObject, node);
+					}
+					else if (node.nodeType == 1) {
+						node.insertBefore(imgObject, node.childNodes[pos]);
 					}
 				}
 			}
 			else {
-				var sel = iframe.contentWindow.getSelection();
-				try {
-					var range = sel.getRangeAt(0);
-				}
-				catch (e) {
-					var range = iframe.contentWindow.document.createRange();
-				}
-				
-				sel.removeAllRanges();
-				range.deleteContents();
-				
-				var node = range.startContainer;
-				var pos = range.startOffset;
-				
-				if (node.nodeType == 3) {
-					node = node.splitText(pos);
-					node.parentNode.insertBefore(imgObject, node);
-				}
-				else if (node.nodeType == 1) {
-					node.insertBefore(imgObject, node.childNodes[pos]);
-				}
-				
+				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
+				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
 			}
 		}
-		else {
-			_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-			_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-		}
+	}
+	catch (e) {
 	}
 }
 
@@ -168,58 +171,62 @@ function wrs_updateFormula(iframe, mathml) {
  * @param int imageHeight Image height
  */
 function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
-	if (iframe && appletCode) {
-		iframe.contentWindow.focus();
-		var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
-		
-		if (_wrs_isNewElement) {
-			if (document.selection) {
-				var range = iframe.contentWindow.document.selection.createRange();
-				
-				iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
+	try {
+		if (iframe && appletCode) {
+			iframe.contentWindow.focus();
+			var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
+			
+			if (_wrs_isNewElement) {
+				if (document.selection) {
+					var range = iframe.contentWindow.document.selection.createRange();
+					
+					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
 
-				if (range.parentElement) {
-					var temporalImg = range.parentElement();
+					if (range.parentElement) {
+						var temporalImg = range.parentElement();
 
-					with (temporalImg) {
-						width = imgObject.width;
-						height = imgObject.height;
-						setAttribute('align', imgObject.getAttribute('align'));
-						setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
-						title = imgObject.title;
-						className = imgObject.className;
+						with (temporalImg) {
+							width = imgObject.width;
+							height = imgObject.height;
+							setAttribute('align', imgObject.getAttribute('align'));
+							setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
+							title = imgObject.title;
+							className = imgObject.className;
+						}
 					}
+				}
+				else {
+					var sel = iframe.contentWindow.getSelection();
+					try {
+						var range = sel.getRangeAt(0);
+					}
+					catch (e) {
+						var range = iframe.contentWindow.document.createRange();
+					}
+					
+					sel.removeAllRanges();
+					range.deleteContents();
+					
+					var node = range.startContainer;
+					var pos = range.startOffset;
+					
+					if (node.nodeType == 3) {
+						node = node.splitText(pos);
+						node.parentNode.insertBefore(imgObject, node);
+					}
+					else if (node.nodeType == 1) {
+						node.insertBefore(imgObject, node.childNodes[pos]);
+					}
+					
 				}
 			}
 			else {
-				var sel = iframe.contentWindow.getSelection();
-				try {
-					var range = sel.getRangeAt(0);
-				}
-				catch (e) {
-					var range = iframe.contentWindow.document.createRange();
-				}
-				
-				sel.removeAllRanges();
-				range.deleteContents();
-				
-				var node = range.startContainer;
-				var pos = range.startOffset;
-				
-				if (node.nodeType == 3) {
-					node = node.splitText(pos);
-					node.parentNode.insertBefore(imgObject, node);
-				}
-				else if (node.nodeType == 1) {
-					node.insertBefore(imgObject, node.childNodes[pos]);
-				}
-				
+				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
+				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
 			}
 		}
-		else {
-			_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-			_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-		}
+	}
+	catch (e) {
 	}
 }
 
