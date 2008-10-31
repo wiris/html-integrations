@@ -263,7 +263,7 @@ function wrs_createImageSrc(mathml) {
 	if (httpRequest) {
 		var data = 'mml=' + wrs_urlencode(mathml);
 		
-		if (_wrs_conf_createimagePath.substr(0, 1) == '/') {
+		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
 			httpRequest.open('POST', _wrs_conf_createimagePath, false);
 		}
 		else {
@@ -317,8 +317,7 @@ function wrs_createImageCASSrc(image) {
 	
 	if (httpRequest) {
 		var data = 'image=' + wrs_urlencode(image);
-		
-		if (_wrs_conf_createcasimagePath.substr(0, 1) == '/') {
+		if (_wrs_conf_createcasimagePath.substr(0, 1) == '/' || _wrs_conf_createcasimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
 			httpRequest.open('POST', _wrs_conf_createcasimagePath, false);
 		}
 		else {
