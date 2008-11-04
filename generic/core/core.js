@@ -369,6 +369,10 @@ function wrs_urlencode(clearString) {
  * @return object
  */
 function wrs_createHttpRequest() {
+	if (typeof XMLHttpRequest != 'undefined') {
+		return new XMLHttpRequest();
+	}
+			
 	try {
 		return new ActiveXObject('Msxml2.XMLHTTP');
 	}
@@ -378,10 +382,6 @@ function wrs_createHttpRequest() {
 		}
 		catch (oc) {
 		}
-	}
-
-	if(typeof XMLHttpRequest != 'undefined') {
-		return new XMLHttpRequest();
 	}
 	
 	return false;
