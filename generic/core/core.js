@@ -105,7 +105,7 @@ function wrs_mathmlEntities(mathml) {
  * @param object iframe Target
  * @param string mathml Mathml code
  */
-function wrs_updateFormula(iframe, mathml) {	
+function wrs_updateFormula(iframe, mathml) {
 	try {
 		if (iframe && mathml) {
 			iframe.contentWindow.focus();
