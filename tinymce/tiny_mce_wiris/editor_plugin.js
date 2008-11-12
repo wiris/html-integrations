@@ -30,15 +30,11 @@ var _wrs_int_temporalImageResizing;
 /* Plugin integration */
 (function () {
 	tinymce.create('tinymce.plugins.tinyWIRIS', {
-		init: function (editor, url) {
-			for (we in editor) {
-				document.write(we + "<br>");
-			}
-			
+		init: function (editor, url) {			
 			var iframe;
 			
 			editor.onInit.add(function (editor) {
-				iframe = editor.getWin();
+				iframe = editor.getContentAreaContainer().firstChild;
 			});
 			
 			if (_wrs_conf_editorEnabled) {
@@ -55,7 +51,7 @@ var _wrs_int_temporalImageResizing;
 			
 			if (_wrs_conf_CASEnabled) {
 				editor.addCommand('tinyWIRIS_openCAS', function () {
-					wrs_int_openNewFormulaEditor(iframe);
+					wrs_int_openNewCAS(iframe);
 				});
 			
 				editor.addButton('tinyWIRIS_CAS', {
