@@ -35,6 +35,7 @@ var _wrs_int_temporalImageResizing;
 			
 			editor.onInit.add(function (editor) {
 				iframe = editor.getContentAreaContainer().firstChild;
+				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			});
 			
 			if (_wrs_conf_editorEnabled) {
@@ -136,7 +137,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
 		if (element.className == 'Wirisformula') {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingFormulaEditor(iframe.id.substr(0, iframe.id.lastIndexOf('_ifr')));
+				wrs_int_openExistingFormulaEditor(iframe);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -145,7 +146,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
 		else if (element.className == 'Wiriscas') {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingCAS(iframe.id.substr(0, iframe.id.lastIndexOf('_ifr')));
+				wrs_int_openExistingCAS(iframe);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -169,7 +170,7 @@ function wrs_int_openExistingFormulaEditor(iframe) {
  * Opens CAS to edit an existing formula.
  * @param string targetPrefix TinyMCE prefix
  */
-function wrs_int_openExistingCAS(targetPrefix) {
+function wrs_int_openExistingCAS(iframe) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
