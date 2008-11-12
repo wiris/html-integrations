@@ -78,26 +78,6 @@ var _wrs_int_temporalImageResizing;
 })();
 
 /**
- * Fullscreen bug fix
- */
-/*function wrs_int_fullscreen() {
-	setTimeout(function () {
-		if (_wrs_conf_editorEnabled) {
-			var editorButton = wrs_int_addButton(document.getElementById('mce_fullscreen_toolbar1'), 'mce_fullscreen', true);
-			wrs_int_addButtonEvents(editorButton, 'mce_fullscreen');
-		}
-		
-		if (_wrs_conf_CASEnabled) {
-			var CASButton = wrs_int_addButton(document.getElementById('mce_fullscreen_toolbar1'), 'mce_fullscreen', true, true);
-			wrs_int_addButtonEvents(CASButton, 'mce_fullscreen', true);
-		}
-		
-		var iframe = document.getElementById('mce_fullscreen_ifr');
-		wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-	}, 10);	// IE delay
-}*/
-
-/**
  * Opens formula editor.
  * @param string targetPrefix TinyMCE prefix
  */
