@@ -64,6 +64,14 @@ var _wrs_int_temporalImageResizing;
 				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			});
 			
+			editor.onLoadContent.add(function (editor, params) {
+				content = wrs_initParse(params.content);
+			});
+			
+			editor.onSaveContent.add(function (editor, params) {
+				params.content = wrs_endParse(params.content);
+			});
+			
 			if (_wrs_conf_editorEnabled) {
 				editor.addCommand('tinyWIRIS_openFormulaEditor', function () {
 					wrs_int_openNewFormulaEditor(iframe);

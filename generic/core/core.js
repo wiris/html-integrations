@@ -397,3 +397,73 @@ function wrs_createObject(objectCode) {
 	container.innerHTML = objectCode;
 	return container.firstChild;
 }
+
+/**
+ * Converts an object to its HTML code.
+ * @param object object
+ * @return string
+ * 
+ */
+function wrs_createObjectCode(object) {
+	var temporal = document.createElement('span');
+	var parent = object.parentNode;	
+	parent.replaceChild(temporal, object);
+	
+	var container = document.createElement('span');
+	container.appendChild(object);
+	var objectCode = container.innerHTML;
+	
+	parent.replaceChild(object, temporal);
+	return objectCode;
+}
+
+/**
+ * Parses initial HTML code.
+ * @param string code
+ * @return string
+ */
+function wrs_initParse(code) {
+	var containerCode = '<div>' + code + '</div>';
+	var container = wrs_createObject(containerCode);
+	container.style.visible = false;
+	container.style.position = 'absolute';
+	container.style.width = container.style.height = 0;
+	document.body.appendChild(container);
+	
+	var appletList = container.getElementsByTagName('applet');
+	
+	for (var i = 0; i < appletList.length; ++i) {
+		if (appletList[i].className == 'Wiriscas') {
+			alert(appletList[i].parentNode);
+			var imgObject = wrs_appletCodeToImgObject(document, wrs_createObjectCode(appletList[i]), appletList[i].getImageBase64('png'), appletList[i].width, appletList[i].height);
+			alert(appletList[i].parentNode);
+			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
+		}
+	}
+	
+	document.body.removeChild(container);
+	return container.innerHTML;
+}
+
+/**
+ * Parses end HTML code.
+ * @param string code
+ * @return string
+ */
+function wrs_endParse(code) {
+	var containerCode = '<span>' + code + '</span>';
+	var container = wrs_createObject(containerCode);
+	var imgList = container.getElementsByTagName('img');
+	
+	for (var i = 0; i < imgList.length; ++i) {
+		if (imgList[i].className == 'Wiriscas') {
+			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
+			appletCode = wrs_mathmlDecode(appletCode);
+			var appletObject = wrs_createObject(appletCode);
+			
+			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
+		}
+	}
+	
+	return container.innerHTML;
+}
