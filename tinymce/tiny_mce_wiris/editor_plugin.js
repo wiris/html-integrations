@@ -10,7 +10,8 @@ if (!window.tinymce) {
 else {
 	wrs_int_tinyManager.baseURL = tinymce.baseURL;
 	wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
-		tinymce.PluginManager.add(pluginName, plugin);
+		tinymce.create('tinymce.plugins.' + pluginName, plugin);
+		tinymce.PluginManager.add(pluginName, tinymce.plugins[pluginName]);
 	}
 }
 
@@ -55,7 +56,7 @@ var _wrs_int_temporalImageResizing;
 		},
 	
 		// new versions
-		init: function (editor, url) {			
+		init: function (editor, url) {		
 			var iframe;
 			
 			editor.onInit.add(function (editor) {
