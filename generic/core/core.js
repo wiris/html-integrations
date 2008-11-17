@@ -405,16 +405,13 @@ function wrs_createObject(objectCode) {
  * 
  */
 function wrs_createObjectCode(object) {
-	var temporal = document.createElement('span');
-	var parent = object.parentNode;	
-	parent.replaceChild(temporal, object);
-	
-	var container = document.createElement('span');
-	container.appendChild(object);
-	var objectCode = container.innerHTML;
-	
-	parent.replaceChild(object, temporal);
-	return objectCode;
+	var parent = object.parentNode;
+	var newParent = document.createElement(parent.tagName);
+	parent.replaceChild(newParent, object);
+	newParent.appendChild(object);
+	var toReturn = newParent.innerHTML;
+	parent.replaceChild(object, newParent);
+	return toReturn;
 }
 
 /**
@@ -425,23 +422,15 @@ function wrs_createObjectCode(object) {
 function wrs_initParse(code) {
 	var containerCode = '<div>' + code + '</div>';
 	var container = wrs_createObject(containerCode);
-	container.style.visible = false;
-	container.style.position = 'absolute';
-	container.style.width = container.style.height = 0;
-	document.body.appendChild(container);
 	
 	var appletList = container.getElementsByTagName('applet');
 	
 	for (var i = 0; i < appletList.length; ++i) {
 		if (appletList[i].className == 'Wiriscas') {
-			alert(appletList[i].parentNode);
-			var imgObject = wrs_appletCodeToImgObject(document, wrs_createObjectCode(appletList[i]), appletList[i].getImageBase64('png'), appletList[i].width, appletList[i].height);
-			alert(appletList[i].parentNode);
-			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
+			
 		}
 	}
-	
-	document.body.removeChild(container);
+
 	return container.innerHTML;
 }
 

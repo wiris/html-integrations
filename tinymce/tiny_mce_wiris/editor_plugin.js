@@ -56,16 +56,15 @@ var _wrs_int_temporalImageResizing;
 		},
 	
 		// new versions
-		init: function (editor, url) {		
+		init: function (editor, url) {
+			var textarea = editor.getElement();
+			textarea.value = wrs_initParse(textarea.value);
+			
 			var iframe;
 			
-			editor.onInit.add(function (editor) {
+			editor.onInit.add(function (editor, params) {
 				iframe = editor.getContentAreaContainer().firstChild;
 				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-			});
-			
-			editor.onLoadContent.add(function (editor, params) {
-				content = wrs_initParse(params.content);
 			});
 			
 			editor.onSaveContent.add(function (editor, params) {
