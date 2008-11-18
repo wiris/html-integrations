@@ -25,8 +25,8 @@ document.getElementsByTagName('head')[0].appendChild(script);
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled
 var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS CAS is enabled
 
-var _wrs_conf_imageMathmlAttribute = 'id';	// Specifies the image tag where we should save the formula editor mathml code
-var _wrs_conf_CASMathmlAttribute = 'id';	// Specifies the image tag where we should save the WIRIS CAS mathml code
+var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code
+var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS CAS mathml code
 
 var _wrs_conf_editorPath = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/integration/editor.php';			// Specifies where is the editor HTML code (for popup window)
 var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';								// Specifies formula editor window options
@@ -58,12 +58,14 @@ var _wrs_int_temporalImageResizing;
 		// new versions
 		init: function (editor, url) {
 			var textarea = editor.getElement();
-			textarea.value = wrs_initParse(textarea.value);
+			var initValues = wrs_preInitParse(textarea.value);
+			textarea.value = initValues['code'];
 			
 			var iframe;
 			
 			editor.onInit.add(function (editor, params) {
 				iframe = editor.getContentAreaContainer().firstChild;
+				wrs_initParse(initValues['appletList'], iframe);
 				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			});
 			
