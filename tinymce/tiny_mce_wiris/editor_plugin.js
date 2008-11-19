@@ -57,15 +57,14 @@ var _wrs_int_temporalImageResizing;
 	
 		// new versions
 		init: function (editor, url) {
-			var textarea = editor.getElement();
-			var initValues = wrs_preInitParse(textarea.value);
-			textarea.value = initValues['code'];
-			
 			var iframe;
 			
 			editor.onInit.add(function (editor, params) {
+				var textarea = editor.getElement();
+				textarea.value = wrs_initParse(textarea.value);
+				editor.load();
+
 				iframe = editor.getContentAreaContainer().firstChild;
-				wrs_initParse(initValues['appletList'], iframe);
 				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			});
 			

@@ -419,62 +419,26 @@ function wrs_createObjectCode(object) {
  * @param string code
  * @return string
  */
-function wrs_preInitParse(code) {
+function wrs_initParse(code) {
 	var containerCode = '<div>' + code + '</div>';
+	var container = wrs_createObject(containerCode);
 	
-	// Creating a container for store Java applets while they are loading
-	var container_applets = wrs_createObject(containerCode);
-	//container_applets.style.visibility = 'hidden';
-	container_applets.style.width = container_applets.style.height = 0;
-	container_applets.style.position = 'relative';
-	document.body.appendChild(container_applets);
+	var appletList = container.getElementsByTagName('applet');
 	
-	// Creating a container for store images. We will return the innerHTML of this container.
-	var container_images = wrs_createObject(containerCode);
-	
-	var loadedAppletList = container_applets.getElementsByTagName('applet');
-	var sleepedAppletList = container_images.getElementsByTagName('applet');
-	
-	var j = 0;
-	for (var i = 0; i < sleepedAppletList.length; ++i) {
-		if (sleepedAppletList[i].className == 'Wiriscas') {
-			alert('leom');
+	for (var i = 0; i < appletList.length; ++i) {
+		if (appletList[i].className == 'Wiriscas') {
 			var imgObject = document.createElement('img');
 			imgObject.className = 'Wiriscas';
 			imgObject.title = 'Double click to edit';
-			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(wrs_createObjectCode(sleepedAppletList[i])));
-			imgObject.id = 'wrs_CAS_' + j + '_img';
-			loadedAppletList[j].id = 'wrs_CAS_' + j;
+			imgObject.src = appletList[i].getAttribute('src');
+			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(wrs_createObjectCode(appletList[i])));
 			
-			sleepedAppletList[i].parentNode.replaceChild(imgObject, sleepedAppletList[i]);
-			--i;		// we have deleted one applet
-			++j;
-		}
-	}
-
-	return {
-		'code': container_images.innerHTML,
-		'appletList': loadedAppletList
-	}
-}
-
-function wrs_initParse(appletList, iframe) {
-	function assignSrc(applet) {
-		if (applet.getImageBase64) {
-			var imageSrc = wrs_createImageCASSrc(applet.getImageBase64('png'));
-			var imageObject = iframe.contentWindow.document.getElementById(applet.id + '_img');
-			imageObject.src = imageSrc;
-		}
-		else {
-			setTimeout(function () {
-				assignSrc(applet);
-			}, 5000);
+			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
+			--i;		// we have deleted one sleeped applet
 		}
 	}
 	
-	for (var i = 0; i < appletList.length; ++i) {
-		assignSrc(appletList[i]);
-	}
+	return container.innerHTML;
 }
 
 /**
@@ -492,6 +456,7 @@ function wrs_endParse(code) {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
+			appletObject.setAttribute('src', imgList[i].src);
 			
 			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
 			--i;		// we have deleted one image
