@@ -51,6 +51,7 @@ var _wrs_int_temporalImageResizing;
 		initInstance : function (editor) {
 			if (!editor.tinyWIRISApplied) {
 				editor.tinyWIRISApplied = true;
+				editor.oldTargetElement.value = wrs_initParse(editor.oldTargetElement.value);
 				wrs_addIframeEvents(editor.iframeElement, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			}
 		},
@@ -59,7 +60,7 @@ var _wrs_int_temporalImageResizing;
 		init: function (editor, url) {
 			var iframe;
 			
-			editor.onInit.add(function (editor, params) {
+			editor.onInit.add(function (editor) {
 				var textarea = editor.getElement();
 				textarea.value = wrs_initParse(textarea.value);
 				editor.load();
