@@ -48,7 +48,7 @@ var _wrs_int_temporalImageResizing;
 (function () {
 	var plugin = {
 		// old versions
-		initInstance : function (editor) {
+		initInstance: function (editor) {
 			if (!editor.tinyWIRISApplied) {
 				editor.tinyWIRISApplied = true;
 				editor.oldTargetElement.value = wrs_initParse(editor.oldTargetElement.value);
@@ -99,7 +99,7 @@ var _wrs_int_temporalImageResizing;
 		},
 		
 		// old versions
-		getControlHTML : function (buttonName) {
+		getControlHTML: function (buttonName) {
 			if (buttonName == 'tinyWIRIS_formulaEditor') {
 				return tinyMCE.getButtonHTML(buttonName, 'Formula Editor', '{$pluginurl}/core/wiris-formula.gif', 'tinyWIRIS_openFormulaEditor');
 			}
@@ -112,7 +112,7 @@ var _wrs_int_temporalImageResizing;
 		},
 		
 		// old versions
-		execCommand : function (editor_id, element, command, user_interface, value) {
+		execCommand: function (editor_id, element, command, user_interface, value) {
 			if (command == 'tinyWIRIS_openFormulaEditor') {
 				var iframe = tinyMCE.getInstanceById(editor_id).iframeElement;
 				wrs_int_openNewFormulaEditor(iframe);
@@ -122,6 +122,21 @@ var _wrs_int_temporalImageResizing;
 				wrs_int_openNewCAS(iframe);
 			}
 		},
+		
+		cleanup : function(type, content, editor) {
+			if (type == 'insert_to_editor') {
+				alert(content);
+				alert(wrs_initParse(content));
+				return wrs_initParse(content);
+			}
+			
+			if (type == 'submit_content') {
+				return wrs_endParse(content);
+			}
+			
+			return content;
+		},
+
 
 		// all versions
 		getInfo: function () {

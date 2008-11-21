@@ -120,12 +120,10 @@ function wrs_updateFormula(iframe, mathml) {
 					if (range.parentElement) {
 						var temporalImg = range.parentElement();
 
-						with (temporalImg) {
-							title = imgObject.title;
-							className = imgObject.className;
-							setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
-							setAttribute('align', imgObject.getAttribute('align'));
-						}
+						temporalImg.title = imgObject.title;
+						temporalImg.className = imgObject.className;
+						temporalImg.setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
+						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
 					}
 				}
 				else {
@@ -185,14 +183,12 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 					if (range.parentElement) {
 						var temporalImg = range.parentElement();
 
-						with (temporalImg) {
-							width = imgObject.width;
-							height = imgObject.height;
-							setAttribute('align', imgObject.getAttribute('align'));
-							setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
-							title = imgObject.title;
-							className = imgObject.className;
-						}
+						temporalImg.width = imgObject.width;
+						temporalImg.height = imgObject.height;
+						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
+						temporalImg.setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
+						temporalImg.title = imgObject.title;
+						temporalImg.className = imgObject.className;
 					}
 				}
 				else {
@@ -217,7 +213,6 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 					else if (node.nodeType == 1) {
 						node.insertBefore(imgObject, node.childNodes[pos]);
 					}
-					
 				}
 			}
 			else {
@@ -241,13 +236,11 @@ function wrs_mathmlToImgObject(creator, mathml) {
 	
 	var imgObject = creator.createElement('img');
 
-	with (imgObject) {
-		setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
-		className = 'Wirisformula';
-		title = 'Double click to edit';
-		src = imageSrc;
-		align = 'middle';
-	}
+	imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
+	imgObject.className = 'Wirisformula';
+	imgObject.title = 'Double click to edit';
+	imgObject.src = imageSrc;
+	imgObject.align = 'middle';
 	
 	return imgObject;
 }
@@ -294,15 +287,13 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
 	
 	var imgObject = creator.createElement('img');
 	
-	with (imgObject) {
-		setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
-		className = 'Wiriscas';
-		title = 'Double click to edit';
-		src = imageSrc;
-		align = 'middle';
-		width = imageWidth;
-		height = imageHeight;
-	}
+	imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
+	imgObject.className = 'Wiriscas';
+	imgObject.title = 'Double click to edit';
+	imgObject.src = imageSrc;
+	imgObject.align = 'middle';
+	imgObject.width = imageWidth;
+	imgObject.height = imageHeight;
 	
 	return imgObject;
 }
@@ -431,6 +422,7 @@ function wrs_initParse(code) {
 			imgObject.className = 'Wiriscas';
 			imgObject.title = 'Double click to edit';
 			imgObject.src = appletList[i].getAttribute('src');
+			imgObject.align = 'middle';
 			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(wrs_createObjectCode(appletList[i])));
 			
 			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
