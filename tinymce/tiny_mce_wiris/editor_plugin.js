@@ -125,9 +125,7 @@ var _wrs_int_temporalImageResizing;
 		
 		cleanup : function(type, content, editor) {
 			if (type == 'insert_to_editor') {
-				alert(content);
-				alert(wrs_initParse(content));
-				return wrs_initParse(content);
+				return wrs_initParse(editor.startContent);
 			}
 			
 			if (type == 'submit_content') {
