@@ -9,6 +9,9 @@ function getMathmlFromAppletCode(appletCode) {
 	var optionForm = document.getElementById('optionForm');
 	var appletObject = opener.wrs_createObject(appletCode);
 	
+	optionForm.width.value = parseInt(appletObject.width);
+	optionForm.height.value = parseInt(appletObject.height);
+	
 	var params = appletObject.childNodes;
 	var mathml = '';
 	
