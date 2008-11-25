@@ -9,12 +9,19 @@ function getMathmlFromAppletCode(appletCode) {
 	var appletObject = opener.wrs_createObject(appletCode);
 	
 	var params = appletObject.childNodes;
+	var mathml = '';
 	
 	for (var i = 0; i < params.length; ++i) {
 		if (params[i].name == 'xmlinitialtext') {
-			return params[i].value;
+			mathml = params[i].value;
+		}
+		else if (params[i].name == 'requestfirstevaluation') {
+			if (params[i].value) {
+			}
 		}
 	}
+	
+	return mathml;
 }
 
 opener.wrs_addEvent(window, 'load', function () {
@@ -41,7 +48,7 @@ opener.wrs_addEvent(window, 'load', function () {
 		appletCode += 'width="' + newWidth + '" height="' + newHeight + '">';
 		
 		appletCode += '<param name="requestfirstevaluation" value="' + (optionForm.executeonload.checked ? 'true' : 'false') + '"/>';
-		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'false') + '"/>';
+		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'floating') + '"/>';
 		appletCode += '<param name="requestfocus" value="' + (optionForm.focusonload.checked ? 'true' : 'false') + '"/>';
 		appletCode += '<param name="level" value="' + (optionForm.level.checked ? 'primary' : 'false') + '"/>';
 		appletCode += '<param name="xmlinitialtext" value="' + htmlentities(applet.getXML()) + '"/>';
