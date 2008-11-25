@@ -6,6 +6,7 @@ function htmlentities(input) {
 }
 
 function getMathmlFromAppletCode(appletCode) {
+	var optionForm = document.getElementById('optionForm');
 	var appletObject = opener.wrs_createObject(appletCode);
 	
 	var params = appletObject.childNodes;
@@ -16,8 +17,16 @@ function getMathmlFromAppletCode(appletCode) {
 			mathml = params[i].value;
 		}
 		else if (params[i].name == 'requestfirstevaluation') {
-			if (params[i].value) {
-			}
+			optionForm.executeonload.checked = (params[i].value == 'true') ? true : false;
+		}
+		else if (params[i].name == 'toolbar') {
+			optionForm.toolbar.checked = (params[i].value == 'floating') ? false : true;
+		}
+		else if (params[i].name == 'requestfocus') {
+			optionForm.focusonload.checked = (params[i].value == 'true') ? true : false;
+		}
+		else if (params[i].name == 'level') {
+			optionForm.level.checked = (params[i].value == 'primary') ? true : false;
 		}
 	}
 	
