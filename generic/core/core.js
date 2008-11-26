@@ -384,8 +384,13 @@ function wrs_createHttpRequest() {
  * @return object
  */
 function wrs_createObject(objectCode) {
+	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
+	objectCode = objectCode.split('<param').join('<param_wiris').split('<PARAM').join('<param_wiris');
+	objectCode = objectCode.split('</param>').join('').split('</PARAM>').join('');
+	
 	var container = document.createElement('span');
 	container.innerHTML = objectCode;
+	
 	return container.firstChild;
 }
 
@@ -411,6 +416,7 @@ function wrs_createObjectCode(object) {
  * @return string
  */
 function wrs_initParse(code) {
+	alert('Me entra: ' + code);
 	var containerCode = '<div>' + code + '</div>';
 	var container = wrs_createObject(containerCode);
 	
@@ -423,13 +429,18 @@ function wrs_initParse(code) {
 			imgObject.title = 'Double click to edit';
 			imgObject.src = appletList[i].getAttribute('src');
 			imgObject.align = 'middle';
-			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(wrs_createObjectCode(appletList[i])));
+			
+			var appletCode = wrs_createObjectCode(appletList[i]);
+			appletCode = appletCode.split('<param_wiris').join('<param');
+			appletCode = appletCode.split('</param_wiris>').join('');
+			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
 			
 			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
 			--i;		// we have deleted one sleeped applet
 		}
 	}
 	
+	alert('Me sale: ' + container.innerHTML);
 	return container.innerHTML;
 }
 
@@ -455,5 +466,8 @@ function wrs_endParse(code) {
 		}
 	}
 
-	return container.innerHTML;
+	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
+	var toReturn = container.innerHTML.split('<param_wiris').join('<param');
+	toReturn = toReturn.split('</param_wiris').join('</param');
+	return toReturn;
 }
