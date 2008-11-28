@@ -6,8 +6,10 @@ function htmlentities(input) {
 }
 
 function getMathmlFromAppletCode(appletCode) {
+	alert(appletCode);
 	var optionForm = document.getElementById('optionForm');
 	var appletObject = opener.wrs_createObject(appletCode);
+	alert(appletObject.innerHTML);
 	
 	optionForm.width.value = parseInt(appletObject.width);
 	optionForm.height.value = parseInt(appletObject.height);
@@ -16,6 +18,7 @@ function getMathmlFromAppletCode(appletCode) {
 	var mathml = '';
 	
 	for (var i = 0; i < params.length; ++i) {
+		alert(params[i].name + ' = ' + params[i].value);
 		if (params[i].name == 'xmlinitialtext') {
 			mathml = params[i].value;
 		}
@@ -59,12 +62,12 @@ opener.wrs_addEvent(window, 'load', function () {
 		appletCode += 'code="' + applet.getAttribute('code') + '" ';
 		appletCode += 'width="' + newWidth + '" height="' + newHeight + '">';
 		
-		appletCode += '<param name="requestfirstevaluation" value="' + (optionForm.executeonload.checked ? 'true' : 'false') + '"/>';
-		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'floating') + '"/>';
-		appletCode += '<param name="requestfocus" value="' + (optionForm.focusonload.checked ? 'true' : 'false') + '"/>';
-		appletCode += '<param name="level" value="' + (optionForm.level.checked ? 'primary' : 'false') + '"/>';
-		appletCode += '<param name="xmlinitialtext" value="' + htmlentities(applet.getXML()) + '"/>';
-		appletCode += '<param name="interface" value="false"/><param name="commands" value="false"/><param name="command" value="false"/>';
+		appletCode += '<param name="requestfirstevaluation" value="' + (optionForm.executeonload.checked ? 'true' : 'false') + '"></param>';
+		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'floating') + '"></param>';
+		appletCode += '<param name="requestfocus" value="' + (optionForm.focusonload.checked ? 'true' : 'false') + '"></param>';
+		appletCode += '<param name="level" value="' + (optionForm.level.checked ? 'primary' : 'false') + '"></param>';
+		appletCode += '<param name="xmlinitialtext" value="' + htmlentities(applet.getXML()) + '"></param>';
+		appletCode += '<param name="interface" value="false"></param><param name="commands" value="false"></param><param name="command" value="false"></param>';
 		
 		appletCode += '</applet>';
 		

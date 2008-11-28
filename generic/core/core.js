@@ -121,9 +121,9 @@ function wrs_updateFormula(iframe, mathml) {
 						var temporalImg = range.parentElement();
 
 						temporalImg.title = imgObject.title;
-						temporalImg.className = imgObject.className;
-						temporalImg.setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
 						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
+						temporalImg.setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
+						temporalImg.className = imgObject.className;
 					}
 				}
 				else {
@@ -186,8 +186,8 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 						temporalImg.width = imgObject.width;
 						temporalImg.height = imgObject.height;
 						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
-						temporalImg.setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
 						temporalImg.title = imgObject.title;
+						temporalImg.setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
 						temporalImg.className = imgObject.className;
 					}
 				}
@@ -236,11 +236,11 @@ function wrs_mathmlToImgObject(creator, mathml) {
 	
 	var imgObject = creator.createElement('img');
 
-	imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
-	imgObject.className = 'Wirisformula';
 	imgObject.title = 'Double click to edit';
 	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
+	imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
+	imgObject.className = 'Wirisformula';
 	
 	return imgObject;
 }
@@ -287,13 +287,13 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
 	
 	var imgObject = creator.createElement('img');
 	
-	imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
-	imgObject.className = 'Wiriscas';
 	imgObject.title = 'Double click to edit';
 	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
 	imgObject.width = imageWidth;
 	imgObject.height = imageHeight;
+	imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
+	imgObject.className = 'Wiriscas';
 	
 	return imgObject;
 }
@@ -384,13 +384,73 @@ function wrs_createHttpRequest() {
  * @return object
  */
 function wrs_createObject(objectCode) {
+	alert('Me entra: ' + objectCode);
+	
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
-	objectCode = objectCode.split('<param').join('<param_wiris').split('<PARAM').join('<param_wiris');
-	objectCode = objectCode.split('</param>').join('').split('</PARAM>').join('');
+	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
+	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
+	
+	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// Is a 'br' because 'br' can't contain nodes.
+	objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
+	
+	alert('Parseado: ' + objectCode);
 	
 	var container = document.createElement('span');
 	container.innerHTML = objectCode;
 	
+	function recursiveParamsFix(object) {
+		if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisParam') {
+			var param = document.createElement('param');
+			
+			for (var i = 0; i < object.attributes.length; ++i) {
+				if (object.attributes[i].nodeValue !== null) {
+					alert(object.attributes[i].nodeName + ' = ' + object.attributes[i].nodeValue);
+					param.setAttribute(object.attributes[i].nodeName, object.attributes[i].nodeValue);
+				}
+			}
+			
+			// IE fix
+			if (param.NAME) {
+				param.name = param.NAME;
+				param.value = param.VALUE;
+			}
+			
+			param.removeAttribute('wirisObject');
+			
+			object.parentNode.replaceChild(param, object);
+		}
+		else if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisApplet') {
+			var applet = document.createElement('applet');
+			
+			for (var i = 0; i < object.attributes.length; ++i) {
+				if (object.attributes[i].nodeValue !== null) {
+					applet.setAttribute(object.attributes[i].nodeName, object.attributes[i].nodeValue);
+				}
+			}
+			
+			applet.removeAttribute('wirisObject');
+			
+			for (var i = 0; i < object.childNodes.length; ++i) {
+				recursiveParamsFix(object.childNodes[i]);
+				
+				if (object.childNodes[i].nodeName == 'param' || object.childNodes[i].nodeName == 'PARAM') {
+					applet.appendChild(object.childNodes[i]);
+				}
+			}
+
+			object.parentNode.replaceChild(applet, object);
+			object = applet;
+		}
+		else {
+			for (var i = 0; i < object.childNodes.length; ++i) {
+				recursiveParamsFix(object.childNodes[i]);
+			}
+		}
+	}
+	
+	recursiveParamsFix(container);
+	
+	alert('Me sale: ' + container.innerHTML);
 	return container.firstChild;
 }
 
@@ -416,31 +476,27 @@ function wrs_createObjectCode(object) {
  * @return string
  */
 function wrs_initParse(code) {
-	alert('Me entra: ' + code);
 	var containerCode = '<div>' + code + '</div>';
 	var container = wrs_createObject(containerCode);
 	
 	var appletList = container.getElementsByTagName('applet');
 	
 	for (var i = 0; i < appletList.length; ++i) {
-		if (appletList[i].className == 'Wiriscas') {
+		if (appletList[i].className == 'Wiriscas' || appletList[i].getAttribute('class') == 'Wiriscas') {		// Internet Explorer can't read className correctly
 			var imgObject = document.createElement('img');
-			imgObject.className = 'Wiriscas';
 			imgObject.title = 'Double click to edit';
 			imgObject.src = appletList[i].getAttribute('src');
 			imgObject.align = 'middle';
 			
 			var appletCode = wrs_createObjectCode(appletList[i]);
-			appletCode = appletCode.split('<param_wiris').join('<param');
-			appletCode = appletCode.split('</param_wiris>').join('');
 			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
+			imgObject.className = 'Wiriscas';
 			
 			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
 			--i;		// we have deleted one sleeped applet
 		}
 	}
 	
-	alert('Me sale: ' + container.innerHTML);
 	return container.innerHTML;
 }
 
@@ -466,8 +522,5 @@ function wrs_endParse(code) {
 		}
 	}
 
-	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
-	var toReturn = container.innerHTML.split('<param_wiris').join('<param');
-	toReturn = toReturn.split('</param_wiris').join('</param');
-	return toReturn;
+	return container.innerHTML;
 }
