@@ -18,7 +18,7 @@ else {
 /* Including core.js */
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/core/core.js';
+script.src = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 /* Configuration */
@@ -28,17 +28,17 @@ var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS CAS is enabled
 var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS CAS mathml code
 
-var _wrs_conf_editorPath = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/integration/editor.php';			// Specifies where is the editor HTML code (for popup window)
+var _wrs_conf_editorPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window)
 var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';								// Specifies formula editor window options
-var _wrs_conf_CASPath = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/integration/cas.php';					// Specifies where is the WIRIS CAS HTML code (for popup window)
+var _wrs_conf_CASPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/cas.php';					// Specifies where is the WIRIS CAS HTML code (for popup window)
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';								// Specifies WIRIS CAS window options
 
-var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/integration/createimage.php';			// Specifies where is createimage script
-var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/integration/createcasimage.php';	// Specifies where is createcasimage script
+var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createimage.php';			// Specifies where is createimage script
+var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script
 
 /* Vars */
-var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/core/wiris-formula.gif';
-var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tinyWIRIS/core/wiris-cas.gif';
+var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-formula.gif';
+var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
@@ -49,8 +49,8 @@ var _wrs_int_temporalImageResizing;
 	var plugin = {
 		// old versions
 		initInstance: function (editor) {
-			if (!editor.tinyWIRISApplied) {
-				editor.tinyWIRISApplied = true;
+			if (!editor.tiny_mce_wirisApplied) {
+				editor.tiny_mce_wirisApplied = true;
 				editor.oldTargetElement.value = wrs_initParse(editor.oldTargetElement.value);
 				wrs_addIframeEvents(editor.iframeElement, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			}
@@ -74,25 +74,25 @@ var _wrs_int_temporalImageResizing;
 			});
 			
 			if (_wrs_conf_editorEnabled) {
-				editor.addCommand('tinyWIRIS_openFormulaEditor', function () {
+				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
 					wrs_int_openNewFormulaEditor(iframe);
 				});
 			
-				editor.addButton('tinyWIRIS_formulaEditor', {
+				editor.addButton('tiny_mce_wiris_formulaEditor', {
 					title: 'Formula Editor',
-					cmd: 'tinyWIRIS_openFormulaEditor',
+					cmd: 'tiny_mce_wiris_openFormulaEditor',
 					image: url + '/core/wiris-formula.gif'
 				});
 			}
 			
 			if (_wrs_conf_CASEnabled) {
-				editor.addCommand('tinyWIRIS_openCAS', function () {
+				editor.addCommand('tiny_mce_wiris_openCAS', function () {
 					wrs_int_openNewCAS(iframe);
 				});
 			
-				editor.addButton('tinyWIRIS_CAS', {
+				editor.addButton('tiny_mce_wiris_CAS', {
 					title: 'WIRIS CAS',
-					cmd: 'tinyWIRIS_openCAS',
+					cmd: 'tiny_mce_wiris_openCAS',
 					image: url + '/core/wiris-cas.gif'
 				});
 			}
@@ -100,12 +100,12 @@ var _wrs_int_temporalImageResizing;
 		
 		// old versions
 		getControlHTML: function (buttonName) {
-			if (buttonName == 'tinyWIRIS_formulaEditor') {
-				return tinyMCE.getButtonHTML(buttonName, 'Formula Editor', '{$pluginurl}/core/wiris-formula.gif', 'tinyWIRIS_openFormulaEditor');
+			if (buttonName == 'tiny_mce_wiris_formulaEditor') {
+				return tinyMCE.getButtonHTML(buttonName, 'Formula Editor', '{$pluginurl}/core/wiris-formula.gif', 'tiny_mce_wiris_openFormulaEditor');
 			}
 			
-			if (buttonName == 'tinyWIRIS_CAS') {
-				return tinyMCE.getButtonHTML(buttonName, 'WIRIS CAS', '{$pluginurl}/core/wiris-cas.gif', 'tinyWIRIS_openCAS');
+			if (buttonName == 'tiny_mce_wiris_CAS') {
+				return tinyMCE.getButtonHTML(buttonName, 'WIRIS CAS', '{$pluginurl}/core/wiris-cas.gif', 'tiny_mce_wiris_openCAS');
 			}
 			
 			return '';
@@ -113,11 +113,11 @@ var _wrs_int_temporalImageResizing;
 		
 		// old versions
 		execCommand: function (editor_id, element, command, user_interface, value) {
-			if (command == 'tinyWIRIS_openFormulaEditor') {
+			if (command == 'tiny_mce_wiris_openFormulaEditor') {
 				var iframe = tinyMCE.getInstanceById(editor_id).iframeElement;
 				wrs_int_openNewFormulaEditor(iframe);
 			}
-			else if (command == 'tinyWIRIS_openCAS') {
+			else if (command == 'tiny_mce_wiris_openCAS') {
 				var iframe = tinyMCE.getInstanceById(editor_id).iframeElement;
 				wrs_int_openNewCAS(iframe);
 			}
@@ -139,7 +139,7 @@ var _wrs_int_temporalImageResizing;
 		// all versions
 		getInfo: function () {
 			return {
-				longname : 'tinyWIRIS',
+				longname : 'tiny_mce_wiris',
 				author : 'Juan Lao Tebar - Maths for More',
 				authorurl : 'http://www.wiris.com',
 				infourl : 'http://www.mathsformore.com',
@@ -148,7 +148,7 @@ var _wrs_int_temporalImageResizing;
 		}	
 	};
 
-	wrs_int_tinyManager.addPlugin('tinyWIRIS', plugin);
+	wrs_int_tinyManager.addPlugin('tiny_mce_wiris', plugin);
 })();
 
 /**
