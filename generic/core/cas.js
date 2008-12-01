@@ -6,10 +6,8 @@ function htmlentities(input) {
 }
 
 function getMathmlFromAppletCode(appletCode) {
-	alert(appletCode);
 	var optionForm = document.getElementById('optionForm');
 	var appletObject = opener.wrs_createObject(appletCode);
-	alert(appletObject.innerHTML);
 	
 	optionForm.width.value = parseInt(appletObject.width);
 	optionForm.height.value = parseInt(appletObject.height);
@@ -18,7 +16,6 @@ function getMathmlFromAppletCode(appletCode) {
 	var mathml = '';
 	
 	for (var i = 0; i < params.length; ++i) {
-		alert(params[i].name + ' = ' + params[i].value);
 		if (params[i].name == 'xmlinitialtext') {
 			mathml = params[i].value;
 		}

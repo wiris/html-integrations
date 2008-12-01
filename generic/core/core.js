@@ -383,17 +383,13 @@ function wrs_createHttpRequest() {
  * @param string objectCode
  * @return object
  */
-function wrs_createObject(objectCode) {
-	alert('Me entra: ' + objectCode);
-	
+function wrs_createObject(objectCode, lol) {
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
 	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
 	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
 	
 	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// Is a 'br' because 'br' can't contain nodes.
 	objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
-	
-	alert('Parseado: ' + objectCode);
 	
 	var container = document.createElement('span');
 	container.innerHTML = objectCode;
@@ -404,7 +400,6 @@ function wrs_createObject(objectCode) {
 			
 			for (var i = 0; i < object.attributes.length; ++i) {
 				if (object.attributes[i].nodeValue !== null) {
-					alert(object.attributes[i].nodeName + ' = ' + object.attributes[i].nodeValue);
 					param.setAttribute(object.attributes[i].nodeName, object.attributes[i].nodeValue);
 				}
 			}
@@ -435,6 +430,7 @@ function wrs_createObject(objectCode) {
 				
 				if (object.childNodes[i].nodeName == 'param' || object.childNodes[i].nodeName == 'PARAM') {
 					applet.appendChild(object.childNodes[i]);
+					--i;	// When we inserts the object child into the applet, object loses one child.
 				}
 			}
 
@@ -450,7 +446,6 @@ function wrs_createObject(objectCode) {
 	
 	recursiveParamsFix(container);
 	
-	alert('Me sale: ' + container.innerHTML);
 	return container.firstChild;
 }
 
@@ -477,7 +472,7 @@ function wrs_createObjectCode(object) {
  */
 function wrs_initParse(code) {
 	var containerCode = '<div>' + code + '</div>';
-	var container = wrs_createObject(containerCode);
+	var container = wrs_createObject(containerCode, true);
 	
 	var appletList = container.getElementsByTagName('applet');
 	
