@@ -383,7 +383,7 @@ function wrs_createHttpRequest() {
  * @param string objectCode
  * @return object
  */
-function wrs_createObject(objectCode, lol) {
+function wrs_createObject(objectCode) {
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
 	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
 	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
@@ -453,7 +453,6 @@ function wrs_createObject(objectCode, lol) {
  * Converts an object to its HTML code.
  * @param object object
  * @return string
- * 
  */
 function wrs_createObjectCode(object) {
 	var parent = object.parentNode;
@@ -466,13 +465,13 @@ function wrs_createObjectCode(object) {
 }
 
 /**
- * Parses initial HTML code.
+ * Parses initial HTML code, converts CAS applets to CAS images.
  * @param string code
  * @return string
  */
 function wrs_initParse(code) {
 	var containerCode = '<div>' + code + '</div>';
-	var container = wrs_createObject(containerCode, true);
+	var container = wrs_createObject(containerCode);
 	
 	var appletList = container.getElementsByTagName('applet');
 	
@@ -496,7 +495,7 @@ function wrs_initParse(code) {
 }
 
 /**
- * Parses end HTML code.
+ * Parses end HTML code, converts CAS images to CAS applets.
  * @param string code
  * @return string
  */
