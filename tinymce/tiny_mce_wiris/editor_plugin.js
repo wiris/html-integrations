@@ -62,11 +62,20 @@ var _wrs_int_temporalImageResizing;
 			
 			editor.onInit.add(function (editor) {
 				var textarea = editor.getElement();
-				textarea.value = wrs_initParse(textarea.value);
-				editor.load();
-
-				iframe = editor.getContentAreaContainer().firstChild;
-				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				
+				function whenDocReady() {
+					if (wrs_initParse) {
+						textarea.value = wrs_initParse(textarea.value);
+						editor.load();
+						iframe = editor.getContentAreaContainer().firstChild;
+						wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					}
+					else {
+						setTimeout(whenDocReady, 50);
+					}
+				}
+				
+				whenDocReady();
 			});
 			
 			editor.onSaveContent.add(function (editor, params) {
