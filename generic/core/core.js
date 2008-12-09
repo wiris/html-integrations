@@ -101,7 +101,7 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
- * Inserts or modifies formulas.
+ * Inserts or modifies formulas on an iframe.
  * @param object iframe Target
  * @param string mathml Mathml code
  */
@@ -161,7 +161,7 @@ function wrs_updateFormula(iframe, mathml) {
 }
 
 /**
- * Inserts or modifies CAS.
+ * Inserts or modifies CAS on an iframe.
  * @param object iframe Target
  * @param string appletCode Applet code
  * @param string image Base 64 image stream
@@ -222,6 +222,25 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 		}
 	}
 	catch (e) {
+	}
+}
+
+/**
+ * Inserts or modifies formulas or CAS on a textarea.
+ * @param object textarea Target
+ * @param string text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateFormula_onTextarea(textarea, wrs_createImageSrc(mathml));
+ */
+function wrs_updateTextarea(textarea, text) {
+	if (textarea && text) {
+		textarea.focus();
+		
+		if (textarea.selectionStart != null) {
+			textarea.value = textarea.value.substring(0, textarea.selectionStart) + text + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+		}
+		else {
+			var selection = document.selection.createRange();
+			selection.text = text;
+		}
 	}
 }
 
@@ -428,7 +447,7 @@ function wrs_createObject(objectCode) {
 			for (var i = 0; i < object.childNodes.length; ++i) {
 				recursiveParamsFix(object.childNodes[i]);
 				
-				if (object.childNodes[i].nodeName == 'param' || object.childNodes[i].nodeName == 'PARAM') {
+				if (object.childNodes[i].nodeName.toLowerCase() == 'param') {
 					applet.appendChild(object.childNodes[i]);
 					--i;	// When we inserts the object child into the applet, object loses one child.
 				}
