@@ -64,7 +64,7 @@ var _wrs_int_temporalImageResizing;
 				var textarea = editor.getElement();
 				
 				function whenDocReady() {
-					if (wrs_initParse) {
+					if (window.wrs_initParse) {
 						textarea.value = wrs_initParse(textarea.value);
 						editor.load();
 						iframe = editor.getContentAreaContainer().firstChild;
