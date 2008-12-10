@@ -18,6 +18,15 @@ function wrs_addEvent(element, event, func) {
 	}
 }
 
+function wrs_removeEvent(element, event, func) {
+	if (element.removeEventListener) {
+		element.removeEventListener(event, func, false);
+	}
+	else if (element.detachEvent) {
+		element.detachEvent('on' + event, func);
+	}
+}
+
 /**
  * Adds iframe events.
  * @param object iframe Target
@@ -47,6 +56,15 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 			var realEvent = (event) ? event : window.event;
 			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
 			mouseupHandler(iframe, element);
+		});
+	}
+}
+
+function wrs_addTextareaEvents(textarea, clickHandler, documentClickHandler) {
+	if (clickHandler) {
+		wrs_addEvent(textarea, 'click', function (event) {
+			var realEvent = (event) ? event : window.event;
+			clickHandler(textarea, realEvent);
 		});
 	}
 }
@@ -284,10 +302,11 @@ function wrs_createImageSrc(mathml) {
 		
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		httpRequest.send(data);
+		
 		return httpRequest.responseText;
 	}
 	else {
-		alert('Your browser is not compatible with technology AJAX. Please, use the latest version of Mozilla Firefox.');
+		alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 		return '';
 	}
 }
@@ -336,10 +355,11 @@ function wrs_createImageCASSrc(image) {
 		
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		httpRequest.send(data);
+		
 		return httpRequest.responseText;
 	}
 	else {
-		alert('Your browser is not compatible with technology AJAX. Please, use the latest version of Mozilla Firefox.');
+		alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 		return '';
 	}
 }
