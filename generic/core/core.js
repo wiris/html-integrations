@@ -39,7 +39,7 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 		wrs_addEvent(iframe.contentWindow.document, 'dblclick', function (event) {
 			var realEvent = (event) ? event : window.event;
 			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			doubleClickHandler(iframe, element);
+			doubleClickHandler(iframe, element, realEvent);
 		});
 	}
 	
@@ -47,7 +47,7 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 		wrs_addEvent(iframe.contentWindow.document, 'mousedown', function (event) {
 			var realEvent = (event) ? event : window.event;
 			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			mousedownHandler(iframe, element);
+			mousedownHandler(iframe, element, realEvent);
 		});
 	}
 	
@@ -55,12 +55,12 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 		wrs_addEvent(iframe.contentWindow.document, 'mouseup', function (event) {
 			var realEvent = (event) ? event : window.event;
 			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			mouseupHandler(iframe, element);
+			mouseupHandler(iframe, element, realEvent);
 		});
 	}
 }
 
-function wrs_addTextareaEvents(textarea, clickHandler, documentClickHandler) {
+function wrs_addTextareaEvents(textarea, clickHandler) {
 	if (clickHandler) {
 		wrs_addEvent(textarea, 'click', function (event) {
 			var realEvent = (event) ? event : window.event;
