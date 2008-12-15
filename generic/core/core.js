@@ -60,6 +60,11 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 	}
 }
 
+/**
+ * Adds textarea events.
+ * @param object textarea Target
+ * @param function clickHandler Function to run when user clicks the textarea.
+ */
 function wrs_addTextareaEvents(textarea, clickHandler) {
 	if (clickHandler) {
 		wrs_addEvent(textarea, 'click', function (event) {
@@ -238,7 +243,7 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 /**
  * Inserts or modifies formulas or CAS on a textarea.
  * @param object textarea Target
- * @param string text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateFormula_onTextarea(textarea, wrs_createImageSrc(mathml));
+ * @param string text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateTextarea(textarea, wrs_createImageSrc(mathml));
  */
 function wrs_updateTextarea(textarea, text) {
 	if (textarea && text) {
