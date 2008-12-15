@@ -132,28 +132,25 @@ function wrs_updateFormula(iframe, mathml) {
 			if (_wrs_isNewElement) {
 				if (document.selection) {
 					var range = iframe.contentWindow.document.selection.createRange();
-					
 					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
 
 					if (range.parentElement) {
 						var temporalImg = range.parentElement();
-
-						temporalImg.title = imgObject.title;
-						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
-						temporalImg.setAttribute(_wrs_conf_imageMathmlAttribute, imgObject.getAttribute(_wrs_conf_imageMathmlAttribute));
-						temporalImg.className = imgObject.className;
+						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
+						temporalImg.parentNode.removeChild(temporalImg);
 					}
 				}
 				else {
-					var sel = iframe.contentWindow.getSelection();
+					var selection = iframe.contentWindow.getSelection();
+					
 					try {
-						var range = sel.getRangeAt(0);
+						var range = selection.getRangeAt(0);						
 					}
 					catch (e) {
 						var range = iframe.contentWindow.document.createRange();
 					}
 					
-					sel.removeAllRanges();
+					selection.removeAllRanges();
 					range.deleteContents();
 				
 					var node = range.startContainer;
@@ -200,13 +197,8 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 
 					if (range.parentElement) {
 						var temporalImg = range.parentElement();
-
-						temporalImg.width = imgObject.width;
-						temporalImg.height = imgObject.height;
-						temporalImg.setAttribute('align', imgObject.getAttribute('align'));
-						temporalImg.title = imgObject.title;
-						temporalImg.setAttribute(_wrs_conf_CASMathmlAttribute, imgObject.getAttribute(_wrs_conf_CASMathmlAttribute));
-						temporalImg.className = imgObject.className;
+						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
+						temporalImg.parentNode.removeChild(temporalImg);
 					}
 				}
 				else {
