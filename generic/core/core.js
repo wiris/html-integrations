@@ -338,11 +338,16 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
  * @param string image Base 64 image stream
  * @return string
  */
-function wrs_createImageCASSrc(image) {
+function wrs_createImageCASSrc(image, appletCode) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
 		var data = 'image=' + wrs_urlencode(image);
+		
+		if (appletCode) {
+			data += '&mml=' + wrs_urlencode(appletCode);
+		}
+		
 		if (_wrs_conf_createcasimagePath.substr(0, 1) == '/' || _wrs_conf_createcasimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
 			httpRequest.open('POST', _wrs_conf_createcasimagePath, false);
 		}

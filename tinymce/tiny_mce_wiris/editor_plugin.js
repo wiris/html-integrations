@@ -162,7 +162,7 @@ var _wrs_int_temporalImageResizing;
 
 /**
  * Opens formula editor.
- * @param string targetPrefix TinyMCE prefix
+ * @param object iframe Target
  */
 function wrs_int_openNewFormulaEditor(iframe) {
 	if (_wrs_int_window_opened) {
@@ -177,7 +177,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
 
 /**
  * Opens CAS.
- * @param string targetPrefix TinyMCE prefix
+ * @param object iframe Target
  */
 function wrs_int_openNewCAS(iframe) {
 	if (_wrs_int_window_opened) {
@@ -220,7 +220,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
 
 /**
  * Opens formula editor to edit an existing formula.
- * @param string targetPrefix TinyMCE prefix
+ * @param object iframe Target
  */
 function wrs_int_openExistingFormulaEditor(iframe) {
 	_wrs_int_window_opened = true;
@@ -231,7 +231,7 @@ function wrs_int_openExistingFormulaEditor(iframe) {
 
 /**
  * Opens CAS to edit an existing formula.
- * @param string targetPrefix TinyMCE prefix
+ * @param object iframe Target
  */
 function wrs_int_openExistingCAS(iframe) {
 	_wrs_int_window_opened = true;
