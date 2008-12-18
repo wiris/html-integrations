@@ -420,6 +420,20 @@ function wrs_createHttpRequest() {
 }
 
 /**
+ * Gets the formula mathml or CAS appletCode using its image md5 sum.
+ * @param string imageMd5 Image md5 sum.
+ * @return string
+ */
+function wrs_getCode(imageMd5) {
+	var data = 'md5=' + imageMd5;
+	httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+	httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	httpRequest.send(data);
+
+	return httpRequest.responseText;
+}
+
+/**
  * Creates new object using its html code.
  * @param string objectCode
  * @return object
