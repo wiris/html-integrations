@@ -44,7 +44,17 @@ opener.wrs_addEvent(window, 'load', function () {
 	if (!opener._wrs_isNewElement) {
 		var appletCode = opener._wrs_temporalImage.getAttribute(opener._wrs_conf_CASMathmlAttribute);
 		var mathml = getMathmlFromAppletCode(opener.wrs_mathmlDecode(appletCode));
-		applet.setXML(mathml);
+		
+		function setAppletMathml() {
+			if (applet.isActive && applet.isActive()) {
+				applet.setXML(mathml);
+			}
+			else {
+				setTimeout(setAppletMathml, 50);
+			}
+		}
+
+		setAppletMathml();
 	}
 	
 	opener.wrs_addEvent(document.getElementById('submit'), 'click', function () {
