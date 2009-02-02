@@ -111,6 +111,7 @@ function wrs_mathmlEncode(input) {
  */
 function wrs_mathmlEntities(mathml) {
 	var toReturn = '';
+	
 	for (var i = 0; i < mathml.length; ++i) {
 		//parsing > 128 characters
 		if (mathml.charCodeAt(i) > 128) {
@@ -120,7 +121,19 @@ function wrs_mathmlEntities(mathml) {
 			toReturn += mathml.charAt(i);
 		}
 	}
+	
 	return toReturn;
+}
+
+/**
+ * Converts special symbols to entities.
+ * @param string input
+ * @return string
+ */
+function wrs_htmlentities(input) {
+	var container = document.createElement('div');
+	container.innerText = input;
+	return container.innerHTML;
 }
 
 /**
