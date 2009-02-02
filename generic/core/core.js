@@ -126,17 +126,6 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
- * Converts special symbols to entities.
- * @param string input
- * @return string
- */
-function wrs_htmlentities(input) {
-	var container = document.createElement('div');
-	container.innerText = input;
-	return container.innerHTML;
-}
-
-/**
  * Inserts or modifies formulas on an iframe.
  * @param object iframe Target
  * @param string mathml Mathml code
