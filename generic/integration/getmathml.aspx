@@ -1,0 +1,1 @@
+<%@ Page language="c#" Codebehind="getmathml.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.getmathml" %>

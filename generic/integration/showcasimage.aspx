@@ -1,0 +1,1 @@
+<%@ Page language="c#" Codebehind="showcasimage.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.showcasimage" %>
