@@ -36,7 +36,7 @@ namespace pluginwiris
 				else 
 				{
 					this.Response.ContentType = "image/gif";
-					// TODO: mostrar el CAS.gif
+					this.Response.WriteFile(this.MapPath("../core/cas.gif"));
 				}
 			}
 		}
