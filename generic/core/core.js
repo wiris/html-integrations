@@ -304,10 +304,9 @@ function wrs_createImageSrc(mathml) {
 		
 		return httpRequest.responseText;
 	}
-	else {
-		alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
-		return '';
-	}
+	
+	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+	return '';
 }
 
 /**
@@ -362,10 +361,9 @@ function wrs_createImageCASSrc(image, appletCode) {
 		
 		return httpRequest.responseText;
 	}
-	else {
-		alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
-		return '';
-	}
+	
+	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+	return '';
 }
 
 /**
@@ -428,11 +426,18 @@ function wrs_createHttpRequest() {
  */
 function wrs_getCode(imageMd5) {
 	var data = 'md5=' + imageMd5;
-	httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
-	httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-	httpRequest.send(data);
-
-	return httpRequest.responseText;
+	
+	var httpRequest = wrs_createHttpRequest();
+	
+	if (httpRequest) {
+		httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		httpRequest.send(data);
+		return httpRequest.responseText;
+	}
+	
+	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+	return '';
 }
 
 /**
