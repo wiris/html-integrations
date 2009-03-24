@@ -46,11 +46,22 @@ opener.wrs_addEvent(window, 'load', function () {
 		var mathml = getMathmlFromAppletCode(opener.wrs_mathmlDecode(appletCode));
 		
 		function setAppletMathml() {
-			if (applet.isActive && applet.isActive()) {
-				applet.setXML(mathml);
+			// Internet explorer fails on "applet.isActive". It only supports "applet.isActive()"
+			try {
+				if (applet.isActive && applet.isActive()) {
+					applet.setXML(mathml);
+				}
+				else {
+					setTimeout(setAppletMathml, 50);
+				}
 			}
-			else {
-				setTimeout(setAppletMathml, 50);
+			catch (e) {
+				if (applet.isActive()) {
+					applet.setXML(mathml);
+				}
+				else {
+					setTimeout(setAppletMathml, 50);
+				}
 			}
 		}
 
