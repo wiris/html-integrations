@@ -26,7 +26,7 @@ namespace pluginwiris
 				if (File.Exists(filePath)) 
 				{
 					StreamReader file = File.OpenText(filePath);
-					this.Response.Write(file.ReadToEnd());
+					this.Response.Write(file.ReadLine());
 					file.Close();
 				}
 			}

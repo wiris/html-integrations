@@ -6,7 +6,8 @@ if (isset($_POST['md5']) && mb_strlen($_POST['md5']) == 32) {
 	
 	if (is_file($filePath)) {
 		if (($content = file_get_contents($filePath)) !== false) {
-			echo $content;
+			$properties = explode("\n", $content);
+			echo $properties[0];
 		}
 		else {
 			echo 'Error: can\'t read the formula. Check your file privileges.';

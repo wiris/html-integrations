@@ -290,12 +290,7 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
-		var data;
-		
-		if (wirisProperties) {
-			data = wirisProperties;
-		}
-		
+		var data = (wirisProperties) ? wirisProperties : {};
 		data['mml'] = mathml;
 		
 		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {

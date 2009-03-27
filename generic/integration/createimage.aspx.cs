@@ -40,7 +40,7 @@ namespace pluginwiris
 					config["wirisimagefontsize"] = this.Request.Form["fontSize"];
 				}
 
-				string toSave = this.Request.Form["mml"] + "\n";
+				string toSave = "wewewewe" + this.Request.Form["mml"] + "\n";
 				toSave += (string)config["wirisimagebgcolor"] + "\n";
 				toSave += (string)config["wirisimagesymbolcolor"] + "\n";
 				toSave += (string)config["wiristransparency"] + "\n";
