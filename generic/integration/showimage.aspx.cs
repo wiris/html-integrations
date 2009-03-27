@@ -77,11 +77,15 @@ namespace pluginwiris
 
 				string postdata = "mml=" + HttpUtility.UrlEncodeUnicode(mathml);
 				postdata += "&bgColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagebgcolor"]);
-				postdata += "&symbolColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
+				
+				string symbolColorParsed = HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
+				postdata += "&symbolColor=" + symbolColorParsed;
+				postdata += "&numberColor=" + symbolColorParsed;
+				postdata += "&identColor=" + symbolColorParsed;
+
 				postdata += "&fontSize=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagefontsize"]);
 				postdata += "&transparency=" + HttpUtility.UrlEncodeUnicode((string)config["wiristransparency"]);
 
-				//Encoding encode = Encoding.GetEncoding("utf-8");
 				ASCIIEncoding encode = new ASCIIEncoding();
 				byte[] data = encode.GetBytes(postdata);
 
