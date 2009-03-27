@@ -1,5 +1,6 @@
 <?php
 include('libwiris.php');
+
 function createImage($config, $formulaFile, $imageFile) {
 	if (is_file($formulaFile) && ($content = file_get_contents($formulaFile)) !== false) {
 		$properties = explode("\n", $content);
