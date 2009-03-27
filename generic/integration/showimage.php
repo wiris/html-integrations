@@ -1,7 +1,7 @@
 <?php
 include('libwiris.php');
 function createImage($config, $formulaFile, $imageFile) {
-	if (is_file($formulaFile) and ($content = file_get_contents($formulaFile)) !== false) {
+	if (is_file($formulaFile) && ($content = file_get_contents($formulaFile)) !== false) {
 		$properties = explode("\n", $content);
 		$mathml = $properties[0];
 		
@@ -41,7 +41,7 @@ function createImage($config, $formulaFile, $imageFile) {
 			)
 		);
 
-		if (isset($config['wirisproxy']) and $config['wirisproxy'] == 'true') {
+		if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true') {
 			$contextArray['http']['proxy'] = 'tcp://' . $config['wirisproxy_host'] . ':' . $config['wirisproxy_port'];
 			$contextArray['http']['request_fulluri'] = true;
 		}
@@ -65,14 +65,9 @@ if (empty($_GET['formula'])) {
 else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
 	$imagePath = $cacheDirectory . '/' . $formula . '.png';
-	$fileExists = false;
+	$config = loadConfig($configFile);
 	
-	if (!is_file($imagePath)) {
-		$config = loadConfig($configFile);
-		$fileExists = createImage($config, $formulaDirectory . '/' . $formula . '.xml', $imagePath);
-	}
-	
-	if ($fileExists) {
+	if (is_file($imagePath) || createImage($config, $formulaDirectory . '/' . $formula . '.xml', $imagePath)) {
 		header('Content-Type: image/png');
 		echo file_get_contents($imagePath);
 	}
