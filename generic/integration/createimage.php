@@ -1,25 +1,37 @@
 ﻿<?php
 include('libwiris.php');
 
-function calculateImageMD5($mathml, $config) {
-	$string = 'mml=' . rawurlencode($mathml);
-	$string .= '&bgColor=' . rawurlencode($config['wirisimagebgcolor']);
-	$string .= '&symbolColor=' . rawurlencode($config['wirisimagesymbolcolor']);
-	$string .= '&fontSize=' . rawurlencode($config['wirisimagefontsize']);
-	$string .= '&transparency=' . rawurlencode($config['wiristransparency']);
-	
-	return md5($string);
-}
-
 if (!empty($_POST['mml'])) {
 	$config = loadConfig($configFile);
-	$fileName = calculateImageMD5($_POST['mml'], $config);
 	
+	if (isset($_POST['bgColor'])) {
+		$config['wirisimagebgcolor'] = $_POST['bgColor'];
+	}
+	
+	if (isset($_POST['symbolColor'])) {
+		$config['wirisimagesymbolcolor'] = $_POST['symbolColor'];
+	}
+	
+	if (isset($_POST['transparency'])) {
+		$config['wiristransparency'] = $_POST['transparency'];
+	}
+	
+	if (isset($_POST['fontSize'])) {
+		$config['wirisimagefontsize'] = $_POST['fontSize'];
+	}
+	
+	$toSave = 'mml=' . rawurlencode($_POST['mml']);
+	$toSave .= '&wirisimagebgcolor=' . rawurlencode($config['wirisimagebgcolor']);
+	$toSave .= '&wirisimagesymbolcolor=' . rawurlencode($config['wirisimagesymbolcolor']);
+	$toSave .= '&wiristransparency=' . rawurlencode($config['wiristransparency']);
+	$toSave .= '&wirisimagefontsize=' . rawurlencode($config['wirisimagefontsize']);
+	
+	$fileName = md5($toSave);
 	$URL = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';
 	$filePath = $formulaDirectory . '/' . $fileName . '.xml';
 	
 	if (!is_file($filePath)) {
-		if (file_put_contents($filePath, $_POST['mml']) !== false) {
+		if (file_put_contents($filePath, $toSave) !== false) {
 			echo $URL;
 		}
 		else {

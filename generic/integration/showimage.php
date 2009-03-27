@@ -1,15 +1,34 @@
 <?php
 include('libwiris.php');
 
+function isMathml($input) {
+	return (mb_substr($input, 0, 12) == '<math xmlns=');
+}
+
 function createImage($config, $formulaFile, $imageFile) {
-	if (is_file($formulaFile) and ($mathml = file_get_contents($formulaFile)) !== false) {
+	if (is_file($formulaFile) and ($content = file_get_contents($formulaFile)) !== false) {
+		if (isMathml($content)) {
+			$mathml = $content;
+		}
+		else {
+			$properties;
+			mb_parse_str($content, $properties);
+			$mathml = (isset($properties['mml'])) ? $properties['mml'] : '';
+			$config['wirisimagebgcolor'] = $properties['wirisimagebgcolor'];
+			$config['wirisimagesymbolcolor'] = $properties['wirisimagesymbolcolor'];
+			$config['wiristransparency'] = $properties['wiristransparency'];
+			$config['wirisimagefontsize'] = $properties['wirisimagefontsize'];
+		}
+		
 		$postdata = http_build_query(
 			array(
 				'mml' => $mathml,
 				'bgColor' => $config['wirisimagebgcolor'],
 				'symbolColor' => $config['wirisimagesymbolcolor'],
-				'fontSize' => $config['wirisimagefontsize'],
-				'transparency' => $config['wiristransparency']
+				'numberColor' => $config['wirisimagesymbolcolor'],
+				'identColor' => $config['wirisimagesymbolcolor'],
+				'transparency' => $config['wiristransparency'],
+				'fontSize' => $config['wirisimagefontsize']
 			)
 		);
 		
@@ -44,10 +63,15 @@ if (empty($_GET['formula'])) {
 }
 else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
-	$config = loadConfig($configFile);
 	$imagePath = $cacheDirectory . '/' . $formula . '.png';
+	$fileExists = false;
 	
-	if (is_file($imagePath) || createImage($config, $formulaDirectory . '/' . $formula . '.xml', $imagePath)) {
+	if (!is_file($imagePath)) {
+		$config = loadConfig($configFile);
+		$fileExists = createImage($config, $formulaDirectory . '/' . $formula . '.xml', $imagePath);
+	}
+	
+	if ($fileExists) {
 		header('Content-Type: image/png');
 		echo file_get_contents($imagePath);
 	}

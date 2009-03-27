@@ -130,11 +130,11 @@ function wrs_mathmlEntities(mathml) {
  * @param object iframe Target
  * @param string mathml Mathml code
  */
-function wrs_updateFormula(iframe, mathml) {
+function wrs_updateFormula(iframe, mathml, wirisProperties) {
 	try {
 		if (iframe && mathml) {
 			iframe.contentWindow.focus();
-			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml);
+			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
 			
 			if (_wrs_isNewElement) {
 				if (document.selection) {
@@ -267,8 +267,8 @@ function wrs_updateTextarea(textarea, text) {
  * @param string mathml Mathml code
  * @return object
  */
-function wrs_mathmlToImgObject(creator, mathml) {
-	var imageSrc = wrs_createImageSrc(mathml);
+function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
+	var imageSrc = wrs_createImageSrc(mathml, wirisProperties);
 	
 	var imgObject = creator.createElement('img');
 
@@ -286,11 +286,17 @@ function wrs_mathmlToImgObject(creator, mathml) {
  * @param mathml Mathml code
  * @return string
  */
-function wrs_createImageSrc(mathml) {
+function wrs_createImageSrc(mathml, wirisProperties) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
-		var data = 'mml=' + wrs_urlencode(mathml);
+		var data;
+		
+		if (wirisProperties) {
+			data = wirisProperties;
+		}
+		
+		data['mml'] = mathml;
 		
 		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
 			httpRequest.open('POST', _wrs_conf_createimagePath, false);
@@ -300,7 +306,7 @@ function wrs_createImageSrc(mathml) {
 		}
 		
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(data);
+		httpRequest.send(wrs_httpBuildQuery(data));
 		
 		return httpRequest.responseText;
 	}
@@ -579,4 +585,19 @@ function wrs_endParse(code) {
 	}
 
 	return container.innerHTML;
+}
+
+/**
+ * Converts a hash to a HTTP query.
+ * @param hash properties
+ * @return string
+ */
+function wrs_httpBuildQuery(properties) {
+	var result = '';
+	
+	for (i in properties) {
+		result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
+	}
+	
+	return result;
 }
