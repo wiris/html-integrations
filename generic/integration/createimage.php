@@ -20,11 +20,11 @@ if (!empty($_POST['mml'])) {
 		$config['wirisimagefontsize'] = $_POST['fontSize'];
 	}
 	
-	$toSave = $_POST['mml'] + "\n";
-	$toSave .= $config['wirisimagebgcolor'] + "\n";
-	$toSave .= $config['wirisimagesymbolcolor'] + "\n";
-	$toSave .= $config['wiristransparency'] + "\n";
-	$toSave .= $config['wirisimagefontsize'] + "\n";
+	$toSave = $_POST['mml'] . "\n";
+	$toSave .= $config['wirisimagebgcolor'] . "\n";
+	$toSave .= $config['wirisimagesymbolcolor'] . "\n";
+	$toSave .= $config['wiristransparency'] . "\n";
+	$toSave .= $config['wirisimagefontsize'] . "\n";
 	
 	$fileName = md5($toSave);
 	$URL = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';

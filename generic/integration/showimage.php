@@ -1,25 +1,26 @@
 <?php
 include('libwiris.php');
-
-function isMathml($input) {
-	return (mb_substr($input, 0, 12) == '<math xmlns=');
-}
-
 function createImage($config, $formulaFile, $imageFile) {
 	if (is_file($formulaFile) and ($content = file_get_contents($formulaFile)) !== false) {
-		if (isMathml($content)) {
-			$mathml = $content;
-		}
-		else {
-			$properties;
-			mb_parse_str($content, $properties);
-			$mathml = (isset($properties['mml'])) ? $properties['mml'] : '';
-			$config['wirisimagebgcolor'] = $properties['wirisimagebgcolor'];
-			$config['wirisimagesymbolcolor'] = $properties['wirisimagesymbolcolor'];
-			$config['wiristransparency'] = $properties['wiristransparency'];
-			$config['wirisimagefontsize'] = $properties['wirisimagefontsize'];
+		$properties = explode("\n", $content);
+		$mathml = $properties[0];
+		
+		if (isset($properties[1])) {
+			$config['wirisimagebgcolor'] = $properties[1];
 		}
 		
+		if (isset($properties[2])) {
+			$config['wirisimagesymbolcolor'] = $properties[2];
+		}
+		
+		if (isset($properties[3])) {
+			$config['wiristransparency'] = $properties[3];
+		}
+		
+		if (isset($properties[4])) {
+			$config['wirisimagefontsize'] = $properties[4];
+		}
+
 		$postdata = http_build_query(
 			array(
 				'mml' => $mathml,
