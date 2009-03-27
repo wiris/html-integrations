@@ -28,8 +28,8 @@ namespace pluginwiris
 			else 
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
-				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula + ".png");
+				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 
 				if (File.Exists(imagePath) || this.createImage(config, this.MapPath(Libwiris.FormulaDirectory + "/" + formula + ".xml"), imagePath)) 
 				{
@@ -49,8 +49,31 @@ namespace pluginwiris
 			{
 				// HTTP Request
 				TextReader file = new StreamReader(formulaFile);
-				string mathml = file.ReadToEnd();
+				string content = file.ReadToEnd();
 				file.Close();
+
+				string[] properties = content.Split('\n');
+				string mathml = properties[0];
+
+				if (properties.Length >= 2) 
+				{
+					config["wirisimagebgcolor"] = properties[1];
+
+					if (properties.Length >= 3) 
+					{
+						config["wirisimagesymbolcolor"] = properties[2];
+
+						if (properties.Length >= 4) 
+						{
+							config["wiristransparency"] = properties[3];
+
+							if (properties.Length >= 5) 
+							{
+								config["wirisimagefontsize"] = properties[4];
+							}
+						}
+					}
+				}
 
 				string postdata = "mml=" + HttpUtility.UrlEncodeUnicode(mathml);
 				postdata += "&bgColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagebgcolor"]);

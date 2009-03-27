@@ -14,38 +14,50 @@ namespace pluginwiris
 {
 	public class createimage : System.Web.UI.Page
 	{
-		private string calculateImageMD5(string mathml, Hashtable config)
-		{
-			string query = "mml=" + HttpUtility.UrlEncodeUnicode(mathml);
-			query += "&bgColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagebgcolor"]);
-			query += "&symbolColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
-			query += "&fontSize=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagefontsize"]);
-			query += "&transparency=" + HttpUtility.UrlEncodeUnicode((string)config["wiristransparency"]);
-
-			return Libwiris.md5(query);
-		}
-
 		private void Page_Load(object sender, System.EventArgs e)
 		{
 			if (this.Request.Form["mml"] != null && this.Request.Form["mml"].Length > 0) 
 			{
 				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
-				string fileName = this.calculateImageMD5(this.Request.Form["mml"], config);
+
+				if (this.Request.Form["bgColor"] != null) 
+				{
+					config["wirisimagebgcolor"] = this.Request.Form["bgColor"];
+				}
+
+				if (this.Request.Form["symbolColor"] != null) 
+				{
+					config["wirisimagesymbolcolor"] = this.Request.Form["symbolColor"];
+				}
+
+				if (this.Request.Form["transparency"] != null) 
+				{
+					config["wiristransparency"] = this.Request.Form["transparency"];
+				}
+
+				if (this.Request.Form["fontSize"] != null) 
+				{
+					config["wirisimagefontsize"] = this.Request.Form["fontSize"];
+				}
+
+				string toSave = this.Request.Form["mml"] + "\n";
+				toSave += (string)config["wirisimagebgcolor"] + "\n";
+				toSave += (string)config["wirisimagesymbolcolor"] + "\n";
+				toSave += (string)config["wiristransparency"] + "\n";
+				toSave += (string)config["wirisimagefontsize"] + "\n";
+
+				string fileName = Libwiris.md5(toSave);
 				string URL =  this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
 				string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".xml");
 
 				if (!File.Exists(filePath)) 
 				{
 					TextWriter file = new StreamWriter(filePath);
-					file.Write(this.Request.Form["mml"]);
+					file.Write(toSave);
 					file.Close();
-
-					this.Response.Write(URL);
 				}
-				else 
-				{
-					this.Response.Write(URL);
-				}
+				
+				this.Response.Write(URL);
 			}
 			else 
 			{

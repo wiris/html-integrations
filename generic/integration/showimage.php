@@ -8,18 +8,18 @@ function createImage($config, $formulaFile, $imageFile) {
 		
 		if (isset($properties[1])) {
 			$config['wirisimagebgcolor'] = $properties[1];
-		}
-		
-		if (isset($properties[2])) {
-			$config['wirisimagesymbolcolor'] = $properties[2];
-		}
-		
-		if (isset($properties[3])) {
-			$config['wiristransparency'] = $properties[3];
-		}
-		
-		if (isset($properties[4])) {
-			$config['wirisimagefontsize'] = $properties[4];
+			
+			if (isset($properties[2])) {
+				$config['wirisimagesymbolcolor'] = $properties[2];
+				
+				if (isset($properties[3])) {
+					$config['wiristransparency'] = $properties[3];
+					
+					if (isset($properties[4])) {
+						$config['wirisimagefontsize'] = $properties[4];
+					}
+				}
+			}
 		}
 
 		$postdata = http_build_query(
