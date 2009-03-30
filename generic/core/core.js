@@ -267,11 +267,9 @@ function wrs_updateTextarea(textarea, text) {
  * @param string mathml Mathml code
  * @return object
  */
-function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
+function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {	
 	var imageSrc = wrs_createImageSrc(mathml, wirisProperties);
-	
 	var imgObject = creator.createElement('img');
-
 	imgObject.title = 'Double click to edit';
 	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
@@ -591,7 +589,9 @@ function wrs_httpBuildQuery(properties) {
 	var result = '';
 	
 	for (i in properties) {
-		result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
+		if (properties[i]) {
+			result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
+		}
 	}
 	
 	return result;
