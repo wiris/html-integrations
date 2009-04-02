@@ -17,9 +17,27 @@ function createImage($config, $formulaFile, $imageFile) {
 					
 					if (isset($properties[4])) {
 						$config['wirisimagefontsize'] = $properties[4];
+						
+						if (isset($properties[5])) {
+							$config['wirisimagenumbercolor'] = $properties[5];
+							
+							if (isset($properties[6])) {
+								$config['wirisimageidentcolor'] = $properties[6];
+							}
+						}
 					}
 				}
 			}
+		}
+		
+		// Retrocompatibility: when wirisimagenumbercolor isn't defined
+		if (!isset($config['wirisimagenumbercolor'])) {
+			$config['wirisimagenumbercolor'] = $config['wirisimagesymbolcolor'];
+		}
+		
+		// Retrocompatibility: when wirisimageidentcolor isn't defined
+		if (!isset($config['wirisimageidentcolor'])) {
+			$config['wirisimageidentcolor'] = $config['wirisimagesymbolcolor'];
 		}
 
 		$postdata = http_build_query(
@@ -27,8 +45,8 @@ function createImage($config, $formulaFile, $imageFile) {
 				'mml' => $mathml,
 				'bgColor' => $config['wirisimagebgcolor'],
 				'symbolColor' => $config['wirisimagesymbolcolor'],
-				'numberColor' => $config['wirisimagesymbolcolor'],
-				'identColor' => $config['wirisimagesymbolcolor'],
+				'numberColor' => $config['wirisimagenumbercolor'],
+				'identColor' => $config['wirisimageidentcolor'],
 				'transparency' => $config['wiristransparency'],
 				'fontSize' => $config['wirisimagefontsize']
 			)

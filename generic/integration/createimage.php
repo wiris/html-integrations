@@ -12,6 +12,14 @@ if (!empty($_POST['mml'])) {
 		$config['wirisimagesymbolcolor'] = $_POST['symbolColor'];
 	}
 	
+	if (isset($_POST['numberColor'])) {
+		$config['wirisimagenumbercolor'] = $_POST['numberColor'];
+	}
+	
+	if (isset($_POST['identColor'])) {
+		$config['wirisimageidentcolor'] = $_POST['identColor'];
+	}
+	
 	if (isset($_POST['transparency'])) {
 		$config['wiristransparency'] = $_POST['transparency'];
 	}
@@ -25,6 +33,8 @@ if (!empty($_POST['mml'])) {
 	$toSave .= $config['wirisimagesymbolcolor'] . "\n";
 	$toSave .= $config['wiristransparency'] . "\n";
 	$toSave .= $config['wirisimagefontsize'] . "\n";
+	$toSave .= $config['wirisimagenumbercolor'] . "\n";
+	$toSave .= $config['wirisimageidentcolor'] . "\n";
 	
 	$fileName = md5($toSave);
 	$URL = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';

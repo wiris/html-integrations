@@ -81,11 +81,15 @@ function wrs_addTextareaEvents(textarea, clickHandler) {
  * @return string
  */
 function wrs_mathmlDecode(input) {
-	input = input.split('«').join('<');
-	input = input.split('»').join('>');
-	input = input.split('¨').join('"');
+	input = input.split('«').join('<');		// \xAB by \x3C
+	input = input.split('»').join('>');		// \xBB by \x3E
+	input = input.split('¨').join('"');		// \xA8 by \x22
+	input = input.split('§').join('&');		// \xA7 by \x26
+	input = input.split('`').join("'");		// \xB4 by \x27
+	
+	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
 	input = input.split('$').join('&');
-	input = input.split('`').join("'");
+	
 	return input;
 }
 
@@ -96,11 +100,12 @@ function wrs_mathmlDecode(input) {
  * @return string
  */
 function wrs_mathmlEncode(input) {
-	input = input.split('<').join('«');
-	input = input.split('>').join('»');
-	input = input.split('"').join('¨');
-	input = input.split('&').join('$');
-	input = input.split("'").join('`');
+	input = input.split('<').join('«');		// \x3C by \xAB
+	input = input.split('>').join('»');		// \x3E by \xBB
+	input = input.split('"').join('¨');		// \x22 by \xA8
+	input = input.split('&').join('§');		// \x26 by \xA7
+	input = input.split("'").join('`');		// \x27 by \xB4
+	
 	return input;
 }
 
