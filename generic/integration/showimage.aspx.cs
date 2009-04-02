@@ -70,19 +70,38 @@ namespace pluginwiris
 							if (properties.Length >= 5) 
 							{
 								config["wirisimagefontsize"] = properties[4];
+
+								if (properties.Length >= 6) 
+								{
+									config["wirisimagenumbercolor"] = properties[5];
+
+									if (properties.Length >= 7) 
+									{
+										config["wirisimageidentcolor"] = properties[6];
+									}
+								}
 							}
 						}
 					}
 				}
 
+				// Retrocompatibility: when wirisimagenumbercolor isn't defined
+				if (config["wirisimagenumbercolor"] == null) 
+				{
+					config["wirisimagenumbercolor"] = config["wirisimagesymbolcolor"];
+				}
+
+				// Retrocompatibility: when wirisimageidentcolor isn't defined
+				if (config["wirisimageidentcolor"] == null) 
+				{
+					config["wirisimageidentcolor"] = config["wirisimagesymbolcolor"];
+				}
+
 				string postdata = "mml=" + HttpUtility.UrlEncodeUnicode(mathml);
 				postdata += "&bgColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagebgcolor"]);
-				
-				string symbolColorParsed = HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
-				postdata += "&symbolColor=" + symbolColorParsed;
-				postdata += "&numberColor=" + symbolColorParsed;
-				postdata += "&identColor=" + symbolColorParsed;
-
+				postdata += "&symbolColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
+				postdata += "&numberColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesnumbercolor"]);
+				postdata += "&identColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimageidentcolor"]);
 				postdata += "&fontSize=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagefontsize"]);
 				postdata += "&transparency=" + HttpUtility.UrlEncodeUnicode((string)config["wiristransparency"]);
 

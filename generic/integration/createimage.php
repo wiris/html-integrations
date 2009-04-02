@@ -12,20 +12,20 @@ if (!empty($_POST['mml'])) {
 		$config['wirisimagesymbolcolor'] = $_POST['symbolColor'];
 	}
 	
-	if (isset($_POST['numberColor'])) {
-		$config['wirisimagenumbercolor'] = $_POST['numberColor'];
-	}
-	
-	if (isset($_POST['identColor'])) {
-		$config['wirisimageidentcolor'] = $_POST['identColor'];
-	}
-	
 	if (isset($_POST['transparency'])) {
 		$config['wiristransparency'] = $_POST['transparency'];
 	}
 	
 	if (isset($_POST['fontSize'])) {
 		$config['wirisimagefontsize'] = $_POST['fontSize'];
+	}
+	
+	if (isset($_POST['numberColor'])) {
+		$config['wirisimagenumbercolor'] = $_POST['numberColor'];
+	}
+	
+	if (isset($_POST['identColor'])) {
+		$config['wirisimageidentcolor'] = $_POST['identColor'];
 	}
 	
 	$toSave = $_POST['mml'] . "\n";

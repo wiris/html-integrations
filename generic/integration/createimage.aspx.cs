@@ -40,11 +40,23 @@ namespace pluginwiris
 					config["wirisimagefontsize"] = this.Request.Form["fontSize"];
 				}
 
+				if (this.Request.Form["numberColor"] != null) 
+				{
+					config["wirisimagenumbercolor"] = this.Request.Form["numberColor"];
+				}
+
+				if (this.Request.Form["identColor"] != null) 
+				{
+					config["wirisimageidentcolor"] = this.Request.Form["identColor"];
+				}
+
 				string toSave = this.Request.Form["mml"] + "\n";
 				toSave += (string)config["wirisimagebgcolor"] + "\n";
 				toSave += (string)config["wirisimagesymbolcolor"] + "\n";
 				toSave += (string)config["wiristransparency"] + "\n";
 				toSave += (string)config["wirisimagefontsize"] + "\n";
+				toSave += (string)config["wirisimagenumbercolor"] + "\n";
+				toSave += (string)config["wirisimageidentcolor"] + "\n";
 
 				string fileName = Libwiris.md5(toSave);
 				string URL =  this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
