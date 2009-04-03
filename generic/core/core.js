@@ -594,9 +594,9 @@ function wrs_httpBuildQuery(properties) {
 	var result = '';
 	
 	for (i in properties) {
-		//if (properties[i]) {		// BUG AQUI!
+		if (properties[i] != null) {
 			result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
-		//}
+		}
 	}
 	
 	return result;
