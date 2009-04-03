@@ -272,14 +272,23 @@ function wrs_updateTextarea(textarea, text) {
  * @param string mathml Mathml code
  * @return object
  */
-function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {	
-	var imageSrc = wrs_createImageSrc(mathml, wirisProperties);
+function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 	var imgObject = creator.createElement('img');
 	imgObject.title = 'Double click to edit';
-	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
-	imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
 	imgObject.className = 'Wirisformula';
+	
+	var result = wrs_createImageSrc(mathml, wirisProperties);
+	
+	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+		var parts = result.split(':', 2);
+		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, parts[0]);
+		imgObject.src = parts[1];
+	}
+	else {
+		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
+		imgObject.src = result;
+	}
 	
 	return imgObject;
 }
@@ -295,6 +304,10 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 	if (httpRequest) {
 		var data = (wirisProperties) ? wirisProperties : {};
 		data['mml'] = mathml;
+		
+		if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+			data['returnDigest'] = 'true';
+		}
 		
 		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
 			httpRequest.open('POST', _wrs_conf_createimagePath, false);
@@ -434,7 +447,13 @@ function wrs_getCode(variableName, imageHashCode) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
-		httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		if (_wrs_conf_getmathmlPath.substr(0, 1) == '/' || _wrs_conf_getmathmlPath.substr(0, 7) == 'http://' || _wrs_conf_getmathmlPath.substr(0, 8) == 'https://') {
+			httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		}
+		else {
+			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_getmathmlPath, false);
+		}
+		
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		httpRequest.send(data);
 		return httpRequest.responseText;
