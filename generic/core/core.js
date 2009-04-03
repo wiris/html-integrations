@@ -337,9 +337,7 @@ function wrs_createImageSrc(mathml, wirisProperties) {
  */
 function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, imageHeight) {
 	var imageSrc = wrs_createImageCASSrc(image);
-	
 	var imgObject = creator.createElement('img');
-	
 	imgObject.title = 'Double click to edit';
 	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
