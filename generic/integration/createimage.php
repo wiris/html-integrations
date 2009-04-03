@@ -42,14 +42,14 @@ if (!empty($_POST['mml'])) {
 	
 	if (!is_file($filePath)) {
 		if (file_put_contents($filePath, $toSave) !== false) {
-			echo $URL;
+			echo (isset($_POST['returnDigest'])) ? $fileName . ':' . $URL : $URL;
 		}
 		else {
 			echo 'Error: can\'t create the image. Check your file privileges.';
 		}
 	}
 	else {
-		echo $URL;
+		echo (isset($_POST['returnDigest'])) ? $fileName . ':' . $URL : $URL;
 	}
 }
 else {
