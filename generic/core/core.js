@@ -424,13 +424,13 @@ function wrs_createHttpRequest() {
 }
 
 /**
- * Gets the formula mathml or CAS appletCode using its image md5 sum.
- * @param string imageMd5 Image md5 sum.
+ * Gets the formula mathml or CAS appletCode using its image hash code.
+ * @param string variableName Variable to send on POST query to the server.
+ * @param string imageHashCode
  * @return string
  */
-function wrs_getCode(imageMd5) {
-	var data = 'md5=' + imageMd5;
-	
+function wrs_getCode(variableName, imageHashCode) {
+	var data = wrs_urlencode(variableName) + '=' + imageHashCode;
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
