@@ -1,3 +1,25 @@
+var wrs_int_opener;
+var closeFunction;
+
+if (window.parent) {			// For iframe mode
+	wrs_int_opener = window.parent;
+	
+	while (wrs_int_opener != wrs_int_opener.parent) {
+		wrs_int_opener = wrs_int_opener.parent;
+	}
+}
+else {							// For popup mode
+	wrs_int_opener = window.opener;
+	closeFunction = window.close;
+}
+
+/* FCKeditor integration begin */
+if (window.parent.InnerDialogLoaded) {
+	window.parent.InnerDialogLoaded();
+	closeFunction = window.parent.CloseDialog;
+}
+/* FCKeditor integration end */
+
 function htmlentities(input) {
     var container = document.createElement('span');
     var text = document.createTextNode(input);
@@ -7,7 +29,7 @@ function htmlentities(input) {
 
 function getMathmlFromAppletCode(appletCode) {
 	var optionForm = document.getElementById('optionForm');
-	var appletObject = opener.wrs_createObject(appletCode);
+	var appletObject = wrs_int_opener.wrs_createObject(appletCode);
 	
 	optionForm.width.value = parseInt(appletObject.width);
 	optionForm.height.value = parseInt(appletObject.height);
@@ -36,14 +58,14 @@ function getMathmlFromAppletCode(appletCode) {
 	return mathml;
 }
 
-opener.wrs_addEvent(window, 'load', function () {
+wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	// Waiting for applet load
 	var applet = document.getElementById('applet');
 	
-	/* Getting possible mathml for CAS editing */
-	if (!opener._wrs_isNewElement) {
-		var appletCode = opener._wrs_temporalImage.getAttribute(opener._wrs_conf_CASMathmlAttribute);
-		var mathml = getMathmlFromAppletCode(opener.wrs_mathmlDecode(appletCode));
+	// Getting possible mathml for CAS editing
+	if (!wrs_int_opener._wrs_isNewElement) {
+		var appletCode = wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_CASMathmlAttribute);
+		var mathml = getMathmlFromAppletCode(wrs_int_opener.wrs_mathmlDecode(appletCode));
 		
 		function setAppletMathml() {
 			// Internet explorer fails on "applet.isActive". It only supports "applet.isActive()"
@@ -68,8 +90,8 @@ opener.wrs_addEvent(window, 'load', function () {
 		setAppletMathml();
 	}
 	
-	opener.wrs_addEvent(document.getElementById('submit'), 'click', function () {
-		/* Creating new applet code */
+	wrs_int_opener.wrs_addEvent(document.getElementById('submit'), 'click', function () {
+		// Creating new applet code
 		var optionForm = document.getElementById('optionForm');
 		var newWidth = parseInt(optionForm.width.value);
 		var newHeight = parseInt(optionForm.height.value);
@@ -89,7 +111,7 @@ opener.wrs_addEvent(window, 'load', function () {
 		
 		appletCode += '</applet>';
 		
-		/* Getting the image */
+		// Getting the image
 		// First, resize applet
 		applet.width = newWidth;
 		applet.height = newHeight;
@@ -103,20 +125,20 @@ opener.wrs_addEvent(window, 'load', function () {
 				// Getting the image
 				var image = applet.getImageBase64('png');
 			
-				/* Posting formula */
-				opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
-				window.close();
+				// Posting formula
+				wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
+				closeFunction();
 			}
 		}
 		
 		finish();
 	});
 
-	opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
-		window.close();
+	wrs_int_opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
+		closeFunction();
 	});
 });
 
-opener.wrs_addEvent(window, 'unload', function () {
-	opener.wrs_int_notifyWindowClosed();
+wrs_int_opener.wrs_addEvent(window, 'unload', function () {
+	wrs_int_opener.wrs_int_notifyWindowClosed();
 });
