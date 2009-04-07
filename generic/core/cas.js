@@ -1,16 +1,16 @@
 var wrs_int_opener;
 var closeFunction;
 
-if (window.parent) {			// For iframe mode
+if (window.opener) {							// For popup mode
+	wrs_int_opener = window.opener;
+	closeFunction = window.close;
+}
+else {											// For iframe mode
 	wrs_int_opener = window.parent;
 	
 	while (wrs_int_opener != wrs_int_opener.parent) {
 		wrs_int_opener = wrs_int_opener.parent;
 	}
-}
-else {							// For popup mode
-	wrs_int_opener = window.opener;
-	closeFunction = window.close;
 }
 
 /* FCKeditor integration begin */

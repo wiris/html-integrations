@@ -7,6 +7,14 @@ $config = loadConfig('../configuration.ini');
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 		<script type="text/javascript" src="../core/cas.js"></script>
 		<title>WIRIS CAS</title>
+		
+		<style type="text/css">
+			<!--
+			body {
+				overflow: hidden;		// Hide scrollbars
+			}
+			-->
+		</style>
 	</head>
 	<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
 		<form id="optionForm">
