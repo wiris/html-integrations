@@ -14,9 +14,12 @@ else {											// For iframe mode
 }
 
 /* FCKeditor integration begin */
-if (window.parent.InnerDialogLoaded) {
+if (window.parent.InnerDialogLoaded) {			// iframe mode
 	window.parent.InnerDialogLoaded();
-	closeFunction = window.parent.CloseDialog;
+	closeFunction = window.parent.Cancel;
+}
+else if (window.opener.parent.FCKeditorAPI) {	// popup mode
+	wrs_int_opener = window.opener.parent;
 }
 /* FCKeditor integration end */
 
@@ -124,10 +127,17 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			else {
 				// Getting the image
 				var image = applet.getImageBase64('png');
-			
-				// Posting formula
-				wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
-				closeFunction();
+				
+				/* FCKeditor integration begin */
+				if (window.parent.InnerDialogLoaded && window.parent.FCKBrowserInfo.IsIE) {			// On IE, we must close the dialog for push the caret on the correct position.
+					closeFunction();
+					wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
+				}
+				/* FCKeditor integration end */
+				else {
+					wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
+					closeFunction();
+				}
 			}
 		}
 		
