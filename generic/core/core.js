@@ -468,8 +468,8 @@ function wrs_getCode(variableName, imageHashCode) {
  */
 function wrs_createObject(objectCode) {
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
-	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
-	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
+	objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
+	objectCode = objectCode.split('</applet>').join('</span>').split('</APPLET>').join('</span>');
 	
 	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// Is a 'br' because 'br' can't contain nodes.
 	objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
