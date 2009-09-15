@@ -1,4 +1,4 @@
-﻿/* Vars */
+﻿// Vars
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
@@ -15,15 +15,6 @@ function wrs_addEvent(element, event, func) {
 	}
 	else if (element.attachEvent) {
 		element.attachEvent('on' + event, func);
-	}
-}
-
-function wrs_removeEvent(element, event, func) {
-	if (element.removeEventListener) {
-		element.removeEventListener(event, func, false);
-	}
-	else if (element.detachEvent) {
-		element.detachEvent('on' + event, func);
 	}
 }
 
@@ -75,258 +66,6 @@ function wrs_addTextareaEvents(textarea, clickHandler) {
 }
 
 /**
- * WIRIS special encoding.
- *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
- * @param string input
- * @return string
- */
-function wrs_mathmlDecode(input) {
-	input = input.split('«').join('<');		// \xAB by \x3C
-	input = input.split('»').join('>');		// \xBB by \x3E
-	input = input.split('¨').join('"');		// \xA8 by \x22
-	input = input.split('§').join('&');		// \xA7 by \x26
-	input = input.split('`').join("'");		// \xB4 by \x27
-	
-	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
-	input = input.split('$').join('&');
-	
-	return input;
-}
-
-/**
- * WIRIS special encoding.
- *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
- * @param string input
- * @return string
- */
-function wrs_mathmlEncode(input) {
-	input = input.split('<').join('«');		// \x3C by \xAB
-	input = input.split('>').join('»');		// \x3E by \xBB
-	input = input.split('"').join('¨');		// \x22 by \xA8
-	input = input.split('&').join('§');		// \x26 by \xA7
-	input = input.split("'").join('`');		// \x27 by \xB4
-	
-	return input;
-}
-
-/**
- * Converts special symbols (> 128) to entities.
- * @param string mathml
- * @return string
- */
-function wrs_mathmlEntities(mathml) {
-	var toReturn = '';
-	
-	for (var i = 0; i < mathml.length; ++i) {
-		//parsing > 128 characters
-		if (mathml.charCodeAt(i) > 128) {
-			toReturn += '&#' + mathml.charCodeAt(i) + ';';
-		}
-		else {
-			toReturn += mathml.charAt(i);
-		}
-	}
-	
-	return toReturn;
-}
-
-/**
- * Inserts or modifies formulas on an iframe.
- * @param object iframe Target
- * @param string mathml Mathml code
- */
-function wrs_updateFormula(iframe, mathml, wirisProperties) {
-	try {
-		if (iframe && mathml) {
-			iframe.contentWindow.focus();
-			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
-			
-			if (_wrs_isNewElement) {
-				if (document.selection) {
-					var range = iframe.contentWindow.document.selection.createRange();
-					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
-
-					if (range.parentElement) {
-						var temporalImg = range.parentElement();
-						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
-						temporalImg.parentNode.removeChild(temporalImg);
-					}
-				}
-				else {
-					var selection = iframe.contentWindow.getSelection();
-					
-					try {
-						var range = selection.getRangeAt(0);						
-					}
-					catch (e) {
-						var range = iframe.contentWindow.document.createRange();
-					}
-					
-					selection.removeAllRanges();
-					range.deleteContents();
-				
-					var node = range.startContainer;
-					var pos = range.startOffset;
-					
-					if (node.nodeType == 3) {
-						node = node.splitText(pos);
-						node.parentNode.insertBefore(imgObject, node);
-					}
-					else if (node.nodeType == 1) {
-						node.insertBefore(imgObject, node.childNodes[pos]);
-					}
-				}
-			}
-			else {
-				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-			}
-		}
-	}
-	catch (e) {
-	}
-}
-
-/**
- * Inserts or modifies CAS on an iframe.
- * @param object iframe Target
- * @param string appletCode Applet code
- * @param string image Base 64 image stream
- * @param int imageWidth Image width
- * @param int imageHeight Image height
- */
-function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
-	try {
-		if (iframe && appletCode) {
-			iframe.contentWindow.focus();
-			var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
-			
-			if (_wrs_isNewElement) {
-				if (document.selection) {
-					var range = iframe.contentWindow.document.selection.createRange();
-					
-					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
-
-					if (range.parentElement) {
-						var temporalImg = range.parentElement();
-						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
-						temporalImg.parentNode.removeChild(temporalImg);
-					}
-				}
-				else {
-					var sel = iframe.contentWindow.getSelection();
-					try {
-						var range = sel.getRangeAt(0);
-					}
-					catch (e) {
-						var range = iframe.contentWindow.document.createRange();
-					}
-					
-					sel.removeAllRanges();
-					range.deleteContents();
-					
-					var node = range.startContainer;
-					var pos = range.startOffset;
-					
-					if (node.nodeType == 3) {
-						node = node.splitText(pos);
-						node.parentNode.insertBefore(imgObject, node);
-					}
-					else if (node.nodeType == 1) {
-						node.insertBefore(imgObject, node.childNodes[pos]);
-					}
-				}
-			}
-			else {
-				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-			}
-		}
-	}
-	catch (e) {
-	}
-}
-
-/**
- * Inserts or modifies formulas or CAS on a textarea.
- * @param object textarea Target
- * @param string text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateTextarea(textarea, wrs_createImageSrc(mathml));
- */
-function wrs_updateTextarea(textarea, text) {
-	if (textarea && text) {
-		textarea.focus();
-		
-		if (textarea.selectionStart != null) {
-			textarea.value = textarea.value.substring(0, textarea.selectionStart) + text + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
-		}
-		else {
-			var selection = document.selection.createRange();
-			selection.text = text;
-		}
-	}
-}
-
-/**
- * Converts mathml to img object.
- * @param object creator Object with "createElement" method
- * @param string mathml Mathml code
- * @return object
- */
-function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
-	var imgObject = creator.createElement('img');
-	imgObject.title = 'Double click to edit';
-	imgObject.align = 'middle';
-	imgObject.className = 'Wirisformula';
-	
-	var result = wrs_createImageSrc(mathml, wirisProperties);
-	
-	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
-		var parts = result.split(':', 2);
-		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, parts[0]);
-		imgObject.src = parts[1];
-	}
-	else {
-		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
-		imgObject.src = result;
-	}
-	
-	return imgObject;
-}
-
-/**
- * Gets formula image src with AJAX.
- * @param mathml Mathml code
- * @return string
- */
-function wrs_createImageSrc(mathml, wirisProperties) {
-	var httpRequest = wrs_createHttpRequest();
-	
-	if (httpRequest) {
-		var data = (wirisProperties) ? wirisProperties : {};
-		data['mml'] = mathml;
-		
-		if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
-			data['returnDigest'] = 'true';
-		}
-		
-		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', _wrs_conf_createimagePath, false);
-		}
-		else {
-			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createimagePath, false);
-		}
-		
-		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(wrs_httpBuildQuery(data));
-		
-		return httpRequest.responseText;
-	}
-	
-	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
-	return '';
-}
-
-/**
  * Converts applet code to img object.
  * @param object creator Object with "createElement" method
  * @param string appletCode Applet code
@@ -347,6 +86,47 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
 	imgObject.className = 'Wiriscas';
 	
 	return imgObject;
+}
+
+/**
+ * Checks if an element contains a class.
+ * @param object element
+ * @param string className
+ * @return bool
+ */
+function wrs_containsClass(element, className) {
+	var currentClasses = element.className.split(' ');
+	
+	for (var i = currentClasses.length - 1; i >= 0; --i) {
+		if (currentClasses[i] == className) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+/**
+ * Cross-browser httpRequest creation.
+ * @return object
+ */
+function wrs_createHttpRequest() {
+	if (typeof XMLHttpRequest != 'undefined') {
+		return new XMLHttpRequest();
+	}
+			
+	try {
+		return new ActiveXObject('Msxml2.XMLHTTP');
+	}
+	catch (e) {
+		try {
+			return new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		catch (oc) {
+		}
+	}
+	
+	return false;
 }
 
 /**
@@ -382,78 +162,31 @@ function wrs_createImageCASSrc(image, appletCode) {
 }
 
 /**
- * URL encode function
- * @param string clearString Input 
+ * Gets formula image src with AJAX.
+ * @param mathml Mathml code
  * @return string
  */
-function wrs_urlencode(clearString) {
-	var output = '';
-	var x = 0;
-	clearString = clearString.toString();
-	var regex = /(^[a-zA-Z0-9_.]*)/;
-	
-	var clearString_length = ((typeof clearString.length) == 'function') ? clearString.length() : clearString.length;
-
-	while (x < clearString_length) {
-		var match = regex.exec(clearString.substr(x));
-		if (match != null && match.length > 1 && match[1] != '') {
-			output += match[1];
-			x += match[1].length;
-		}
-		else {
-			var charCode = clearString.charCodeAt(x);
-			var hexVal = charCode.toString(16);
-			output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
-			++x;
-		}
-	}
-	
-	return output;
-}
-
-/**
- * Cross-browser httpRequest creation.
- * @return object
- */
-function wrs_createHttpRequest() {
-	if (typeof XMLHttpRequest != 'undefined') {
-		return new XMLHttpRequest();
-	}
-			
-	try {
-		return new ActiveXObject('Msxml2.XMLHTTP');
-	}
-	catch (e) {
-		try {
-			return new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		catch (oc) {
-		}
-	}
-	
-	return false;
-}
-
-/**
- * Gets the formula mathml or CAS appletCode using its image hash code.
- * @param string variableName Variable to send on POST query to the server.
- * @param string imageHashCode
- * @return string
- */
-function wrs_getCode(variableName, imageHashCode) {
-	var data = wrs_urlencode(variableName) + '=' + imageHashCode;
+function wrs_createImageSrc(mathml, wirisProperties) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
-		if (_wrs_conf_getmathmlPath.substr(0, 1) == '/' || _wrs_conf_getmathmlPath.substr(0, 7) == 'http://' || _wrs_conf_getmathmlPath.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		var data = (wirisProperties) ? wirisProperties : {};
+		data['mml'] = mathml;
+		
+		if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+			data['returnDigest'] = 'true';
+		}
+		
+		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
+			httpRequest.open('POST', _wrs_conf_createimagePath, false);
 		}
 		else {
-			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_getmathmlPath, false);
+			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createimagePath, false);
 		}
 		
 		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(data);
+		httpRequest.send(wrs_httpBuildQuery(data));
+		
 		return httpRequest.responseText;
 	}
 	
@@ -548,6 +281,75 @@ function wrs_createObjectCode(object) {
 }
 
 /**
+ * Parses end HTML code, converts CAS images to CAS applets.
+ * @param string code
+ * @return string
+ */
+function wrs_endParse(code) {
+	var containerCode = '<span>' + code + '</span>';
+	var container = wrs_createObject(containerCode);
+	var imgList = container.getElementsByTagName('img');
+	
+	for (var i = 0; i < imgList.length; ++i) {
+		if (imgList[i].className == 'Wiriscas') {
+			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
+			appletCode = wrs_mathmlDecode(appletCode);
+			var appletObject = wrs_createObject(appletCode);
+			appletObject.setAttribute('src', imgList[i].src);
+			
+			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
+			--i;		// we have deleted one image
+		}
+	}
+
+	return container.innerHTML;
+}
+
+/**
+ * Gets the formula mathml or CAS appletCode using its image hash code.
+ * @param string variableName Variable to send on POST query to the server.
+ * @param string imageHashCode
+ * @return string
+ */
+function wrs_getCode(variableName, imageHashCode) {
+	var data = wrs_urlencode(variableName) + '=' + imageHashCode;
+	var httpRequest = wrs_createHttpRequest();
+	
+	if (httpRequest) {
+		if (_wrs_conf_getmathmlPath.substr(0, 1) == '/' || _wrs_conf_getmathmlPath.substr(0, 7) == 'http://' || _wrs_conf_getmathmlPath.substr(0, 8) == 'https://') {
+			httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		}
+		else {
+			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_getmathmlPath, false);
+		}
+		
+		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		httpRequest.send(data);
+		return httpRequest.responseText;
+	}
+	
+	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+	return '';
+}
+
+/**
+ * Converts a hash to a HTTP query.
+ * @param hash properties
+ * @return string
+ */
+function wrs_httpBuildQuery(properties) {
+	var result = '';
+	
+	for (i in properties) {
+		if (properties[i] != null) {
+			result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
+		}
+	}
+	
+	return result;
+}
+
+/**
  * Parses initial HTML code, converts CAS applets to CAS images.
  * @param string code
  * @return string
@@ -578,43 +380,265 @@ function wrs_initParse(code) {
 }
 
 /**
- * Parses end HTML code, converts CAS images to CAS applets.
- * @param string code
+ * WIRIS special encoding.
+ *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+ * @param string input
  * @return string
  */
-function wrs_endParse(code) {
-	var containerCode = '<span>' + code + '</span>';
-	var container = wrs_createObject(containerCode);
-	var imgList = container.getElementsByTagName('img');
+function wrs_mathmlDecode(input) {
+	input = input.split('«').join('<');		// \xAB by \x3C
+	input = input.split('»').join('>');		// \xBB by \x3E
+	input = input.split('¨').join('"');		// \xA8 by \x22
+	input = input.split('§').join('&');		// \xA7 by \x26
+	input = input.split('`').join("'");		// \xB4 by \x27
 	
-	for (var i = 0; i < imgList.length; ++i) {
-		if (imgList[i].className == 'Wiriscas') {
-			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
-			appletCode = wrs_mathmlDecode(appletCode);
-			var appletObject = wrs_createObject(appletCode);
-			appletObject.setAttribute('src', imgList[i].src);
-			
-			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
-			--i;		// we have deleted one image
-		}
-	}
-
-	return container.innerHTML;
+	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
+	input = input.split('$').join('&');
+	
+	return input;
 }
 
 /**
- * Converts a hash to a HTTP query.
- * @param hash properties
+ * WIRIS special encoding.
+ *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+ * @param string input
  * @return string
  */
-function wrs_httpBuildQuery(properties) {
-	var result = '';
+function wrs_mathmlEncode(input) {
+	input = input.split('<').join('«');		// \x3C by \xAB
+	input = input.split('>').join('»');		// \x3E by \xBB
+	input = input.split('"').join('¨');		// \x22 by \xA8
+	input = input.split('&').join('§');		// \x26 by \xA7
+	input = input.split("'").join('`');		// \x27 by \xB4
 	
-	for (i in properties) {
-		if (properties[i] != null) {
-			result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
+	return input;
+}
+
+/**
+ * Converts special symbols (> 128) to entities.
+ * @param string mathml
+ * @return string
+ */
+function wrs_mathmlEntities(mathml) {
+	var toReturn = '';
+	
+	for (var i = 0; i < mathml.length; ++i) {
+		//parsing > 128 characters
+		if (mathml.charCodeAt(i) > 128) {
+			toReturn += '&#' + mathml.charCodeAt(i) + ';';
+		}
+		else {
+			toReturn += mathml.charAt(i);
 		}
 	}
 	
-	return result;
+	return toReturn;
+}
+
+/**
+ * Converts mathml to img object.
+ * @param object creator Object with "createElement" method
+ * @param string mathml Mathml code
+ * @return object
+ */
+function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
+	var imgObject = creator.createElement('img');
+	imgObject.title = 'Double click to edit';
+	imgObject.align = 'middle';
+	imgObject.className = 'Wirisformula';
+	
+	var result = wrs_createImageSrc(mathml, wirisProperties);
+	
+	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+		var parts = result.split(':', 2);
+		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, parts[0]);
+		imgObject.src = parts[1];
+	}
+	else {
+		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
+		imgObject.src = result;
+	}
+	
+	return imgObject;
+}
+
+/**
+ * Cross-browser removeEventListener/detachEvent function.
+ * @param object element Element target
+ * @param event event Event
+ * @param function func Function to run
+ */
+function wrs_removeEvent(element, event, func) {
+	if (element.removeEventListener) {
+		element.removeEventListener(event, func, false);
+	}
+	else if (element.detachEvent) {
+		element.detachEvent('on' + event, func);
+	}
+}
+
+/**
+ * Inserts or modifies CAS on an iframe.
+ * @param object iframe Target
+ * @param string appletCode Applet code
+ * @param string image Base 64 image stream
+ * @param int imageWidth Image width
+ * @param int imageHeight Image height
+ */
+function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
+	try {
+		if (iframe && appletCode) {
+			iframe.contentWindow.focus();
+			var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
+			
+			if (_wrs_isNewElement) {
+				if (document.selection) {
+					var range = iframe.contentWindow.document.selection.createRange();
+					
+					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
+
+					if (range.parentElement) {
+						var temporalImg = range.parentElement();
+						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
+						temporalImg.parentNode.removeChild(temporalImg);
+					}
+				}
+				else {
+					var sel = iframe.contentWindow.getSelection();
+					try {
+						var range = sel.getRangeAt(0);
+					}
+					catch (e) {
+						var range = iframe.contentWindow.document.createRange();
+					}
+					
+					sel.removeAllRanges();
+					range.deleteContents();
+					
+					var node = range.startContainer;
+					var pos = range.startOffset;
+					
+					if (node.nodeType == 3) {
+						node = node.splitText(pos);
+						node.parentNode.insertBefore(imgObject, node);
+					}
+					else if (node.nodeType == 1) {
+						node.insertBefore(imgObject, node.childNodes[pos]);
+					}
+				}
+			}
+			else {
+				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
+				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
+			}
+		}
+	}
+	catch (e) {
+	}
+}
+
+/**
+ * Inserts or modifies formulas on an iframe.
+ * @param object iframe Target
+ * @param string mathml Mathml code
+ */
+function wrs_updateFormula(iframe, mathml, wirisProperties) {
+	try {
+		if (iframe && mathml) {
+			iframe.contentWindow.focus();
+			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
+			
+			if (_wrs_isNewElement) {
+				if (document.selection) {
+					var range = iframe.contentWindow.document.selection.createRange();
+					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
+
+					if (range.parentElement) {
+						var temporalImg = range.parentElement();
+						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
+						temporalImg.parentNode.removeChild(temporalImg);
+					}
+				}
+				else {
+					var selection = iframe.contentWindow.getSelection();
+					
+					try {
+						var range = selection.getRangeAt(0);						
+					}
+					catch (e) {
+						var range = iframe.contentWindow.document.createRange();
+					}
+					
+					selection.removeAllRanges();
+					range.deleteContents();
+				
+					var node = range.startContainer;
+					var pos = range.startOffset;
+					
+					if (node.nodeType == 3) {
+						node = node.splitText(pos);
+						node.parentNode.insertBefore(imgObject, node);
+					}
+					else if (node.nodeType == 1) {
+						node.insertBefore(imgObject, node.childNodes[pos]);
+					}
+				}
+			}
+			else {
+				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
+				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
+			}
+		}
+	}
+	catch (e) {
+	}
+}
+
+/**
+ * Inserts or modifies formulas or CAS on a textarea.
+ * @param object textarea Target
+ * @param string text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateTextarea(textarea, wrs_createImageSrc(mathml));
+ */
+function wrs_updateTextarea(textarea, text) {
+	if (textarea && text) {
+		textarea.focus();
+		
+		if (textarea.selectionStart != null) {
+			textarea.value = textarea.value.substring(0, textarea.selectionStart) + text + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+		}
+		else {
+			var selection = document.selection.createRange();
+			selection.text = text;
+		}
+	}
+}
+
+/**
+ * URL encode function
+ * @param string clearString Input 
+ * @return string
+ */
+function wrs_urlencode(clearString) {
+	var output = '';
+	var x = 0;
+	clearString = clearString.toString();
+	var regex = /(^[a-zA-Z0-9_.]*)/;
+	
+	var clearString_length = ((typeof clearString.length) == 'function') ? clearString.length() : clearString.length;
+
+	while (x < clearString_length) {
+		var match = regex.exec(clearString.substr(x));
+		if (match != null && match.length > 1 && match[1] != '') {
+			output += match[1];
+			x += match[1].length;
+		}
+		else {
+			var charCode = clearString.charCodeAt(x);
+			var hexVal = charCode.toString(16);
+			output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
+			++x;
+		}
+	}
+	
+	return output;
 }

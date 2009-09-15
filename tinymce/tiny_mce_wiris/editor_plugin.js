@@ -197,7 +197,7 @@ function wrs_int_openNewCAS(iframe) {
  */
 function wrs_int_doubleClickHandler(iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
-		if (element.className == 'Wirisformula') {
+		if (wrs_containsClass(element, 'Wirisformula')) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(iframe);
@@ -206,7 +206,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
 				_wrs_int_window.focus();
 			}
 		}
-		else if (element.className == 'Wiriscas') {
+		else if (wrs_containsClass(element, 'Wiriscas')) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingCAS(iframe);
@@ -247,7 +247,7 @@ function wrs_int_openExistingCAS(iframe) {
  */
 function wrs_int_mousedownHandler(iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
-		if (element.className == 'Wirisformula' || element.className == 'Wiriscas') {
+		if (wrs_containsClass(element, 'Wirisformula') || wrs_containsClass(element, 'Wiriscas')) {
 			_wrs_int_temporalImageResizing = element;
 		}
 	}
