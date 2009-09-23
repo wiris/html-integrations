@@ -1,28 +1,29 @@
 <?php
-include('libwiris.php');
+include 'libwiris.php';
 
-function createImage($config, $formulaFile, $imageFile) {
-	if (is_file($formulaFile) && ($content = file_get_contents($formulaFile)) !== false) {
-		$properties = explode("\n", $content);
-		$mathml = $properties[0];
-		
-		if (isset($properties[1])) {
-			$config['wirisimagebgcolor'] = $properties[1];
+function createImage($config, $formulaPath, $imagePath) {
+	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
+		if (($line = fgets($handle)) !== false) {
+			$mathml = $line;
 			
-			if (isset($properties[2])) {
-				$config['wirisimagesymbolcolor'] = $properties[2];
+			if (($line = fgets($handle)) !== false) {
+				$config['wirisimagebgcolor'] = $line;
 				
-				if (isset($properties[3])) {
-					$config['wiristransparency'] = $properties[3];
+				if (($line = fgets($handle)) !== false) {
+					$config['wirisimagesymbolcolor'] = $line;
 					
-					if (isset($properties[4])) {
-						$config['wirisimagefontsize'] = $properties[4];
+					if (($line = fgets($handle)) !== false) {
+						$config['wiristransparency'] = $line;
 						
-						if (isset($properties[5])) {
-							$config['wirisimagenumbercolor'] = $properties[5];
+						if (($line = fgets($handle)) !== false) {
+							$config['wirisimagefontsize'] = $line;
 							
-							if (isset($properties[6])) {
-								$config['wirisimageidentcolor'] = $properties[6];
+							if (($line = fgets($handle)) !== false) {
+								$config['wirisimagenumbercolor'] = $line;
+								
+								if (($line = fgets($handle)) !== false) {
+									$config['wirisimageidentcolor'] = $line;
+								}
 							}
 						}
 					}
@@ -30,12 +31,16 @@ function createImage($config, $formulaFile, $imageFile) {
 			}
 		}
 		
-		// Retrocompatibility: when wirisimagenumbercolor isn't defined
+		fclose($handle);
+		
+		// Retrocompatibility: when wirisimagenumbercolor is not defined
+		
 		if (!isset($config['wirisimagenumbercolor'])) {
 			$config['wirisimagenumbercolor'] = $config['wirisimagesymbolcolor'];
 		}
 		
-		// Retrocompatibility: when wirisimageidentcolor isn't defined
+		// Retrocompatibility: when wirisimageidentcolor is not defined
+		
 		if (!isset($config['wirisimageidentcolor'])) {
 			$config['wirisimageidentcolor'] = $config['wirisimagesymbolcolor'];
 		}
@@ -71,7 +76,7 @@ function createImage($config, $formulaFile, $imageFile) {
 			return false;
 		}
 
-		file_put_contents($imageFile, $response);
+		file_put_contents($imagePath, $response);
 		return true;
 	}
 	
@@ -84,11 +89,11 @@ if (empty($_GET['formula'])) {
 else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
 	$imagePath = $cacheDirectory . '/' . $formula . '.png';
-	$config = loadConfig($configFile);
+	$config = parse_ini_file(WRS_CONFIG_FILE);
 	
 	if (is_file($imagePath) || createImage($config, $formulaDirectory . '/' . $formula . '.xml', $imagePath)) {
 		header('Content-Type: image/png');
-		echo file_get_contents($imagePath);
+		readfile($imagePath);
 	}
 	else {
 		echo 'Error creating the image.';

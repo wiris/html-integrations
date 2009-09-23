@@ -1,6 +1,5 @@
 <?php
-include('libwiris.php');
-
+include 'libwiris.php';
 $digest = false;
 
 if (isset($_POST['md5']) && mb_strlen($_POST['md5']) == 32) {		// Support for "generic simple" integration.
@@ -11,16 +10,22 @@ else if (isset($_POST['digest'])) {		// Support for future integrations (where m
 }
 
 if ($digest !== false) {
-	$filePath = $formulaDirectory . '/' . basename($digest) . '.xml';
+	$filePath = WRS_FORMULA_DIRECTORY . '/' . basename($digest) . '.xml';
 	
 	if (is_file($filePath)) {
-		if (($content = file_get_contents($filePath)) !== false) {
-			$properties = explode("\n", $content);
-			echo $properties[0];
+		if (($handle = fopen($filePath, 'r')) !== false) {
+			if (($line = fgets($handle)) !== false) {
+				echo $line;
+			}
+			
+			fclose($handle);
 		}
 		else {
-			echo 'Error: can\'t read the formula. Check your file privileges.';
+			echo 'Error: can not read the formula. Check your file privileges.';
 		}
+	}
+	else {
+		echo 'Error: formula does not exists.';
 	}
 }
 else {

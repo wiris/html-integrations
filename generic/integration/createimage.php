@@ -1,8 +1,8 @@
 ﻿<?php
-include('libwiris.php');
+include 'libwiris.php';
 
 if (!empty($_POST['mml'])) {
-	$config = loadConfig($configFile);
+	$config = parse_ini_file(WRS_CONFIG_FILE);
 	
 	if (isset($_POST['bgColor'])) {
 		$config['wirisimagebgcolor'] = $_POST['bgColor'];
@@ -37,19 +37,19 @@ if (!empty($_POST['mml'])) {
 	$toSave .= $config['wirisimageidentcolor'] . "\n";
 	
 	$fileName = md5($toSave);
-	$URL = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';
-	$filePath = $formulaDirectory . '/' . $fileName . '.xml';
+	$url = dirname($_SERVER['PHP_SELF']) . 'showimage.php?formula=' . $fileName . '.png';
+	$filePath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.xml';
 	
 	if (!is_file($filePath)) {
 		if (file_put_contents($filePath, $toSave) !== false) {
-			echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $URL : $URL;
+			echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $url : $url;
 		}
 		else {
-			echo 'Error: can\'t create the image. Check your file privileges.';
+			echo 'Error: can not create the image. Check your file privileges.';
 		}
 	}
 	else {
-		echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $URL : $URL;
+		echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $url : $url;
 	}
 }
 else {

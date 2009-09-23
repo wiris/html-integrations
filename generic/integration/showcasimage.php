@@ -1,19 +1,19 @@
 <?php
-include('libwiris.php');
+include 'libwiris.php';
 
 if (empty($_GET['formula'])) {
 	echo 'Error: no image name has been sended.';
 }
 else {
 	$formula = basename($_GET['formula']);
-	$filePath = $cacheDirectory . '/' . $formula;
+	$filePath = WRS_CACHE_DIRECTORY . '/' . $formula;
 	
 	if (is_file($filePath)) {
 		header('Content-Type: image/png');
-		echo file_get_contents($filePath);
+		readfile($filePath);
 	}
 	else {
 		header('Content-Type: image/gif');
-		echo file_get_contents('../core/cas.gif');
+		readfile('../core/cas.gif');
 	}
 }

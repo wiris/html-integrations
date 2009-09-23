@@ -1,6 +1,6 @@
 <?php
-include('libwiris.php');
-$config = loadConfig('../configuration.ini');
+include 'libwiris.php';
+$config = parse_ini_file(WRS_CONFIG_FILE);
 ?>
 <html>
 	<head>
