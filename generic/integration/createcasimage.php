@@ -1,7 +1,7 @@
 <?php
 include 'libwiris.php';
 
-$currentPath = dirname($_SERVER['PHP_SELF']);
+$currentPath = dirname($_SERVER['PHP_SELF']) . '/';
 
 if (isset($_POST['image'])) {
 	$fileName = md5($_POST['image']);

@@ -37,7 +37,7 @@ if (!empty($_POST['mml'])) {
 	$toSave .= $config['wirisimageidentcolor'] . "\n";
 	
 	$fileName = md5($toSave);
-	$url = dirname($_SERVER['PHP_SELF']) . 'showimage.php?formula=' . $fileName . '.png';
+	$url = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';
 	$filePath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.xml';
 	
 	if (!is_file($filePath)) {
