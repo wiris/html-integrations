@@ -4,25 +4,25 @@ include 'libwiris.php';
 function createImage($config, $formulaPath, $imagePath) {
 	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
 		if (($line = fgets($handle)) !== false) {
-			$mathml = $line;
+			$mathml = trim($line);
 			
 			if (($line = fgets($handle)) !== false) {
-				$config['wirisimagebgcolor'] = $line;
+				$config['wirisimagebgcolor'] = trim($line);
 				
 				if (($line = fgets($handle)) !== false) {
-					$config['wirisimagesymbolcolor'] = $line;
+					$config['wirisimagesymbolcolor'] = trim($line);
 					
 					if (($line = fgets($handle)) !== false) {
-						$config['wiristransparency'] = $line;
+						$config['wiristransparency'] = trim($line);
 						
 						if (($line = fgets($handle)) !== false) {
-							$config['wirisimagefontsize'] = $line;
+							$config['wirisimagefontsize'] = trim($line);
 							
 							if (($line = fgets($handle)) !== false) {
-								$config['wirisimagenumbercolor'] = $line;
+								$config['wirisimagenumbercolor'] = trim($line);
 								
 								if (($line = fgets($handle)) !== false) {
-									$config['wirisimageidentcolor'] = $line;
+									$config['wirisimageidentcolor'] = trim($line);
 								}
 							}
 						}
