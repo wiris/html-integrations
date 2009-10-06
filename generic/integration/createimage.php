@@ -31,7 +31,7 @@ if (!empty($_POST['mml'])) {
 	$toSave = $_POST['mml'] . "\n";
 	$toSave .= $config['wirisimagebgcolor'] . "\n";
 	$toSave .= $config['wirisimagesymbolcolor'] . "\n";
-	$toSave .= $config['wiristransparency'] . "\n";
+	$toSave .= (($config['wiristransparency']) ? 'true' : 'false') . "\n";
 	$toSave .= $config['wirisimagefontsize'] . "\n";
 	$toSave .= $config['wirisimagenumbercolor'] . "\n";
 	$toSave .= $config['wirisimageidentcolor'] . "\n";
