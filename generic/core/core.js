@@ -164,7 +164,8 @@ function wrs_createImageCASSrc(image, appletCode) {
 /**
  * Gets formula image src with AJAX.
  * @param mathml Mathml code
- * @return string
+ * @param wirisProperties
+ * @return string Image src
  */
 function wrs_createImageSrc(mathml, wirisProperties) {
 	var httpRequest = wrs_createHttpRequest();
