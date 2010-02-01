@@ -37,17 +37,17 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			if (window.wrs_initParse) {
 				editor.setData(wrs_initParse(editor.getData()));
 
+				// setData method is asyncronous, so we must to cancel the submit event and execute submit() method, that executes wrs_endParse.
+				
 				wrs_addEvent(editor.element.$.form, 'submit', function (e) {
-					editor.setData('iskander', function () {
-						alert('lel');
-					});
-					
 					if (e.preventDefault) {
 						e.preventDefault();
 					}
 					else {
 						e.returnValue = false;
 					}
+					
+					editor.element.$.form.submit();
 				});
 				
 				// If you executes the method submit(), the event 'submit' is not fired.
