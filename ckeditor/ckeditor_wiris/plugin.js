@@ -34,14 +34,29 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		var iframe;
 		
 		function whenDocReady() {
-			var iframeContainer = document.getElementById('cke_' + editor.name);
-			iframeContainer = document.getElementById('cke_example');
-			
-			if (window.wrs_initParse && iframeContainer != null) {
-				alert('le fu');
+			if (window.wrs_initParse) {
 				editor.setData(wrs_initParse(editor.getData()));
-				iframe = iframeContainer.firstChild;
-				wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+
+				wrs_addEvent(editor.element.$.form, 'submit', function (e) {
+					editor.setData('iskander', function () {
+						alert('lel');
+					});
+					
+					if (e.preventDefault) {
+						e.preventDefault();
+					}
+					else {
+						e.returnValue = false;
+					}
+				});
+				
+				// If you executes the method submit(), the event 'submit' is not fired.
+				editor.element.$.form._submit = editor.element.$.form.submit;
+				
+				editor.element.$.form.submit = function () {
+					editor.element.$.value = wrs_endParse(editor.element.$.value);
+					editor.element.$.form._submit.call(editor.element.$.form);
+				}
 			}
 			else {
 				setTimeout(whenDocReady, 50);
@@ -50,6 +65,21 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		whenDocReady();
 		
+		function checkIframe() {
+			try {
+				var newIframe = document.getElementById('cke_contents_' + editor.name).firstChild;
+				
+				if (iframe != newIframe) {
+					iframe = newIframe;
+					wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				}
+			}
+			catch (e) {
+			}
+		}
+		
+		setInterval(checkIframe, 500);		// CKEditor replaces several times the iframe element during its execution, so we must assign the events again.
+		
 		if (_wrs_conf_editorEnabled) {
 			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
 				'async': false,								// The command need some time to complete after exec function returns.
@@ -57,14 +87,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'editorFocus': false,
 				
 				'exec': function (editor) {
-					/*var we = '';
-					
-					for (var i in iframe) {
-						we += i + "\n";
-					}
-					
-					alert(we);*/
-					
 					wrs_int_openNewFormulaEditor(iframe);
 				}
 			});
@@ -73,6 +95,24 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'label': 'Formula Editor',
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
+			});
+		}
+		
+		if (_wrs_conf_CASEnabled) {
+			editor.addCommand('ckeditor_wiris_openCAS', {
+				'async': false,								// The command need some time to complete after exec function returns.
+				'canUndo': false,
+				'editorFocus': false,
+				
+				'exec': function (editor) {
+					wrs_int_openNewCAS(iframe);
+				}
+			});
+			
+			editor.ui.addButton('ckeditor_wiris_CAS', {
+				'label': 'WIRIS CAS',
+				'command': 'ckeditor_wiris_openCAS',
+				'icon': _wrs_int_CASIcon
 			});
 		}
 	}
