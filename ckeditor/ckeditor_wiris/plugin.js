@@ -65,6 +65,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		whenDocReady();
 		
+		editor.on('submit', function () { alert('we'); });
+		
 		function checkIframe() {
 			try {
 				var newIframe = document.getElementById('cke_contents_' + editor.name).firstChild;
