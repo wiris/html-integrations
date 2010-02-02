@@ -35,28 +35,20 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		function whenDocReady() {
 			if (window.wrs_initParse) {
-				editor.setData(wrs_initParse(editor.getData()));
-
-				// setData method is asyncronous, so we must to cancel the submit event and execute submit() method, that executes wrs_endParse.
-				
-				wrs_addEvent(editor.element.$.form, 'submit', function (e) {
-					if (e.preventDefault) {
-						e.preventDefault();
-					}
-					else {
-						e.returnValue = false;
-					}
-					
-					editor.element.$.form.submit();
+				editor.setData(wrs_initParse(editor.getData()), function () {
+					editor.on('beforeGetData', function () {
+						if (typeof editor._.data != 'string') {
+							if (editor.element && editor.elementMode == 1) {
+								editor._.data = editor.element.is('textarea') ? editor.element.getValue() : editor.element.getHtml();
+							}
+							else {
+								editor._.data = '';
+							}
+						}
+						
+						editor._.data = wrs_endParse(editor._.data);
+					});
 				});
-				
-				// If you executes the method submit(), the event 'submit' is not fired.
-				editor.element.$.form._submit = editor.element.$.form.submit;
-				
-				editor.element.$.form.submit = function () {
-					editor.element.$.value = wrs_endParse(editor.element.$.value);
-					editor.element.$.form._submit.call(editor.element.$.form);
-				}
 			}
 			else {
 				setTimeout(whenDocReady, 50);
@@ -65,26 +57,25 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		whenDocReady();
 		
-		editor.on('submit', function () { alert('we'); });
-		
 		function checkIframe() {
 			try {
-				var newIframe = document.getElementById('cke_contents_' + editor.name).firstChild;
+				var newIframe = document.getElementById('cke_contents_' + editor.name).getElementsByTagName('iframe')[0];
 				
 				if (iframe != newIframe) {
+					wrs_addIframeEvents(newIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 					iframe = newIframe;
-					wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 				}
 			}
 			catch (e) {
 			}
 		}
 		
-		setInterval(checkIframe, 500);		// CKEditor replaces several times the iframe element during its execution, so we must assign the events again.
+		// CKEditor replaces several times the iframe element during its execution, so we must assign the events again.
+		setInterval(checkIframe, 500);
 		
 		if (_wrs_conf_editorEnabled) {
 			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
-				'async': false,								// The command need some time to complete after exec function returns.
+				'async': false,
 				'canUndo': false,
 				'editorFocus': false,
 				
