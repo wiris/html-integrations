@@ -65,7 +65,13 @@ var _wrs_int_temporalImageResizing;
 				
 				function whenDocReady() {
 					if (window.wrs_initParse) {
-						textarea.value = wrs_initParse(textarea.value);
+						if (textarea.value == undefined) {
+							textarea.value = wrs_initParse(editor.getContent());
+						}
+						else {
+							textarea.value = wrs_initParse(textarea.value);
+						}
+						
 						editor.load();
 						iframe = editor.getContentAreaContainer().firstChild;
 						wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
