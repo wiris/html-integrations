@@ -5,15 +5,15 @@ if (window.opener) {							// For popup mode
 	wrs_int_opener = window.opener;
 	closeFunction = window.close;
 }
+/* FCKeditor integration begin */
 else {											// For iframe mode
 	wrs_int_opener = window.parent;
 	
-	while (wrs_int_opener != wrs_int_opener.parent) {
+	while (wrs_int_opener.InnerDialogLoaded) {
 		wrs_int_opener = wrs_int_opener.parent;
 	}
 }
 
-/* FCKeditor integration begin */
 if (window.parent.InnerDialogLoaded) {			// iframe mode
 	window.parent.InnerDialogLoaded();
 	closeFunction = window.parent.Cancel;
