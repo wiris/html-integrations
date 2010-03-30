@@ -43,6 +43,7 @@ var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
+var _wrs_int_language = 'en';
 
 /* Plugin integration */
 (function () {
@@ -102,6 +103,7 @@ var _wrs_int_temporalImageResizing;
 			
 			if (_wrs_conf_CASEnabled) {
 				editor.addCommand('tiny_mce_wiris_openCAS', function () {
+					_wrs_int_language = editor.settings.language;
 					wrs_int_openNewCAS(iframe);
 				});
 			
