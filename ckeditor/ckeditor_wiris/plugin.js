@@ -26,6 +26,7 @@ var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
+var _wrs_int_language = 'en';
 
 // Plugin integration
 
@@ -98,6 +99,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'editorFocus': false,
 				
 				'exec': function (editor) {
+					_wrs_int_language = editor.langCode;
 					wrs_int_openNewCAS(iframe);
 				}
 			});
