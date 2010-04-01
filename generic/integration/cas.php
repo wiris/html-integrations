@@ -53,9 +53,7 @@ else {
 		<form id="optionForm">
 			<table height="100%" width="100%">
 				<tr>
-					<td id="appletContainer" colspan="5">
-						<!--<applet id="applet" alt="WIRIS CAS" codebase="<?php echo $config['wiriscascodebase']; ?>" archive="<?php echo $config['wiriscasarchive']; ?>" code="<?php echo $config['wiriscasclass']; ?>" width="100%" height="100%"></applet>-->
-					</td>
+					<td id="appletContainer" colspan="5"></td>
 				</tr>
 				<tr height="1px">
 					<td>Width</td>
