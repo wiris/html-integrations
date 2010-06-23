@@ -3,20 +3,19 @@ define('WRS_CONFIG_FILE', '../configuration.ini');
 define('WRS_CACHE_DIRECTORY', '../cache');
 define('WRS_FORMULA_DIRECTORY', '../formulas');
 
-global $wrs_configProperties;
+global $wrs_imageConfigProperties;
 
-$wrs_configProperties = array(
-	'wirisimagebgcolor',
-	'wirisimagesymbolcolor',
-	'wiristransparency',
-	'wirisimagefontsize',
-	'wirisimagenumbercolor',
-	'wirisimageidentcolor',
-	'wirisimageidentmathvariant',
-	'wirisimagenumbermathvariant',
-	'wirisimagefontident',
-	'wirisimagefontnumber',
-	'wirisimagefontranges'
+$wrs_imageConfigProperties = array(
+	'bgColor' => 'wirisimagebgcolor',
+	'symbolColor' => 'wirisimagesymbolcolor',
+	'transparency' => 'wiristransparency',
+	'fontSize' => 'wirisimagefontsize',
+	'numberColor' => 'wirisimagenumbercolor',
+	'identColor' => 'wirisimageidentcolor',
+	'identMathvariant' => 'wirisimageidentmathvariant',
+	'numberMathvariant' => 'wirisimagenumbermathvariant',
+	'fontIdent' => 'wirisimagefontident',
+	'fontNumber' => 'wirisimagefontnumber'
 );
 
 function wrs_replaceVariable($value, $variableName, $variableValue) {	

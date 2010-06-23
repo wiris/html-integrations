@@ -2,37 +2,30 @@
 include 'libwiris.php';
 
 if (!empty($_POST['mml'])) {
-	static $postData = array(
-		'bgColor' => 'wirisimagebgcolor',
-		'transparency' => 'wiristransparency',
-		'fontSize' => 'wirisimagefontsize',
-		'numberColor' => 'wirisimagenumbercolor',
-		'identColor' => 'wirisimageidentcolor',
-		'symbolColor' => 'wirisimagesymbolcolor',
-		'identMathvariant' => 'wirisimageidentmathvariant',
-		'numberMathvariant' => 'wirisimagenumbermathvariant',
-		'fontIdent' => 'wirisimagefontident',
-		'fontNumber' => 'wirisimagefontnumber'
-	);
+	$toSave = $_POST['mml'] . "\n";
 	
 	$config = parse_ini_file(WRS_CONFIG_FILE);
+	global $wrs_imageConfigProperties;
 	
-	foreach ($postData as $key => $value) {
-		if (isset($_POST[$key])) {
-			$config[$value] = $_POST[$key];
+	foreach ($wrs_imageConfigProperties as $serverParam => $configKey) {
+		if (isset($_POST[$serverParam])) {
+			$config[$configKey] = $_POST[$serverParam];
+		}
+		
+		if (isset($config[$configKey])) {
+			$toSave .= $config[$configKey] . "\n";
 		}
 	}
 	
-	if ($config['wiristransparency'] != 'true') {
-		$config['wiristransparency'] = 'false';
-	}
-	
-	$toSave = $_POST['mml'] . "\n";
-	global $wrs_configProperties;
-	
-	foreach ($wrs_configProperties as $property) {
-		if (isset($config[$property])) {
-			$toSave .= $config[$property] . "\n";
+	if (isset($config['wirisimagefontranges'])) {
+		$fontRanges = explode(',', $config['wirisimagefontranges']);
+		
+		foreach ($fontRanges as $fontRangeName) {
+			$fontRangeName = trim($fontRangeName);
+			
+			if (isset($config[$fontRangeName])) {
+				$toSave .= $config[$fontRangeName] . "\n";
+			}
 		}
 	}
 	

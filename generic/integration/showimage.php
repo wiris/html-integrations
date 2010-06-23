@@ -3,15 +3,27 @@ include 'libwiris.php';
 
 function createImage($config, $formulaPath, $imagePath) {
 	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
+		$fonts = array();
+		
 		if (($line = fgets($handle)) !== false) {
 			$mathml = trim($line);
-			global $wrs_configProperties;
-			$configPropertiesCount = count($wrs_configProperties);
+			global $wrs_imageConfigProperties;
+			$current = reset($wrs_imageConfigProperties);
+			
+			while (($line = fgets($handle)) !== false && $current !== false) {
+				$config[$current] = trim($line);
+				$current = next($wrs_imageConfigProperties);
+			}
+			
 			$i = 0;
 			
-			while (($line = fgets($handle)) !== false && $i < $configPropertiesCount) {
-				$config[$wrs_configProperties[$i]] = trim($line);
-				++$i;
+			while (($line = fgets($handle)) !== false) {
+				$line = trim($line);
+				
+				if (isset($line[0])) {
+					$fonts['font' . $i] = trim($line);
+					++$i;
+				}
 			}
 		}
 		
@@ -28,18 +40,16 @@ function createImage($config, $formulaPath, $imagePath) {
 		if (!isset($config['wirisimageidentcolor'])) {
 			$config['wirisimageidentcolor'] = $config['wirisimagesymbolcolor'];
 		}
+		
+		$properties = array('mml' => $mathml);
+		
+		foreach ($wrs_imageConfigProperties as $serverParam => $configKey) {
+			if (isset($config[$configKey])) {
+				$properties[$serverParam] = $config[$configKey];
+			}
+		}
 
-		$postdata = http_build_query(
-			array(
-				'mml' => $mathml,
-				'bgColor' => $config['wirisimagebgcolor'],
-				'symbolColor' => $config['wirisimagesymbolcolor'],
-				'numberColor' => $config['wirisimagenumbercolor'],
-				'identColor' => $config['wirisimageidentcolor'],
-				'transparency' => $config['wiristransparency'],
-				'fontSize' => $config['wirisimagefontsize']
-			)
-		);
+		$postdata = http_build_query(array_merge($fonts, $properties));
 		
 		$contextArray = array('http' =>
 			array(
