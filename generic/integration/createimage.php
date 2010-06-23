@@ -2,39 +2,39 @@
 include 'libwiris.php';
 
 if (!empty($_POST['mml'])) {
+	static $postData = array(
+		'bgColor' => 'wirisimagebgcolor',
+		'transparency' => 'wiristransparency',
+		'fontSize' => 'wirisimagefontsize',
+		'numberColor' => 'wirisimagenumbercolor',
+		'identColor' => 'wirisimageidentcolor',
+		'symbolColor' => 'wirisimagesymbolcolor',
+		'identMathvariant' => 'wirisimageidentmathvariant',
+		'numberMathvariant' => 'wirisimagenumbermathvariant',
+		'fontIdent' => 'wirisimagefontident',
+		'fontNumber' => 'wirisimagefontnumber'
+	);
+	
 	$config = parse_ini_file(WRS_CONFIG_FILE);
 	
-	if (isset($_POST['bgColor'])) {
-		$config['wirisimagebgcolor'] = $_POST['bgColor'];
+	foreach ($postData as $key => $value) {
+		if (isset($_POST[$key])) {
+			$config[$value] = $_POST[$key];
+		}
 	}
 	
-	if (isset($_POST['symbolColor'])) {
-		$config['wirisimagesymbolcolor'] = $_POST['symbolColor'];
-	}
-	
-	if (isset($_POST['transparency'])) {
-		$config['wiristransparency'] = $_POST['transparency'];
-	}
-	
-	if (isset($_POST['fontSize'])) {
-		$config['wirisimagefontsize'] = $_POST['fontSize'];
-	}
-	
-	if (isset($_POST['numberColor'])) {
-		$config['wirisimagenumbercolor'] = $_POST['numberColor'];
-	}
-	
-	if (isset($_POST['identColor'])) {
-		$config['wirisimageidentcolor'] = $_POST['identColor'];
+	if ($config['wiristransparency'] != 'true') {
+		$config['wiristransparency'] = 'false';
 	}
 	
 	$toSave = $_POST['mml'] . "\n";
-	$toSave .= $config['wirisimagebgcolor'] . "\n";
-	$toSave .= $config['wirisimagesymbolcolor'] . "\n";
-	$toSave .= (($config['wiristransparency']) ? 'true' : 'false') . "\n";
-	$toSave .= $config['wirisimagefontsize'] . "\n";
-	$toSave .= $config['wirisimagenumbercolor'] . "\n";
-	$toSave .= $config['wirisimageidentcolor'] . "\n";
+	global $wrs_configProperties;
+	
+	foreach ($wrs_configProperties as $property) {
+		if (isset($config[$property])) {
+			$toSave .= $config[$property] . "\n";
+		}
+	}
 	
 	$fileName = md5($toSave);
 	$url = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';

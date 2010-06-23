@@ -3,6 +3,22 @@ define('WRS_CONFIG_FILE', '../configuration.ini');
 define('WRS_CACHE_DIRECTORY', '../cache');
 define('WRS_FORMULA_DIRECTORY', '../formulas');
 
+global $wrs_configProperties;
+
+$wrs_configProperties = array(
+	'wirisimagebgcolor',
+	'wirisimagesymbolcolor',
+	'wiristransparency',
+	'wirisimagefontsize',
+	'wirisimagenumbercolor',
+	'wirisimageidentcolor',
+	'wirisimageidentmathvariant',
+	'wirisimagenumbermathvariant',
+	'wirisimagefontident',
+	'wirisimagefontnumber',
+	'wirisimagefontranges'
+);
+
 function wrs_replaceVariable($value, $variableName, $variableValue) {	
 	return str_replace('%' . $variableName, $variableValue, $value);
 }

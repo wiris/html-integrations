@@ -5,29 +5,13 @@ function createImage($config, $formulaPath, $imagePath) {
 	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
 		if (($line = fgets($handle)) !== false) {
 			$mathml = trim($line);
+			global $wrs_configProperties;
+			$configPropertiesCount = count($wrs_configProperties);
+			$i = 0;
 			
-			if (($line = fgets($handle)) !== false) {
-				$config['wirisimagebgcolor'] = trim($line);
-				
-				if (($line = fgets($handle)) !== false) {
-					$config['wirisimagesymbolcolor'] = trim($line);
-					
-					if (($line = fgets($handle)) !== false) {
-						$config['wiristransparency'] = trim($line);
-						
-						if (($line = fgets($handle)) !== false) {
-							$config['wirisimagefontsize'] = trim($line);
-							
-							if (($line = fgets($handle)) !== false) {
-								$config['wirisimagenumbercolor'] = trim($line);
-								
-								if (($line = fgets($handle)) !== false) {
-									$config['wirisimageidentcolor'] = trim($line);
-								}
-							}
-						}
-					}
-				}
+			while (($line = fgets($handle)) !== false && $i < $configPropertiesCount) {
+				$config[$wrs_configProperties[$i]] = trim($line);
+				++$i;
 			}
 		}
 		
