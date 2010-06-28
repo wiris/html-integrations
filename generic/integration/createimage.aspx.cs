@@ -18,45 +18,36 @@ namespace pluginwiris
 		{
 			if (this.Request.Form["mml"] != null && this.Request.Form["mml"].Length > 0) 
 			{
+                string toSave = this.Request.Form["mml"] + "\n";
 				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 
-				if (this.Request.Form["bgColor"] != null) 
-				{
-					config["wirisimagebgcolor"] = this.Request.Form["bgColor"];
-				}
+                foreach (string serverParam in Libwiris.imageConfigProperties)
+                {
+                    if (this.Request.Form[serverParam] != null)
+                    {
+                        config[Libwiris.imageConfigProperties[serverParam]] = this.Request.Form[serverParam];
+                    }
 
-				if (this.Request.Form["symbolColor"] != null) 
-				{
-					config["wirisimagesymbolcolor"] = this.Request.Form["symbolColor"];
-				}
+                    if (config[Libwiris.imageConfigProperties[serverParam]] != null)
+                    {
+                        toSave += config[Libwiris.imageConfigProperties[serverParam]].ToString() + "\n";
+                    }
+                }
 
-				if (this.Request.Form["transparency"] != null) 
-				{
-					config["wiristransparency"] = this.Request.Form["transparency"];
-				}
+                if (config["wirisimagefontranges"] != null)
+                {
+                    string[] fontRanges = config["wirisimagefontranges"].ToString().Split(',');
 
-				if (this.Request.Form["fontSize"] != null) 
-				{
-					config["wirisimagefontsize"] = this.Request.Form["fontSize"];
-				}
+                    foreach (string fontRangeName in fontRanges)
+                    {
+                        string fontRangeNameParsed = fontRangeName.Trim();
 
-				if (this.Request.Form["numberColor"] != null) 
-				{
-					config["wirisimagenumbercolor"] = this.Request.Form["numberColor"];
-				}
-
-				if (this.Request.Form["identColor"] != null) 
-				{
-					config["wirisimageidentcolor"] = this.Request.Form["identColor"];
-				}
-
-				string toSave = this.Request.Form["mml"] + "\n";
-				toSave += (string)config["wirisimagebgcolor"] + "\n";
-				toSave += (string)config["wirisimagesymbolcolor"] + "\n";
-				toSave += (string)config["wiristransparency"] + "\n";
-				toSave += (string)config["wirisimagefontsize"] + "\n";
-				toSave += (string)config["wirisimagenumbercolor"] + "\n";
-				toSave += (string)config["wirisimageidentcolor"] + "\n";
+                        if (config[fontRangeNameParsed] != null)
+                        {
+                            toSave += config[fontRangeNameParsed].ToString() + "\n";
+                        }
+                    }
+                }
 
 				string fileName = Libwiris.md5(toSave);
 				string URL =  this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";

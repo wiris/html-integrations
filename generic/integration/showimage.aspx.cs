@@ -47,63 +47,68 @@ namespace pluginwiris
 		{
 			if (File.Exists(formulaFile)) 
 			{
-				// HTTP Request
+                Hashtable fonts = new Hashtable();
 				TextReader file = new StreamReader(formulaFile);
 				string content = file.ReadToEnd();
 				file.Close();
+                string[] lines = content.Split('\n');
+                String mathml = "";
 
-				string[] properties = content.Split('\n');
-				string mathml = properties[0];
+                if (lines.Length > 0)
+                {
+                    mathml = lines[0].Trim();
+                    int i = 0;
+                    IDictionaryEnumerator keys = Libwiris.imageConfigProperties.GetEnumerator();
+                    keys.Reset();
 
-				if (properties.Length >= 2) 
-				{
-					config["wirisimagebgcolor"] = properties[1];
+                    while (i < lines.Length && keys.MoveNext())
+                    {
+                        config[keys.Current.ToString()] = lines[i].Trim();
+                        ++i;
+                    }
 
-					if (properties.Length >= 3) 
-					{
-						config["wirisimagesymbolcolor"] = properties[2];
+                    int j = 0;
 
-						if (properties.Length >= 4) 
-						{
-							config["wiristransparency"] = properties[3];
+                    while (i < lines.Length)
+                    {
+                        string line = lines[i].Trim();
 
-							if (properties.Length >= 5) 
-							{
-								config["wirisimagefontsize"] = properties[4];
+                        if (line.Length > 0)
+                        {
+                            fonts["font" + j] = line;
+                            ++j;
+                        }
 
-								if (properties.Length >= 6) 
-								{
-									config["wirisimagenumbercolor"] = properties[5];
-
-									if (properties.Length >= 7) 
-									{
-										config["wirisimageidentcolor"] = properties[6];
-									}
-								}
-							}
-						}
-					}
-				}
+                        ++i;
+                    }
+                }
 
 				// Retrocompatibility: when wirisimagenumbercolor isn't defined
+
 				if (config["wirisimagenumbercolor"] == null) 
 				{
-					config["wirisimagenumbercolor"] = config["wirisimagesymbolcolor"];
+					config["wirisimagenumbercolor"] = config["wirisimagesymbolcolor"].ToString();
 				}
 
 				// Retrocompatibility: when wirisimageidentcolor isn't defined
+
 				if (config["wirisimageidentcolor"] == null) 
 				{
-					config["wirisimageidentcolor"] = config["wirisimagesymbolcolor"];
+					config["wirisimageidentcolor"] = config["wirisimagesymbolcolor"].ToString();
 				}
 
-				string postdata = "mml=" + HttpUtility.UrlEncodeUnicode(mathml);
-				postdata += "&bgColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagebgcolor"]);
-				postdata += "&symbolColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesymbolcolor"]);
-				postdata += "&numberColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagesnumbercolor"]);
-				postdata += "&identColor=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimageidentcolor"]);
-				postdata += "&fontSize=" + HttpUtility.UrlEncodeUnicode((string)config["wirisimagefontsize"]);
-				postdata += "&transparency=" + HttpUtility.UrlEncodeUnicode((string)config["wiristransparency"]);
+                Hashtable properties = new Hashtable();
+                properties["mml"] = mathml;
+
+                foreach (string serverParam in Libwiris.imageConfigProperties)
+                {
+                    if (config[Libwiris.imageConfigProperties[serverParam]] != null)
+                    {
+                        properties[serverParam] = config[Libwiris.imageConfigProperties[serverParam]].ToString();
+                    }
+                }
+
+                string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
 
 				ASCIIEncoding encode = new ASCIIEncoding();
 				byte[] data = encode.GetBytes(postdata);

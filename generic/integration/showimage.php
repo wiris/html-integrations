@@ -26,6 +26,9 @@ function createImage($config, $formulaPath, $imagePath) {
 				}
 			}
 		}
+		else {
+			$mathml = '';
+		}
 		
 		fclose($handle);
 		

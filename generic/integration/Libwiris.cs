@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
+using System.Web;
 
 namespace pluginwiris
 {
@@ -20,6 +21,46 @@ namespace pluginwiris
 		static public string CacheDirectory = "../cache";
 		static public string configFile = "../configuration.ini";
 
+        static public Hashtable imageConfigProperties = new Hashtable();
+
+        static Libwiris() {
+            Libwiris.imageConfigProperties.Add("bgColor", "wirisimagebgcolor");
+	        Libwiris.imageConfigProperties.Add("symbolColor", "wirisimagesymbolcolor");
+	        Libwiris.imageConfigProperties.Add("transparency", "wiristransparency");
+	        Libwiris.imageConfigProperties.Add("fontSize", "wirisimagefontsize");
+	        Libwiris.imageConfigProperties.Add("numberColor", "wirisimagenumbercolor");
+	        Libwiris.imageConfigProperties.Add("identColor", "wirisimageidentcolor");
+	        Libwiris.imageConfigProperties.Add("identMathvariant", "wirisimageidentmathvariant");
+	        Libwiris.imageConfigProperties.Add("numberMathvariant", "wirisimagenumbermathvariant");
+	        Libwiris.imageConfigProperties.Add("fontIdent", "wirisimagefontident");
+	        Libwiris.imageConfigProperties.Add("fontNumber", "wirisimagefontnumber");
+        }
+
+        public Libwiris(System.ComponentModel.IContainer container)
+        {
+            ///
+            /// Required for Windows.Forms Class Composition Designer support
+            ///
+            container.Add(this);
+            InitializeComponent();
+
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
+
+        public Libwiris()
+        {
+            ///
+            /// Required for Windows.Forms Class Composition Designer support
+            ///
+            InitializeComponent();
+
+            //
+            // TODO: Add any constructor code after InitializeComponent call
+            //
+        }
+
 		static public string base64Decode(string data) 
 		{
 			System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
@@ -33,20 +74,20 @@ namespace pluginwiris
 			return new String(decoded_char);
 		}
 
-		static public string md5(string input) 
-		{
-			System.Security.Cryptography.MD5CryptoServiceProvider md5Provider = new System.Security.Cryptography.MD5CryptoServiceProvider();
-			byte[] stream = System.Text.Encoding.UTF8.GetBytes(input);
-			stream = md5Provider.ComputeHash(stream);
-			System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
-
-			foreach (byte currentByte in stream) 
-			{
-				stringBuilder.Append(currentByte.ToString("x2").ToLower());
-			}
-
-			return stringBuilder.ToString();
-		}
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
 		static public Hashtable loadConfig(string file) 
 		{
@@ -57,16 +98,16 @@ namespace pluginwiris
 			reader.Close();
 
 			content = content.Replace("\r", "");
-			string[] content_lines = content.Split("\n".ToCharArray(0, 1));
-			
-			for (int i = 0; i < content_lines.Length; ++i) 
+			string[] contentLines = content.Split('\n');
+
+            for (int i = 0; i < contentLines.Length; ++i) 
 			{
-				string[] line_words = content_lines[i].Split("=".ToCharArray(0, 1), 2);
-				
-				if (line_words.Length == 2) 
+                string[] lineWords = contentLines[i].Split("\n".ToCharArray(0, 1), 2);
+
+                if (lineWords.Length == 2) 
 				{
-					string key = line_words[0].Trim();
-					string values = line_words[1].Trim();
+                    string key = lineWords[0].Trim();
+                    string values = lineWords[1].Trim();
 					toReturn.Add(key, values);
 				}
 			}
@@ -74,48 +115,34 @@ namespace pluginwiris
 			return toReturn;
 		}
 
-		public Libwiris(System.ComponentModel.IContainer container)
-		{
-			///
-			/// Required for Windows.Forms Class Composition Designer support
-			///
-			container.Add(this);
-			InitializeComponent();
+        static public string md5(string input)
+        {
+            System.Security.Cryptography.MD5CryptoServiceProvider md5Provider = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            byte[] stream = System.Text.Encoding.UTF8.GetBytes(input);
+            stream = md5Provider.ComputeHash(stream);
+            System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+            foreach (byte currentByte in stream)
+            {
+                stringBuilder.Append(currentByte.ToString("x2").ToLower());
+            }
 
-		public Libwiris()
-		{
-			///
-			/// Required for Windows.Forms Class Composition Designer support
-			///
-			InitializeComponent();
+            return stringBuilder.ToString();
+        }
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
-		}
+        static public string httpBuildQuery(Hashtable properties)
+        {
+            string returnValue = "";
 
-		/// <summary> 
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+            foreach (string key in properties)
+            {
+                returnValue += HttpUtility.UrlEncodeUnicode(key) + "=" + HttpUtility.UrlEncodeUnicode(properties[key].ToString()) + "&";
+            }
 
-
-		#region Component Designer generated code
+            return returnValue;
+        }
+        
+        #region Component Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
