@@ -21,7 +21,7 @@ function createImage($config, $formulaPath, $imagePath) {
 				$line = trim($line);
 				
 				if (isset($line[0])) {
-					$fonts['font' . $i] = trim($line);
+					$fonts['font' . $i] = $line;
 					++$i;
 				}
 			}
