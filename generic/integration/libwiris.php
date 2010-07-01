@@ -3,7 +3,7 @@ define('WRS_CONFIG_FILE', '../configuration.ini');
 define('WRS_CACHE_DIRECTORY', '../cache');
 define('WRS_FORMULA_DIRECTORY', '../formulas');
 
-global $wrs_imageConfigProperties;
+global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
 $wrs_imageConfigProperties = array(
 	'bgColor' => 'wirisimagebgcolor',
@@ -16,6 +16,19 @@ $wrs_imageConfigProperties = array(
 	'numberMathvariant' => 'wirisimagenumbermathvariant',
 	'fontIdent' => 'wirisimagefontident',
 	'fontNumber' => 'wirisimagefontnumber'
+);
+
+$wrs_xmlFileAttributes = array(
+	'bgColor',
+	'symbolColor',
+	'transparency',
+	'fontSize',
+	'numberColor',
+	'identColor',
+	'identMathvariant',
+	'numberMathvariant',
+	'fontIdent',
+	'fontNumber'
 );
 
 function wrs_getAvailableCASLanguages($languageString) {

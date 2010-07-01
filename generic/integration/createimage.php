@@ -5,9 +5,11 @@ if (!empty($_POST['mml'])) {
 	$toSave = $_POST['mml'] . "\n";
 	
 	$config = parse_ini_file(WRS_CONFIG_FILE);
-	global $wrs_imageConfigProperties;
+	global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 	
-	foreach ($wrs_imageConfigProperties as $serverParam => $configKey) {
+	foreach ($wrs_xmlFileAttributes as $serverParam) {
+		$configKey = $wrs_imageConfigProperties[$serverParam];
+		
 		if (isset($_POST[$serverParam])) {
 			$config[$configKey] = $_POST[$serverParam];
 		}

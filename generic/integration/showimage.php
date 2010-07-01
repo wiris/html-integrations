@@ -7,12 +7,13 @@ function createImage($config, $formulaPath, $imagePath) {
 		
 		if (($line = fgets($handle)) !== false) {
 			$mathml = trim($line);
-			global $wrs_imageConfigProperties;
-			$current = reset($wrs_imageConfigProperties);
+			global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
+			$i = 0;
+			$wrs_xmlFileAttributesCount = count($wrs_xmlFileAttributes);
 			
-			while (($line = fgets($handle)) !== false && $current !== false) {
-				$config[$current] = trim($line);
-				$current = next($wrs_imageConfigProperties);
+			while (($line = fgets($handle)) !== false && $i < $wrs_xmlFileAttributesCount) {
+				$config[$wrs_imageConfigProperties[$wrs_xmlFileAttributes[$i]]] = trim($line);
+				++$i;
 			}
 			
 			$i = 0;
