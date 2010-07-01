@@ -194,6 +194,8 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		appletCode += '<param name="xmlinitialtext" value="' + htmlentities(applet.getXML()) + '"></param>';
 		appletCode += '<param name="interface" value="false"></param><param name="commands" value="false"></param><param name="command" value="false"></param>';
 		
+		appletCode += '<p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target="_blank" href="http://www.java.com">www.java.com</a></p>';
+		
 		appletCode += '</applet>';
 		
 		// Getting the image
