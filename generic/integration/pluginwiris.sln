@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{9A730198-AA91-4A93-A612-9D5F69D5DBDA}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{0BFA32BA-C604-4017-805B-81DAEBF3DB4C}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		Debug.AspNetCompiler.VirtualPath = "/aspx"
@@ -26,8 +26,8 @@ Global
 		Debug|.NET = Debug|.NET
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A730198-AA91-4A93-A612-9D5F69D5DBDA}.Debug|.NET.ActiveCfg = Debug|.NET
-		{9A730198-AA91-4A93-A612-9D5F69D5DBDA}.Debug|.NET.Build.0 = Debug|.NET
+		{0BFA32BA-C604-4017-805B-81DAEBF3DB4C}.Debug|.NET.ActiveCfg = Debug|.NET
+		{0BFA32BA-C604-4017-805B-81DAEBF3DB4C}.Debug|.NET.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

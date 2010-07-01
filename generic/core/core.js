@@ -2,6 +2,7 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
+var _wrs_noJavaMessage = '<p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target="_blank" href="http://www.java.com">www.java.com</a></p>';
 
 /**
  * Cross-browser addEventListener/attachEvent function.
@@ -296,6 +297,7 @@ function wrs_endParse(code) {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
+			appletObject.innerHTML += _wrs_noJavaMessage;
 			appletObject.setAttribute('src', imgList[i].src);
 			
 			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
