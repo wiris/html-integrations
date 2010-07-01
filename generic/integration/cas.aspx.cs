@@ -55,7 +55,9 @@ namespace pluginwiris
 					"</style>" +
 				"</head>" +
 				"<body topmargin=\"0\" leftmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">" +
-                    "<applet id=\"applet\" alt=\"WIRIS CAS\" codebase=\"" + Libwiris.htmlentities(codebase, true) + "\" archive=\"" + Libwiris.htmlentities(archive, true) + "\" code=\"" + Libwiris.htmlentities(className, true) + "\" width=\"100%\" height=\"100%\"></applet>" +
+                    "<applet id=\"applet\" alt=\"WIRIS CAS\" codebase=\"" + Libwiris.htmlentities(codebase, true) + "\" archive=\"" + Libwiris.htmlentities(archive, true) + "\" code=\"" + Libwiris.htmlentities(className, true) + "\" width=\"100%\" height=\"100%\">" +
+                        "<p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target=\"_blank\" href=\"http://www.java.com\">www.java.com</a></p>" +
+                    "</applet>" +
 				"</body>" +
 			"</html>";
         }

@@ -27,7 +27,9 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'applet') {
 		</style>
 	</head>
 	<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
-		<applet id="applet" alt="WIRIS CAS" codebase="<?php echo htmlentities($codebase, ENT_QUOTES, 'UTF-8'); ?>" archive="<?php echo htmlentities($archive, ENT_QUOTES, 'UTF-8'); ?>" code="<?php echo htmlentities($class, ENT_QUOTES, 'UTF-8'); ?>" width="100%" height="100%"></applet>
+		<applet id="applet" alt="WIRIS CAS" codebase="<?php echo htmlentities($codebase, ENT_QUOTES, 'UTF-8'); ?>" archive="<?php echo htmlentities($archive, ENT_QUOTES, 'UTF-8'); ?>" code="<?php echo htmlentities($class, ENT_QUOTES, 'UTF-8'); ?>" width="100%" height="100%">
+			<p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target="_blank" href="http://www.java.com">www.java.com</a></p>
+		</applet>
 	</body>
 </html>
 <?php
