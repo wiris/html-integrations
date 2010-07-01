@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{FE80B273-8BFA-4D84-97C4-C3FE189D963E}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{9A730198-AA91-4A93-A612-9D5F69D5DBDA}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		Debug.AspNetCompiler.VirtualPath = "/aspx"
@@ -23,14 +23,11 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{FE80B273-8BFA
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|.NET = Debug|.NET
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FE80B273-8BFA-4D84-97C4-C3FE189D963E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE80B273-8BFA-4D84-97C4-C3FE189D963E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE80B273-8BFA-4D84-97C4-C3FE189D963E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE80B273-8BFA-4D84-97C4-C3FE189D963E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A730198-AA91-4A93-A612-9D5F69D5DBDA}.Debug|.NET.ActiveCfg = Debug|.NET
+		{9A730198-AA91-4A93-A612-9D5F69D5DBDA}.Debug|.NET.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

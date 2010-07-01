@@ -19,7 +19,7 @@ namespace pluginwiris
 		public Global()
 		{
 			InitializeComponent();
-		}	
+		}
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{

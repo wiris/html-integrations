@@ -51,23 +51,23 @@ namespace pluginwiris
 				TextReader file = new StreamReader(formulaFile);
 				string content = file.ReadToEnd();
 				file.Close();
-                string[] lines = content.Split('\n');
+                string[] lines = content.Split("\n".ToCharArray(0, 1));
                 String mathml = "";
 
                 if (lines.Length > 0)
                 {
                     mathml = lines[0].Trim();
-                    int i = 0;
-                    IDictionaryEnumerator keys = Libwiris.imageConfigProperties.GetEnumerator();
-                    keys.Reset();
+                    int i = 1;
+                    int j = 0;
 
-                    while (i < lines.Length && keys.MoveNext())
+                    while (i < lines.Length && j < Libwiris.xmlFileAttributes.Length)
                     {
-                        config[keys.Current.ToString()] = lines[i].Trim();
+                        config[Libwiris.imageConfigProperties[Libwiris.xmlFileAttributes[j]]] = lines[i].Trim();
                         ++i;
+                        ++j;
                     }
 
-                    int j = 0;
+                    j = 0;
 
                     while (i < lines.Length)
                     {
@@ -87,28 +87,33 @@ namespace pluginwiris
 
 				if (config["wirisimagenumbercolor"] == null) 
 				{
-					config["wirisimagenumbercolor"] = config["wirisimagesymbolcolor"].ToString();
+					config["wirisimagenumbercolor"] = (string)config["wirisimagesymbolcolor"];
 				}
 
 				// Retrocompatibility: when wirisimageidentcolor isn't defined
 
 				if (config["wirisimageidentcolor"] == null) 
 				{
-					config["wirisimageidentcolor"] = config["wirisimagesymbolcolor"].ToString();
+					config["wirisimageidentcolor"] = (string)config["wirisimagesymbolcolor"];
 				}
 
                 Hashtable properties = new Hashtable();
                 properties["mml"] = mathml;
 
-                foreach (string serverParam in Libwiris.imageConfigProperties)
+                foreach (DictionaryEntry entry in Libwiris.imageConfigProperties)
                 {
-                    if (config[Libwiris.imageConfigProperties[serverParam]] != null)
+                    string serverParam = (string)entry.Key;
+                    string configKey = (string)entry.Value;
+
+                    if (config[configKey] != null)
                     {
-                        properties[serverParam] = config[Libwiris.imageConfigProperties[serverParam]].ToString();
+                        properties[serverParam] = (string)config[configKey];
                     }
                 }
 
                 string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
+                //this.Response.Write(postdata + "<br/>");
+                //return true;
 
 				ASCIIEncoding encode = new ASCIIEncoding();
 				byte[] data = encode.GetBytes(postdata);
@@ -135,7 +140,6 @@ namespace pluginwiris
 				responseReader.Close();
 				responseStream.Close();
 				response.Close();
-
 				return true;
 			}
 

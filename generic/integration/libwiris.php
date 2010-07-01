@@ -18,10 +18,6 @@ $wrs_imageConfigProperties = array(
 	'fontNumber' => 'wirisimagefontnumber'
 );
 
-function wrs_replaceVariable($value, $variableName, $variableValue) {	
-	return str_replace('%' . $variableName, $variableValue, $value);
-}
-
 function wrs_getAvailableCASLanguages($languageString) {
 	$availableLanguages = explode(',', $languageString);
 		
@@ -36,6 +32,10 @@ function wrs_getAvailableCASLanguages($languageString) {
 	}
 	
 	return $availableLanguages;
+}
+
+function wrs_replaceVariable($value, $variableName, $variableValue) {	
+	return str_replace('%' . $variableName, $variableValue, $value);
 }
 
 function wrs_secureStripslashes($element) {
