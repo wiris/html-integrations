@@ -47,11 +47,11 @@ namespace pluginwiris
             this.content = "<html>" +
 				"<head>" +
 					"<style type=\"text/css\">" +
-						"<!--" +
+						"/*<!--*/ " +
 						"body {" +
 						"overflow: hidden;		// Hide scrollbars\n" +
 						"}" +
-						"-->" +
+						"/*-->*/" +
 					"</style>" +
 				"</head>" +
 				"<body topmargin=\"0\" leftmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">" +
@@ -70,11 +70,11 @@ namespace pluginwiris
                         "<script type=\"text/javascript\" src=\"../core/cas.js\"></script>" +
                         "<title>WIRIS CAS</title>" +
                         "<style type=\"text/css\">" +
-                                "<!-- " +
+                                "/*<!--*/ " +
                                 "body {" +
                                         "overflow: hidden;               // Hide scrollbars\n" +
                                 "}" +
-                                "-->" +
+                                "/*-->*/" +
                         "</style>" +
                 "</head>" +
                 "<body topmargin=\"0\" leftmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">" +
