@@ -179,8 +179,8 @@ namespace pluginwiris
                 if (lineWords.Length == 2)
                 {
                     string key = lineWords[0].Trim();
-                    string values = lineWords[1].Trim();
-                    toReturn.Add(key, values);
+                    string value = lineWords[1].Trim();
+                    toReturn.Add(key, value);
                 }
             }
 
