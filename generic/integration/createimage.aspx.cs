@@ -52,7 +52,7 @@ namespace pluginwiris
                 }
 
                 string fileName = Libwiris.md5(toSave);
-                string URL = this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
+                string url = this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
                 string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".xml");
 
                 if (!File.Exists(filePath))
@@ -62,7 +62,7 @@ namespace pluginwiris
                     file.Close();
                 }
 
-                this.Response.Write(URL);
+                this.Response.Write(url);
             }
             else
             {

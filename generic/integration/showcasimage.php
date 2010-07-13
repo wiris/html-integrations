@@ -17,3 +17,4 @@ else {
 		readfile('../core/cas.gif');
 	}
 }
+?>

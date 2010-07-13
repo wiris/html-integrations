@@ -53,7 +53,7 @@ function createImage($config, $formulaPath, $imagePath) {
 			}
 		}
 
-		$postdata = http_build_query(array_merge($fonts, $properties));
+		$postdata = http_build_query($fonts, '', '&') . '&' . http_build_query($properties, '', '&');
 		
 		$contextArray = array('http' =>
 			array(
@@ -97,3 +97,4 @@ else {
 		echo 'Error creating the image.';
 	}
 }
+?>
