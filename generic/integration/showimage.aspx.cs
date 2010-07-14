@@ -112,8 +112,6 @@ namespace pluginwiris
                 }
 
                 string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
-                //this.Response.Write(postdata + "<br/>");
-                //return true;
 
 				ASCIIEncoding encode = new ASCIIEncoding();
 				byte[] data = encode.GetBytes(postdata);

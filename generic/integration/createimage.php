@@ -17,6 +17,9 @@ if (!empty($_POST['mml'])) {
 		if (isset($config[$configKey])) {
 			$toSave .= $config[$configKey] . "\n";
 		}
+		else {
+			$toSave .= "\n";
+		}
 	}
 	
 	if (isset($config['wirisimagefontranges'])) {

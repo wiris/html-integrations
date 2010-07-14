@@ -34,6 +34,10 @@ namespace pluginwiris
                     {
                         toSave += (string)config[configKey] + "\n";
                     }
+					else
+					{
+						toSave += "\n";
+					}
                 }
 
                 if (config["wirisimagefontranges"] != null)
