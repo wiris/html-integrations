@@ -1,6 +1,6 @@
 <?php
 include 'libwiris.php';
-$config = parse_ini_file(WRS_CONFIG_FILE);
+$config = wrs_loadConfig(WRS_CONFIG_FILE);
 $availableLanguages = wrs_getAvailableCASLanguages($config['wiriscaslanguages']);
 
 if (isset($_GET['mode']) && $_GET['mode'] == 'applet') {
