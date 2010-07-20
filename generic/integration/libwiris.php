@@ -47,6 +47,29 @@ function wrs_getAvailableCASLanguages($languageString) {
 	return $availableLanguages;
 }
 
+function wrs_loadConfig($file) {
+	$handle = fopen($file, 'r');
+	
+	if ($handle === false) {
+		return array();
+	}
+	
+	$toReturn = array();
+	
+	while (($line = fgets($handle)) !== false) {
+		$lineWords = explode('=', $line, 2);
+		
+		if (isset($lineWords[1])) {
+			$key = trim($lineWords[0]);
+			$value = trim($lineWords[1]);
+			$toReturn[$key] = $value;
+		}
+	}
+	
+	fclose($handle);
+	return $toReturn;
+}
+
 function wrs_replaceVariable($value, $variableName, $variableValue) {	
 	return str_replace('%' . $variableName, $variableValue, $value);
 }

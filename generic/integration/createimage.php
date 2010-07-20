@@ -4,7 +4,7 @@ include 'libwiris.php';
 if (!empty($_POST['mml'])) {
 	$toSave = $_POST['mml'] . "\n";
 	
-	$config = parse_ini_file(WRS_CONFIG_FILE);
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 	
 	foreach ($wrs_xmlFileAttributes as $serverParam) {

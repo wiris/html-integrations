@@ -87,7 +87,7 @@ if (empty($_GET['formula'])) {
 else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
 	$imagePath = WRS_CACHE_DIRECTORY . '/' . $formula . '.png';
-	$config = parse_ini_file(WRS_CONFIG_FILE);
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	
 	if (is_file($imagePath) || createImage($config, WRS_FORMULA_DIRECTORY . '/' . $formula . '.xml', $imagePath)) {
 		header('Content-Type: image/png');
