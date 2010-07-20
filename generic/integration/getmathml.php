@@ -1,6 +1,6 @@
 <?php
 include 'libwiris.php';
-$digest = false;
+$digest = NULL;
 
 if (isset($_POST['md5']) && mb_strlen($_POST['md5']) == 32) {		// Support for "generic simple" integration.
 	$digest = $_POST['md5'];
@@ -9,7 +9,7 @@ else if (isset($_POST['digest'])) {		// Support for future integrations (where m
 	$digest = $_POST['digest'];
 }
 
-if ($digest !== false) {
+if (!is_null($digest)) {
 	$filePath = WRS_FORMULA_DIRECTORY . '/' . basename($digest) . '.xml';
 	
 	if (is_file($filePath)) {
