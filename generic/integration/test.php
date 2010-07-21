@@ -124,29 +124,29 @@ function wrs_assert($condition) {
 		
 		<p class="concrete">
 			<?php
-			echo 'Checking for file_put_contents...';
-			wrs_assert(function_exists('file_put_contents'));
-			
-			echo '<br/>Checking for mb_strlen...';
-			wrs_assert(function_exists('mb_strlen'));
-			
-			echo '<br/>Checking for fopen...';
-			wrs_assert(function_exists('fopen'));
+			echo 'Checking for fclose...';
+			wrs_assert(function_exists('fclose'));
 			
 			echo '<br/>Checking for fgets...';
 			wrs_assert(function_exists('fgets'));
 			
-			echo '<br/>Checking for fclose...';
-			wrs_assert(function_exists('fclose'));
+			echo '<br/>Checking for file_put_contents...';
+			wrs_assert(function_exists('file_put_contents'));
+			
+			echo '<br/>Checking for fopen...';
+			wrs_assert(function_exists('fopen'));
+			
+			echo '<br/>Checking for http_build_query...';
+			wrs_assert(function_exists('http_build_query'));
 			
 			echo '<br/>Checking for is_file...';
 			wrs_assert(function_exists('is_file'));
 			
+			echo '<br/>Checking for mb_strlen...';
+			wrs_assert(function_exists('mb_strlen'));
+			
 			echo '<br/>Checking for readfile...';
 			wrs_assert(function_exists('readfile'));
-			
-			echo '<br/>Checking for http_build_query...';
-			wrs_assert(function_exists('http_build_query'));
 			?>
 		</p>
 	</body>
