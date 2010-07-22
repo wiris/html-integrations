@@ -75,7 +75,7 @@ function wrs_assert($condition) {
 			echo 'Resolving IP address... ';
 			wrs_assert(gethostbyname($config['wirisimageservicehost']) != $config['wirisimageservicehost']);
 			
-			echo '<br/>Connecting... ';
+			echo '<br/>Connecting to ', $config['wirisimageservicehost'], ' on port ', $config['wirisimageserviceport'], '... ';
 			wrs_assert(fsockopen($config['wirisimageservicehost'], $config['wirisimageserviceport']));
 			?>
 		</p>
