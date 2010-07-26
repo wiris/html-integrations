@@ -23,7 +23,7 @@ namespace pluginwiris
         {
         }
 
-        public void wrs_assert(bool condition)
+        protected void wrs_assert(bool condition)
         {
             if (condition)
             {

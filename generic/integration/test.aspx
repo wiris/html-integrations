@@ -1,4 +1,4 @@
-﻿<%@ Page language="c#" Codebehind="editor.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.editor" %>
+﻿<%@ Page language="c#" Codebehind="test.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.test" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 	<head>
@@ -49,8 +49,8 @@
 		
 		<p>
                         <%
-                                this.Response.Write("Loading " + this.MapPath(Libwiris.configFile) + "... ");
-                                Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+                                this.Response.Write("Loading " + this.MapPath(pluginwiris.Libwiris.configFile) + "... ");
+                                Hashtable config = pluginwiris.Libwiris.loadConfig(this.MapPath(pluginwiris.Libwiris.configFile));
                                 this.wrs_assert(config.Count > 0);
 			%>
 		</p>
@@ -63,7 +63,7 @@
 
                                 try
                                 {
-                                        TcpClient socket = new TcpClient(config["wirisimageservicehost"], (int)config["wirisimageserviceport"]);
+                                        System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient((string)config["wirisimageservicehost"], Convert.ToInt32((string)config["wirisimageserviceport"]));
                                         this.wrs_assert(true);
                                         socket.Close();
                                 }
@@ -78,12 +78,12 @@
 		
 		<p>
 		        <%
-                                String file = this.MapPath(Libwiris.FormulaDirectory);
+                                String file = this.MapPath(pluginwiris.Libwiris.FormulaDirectory + "/test.xml");
                                 this.Response.Write("Writing file " + file + "... ");
 
                                 try
                                 {
-                                        TextWriter fileWriter = new StreamWriter(file);
+                                        System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
                                         fileWriter.Close();
                                         this.wrs_assert(true);
                                 }
@@ -102,7 +102,7 @@
 
                                 try
                                 {
-                                        TextReader fileReader = new StreamReader(file);
+                                        System.IO.TextReader fileReader = new System.IO.StreamReader(file);
                                         fileReader.Close();
                                         this.wrs_assert(true);
                                 }
@@ -117,12 +117,12 @@
 		
 		<p>
 		        <%
-                                file = this.MapPath(Libwiris.CacheDirectory + "/test.png");
+                                file = this.MapPath(pluginwiris.Libwiris.CacheDirectory + "/test.png");
                                 this.Response.Write("Writing file " + file + "... ");
 
                                 try
                                 {
-                                        TextWriter fileWriter = new StreamWriter(file);
+                                        System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
                                         fileWriter.Close();
                                         this.wrs_assert(true);
                                 }
@@ -141,7 +141,7 @@
 
                                 try
                                 {
-                                        TextReader fileReader = new StreamReader(file);
+                                        System.IO.TextReader fileReader = new System.IO.StreamReader(file);
                                         fileReader.Close();
                                         this.wrs_assert(true);
                                 }
@@ -162,15 +162,15 @@
 
                                 if (this.Request.QueryString["html"] == null || this.Request.QueryString["sql"] == null)
                                 {
-                                        this.Response.Redirect(his.Page.ResolveUrl("test.aspx") + "?html=" + HttpUtility.UrlEncodeUnicode(test.HTML_STRING) + "&sql=" + HttpUtility.UrlEncodeUnicode(test.SQL_STRING));
+                                        this.Response.Redirect(this.Page.ResolveUrl("test.aspx") + "?html=" + HttpUtility.UrlEncodeUnicode(HTML_STRING) + "&sql=" + HttpUtility.UrlEncodeUnicode(SQL_STRING));
                                 }
                                 else
                                 {
                                         this.Response.Write("Checking for HTML filter (should be disabled)... ");
-                                        this.wrs_assert(this.Request.QueryString["html"] == test.HTML_STRING);
+                                        this.wrs_assert(this.Request.QueryString["html"] == HTML_STRING);
 
                                         this.Response.Write("<br/>Checking for SQL filter (should be disabled)... ");
-                                        this.wrs_assert(this.Request.QueryString["sql"] == test.SQL_STRING);
+                                        this.wrs_assert(this.Request.QueryString["sql"] == SQL_STRING);
                                 }
 		        %>
 		</p>
