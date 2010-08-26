@@ -47,6 +47,7 @@ namespace pluginwiris
             Libwiris.imageConfigProperties["numberMathvariant"] = "wirisimagenumbermathvariant";
             Libwiris.imageConfigProperties["fontIdent"] = "wirisimagefontident";
             Libwiris.imageConfigProperties["fontNumber"] = "wirisimagefontnumber";
+			Libwiris.imageConfigProperties["version"] = "wirisimageserviceversion";
         }
 
         public Libwiris(System.ComponentModel.IContainer container)

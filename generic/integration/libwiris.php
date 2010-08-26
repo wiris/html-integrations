@@ -15,7 +15,8 @@ $wrs_imageConfigProperties = array(
 	'identMathvariant' => 'wirisimageidentmathvariant',
 	'numberMathvariant' => 'wirisimagenumbermathvariant',
 	'fontIdent' => 'wirisimagefontident',
-	'fontNumber' => 'wirisimagefontnumber'
+	'fontNumber' => 'wirisimagefontnumber',
+	'version' => 'wirisimageserviceversion'
 );
 
 $wrs_xmlFileAttributes = array(
