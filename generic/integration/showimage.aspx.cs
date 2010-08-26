@@ -85,14 +85,14 @@ namespace pluginwiris
 
 				// Retrocompatibility: when wirisimagenumbercolor isn't defined
 
-				if (config["wirisimagenumbercolor"] == null) 
+				if (config["wirisimagenumbercolor"] == null && config["wirisimagesymbolcolor"] != null) 
 				{
 					config["wirisimagenumbercolor"] = (string)config["wirisimagesymbolcolor"];
 				}
 
 				// Retrocompatibility: when wirisimageidentcolor isn't defined
 
-				if (config["wirisimageidentcolor"] == null) 
+				if (config["wirisimageidentcolor"] == null && config["wirisimagesymbolcolor"] != null) 
 				{
 					config["wirisimageidentcolor"] = (string)config["wirisimagesymbolcolor"];
 				}

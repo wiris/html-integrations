@@ -35,13 +35,13 @@ function createImage($config, $formulaPath, $imagePath) {
 		
 		// Retrocompatibility: when wirisimagenumbercolor is not defined
 		
-		if (!isset($config['wirisimagenumbercolor'])) {
+		if (!isset($config['wirisimagenumbercolor']) && isset($config['wirisimagesymbolcolor'])) {
 			$config['wirisimagenumbercolor'] = $config['wirisimagesymbolcolor'];
 		}
 		
 		// Retrocompatibility: when wirisimageidentcolor is not defined
 		
-		if (!isset($config['wirisimageidentcolor'])) {
+		if (!isset($config['wirisimageidentcolor']) && isset($config['wirisimagesymbolcolor'])) {
 			$config['wirisimageidentcolor'] = $config['wirisimagesymbolcolor'];
 		}
 		
