@@ -30,6 +30,7 @@ namespace pluginwiris
             parameters["numberMathvariant"] = "wirisimagenumbermathvariant";
             parameters["fontIdent"] = "wirisimagefontident";
             parameters["fontNumber"] = "wirisimagefontnumber";
+			parameters["version"] = "wirisimageserviceversion";
 
             foreach (DictionaryEntry entry in parameters)
             {
