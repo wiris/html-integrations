@@ -367,7 +367,6 @@ function wrs_httpBuildQuery(properties) {
 function wrs_initParse(code) {
 	var containerCode = '<div>' + code + '</div>';
 	var container = wrs_createObject(containerCode);
-	
 	var appletList = container.getElementsByTagName('applet');
 	
 	for (var i = 0; i < appletList.length; ++i) {
