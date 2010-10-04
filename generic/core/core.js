@@ -245,11 +245,10 @@ function wrs_createObject(objectCode) {
 			
 			for (var i = 0; i < object.childNodes.length; ++i) {
 				recursiveParamsFix(object.childNodes[i]);
-				var childNodeName = object.childNodes[i].nodeName.toLowerCase();
-				
-				if (childNodeName == 'param' || childNodeName == 'p') {
+
+				if (object.childNodes[i].nodeName.toLowerCase() == 'param') {
 					applet.appendChild(object.childNodes[i]);
-					--i;	// When we inserts the object child into the applet, object loses one child.
+					--i;	// When we insert the object child into the applet, object loses one child.
 				}
 			}
 
@@ -264,7 +263,6 @@ function wrs_createObject(objectCode) {
 	}
 	
 	recursiveParamsFix(container);
-	
 	return container.firstChild;
 }
 
@@ -299,11 +297,13 @@ function wrs_endParse(code) {
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
 			
-			try {
+			// This is not standard. It causes problems on modern browsers with DOM manipulation.
+			
+			/*try {
 				appletObject.innerHTML += _wrs_noJavaMessage;
 			}
 			catch (e) {
-			}
+			}*/
 			
 			appletObject.setAttribute('src', imgList[i].src);
 			
