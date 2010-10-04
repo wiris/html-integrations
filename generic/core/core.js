@@ -203,13 +203,13 @@ function wrs_createImageSrc(mathml, wirisProperties) {
  */
 function wrs_createObject(objectCode) {
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
-	objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
-	objectCode = objectCode.split('</applet>').join('</span>').split('</APPLET>').join('</span>');
+	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
+	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
 	
 	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// Is a 'br' because 'br' can't contain nodes.
 	objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
 	
-	var container = document.createElement('span');
+	var container = document.createElement('div');
 	container.innerHTML = objectCode;
 	
 	function recursiveParamsFix(object) {
@@ -245,8 +245,9 @@ function wrs_createObject(objectCode) {
 			
 			for (var i = 0; i < object.childNodes.length; ++i) {
 				recursiveParamsFix(object.childNodes[i]);
+				var childNodeName = object.childNodes[i].nodeName.toLowerCase();
 				
-				if (object.childNodes[i].nodeName.toLowerCase() == 'param') {
+				if (childNodeName == 'param' || childNodeName == 'p') {
 					applet.appendChild(object.childNodes[i]);
 					--i;	// When we inserts the object child into the applet, object loses one child.
 				}
@@ -297,7 +298,13 @@ function wrs_endParse(code) {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
-			appletObject.innerHTML += _wrs_noJavaMessage;
+			
+			try {
+				appletObject.innerHTML += _wrs_noJavaMessage;
+			}
+			catch (e) {
+			}
+			
 			appletObject.setAttribute('src', imgList[i].src);
 			
 			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
@@ -367,7 +374,8 @@ function wrs_initParse(code) {
 		if (appletList[i].className == 'Wiriscas' || appletList[i].getAttribute('class') == 'Wiriscas') {		// Internet Explorer can't read className correctly
 			var imgObject = document.createElement('img');
 			imgObject.title = 'Double click to edit';
-			imgObject.src = appletList[i].getAttribute('src');
+			var src = appletList[i].getAttribute('src');
+			imgObject.src = (src !== null) ? src : appletList[i].attributes[9].nodeValue;		// IE fix: the src is the attribute number 9.
 			imgObject.align = 'middle';
 			
 			var appletCode = wrs_createObjectCode(appletList[i]);
