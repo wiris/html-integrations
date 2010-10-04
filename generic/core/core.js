@@ -377,7 +377,7 @@ function wrs_initParse(code) {
 			var src = appletList[i].getAttribute('src');
 			
 			for (var j in appletList[i].attributes) {
-				alert(j + ': ' + appletList[i].attributes[j]);
+				alert(j + ': ' + appletList[i].attributes[j].nodeValue);
 			}
 			
 			imgObject.src = (src !== null) ? src : appletList[i].attributes[9].nodeValue;		// IE fix: the src is the attribute number 9.
