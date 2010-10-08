@@ -2,7 +2,6 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
-var _wrs_noJavaMessage = '<p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target="_blank" href="http://www.java.com">www.java.com</a></p>';
 
 /**
  * Cross-browser addEventListener/attachEvent function.
@@ -108,6 +107,55 @@ function wrs_containsClass(element, className) {
 }
 
 /**
+ * Cross-browser solution for creating new elements.
+ * 
+ * It fixes some browser bugs.
+ *
+ * @param string elementName The tag name of the wished element.
+ * @param object attributes An object where each key is a wished attribute name and each value is its value.
+ * @param object creator Optional param. If supplied, this function will use the "createElement" method from this param. Else, "document" will be used.
+ * @return object The DOM element with the specified attributes assignated.
+ */
+function wrs_createElement(elementName, attributes, creator) {
+	if (attributes === undefined) {
+		attributes = {};
+	}
+	
+	if (creator === undefined) {
+		creator = document;
+	}
+	
+	var element;
+	
+	/*
+	 * Internet Explorer fix:
+	 * If you create a new object dynamically, you can't set a non-standard attribute.
+	 * For example, you can't set the "src" attribute on an "applet" object.
+	 * Other browsers will throw an exception and will run the standard code.
+	 */
+	
+	try {
+		var html = '<' + elementName + ' ';
+		
+		for (var attributeName in attributes) {
+			html += attributeName + '="' + wrs_htmlentities(attributes[attributeName]) + '" ';
+		}
+		
+		html += '>';
+		element = creator.createElement(html);
+	}
+	catch (e) {
+		element = creator.createElement(elementName);
+		
+		for (var attributeName in attributes) {
+			element.setAttribute(attributeName, attributes[attributeName]);
+		}
+	}
+	
+	return element;
+}
+
+/**
  * Cross-browser httpRequest creation.
  * @return object
  */
@@ -201,26 +249,32 @@ function wrs_createImageSrc(mathml, wirisProperties) {
  * @param string objectCode
  * @return object
  */
-function wrs_createObject(objectCode) {
+function wrs_createObject(objectCode, creator) {
+	if (creator === undefined) {
+		creator = document;
+	}
+
 	// Internet Explorer can't include "param" tag when is setting an innerHTML property.
-	objectCode = objectCode.split('<applet ').join('<div wirisObject="WirisApplet" ').split('<APPLET ').join('<div wirisObject="WirisApplet" ');	// Is a 'div' because 'div' object can contain any object.
-	objectCode = objectCode.split('</applet>').join('</div>').split('</APPLET>').join('</div>');
+	objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" ');	// It is a 'span' because 'span' objects can contain 'br' nodes.
+	objectCode = objectCode.split('</applet>').join('</span>').split('</APPLET>').join('</span>');
 	
-	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// Is a 'br' because 'br' can't contain nodes.
+	objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');			// It is a 'br' because 'br' can't contain nodes.
 	objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
 	
-	var container = document.createElement('div');
+	var container = wrs_createElement('div', {}, creator);
 	container.innerHTML = objectCode;
 	
 	function recursiveParamsFix(object) {
 		if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisParam') {
-			var param = document.createElement('param');
+			var attributesParsed = {};
 			
 			for (var i = 0; i < object.attributes.length; ++i) {
 				if (object.attributes[i].nodeValue !== null) {
-					param.setAttribute(object.attributes[i].nodeName, object.attributes[i].nodeValue);
+					attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
 				}
 			}
+			
+			var param = wrs_createElement('param', attributesParsed, creator);
 			
 			// IE fix
 			if (param.NAME) {
@@ -229,18 +283,18 @@ function wrs_createObject(objectCode) {
 			}
 			
 			param.removeAttribute('wirisObject');
-			
 			object.parentNode.replaceChild(param, object);
 		}
 		else if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisApplet') {
-			var applet = document.createElement('applet');
+			var attributesParsed = {};
 			
 			for (var i = 0; i < object.attributes.length; ++i) {
 				if (object.attributes[i].nodeValue !== null) {
-					applet.setAttribute(object.attributes[i].nodeName, object.attributes[i].nodeValue);
+					attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
 				}
 			}
 			
+			var applet = wrs_createElement('applet', attributesParsed, creator);
 			applet.removeAttribute('wirisObject');
 			
 			for (var i = 0; i < object.childNodes.length; ++i) {
@@ -271,9 +325,13 @@ function wrs_createObject(objectCode) {
  * @param object object
  * @return string
  */
-function wrs_createObjectCode(object) {
+function wrs_createObjectCode(object, creator) {
+	if (creator === undefined) {
+		creator = document;
+	}
+	
 	var parent = object.parentNode;
-	var newParent = document.createElement(parent.tagName);
+	var newParent = wrs_createElement(parent.tagName, {}, creator);
 	parent.replaceChild(newParent, object);
 	newParent.appendChild(object);
 	var toReturn = newParent.innerHTML;
@@ -296,19 +354,10 @@ function wrs_endParse(code) {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
-			
-			// This is not standard. It causes problems on modern browsers with DOM manipulation.
-			
-			/*try {
-				appletObject.innerHTML += _wrs_noJavaMessage;
-			}
-			catch (e) {
-			}*/
-			
 			appletObject.setAttribute('src', imgList[i].src);
 			
 			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
-			--i;		// we have deleted one image
+			--i;		// One image has been deleted.
 		}
 	}
 
@@ -343,6 +392,18 @@ function wrs_getCode(variableName, imageHashCode) {
 }
 
 /**
+ * Parses a text and replaces all HTML special characters by their entities.
+ * @param string input
+ * @return string
+ */
+function wrs_htmlentities(input) {
+    var container = document.createElement('span');
+    var text = document.createTextNode(input);
+    container.appendChild(text);
+    return container.innerHTML.split('"').join('&quot;');
+}
+
+/**
  * Converts a hash to a HTTP query.
  * @param hash properties
  * @return string
@@ -371,10 +432,9 @@ function wrs_initParse(code) {
 	
 	for (var i = 0; i < appletList.length; ++i) {
 		if (appletList[i].className == 'Wiriscas' || appletList[i].getAttribute('class') == 'Wiriscas') {		// Internet Explorer can't read className correctly
-			var imgObject = document.createElement('img');
+			var imgObject = wrs_createElement('img');
 			imgObject.title = 'Double click to edit';
-			var src = appletList[i].getAttribute('src');
-			imgObject.src = (src !== null) ? src : appletList[i].attributes[9].nodeValue;		// IE fix: the src is the attribute number 9.
+			imgObject.src = appletList[i].getAttribute('src');
 			imgObject.align = 'middle';
 			
 			var appletCode = wrs_createObjectCode(appletList[i]);

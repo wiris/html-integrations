@@ -3,12 +3,12 @@ var appletObject;
 var initialXML = '';
 var closeFunction;
 
-if (window.opener) {							// For popup mode
+if (window.opener) {							// For popup mode.
 	wrs_opener = window.opener;
 	closeFunction = window.close;
 }
 // FCKeditor integration begin
-else {											// For iframe mode
+else {											// For iframe mode.
 	wrs_opener = window.parent;
 	
 	while (wrs_opener.InnerDialogLoaded) {
@@ -16,25 +16,18 @@ else {											// For iframe mode
 	}
 }
 
-if (window.parent.InnerDialogLoaded) {			// iframe mode
+if (window.parent.InnerDialogLoaded) {			// Iframe mode.
 	window.parent.InnerDialogLoaded();
 	closeFunction = window.parent.Cancel;
 }
-else if (window.opener.parent.FCKeditorAPI) {	// popup mode
+else if (window.opener.parent.FCKeditorAPI) {	// Popup mode.
 	wrs_opener = window.opener.parent;
 }
 // FCKeditor integration end
 
-function htmlentities(input) {
-    var container = document.createElement('span');
-    var text = document.createTextNode(input);
-    container.appendChild(text);
-    return container.innerHTML.split('"').join('&quot;');
-}
-
 function getMathmlFromAppletCode(appletCode) {
 	var optionForm = document.getElementById('optionForm');
-	appletObject = wrs_opener.wrs_createObject(appletCode);
+	appletObject = wrs_opener.wrs_createObject(appletCode, document);
 	
 	optionForm.width.value = parseInt(appletObject.width);
 	optionForm.height.value = parseInt(appletObject.height);
@@ -87,7 +80,8 @@ function createIframe(params) {
 			var applet = iframe.contentWindow.document.getElementById('applet');
 			
 			function setAppletMathml() {
-				// Internet explorer fails on "applet.isActive". It only supports "applet.isActive()"
+				// Internet explorer fails on "applet.isActive". It only supports "applet.isActive()".
+				
 				try {
 					if (applet.isActive && applet.isActive()) {
 						applet.setXML(initialXML);
@@ -142,6 +136,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 	else {
 		var appletCode = wrs_opener._wrs_temporalImage.getAttribute(wrs_opener._wrs_conf_CASMathmlAttribute);
 		initialXML = getMathmlFromAppletCode(wrs_opener.wrs_mathmlDecode(appletCode));
+		
 		var language = '';
 		
 		// We can convert initialXML to an object and get its "lang" value. However, IE does not support this functionability, so we use string parsing.
@@ -191,7 +186,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'floating') + '"></param>';
 		appletCode += '<param name="requestfocus" value="' + (optionForm.focusonload.checked ? 'true' : 'false') + '"></param>';
 		appletCode += '<param name="level" value="' + (optionForm.level.checked ? 'primary' : 'false') + '"></param>';
-		appletCode += '<param name="xmlinitialtext" value="' + htmlentities(applet.getXML()) + '"></param>';
+		appletCode += '<param name="xmlinitialtext" value="' + wrs_opener.wrs_htmlentities(applet.getXML()) + '"></param>';
 		appletCode += '<param name="interface" value="false"></param><param name="commands" value="false"></param><param name="command" value="false"></param>';
 		
 		appletCode += '</applet>';
