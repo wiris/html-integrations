@@ -307,7 +307,6 @@ function wrs_createObject(objectCode, creator) {
 			}
 
 			object.parentNode.replaceChild(applet, object);
-			object = applet;
 		}
 		else {
 			for (var i = 0; i < object.childNodes.length; ++i) {
