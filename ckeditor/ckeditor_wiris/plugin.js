@@ -19,6 +19,8 @@ var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';
 var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script
 var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script
 
+var _wrs_conf_saveMode = 'tags';		// this value can be 'tags', 'xml' or 'safeXml'.
+
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-formula.gif';
 var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-cas.gif';

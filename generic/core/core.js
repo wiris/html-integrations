@@ -2,6 +2,11 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
+var _wrs_tagOpener = '«';		// \x3C by \xAB
+var _wrs_tagCloser = '»';		// \x3E by \xBB
+var _wrs_doubleQuote = '¨';		// \x22 by \xA8
+var _wrs_ampersand = '§';		// \x26 by \xA7
+var _wrs_quote = '`';			// \x27 by \xB4
 
 /**
  * Cross-browser addEventListener/attachEvent function.
@@ -347,15 +352,47 @@ function wrs_endParse(code) {
 	var containerCode = '<div>' + code + '</div>';
 	var container = wrs_createObject(containerCode);
 	var imgList = container.getElementsByTagName('img');
+	var convertToXml = false;
+	var convertToSafeXml = false;
+	
+	if (window._wrs_conf_saveMode) {
+		if (_wrs_conf_saveMode == 'safeXml') {
+			convertToXml = true;
+			convertToSafeXml = true;
+		}
+		else if (_wrs_conf_saveMode == 'xml') {
+			convertToXml = true;
+		}
+	}
 	
 	for (var i = 0; i < imgList.length; ++i) {
-		if (imgList[i].className == 'Wiriscas') {
+		if (imgList[i].className == 'Wirisformula') {
+			if (convertToXml) {
+				var xmlCode = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
+				
+				if (!convertToSafeXml) {
+					xmlCode = wrs_mathmlDecode(xmlCode);
+				}
+				
+				var span = document.createElement('span');
+				span.innerHTML = xmlCode;
+				imgList[i].parentNode.replaceChild(span, imgList[i]);
+				--i;		// One image has been deleted.
+			}
+		}
+		else if (imgList[i].className == 'Wiriscas') {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
 			appletObject.setAttribute('src', imgList[i].src);
+			var object = appletObject;
 			
-			imgList[i].parentNode.replaceChild(appletObject, imgList[i]);
+			if (convertToSafeXml) {
+				object = document.createElement('span');
+				object.innerHTML = wrs_mathmlEncode(wrs_createObjectCode(appletObject));
+			}
+			
+			imgList[i].parentNode.replaceChild(object, imgList[i]);
 			--i;		// One image has been deleted.
 		}
 	}
@@ -425,8 +462,21 @@ function wrs_httpBuildQuery(properties) {
  * @return string
  */
 function wrs_initParse(code) {
-	var containerCode = '<div>' + code + '</div>';
-	var container = wrs_createObject(containerCode);
+	if (window._wrs_conf_saveMode) {
+		var safeXml = (_wrs_conf_saveMode == 'safeXml');
+		
+		if (safeXml) {
+			// Converting safe XML to XML.
+			code = wrs_mathmlDecode(code);
+		}
+		
+		if (safeXml || _wrs_conf_saveMode == 'xml') {
+			// Converting XML to tags.
+			code = wrs_parseMathmlToImg(code);
+		}
+	}
+	
+	var container = wrs_createObject('<div>' + code + '</div>');
 	var appletList = container.getElementsByTagName('applet');
 	
 	for (var i = 0; i < appletList.length; ++i) {
@@ -450,16 +500,16 @@ function wrs_initParse(code) {
 
 /**
  * WIRIS special encoding.
- *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+ * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
  * @param string input
  * @return string
  */
 function wrs_mathmlDecode(input) {
-	input = input.split('«').join('<');		// \xAB by \x3C
-	input = input.split('»').join('>');		// \xBB by \x3E
-	input = input.split('¨').join('"');		// \xA8 by \x22
-	input = input.split('§').join('&');		// \xA7 by \x26
-	input = input.split('`').join("'");		// \xB4 by \x27
+	input = input.split(_wrs_tagOpener).join('<');		// \xAB by \x3C
+	input = input.split(_wrs_tagCloser).join('>');		// \xBB by \x3E
+	input = input.split(_wrs_doubleQuote).join('"');	// \xA8 by \x22
+	input = input.split(_wrs_ampersand).join('&');		// \xA7 by \x26
+	input = input.split(_wrs_quote).join("'");			// \xB4 by \x27
 	
 	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
 	input = input.split('$').join('&');
@@ -474,11 +524,11 @@ function wrs_mathmlDecode(input) {
  * @return string
  */
 function wrs_mathmlEncode(input) {
-	input = input.split('<').join('«');		// \x3C by \xAB
-	input = input.split('>').join('»');		// \x3E by \xBB
-	input = input.split('"').join('¨');		// \x22 by \xA8
-	input = input.split('&').join('§');		// \x26 by \xA7
-	input = input.split("'").join('`');		// \x27 by \xB4
+	input = input.split('<').join(_wrs_tagOpener);		// \x3C by \xAB
+	input = input.split('>').join(_wrs_tagCloser);		// \x3E by \xBB
+	input = input.split('"').join(_wrs_doubleQuote);	// \x22 by \xA8
+	input = input.split('&').join(_wrs_ampersand);		// \x26 by \xA7
+	input = input.split("'").join(_wrs_quote);			// \x27 by \xB4
 	
 	return input;
 }
@@ -529,6 +579,36 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 	}
 	
 	return imgObject;
+}
+
+/**
+ * Converts all occurrences of mathml code to the corresponding image.
+ * @param string content
+ * @return string
+ */
+function wrs_parseMathmlToImg(content) {
+	var output = '';
+	var start = 0;
+	var end = 0;
+	
+	do {
+		start = content.indexOf('<mathml', end);
+		
+		if (start != -1) {
+			output += content.substring(end, start);
+			end = content.indexOf('</mathml>', start);
+			
+			if (end == -1) {
+				end = content.length;
+			}
+			
+			var mathml = content.substring(start, end + 9);		// '</mathml>'.length == 9
+			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+		}
+	} while (start != -1);
+	
+	output += content.substring(end, content.length - 1);
+	return output;
 }
 
 /**
