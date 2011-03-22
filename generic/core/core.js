@@ -587,6 +587,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
  * @return string
  */
 function wrs_parseMathmlToImg(content) {
+	alert(content);
 	var output = '';
 	var start = 0;
 	var end = 0;
