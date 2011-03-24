@@ -2,11 +2,28 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
-var _wrs_tagOpener = '«';		// \x3C by \xAB
-var _wrs_tagCloser = '»';		// \x3E by \xBB
-var _wrs_doubleQuote = '¨';		// \x22 by \xA8
-var _wrs_ampersand = '§';		// \x26 by \xA7
-var _wrs_quote = '`';			// \x27 by \xB4
+
+var _wrs_xmlCharacters = {
+	'tagOpener': '<',		// \x3C
+	'tagCloser': '>',		// \x3E
+	'doubleQuote': '"',		// \x22
+	'ampersand': '&',		// \x26
+	'quote': '\''			// \x27
+};
+
+var _wrs_safeXmlCharacters = {
+	'tagOpener': '«',		// \xAB
+	'tagCloser': '»',		// \xBB
+	'doubleQuote': '¨',		// \xA8
+	'ampersand': '§',		// \xA7
+	'quote': '`'			// \xB4
+};
+
+var _wrs_safeXmlCharactersEntities = {
+	'tagOpener': '&laquo;',
+	'tagCloser': '&raquo;',
+	'doubleQuote': '&uml;'
+}
 
 /**
  * Cross-browser addEventListener/attachEvent function.
@@ -335,11 +352,22 @@ function wrs_createObjectCode(object, creator) {
 	}
 	
 	var parent = object.parentNode;
-	var newParent = wrs_createElement(parent.tagName, {}, creator);
-	parent.replaceChild(newParent, object);
-	newParent.appendChild(object);
-	var toReturn = newParent.innerHTML;
-	parent.replaceChild(object, newParent);
+	var toReturn;
+	
+	if (parent != null) {
+		var newParent = wrs_createElement(parent.tagName, {}, creator);
+		parent.replaceChild(newParent, object);
+		newParent.appendChild(object);
+		toReturn = newParent.innerHTML;
+		parent.replaceChild(object, newParent);
+	}
+	else {
+		var newParent = wrs_createElement('div', {}, creator);
+		newParent.appendChild(object);
+		toReturn = newParent.innerHTML;
+		newParent.removeChild(object);
+	}
+
 	return toReturn;
 }
 
@@ -369,14 +397,19 @@ function wrs_endParse(code) {
 		if (imgList[i].className == 'Wirisformula') {
 			if (convertToXml) {
 				var xmlCode = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
+				var replacementObject;
 				
 				if (!convertToSafeXml) {
 					xmlCode = wrs_mathmlDecode(xmlCode);
+					var span = document.createElement('span');
+					span.innerHTML = xmlCode;
+					replacementObject = span.firstChild;
+				}
+				else {
+					replacementObject = document.createTextNode(xmlCode);
 				}
 				
-				var span = document.createElement('span');
-				span.innerHTML = xmlCode;
-				imgList[i].parentNode.replaceChild(span, imgList[i]);
+				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
 				--i;		// One image has been deleted.
 			}
 		}
@@ -388,8 +421,7 @@ function wrs_endParse(code) {
 			var object = appletObject;
 			
 			if (convertToSafeXml) {
-				object = document.createElement('span');
-				object.innerHTML = wrs_mathmlEncode(wrs_createObjectCode(appletObject));
+				object = document.createTextNode(wrs_mathmlEncode(wrs_createObjectCode(appletObject)));
 			}
 			
 			imgList[i].parentNode.replaceChild(object, imgList[i]);
@@ -464,15 +496,16 @@ function wrs_httpBuildQuery(properties) {
 function wrs_initParse(code) {
 	if (window._wrs_conf_saveMode) {
 		var safeXml = (_wrs_conf_saveMode == 'safeXml');
+		var characters = _wrs_xmlCharacters;
 		
 		if (safeXml) {
-			// Converting safe XML to XML.
-			code = wrs_mathmlDecode(code);
+			characters = _wrs_safeXmlCharacters;
+			code = wrs_parseSafeAppletsToObjects(code);
 		}
 		
 		if (safeXml || _wrs_conf_saveMode == 'xml') {
 			// Converting XML to tags.
-			code = wrs_parseMathmlToImg(code);
+			code = wrs_parseMathmlToImg(code, characters);
 		}
 	}
 	
@@ -505,11 +538,17 @@ function wrs_initParse(code) {
  * @return string
  */
 function wrs_mathmlDecode(input) {
-	input = input.split(_wrs_tagOpener).join('<');		// \xAB by \x3C
-	input = input.split(_wrs_tagCloser).join('>');		// \xBB by \x3E
-	input = input.split(_wrs_doubleQuote).join('"');	// \xA8 by \x22
-	input = input.split(_wrs_ampersand).join('&');		// \xA7 by \x26
-	input = input.split(_wrs_quote).join("'");			// \xB4 by \x27
+	// Decoding entities.
+	input = input.split(_wrs_safeXmlCharactersEntities.tagOpener).join(_wrs_safeXmlCharacters.tagOpener);
+	input = input.split(_wrs_safeXmlCharactersEntities.tagCloser).join(_wrs_safeXmlCharacters.tagCloser);
+	input = input.split(_wrs_safeXmlCharactersEntities.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote);
+
+	// Decoding characters.
+	input = input.split(_wrs_safeXmlCharacters.tagOpener).join(_wrs_xmlCharacters.tagOpener);
+	input = input.split(_wrs_safeXmlCharacters.tagCloser).join(_wrs_xmlCharacters.tagCloser);
+	input = input.split(_wrs_safeXmlCharacters.doubleQuote).join(_wrs_xmlCharacters.doubleQuote);
+	input = input.split(_wrs_safeXmlCharacters.ampersand).join(_wrs_xmlCharacters.ampersand);
+	input = input.split(_wrs_safeXmlCharacters.quote).join(_wrs_xmlCharacters.quote);
 	
 	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
 	input = input.split('$').join('&');
@@ -519,16 +558,16 @@ function wrs_mathmlDecode(input) {
 
 /**
  * WIRIS special encoding.
- *  We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+ * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
  * @param string input
  * @return string
  */
 function wrs_mathmlEncode(input) {
-	input = input.split('<').join(_wrs_tagOpener);		// \x3C by \xAB
-	input = input.split('>').join(_wrs_tagCloser);		// \x3E by \xBB
-	input = input.split('"').join(_wrs_doubleQuote);	// \x22 by \xA8
-	input = input.split('&').join(_wrs_ampersand);		// \x26 by \xA7
-	input = input.split("'").join(_wrs_quote);			// \x27 by \xB4
+	input = input.split(_wrs_xmlCharacters.tagOpener).join(_wrs_safeXmlCharacters.tagOpener);
+	input = input.split(_wrs_xmlCharacters.tagCloser).join(_wrs_safeXmlCharacters.tagCloser);
+	input = input.split(_wrs_xmlCharacters.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote);
+	input = input.split(_wrs_xmlCharacters.ampersand).join(_wrs_safeXmlCharacters.ampersand);
+	input = input.split(_wrs_xmlCharacters.quote).join(_wrs_safeXmlCharacters.quote);
 	
 	return input;
 }
@@ -586,26 +625,59 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
  * @param string content
  * @return string
  */
-function wrs_parseMathmlToImg(content) {
-	alert(content);
+function wrs_parseMathmlToImg(content, characters) {
 	var output = '';
-	var start = content.indexOf('<math');
-	alert(start);
+	var mathTagBegin = characters.tagOpener + 'math';
+	var mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
+	var start = content.indexOf(mathTagBegin);
 	var end = 0;
 	
 	while (start != -1) {
-		alert('<math encontrado en ' + start);
-		
 		output += content.substring(end, start);
-		end = content.indexOf('</math>', start);
+		end = content.indexOf(mathTagEnd, start);
 		
 		if (end == -1) {
-			end = content.length;
+			end = content.length - 1;
 		}
-			
-		var mathml = content.substring(start, end + 7);		// '</math>'.length == 7
+		else {
+			end += mathTagEnd.length;
+		}
+		
+		var mathml = content.substring(start, end);
+		mathml = (characters == _wrs_safeXmlCharacters) ? wrs_mathmlDecode(mathml) : wrs_mathmlEntities(mathml);
 		output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
-		start = content.indexOf('<math', end);
+		start = content.indexOf(mathTagBegin, end);
+	}
+	
+	output += content.substring(end, content.length - 1);
+	return output;
+}
+
+/**
+ * Converts all occurrences of safe applet code to the corresponding code.
+ * @param string content
+ * @return string
+ */
+function wrs_parseSafeAppletsToObjects(content) {
+	var output = '';
+	var appletTagBegin = _wrs_safeXmlCharacters.tagOpener + 'applet';
+	var appletTagEnd = _wrs_safeXmlCharacters.tagOpener + '/applet' + _wrs_safeXmlCharacters.tagCloser;
+	var start = content.indexOf(appletTagBegin);
+	var end = 0;
+	
+	while (start != -1) {
+		output += content.substring(end, start);
+		end = content.indexOf(appletTagEnd, start);
+		
+		if (end == -1) {
+			end = content.length - 1;
+		}
+		else {
+			end += appletTagEnd.length;
+		}
+		
+		output += wrs_mathmlDecode(content.substring(start, end));
+		start = content.indexOf(appletTagBegin, end);
 	}
 	
 	output += content.substring(end, content.length - 1);
