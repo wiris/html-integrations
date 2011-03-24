@@ -589,24 +589,24 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 function wrs_parseMathmlToImg(content) {
 	alert(content);
 	var output = '';
-	var start = 0;
+	var start = content.indexOf('<math');
+	alert(start);
 	var end = 0;
 	
-	do {
-		start = content.indexOf('<mathml', end);
+	while (start != -1) {
+		alert('<math encontrado en ' + start);
 		
-		if (start != -1) {
-			output += content.substring(end, start);
-			end = content.indexOf('</mathml>', start);
-			
-			if (end == -1) {
-				end = content.length;
-			}
-			
-			var mathml = content.substring(start, end + 9);		// '</mathml>'.length == 9
-			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+		output += content.substring(end, start);
+		end = content.indexOf('</math>', start);
+		
+		if (end == -1) {
+			end = content.length;
 		}
-	} while (start != -1);
+			
+		var mathml = content.substring(start, end + 7);		// '</math>'.length == 7
+		output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+		start = content.indexOf('<math', end);
+	}
 	
 	output += content.substring(end, content.length - 1);
 	return output;
