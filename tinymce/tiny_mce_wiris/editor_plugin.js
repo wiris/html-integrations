@@ -1,14 +1,16 @@
 /* Enabling support for all tinyMCE versions */
 var wrs_int_tinyManager = function () {};
 
-if (!window.tinymce) {
+if (!window.tinymce) {			// tinyMCE 2.x
 	wrs_int_tinyManager.baseURL = tinyMCE.baseURL;
+	
 	wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
 		tinyMCE.addPlugin(pluginName, plugin);
 	}
 }
-else {
+else {							// tinyMCE 3.x
 	wrs_int_tinyManager.baseURL = tinymce.baseURL;
+	
 	wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
 		tinymce.create('tinymce.plugins.' + pluginName, plugin);
 		tinymce.PluginManager.add(pluginName, tinymce.plugins[pluginName]);
@@ -45,21 +47,25 @@ var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
+var _wrs_int_wirisProperties;
 var _wrs_int_language = 'en';
 
 /* Plugin integration */
 (function () {
 	var plugin = {
-		// old versions
+		// tinyMCE 2.x
 		initInstance: function (editor) {
 			if (!editor.tiny_mce_wirisApplied) {
 				editor.tiny_mce_wirisApplied = true;
 				editor.oldTargetElement.value = wrs_initParse(editor.oldTargetElement.value);
-				wrs_addIframeEvents(editor.iframeElement, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				
+				wrs_addIframeEvents(editor.iframeElement, function (iframe, element) {
+					wrs_int_doubleClickHandler(editor, iframe, element);
+				}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			}
 		},
 	
-		// new versions
+		// tinyMCE 3.x		
 		init: function (editor, url) {
 			var iframe;
 			
@@ -77,7 +83,10 @@ var _wrs_int_language = 'en';
 						
 						editor.load();
 						iframe = editor.getContentAreaContainer().firstChild;
-						wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+						
+						wrs_addIframeEvents(iframe, function (iframe, element) {
+							wrs_int_doubleClickHandler(editor, iframe, element);
+						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 					}
 					else {
 						setTimeout(whenDocReady, 50);
@@ -93,6 +102,15 @@ var _wrs_int_language = 'en';
 			
 			if (_wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
+					_wrs_int_wirisProperties = {
+						'bgColor': editor.settings['wirisimagebgcolor'],
+						'symbolColor': editor.settings['wirisimagesymbolcolor'],
+						'transparency': editor.settings['wiristransparency'],
+						'fontSize': editor.settings['wirisimagefontsize'],
+						'numberColor': editor.settings['wirisimagenumbercolor'],
+						'identColor': editor.settings['wirisimageidentcolor']
+					};
+					
 					wrs_int_openNewFormulaEditor(iframe);
 				});
 			
@@ -205,9 +223,18 @@ function wrs_int_openNewCAS(iframe) {
  * @param object iframe Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandler(iframe, element) {
+function wrs_int_doubleClickHandler(editor, iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
+			_wrs_int_wirisProperties = {
+				'bgColor': editor.settings['wirisimagebgcolor'],
+				'symbolColor': editor.settings['wirisimagesymbolcolor'],
+				'transparency': editor.settings['wiristransparency'],
+				'fontSize': editor.settings['wirisimagefontsize'],
+				'numberColor': editor.settings['wirisimagenumbercolor'],
+				'identColor': editor.settings['wirisimageidentcolor']
+			};
+			
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(iframe);
@@ -281,7 +308,7 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml) {
-	wrs_updateFormula(_wrs_int_temporalIframe, mathml);
+	wrs_updateFormula(_wrs_int_temporalIframe, mathml, _wrs_int_wirisProperties);
 }
 
 /**
