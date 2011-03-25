@@ -36,6 +36,8 @@ var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';
 var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createimage.php';			// Specifies where is createimage script
 var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script
 
+var _wrs_conf_saveMode = 'tags';		// this value can be 'tags', 'xml' or 'safeXml'.
+
 /* Vars */
 var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-formula.gif';
 var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-cas.gif';
