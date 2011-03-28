@@ -621,6 +621,29 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 }
 
 /**
+ * Opens a new CAS window.
+ * @return object The opened window
+ */
+function wrs_openCASWindow() {
+	return window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+}
+
+/**
+ * Opens a new editor window.
+ * @param string language Language code for the editor
+ * @return object The opened window
+ */
+function wrs_openEditorWindow(language) {
+	var path = _wrs_conf_editorPath;
+	
+	if (language) {
+		path += '?lang=' + language;
+	}
+	
+	return window.open(path, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+}
+
+/**
  * Converts all occurrences of mathml code to the corresponding image.
  * @param string content
  * @return string

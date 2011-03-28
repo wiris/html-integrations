@@ -1,20 +1,11 @@
 /* Enabling support for all tinyMCE versions */
 var wrs_int_tinyManager = function () {};
 
-if (!window.tinymce) {			// tinyMCE 2.x
-	wrs_int_tinyManager.baseURL = tinyMCE.baseURL;
-	
-	wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
-		tinyMCE.addPlugin(pluginName, plugin);
-	}
-}
-else {							// tinyMCE 3.x
-	wrs_int_tinyManager.baseURL = tinymce.baseURL;
-	
-	wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
-		tinymce.create('tinymce.plugins.' + pluginName, plugin);
-		tinymce.PluginManager.add(pluginName, tinymce.plugins[pluginName]);
-	}
+wrs_int_tinyManager.baseURL = tinymce.baseURL;
+
+wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
+	tinymce.create('tinymce.plugins.' + pluginName, plugin);
+	tinymce.PluginManager.add(pluginName, tinymce.plugins[pluginName]);
 }
 
 /* Including core.js */
@@ -53,19 +44,6 @@ var _wrs_int_language = 'en';
 /* Plugin integration */
 (function () {
 	var plugin = {
-		// tinyMCE 2.x
-		initInstance: function (editor) {
-			if (!editor.tiny_mce_wirisApplied) {
-				editor.tiny_mce_wirisApplied = true;
-				editor.oldTargetElement.value = wrs_initParse(editor.oldTargetElement.value);
-				
-				wrs_addIframeEvents(editor.iframeElement, function (iframe, element) {
-					wrs_int_doubleClickHandler(editor, iframe, element);
-				}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-			}
-		},
-	
-		// tinyMCE 3.x		
 		init: function (editor, url) {
 			var iframe;
 			
@@ -111,7 +89,7 @@ var _wrs_int_language = 'en';
 						'identColor': editor.settings['wirisimageidentcolor']
 					};
 					
-					wrs_int_openNewFormulaEditor(iframe);
+					wrs_int_openNewFormulaEditor(iframe, editor.settings['wirisformulaeditorlang']);
 				});
 			
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
@@ -135,44 +113,6 @@ var _wrs_int_language = 'en';
 			}
 		},
 		
-		// old versions
-		getControlHTML: function (buttonName) {
-			if (buttonName == 'tiny_mce_wiris_formulaEditor') {
-				return tinyMCE.getButtonHTML(buttonName, 'Formula Editor', '{$pluginurl}/core/wiris-formula.gif', 'tiny_mce_wiris_openFormulaEditor');
-			}
-			
-			if (buttonName == 'tiny_mce_wiris_CAS') {
-				return tinyMCE.getButtonHTML(buttonName, 'WIRIS CAS', '{$pluginurl}/core/wiris-cas.gif', 'tiny_mce_wiris_openCAS');
-			}
-			
-			return '';
-		},
-		
-		// old versions
-		execCommand: function (editor_id, element, command, user_interface, value) {
-			if (command == 'tiny_mce_wiris_openFormulaEditor') {
-				var iframe = tinyMCE.getInstanceById(editor_id).iframeElement;
-				wrs_int_openNewFormulaEditor(iframe);
-			}
-			else if (command == 'tiny_mce_wiris_openCAS') {
-				var iframe = tinyMCE.getInstanceById(editor_id).iframeElement;
-				wrs_int_openNewCAS(iframe);
-			}
-		},
-		
-		cleanup : function(type, content, editor) {
-			if (type == 'insert_to_editor') {
-				return wrs_initParse(editor.startContent);
-			}
-			
-			if (type == 'submit_content') {
-				return wrs_endParse(content);
-			}
-			
-			return content;
-		},
-
-
 		// all versions
 		getInfo: function () {
 			return {
@@ -192,14 +132,15 @@ var _wrs_int_language = 'en';
  * Opens formula editor.
  * @param object iframe Target
  */
-function wrs_int_openNewFormulaEditor(iframe) {
+function wrs_int_openNewFormulaEditor(iframe, language) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
 	else {
-		_wrs_int_window_opened = _wrs_isNewElement = true;
+		_wrs_int_window_opened = true;
+		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = window.open(_wrs_conf_editorPath, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+		_wrs_int_window = wrs_openEditorWindow(language);
 	}
 }
 
@@ -214,7 +155,7 @@ function wrs_int_openNewCAS(iframe) {
 	else {
 		_wrs_int_window_opened = _wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+		_wrs_int_window = wrs_openCASWindow();
 	}
 }
 
@@ -237,7 +178,7 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
 			
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingFormulaEditor(iframe);
+				wrs_int_openExistingFormulaEditor(iframe, editor.settings['wirisformulaeditorlang']);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -259,11 +200,11 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
  * Opens formula editor to edit an existing formula.
  * @param object iframe Target
  */
-function wrs_int_openExistingFormulaEditor(iframe) {
+function wrs_int_openExistingFormulaEditor(iframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = window.open(_wrs_conf_editorPath, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+	_wrs_int_window = wrs_openEditorWindow(language);
 }
 
 /**
@@ -274,7 +215,7 @@ function wrs_int_openExistingCAS(iframe) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+	_wrs_int_window = wrs_openCASWindow();
 }
 
 /**
