@@ -640,7 +640,7 @@ function wrs_openEditorWindow(language) {
 		path += '?lang=' + language;
 	}
 	
-	return window.open(path, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
 }
 
 /**

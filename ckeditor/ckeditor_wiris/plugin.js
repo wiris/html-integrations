@@ -88,7 +88,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			});
 			
 			editor.ui.addButton('ckeditor_wiris_formulaEditor', {
-				'label': 'Formula Editor',
+				'label': 'WIRIS editor',
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});

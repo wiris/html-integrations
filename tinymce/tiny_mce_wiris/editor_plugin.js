@@ -93,7 +93,7 @@ var _wrs_int_language = 'en';
 				});
 			
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
-					title: 'Formula Editor',
+					title: 'WIRIS editor',
 					cmd: 'tiny_mce_wiris_openFormulaEditor',
 					image: url + '/core/wiris-formula.gif'
 				});
