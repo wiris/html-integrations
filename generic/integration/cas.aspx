@@ -1,23 +1,33 @@
 <%@ Page language="c#" Codebehind="cas.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.cas" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <%
         if (this.Request.QueryString["mode"] == "applet")
         {
                 %>
-                <html>
+		<html>
 			<head>
 				<style type="text/css">
 					/*<!--*/ 
-					
+					html,
 					body {
-					        overflow: hidden;		// Hide scrollbars
+						height: 100%;
 					}
-					
+
+					body {
+						overflow: hidden;
+						margin: 0;
+					}
+
+					applet {
+						height: 100%;
+						width: 100%;
+					}
 					/*-->*/
 				</style>
 			</head>
 			
-			<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
-                            <applet id="applet" alt="WIRIS CAS" codebase=<% this.Response.Write(Libwiris.htmlentities(this.codebase, true)); %>" archive=<% this.Response.Write(Libwiris.htmlentities(this.archive, true)); %>" code=<% this.Response.Write(Libwiris.htmlentities(this.className, true)); %>" width="100%" height="100%">
+			<body>
+                            <applet id="applet" alt="WIRIS CAS" codebase=<% this.Response.Write(Libwiris.htmlentities(this.codebase, true)); %>" archive=<% this.Response.Write(Libwiris.htmlentities(this.archive, true)); %>" code=<% this.Response.Write(Libwiris.htmlentities(this.className, true)); %>">
                                 <p>You need JAVA&reg; to use WIRIS tools.<br />FREE download from <a target="_blank" href="http://www.java.com">www.java.com</a></p>
                             </applet>
 			</body>
@@ -35,23 +45,30 @@
                                 
                                 <style type="text/css">
                                         /*<!--*/ 
-                                        
-                                        body {
-                                                overflow: hidden;               // Hide scrollbars\n
-                                        }
-                                        
+                                        html,
+										body,
+										#optionForm {
+											height: 100%;
+										}
+										
+										body {
+											overflow: hidden;
+											margin: 0;
+										}
+										
+										#controls {
+											width: 100%;
+										}
                                         /*-->*/
                                 </style>
                         </head>
                         
-                        <body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+                        <body>
                                 <form id="optionForm">
-                                        <table height="100%" width="100%">
+										<div id="appletContainer"></div>
+									
+                                        <table>
                                                 <tr>
-                                                        <td id="appletContainer" colspan="5"></td>
-                                                </tr>
-                                                
-                                                <tr height="1px">
                                                         <td>Width</td>
                                                         <td><input name="width" type="text" value=" this.config["CAS_width"] + ""/></td>
                                                         <td><input name="executeonload" type="checkbox"/> Calculate on load</td>
@@ -74,7 +91,7 @@
                                                         </td>
                                                 </tr>
                                                 
-                                                <tr height="1px">
+                                                <tr>
                                                         <td>Height</td>
                                                         <td><input name="height" type="text" value=" this.config["CAS_height"] + ""/></td>
                                                         <td><input name="focusonload" type="checkbox"/> Focus on load</td>
@@ -82,7 +99,7 @@
                                                         <td></td>
                                                 </tr>
                                                 
-                                                <tr height="1px">
+                                                <tr>
                                                         <td colspan="5"><input id="submit" value="Accept" type="button"/> <input id="cancel" value="Cancel" type="button"/></td>
                                                 </tr>
                                         </table>

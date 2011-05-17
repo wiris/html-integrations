@@ -224,6 +224,12 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 	wrs_opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
 		closeFunction();
 	});
+	
+	// Auto resizing
+	
+	setInterval(function () {
+		document.getElementById('appletContainer').style.height = (document.getElementById('optionForm').offsetHeight - document.getElementById('controls').offsetHeight - 5) + 'px';
+	}, 100);
 });
 
 wrs_opener.wrs_addEvent(window, 'unload', function () {
