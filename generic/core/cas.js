@@ -193,12 +193,12 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		
 		// Getting the image
 		// First, resize applet
-		applet.width = newWidth;
-		applet.height = newHeight;
+		applet.style.width = newWidth + 'px';
+		applet.style.height = newHeight + 'px';
 		
 		// Waiting for applet resizing
 		function finish() {
-			if (applet.getSize().width != applet.width || applet.getSize().height != applet.height) {
+			if (applet.getSize().width != newWidth || applet.getSize().height != newHeight) {
 				setTimeout(finish, 100);
 			}
 			else {
