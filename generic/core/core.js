@@ -382,6 +382,7 @@ function wrs_endParse(code) {
 	var imgList = container.getElementsByTagName('img');
 	var convertToXml = false;
 	var convertToSafeXml = false;
+	var convertToFlash = false;
 	
 	if (window._wrs_conf_saveMode) {
 		if (_wrs_conf_saveMode == 'safeXml') {
@@ -390,6 +391,9 @@ function wrs_endParse(code) {
 		}
 		else if (_wrs_conf_saveMode == 'xml') {
 			convertToXml = true;
+		}
+		else if (_wrs_conf_saveMode == 'flash') {
+			convertToFlash = true;
 		}
 	}
 	
@@ -411,6 +415,31 @@ function wrs_endParse(code) {
 				
 				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
 				--i;		// One image has been deleted.
+			}
+			else if (convertToFlash) {
+				var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute));
+				
+				var replacementObject = document.createElement('object');
+				replacementObject.className = 'Wirisformula';
+				replacementObject.setAttribute('classid', 'clsid:d27cdb6e-ae6d-11cf-96b8-444553540000');
+				
+				var movieParam = document.createElement('param');
+				movieParam.name = 'movie';
+				movieParam.value = 'editor.swf';
+				replacementObject.appendChild(movieParam);
+				
+				var flashVarsParam = document.createElement('param');
+				flashVarsParam.name = 'FlashVars';
+				flashVarsParam.value = 'mathml=' + wrs_urlencode(mathml);
+				replacementObject.appendChild(flashVarsParam);
+				
+				var embedObject = document.createElement('embed');
+				embedObject.setAttribute('src', 'editor.swf');
+				embedObject.setAttribute('FlashVars', flashVarsParam.value);
+				replacementObject.appendChild(embedObject);
+				
+				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
+				--i;
 			}
 		}
 		else if (imgList[i].className == 'Wiriscas') {
@@ -495,17 +524,22 @@ function wrs_httpBuildQuery(properties) {
  */
 function wrs_initParse(code) {
 	if (window._wrs_conf_saveMode) {
-		var safeXml = (_wrs_conf_saveMode == 'safeXml');
-		var characters = _wrs_xmlCharacters;
-		
-		if (safeXml) {
-			characters = _wrs_safeXmlCharacters;
-			code = wrs_parseSafeAppletsToObjects(code);
+		if (_wrs_conf_saveMode == 'flash') {
+			code = wrs_parseFlashToImg(code);
 		}
-		
-		if (safeXml || _wrs_conf_saveMode == 'xml') {
-			// Converting XML to tags.
-			code = wrs_parseMathmlToImg(code, characters);
+		else {
+			var safeXml = (_wrs_conf_saveMode == 'safeXml');
+			var characters = _wrs_xmlCharacters;
+			
+			if (safeXml) {
+				characters = _wrs_safeXmlCharacters;
+				code = wrs_parseSafeAppletsToObjects(code);
+			}
+			
+			if (safeXml || _wrs_conf_saveMode == 'xml') {
+				// Converting XML to tags.
+				code = wrs_parseMathmlToImg(code, characters);
+			}
 		}
 	}
 	
@@ -641,6 +675,31 @@ function wrs_openEditorWindow(language) {
 	}
 	
 	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+}
+
+/**
+ * Converts all occurrences of WIRIS flash formula display to the corresponding image.
+ * @param string content
+ * @return string
+ */
+function wrs_parseFlashToImg(content) {
+	var parent = wrs_createObject('<div>' + content + '</div>');
+	var objectList = parent.getElementsByTagName('object');
+	
+	for (var i = 0; i < objectList.length; ++i) {
+		if (objectList[i].className == 'Wirisformula') {
+			var embedObject = objectList[i].getElementsByTagName('embed')[0];
+			var flashVars = embedObject.getAttribute('FlashVars');
+			var start = flashVars.indexOf('=') + 1;
+			var mathml = wrs_urldecode(flashVars.substr(start, flashVars.length - start));
+			
+			var imgObject = wrs_mathmlToImgObject(document, mathml);
+			objectList[i].parentNode.replaceChild(imgObject, objectList[i]);
+			--i;
+		}
+	}
+	
+	return parent.innerHTML;
 }
 
 /**
@@ -859,8 +918,17 @@ function wrs_updateTextarea(textarea, text) {
 }
 
 /**
- * URL encode function
- * @param string clearString Input 
+ * URL decode function.
+ * @param string input
+ * @return string
+ */
+function wrs_urldecode(input) {
+	return decodeURIComponent(input);
+}
+
+/**
+ * URL encode function.
+ * @param string clearString Input.
  * @return string
  */
 function wrs_urlencode(clearString) {
