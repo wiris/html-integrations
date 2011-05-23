@@ -628,6 +628,43 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
+ * Converts entities to symbols.
+ * @param string mathml
+ * @return string
+ */
+function wrs_mathmlEntitiesDecode(mathml) {
+	mathml = mathml.split('&nbsp;').join(' ');
+	var output = '';
+	var parsing = false;
+	var number;
+	
+	for (var i = 0; i < mathml.length; ++i) {
+		var character = mathml.charAt(i);
+		
+		if (parsing) {
+			if (character == '#') {
+				number = '';
+			}
+			else if (character == ';') {
+				output += String.fromCharCode(number);
+				parsing = false;
+			}
+			else {
+				number += character;
+			}
+		}
+		else if (character == '&') {
+			parsing = true;
+		}
+		else {
+			output += character;
+		}
+	}
+	
+	return output;
+}
+
+/**
  * Converts mathml to img object.
  * @param object creator Object with "createElement" method
  * @param string mathml Mathml code
