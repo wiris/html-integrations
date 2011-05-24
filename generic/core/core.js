@@ -278,11 +278,11 @@ function wrs_createNewFlashFormulaDisplay(mathml) {
 	
 	var movieParam = document.createElement('param');
 	movieParam.name = 'movie';
-	movieParam.value = 'editor.swf';
+	movieParam.value = _wrs_conf_flashFormulaDisplayPath;
 	flashObject.appendChild(movieParam);
 	
 	var embedObject = document.createElement('embed');
-	embedObject.setAttribute('src', 'editor.swf');
+	embedObject.setAttribute('src', _wrs_conf_flashFormulaDisplayPath);
 	flashObject.appendChild(embedObject);
 	
 	if (mathml !== null) {
