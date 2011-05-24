@@ -2,6 +2,7 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
+var _wrs_flashDimensionManager;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -267,6 +268,36 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 }
 
 /**
+ * Creates a new instance of the WIRIS flash formula display.
+ * @param string mathml MathML to be inserted by default. Must be null if no MathML should be inserted.
+ * @return object The Flash HTML element.
+ */
+function wrs_createNewFlashFormulaDisplay(mathml) {
+	var flashObject = document.createElement('object');
+	flashObject.setAttribute('classid', 'clsid:d27cdb6e-ae6d-11cf-96b8-444553540000');
+	
+	var movieParam = document.createElement('param');
+	movieParam.name = 'movie';
+	movieParam.value = 'editor.swf';
+	flashObject.appendChild(movieParam);
+	
+	var embedObject = document.createElement('embed');
+	embedObject.setAttribute('src', 'editor.swf');
+	flashObject.appendChild(embedObject);
+	
+	if (mathml !== null) {
+		var flashVarsParam = document.createElement('param');
+		flashVarsParam.name = 'FlashVars';
+		flashVarsParam.value = 'mathml=' + wrs_urlencode(mathml);
+		flashObject.appendChild(flashVarsParam);
+		
+		embedObject.setAttribute('FlashVars', flashVarsParam.value);
+	}
+	
+	return flashObject;
+}
+
+/**
  * Creates new object using its html code.
  * @param string objectCode
  * @return object
@@ -418,26 +449,21 @@ function wrs_endParse(code) {
 			}
 			else if (convertToFlash) {
 				var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute));
+				_wrs_flashDimensionManager.setMathML(mathml);
+				var width = _wrs_flashDimensionManager.getFormulaWidth();
+				var height = _wrs_flashDimensionManager.getFormulaHeight();
+				var baseline = _wrs_flashDimensionManager.getFormulaBaseline();
 				
-				var replacementObject = document.createElement('object');
+				var replacementObject = wrs_createNewFlashFormulaDisplay(mathml);
 				replacementObject.className = 'Wirisformula';
-				replacementObject.setAttribute('classid', 'clsid:d27cdb6e-ae6d-11cf-96b8-444553540000');
+				replacementObject.style.verticalAlign = ((baseline - height) / 2) + 'px';
+				replacementObject.style.width = width + 'px';
+				replacementObject.style.height = height + 'px';
 				
-				var movieParam = document.createElement('param');
-				movieParam.name = 'movie';
-				movieParam.value = 'editor.swf';
-				replacementObject.appendChild(movieParam);
-				
-				var flashVarsParam = document.createElement('param');
-				flashVarsParam.name = 'FlashVars';
-				flashVarsParam.value = 'mathml=' + wrs_urlencode(mathml);
-				replacementObject.appendChild(flashVarsParam);
-				
-				var embedObject = document.createElement('embed');
-				embedObject.setAttribute('src', 'editor.swf');
-				embedObject.setAttribute('FlashVars', flashVarsParam.value);
-				replacementObject.appendChild(embedObject);
-				
+				var embedObject = replacementObject.getElementsByTagName('embed')[0];
+				embedObject.style.width = width + 'px';
+				embedObject.style.height = height + 'px';
+
 				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
 				--i;
 			}
@@ -489,6 +515,29 @@ function wrs_getCode(variableName, imageHashCode) {
 }
 
 /**
+ * Gets the flash application instance of a given flash HTML element.
+ * @param flashElement The Flash HTML element.
+ * @return object The application instance.
+ */
+function wrs_getFlashApplicationInstance(flashElement, callback) {
+	var embedElement = flashElement.getElementsByTagName('embed')[0];
+	
+	function getApplication() {
+		if (flashElement.TGetProperty !== undefined) {
+			callback(flashElement);
+		}
+		else if (embedElement.TGetProperty !== undefined) {
+			callback(embedElement);
+		}
+		else {
+			setTimeout(getApplication, 100);
+		}
+	}
+	
+	getApplication();
+}
+
+/**
  * Parses a text and replaces all HTML special characters by their entities.
  * @param string input
  * @return string
@@ -525,6 +574,18 @@ function wrs_httpBuildQuery(properties) {
 function wrs_initParse(code) {
 	if (window._wrs_conf_saveMode) {
 		if (_wrs_conf_saveMode == 'flash') {
+			var flashElement = wrs_createNewFlashFormulaDisplay(null);
+			flashElement.style.position = 'absolute';
+			flashElement.style.width = '0';
+			flashElement.style.height = '0';
+			flashElement.style.border = 'none';
+			flashElement.style.top = '-10000px';
+			document.body.appendChild(flashElement);
+			
+			wrs_getFlashApplicationInstance(flashElement, function (application) {
+				_wrs_flashDimensionManager = application;
+			});
+			
 			code = wrs_parseFlashToImg(code);
 		}
 		else {
