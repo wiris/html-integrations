@@ -6,15 +6,15 @@ document.getElementsByTagName('head')[0].appendChild(script);
 
 // Configuration
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled
-var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS CAS is enabled
+var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled
 
 var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code
-var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS CAS mathml code
+var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code
 
 var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window)
 var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';								// Specifies formula editor window options
-var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS CAS HTML code (for popup window)
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';								// Specifies WIRIS CAS window options
+var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window)
+var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';								// Specifies WIRIS cas window options
 
 var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script
 var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script
@@ -107,7 +107,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			});
 			
 			editor.ui.addButton('ckeditor_wiris_CAS', {
-				'label': 'WIRIS CAS',
+				'label': 'WIRIS cas',
 				'command': 'ckeditor_wiris_openCAS',
 				'icon': _wrs_int_CASIcon
 			});

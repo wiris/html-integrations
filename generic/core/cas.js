@@ -176,7 +176,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		var newWidth = parseInt(optionForm.width.value);
 		var newHeight = parseInt(optionForm.height.value);
 		
-		var appletCode = '<applet alt="WIRIS CAS" class="Wiriscas" align="middle" ';
+		var appletCode = '<applet alt="WIRIS cas" class="Wiriscas" align="middle" ';
 		appletCode += 'codebase="' + applet.getAttribute('codebase') + '" ';
 		appletCode += 'archive="' + applet.getAttribute('archive') + '" ';
 		appletCode += 'code="' + applet.getAttribute('code') + '" ';
