@@ -69,8 +69,9 @@ function createImage($config, $formulaPath, $imagePath) {
 		}
 
 		$context = stream_context_create($contextArray);
+		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
 
-		if (($response = file_get_contents('http://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], false, $context)) === false) {
+		if (($response = file_get_contents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], false, $context)) === false) {
 			return false;
 		}
 
