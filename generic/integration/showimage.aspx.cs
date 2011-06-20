@@ -115,8 +115,15 @@ namespace pluginwiris
 
 				ASCIIEncoding encode = new ASCIIEncoding();
 				byte[] data = encode.GetBytes(postdata);
+				
+				string protocol = (string)config["wirisimageserviceprotocol"];
+				
+				if (protocol == null)
+				{
+					protocol = "http";
+				}
 
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://" + (string)config["wirisimageservicehost"] + ":" + (string)config["wirisimageserviceport"] + (string)config["wirisimageservicepath"]);
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(protocol + "://" + (string)config["wirisimageservicehost"] + ":" + (string)config["wirisimageserviceport"] + (string)config["wirisimageservicepath"]);
 				request.Method = "POST";
 				request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
 				
