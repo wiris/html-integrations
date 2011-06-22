@@ -13,6 +13,7 @@ namespace pluginwiris
 {
     public class cas : System.Web.UI.Page
     {
+		public string availableLanguagesString;
 	    public string archive;
         public string className;
         public string codebase;
@@ -26,17 +27,31 @@ namespace pluginwiris
 
             if (this.Request.QueryString["mode"] == "applet")
             {
-                string language = availableLanguages[0];
+                this.language = availableLanguages[0];
 
                 if (Libwiris.inArray(this.Request.QueryString["lang"], availableLanguages))
                 {
-                    language = this.Request.QueryString["lang"];
+                    this.language = this.Request.QueryString["lang"];
                 }
 
                 this.codebase = Libwiris.replaceVariable((string)this.config["wiriscascodebase"], "LANG", language);
                 this.archive = Libwiris.replaceVariable((string)this.config["wiriscasarchive"], "LANG", language);
                 this.className = Libwiris.replaceVariable((string)this.config["wiriscasclass"], "LANG", language);
+				
+				// Sanitize.
+				this.codebase = Libwiris.htmlentities(this.codebase, true);
+				this.archive = Libwiris.htmlentities(this.archive, true);
+				this.className = Libwiris.htmlentities(this.className, true);
             }
+			else {
+				this.availableLanguagesString = "";
+				
+				for (int i = 0; i < availableLanguages.Length; ++i)
+				{
+						string language = Libwiris.htmlentities(availableLanguages[i], true);
+						this.availableLanguagesString += "<option value=\"" + language + "\">" + language + "</option>";
+				}
+			}
         }
 
         #region Web Form Designer generated code
