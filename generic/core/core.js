@@ -2,7 +2,6 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
-var _wrs_flashDimensionManager;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -158,10 +157,10 @@ function wrs_createElement(elementName, attributes, creator) {
 	 */
 	
 	try {
-		var html = '<' + elementName + ' ';
+		var html = '<' + elementName;
 		
 		for (var attributeName in attributes) {
-			html += attributeName + '="' + wrs_htmlentities(attributes[attributeName]) + '" ';
+			html += ' ' + attributeName + '="' + wrs_htmlentities(attributes[attributeName]) + '"';
 		}
 		
 		html += '>';
@@ -268,36 +267,6 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 }
 
 /**
- * Creates a new instance of the WIRIS flash formula display.
- * @param string mathml MathML to be inserted by default. Must be null if no MathML should be inserted.
- * @return object The Flash HTML element.
- */
-function wrs_createNewFlashFormulaDisplay(mathml) {
-	var flashObject = document.createElement('object');
-	flashObject.setAttribute('classid', 'clsid:d27cdb6e-ae6d-11cf-96b8-444553540000');
-	
-	var movieParam = document.createElement('param');
-	movieParam.name = 'movie';
-	movieParam.value = _wrs_conf_flashFormulaDisplayPath;
-	flashObject.appendChild(movieParam);
-	
-	var embedObject = document.createElement('embed');
-	embedObject.setAttribute('src', _wrs_conf_flashFormulaDisplayPath);
-	flashObject.appendChild(embedObject);
-	
-	if (mathml !== null) {
-		var flashVarsParam = document.createElement('param');
-		flashVarsParam.name = 'FlashVars';
-		flashVarsParam.value = 'mathml=' + wrs_urlencode(mathml);
-		flashObject.appendChild(flashVarsParam);
-		
-		embedObject.setAttribute('FlashVars', flashVarsParam.value);
-	}
-	
-	return flashObject;
-}
-
-/**
  * Creates new object using its html code.
  * @param string objectCode
  * @return object
@@ -377,29 +346,38 @@ function wrs_createObject(objectCode, creator) {
  * @param object object
  * @return string
  */
-function wrs_createObjectCode(object, creator) {
-	if (creator === undefined) {
-		creator = document;
-	}
-	
-	var parent = object.parentNode;
-	var toReturn;
-	
-	if (parent != null) {
-		var newParent = wrs_createElement(parent.tagName, {}, creator);
-		parent.replaceChild(newParent, object);
-		newParent.appendChild(object);
-		toReturn = newParent.innerHTML;
-		parent.replaceChild(object, newParent);
-	}
-	else {
-		var newParent = wrs_createElement('div', {}, creator);
-		newParent.appendChild(object);
-		toReturn = newParent.innerHTML;
-		newParent.removeChild(object);
-	}
+function wrs_createObjectCode(object) {
+	if (object.nodeType == 1) {		// ELEMENT_NODE
+		var output = '<' + object.tagName;
+		
+		for (var i = 0; i < object.attributes.length; ++i) {
+			output += ' ' + object.attributes[i].name + '="' + wrs_htmlentities(object.attributes[i].value) + '"';
+		}
+		
+		if (object.childNodes.length > 0) {
+			output += '>';
+			
+			for (var i = 0; i < object.childNodes.length; ++i) {
+				output += wrs_createObjectCode(object.childNodes[i]);
+			}
+			
+			output += '</' + object.tagName + '>';
+		}
+		else if (object.nodeName == 'DIV' || object.nodeName == 'SCRIPT') {
+			output += '></' + object.tagName + '>';
+		}
+		else {
+			output += '/>';
+		}
 
-	return toReturn;
+		return output;
+	}
+	
+	if (object.nodeType == 3) {		// TEXT_NODE
+		return wrs_htmlentities(object.nodeValue);
+	}
+	
+	return '';
 }
 
 /**
@@ -413,7 +391,6 @@ function wrs_endParse(code) {
 	var imgList = container.getElementsByTagName('img');
 	var convertToXml = false;
 	var convertToSafeXml = false;
-	var convertToFlash = false;
 	
 	if (window._wrs_conf_saveMode) {
 		if (_wrs_conf_saveMode == 'safeXml') {
@@ -422,9 +399,6 @@ function wrs_endParse(code) {
 		}
 		else if (_wrs_conf_saveMode == 'xml') {
 			convertToXml = true;
-		}
-		else if (_wrs_conf_saveMode == 'flash') {
-			convertToFlash = true;
 		}
 	}
 	
@@ -447,26 +421,6 @@ function wrs_endParse(code) {
 				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
 				--i;		// One image has been deleted.
 			}
-			else if (convertToFlash) {
-				var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute));
-				_wrs_flashDimensionManager.setMathML(mathml);
-				var width = _wrs_flashDimensionManager.getFormulaWidth();
-				var height = _wrs_flashDimensionManager.getFormulaHeight();
-				var baseline = _wrs_flashDimensionManager.getFormulaBaseline();
-				
-				var replacementObject = wrs_createNewFlashFormulaDisplay(mathml);
-				replacementObject.className = 'Wirisformula';
-				replacementObject.style.verticalAlign = ((baseline - height) / 2) + 'px';
-				replacementObject.style.width = width + 'px';
-				replacementObject.style.height = height + 'px';
-				
-				var embedObject = replacementObject.getElementsByTagName('embed')[0];
-				embedObject.style.width = width + 'px';
-				embedObject.style.height = height + 'px';
-
-				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
-				--i;
-			}
 		}
 		else if (imgList[i].className == 'Wiriscas') {
 			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
@@ -484,7 +438,7 @@ function wrs_endParse(code) {
 		}
 	}
 
-	return container.innerHTML;
+	return wrs_createObjectCode(container);
 }
 
 /**
@@ -512,29 +466,6 @@ function wrs_getCode(variableName, imageHashCode) {
 	
 	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 	return '';
-}
-
-/**
- * Gets the flash application instance of a given flash HTML element.
- * @param flashElement The Flash HTML element.
- * @return object The application instance.
- */
-function wrs_getFlashApplicationInstance(flashElement, callback) {
-	var embedElement = flashElement.getElementsByTagName('embed')[0];
-	
-	function getApplication() {
-		if (flashElement.TGetProperty !== undefined) {
-			callback(flashElement);
-		}
-		else if (embedElement.TGetProperty !== undefined) {
-			callback(embedElement);
-		}
-		else {
-			setTimeout(getApplication, 100);
-		}
-	}
-	
-	getApplication();
 }
 
 /**
@@ -573,34 +504,17 @@ function wrs_httpBuildQuery(properties) {
  */
 function wrs_initParse(code) {
 	if (window._wrs_conf_saveMode) {
-		if (_wrs_conf_saveMode == 'flash') {
-			var flashElement = wrs_createNewFlashFormulaDisplay(null);
-			flashElement.style.position = 'absolute';
-			flashElement.style.width = '0';
-			flashElement.style.height = '0';
-			flashElement.style.border = 'none';
-			flashElement.style.top = '-10000px';
-			document.body.appendChild(flashElement);
-			
-			wrs_getFlashApplicationInstance(flashElement, function (application) {
-				_wrs_flashDimensionManager = application;
-			});
-			
-			code = wrs_parseFlashToImg(code);
+		var safeXml = (_wrs_conf_saveMode == 'safeXml');
+		var characters = _wrs_xmlCharacters;
+		
+		if (safeXml) {
+			characters = _wrs_safeXmlCharacters;
+			code = wrs_parseSafeAppletsToObjects(code);
 		}
-		else {
-			var safeXml = (_wrs_conf_saveMode == 'safeXml');
-			var characters = _wrs_xmlCharacters;
-			
-			if (safeXml) {
-				characters = _wrs_safeXmlCharacters;
-				code = wrs_parseSafeAppletsToObjects(code);
-			}
-			
-			if (safeXml || _wrs_conf_saveMode == 'xml') {
-				// Converting XML to tags.
-				code = wrs_parseMathmlToImg(code, characters);
-			}
+		
+		if (safeXml || _wrs_conf_saveMode == 'xml') {
+			// Converting XML to tags.
+			code = wrs_parseMathmlToImg(code, characters);
 		}
 	}
 	
@@ -623,7 +537,7 @@ function wrs_initParse(code) {
 		}
 	}
 	
-	return container.innerHTML;
+	return wrs_createObjectCode(container);
 }
 
 /**
@@ -773,31 +687,6 @@ function wrs_openEditorWindow(language) {
 	}
 	
 	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
-}
-
-/**
- * Converts all occurrences of WIRIS flash formula display to the corresponding image.
- * @param string content
- * @return string
- */
-function wrs_parseFlashToImg(content) {
-	var parent = wrs_createObject('<div>' + content + '</div>');
-	var objectList = parent.getElementsByTagName('object');
-	
-	for (var i = 0; i < objectList.length; ++i) {
-		if (objectList[i].className == 'Wirisformula') {
-			var embedObject = objectList[i].getElementsByTagName('embed')[0];
-			var flashVars = embedObject.getAttribute('FlashVars');
-			var start = flashVars.indexOf('=') + 1;
-			var mathml = wrs_urldecode(flashVars.substr(start, flashVars.length - start));
-			
-			var imgObject = wrs_mathmlToImgObject(document, mathml);
-			objectList[i].parentNode.replaceChild(imgObject, objectList[i]);
-			--i;
-		}
-	}
-	
-	return parent.innerHTML;
 }
 
 /**
