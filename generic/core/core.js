@@ -386,9 +386,7 @@ function wrs_createObjectCode(object) {
  * @return string
  */
 function wrs_endParse(code) {
-	var containerCode = '<div>' + code + '</div>';
-	var container = wrs_createObject(containerCode);
-	var imgList = container.getElementsByTagName('img');
+	var output = '';
 	var convertToXml = false;
 	var convertToSafeXml = false;
 	
@@ -402,43 +400,46 @@ function wrs_endParse(code) {
 		}
 	}
 	
-	for (var i = 0; i < imgList.length; ++i) {
-		if (imgList[i].className == 'Wirisformula') {
-			if (convertToXml) {
-				var xmlCode = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
-				var replacementObject;
+	var upperCaseCode = code.toUpperCase();
+	var endPosition = 0;
+	var startPosition = upperCaseCode.indexOf('<IMG');
+	
+	while (startPosition != -1) {
+		output += code.substring(endPosition, startPosition);
+		var i = startPosition + 1;
+		
+		while (i < code.length && endPosition < startPosition) {
+			var character = code.charAt(i);
+			
+			if (character == '"' || character == '\'') {
+				var characterNextPosition = upperCaseCode.indexOf(character, i + 1);
 				
-				if (!convertToSafeXml) {
-					xmlCode = wrs_mathmlDecode(xmlCode);
-					var span = document.createElement('span');
-					span.innerHTML = xmlCode;
-					replacementObject = span.firstChild;
+				if (characterNextPosition == -1) {
+					i = code.length;		// End while.
 				}
 				else {
-					replacementObject = document.createTextNode(xmlCode);
+					i = characterNextPosition;
 				}
-				
-				imgList[i].parentNode.replaceChild(replacementObject, imgList[i]);
-				--i;		// One image has been deleted.
 			}
-		}
-		else if (imgList[i].className == 'Wiriscas') {
-			var appletCode = imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute);
-			appletCode = wrs_mathmlDecode(appletCode);
-			var appletObject = wrs_createObject(appletCode);
-			appletObject.setAttribute('src', imgList[i].src);
-			var object = appletObject;
-			
-			if (convertToSafeXml) {
-				object = document.createTextNode(wrs_mathmlEncode(wrs_createObjectCode(appletObject)));
+			else if (character == '>') {
+				endPosition = i + 1;
 			}
 			
-			imgList[i].parentNode.replaceChild(object, imgList[i]);
-			--i;		// One image has been deleted.
+			++i;
 		}
+		
+		if (endPosition < startPosition) {		// The img tag is stripped.
+			output += code.substring(startPosition, code.length);
+			return output;
+		}
+		
+		var imgCode = code.substring(startPosition, endPosition);
+		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
+		startPosition = upperCaseCode.indexOf('<IMG', endPosition);
 	}
-
-	return wrs_createObjectCode(container);
+	
+	output += code.substring(endPosition, code.length);
+	return output;
 }
 
 /**
@@ -466,6 +467,46 @@ function wrs_getCode(variableName, imageHashCode) {
 	
 	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 	return '';
+}
+
+/**
+ * Converts the HTML of a image into the output code that WIRIS must return.
+ * @param string imgCode
+ * @return string
+ */
+function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
+	var imgObject = wrs_createObject(imgCode);
+		
+	if (imgObject.className == 'Wirisformula') {
+		if (!convertToXml) {
+			return imgCode;
+		}
+		
+		var xmlCode = imgObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+		
+		if (!convertToSafeXml) {
+			xmlCode = wrs_mathmlDecode(xmlCode);
+		}
+		
+		return xmlCode;
+	}
+	
+	if (imgObject.className == 'Wiriscas') {
+		var appletCode = imgObject.getAttribute(_wrs_conf_CASMathmlAttribute);
+		appletCode = wrs_mathmlDecode(appletCode);
+		var appletObject = wrs_createObject(appletCode);
+		appletObject.setAttribute('src', imgObject.src);
+		var object = appletObject;
+		var appletCodeToBeInserted = wrs_createObjectCode(appletObject);
+		
+		if (convertToSafeXml) {
+			appletCodeToBeInserted = wrs_mathmlEncode(appletCodeToBeInserted);
+		}
+		
+		return appletCodeToBeInserted;
+	}
+	
+	return imgCode;
 }
 
 /**
@@ -718,7 +759,7 @@ function wrs_parseMathmlToImg(content, characters) {
 		start = content.indexOf(mathTagBegin, end);
 	}
 	
-	output += content.substring(end, content.length - 1);
+	output += content.substring(end, content.length);
 	return output;
 }
 
@@ -729,8 +770,8 @@ function wrs_parseMathmlToImg(content, characters) {
  */
 function wrs_parseSafeAppletsToObjects(content) {
 	var output = '';
-	var appletTagBegin = _wrs_safeXmlCharacters.tagOpener + 'applet';
-	var appletTagEnd = _wrs_safeXmlCharacters.tagOpener + '/applet' + _wrs_safeXmlCharacters.tagCloser;
+	var appletTagBegin = _wrs_safeXmlCharacters.tagOpener + 'APPLET';
+	var appletTagEnd = _wrs_safeXmlCharacters.tagOpener + '/APPLET' + _wrs_safeXmlCharacters.tagCloser;
 	var start = content.indexOf(appletTagBegin);
 	var end = 0;
 	
@@ -749,7 +790,7 @@ function wrs_parseSafeAppletsToObjects(content) {
 		start = content.indexOf(appletTagBegin, end);
 	}
 	
-	output += content.substring(end, content.length - 1);
+	output += content.substring(end, content.length);
 	return output;
 }
 
