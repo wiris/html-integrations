@@ -83,7 +83,7 @@ function createIframe(params) {
 				// Internet explorer fails on "applet.isActive". It only supports "applet.isActive()".
 				
 				try {
-					if (applet.isActive && applet.isActive()) {
+					if (applet.isActive()) {
 						applet.setXML(initialXML);
 					}
 					else {
@@ -91,12 +91,7 @@ function createIframe(params) {
 					}
 				}
 				catch (e) {
-					if (applet.isActive()) {
-						applet.setXML(initialXML);
-					}
-					else {
-						setTimeout(setAppletMathml, 50);
-					}
+					setTimeout(setAppletMathml, 50);
 				}
 			}
 

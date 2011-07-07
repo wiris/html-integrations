@@ -772,12 +772,13 @@ function wrs_parseSafeAppletsToObjects(content) {
 	var output = '';
 	var appletTagBegin = _wrs_safeXmlCharacters.tagOpener + 'APPLET';
 	var appletTagEnd = _wrs_safeXmlCharacters.tagOpener + '/APPLET' + _wrs_safeXmlCharacters.tagCloser;
-	var start = content.indexOf(appletTagBegin);
+	var upperCaseContent = content.toUpperCase();
+	var start = upperCaseContent.indexOf(appletTagBegin);
 	var end = 0;
 	
 	while (start != -1) {
 		output += content.substring(end, start);
-		end = content.indexOf(appletTagEnd, start);
+		end = upperCaseContent.indexOf(appletTagEnd, start);
 		
 		if (end == -1) {
 			end = content.length - 1;
@@ -787,7 +788,7 @@ function wrs_parseSafeAppletsToObjects(content) {
 		}
 		
 		output += wrs_mathmlDecode(content.substring(start, end));
-		start = content.indexOf(appletTagBegin, end);
+		start = upperCaseContent.indexOf(appletTagBegin, end);
 	}
 	
 	output += content.substring(end, content.length);
@@ -810,6 +811,65 @@ function wrs_removeEvent(element, event, func) {
 }
 
 /**
+ * Inserts or modifies an image on an iframe.
+ * @param object imgObject Image
+ * @param object iframe Target
+ */
+function wrs_insertImageOnIframe(imgObject, iframe) {
+	try {
+		iframe.contentWindow.focus();
+		
+		if (_wrs_isNewElement) {
+			if (document.selection) {
+				var range = iframe.contentWindow.document.selection.createRange();
+				iframe.contentWindow.document.execCommand('InsertImage', false, imgObject.src);
+
+				if (range.parentElement) {
+					var temporalObject = range.parentElement();
+					
+					if (temporalObject.nodeName.toUpperCase() == 'IMG') {
+						temporalObject.parentNode.replaceChild(imgObject, temporalObject);
+					}
+					else {
+						// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+						range.pasteHTML(wrs_createObjectCode(imgObject));
+					}
+				}
+			}
+			else {
+				var selection = iframe.contentWindow.getSelection();
+				
+				try {
+					var range = selection.getRangeAt(0);
+				}
+				catch (e) {
+					var range = iframe.contentWindow.document.createRange();
+				}
+				
+				selection.removeAllRanges();
+				range.deleteContents();
+				
+				var node = range.startContainer;
+				var position = range.startOffset;
+				
+				if (node.nodeType == 3) {		// TEXT_NODE
+					node = node.splitText(position);
+					node.parentNode.insertBefore(imgObject, node);
+				}
+				else if (node.nodeType == 1) {	// ELEMENT_NODE
+					node.insertBefore(imgObject, node.childNodes[position]);
+				}
+			}
+		}
+		else {
+			_wrs_temporalImage.parentNode.replaceChild(imgObject, _wrs_temporalImage);
+		}
+	}
+	catch (e) {
+	}
+}
+
+/**
  * Inserts or modifies CAS on an iframe.
  * @param object iframe Target
  * @param string appletCode Applet code
@@ -818,55 +878,8 @@ function wrs_removeEvent(element, event, func) {
  * @param int imageHeight Image height
  */
 function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
-	try {
-		if (iframe && appletCode) {
-			iframe.contentWindow.focus();
-			var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
-			
-			if (_wrs_isNewElement) {
-				if (document.selection) {
-					var range = iframe.contentWindow.document.selection.createRange();
-					
-					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
-
-					if (range.parentElement) {
-						var temporalImg = range.parentElement();
-						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
-						temporalImg.parentNode.removeChild(temporalImg);
-					}
-				}
-				else {
-					var sel = iframe.contentWindow.getSelection();
-					try {
-						var range = sel.getRangeAt(0);
-					}
-					catch (e) {
-						var range = iframe.contentWindow.document.createRange();
-					}
-					
-					sel.removeAllRanges();
-					range.deleteContents();
-					
-					var node = range.startContainer;
-					var pos = range.startOffset;
-					
-					if (node.nodeType == 3) {
-						node = node.splitText(pos);
-						node.parentNode.insertBefore(imgObject, node);
-					}
-					else if (node.nodeType == 1) {
-						node.insertBefore(imgObject, node.childNodes[pos]);
-					}
-				}
-			}
-			else {
-				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-			}
-		}
-	}
-	catch (e) {
-	}
+	var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
+	wrs_insertImageOnIframe(imgObject, iframe);
 }
 
 /**
@@ -875,55 +888,8 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
  * @param string mathml Mathml code
  */
 function wrs_updateFormula(iframe, mathml, wirisProperties) {
-	try {
-		if (iframe && mathml) {
-			iframe.contentWindow.focus();
-			var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
-			
-			if (_wrs_isNewElement) {
-				if (document.selection) {
-					var range = iframe.contentWindow.document.selection.createRange();
-					iframe.contentWindow.document.execCommand('insertimage', false, imgObject.src);
-
-					if (range.parentElement) {
-						var temporalImg = range.parentElement();
-						temporalImg.parentNode.insertBefore(imgObject, temporalImg);
-						temporalImg.parentNode.removeChild(temporalImg);
-					}
-				}
-				else {
-					var selection = iframe.contentWindow.getSelection();
-					
-					try {
-						var range = selection.getRangeAt(0);						
-					}
-					catch (e) {
-						var range = iframe.contentWindow.document.createRange();
-					}
-					
-					selection.removeAllRanges();
-					range.deleteContents();
-				
-					var node = range.startContainer;
-					var pos = range.startOffset;
-					
-					if (node.nodeType == 3) {
-						node = node.splitText(pos);
-						node.parentNode.insertBefore(imgObject, node);
-					}
-					else if (node.nodeType == 1) {
-						node.insertBefore(imgObject, node.childNodes[pos]);
-					}
-				}
-			}
-			else {
-				_wrs_temporalImage.parentNode.insertBefore(imgObject, _wrs_temporalImage);
-				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
-			}
-		}
-	}
-	catch (e) {
-	}
+	var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
+	wrs_insertImageOnIframe(imgObject, iframe);
 }
 
 /**
