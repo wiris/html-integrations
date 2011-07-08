@@ -206,30 +206,12 @@ function wrs_createHttpRequest() {
  * @return string
  */
 function wrs_createImageCASSrc(image, appletCode) {
-	var httpRequest = wrs_createHttpRequest();
+	var data = {
+		'image': image,
+		'mml': appletCode
+	};
 	
-	if (httpRequest) {
-		var data = 'image=' + wrs_urlencode(image);
-		
-		if (appletCode) {
-			data += '&mml=' + wrs_urlencode(appletCode);
-		}
-		
-		if (_wrs_conf_createcasimagePath.substr(0, 1) == '/' || _wrs_conf_createcasimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', _wrs_conf_createcasimagePath, false);
-		}
-		else {
-			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createcasimagePath, false);
-		}
-		
-		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(data);
-		
-		return httpRequest.responseText;
-	}
-	
-	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
-	return '';
+	return wrs_getContent(_wrs_conf_createcasimagePath, data);
 }
 
 /**
@@ -239,31 +221,14 @@ function wrs_createImageCASSrc(image, appletCode) {
  * @return string Image src
  */
 function wrs_createImageSrc(mathml, wirisProperties) {
-	var httpRequest = wrs_createHttpRequest();
+	var data = (wirisProperties) ? wirisProperties : {};
+	data['mml'] = mathml;
 	
-	if (httpRequest) {
-		var data = (wirisProperties) ? wirisProperties : {};
-		data['mml'] = mathml;
-		
-		if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
-			data['returnDigest'] = 'true';
-		}
-		
-		if (_wrs_conf_createimagePath.substr(0, 1) == '/' || _wrs_conf_createimagePath.substr(0, 7) == 'http://' || _wrs_conf_createimagePath.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', _wrs_conf_createimagePath, false);
-		}
-		else {
-			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_createimagePath, false);
-		}
-		
-		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(wrs_httpBuildQuery(data));
-		
-		return httpRequest.responseText;
+	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+		data['returnDigest'] = 'true';
 	}
 	
-	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
-	return '';
+	return wrs_getContent(_wrs_conf_createimagePath, data);
 }
 
 /**
@@ -449,24 +414,54 @@ function wrs_endParse(code) {
  * @return string
  */
 function wrs_getCode(variableName, imageHashCode) {
-	var data = wrs_urlencode(variableName) + '=' + imageHashCode;
+	var data = {};
+	data[variableName] = imageHashCode;
+	return wrs_getContent(_wrs_conf_getmathmlPath, data);
+}
+
+/**
+ * Gets the content from an URL.
+ * @param string url
+ * @param object postVariables Null if a GET query should be done.
+ * @return string
+ */
+function wrs_getContent(url, postVariables) {
 	var httpRequest = wrs_createHttpRequest();
 	
 	if (httpRequest) {
-		if (_wrs_conf_getmathmlPath.substr(0, 1) == '/' || _wrs_conf_getmathmlPath.substr(0, 7) == 'http://' || _wrs_conf_getmathmlPath.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', _wrs_conf_getmathmlPath, false);
+		if (url.substr(0, 1) == '/' || url.substr(0, 7) == 'http://' || url.substr(0, 8) == 'https://') {
+			httpRequest.open('POST', url, false);
 		}
 		else {
-			httpRequest.open('POST', _wrs_currentPath + _wrs_conf_getmathmlPath, false);
+			httpRequest.open('POST', _wrs_currentPath + url, false);
 		}
 		
-		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		httpRequest.send(data);
+		if (postVariables !== undefined) {
+			httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			httpRequest.send(wrs_httpBuildQuery(data));
+		}
+		else {
+			httpRequest.send(null);
+		}
+		
 		return httpRequest.responseText;
 	}
 	
 	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 	return '';
+}
+
+/**
+ * Converts MathML to LateX.
+ * @param string mathml
+ * @return string
+ */
+function wrs_getLatexFromMathML(var mathml) {
+	var data = {
+		'mml': mathml
+	}
+	
+	return wrs_getContent(_wrs_conf_getlatexPath, data);
 }
 
 /**
@@ -579,6 +574,65 @@ function wrs_initParse(code) {
 	}
 	
 	return wrs_createObjectCode(container);
+}
+
+/**
+ * Inserts an element on an iframe.
+ * @param object element Element
+ * @param object iframe Target
+ */
+function wrs_insertElementOnIframe(element, iframe) {
+	try {
+		iframe.contentWindow.focus();
+		
+		if (_wrs_isNewElement) {
+			if (document.selection) {
+				var range = iframe.contentWindow.document.selection.createRange();
+				iframe.contentWindow.document.execCommand('InsertImage', false, element.src);
+
+				if (range.parentElement) {
+					var temporalObject = range.parentElement();
+					
+					if (temporalObject.nodeName.toUpperCase() == 'IMG') {
+						temporalObject.parentNode.replaceChild(element, temporalObject);
+					}
+					else {
+						// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+						range.pasteHTML(wrs_createObjectCode(element));
+					}
+				}
+			}
+			else {
+				var selection = iframe.contentWindow.getSelection();
+				
+				try {
+					var range = selection.getRangeAt(0);
+				}
+				catch (e) {
+					var range = iframe.contentWindow.document.createRange();
+				}
+				
+				selection.removeAllRanges();
+				range.deleteContents();
+				
+				var node = range.startContainer;
+				var position = range.startOffset;
+				
+				if (node.nodeType == 3) {		// TEXT_NODE
+					node = node.splitText(position);
+					node.parentNode.insertBefore(element, node);
+				}
+				else if (node.nodeType == 1) {	// ELEMENT_NODE
+					node.insertBefore(element, node.childNodes[position]);
+				}
+			}
+		}
+		else {
+			_wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
+		}
+	}
+	catch (e) {
+	}
 }
 
 /**
@@ -811,65 +865,6 @@ function wrs_removeEvent(element, event, func) {
 }
 
 /**
- * Inserts or modifies an image on an iframe.
- * @param object imgObject Image
- * @param object iframe Target
- */
-function wrs_insertImageOnIframe(imgObject, iframe) {
-	try {
-		iframe.contentWindow.focus();
-		
-		if (_wrs_isNewElement) {
-			if (document.selection) {
-				var range = iframe.contentWindow.document.selection.createRange();
-				iframe.contentWindow.document.execCommand('InsertImage', false, imgObject.src);
-
-				if (range.parentElement) {
-					var temporalObject = range.parentElement();
-					
-					if (temporalObject.nodeName.toUpperCase() == 'IMG') {
-						temporalObject.parentNode.replaceChild(imgObject, temporalObject);
-					}
-					else {
-						// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
-						range.pasteHTML(wrs_createObjectCode(imgObject));
-					}
-				}
-			}
-			else {
-				var selection = iframe.contentWindow.getSelection();
-				
-				try {
-					var range = selection.getRangeAt(0);
-				}
-				catch (e) {
-					var range = iframe.contentWindow.document.createRange();
-				}
-				
-				selection.removeAllRanges();
-				range.deleteContents();
-				
-				var node = range.startContainer;
-				var position = range.startOffset;
-				
-				if (node.nodeType == 3) {		// TEXT_NODE
-					node = node.splitText(position);
-					node.parentNode.insertBefore(imgObject, node);
-				}
-				else if (node.nodeType == 1) {	// ELEMENT_NODE
-					node.insertBefore(imgObject, node.childNodes[position]);
-				}
-			}
-		}
-		else {
-			_wrs_temporalImage.parentNode.replaceChild(imgObject, _wrs_temporalImage);
-		}
-	}
-	catch (e) {
-	}
-}
-
-/**
  * Inserts or modifies CAS on an iframe.
  * @param object iframe Target
  * @param string appletCode Applet code
@@ -879,7 +874,7 @@ function wrs_insertImageOnIframe(imgObject, iframe) {
  */
 function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
 	var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
-	wrs_insertImageOnIframe(imgObject, iframe);
+	wrs_insertElementOnIframe(imgObject, iframe);
 }
 
 /**
@@ -888,8 +883,15 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
  * @param string mathml Mathml code
  */
 function wrs_updateFormula(iframe, mathml, wirisProperties) {
-	var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
-	wrs_insertImageOnIframe(imgObject, iframe);
+	if (window._wrs_conf_editMode && _wrs_conf_editMode == 'latex') {
+		var latex = wrs_getLatexFromMathML(mathml);
+		var textNode = iframe.contentWindow.document.createTextNode('$' + latex + '$');
+		wrs_insertElementOnIframe(textNode, iframe);
+	}
+	else {
+		var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
+		wrs_insertElementOnIframe(imgObject, iframe);
+	}
 }
 
 /**
