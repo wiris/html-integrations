@@ -28,7 +28,22 @@ if (!is_null($digest)) {
 		echo 'Error: formula does not exists.';
 	}
 }
+else if (isset($_POST['latex'])) {
+	echo '<math><mrow><mi>2</mi></mrow><semantics><annotation encoding="TeX">' . $_POST['latex'] . '</annotation></semantics></math>';
+	exit;
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
+	$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
+	$path = substr($config['wirisimageservicepath'], 0, strrpos($config['wirisimageservicepath'], '/')) . '/mathml';
+	$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path, array('latex' => $_POST['latex']));
+
+	if ($response !== false) {
+		echo $response;
+	}
+	else {
+		echo 'Error connecting to the latex translator service.';
+	}
+}
 else {
-	echo 'Error: no digest has been sended.';
+	echo 'Error: no digest or latex has been sended.';
 }
 ?>

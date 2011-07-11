@@ -48,6 +48,29 @@ function wrs_getAvailableCASLanguages($languageString) {
 	return $availableLanguages;
 }
 
+function wrs_getContents($url, $postVariables = NULL) {
+	if (is_null($postVariables)) {
+		$httpConfiguration = array('method' => 'GET');
+	}
+	else {
+		$httpConfiguration = array(
+			'method'  => 'POST',
+			'header'  => 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+			'content' => http_build_query($postVariables, '', '&')
+		);
+	}
+	
+	$contextArray = array('http' =>	$httpConfiguration);
+
+	if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true') {
+		$contextArray['http']['proxy'] = 'tcp://' . $config['wirisproxy_host'] . ':' . $config['wirisproxy_port'];
+		$contextArray['http']['request_fulluri'] = true;
+	}
+	
+	$context = stream_context_create($contextArray);
+	return file_get_contents($url, false, $context);
+}
+
 function wrs_loadConfig($file) {
 	$handle = fopen($file, 'r');
 	

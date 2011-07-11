@@ -117,8 +117,8 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
  * @return bool
  */
 function wrs_arrayContains(stack, element) {
-	for (var i = array.length - 1; i >= 0; --i) {
-		if (array[i] == element) {
+	for (var i = stack.length - 1; i >= 0; --i) {
+		if (stack[i] == element) {
 			return true;
 		}
 	}
@@ -500,7 +500,7 @@ function wrs_getContent(url, postVariables) {
 		
 		if (postVariables !== undefined) {
 			httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			httpRequest.send(wrs_httpBuildQuery(data));
+			httpRequest.send(wrs_httpBuildQuery(postVariables));
 		}
 		else {
 			httpRequest.send(null);
@@ -518,10 +518,10 @@ function wrs_getContent(url, postVariables) {
  * @param string mathml
  * @return string
  */
-function wrs_getLatexFromMathML(var mathml) {
+function wrs_getLatexFromMathML(mathml) {
 	var data = {
 		'mml': mathml
-	}
+	};
 	
 	return wrs_getContent(_wrs_conf_getlatexPath, data);
 }
@@ -531,10 +531,10 @@ function wrs_getLatexFromMathML(var mathml) {
  * @param string latex
  * @return string
  */
-function wrs_getMathMLFromLatex(var latex) {
+function wrs_getMathMLFromLatex(latex) {
 	var data = {
 		'latex': latex
-	}
+	};
 	
 	return wrs_getContent(_wrs_conf_getmathmlPath, data);
 }
@@ -609,11 +609,50 @@ function wrs_httpBuildQuery(properties) {
 }
 
 /**
- * Parses initial HTML code, converts CAS applets to CAS images.
+ * Parses initial HTML code.
  * @param string code
  * @return string
  */
 function wrs_initParse(code) {
+	code = wrs_initParseEditMode(code);
+	return wrs_initParseSaveMode(code);
+}
+
+/**
+ * Parses initial HTML code depending on the edit mode.
+ * @param string code
+ * @return string
+ */
+function wrs_initParseEditMode(code) {
+	var container = wrs_createObject('<div>' + code + '</div>');
+	var imgList = container.getElementsByTagName('img');
+	var token = 'encoding="TeX">';
+	
+	for (var i = 0; i < imgList.length; ++i) {
+		if (imgList[i].className == 'Wirisformula') {
+			var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute));
+			var latexStartPosition = mathml.indexOf(token);
+			
+			if (latexStartPosition != -1) {
+				latexStartPosition += token.length;
+				var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
+				var latex = mathml.substring(latexStartPosition, latexEndPosition);
+				var textNode = document.createTextNode('$$' + latex + '$$');
+				imgList[i].parentNode.replaceChild(textNode, imgList[i]);
+				--i;		// An image has been replaced.
+			}
+		}
+	}
+	
+	return wrs_createObjectCode(container);
+}
+
+/**
+ * Parses initial HTML code depending on the save mode.
+ * @param string code
+ * @return string
+ */
+function wrs_initParseSaveMode(code) {
 	if (window._wrs_conf_saveMode) {
 		var safeXml = (_wrs_conf_saveMode == 'safeXml');
 		var characters = _wrs_xmlCharacters;
@@ -644,7 +683,7 @@ function wrs_initParse(code) {
 			imgObject.className = 'Wiriscas';
 			
 			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
-			--i;		// we have deleted one sleeped applet
+			--i;		// An applet has been replaced.
 		}
 	}
 	

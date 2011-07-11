@@ -53,25 +53,10 @@ function createImage($config, $formulaPath, $imagePath) {
 			}
 		}
 
-		$postdata = http_build_query($fonts, '', '&') . '&' . http_build_query($properties, '', '&');
-		
-		$contextArray = array('http' =>
-			array(
-				'method'  => 'POST',
-				'header'  => 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-				'content' => $postdata
-			)
-		);
-
-		if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true') {
-			$contextArray['http']['proxy'] = 'tcp://' . $config['wirisproxy_host'] . ':' . $config['wirisproxy_port'];
-			$contextArray['http']['request_fulluri'] = true;
-		}
-
-		$context = stream_context_create($contextArray);
 		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
+		$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], array_merge($fonts, $properties));
 
-		if (($response = file_get_contents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], false, $context)) === false) {
+		if ($response === false) {
 			return false;
 		}
 
