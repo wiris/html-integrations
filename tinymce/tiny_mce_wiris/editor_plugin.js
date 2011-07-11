@@ -29,9 +29,10 @@ var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';
 var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createimage.php';			// Specifies where is the createimage script.
 var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';		// Specifies where is the createcasimage script.
 
+var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getlatex.php';			// Specifies where is the getlatex script.
 
-var _wrs_conf_editMode = 'latex';		// This value can be 'tags' or 'latex'.
+var _wrs_conf_editMode = ['images', 'latex'];		// This value can contain 'images' and 'latex'.
 var _wrs_conf_saveMode = 'tags';		// This value can be 'tags', 'xml' or 'safeXml'.
 
 /* Vars */
@@ -78,6 +79,15 @@ var _wrs_int_language = 'en';
 			});
 			
 			editor.onSaveContent.add(function (editor, params) {
+				_wrs_int_wirisProperties = {
+					'bgColor': editor.settings['wirisimagebgcolor'],
+					'symbolColor': editor.settings['wirisimagesymbolcolor'],
+					'transparency': editor.settings['wiristransparency'],
+					'fontSize': editor.settings['wirisimagefontsize'],
+					'numberColor': editor.settings['wirisimagenumbercolor'],
+					'identColor': editor.settings['wirisimageidentcolor']
+				};
+				
 				params.content = wrs_endParse(params.content);
 			});
 			
@@ -251,8 +261,8 @@ function wrs_int_mouseupHandler() {
  * Calls wrs_updateFormula with well params.
  * @param string mathml
  */
-function wrs_int_updateFormula(mathml) {
-	wrs_updateFormula(_wrs_int_temporalIframe, mathml, _wrs_int_wirisProperties);
+function wrs_int_updateFormula(mathml, editMode) {
+	wrs_updateFormula(_wrs_int_temporalIframe, mathml, _wrs_int_wirisProperties, editMode);
 }
 
 /**

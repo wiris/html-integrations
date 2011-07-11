@@ -111,6 +111,22 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
 }
 
 /**
+ * Checks if a determined array contains a determined element.
+ * @param array stack
+ * @param object element
+ * @return bool
+ */
+function wrs_arrayContains(stack, element) {
+	for (var i = array.length - 1; i >= 0; --i) {
+		if (array[i] == element) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+/**
  * Checks if an element contains a class.
  * @param object element
  * @param string className
@@ -346,11 +362,57 @@ function wrs_createObjectCode(object) {
 }
 
 /**
- * Parses end HTML code, converts CAS images to CAS applets.
+ * Parses end HTML code.
  * @param string code
  * @return string
  */
-function wrs_endParse(code) {
+function wrs_endParse(code, wirisProperties) {
+	code = wrs_endParseEditMode(code);
+	return wrs_endParseSaveMode(code);
+}
+
+/**
+ * Parses end HTML code depending on the edit mode.
+ * @param string code
+ * @return string
+ */
+function wrs_endParseEditMode(code, wirisProperties) {
+	if (window._wrs_conf_editMode !== undefined && wrs_arrayContains(_wrs_conf_editMode, 'latex')) {
+		var output = '';
+		var endPosition = 0;
+		var startPosition = code.indexOf('$$');
+		
+		while (startPosition != -1) {
+			output += code.substring(endPosition, startPosition);
+			endPosition = code.indexOf('$$', startPosition + 2);
+			
+			if (endPosition == -1) {
+				endPosition = code.length;
+			}
+			else {
+				var latex = code.substring(startPosition + 2, endPosition);
+				var mathml = wrs_getMathMLFromLatex(latex);
+				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties);
+				output += wrs_createObjectCode(imgObject);
+				endPosition += 2;
+			}
+			
+			startPosition = code.indexOf('$$', endPosition);
+		}
+		
+		output += code.substring(endPosition, code.length);
+		return output;
+	}
+	
+	return code;
+}
+
+/**
+ * Parses end HTML code depending on the save mode.
+ * @param string code
+ * @return string
+ */
+function wrs_endParseSaveMode(code) {
 	var output = '';
 	var convertToXml = false;
 	var convertToSafeXml = false;
@@ -452,7 +514,7 @@ function wrs_getContent(url, postVariables) {
 }
 
 /**
- * Converts MathML to LateX.
+ * Converts MathML to LaTeX.
  * @param string mathml
  * @return string
  */
@@ -462,6 +524,19 @@ function wrs_getLatexFromMathML(var mathml) {
 	}
 	
 	return wrs_getContent(_wrs_conf_getlatexPath, data);
+}
+
+/**
+ * Converts LaTeX to MathML.
+ * @param string latex
+ * @return string
+ */
+function wrs_getMathMLFromLatex(var latex) {
+	var data = {
+		'latex': latex
+	}
+	
+	return wrs_getContent(_wrs_conf_getmathmlPath, data);
 }
 
 /**
@@ -882,10 +957,10 @@ function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
  * @param object iframe Target
  * @param string mathml Mathml code
  */
-function wrs_updateFormula(iframe, mathml, wirisProperties) {
-	if (window._wrs_conf_editMode && _wrs_conf_editMode == 'latex') {
+function wrs_updateFormula(iframe, mathml, wirisProperties, editMode) {
+	if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
-		var textNode = iframe.contentWindow.document.createTextNode('$' + latex + '$');
+		var textNode = iframe.contentWindow.document.createTextNode('$$' + latex + '$$');
 		wrs_insertElementOnIframe(textNode, iframe);
 	}
 	else {
