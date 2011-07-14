@@ -644,7 +644,7 @@ function wrs_initParseEditMode(code) {
 		}
 	}
 	
-	return wrs_createObjectCode(container);
+	return container.innerHTML;
 }
 
 /**
@@ -687,7 +687,7 @@ function wrs_initParseSaveMode(code) {
 		}
 	}
 	
-	return wrs_createObjectCode(container);
+	return container.innerHTML;
 }
 
 /**

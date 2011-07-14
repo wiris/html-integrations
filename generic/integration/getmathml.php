@@ -29,12 +29,18 @@ if (!is_null($digest)) {
 	}
 }
 else if (isset($_POST['latex'])) {
-	echo '<math><mrow><mi>2</mi></mrow><semantics><annotation encoding="TeX">' . $_POST['latex'] . '</annotation></semantics></math>';
-	exit;
 	$config = wrs_loadConfig(WRS_CONFIG_FILE);
-	$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-	$path = substr($config['wirisimageservicepath'], 0, strrpos($config['wirisimageservicepath'], '/')) . '/mathml';
-	$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path, array('latex' => $_POST['latex']));
+	
+	if (isset($config['wirislatextomathmlurl'])) {
+		$url = $config['wirislatextomathmlurl'];
+	}
+	else {
+		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
+		$path = substr($config['wirisimageservicepath'], 0, strrpos($config['wirisimageservicepath'], '/')) . '/mathml';
+		$url = $protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path;
+	}
+	
+	$response = wrs_getContents($url, array('latex' => $_POST['latex']));
 
 	if ($response !== false) {
 		echo $response;
