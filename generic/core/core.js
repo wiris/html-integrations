@@ -2,6 +2,7 @@
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
+var _wrs_temporalFocusElement;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -60,6 +61,7 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
 		wrs_addEvent(iframe.contentWindow.document, 'mousedown', function (event) {
 			var realEvent = (event) ? event : window.event;
 			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+			_wrs_temporalFocusElement = element;
 			mousedownHandler(iframe, element, realEvent);
 		});
 	}
