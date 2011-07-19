@@ -26,6 +26,11 @@ var _wrs_safeXmlCharactersEntities = {
 	'doubleQuote': '&uml;'
 }
 
+var _wrs_staticNodeLengths = {
+	'IMG': 1,
+	'BR': 1
+}
+
 /**
  * Cross-browser addEventListener/attachEvent function.
  * @param object element Element target
@@ -529,6 +534,107 @@ function wrs_getLatexFromMathML(mathml) {
 }
 
 /**
+ * Extracts the latex of a determined position in a text.
+ * @param string text
+ * @param int caretPosition
+ * @return object An object with 3 keys: 'latex', 'start' and 'end'. Null if latex is not found.
+ */
+function wrs_getLatexFromTextNode(textNode, caretPosition) {
+	// Looking for the first textNode.
+	var startNode = textNode;
+	
+	while (startNode.previousSibling && startNode.previousSibling.nodeType == 3) {		// TEXT_NODE
+		startNode = startNode.previousSibling;
+	}
+	
+	// Finding latex.
+	
+	function getNextLatexPosition(currentNode, currentPosition) {
+		var position = currentNode.nodeValue.indexOf('$$', currentPosition);
+		
+		while (position == -1) {
+			currentNode = currentNode.nextSibling;
+			
+			if (!currentNode || currentNode.nodeType != 3) {		// TEXT_NODE
+				return null;		// Not found.
+			}
+			
+			position = currentNode.nodeValue.indexOf('$$');
+		}
+		
+		return {
+			'node': currentNode,
+			'position': position
+		};
+	}
+	
+	function isPrevious(node, position, endNode, endPosition) {
+		if (node == endNode) {
+			return (position <= endPosition);
+		}
+		
+		while (node && node != endNode) {
+			node = node.nextSibling;
+		}
+		
+		return (node == endNode);
+	}
+	
+	var start;
+	
+	var end = {
+		'node': startNode,
+		'position': 0
+	};
+	
+	do {
+		var start = getNextLatexPosition(end.node, end.position);
+		
+		if (start == null || isPrevious(textNode, caretPosition, start.node, start.position)) {
+			return null;
+		}
+		
+		var end = getNextLatexPosition(start.node, start.position + 2);
+		
+		if (end == null) {
+			return null;
+		}
+		
+		end.position += 2;
+	} while (isPrevious(end.node, end.position, textNode, caretPosition));
+	
+	// Isolating latex.
+	var latex;
+	
+	if (start.node == end.node) {
+		latex = start.node.nodeValue.substring(start.position + 2, end.position - 2);
+	}
+	else {
+		latex = start.node.nodeValue.substring(start.position + 2, start.node.nodeValue.length);
+		var currentNode = start.node;
+		
+		do {
+			currentNode = currentNode.nextSibling;
+			
+			if (currentNode == end.node) {
+				latex += end.node.nodeValue.substring(0, end.position - 2);
+			}
+			else {
+				latex += currentNode.nodeValue;
+			}
+		} while (currentNode != end.node);
+	}
+	
+	return {
+		'latex': latex,
+		'startNode': start.node,
+		'startPosition': start.position,
+		'endNode': end.node,
+		'endPosition': end.position
+	};
+}
+
+/**
  * Converts LaTeX to MathML.
  * @param string latex
  * @return string
@@ -539,6 +645,112 @@ function wrs_getMathMLFromLatex(latex) {
 	};
 	
 	return wrs_getContent(_wrs_conf_getmathmlPath, data);
+}
+
+/**
+ * Gets the node length in characters.
+ * @param object node
+ * @return int
+ */
+function wrs_getNodeLength(node) {
+	if (node.nodeType == 3) {		// TEXT_NODE
+		return node.nodeValue.length;
+	}
+	
+	if (node.nodeType == 1) {		// ELEMENT_NODE
+		var length = _wrs_staticNodeLengths[node.nodeName.toUpperCase()];
+		
+		if (length === undefined) {
+			length = 0;
+		}
+		
+		for (var i = 0; i < node.childNodes.length; ++i) {
+			length += wrs_getNodeLength(node.childNodes[i]);
+		}
+		
+		return length;
+	}
+	
+	return 0;
+}
+
+/**
+ * Gets the selected node or text on an iframe.
+ * If the caret is on a text node, concatenates it with all the previous and next text nodes.
+ * @return object An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text.
+ */
+function wrs_getSelectedItem(iframe) {
+	if (document.selection) {
+		var range = iframe.contentWindow.document.selection.createRange();
+
+		if (range.parentElement) {
+			iframe.contentWindow.document.execCommand('InsertImage', false);
+			var temporalObject = range.parentElement();
+			
+			if (temporalObject.nodeName.toUpperCase() != 'IMG') {
+				// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+				range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
+				temporalObject = iframe.contentWindow.document.getElementById('wrs_openEditorWindow_temporalObject');
+			}
+			
+			var node;
+			var caretPosition;
+			
+			if (temporalObject.nextSibling && temporalObject.nextSibling.nodeType == 3) {				// TEXT_NODE
+				node = temporalObject.nextSibling;
+				caretPosition = 0;
+			}
+			else if (temporalObject.previousSibling && temporalObject.previousSibling.nodeType == 3) {	// TEXT_NODE
+				node = temporalObject.previousSibling;
+				caretPosition = node.nodeValue.length;
+			}
+			else {
+				node = iframe.contentWindow.document.createTextNode('');
+				temporalObject.parentNode.insertBefore(node, temporalObject);
+				caretPosition = 0;
+			}
+			
+			temporalObject.parentNode.removeChild(temporalObject);
+			
+			return {
+				'node': node,
+				'caretPosition': caretPosition
+			};
+		}
+		else {
+			return {
+				'node': range.item(0)
+			};
+		}
+	}
+	
+	var selection = iframe.contentWindow.getSelection();
+	
+	try {
+		var range = selection.getRangeAt(0);
+	}
+	catch (e) {
+		var range = iframe.contentWindow.document.createRange();
+	}
+	
+	var node = range.startContainer;
+	
+	if (node.nodeType == 3) {		// TEXT_NODE
+		return {
+			'node': node,
+			'caretPosition': range.startOffset
+		};
+	}
+	
+	if (node.nodeType == 1) {	// ELEMENT_NODE
+		var position = range.startOffset;
+		
+		return {
+			'node': node.childNodes[position]
+		};
+	}
+	
+	return null;
 }
 
 /**
@@ -743,11 +955,24 @@ function wrs_insertElementOnIframe(element, iframe) {
 				}
 			}
 		}
+		else if (_wrs_temporalRange) {
+			if (document.selection) {
+				_wrs_isNewElement = true;
+				_wrs_temporalRange.select();
+				wrs_insertElementOnIframe(element, iframe);
+			}
+			else {
+				var parentNode = _wrs_temporalRange.startContainer;
+				_wrs_temporalRange.deleteContents();
+				_wrs_temporalRange.insertNode(element);
+			}
+		}
 		else {
 			_wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
 		}
 	}
 	catch (e) {
+		alert(e);
 	}
 }
 
@@ -890,11 +1115,57 @@ function wrs_openCASWindow() {
  * @param string language Language code for the editor
  * @return object The opened window
  */
-function wrs_openEditorWindow(language) {
+function wrs_openEditorWindow(language, iframe) {
 	var path = _wrs_conf_editorPath;
 	
 	if (language) {
 		path += '?lang=' + language;
+	}
+	
+	_wrs_temporalRange = null;
+	
+	if (iframe) {
+		var selectedItem = wrs_getSelectedItem(iframe);
+		
+		if (selectedItem != null) {
+			if (selectedItem.caretPosition === undefined) {
+				if (selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wirisformula') {
+					_wrs_temporalImage = selectedItem.node;
+					_wrs_isNewElement = false;
+				}
+			}
+			else {
+				var latexResult = wrs_getLatexFromTextNode(selectedItem.node, selectedItem.caretPosition);
+				
+				if (latexResult != null) {
+					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
+					_wrs_isNewElement = false;
+					
+					_wrs_temporalImage = document.createElement('img');
+					_wrs_temporalImage.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+					
+					if (document.selection) {
+						var leftOffset = 0;
+						var previousNode = latexResult.startNode.previousSibling;
+						
+						while (previousNode) {
+							leftOffset += wrs_getNodeLength(previousNode);
+							previousNode = previousNode.previousSibling;
+						}
+					
+						_wrs_temporalRange = iframe.contentWindow.document.selection.createRange();
+						_wrs_temporalRange.moveToElementText(latexResult.startNode.parentNode);
+						_wrs_temporalRange.move('character', leftOffset + latexResult.startPosition);
+						_wrs_temporalRange.moveEnd('character', latexResult.latex.length + 4);		// +4 for the '$$' characters.
+					}
+					else {
+						_wrs_temporalRange = iframe.contentWindow.document.createRange();
+						_wrs_temporalRange.setStart(latexResult.startNode, latexResult.startPosition);
+						_wrs_temporalRange.setEnd(latexResult.endNode, latexResult.endPosition);
+					}
+				}
+			}
+		}
 	}
 	
 	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);

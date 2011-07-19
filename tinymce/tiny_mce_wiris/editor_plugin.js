@@ -32,7 +32,7 @@ var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_
 var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getlatex.php';			// Specifies where is the getlatex script.
 
-//var _wrs_conf_editMode = ['images', 'latex'];		// This value can contain 'images' and 'latex'.
+var _wrs_conf_editMode = ['images', 'latex'];		// This value can contain 'images' and 'latex'.
 var _wrs_conf_saveMode = 'tags';		// This value can be 'tags', 'xml' or 'safeXml'.
 
 /* Vars */
@@ -153,7 +153,7 @@ function wrs_int_openNewFormulaEditor(iframe, language) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openEditorWindow(language);
+		_wrs_int_window = wrs_openEditorWindow(language, iframe);
 	}
 }
 
