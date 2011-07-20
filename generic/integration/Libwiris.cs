@@ -87,6 +87,11 @@ namespace pluginwiris
 
             return new String(decoded_char);
         }
+		
+		static public string dirName(string path)
+		{
+			return path.Substring(0, path.LastIndexOf('/'));
+		}
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -122,6 +127,32 @@ namespace pluginwiris
 
             return availableLanguages;
         }
+		
+		static public Stream getContents(string url, Hashtable postVariables)
+		{
+			string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
+
+			ASCIIEncoding encode = new ASCIIEncoding();
+			byte[] data = encode.GetBytes(postdata);
+			
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			
+			if (postVariables == null)
+			{
+				request.Method = "GET";
+			}
+			else
+			{
+				request.Method = "POST";
+				request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			}
+			
+			Stream requestStream = request.GetRequestStream();
+			requestStream.Write(data, 0, data.Length);
+			requestStream.Close();
+			WebResponse response = request.GetResponse();
+			return response.GetResponseStream();
+		}
 
         static public string httpBuildQuery(Hashtable properties)
         {

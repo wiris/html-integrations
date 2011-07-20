@@ -30,9 +30,33 @@ namespace pluginwiris
                     file.Close();
                 }
             }
+			else if (this.Request.Form["latex"] != null) {
+				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+				string url;
+				
+				if (config["wirislatextomathmlurl"] != null) {
+					url = (string)config["wirislatextomathmlurl"];
+				}
+				else {
+					string protocol = (config["wirisimageserviceprotocol"] != null) ? (string)config["wirisimageserviceprotocol"] : "http";
+					string path = Libwiris.dirName("wirisimageservicepath") + "/mathml";
+					url = protocol + "://" + config["wirisimageservicehost"] + ":" + config["wirisimageserviceport"] + path;
+				}
+				
+				Hashtable data = new Hashtable();
+				data["latex"] = this.Request.Form["latex"];
+				
+				if (this.Request.Form["saveLatex"] != null) {
+					data["saveLatex"] = "";
+				}
+			
+				Stream response = Libwiris.getContents(url, data);
+				StreamReader responseReader = new StreamReader(response);
+				this.Response.Write(responseReader.ReadToEnd());
+			}
             else
             {
-                this.Response.Write("Error: no md5 has been sended");
+                this.Response.Write("Error: no digest or latex has been sended");
             }
         }
 

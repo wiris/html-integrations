@@ -111,11 +111,6 @@ namespace pluginwiris
                     }
                 }
 
-                string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
-
-				ASCIIEncoding encode = new ASCIIEncoding();
-				byte[] data = encode.GetBytes(postdata);
-				
 				string protocol = (string)config["wirisimageserviceprotocol"];
 				
 				if (protocol == null)
@@ -123,17 +118,9 @@ namespace pluginwiris
 					protocol = "http";
 				}
 
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(protocol + "://" + (string)config["wirisimageservicehost"] + ":" + (string)config["wirisimageserviceport"] + (string)config["wirisimageservicepath"]);
-				request.Method = "POST";
-				request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+				Stream responseStream = Libwiris.getContents(protocol + "://" + (string)config["wirisimageservicehost"] + ":" + (string)config["wirisimageserviceport"] + (string)config["wirisimageservicepath"], properties);
 				
-				Stream requestStream = request.GetRequestStream();
-				requestStream.Write(data, 0, data.Length);
-				requestStream.Close();
-
 				// Saving the image
-				WebResponse response = request.GetResponse();
-				Stream responseStream = response.GetResponseStream();
 				BinaryReader responseReader = new BinaryReader(responseStream);
 				FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
 				BinaryWriter writer = new BinaryWriter(image);
@@ -144,7 +131,7 @@ namespace pluginwiris
 				image.Close();
 				responseReader.Close();
 				responseStream.Close();
-				response.Close();
+				
 				return true;
 			}
 

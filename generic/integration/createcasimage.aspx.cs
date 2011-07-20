@@ -31,7 +31,7 @@ namespace pluginwiris
                     file.Close();
                 }
 
-                string URL = this.Page.ResolveUrl("showcasimage.aspx") + "?formula=" + fileName + ".png";
+                string url = this.Page.ResolveUrl("showcasimage.aspx") + "?formula=" + fileName + ".png";
                 string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + fileName + ".png");
 
                 if (!File.Exists(imagePath))
@@ -47,11 +47,11 @@ namespace pluginwiris
 
                     writer.Close();
                     file.Close();
-                    this.Response.Write(URL);
+                    this.Response.Write(url);
                 }
                 else
                 {
-                    this.Response.Write(URL);
+                    this.Response.Write(url);
                 }
             }
             else
