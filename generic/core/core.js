@@ -337,9 +337,12 @@ function wrs_createObject(objectCode, creator) {
 function wrs_createObjectCode(object) {
 	if (object.nodeType == 1) {		// ELEMENT_NODE
 		var output = '<' + object.tagName;
+		var we = '';
 		
 		for (var i = 0; i < object.attributes.length; ++i) {
-			output += ' ' + object.attributes[i].name + '="' + wrs_htmlentities(object.attributes[i].value) + '"';
+			if (object.attributes[i].specified) {
+				output += ' ' + object.attributes[i].name + '="' + wrs_htmlentities(object.attributes[i].value) + '"';
+			}
 		}
 		
 		if (object.childNodes.length > 0) {
@@ -684,6 +687,10 @@ function wrs_getSelectedItem(iframe) {
 		var range = iframe.contentWindow.document.selection.createRange();
 
 		if (range.parentElement) {
+			if (range.text.length > 0) {
+				return null;
+			}
+			
 			iframe.contentWindow.document.execCommand('InsertImage', false);
 			var temporalObject = range.parentElement();
 			
@@ -717,11 +724,14 @@ function wrs_getSelectedItem(iframe) {
 				'caretPosition': caretPosition
 			};
 		}
-		else {
-			return {
-				'node': range.item(0)
-			};
+		
+		if (range.length > 1) {
+			return null;
 		}
+		
+		return {
+			'node': range.item(0)
+		};
 	}
 	
 	var selection = iframe.contentWindow.getSelection();
@@ -736,6 +746,10 @@ function wrs_getSelectedItem(iframe) {
 	var node = range.startContainer;
 	
 	if (node.nodeType == 3) {		// TEXT_NODE
+		if (range.startOffset != range.endOffset) {
+			return null;
+		}
+		
 		return {
 			'node': node,
 			'caretPosition': range.startOffset
@@ -1106,7 +1120,18 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
  * Opens a new CAS window.
  * @return object The opened window
  */
-function wrs_openCASWindow() {
+function wrs_openCASWindow(iframe) {
+	_wrs_temporalRange = null;
+	
+	if (iframe) {
+		var selectedItem = wrs_getSelectedItem(iframe);
+		
+		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wiriscas') {
+			_wrs_temporalImage = selectedItem.node;
+			_wrs_isNewElement = false;
+		}
+	}
+
 	return window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
 }
 
@@ -1134,7 +1159,7 @@ function wrs_openEditorWindow(language, iframe) {
 					_wrs_isNewElement = false;
 				}
 			}
-			else {
+			else if (window._wrs_conf_editMode !== undefined && wrs_arrayContains(_wrs_conf_editMode, 'latex')) {
 				var latexResult = wrs_getLatexFromTextNode(selectedItem.node, selectedItem.caretPosition);
 				
 				if (latexResult != null) {

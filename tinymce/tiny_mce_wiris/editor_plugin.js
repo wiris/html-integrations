@@ -168,7 +168,7 @@ function wrs_int_openNewCAS(iframe) {
 	else {
 		_wrs_int_window_opened = _wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow();
+		_wrs_int_window = wrs_openCASWindow(iframe);
 	}
 }
 
