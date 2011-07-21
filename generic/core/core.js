@@ -401,7 +401,7 @@ function wrs_endParseEditMode(code, wirisProperties) {
 			}
 			else {
 				var latex = code.substring(startPosition + 2, endPosition);
-				var mathml = wrs_getMathMLFromLatex(latex);
+				var mathml = wrs_getMathMLFromLatex(latex, true);
 				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties);
 				output += wrs_createObjectCode(imgObject);
 				endPosition += 2;
@@ -642,10 +642,14 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
  * @param string latex
  * @return string
  */
-function wrs_getMathMLFromLatex(latex) {
+function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
 	var data = {
 		'latex': latex
 	};
+	
+	if (includeLatexOnSemantics) {
+		data['saveLatex'] = '';
+	}
 	
 	return wrs_getContent(_wrs_conf_getmathmlPath, data);
 }
@@ -854,7 +858,7 @@ function wrs_initParse(code) {
 function wrs_initParseEditMode(code) {
 	var container = wrs_createObject('<div>' + code + '</div>');
 	var imgList = container.getElementsByTagName('img');
-	var token = 'encoding="TeX">';
+	var token = 'encoding="LaTeX">';
 	
 	for (var i = 0; i < imgList.length; ++i) {
 		if (imgList[i].className == 'Wirisformula') {
@@ -986,7 +990,6 @@ function wrs_insertElementOnIframe(element, iframe) {
 		}
 	}
 	catch (e) {
-		alert(e);
 	}
 }
 

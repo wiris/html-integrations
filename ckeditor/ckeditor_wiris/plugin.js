@@ -5,21 +5,22 @@ script.src = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Configuration
-var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled
-var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled
+var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
+var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code
-var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code
+var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code.
+var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
-var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window)
-var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';								// Specifies formula editor window options
-var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window)
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';								// Specifies WIRIS cas window options
+var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window).
+var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';							// Specifies formula editor window options.
+var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
+var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';							// Specifies WIRIS cas window options.
 
-var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script
-var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script
+var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script.
+var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script.
 
-var _wrs_conf_saveMode = 'tags';		// this value can be 'tags', 'xml' or 'safeXml'.
+var _wrs_conf_editMode = ['images', 'latex'];				// This value can contain 'images' and 'latex'.
+var _wrs_conf_saveMode = 'tags';					// This value can be 'tags', 'xml' or 'safeXml'.
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-formula.gif';
@@ -124,9 +125,10 @@ function wrs_int_openNewFormulaEditor(iframe) {
 		_wrs_int_window.focus();
 	}
 	else {
-		_wrs_int_window_opened = _wrs_isNewElement = true;
+		_wrs_int_window_opened = true;
+		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = window.open(_wrs_conf_editorPath, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+		_wrs_int_window = wrs_openEditorWindow(null, iframe);
 	}
 }
 
@@ -139,9 +141,10 @@ function wrs_int_openNewCAS(iframe) {
 		_wrs_int_window.focus();
 	}
 	else {
-		_wrs_int_window_opened = _wrs_isNewElement = true;
+		_wrs_int_window_opened = true;
+		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+		_wrs_int_window = wrs_openCASWindow(iframe);
 	}
 }
 

@@ -36,11 +36,19 @@ else if (isset($_POST['latex'])) {
 	}
 	else {
 		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-		$path = substr($config['wirisimageservicepath'], 0, strrpos($config['wirisimageservicepath'], '/')) . '/mathml';
+		$path = dirname($config['wirisimageservicepath']) . '/mathml';
 		$url = $protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path;
 	}
 	
-	$response = wrs_getContents($url, array('latex' => $_POST['latex']));
+	$data = array(
+		'latex' => $_POST['latex']
+	);
+	
+	if (isset($_POST['saveLatex'])) {
+		$data['saveLatex'] = '';
+	}
+	
+	$response = wrs_getContents($url, $data);
 
 	if ($response !== false) {
 		echo $response;
