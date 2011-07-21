@@ -19,6 +19,9 @@ var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';
 var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script.
 var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script.
 
+var _wrs_conf_getmathmlPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
+var _wrs_conf_getlatexPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getlatex.php';			// Specifies where is the getlatex script.
+
 var _wrs_conf_editMode = ['images', 'latex'];				// This value can contain 'images' and 'latex'.
 var _wrs_conf_saveMode = 'tags';					// This value can be 'tags', 'xml' or 'safeXml'.
 
@@ -228,8 +231,8 @@ function wrs_int_mouseupHandler() {
  * Calls wrs_updateFormula with well params.
  * @param string mathml
  */
-function wrs_int_updateFormula(mathml) {
-	wrs_updateFormula(_wrs_int_temporalIframe, mathml);
+function wrs_int_updateFormula(mathml, editMode) {
+	wrs_updateFormula(_wrs_int_temporalIframe, mathml, null, editMode);
 }
 
 /**
