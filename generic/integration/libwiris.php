@@ -55,7 +55,7 @@ function wrs_getContents($url, $postVariables = NULL) {
 	else {
 		$httpConfiguration = array(
 			'method'  => 'POST',
-			'header'  => 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+			'header'  => array('Content-Type: application/x-www-form-urlencoded; charset=UTF-8'),
 			'content' => http_build_query($postVariables, '', '&')
 		);
 	}
