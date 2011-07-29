@@ -764,9 +764,11 @@ function wrs_getSelectedItem(iframe) {
 	if (node.nodeType == 1) {	// ELEMENT_NODE
 		var position = range.startOffset;
 		
-		return {
-			'node': node.childNodes[position]
-		};
+		if (node.childNodes[position]) {
+			return {
+				'node': node.childNodes[position]
+			};
+		}
 	}
 	
 	return null;
@@ -779,34 +781,35 @@ function wrs_getSelectedItem(iframe) {
  */
 function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
 	var imgObject = wrs_createObject(imgCode);
-		
-	if (imgObject.className == 'Wirisformula') {
-		if (!convertToXml) {
-			return imgCode;
-		}
-		
-		var xmlCode = imgObject.getAttribute(_wrs_conf_imageMathmlAttribute);
-		
-		if (!convertToSafeXml) {
-			xmlCode = wrs_mathmlDecode(xmlCode);
-		}
-		
-		return xmlCode;
-	}
 	
-	if (imgObject.className == 'Wiriscas') {
-		var appletCode = imgObject.getAttribute(_wrs_conf_CASMathmlAttribute);
-		appletCode = wrs_mathmlDecode(appletCode);
-		var appletObject = wrs_createObject(appletCode);
-		appletObject.setAttribute('src', imgObject.src);
-		var object = appletObject;
-		var appletCodeToBeInserted = wrs_createObjectCode(appletObject);
-		
-		if (convertToSafeXml) {
-			appletCodeToBeInserted = wrs_mathmlEncode(appletCodeToBeInserted);
+	if (imgObject) {
+		if (imgObject.className == 'Wirisformula') {
+			if (!convertToXml) {
+				return imgCode;
+			}
+			
+			var xmlCode = imgObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+			
+			if (!convertToSafeXml) {
+				xmlCode = wrs_mathmlDecode(xmlCode);
+			}
+			
+			return xmlCode;
 		}
-		
-		return appletCodeToBeInserted;
+		else if (imgObject.className == 'Wiriscas') {
+			var appletCode = imgObject.getAttribute(_wrs_conf_CASMathmlAttribute);
+			appletCode = wrs_mathmlDecode(appletCode);
+			var appletObject = wrs_createObject(appletCode);
+			appletObject.setAttribute('src', imgObject.src);
+			var object = appletObject;
+			var appletCodeToBeInserted = wrs_createObjectCode(appletObject);
+			
+			if (convertToSafeXml) {
+				appletCodeToBeInserted = wrs_mathmlEncode(appletCodeToBeInserted);
+			}
+			
+			return appletCodeToBeInserted;
+		}
 	}
 	
 	return imgCode;
