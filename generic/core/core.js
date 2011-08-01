@@ -471,7 +471,6 @@ function wrs_endParseSaveMode(code) {
 		}
 		
 		var imgCode = code.substring(startPosition, endPosition);
-		alert(imgCode);
 		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
 		startPosition = upperCaseCode.indexOf('<IMG', endPosition);
 	}
