@@ -445,7 +445,7 @@ function wrs_endParseSaveMode(code) {
 		output += code.substring(endPosition, startPosition);
 		var i = startPosition + 1;
 		
-		while (i < code.length && endPosition < startPosition) {
+		while (i < code.length && endPosition <= startPosition) {
 			var character = code.charAt(i);
 			
 			if (character == '"' || character == '\'') {
@@ -471,6 +471,7 @@ function wrs_endParseSaveMode(code) {
 		}
 		
 		var imgCode = code.substring(startPosition, endPosition);
+		alert(imgCode);
 		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
 		startPosition = upperCaseCode.indexOf('<IMG', endPosition);
 	}
