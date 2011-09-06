@@ -4,6 +4,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using System.Text;
+using System.Net;
 
 namespace pluginwiris
 {
@@ -130,7 +132,7 @@ namespace pluginwiris
 		
 		static public Stream getContents(string url, Hashtable postVariables)
 		{
-			string postdata = Libwiris.httpBuildQuery(properties) + Libwiris.httpBuildQuery(fonts);
+			string postdata = Libwiris.httpBuildQuery(postVariables);
 
 			ASCIIEncoding encode = new ASCIIEncoding();
 			byte[] data = encode.GetBytes(postdata);

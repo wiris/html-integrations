@@ -1,6 +1,4 @@
 using System;
-using System.Text;
-using System.Net;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
@@ -125,7 +123,7 @@ namespace pluginwiris
 				FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
 				BinaryWriter writer = new BinaryWriter(image);
 
-				writer.Write(responseReader.ReadBytes((int)response.ContentLength));
+				writer.Write(responseReader.ReadBytes((int)responseStream.Length));
 
 				writer.Close();
 				image.Close();
