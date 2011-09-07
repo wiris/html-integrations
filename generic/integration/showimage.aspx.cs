@@ -123,7 +123,13 @@ namespace pluginwiris
 				FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
 				BinaryWriter writer = new BinaryWriter(image);
 
-				writer.Write(responseReader.ReadBytes((int)responseStream.Length));
+				byte[] buffer = new byte[8192];
+				int bytesRead = responseReader.Read(buffer, 0, buffer.Length);
+				
+				while (bytesRead > 0) {
+					writer.Write(buffer, 0, bytesRead);
+					bytesRead = responseReader.Read(buffer, 0, buffer.Length);
+				}
 
 				writer.Close();
 				image.Close();
