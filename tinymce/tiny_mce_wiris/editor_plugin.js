@@ -32,8 +32,8 @@ var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_
 var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getlatex.php';				// Specifies where is the getlatex script.
 
-var _wrs_conf_editMode = ['images'];				// This value can contain 'images' and 'latex'.
 var _wrs_conf_saveMode = 'tags';					// This value can be 'tags', 'xml' or 'safeXml'.
+//var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
 /* Vars */
 var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-formula.gif';

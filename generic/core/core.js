@@ -1,5 +1,6 @@
 ﻿// Vars
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
+var _wrs_editMode;
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
@@ -387,7 +388,7 @@ function wrs_endParse(code, wirisProperties) {
  * @return string
  */
 function wrs_endParseEditMode(code, wirisProperties) {
-	if (window._wrs_conf_editMode !== undefined && wrs_arrayContains(_wrs_conf_editMode, 'latex')) {
+	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
 		var output = '';
 		var endPosition = 0;
 		var startPosition = code.indexOf('$$');
@@ -850,7 +851,7 @@ function wrs_httpBuildQuery(properties) {
  * @return string
  */
 function wrs_initParse(code) {
-	code = wrs_initParseEditMode(code);
+	code = wrs_initParseEditMode(code);		// LaTeX is not saved as images, so it is not converted to latex again at the init.
 	return wrs_initParseSaveMode(code);
 }
 
@@ -1154,6 +1155,7 @@ function wrs_openEditorWindow(language, iframe) {
 		path += '?lang=' + language;
 	}
 	
+	_wrs_editMode = 'images';
 	_wrs_temporalRange = null;
 	
 	if (iframe) {
@@ -1166,10 +1168,12 @@ function wrs_openEditorWindow(language, iframe) {
 					_wrs_isNewElement = false;
 				}
 			}
-			else if (window._wrs_conf_editMode !== undefined && wrs_arrayContains(_wrs_conf_editMode, 'latex')) {
+			else {
 				var latexResult = wrs_getLatexFromTextNode(selectedItem.node, selectedItem.caretPosition);
 				
 				if (latexResult != null) {
+					_wrs_editMode = 'latex';
+					
 					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
 					_wrs_isNewElement = false;
 					

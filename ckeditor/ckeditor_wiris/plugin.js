@@ -22,8 +22,8 @@ var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/
 var _wrs_conf_getmathmlPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_getlatexPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getlatex.php';			// Specifies where is the getlatex script.
 
-var _wrs_conf_editMode = ['images', 'latex'];				// This value can contain 'images' and 'latex'.
 var _wrs_conf_saveMode = 'tags';					// This value can be 'tags', 'xml' or 'safeXml'.
+//var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-formula.gif';
