@@ -24,7 +24,7 @@ else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 /* FCKeditor integration end */
 
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
-	var editor = new com.wiris.jsEditor.JsEditor('../core');
+	var editor = new com.wiris.jsEditor.JsEditor('../editor');
 	var editorElement = editor.getElement();
 	var editorContainer = document.getElementById('editorContainer');
 	editorContainer.appendChild(editorElement);

@@ -12,7 +12,7 @@ var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we 
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
 var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window).
-var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes';							// Specifies formula editor window options.
+var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';							// Specifies formula editor window options.
 var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';							// Specifies WIRIS cas window options.
 
