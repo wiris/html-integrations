@@ -33,6 +33,40 @@ var _wrs_staticNodeLengths = {
 }
 
 /**
+ * Adds element events.
+ * @param object target Target
+ * @param function doubleClickHandler Function to run when user double clicks the element
+ * @param function mousedownHandler Function to run when user mousedowns the element
+ * @param function mouseupHandler Function to run when user mouseups the element
+ */
+function wrs_addElementEvents(target, doubleClickHandler, mousedownHandler, mouseupHandler) {
+	if (doubleClickHandler) {
+		wrs_addEvent(target, 'dblclick', function (event) {
+			var realEvent = (event) ? event : window.event;
+			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+			doubleClickHandler(target, element, realEvent);
+		});
+	}
+	
+	if (mousedownHandler) {
+		wrs_addEvent(target, 'mousedown', function (event) {
+			var realEvent = (event) ? event : window.event;
+			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+			_wrs_temporalFocusElement = element;
+			mousedownHandler(target, element, realEvent);
+		});
+	}
+	
+	if (mouseupHandler) {
+		wrs_addEvent(target, 'mouseup', function (event) {
+			var realEvent = (event) ? event : window.event;
+			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+			mouseupHandler(target, element, realEvent);
+		});
+	}
+}
+
+/**
  * Cross-browser addEventListener/attachEvent function.
  * @param object element Element target
  * @param event event Event
@@ -55,30 +89,14 @@ function wrs_addEvent(element, event, func) {
  * @param function mouseupHandler Function to run when user mouseups the iframe
  */
 function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
-	if (doubleClickHandler) {
-		wrs_addEvent(iframe.contentWindow.document, 'dblclick', function (event) {
-			var realEvent = (event) ? event : window.event;
-			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			doubleClickHandler(iframe, element, realEvent);
-		});
-	}
-	
-	if (mousedownHandler) {
-		wrs_addEvent(iframe.contentWindow.document, 'mousedown', function (event) {
-			var realEvent = (event) ? event : window.event;
-			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			_wrs_temporalFocusElement = element;
-			mousedownHandler(iframe, element, realEvent);
-		});
-	}
-	
-	if (mouseupHandler) {
-		wrs_addEvent(iframe.contentWindow.document, 'mouseup', function (event) {
-			var realEvent = (event) ? event : window.event;
-			var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-			mouseupHandler(iframe, element, realEvent);
-		});
-	}
+	wrs_addElementEvents(iframe.contentWindow.document, function (target, element, event) {
+			doubleClickHandler(iframe, element, event);
+		}, function (target, element, event) {
+			mousedownHandler(iframe, element, event);
+		}, function (target, element, event) {
+			mouseupHandler(iframe, element, event);
+		}
+	);
 }
 
 /**
@@ -684,26 +702,27 @@ function wrs_getNodeLength(node) {
 }
 
 /**
- * Gets the selected node or text on an iframe.
+ * Gets the selected node or text.
  * If the caret is on a text node, concatenates it with all the previous and next text nodes.
+ * @param windowTarget The window where the selection is.
  * @return object An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text.
  */
-function wrs_getSelectedItem(iframe) {
+function wrs_getSelectedItem(windowTarget) {
 	if (document.selection) {
-		var range = iframe.contentWindow.document.selection.createRange();
+		var range = windowTarget.document.selection.createRange();
 
 		if (range.parentElement) {
 			if (range.text.length > 0) {
 				return null;
 			}
 			
-			iframe.contentWindow.document.execCommand('InsertImage', false);
+			windowTarget.document.execCommand('InsertImage', false);
 			var temporalObject = range.parentElement();
 			
 			if (temporalObject.nodeName.toUpperCase() != 'IMG') {
 				// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
 				range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
-				temporalObject = iframe.contentWindow.document.getElementById('wrs_openEditorWindow_temporalObject');
+				temporalObject = windowTarget.document.getElementById('wrs_openEditorWindow_temporalObject');
 			}
 			
 			var node;
@@ -718,7 +737,7 @@ function wrs_getSelectedItem(iframe) {
 				caretPosition = node.nodeValue.length;
 			}
 			else {
-				node = iframe.contentWindow.document.createTextNode('');
+				node = windowTarget.document.createTextNode('');
 				temporalObject.parentNode.insertBefore(node, temporalObject);
 				caretPosition = 0;
 			}
@@ -740,13 +759,13 @@ function wrs_getSelectedItem(iframe) {
 		};
 	}
 	
-	var selection = iframe.contentWindow.getSelection();
+	var selection = windowTarget.getSelection();
 	
 	try {
 		var range = selection.getRangeAt(0);
 	}
 	catch (e) {
-		var range = iframe.contentWindow.document.createRange();
+		var range = windowTarget.document.createRange();
 	}
 	
 	var node = range.startContainer;
@@ -928,18 +947,19 @@ function wrs_initParseSaveMode(code) {
 }
 
 /**
- * Inserts an element on an iframe.
+ * Replaces a selection with an element.
  * @param object element Element
- * @param object iframe Target
+ * @param object focusElement Element to be focused
+ * @param object windowTarget Target
  */
-function wrs_insertElementOnIframe(element, iframe) {
+function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 	try {
-		iframe.contentWindow.focus();
+		focusElement.focus();
 		
 		if (_wrs_isNewElement) {
 			if (document.selection) {
-				var range = iframe.contentWindow.document.selection.createRange();
-				iframe.contentWindow.document.execCommand('InsertImage', false, element.src);
+				var range = windowTarget.document.selection.createRange();
+				windowTarget.document.execCommand('InsertImage', false, element.src);
 
 				if (range.parentElement) {
 					var temporalObject = range.parentElement();
@@ -954,13 +974,13 @@ function wrs_insertElementOnIframe(element, iframe) {
 				}
 			}
 			else {
-				var selection = iframe.contentWindow.getSelection();
+				var selection = windowTarget.getSelection();
 				
 				try {
 					var range = selection.getRangeAt(0);
 				}
 				catch (e) {
-					var range = iframe.contentWindow.document.createRange();
+					var range = windowTarget.document.createRange();
 				}
 				
 				selection.removeAllRanges();
@@ -982,7 +1002,7 @@ function wrs_insertElementOnIframe(element, iframe) {
 			if (document.selection) {
 				_wrs_isNewElement = true;
 				_wrs_temporalRange.select();
-				wrs_insertElementOnIframe(element, iframe);
+				wrs_insertElementOnSelection(element, focusElement, windowTarget);
 			}
 			else {
 				var parentNode = _wrs_temporalRange.startContainer;
@@ -1126,13 +1146,14 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 
 /**
  * Opens a new CAS window.
+ * @param object windowTarget The window where the editable content is
  * @return object The opened window
  */
-function wrs_openCASWindow(iframe) {
+function wrs_openCASWindow(windowTarget) {
 	_wrs_temporalRange = null;
 	
-	if (iframe) {
-		var selectedItem = wrs_getSelectedItem(iframe);
+	if (windowTarget) {
+		var selectedItem = wrs_getSelectedItem(windowTarget);
 		
 		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wiriscas') {
 			_wrs_temporalImage = selectedItem.node;
@@ -1146,9 +1167,10 @@ function wrs_openCASWindow(iframe) {
 /**
  * Opens a new editor window.
  * @param string language Language code for the editor
+ * @param object windowTarget The window where the editable content is
  * @return object The opened window
  */
-function wrs_openEditorWindow(language, iframe) {
+function wrs_openEditorWindow(language, windowTarget) {
 	var path = _wrs_conf_editorPath;
 	
 	if (language) {
@@ -1158,8 +1180,8 @@ function wrs_openEditorWindow(language, iframe) {
 	_wrs_editMode = 'images';
 	_wrs_temporalRange = null;
 	
-	if (iframe) {
-		var selectedItem = wrs_getSelectedItem(iframe);
+	if (windowTarget) {
+		var selectedItem = wrs_getSelectedItem(windowTarget);
 		
 		if (selectedItem != null) {
 			if (selectedItem.caretPosition === undefined) {
@@ -1189,13 +1211,13 @@ function wrs_openEditorWindow(language, iframe) {
 							previousNode = previousNode.previousSibling;
 						}
 					
-						_wrs_temporalRange = iframe.contentWindow.document.selection.createRange();
+						_wrs_temporalRange = windowTarget.document.selection.createRange();
 						_wrs_temporalRange.moveToElementText(latexResult.startNode.parentNode);
 						_wrs_temporalRange.move('character', leftOffset + latexResult.startPosition);
 						_wrs_temporalRange.moveEnd('character', latexResult.latex.length + 4);		// +4 for the '$$' characters.
 					}
 					else {
-						_wrs_temporalRange = iframe.contentWindow.document.createRange();
+						_wrs_temporalRange = windowTarget.document.createRange();
 						_wrs_temporalRange.setStart(latexResult.startNode, latexResult.startPosition);
 						_wrs_temporalRange.setEnd(latexResult.endNode, latexResult.endPosition);
 					}
@@ -1288,32 +1310,34 @@ function wrs_removeEvent(element, event, func) {
 }
 
 /**
- * Inserts or modifies CAS on an iframe.
- * @param object iframe Target
+ * Inserts or modifies CAS.
+ * @param object focusElement Element to be focused
+ * @param object windowTarget Window where the editable content is
  * @param string appletCode Applet code
  * @param string image Base 64 image stream
  * @param int imageWidth Image width
  * @param int imageHeight Image height
  */
-function wrs_updateCAS(iframe, appletCode, image, imageWidth, imageHeight) {
-	var imgObject = wrs_appletCodeToImgObject(iframe.contentWindow.document, appletCode, image, imageWidth, imageHeight);
-	wrs_insertElementOnIframe(imgObject, iframe);
+function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth, imageHeight) {
+	var imgObject = wrs_appletCodeToImgObject(windowTarget.document, appletCode, image, imageWidth, imageHeight);
+	wrs_insertElementOnSelection(imgObject, focusElement, windowTarget);
 }
 
 /**
- * Inserts or modifies formulas on an iframe.
- * @param object iframe Target
+ * Inserts or modifies formulas.
+ * @param object focusElement Element to be focused
+ * @param object windowTarget Window where the editable content is
  * @param string mathml Mathml code
  */
-function wrs_updateFormula(iframe, mathml, wirisProperties, editMode) {
+function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode) {
 	if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
-		var textNode = iframe.contentWindow.document.createTextNode('$$' + latex + '$$');
-		wrs_insertElementOnIframe(textNode, iframe);
+		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
+		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
 	}
 	else {
-		var imgObject = wrs_mathmlToImgObject(iframe.contentWindow.document, mathml, wirisProperties);
-		wrs_insertElementOnIframe(imgObject, iframe);
+		var imgObject = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties);
+		wrs_insertElementOnSelection(imgObject, focusElement, windowTarget);
 	}
 }
 

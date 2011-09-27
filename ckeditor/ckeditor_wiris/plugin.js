@@ -131,7 +131,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openEditorWindow(null, iframe);
+		_wrs_int_window = wrs_openEditorWindow(null, iframe.contentWindow);
 	}
 }
 
@@ -147,7 +147,7 @@ function wrs_int_openNewCAS(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow(iframe);
+		_wrs_int_window = wrs_openCASWindow(iframe.contentWindow);
 	}
 }
 
@@ -187,7 +187,7 @@ function wrs_int_openExistingFormulaEditor(iframe) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = window.open(_wrs_conf_editorPath, 'WIRISFormulaEditor', _wrs_conf_editorAttributes);
+	_wrs_int_window = wrs_openEditorWindow(null, iframe.contentWindow);
 }
 
 /**
@@ -198,7 +198,7 @@ function wrs_int_openExistingCAS(iframe) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+	_wrs_int_window = wrs_openCASWindow(iframe.contentWindow);
 }
 
 /**
@@ -232,7 +232,7 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode) {
-	wrs_updateFormula(_wrs_int_temporalIframe, mathml, null, editMode);
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode);
 }
 
 /**
@@ -243,7 +243,7 @@ function wrs_int_updateFormula(mathml, editMode) {
  * @param int height
  */
 function wrs_int_updateCAS(appletCode, image, width, height) {
-	wrs_updateCAS(_wrs_int_temporalIframe, appletCode, image, width, height);
+	wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
 }
 
 /**
