@@ -20,8 +20,12 @@
 			}
 			
 			#links {
-				float: right;
+				text-align: right;
 				margin-right: 20px;
+			}
+			
+			#controls {
+				float: left;
 			}
 			
 			/*-->*/
@@ -31,12 +35,12 @@
 		<div id="container">
 			<div id="editorContainer"></div>
 			
+			<div id="controls">
+			</div>
+			
 			<div id="links">
 				<a href="#" onclick="window.open('../latex.html', 'LaTeX', 'left=100, top=100, width=500, height=280, scroll=no, resizable=no');">LaTeX</a> | 
 				<a href="http://www.wiris.com/portal/docs/editor-manual" target="_blank">Manual</a>
-			</div>
-
-			<div id="controls">
 			</div>
 		</div>
 	</body>
