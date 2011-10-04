@@ -153,7 +153,7 @@ function wrs_int_openNewFormulaEditor(iframe, language) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openEditorWindow(language, iframe.contentWindow);
+		_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
 	}
 }
 
@@ -169,7 +169,7 @@ function wrs_int_openNewCAS(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow(iframe.contentWindow);
+		_wrs_int_window = wrs_openCASWindow(iframe, true);
 	}
 }
 
@@ -218,7 +218,7 @@ function wrs_int_openExistingFormulaEditor(iframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openEditorWindow(language, iframe.contentWindow);
+	_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
 }
 
 /**
@@ -229,7 +229,7 @@ function wrs_int_openExistingCAS(iframe) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openCASWindow(iframe.contentWindow);
+	_wrs_int_window = wrs_openCASWindow(iframe, true);
 }
 
 /**

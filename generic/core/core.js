@@ -704,10 +704,21 @@ function wrs_getNodeLength(node) {
 /**
  * Gets the selected node or text.
  * If the caret is on a text node, concatenates it with all the previous and next text nodes.
- * @param windowTarget The window where the selection is.
- * @return object An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text.
+ * @param object target The editable element
+ * @param boolean isIframe Specifies if the target is an iframe or not
+ * @return object An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text
  */
-function wrs_getSelectedItem(windowTarget) {
+function wrs_getSelectedItem(target, isIframe) {
+	var windowTarget;
+	
+	if (isIframe) {
+		windowTarget = target.contentWindow;
+	}
+	else {
+		windowTarget = window;
+		target.focus();
+	}
+	
 	if (document.selection) {
 		var range = windowTarget.document.selection.createRange();
 
@@ -715,12 +726,12 @@ function wrs_getSelectedItem(windowTarget) {
 			if (range.text.length > 0) {
 				return null;
 			}
-			
+
 			windowTarget.document.execCommand('InsertImage', false);
 			var temporalObject = range.parentElement();
 			
-			if (temporalObject.nodeName.toUpperCase() != 'IMG') {
-				// IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+			if (true || temporalObject.nodeName.toUpperCase() != 'IMG') {
+				// IE9 fix: parentElement() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
 				range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
 				temporalObject = windowTarget.document.getElementById('wrs_openEditorWindow_temporalObject');
 			}
@@ -1146,14 +1157,19 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
 
 /**
  * Opens a new CAS window.
- * @param object windowTarget The window where the editable content is
+ * @param object target The editable element
+ * @param boolean isIframe Specifies if target is an iframe or not
  * @return object The opened window
  */
-function wrs_openCASWindow(windowTarget) {
+function wrs_openCASWindow(target, isIframe) {
+	if (isIframe === undefined) {
+		isIframe = true;
+	}
+	
 	_wrs_temporalRange = null;
 	
 	if (windowTarget) {
-		var selectedItem = wrs_getSelectedItem(windowTarget);
+		var selectedItem = wrs_getSelectedItem(target, isIframe);
 		
 		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wiriscas') {
 			_wrs_temporalImage = selectedItem.node;
@@ -1167,10 +1183,15 @@ function wrs_openCASWindow(windowTarget) {
 /**
  * Opens a new editor window.
  * @param string language Language code for the editor
- * @param object windowTarget The window where the editable content is
+ * @param object target The editable element
+ * @param boolean isIframe Specifies if the target is an iframe or not
  * @return object The opened window
  */
-function wrs_openEditorWindow(language, windowTarget) {
+function wrs_openEditorWindow(language, target, isIframe) {
+	if (isIframe === undefined) {
+		isIframe = true;
+	}
+	
 	var path = _wrs_conf_editorPath;
 	
 	if (language) {
@@ -1180,8 +1201,8 @@ function wrs_openEditorWindow(language, windowTarget) {
 	_wrs_editMode = 'images';
 	_wrs_temporalRange = null;
 	
-	if (windowTarget) {
-		var selectedItem = wrs_getSelectedItem(windowTarget);
+	if (target) {
+		var selectedItem = wrs_getSelectedItem(target, isIframe);
 		
 		if (selectedItem != null) {
 			if (selectedItem.caretPosition === undefined) {
@@ -1192,7 +1213,7 @@ function wrs_openEditorWindow(language, windowTarget) {
 			}
 			else {
 				var latexResult = wrs_getLatexFromTextNode(selectedItem.node, selectedItem.caretPosition);
-				
+
 				if (latexResult != null) {
 					_wrs_editMode = 'latex';
 					
@@ -1201,6 +1222,7 @@ function wrs_openEditorWindow(language, windowTarget) {
 					
 					_wrs_temporalImage = document.createElement('img');
 					_wrs_temporalImage.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+					var windowTarget = (isIframe) ? target.contentWindow : window;
 					
 					if (document.selection) {
 						var leftOffset = 0;
