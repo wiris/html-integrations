@@ -1168,7 +1168,7 @@ function wrs_openCASWindow(target, isIframe) {
 	
 	_wrs_temporalRange = null;
 	
-	if (windowTarget) {
+	if (target) {
 		var selectedItem = wrs_getSelectedItem(target, isIframe);
 		
 		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wiriscas') {
