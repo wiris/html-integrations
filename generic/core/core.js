@@ -1116,6 +1116,10 @@ function wrs_mathmlEntitiesDecode(mathml) {
 				number = '';
 			}
 			else if (character == ';') {
+				if (number.charAt(0) == 'x') {
+					number = parseInt('0' + number, 16);
+				}
+				
 				output += String.fromCharCode(number);
 				parsing = false;
 			}
@@ -1227,7 +1231,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 					_wrs_isNewElement = false;
 					
 					_wrs_temporalImage = document.createElement('img');
-					_wrs_temporalImage.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+					_wrs_temporalImage.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
 					var windowTarget = (isIframe) ? target.contentWindow : window;
 					
 					if (document.selection) {
