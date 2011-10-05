@@ -852,10 +852,16 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
  * @return string
  */
 function wrs_htmlentities(input) {
-    var container = document.createElement('span');
-    var text = document.createTextNode(input);
-    container.appendChild(text);
-    return container.innerHTML.split('"').join('&quot;');
+    return input.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
+}
+
+/**
+ * Parses a text and replaces all the HTML entities by their characters.
+ * @param string input
+ * @return string
+ */
+function wrs_htmlentitiesDecode(input) {
+	return input.split('&quot;').join('"').split('&gt;').join('>').split('&lt;').join('<').split('&amp;').join('&');
 }
 
 /**
@@ -881,7 +887,7 @@ function wrs_httpBuildQuery(properties) {
  * @return string
  */
 function wrs_initParse(code) {
-	code = wrs_initParseEditMode(code);		// LaTeX is not saved as images, so it is not converted to latex again at the init.
+	code = wrs_initParseEditMode(code);
 	return wrs_initParseSaveMode(code);
 }
 
@@ -904,7 +910,7 @@ function wrs_initParseEditMode(code) {
 				latexStartPosition += token.length;
 				var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
 				var latex = mathml.substring(latexStartPosition, latexEndPosition);
-				var textNode = document.createTextNode('$$' + latex + '$$');
+				var textNode = document.createTextNode('$$' + wrs_htmlentitiesDecode(latex) + '$$');
 				imgList[i].parentNode.replaceChild(textNode, imgList[i]);
 				--i;		// An image has been replaced.
 			}
