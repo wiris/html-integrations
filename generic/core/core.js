@@ -420,6 +420,7 @@ function wrs_endParseEditMode(code, wirisProperties) {
 			}
 			else {
 				var latex = code.substring(startPosition + 2, endPosition);
+				latex = wrs_htmlentitiesDecode(latex);
 				var mathml = wrs_getMathMLFromLatex(latex, true);
 				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties);
 				output += wrs_createObjectCode(imgObject);
@@ -1227,6 +1228,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 				if (latexResult != null) {
 					_wrs_editMode = 'latex';
 					
+					alert(latexResult.latex);
 					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
 					_wrs_isNewElement = false;
 					
