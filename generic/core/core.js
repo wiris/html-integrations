@@ -356,8 +356,7 @@ function wrs_createObject(objectCode, creator) {
 function wrs_createObjectCode(object) {
 	if (object.nodeType == 1) {		// ELEMENT_NODE
 		var output = '<' + object.tagName;
-		var we = '';
-		
+
 		for (var i = 0; i < object.attributes.length; ++i) {
 			if (object.attributes[i].specified) {
 				output += ' ' + object.attributes[i].name + '="' + wrs_htmlentities(object.attributes[i].value) + '"';
@@ -544,6 +543,21 @@ function wrs_getContent(url, postVariables) {
 }
 
 /**
+ * Generates the innerHTML of an element.
+ * @param object element
+ * @return string
+ */
+function wrs_getInnerHTML(element) {
+	var innerHTML = '';
+	
+	for (var i = 0; i < element.childNodes.length; ++i) {
+		innerHTML += wrs_createObjectCode(element.childNodes[i]);
+	}
+	
+	return innerHTML;
+}
+
+/**
  * Converts MathML to LaTeX.
  * @param string mathml
  * @return string
@@ -714,6 +728,7 @@ function wrs_getSelectedItem(target, isIframe) {
 	
 	if (isIframe) {
 		windowTarget = target.contentWindow;
+		windowTarget.focus();
 	}
 	else {
 		windowTarget = window;
@@ -728,10 +743,10 @@ function wrs_getSelectedItem(target, isIframe) {
 				return null;
 			}
 
-			windowTarget.document.execCommand('InsertImage', false);
+			windowTarget.document.execCommand('InsertImage', false, '#');
 			var temporalObject = range.parentElement();
 			
-			if (true || temporalObject.nodeName.toUpperCase() != 'IMG') {
+			if (temporalObject.nodeName.toUpperCase() != 'IMG') {
 				// IE9 fix: parentElement() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
 				range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
 				temporalObject = windowTarget.document.getElementById('wrs_openEditorWindow_temporalObject');
@@ -1228,7 +1243,6 @@ function wrs_openEditorWindow(language, target, isIframe) {
 				if (latexResult != null) {
 					_wrs_editMode = 'latex';
 					
-					alert(latexResult.latex);
 					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
 					_wrs_isNewElement = false;
 					
