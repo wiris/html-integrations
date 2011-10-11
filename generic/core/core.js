@@ -1114,47 +1114,6 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
- * Converts entities to symbols.
- * @param string mathml
- * @return string
- */
-function wrs_mathmlEntitiesDecode(mathml) {
-	mathml = mathml.split('&nbsp;').join(' ');
-	var output = '';
-	var parsing = false;
-	var number;
-	
-	for (var i = 0; i < mathml.length; ++i) {
-		var character = mathml.charAt(i);
-		
-		if (parsing) {
-			if (character == '#') {
-				number = '';
-			}
-			else if (character == ';') {
-				if (number.charAt(0) == 'x') {
-					number = parseInt('0' + number, 16);
-				}
-				
-				output += String.fromCharCode(number);
-				parsing = false;
-			}
-			else {
-				number += character;
-			}
-		}
-		else if (character == '&') {
-			parsing = true;
-		}
-		else {
-			output += character;
-		}
-	}
-	
-	return output;
-}
-
-/**
  * Converts mathml to img object.
  * @param object creator Object with "createElement" method
  * @param string mathml Mathml code
@@ -1244,6 +1203,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
 					_wrs_editMode = 'latex';
 					
 					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
+					alert('1. ' + mathml);
+					alert('2. ' + wrs_mathmlEncode(mathml));
 					_wrs_isNewElement = false;
 					
 					_wrs_temporalImage = document.createElement('img');

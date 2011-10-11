@@ -40,9 +40,8 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			mathml = wrs_int_opener.wrs_mathmlDecode(wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute));
 		}
 		
-		mathml = wrs_int_opener.wrs_mathmlEntitiesDecode(mathml);
-		
 		setTimeout(function () {
+			alert(mathml);
 			editor.setMathML(mathml);
 		}, 100);
 	}
