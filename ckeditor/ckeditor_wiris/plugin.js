@@ -55,6 +55,10 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						
 						editor._.data = wrs_endParse(editor._.data);
 					});
+					
+					if (editor._.events.doubleclick) {					// When the iframe is double clicked, a dialog is open. This should be avoided.
+						editor._.events.doubleclick.listeners = [];
+					}
 				});
 			}
 			else {
