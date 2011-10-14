@@ -32,6 +32,16 @@ $wrs_xmlFileAttributes = array(
 	'fontNumber'
 );
 
+function wrs_createIni($properties) {
+	$ini = '';
+	
+	foreach ($properties as $key => $value) {
+		$ini .= $key . '=' . $value . "\r\n";
+	}
+	
+	return $ini;
+}
+
 function wrs_getAvailableCASLanguages($languageString) {
 	$availableLanguages = explode(',', $languageString);
 		
@@ -71,11 +81,21 @@ function wrs_getContents($url, $postVariables = NULL) {
 	return file_get_contents($url, false, $context);
 }
 
-function wrs_loadConfig($file) {
-	$handle = fopen($file, 'r');
+function wrs_loadConfig($filePath) {
+	$config = wrs_parseIni($filePath);
+	
+	if ($config === false) {
+		return array();
+	}
+	
+	return $config;
+}
+
+function wrs_parseIni($filePath) {
+	$handle = fopen($filePath, 'r');
 	
 	if ($handle === false) {
-		return array();
+		return false;
 	}
 	
 	$toReturn = array();

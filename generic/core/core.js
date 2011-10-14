@@ -686,7 +686,7 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
 	}
 	
 	var mathML = wrs_getContent(_wrs_conf_getmathmlPath, data);
-	return mathML.split("\r").join('').split("\n").join('');
+	return mathML.split("\r").join('').split("\n").join(' ');
 }
 
 /**

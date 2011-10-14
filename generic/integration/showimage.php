@@ -1,12 +1,13 @@
 <?php
 include 'libwiris.php';
 
-function createImage($config, $formulaPath, $imagePath) {
+function getConfigurationAndFonts($config, $formulaPath) {
 	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
 		$fonts = array();
 		
 		if (($line = fgets($handle)) !== false) {
 			$mathml = trim($line);
+
 			global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 			$i = 0;
 			$wrs_xmlFileAttributesCount = count($wrs_xmlFileAttributes);
@@ -33,6 +34,50 @@ function createImage($config, $formulaPath, $imagePath) {
 		
 		fclose($handle);
 		
+		return array(
+			'mathml' => $mathml,
+			'config' => $config,
+			'fonts' => $fonts
+		);
+	}
+	
+	return false;
+}
+
+function getConfigurationAndFontsFromIni($config, $formulaPath) {
+	$formulaConfig = wrs_parseIni($formulaPath);
+
+	if ($formulaConfig === false) {
+		return false;
+	}
+	
+	$fonts = array();
+	global $wrs_imageConfigProperties;
+	
+	foreach ($formulaConfig as $key => $value) {
+		if ($key != 'mml') {
+			if (substr($key, 0, 4) == 'font') {
+				$fonts[$key] = $value;
+			}
+			else {
+				$config[$wrs_imageConfigProperties[$key]] = trim($value);
+			}
+		}
+	}
+	
+	return array(
+		'mathml' => $formulaConfig['mml'],
+		'config' => $config,
+		'fonts' => $fonts
+	);
+}
+
+function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
+	$configAndFonts = ($formulaPathExtension == 'ini') ? getConfigurationAndFontsFromIni($config, $formulaPath . '.ini') : getConfigurationAndFonts($config, $formulaPath . '.xml');
+	
+	if ($configAndFonts !== false) {
+		$config = $configAndFonts['config'];
+		
 		// Retrocompatibility: when wirisimagenumbercolor is not defined
 		
 		if (!isset($config['wirisimagenumbercolor']) && isset($config['wirisimagesymbolcolor'])) {
@@ -45,16 +90,35 @@ function createImage($config, $formulaPath, $imagePath) {
 			$config['wirisimageidentcolor'] = $config['wirisimagesymbolcolor'];
 		}
 		
-		$properties = array('mml' => $mathml);
+		// Converting configuration to parameters.
+		global $wrs_imageConfigProperties;
+		$properties = array('mml' => $configAndFonts['mathml']);
 		
 		foreach ($wrs_imageConfigProperties as $serverParam => $configKey) {
 			if (isset($config[$configKey])) {
 				$properties[$serverParam] = $config[$configKey];
 			}
 		}
+		
+		// Converting fonts to parameters.
+		
+		if (isset($config['wirisimagefontranges'])) {
+			$carry = count($configAndFonts['fonts']);
+			$fontRanges = explode(',', $config['wirisimagefontranges']);
+			$fontRangesCount = count($fontRanges);
+			
+			for ($i = 0; $i < $fontRangesCount; ++$i) {
+				$rangeName = trim($fontRanges[$i]);
+				
+				if (isset($config[$rangeName])) {
+					$configAndFonts['fonts']['font' . ($carry + $i)] = $config[$rangeName];
+				}
+			}
+		}
 
+		// Query.
 		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-		$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], array_merge($fonts, $properties));
+		$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], array_merge($configAndFonts['fonts'], $properties));
 
 		if ($response === false) {
 			return false;
@@ -72,10 +136,12 @@ if (empty($_GET['formula'])) {
 }
 else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
+	$formulaPath = WRS_FORMULA_DIRECTORY . '/' . $formula;
+	$extension = (is_file($formulaPath . '.ini')) ? 'ini' : 'xml';
 	$imagePath = WRS_CACHE_DIRECTORY . '/' . $formula . '.png';
 	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	
-	if (is_file($imagePath) || createImage($config, WRS_FORMULA_DIRECTORY . '/' . $formula . '.xml', $imagePath)) {
+	if (is_file($imagePath) || createImage($config, $formulaPath, $extension, $imagePath)) {
 		header('Content-Type: image/png');
 		readfile($imagePath);
 	}

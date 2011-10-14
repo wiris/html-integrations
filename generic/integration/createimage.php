@@ -2,41 +2,20 @@
 include 'libwiris.php';
 
 if (!empty($_POST['mml'])) {
-	$toSave = $_POST['mml'] . "\n";
-	
 	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
+	$properties = array('mml' => $_POST['mml']);
 	
-	foreach ($wrs_xmlFileAttributes as $serverParam) {
-		$configKey = $wrs_imageConfigProperties[$serverParam];
-		
-		if (isset($_POST[$serverParam])) {
-			$config[$configKey] = $_POST[$serverParam];
-		}
-		
-		if (isset($config[$configKey])) {
-			$toSave .= $config[$configKey] . "\n";
-		}
-		else {
-			$toSave .= "\n";
+	foreach ($_POST as $key => $value) {
+		if (in_array($key, $wrs_xmlFileAttributes) || substr($key, 0, 4) == 'font') {
+			$properties[$key] = $value;
 		}
 	}
 	
-	if (isset($config['wirisimagefontranges'])) {
-		$fontRanges = explode(',', $config['wirisimagefontranges']);
-		
-		foreach ($fontRanges as $fontRangeName) {
-			$fontRangeName = trim($fontRangeName);
-			
-			if (isset($config[$fontRangeName])) {
-				$toSave .= $config[$fontRangeName] . "\n";
-			}
-		}
-	}
-	
+	$toSave = wrs_createIni($properties);
 	$fileName = md5($toSave);
 	$url = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';
-	$filePath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.xml';
+	$filePath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.ini';
 	
 	if (!is_file($filePath)) {
 		if (file_put_contents($filePath, $toSave) !== false) {
