@@ -1,6 +1,8 @@
 <?php
 include 'libwiris.php';
 
+// Retrocompatibility: there was a time that the files had another format.
+
 function getConfigurationAndFonts($config, $formulaPath) {
 	if (is_file($formulaPath) && ($handle = fopen($formulaPath, 'r')) !== false) {
 		$fonts = array();
@@ -106,12 +108,14 @@ function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
 			$carry = count($configAndFonts['fonts']);
 			$fontRanges = explode(',', $config['wirisimagefontranges']);
 			$fontRangesCount = count($fontRanges);
+			$j = 0;
 			
 			for ($i = 0; $i < $fontRangesCount; ++$i) {
 				$rangeName = trim($fontRanges[$i]);
 				
 				if (isset($config[$rangeName])) {
-					$configAndFonts['fonts']['font' . ($carry + $i)] = $config[$rangeName];
+					$configAndFonts['fonts']['font' . ($carry + $j)] = $config[$rangeName];
+					++$j;
 				}
 			}
 		}
