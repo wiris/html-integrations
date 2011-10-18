@@ -10,9 +10,21 @@ else if (isset($_POST['digest'])) {		// Support for future integrations (where m
 }
 
 if (!is_null($digest)) {
-	$filePath = WRS_FORMULA_DIRECTORY . '/' . basename($digest) . '.xml';
-	
-	if (is_file($filePath)) {
+	$filePath = WRS_FORMULA_DIRECTORY . '/' . basename($digest);
+
+	if (is_file($filePath . '.ini')) {
+		$formula = wrs_parseIni($filePath . '.ini');
+		
+		if ($formula !== false) {
+			if (isset($formula['mml'])) {
+				echo $formula['mml'];
+			}
+		}
+		else {
+			echo 'Error: could not read the formula. Check your file permissions.';
+		}
+	}
+	else if (is_file($filePath . '.xml')) {
 		if (($handle = fopen($filePath, 'r')) !== false) {
 			if (($line = fgets($handle)) !== false) {
 				echo $line;
@@ -21,7 +33,7 @@ if (!is_null($digest)) {
 			fclose($handle);
 		}
 		else {
-			echo 'Error: can not read the formula. Check your file privileges.';
+			echo 'Error: could not read the formula. Check your file permissions.';
 		}
 	}
 	else {
@@ -36,7 +48,7 @@ else if (isset($_POST['latex'])) {
 	}
 	else {
 		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-		$path = dirname($config['wirisimageservicepath']) . '/mathml';
+		$path = dirname($config['wirisimageservicepath']) . '/latex2mathml';
 		$url = $protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path;
 	}
 	
@@ -54,10 +66,10 @@ else if (isset($_POST['latex'])) {
 		echo $response;
 	}
 	else {
-		echo 'Error connecting to the latex translator service.';
+		echo 'Error: could not connect to the latex translator service.';
 	}
 }
 else {
-	echo 'Error: no digest or latex has been sended.';
+	echo 'Error: no digest or latex has been sent.';
 }
 ?>
