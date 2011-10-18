@@ -1203,8 +1203,6 @@ function wrs_openEditorWindow(language, target, isIframe) {
 					_wrs_editMode = 'latex';
 					
 					var mathml = wrs_getMathMLFromLatex(latexResult.latex);
-					alert('1. ' + mathml);
-					alert('2. ' + wrs_mathmlEncode(mathml));
 					_wrs_isNewElement = false;
 					
 					_wrs_temporalImage = document.createElement('img');
