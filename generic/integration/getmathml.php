@@ -47,9 +47,7 @@ else if (isset($_POST['latex'])) {
 		$url = $config['wirislatextomathmlurl'];
 	}
 	else {
-		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-		$path = dirname($config['wirisimageservicepath']) . '/latex2mathml';
-		$url = $protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $path;
+		$url = wrs_getImageServiceURL($config, 'latex2mathml');
 	}
 	
 	$data = array(

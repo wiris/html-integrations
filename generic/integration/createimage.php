@@ -2,7 +2,7 @@
 include 'libwiris.php';
 
 if (!empty($_POST['mml'])) {
-	global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
+	global $wrs_xmlFileAttributes;
 	$properties = array('mml' => $_POST['mml']);
 	
 	foreach ($_POST as $key => $value) {

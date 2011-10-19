@@ -81,6 +81,26 @@ function wrs_getContents($url, $postVariables = NULL) {
 	return file_get_contents($url, false, $context);
 }
 
+function wrs_getImageServiceURL($config, $service) {
+	// Protocol.
+	$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
+
+	// Domain.
+	$domain = $config['wirisimageservicehost'];
+
+	// Port.
+	$port = (isset($config['wirisimageserviceport'])) ? ':' . $config['wirisimageserviceport'] : '';
+
+	// Path.
+	$path = $config['wirisimageservicepath'];
+
+	if (!is_null($service)) {
+		$path = dirname($path) . '/' . $service;
+	}
+
+	return $protocol . '://' . $domain . $port . $path;
+}
+
 function wrs_loadConfig($filePath) {
 	$config = wrs_parseIni($filePath);
 	

@@ -25,7 +25,7 @@ function getConfigurationAndFonts($config, $formulaPath) {
 				$line = trim($line);
 				
 				if (isset($line[0])) {
-					$fonts['font' . $i] = $line;
+					$fonts['font' . $i] = trim($line);
 					++$i;
 				}
 			}
@@ -59,7 +59,7 @@ function getConfigurationAndFontsFromIni($config, $formulaPath) {
 	foreach ($formulaConfig as $key => $value) {
 		if ($key != 'mml') {
 			if (substr($key, 0, 4) == 'font') {
-				$fonts[$key] = $value;
+				$fonts[$key] = trim($value);
 			}
 			else {
 				$config[$wrs_imageConfigProperties[$key]] = trim($value);
@@ -68,7 +68,7 @@ function getConfigurationAndFontsFromIni($config, $formulaPath) {
 	}
 	
 	return array(
-		'mathml' => $formulaConfig['mml'],
+		'mathml' => trim($formulaConfig['mml']),
 		'config' => $config,
 		'fonts' => $fonts
 	);
@@ -98,7 +98,7 @@ function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
 		
 		foreach ($wrs_imageConfigProperties as $serverParam => $configKey) {
 			if (isset($config[$configKey])) {
-				$properties[$serverParam] = $config[$configKey];
+				$properties[$serverParam] = trim($config[$configKey]);
 			}
 		}
 		
@@ -114,16 +114,15 @@ function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
 				$rangeName = trim($fontRanges[$i]);
 				
 				if (isset($config[$rangeName])) {
-					$configAndFonts['fonts']['font' . ($carry + $j)] = $config[$rangeName];
+					$configAndFonts['fonts']['font' . ($carry + $j)] = trim($config[$rangeName]);
 					++$j;
 				}
 			}
 		}
 
 		// Query.
-		$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
-		$response = wrs_getContents($protocol . '://' . $config['wirisimageservicehost'] . ':' . $config['wirisimageserviceport'] . $config['wirisimageservicepath'], array_merge($configAndFonts['fonts'], $properties));
-
+		$response = wrs_getContents(wrs_getImageServiceURL($config, NULL), array_merge($configAndFonts['fonts'], $properties));
+		
 		if ($response === false) {
 			return false;
 		}
