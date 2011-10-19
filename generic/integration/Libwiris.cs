@@ -90,6 +90,18 @@ namespace pluginwiris
             return new String(decoded_char);
         }
 		
+		static public string createIni(Hashtable properties)
+		{
+			string toReturn = "";
+			
+			foreach (DictionaryEntry entry in properties)
+			{
+				toReturn += (string)entry.Key + " = " + (string)entry.Value + "\r\n";
+			}
+			
+			return toReturn;
+		}
+		
 		static public string dirName(string path)
 		{
 			return path.Substring(0, path.LastIndexOf('/'));
@@ -155,7 +167,28 @@ namespace pluginwiris
 			WebResponse response = request.GetResponse();
 			return response.GetResponseStream();
 		}
+		
+		static public string getImageServiceURL(Hashtable config, string service)
+		{
+			// Protocol.
+			string protocol = (config["wirisimageserviceprotocol"] != null) ? (string)config["wirisimageserviceprotocol"] : "http";
 
+			// Domain.
+			string domain = config["wirisimageservicehost"];
+
+			// Port.
+			string port = (config["wirisimageserviceport"] != null) ? ":" + (string)config["wirisimageserviceport"] : '';
+
+			// Path.
+			string path = (string)config["wirisimageservicepath"];
+
+			if (service != null) {
+				path = Libwiris.dirName(path) + "/" + service;
+			}
+
+			return protocol + "://" + domain + port + path;
+		}
+		
         static public string httpBuildQuery(Hashtable properties)
         {
             string returnValue = "";
@@ -197,7 +230,12 @@ namespace pluginwiris
 
         static public Hashtable loadConfig(string file)
         {
-            Hashtable toReturn = new Hashtable();
+            return Libwiris.parseIni(file);
+        }
+		
+		static public Hashtable parseIni(string file)
+		{
+			Hashtable toReturn = new Hashtable();
 
             StreamReader reader = File.OpenText(file);
             string content = reader.ReadToEnd();
@@ -219,7 +257,7 @@ namespace pluginwiris
             }
 
             return toReturn;
-        }
+		}
 
         static public string replaceVariable(string value, string variableName, string variableValue)
         {

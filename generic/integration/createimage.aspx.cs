@@ -17,47 +17,22 @@ namespace pluginwiris
         private void Page_Load(object sender, System.EventArgs e)
         {
             if (this.Request.Form["mml"] != null && this.Request.Form["mml"].Length > 0)
-            {
-                string toSave = this.Request.Form["mml"] + "\n";
-                Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
-
-                foreach (string serverParam in Libwiris.xmlFileAttributes)
-                {
-                    string configKey = (string)Libwiris.imageConfigProperties[serverParam];
-
-                    if (this.Request.Form[serverParam] != null)
-                    {
-                        config[configKey] = this.Request.Form[serverParam];
-                    }
-
-                    if (config[configKey] != null)
-                    {
-                        toSave += (string)config[configKey] + "\n";
-                    }
-					else
+			{
+				Hashtable properties = new Hashtable();
+				properties["mml"] = this.Request.Form["mml"];
+				
+				foreach (string key in this.Request.Form.AllKeys)
+				{
+					if (Libwiris.inArray(key, Libwiris.xmlFileAttributes) || key.Substring(0, 4) == "font")
 					{
-						toSave += "\n";
+						properties[key] = this.Request.Form[key];
 					}
-                }
-
-                if (config["wirisimagefontranges"] != null)
-                {
-                    string[] fontRanges = ((string)config["wirisimagefontranges"]).Split(',');
-
-                    foreach (string fontRangeName in fontRanges)
-                    {
-                        string fontRangeNameParsed = fontRangeName.Trim();
-
-                        if (config[fontRangeNameParsed] != null)
-                        {
-                            toSave += (string)config[fontRangeNameParsed] + "\n";
-                        }
-                    }
-                }
-
+				}
+			
+				string toSave = Libwiris.createIni(properties);
                 string fileName = Libwiris.md5(toSave);
                 string url = this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
-                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".xml");
+                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".ini");
 
                 if (!File.Exists(filePath))
                 {

@@ -21,9 +21,18 @@ namespace pluginwiris
         {
             if (this.Request.Form["md5"] != null && this.Request.Form["md5"].Length == 32)
             {
-                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + Path.GetFileName(this.Request.Form["md5"]) + ".xml");
+                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + Path.GetFileName(this.Request.Form["md5"]));
 
-                if (File.Exists(filePath))
+				if (File.Exists(filePath + ".ini"))
+				{
+					Hashtable formula = Libwiris.parseIni(filePath + ".ini");
+					
+					if (formula["mml"] != null)
+					{
+						this.Response.Write(formula["mml"]);
+					}
+				}
+                else if (File.Exists(filePath + ".xml"))
                 {
                     StreamReader file = File.OpenText(filePath);
                     this.Response.Write(file.ReadLine());
@@ -38,9 +47,7 @@ namespace pluginwiris
 					url = (string)config["wirislatextomathmlurl"];
 				}
 				else {
-					string protocol = (config["wirisimageserviceprotocol"] != null) ? (string)config["wirisimageserviceprotocol"] : "http";
-					string path = Libwiris.dirName("wirisimageservicepath") + "/mathml";
-					url = protocol + "://" + config["wirisimageservicehost"] + ":" + config["wirisimageserviceport"] + path;
+					url = Libwiris.getImageServiceURL(config, "latex2mathml");
 				}
 				
 				Hashtable data = new Hashtable();
@@ -56,7 +63,7 @@ namespace pluginwiris
 			}
             else
             {
-                this.Response.Write("Error: no digest or latex has been sended");
+                this.Response.Write("Error: no digest or latex has been sent.");
             }
         }
 

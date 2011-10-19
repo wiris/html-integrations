@@ -27,119 +27,178 @@ namespace pluginwiris
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
 				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula + ".png");
-				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 
-				if (File.Exists(imagePath) || this.createImage(config, this.MapPath(Libwiris.FormulaDirectory + "/" + formula + ".xml"), imagePath)) 
+				if (!File.Exists(imagePath))
 				{
-					this.Response.ContentType = "image/png";
-					this.Response.WriteFile(imagePath);
+					Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+					string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + formula);
+					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
+					this.createImage(config, formulaPath, extension, imagePath)
 				}
-				else 
-				{
-					this.Response.Write("Error creating the image.");
-				}
+				
+				this.Response.ContentType = "image/png";
+				this.Response.WriteFile(imagePath);
 			}
 		}
-
-		private bool createImage(Hashtable config, string formulaFile, string imageFile) 
+		
+		// Retrocompatibility: there was a time that the files had another format.
+		
+		private Hashtable getConfigurationAndFonts(Hashtable config, string formulaFile)
 		{
-			if (File.Exists(formulaFile)) 
+			Hashtable fonts = new Hashtable();
+			TextReader file = new StreamReader(formulaFile);
+			string content = file.ReadToEnd();
+			file.Close();
+			string[] lines = content.Split("\n".ToCharArray(0, 1));
+			String mathml = "";
+
+			if (lines.Length > 0)
 			{
-                Hashtable fonts = new Hashtable();
-				TextReader file = new StreamReader(formulaFile);
-				string content = file.ReadToEnd();
-				file.Close();
-                string[] lines = content.Split("\n".ToCharArray(0, 1));
-                String mathml = "";
+				mathml = lines[0].Trim();
+				int i = 1;
+				int j = 0;
 
-                if (lines.Length > 0)
-                {
-                    mathml = lines[0].Trim();
-                    int i = 1;
-                    int j = 0;
-
-                    while (i < lines.Length && j < Libwiris.xmlFileAttributes.Length)
-                    {
-                        config[Libwiris.imageConfigProperties[Libwiris.xmlFileAttributes[j]]] = lines[i].Trim();
-                        ++i;
-                        ++j;
-                    }
-
-                    j = 0;
-
-                    while (i < lines.Length)
-                    {
-                        string line = lines[i].Trim();
-
-                        if (line.Length > 0)
-                        {
-                            fonts["font" + j] = line;
-                            ++j;
-                        }
-
-                        ++i;
-                    }
-                }
-
-				// Retrocompatibility: when wirisimagenumbercolor isn't defined
-
-				if (config["wirisimagenumbercolor"] == null && config["wirisimagesymbolcolor"] != null) 
+				while (i < lines.Length && j < Libwiris.xmlFileAttributes.Length)
 				{
-					config["wirisimagenumbercolor"] = (string)config["wirisimagesymbolcolor"];
+					config[Libwiris.imageConfigProperties[Libwiris.xmlFileAttributes[j]]] = lines[i].Trim();
+					++i;
+					++j;
 				}
 
-				// Retrocompatibility: when wirisimageidentcolor isn't defined
+				j = 0;
 
-				if (config["wirisimageidentcolor"] == null && config["wirisimagesymbolcolor"] != null) 
+				while (i < lines.Length)
 				{
-					config["wirisimageidentcolor"] = (string)config["wirisimagesymbolcolor"];
+					string line = lines[i].Trim();
+
+					if (line.Length > 0)
+					{
+						fonts["font" + j] = line;
+						++j;
+					}
+
+					++i;
 				}
-
-                Hashtable properties = new Hashtable();
-                properties["mml"] = mathml;
-
-                foreach (DictionaryEntry entry in Libwiris.imageConfigProperties)
-                {
-                    string serverParam = (string)entry.Key;
-                    string configKey = (string)entry.Value;
-
-                    if (config[configKey] != null)
-                    {
-                        properties[serverParam] = (string)config[configKey];
-                    }
-                }
-
-				string protocol = (string)config["wirisimageserviceprotocol"];
+			}
+			
+			Hashtable toReturn = new Hashtable();
+			toReturn["mathml"] = mathml;
+			toReturn["config"] = config;
+			toReturn["fonts"] = fonts;
+			return toReturn;
+		}
+		
+		private Hashtable getConfigurationAndFontsFromIni(Hashtable config, string formulaFile)
+		{
+			Hashtable formulaConfig = Libwiris.parseIni(formulaFile);
+			Hashtable fonts = new Hashtable();
+			
+			foreach (DictionaryEntry entry in formulaConfig)
+			{
+				string key = (string)entry.Key;
 				
-				if (protocol == null)
+				if (key != "mml")
 				{
-					protocol = "http";
+					string value = (string)entry.Value.Trim();
+					
+					if (key.Substring(0, 4) == "font")
+					{
+						fonts[key] = value;
+					}
+					else
+					{
+						config[Libwiris.imageConfigProperties[key]] = value;
+					}
 				}
+			}
+			
+			Hashtable toReturn = new Hashtable();
+			toReturn["mathml"] = formulaConfig["mml"].Trim();
+			toReturn["config"] = config;
+			toReturn["fonts"] = fonts;
+			return toReturn;
+		}
 
-				Stream responseStream = Libwiris.getContents(protocol + "://" + (string)config["wirisimageservicehost"] + ":" + (string)config["wirisimageserviceport"] + (string)config["wirisimageservicepath"], properties);
-				
-				// Saving the image
-				BinaryReader responseReader = new BinaryReader(responseStream);
-				FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
-				BinaryWriter writer = new BinaryWriter(image);
+		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imageFile) 
+		{
+			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(formulaPath + ".ini") : this.getConfigurationAndFonts(formulaPath + ".xml");
+			config = (Hashtable)configAndFonts["config"];
+			
+			// Retrocompatibility: when wirisimagenumbercolor isn't defined
 
-				byte[] buffer = new byte[8192];
-				int bytesRead = responseReader.Read(buffer, 0, buffer.Length);
-				
-				while (bytesRead > 0) {
-					writer.Write(buffer, 0, bytesRead);
-					bytesRead = responseReader.Read(buffer, 0, buffer.Length);
-				}
-
-				writer.Close();
-				image.Close();
-				responseReader.Close();
-				responseStream.Close();
-				
-				return true;
+			if (config["wirisimagenumbercolor"] == null && config["wirisimagesymbolcolor"] != null) 
+			{
+				config["wirisimagenumbercolor"] = (string)config["wirisimagesymbolcolor"];
 			}
 
-			return false;
+			// Retrocompatibility: when wirisimageidentcolor isn't defined
+
+			if (config["wirisimageidentcolor"] == null && config["wirisimagesymbolcolor"] != null) 
+			{
+				config["wirisimageidentcolor"] = (string)config["wirisimagesymbolcolor"];
+			}
+			
+			// Converting configuration to parameters.
+			Hashtable properties = new Hashtable();
+			properties["mml"] = configAndFonts["mathml"];
+
+			foreach (DictionaryEntry entry in Libwiris.imageConfigProperties)
+			{
+				string serverParam = (string)entry.Key;
+				string configKey = (string)entry.Value;
+
+				if (config[configKey] != null)
+				{
+					properties[serverParam] = (string)config[configKey].Trim();
+				}
+			}
+			
+			// Converting fonts to parameters.
+			Hashtable fonts = (Hashtable)configAndFonts["fonts"];
+			
+			if (config["wirisimagefontranges"] != null)
+			{
+				int carry = ((Hashtable)configAndFonts["fonts"]).Count;
+				string[] fontRanges = ((string)config["wirisimagefontranges"]).Split(',');
+				int i = 0;
+				
+				foreach (string fontRangeName in fontRanges)
+				{
+					fontRangeName = fontRangeName.Trim();
+					
+					if (config[fontRangeName] != null)
+					{
+						fonts["font" + (carry + i)] = ((string)config[fontRangeName]).Trim();
+						++i;
+					}
+				}
+			}
+			
+			foreach (DictionaryEntry entry in fonts)
+			{
+				properties[(string)entry.Key] = fonts[(string)entry.Key];
+			}
+			
+			// Query.
+			Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties);
+			
+			// Saving the image
+			BinaryReader responseReader = new BinaryReader(responseStream);
+			FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
+			BinaryWriter writer = new BinaryWriter(image);
+
+			byte[] buffer = new byte[8192];
+			int bytesRead = responseReader.Read(buffer, 0, buffer.Length);
+			
+			while (bytesRead > 0) {
+				writer.Write(buffer, 0, bytesRead);
+				bytesRead = responseReader.Read(buffer, 0, buffer.Length);
+			}
+
+			writer.Close();
+			image.Close();
+			responseReader.Close();
+			responseStream.Close();
 		}
 
 		#region Web Form Designer generated code
