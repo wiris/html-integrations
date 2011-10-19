@@ -37,7 +37,7 @@ if (!is_null($digest)) {
 		}
 	}
 	else {
-		echo 'Error: formula does not exists.';
+		echo 'Error: formula not found.';
 	}
 }
 else if (isset($_POST['latex'])) {

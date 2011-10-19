@@ -21,7 +21,7 @@ if (!empty($_POST['mml'])) {
 			echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $url : $url;
 		}
 		else {
-			echo 'Error: can not create the image. Check your file privileges.';
+			echo 'Error: can not create the image. Check your file permissions.';
 		}
 	}
 	else {
@@ -29,6 +29,6 @@ if (!empty($_POST['mml'])) {
 	}
 }
 else {
-	echo 'Error: no mathml has been sended.';
+	echo 'Error: no mathml has been sent.';
 }
 ?>
