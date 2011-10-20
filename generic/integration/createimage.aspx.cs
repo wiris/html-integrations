@@ -23,7 +23,7 @@ namespace pluginwiris
 				
 				foreach (string key in this.Request.Form.AllKeys)
 				{
-					if (Libwiris.inArray(key, Libwiris.xmlFileAttributes) || key.Substring(0, 4) == "font")
+					if (key != null && (Libwiris.inArray(key, Libwiris.xmlFileAttributes) || (key.Length >= 4 && key.Substring(0, 4) == "font")))
 					{
 						properties[key] = this.Request.Form[key];
 					}
@@ -45,7 +45,7 @@ namespace pluginwiris
             }
             else
             {
-                this.Response.Write("Error: no mathml has been sended");
+                this.Response.Write("Error: no mathml has been sent.");
             }
         }
 

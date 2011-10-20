@@ -19,7 +19,7 @@ namespace pluginwiris
     {
         private void Page_Load(object sender, System.EventArgs e)
         {
-            if (this.Request.Form["md5"] != null && this.Request.Form["md5"].Length == 32)
+            if (this.Request.Form["md5"] != null)
             {
                 string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + Path.GetFileName(this.Request.Form["md5"]));
 

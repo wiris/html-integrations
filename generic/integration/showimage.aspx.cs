@@ -33,7 +33,7 @@ namespace pluginwiris
 					Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 					string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + formula);
 					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
-					this.createImage(config, formulaPath, extension, imagePath)
+					this.createImage(config, formulaPath, extension, imagePath);
 				}
 				
 				this.Response.ContentType = "image/png";
@@ -99,9 +99,9 @@ namespace pluginwiris
 				
 				if (key != "mml")
 				{
-					string value = (string)entry.Value.Trim();
+					string value = ((string)entry.Value).Trim();
 					
-					if (key.Substring(0, 4) == "font")
+					if (key.Length >= 4 && key.Substring(0, 4) == "font")
 					{
 						fonts[key] = value;
 					}
@@ -113,7 +113,7 @@ namespace pluginwiris
 			}
 			
 			Hashtable toReturn = new Hashtable();
-			toReturn["mathml"] = formulaConfig["mml"].Trim();
+			toReturn["mathml"] = ((string)formulaConfig["mml"]).Trim();
 			toReturn["config"] = config;
 			toReturn["fonts"] = fonts;
 			return toReturn;
@@ -121,7 +121,7 @@ namespace pluginwiris
 
 		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imageFile) 
 		{
-			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(formulaPath + ".ini") : this.getConfigurationAndFonts(formulaPath + ".xml");
+			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(config, formulaPath + ".ini") : this.getConfigurationAndFonts(config, formulaPath + ".xml");
 			config = (Hashtable)configAndFonts["config"];
 			
 			// Retrocompatibility: when wirisimagenumbercolor isn't defined
@@ -149,7 +149,7 @@ namespace pluginwiris
 
 				if (config[configKey] != null)
 				{
-					properties[serverParam] = (string)config[configKey].Trim();
+					properties[serverParam] = ((string)config[configKey]).Trim();
 				}
 			}
 			
@@ -164,11 +164,11 @@ namespace pluginwiris
 				
 				foreach (string fontRangeName in fontRanges)
 				{
-					fontRangeName = fontRangeName.Trim();
+					string fontRangeNameTrimmed = fontRangeName.Trim();
 					
-					if (config[fontRangeName] != null)
+					if (config[fontRangeNameTrimmed] != null)
 					{
-						fonts["font" + (carry + i)] = ((string)config[fontRangeName]).Trim();
+						fonts["font" + (carry + i)] = ((string)config[fontRangeNameTrimmed]).Trim();
 						++i;
 					}
 				}

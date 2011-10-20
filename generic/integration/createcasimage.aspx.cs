@@ -22,7 +22,7 @@ namespace pluginwiris
             if (this.Request.Form["image"] != null && this.Request.Form["image"].Length > 0)
             {
                 string fileName = Libwiris.md5(this.Request.Form["image"]);
-                string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".xml");
+                string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".ini");
 
                 if (this.Request.Form["mml"] != null && this.Request.Form["mml"].Length > 0 && !File.Exists(formulaPath))
                 {

@@ -174,10 +174,10 @@ namespace pluginwiris
 			string protocol = (config["wirisimageserviceprotocol"] != null) ? (string)config["wirisimageserviceprotocol"] : "http";
 
 			// Domain.
-			string domain = config["wirisimageservicehost"];
+			string domain = (string)config["wirisimageservicehost"];
 
 			// Port.
-			string port = (config["wirisimageserviceport"] != null) ? ":" + (string)config["wirisimageserviceport"] : '';
+			string port = (config["wirisimageserviceport"] != null) ? ":" + (string)config["wirisimageserviceport"] : "";
 
 			// Path.
 			string path = (string)config["wirisimageservicepath"];
