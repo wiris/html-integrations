@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{14A7B396-B89D-4AAC-887E-6FBA4A38DC63}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{AB262D9E-E61E-485E-AF08-2689DF44F0E0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		Debug.AspNetCompiler.VirtualPath = "/aspx"
@@ -18,7 +18,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "aspx", ".", "{14A7B396-B89D
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1149"
+		VWDPort = "49589"
 	EndProjectSection
 EndProject
 Global
@@ -26,8 +26,8 @@ Global
 		Debug|.NET = Debug|.NET
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{14A7B396-B89D-4AAC-887E-6FBA4A38DC63}.Debug|.NET.ActiveCfg = Debug|.NET
-		{14A7B396-B89D-4AAC-887E-6FBA4A38DC63}.Debug|.NET.Build.0 = Debug|.NET
+		{AB262D9E-E61E-485E-AF08-2689DF44F0E0}.Debug|.NET.ActiveCfg = Debug|.NET
+		{AB262D9E-E61E-485E-AF08-2689DF44F0E0}.Debug|.NET.Build.0 = Debug|.NET
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
