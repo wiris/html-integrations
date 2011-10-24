@@ -41,7 +41,6 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		}
 		
 		setTimeout(function () {
-			alert(mathml);
 			editor.setMathML(mathml);
 		}, 100);
 	}
