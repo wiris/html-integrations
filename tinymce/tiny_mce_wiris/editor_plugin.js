@@ -56,14 +56,7 @@ var _wrs_int_language = 'en';
 				
 				function whenDocReady() {
 					if (window.wrs_initParse) {
-						if (textarea.value == undefined) {
-							textarea.value = wrs_initParse(editor.getContent());
-						}
-						else {
-							textarea.value = wrs_initParse(textarea.value);
-						}
-						
-						editor.load();
+						editor.setContent(wrs_initParse(textarea.value));
 						iframe = editor.getContentAreaContainer().firstChild;
 						
 						wrs_addIframeEvents(iframe, function (iframe, element) {
