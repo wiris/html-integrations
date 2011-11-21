@@ -913,7 +913,8 @@ function wrs_initParse(code) {
  * @return string
  */
 function wrs_initParseEditMode(code) {
-	var container = wrs_createObject('<div>' + code + '</div>');
+	var splitedCode = wrs_splitBody(code);
+	var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
 	var imgList = container.getElementsByTagName('img');
 	var token = 'encoding="LaTeX">';
 	
@@ -933,7 +934,7 @@ function wrs_initParseEditMode(code) {
 		}
 	}
 	
-	return container.innerHTML;
+	return splitedCode.prefix + container.innerHTML + splitedCode.sufix;
 }
 
 /**
@@ -957,7 +958,8 @@ function wrs_initParseSaveMode(code) {
 		}
 	}
 	
-	var container = wrs_createObject('<div>' + code + '</div>');
+	var splitedCode = wrs_splitBody(code);
+	var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
 	var appletList = container.getElementsByTagName('applet');
 	
 	for (var i = 0; i < appletList.length; ++i) {
@@ -976,7 +978,7 @@ function wrs_initParseSaveMode(code) {
 		}
 	}
 	
-	return container.innerHTML;
+	return splitedCode.prefix + container.innerHTML + splitedCode.sufix;
 }
 
 /**
@@ -1314,6 +1316,40 @@ function wrs_removeEvent(element, event, func) {
 	else if (element.detachEvent) {
 		element.detachEvent('on' + event, func);
 	}
+}
+
+/**
+ * Splits an HTML content in three parts: the code before <body>, the code between <body> and </body> and the code after </body>.
+ * @param string code
+ * @return string
+ */
+function wrs_splitBody(code) {
+	var prefix = '';
+	var sufix = '';
+	var bodyPosition = code.indexOf('<body');
+	
+	if (bodyPosition != -1) {
+		bodyPosition = code.indexOf('>', bodyPosition);
+		
+		if (bodyPosition != -1) {
+			++bodyPosition;
+			var endBodyPosition = code.indexOf('</body>', bodyPosition);
+			
+			if (endBodyPosition == -1) {
+				endBodyPosition = code.length;
+			}
+			
+			prefix = code.substring(0, bodyPosition);
+			sufix = code.substring(endBodyPosition, code.length);
+			code = code.substring(bodyPosition, endBodyPosition);
+		}
+	}
+	
+	return {
+		'prefix': prefix,
+		'code': code,
+		'sufix': sufix
+	};
 }
 
 /**
