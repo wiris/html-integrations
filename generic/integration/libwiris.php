@@ -242,7 +242,7 @@ function wrs_parseIni($filePath, $parseSections = false, $properties = null) {
 		$line = trim($line);
 		$lineLength = mb_strlen($line);
 		
-		if ($line[0] == '[' && $line[$lineLength - 1] == ']') {
+		if ($lineLength > 0 && $line[0] == '[' && mb_substr($line, -1) == ']') {
 			$lastSection = mb_substr($line, 1, $lineLength - 2);
 			
 			if (!isset($properties[$lastSection])) {
