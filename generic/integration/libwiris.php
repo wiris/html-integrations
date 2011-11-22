@@ -1,4 +1,5 @@
 <?php
+define('WRS_DEFAULT_CONFIG_FILE', '../default_configuration.ini');
 define('WRS_CONFIG_FILE', '../configuration.ini');
 define('WRS_CACHE_DIRECTORY', '../cache');
 define('WRS_FORMULA_DIRECTORY', '../formulas');
@@ -32,6 +33,80 @@ $wrs_xmlFileAttributes = array(
 	'fontNumber'
 );
 
+function wrs_applyConfigRetrocompatibility($config) {
+	if (isset($config['']['wirisimageserviceprotocol']) && isset($config['']['wirisimageservicehost']) && isset($config['']['wirisimageserviceport']) && isset($config['']['wirisimageservicepath'])) {
+		$config['main']['editor.serviceURL'] = $config['']['wirisimageserviceprotocol'] . '://' . $config['']['wirisimageservicehost'] . rtrim($config['wirisimageservicepath'], '/render');
+	}
+	
+	if (isset($config['']['wirismathmltolatexurl'])) {
+		$config['main']['editor.serviceURL.mathml2latex'] = $config['']['wirismathmltolatexurl'];
+	}
+	
+	if (isset($config['']['wirislatextomathmlurl'])) {
+		$config['main']['editor.serviceURL.latex2mathml'] = $config['']['wirislatextomathmlurl'];
+	}
+	
+	if (isset($config['']['wirisimageserviceversion'])) {
+		$config['main']['editor.version'] = $config['']['wirisimageserviceversion'];
+	}
+	
+	if (isset($config['']['wirisformulaeditorlang'])) {
+		$config['main']['editor.language'] = $config['']['wirisformulaeditorlang'];
+	}
+
+	if (isset($config['']['wiriscascodebase'])) {
+		$config['main']['cas.serviceURL'] = $config['']['wiriscascodebase'];
+	}
+	
+	if (isset($config['']['wiriscascodebase']) && isset($config['']['wiriscasarchive'])) {
+		$config['main']['cas.serviceURL.archive'] = $config['']['wiriscascodebase'] . '/' . $config['']['wiriscasarchive'];
+	}
+	
+	if (isset($config['']['wiriscasclass'])) {
+		$config['main']['cas.class'] = $config['']['wiriscasclass'];
+	}
+	
+	if (isset($config['']['wiriscaslanguages'])) {
+		$config['main']['cas.languages'] = $config['']['wiriscaslanguages'];
+	}
+	
+	if (isset($config['']['CAS_width'])) {
+		$config['main']['cas.width'] = $config['']['CAS_width'];
+	}
+
+	if (isset($config['']['CAS_height'])) {
+		$config['main']['cas.height'] = $config['']['CAS_height'];
+	}
+	
+	if (isset($config['']['wiriscachedirectory'])) {
+		$config['main']['plugin.cacheDirectory'] = $config['']['wiriscachedirectory'];
+	}
+	
+	if (isset($config['']['wirisformuladirectory'])) {
+		$config['main']['plugin.formulaDirectory'] = $config['']['wirisformuladirectory'];
+	}
+	
+	if (isset($config['']['wirisproxy_host']) && isset($config['']['wirisproxy_port'])) {
+		$config['main']['plugin.proxy'] = $config['']['wirisproxy_host'] . ':' . $config['']['wirisproxy_port'];
+	}
+	
+	if (isset($config['']['wirisstorageclass'])) {
+		$config['main']['plugin.storageClass'] = $config['']['wirisstorageclass'];
+	}
+	
+	if (isset($config['']['wiriscontainerstorageclass'])) {
+		$config['main']['plugin.containerStorageClass'] = $config['']['wiriscontainerstorageclass'];
+	}
+
+	if (isset($config['']['wirisconfigurationclass'])) {
+		$config['main']['plugin.configurationClass'] = $config['']['wirisconfigurationclass'];
+	}
+	
+	if (isset($config['']['wirisconfigurationrefreshtime'])) {
+		$config['main']['plugin.refreshInterval'] = $config['']['wirisconfigurationrefreshtime'];
+	}
+}
+
 function wrs_createIni($properties) {
 	$ini = '';
 	
@@ -40,6 +115,41 @@ function wrs_createIni($properties) {
 	}
 	
 	return $ini;
+}
+
+function wrs_deduceConfigUndefinedValues($config) {
+	$deduction = array(
+		'plugin.cacheDirectory' => $config['main']['plugin.php.cacheDirectory'],
+		'plugin.formulaDirectory' => $config['main']['plugin.php.formulaDirectory'],
+		'editor.enabled' => $config['main']['plugin.enabled'],
+		'editor.saveMode' => $config['main']['plugin.saveMode'],
+		'editor.codeAttribute' => $config['main']['plugin.codeAttribute'],
+		'editor.serviceURL' => $config['main']['plugin.serviceURL'] . '/editor',
+		'editor.serviceURL.render' => $config['main']['editor.serviceURL'] . '/render',
+		'editor.serviceURL.mathml2latex' => $config['main']['editor.serviceURL'] . '/mathml2latex',
+		'editor.serviceURL.latex2mathml' => $config['main']['editor.serviceURL'] . '/latex2mathml',
+		'editor.cacheDirectory' => $config['main']['plugin.cacheDirectory'],
+		'editor.formulaDirectory' => $config['main']['plugin.formulaDirectory'],
+		'cas.enabled' => $config['main']['plugin.enabled'],
+		'cas.saveMode' => $config['main']['plugin.saveMode'],
+		'cas.codeAttribute' => $config['main']['plugin.codeAttribute'],
+		'cas.serviceURL' => $config['main']['plugin.serviceURL'] . '/cas',
+		'cas.serviceURL.archive' => $config['main']['cas.serviceURL'] . '/wrs_net_%LANG.jar',
+		'cas.cacheDirectory' => $config['main']['plugin.cacheDirectory'],
+		'cas.formulaDirectory' => $config['main']['plugin.formulaDirectory']
+	);
+	
+	foreach ($deduction as $key => $value) {
+		if (!isset($config['main'][$key])) {
+			$config['main'][$key] = $value;
+		}
+	}
+	
+	foreach ($config['main'] as $key => $value) {
+		if (substr($key, 0, 4) == 'php.') {
+			$config['main'][substr($key, 4)] = $value;
+		}
+	}
 }
 
 function wrs_getAvailableCASLanguages($languageString) {
@@ -102,36 +212,61 @@ function wrs_getImageServiceURL($config, $service) {
 }
 
 function wrs_loadConfig($filePath) {
-	$config = wrs_parseIni($filePath);
+	return wrs_parseIni($filePath, false, array());
 	
-	if ($config === false) {
-		return array();
-	}
+	/*
+	TODO: implement the new configuration system.
 	
-	return $config;
+	$defaultConfig = wrs_parseIni(WRS_DEFAULT_CONFIG_FILE, true);
+	$config = wrs_parseIni(WRS_CONFIG_FILE, true, $wrs_defaultConfig);
+	$config = wrs_applyConfigRetrocompatibility($config);
+	$config = wrs_deduceConfigUndefinedValues($config);
+	return $config;*/
 }
 
-function wrs_parseIni($filePath) {
+function wrs_parseIni($filePath, $parseSections = false, $properties = null) {
 	$handle = fopen($filePath, 'r');
 	
 	if ($handle === false) {
-		return false;
+		return $properties;
 	}
 	
-	$toReturn = array();
+	if (is_null($properties)) {
+		$properties = array();
+	}
+	
+	$lastSection = '';
+	$properties[$lastSection] = array();
 	
 	while (($line = fgets($handle)) !== false) {
-		$lineWords = explode('=', $line, 2);
+		$line = trim($line);
+		$lineLength = mb_strlen($line);
 		
-		if (isset($lineWords[1])) {
-			$key = trim($lineWords[0]);
-			$value = trim($lineWords[1]);
-			$toReturn[$key] = $value;
+		if ($line[0] == '[' && $line[$lineLength - 1] == ']') {
+			$lastSection = mb_substr($line, 1, $lineLength - 2);
+			
+			if (!isset($properties[$lastSection])) {
+				$properties[$lastSection] = array();
+			}
+		}
+		else {
+			$lineWords = explode('=', $line, 2);
+			
+			if (isset($lineWords[1])) {
+				$key = trim($lineWords[0]);
+				$value = trim($lineWords[1]);
+				$properties[$lastSection][$key] = $value;
+			}
 		}
 	}
 	
 	fclose($handle);
-	return $toReturn;
+	
+	if (!$parseSections) {
+		return $properties[''];
+	}
+	
+	return $properties;
 }
 
 function wrs_replaceVariable($value, $variableName, $variableValue) {	
