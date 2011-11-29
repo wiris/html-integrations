@@ -1,31 +1,13 @@
 ﻿<?php
-include 'libwiris.php';
+include 'api.php';
 
 if (!empty($_POST['mml'])) {
-	global $wrs_xmlFileAttributes;
-	$properties = array('mml' => $_POST['mml']);
-	
-	foreach ($_POST as $key => $value) {
-		if (in_array($key, $wrs_xmlFileAttributes) || substr($key, 0, 4) == 'font') {
-			$properties[$key] = $value;
-		}
+	try {
+		$api = new WIRISPluginAPI();
+		echo $api->mathml2img($_POST['mml'], dirname($_SERVER['PHP_SELF']), $_POST);
 	}
-	
-	$toSave = wrs_createIni($properties);
-	$fileName = md5($toSave);
-	$url = dirname($_SERVER['PHP_SELF']) . '/showimage.php?formula=' . $fileName . '.png';
-	$filePath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.ini';
-	
-	if (!is_file($filePath)) {
-		if (file_put_contents($filePath, $toSave) !== false) {
-			echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $url : $url;
-		}
-		else {
-			echo 'Error: can not create the image. Check your file permissions.';
-		}
-	}
-	else {
-		echo (isset($_POST['returnDigest']) && $_POST['returnDigest'] != 'false') ? $fileName . ':' . $url : $url;
+	catch (Exception $e) {
+		echo $e->getMessage();
 	}
 }
 else {
