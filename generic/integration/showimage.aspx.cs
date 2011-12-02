@@ -19,13 +19,7 @@ namespace pluginwiris
 	{
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			bool error = false;
-			
-			if (this.Request.QueryString["mml"] == null && this.Request.QueryString["formula"] == null) 
-			{
-				this.Response.Write("Error: no digest or mathml has been sended");
-			}
-			else
+			if (this.Request.QueryString["formula"] != null) 
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
 				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula + ".png");
@@ -35,11 +29,30 @@ namespace pluginwiris
 					Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 					string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + formula);
 					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
-					this.createImage(config, formulaPath, extension, imagePath, this.Request.QueryString["mml"]);
+					this.createImage(config, formulaPath, extension, imagePath);
 				}
 				
 				this.Response.ContentType = "image/png";
 				this.Response.WriteFile(imagePath);
+			}
+			else if (this.Request.QueryString["mml"] != null)
+			{
+				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/temp.png");
+				
+				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+				
+				Hashtable properties = new Hashtable();
+				properties["mml"] = this.Request.QueryString["mml"];
+				
+				Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties);
+				this.saveImage(imagePath, responseStream);
+				responseStream.Close();
+				
+				this.Response.ContentType = "image/png";
+				this.Response.WriteFile(imagePath);
+			}
+			else {
+				this.Response.Write("Error: no digest or mathml has been sended");
 			}
 		}
 		
@@ -121,7 +134,7 @@ namespace pluginwiris
 			return toReturn;
 		}
 
-		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imageFile, string mathml) 
+		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imagePath) 
 		{
 			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(config, formulaPath + ".ini") : this.getConfigurationAndFonts(config, formulaPath + ".xml");
 			config = (Hashtable)configAndFonts["config"];
@@ -142,15 +155,7 @@ namespace pluginwiris
 			
 			// Converting configuration to parameters.
 			Hashtable properties = new Hashtable();
-			
-			if (mathml != null)
-			{
-				properties["mml"] = mathml;
-			}
-			else
-			{
-				properties["mml"] = configAndFonts["mathml"];
-			}
+			properties["mml"] = configAndFonts["mathml"];
 
 			foreach (DictionaryEntry entry in Libwiris.imageConfigProperties)
 			{
@@ -189,12 +194,15 @@ namespace pluginwiris
 				properties[(string)entry.Key] = fonts[(string)entry.Key];
 			}
 			
-			// Query.
 			Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties);
-			
-			// Saving the image
-			BinaryReader responseReader = new BinaryReader(responseStream);
-			FileStream image = new FileStream(imageFile, FileMode.Create, FileAccess.Write);
+			this.saveImage(imagePath, responseStream);
+			responseStream.Close();
+		}
+		
+		private void saveImage(string imagePath, Stream stream)
+		{
+			BinaryReader responseReader = new BinaryReader(stream);
+			FileStream image = new FileStream(imagePath, FileMode.Create, FileAccess.Write);
 			BinaryWriter writer = new BinaryWriter(image);
 
 			byte[] buffer = new byte[8192];
@@ -208,7 +216,6 @@ namespace pluginwiris
 			writer.Close();
 			image.Close();
 			responseReader.Close();
-			responseStream.Close();
 		}
 
 		#region Web Form Designer generated code
