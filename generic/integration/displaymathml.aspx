@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="displaymathml.aspx.cs" Inherits="displaymathml" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="displaymathml.aspx.cs" Inherits="displaymathml" %>
 var url = "<asp:Literal ID="Literal1" runat="server"></asp:Literal>";
 
 function generateEntities(s) {
@@ -86,3 +86,4 @@ if (window.attachEvent) {
 }
 
 window.addEventListener('load',mathmlFunction,false);
+
