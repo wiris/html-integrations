@@ -2,6 +2,7 @@
 var url = "<asp:Literal ID="Literal1" runat="server"></asp:Literal>";
 
 function generateEntities(s) {
+    var i,c,d;
 	d = "";
 	for (i=0;i<s.length;i++) {
 		c = s.charCodeAt(i);
@@ -45,9 +46,15 @@ function fixVerticalAlignForAll() {
 function mathmlFunction() {
 
 	var maths = document.getElementsByTagName('math');
+	var as = new Array();
+	var i;
 	
 	for (i = 0; i < maths.length; i++) {
-		var mathNode = maths[i];
+	    as.push(maths[i]);
+	}
+	
+	for (i = 0; i < as.length; i++) {
+		var mathNode = as[i];
 		var container = document.createElement('span');
 		container.className = 'wrs_viewer';
 		mathNode.parentNode.replaceChild(container, mathNode);
