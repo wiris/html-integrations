@@ -19,11 +19,13 @@ namespace pluginwiris
 	{
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			if (this.Request.QueryString["formula"] == null || this.Request.QueryString["formula"].Length == 0) 
+			bool error = false;
+			
+			if (this.Request.QueryString["mml"] == null && this.Request.QueryString["formula"] == null) 
 			{
-				this.Response.Write("Error: no image name has been sended");
+				this.Response.Write("Error: no digest or mathml has been sended");
 			}
-			else 
+			else
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
 				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula + ".png");
@@ -33,7 +35,7 @@ namespace pluginwiris
 					Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 					string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + formula);
 					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
-					this.createImage(config, formulaPath, extension, imagePath);
+					this.createImage(config, formulaPath, extension, imagePath, this.Request.QueryString["mml"]);
 				}
 				
 				this.Response.ContentType = "image/png";
@@ -119,7 +121,7 @@ namespace pluginwiris
 			return toReturn;
 		}
 
-		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imageFile) 
+		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imageFile, string mathml) 
 		{
 			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(config, formulaPath + ".ini") : this.getConfigurationAndFonts(config, formulaPath + ".xml");
 			config = (Hashtable)configAndFonts["config"];
@@ -140,7 +142,15 @@ namespace pluginwiris
 			
 			// Converting configuration to parameters.
 			Hashtable properties = new Hashtable();
-			properties["mml"] = configAndFonts["mathml"];
+			
+			if (mathml != null)
+			{
+				properties["mml"] = mathml;
+			}
+			else
+			{
+				properties["mml"] = configAndFonts["mathml"];
+			}
 
 			foreach (DictionaryEntry entry in Libwiris.imageConfigProperties)
 			{
