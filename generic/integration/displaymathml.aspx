@@ -1,3 +1,6 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="displaymathml.aspx.cs" Inherits="displaymathml" %>
+var url = "<asp:Literal ID="Literal1" runat="server"></asp:Literal>";
+
 function generateEntities(s) {
 	d = "";
 	for (i=0;i<s.length;i++) {
@@ -62,7 +65,7 @@ function mathmlFunction() {
 		if (img.attachEvent!=null) {
 			img.attachEvent( "onload", function() {fixVerticalAlign(img);});
 		}
-		img.src = 'http://localhost/aspx-demo_nicedit_wiris/nicedit/nicedit_wiris/integration/showimage.aspx?mml='+encodeURIComponent(mathml);
+		img.src = url + '?mml='+encodeURIComponent(mathml);
 		img.align = 'middle';
 		img.className = 'Wirisformula';
 		
