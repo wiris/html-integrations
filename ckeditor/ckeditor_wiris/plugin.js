@@ -8,7 +8,7 @@ document.getElementsByTagName('head')[0].appendChild(script);
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = 'alt';	// Specifies the image tag where we should save the formula editor mathml code.
+var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
 var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window).
