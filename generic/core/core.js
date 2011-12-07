@@ -913,28 +913,32 @@ function wrs_initParse(code) {
  * @return string
  */
 function wrs_initParseEditMode(code) {
-	var splitedCode = wrs_splitBody(code);
-	var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
-	var imgList = container.getElementsByTagName('img');
-	var token = 'encoding="LaTeX">';
-	
-	for (var i = 0; i < imgList.length; ++i) {
-		if (imgList[i].className == 'Wirisformula') {
-			var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_CASMathmlAttribute));
-			var latexStartPosition = mathml.indexOf(token);
-			
-			if (latexStartPosition != -1) {
-				latexStartPosition += token.length;
-				var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
-				var latex = mathml.substring(latexStartPosition, latexEndPosition);
-				var textNode = document.createTextNode('$$' + wrs_htmlentitiesDecode(latex) + '$$');
-				imgList[i].parentNode.replaceChild(textNode, imgList[i]);
-				--i;		// An image has been replaced.
+	if (wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
+		var splitedCode = wrs_splitBody(code);
+		var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
+		var imgList = container.getElementsByTagName('img');
+		var token = 'encoding="LaTeX">';
+		
+		for (var i = 0; i < imgList.length; ++i) {
+			if (imgList[i].className == 'Wirisformula') {
+				var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute));
+				var latexStartPosition = mathml.indexOf(token);
+				
+				if (latexStartPosition != -1) {
+					latexStartPosition += token.length;
+					var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
+					var latex = mathml.substring(latexStartPosition, latexEndPosition);
+					var textNode = document.createTextNode('$$' + wrs_htmlentitiesDecode(latex) + '$$');
+					imgList[i].parentNode.replaceChild(textNode, imgList[i]);
+					--i;		// An image has been replaced.
+				}
 			}
 		}
+		
+		code = splitedCode.prefix + container.innerHTML + splitedCode.sufix;
 	}
 	
-	return splitedCode.prefix + container.innerHTML + splitedCode.sufix;
+	return code;
 }
 
 /**
