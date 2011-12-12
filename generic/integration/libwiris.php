@@ -212,7 +212,23 @@ function wrs_getImageServiceURL($config, $service) {
 }
 
 function wrs_loadConfig($filePath) {
-	return wrs_parseIni($filePath, false, array());
+	$config = wrs_parseIni($filePath, false, array());
+	
+	if (isset($config['wirisconfigurationclass'])) {
+		$parts = explode(';', $config['wirisconfigurationclass'], 2);
+		
+		if (isset($parts[0]) && isset($parts[1])) {
+			$file = trim($parts[0]);
+			require_once($file);
+			
+			$className = trim($parts[1]);
+			$configurationUpdater = new $className();
+			$configurationUpdater->init();
+			$configurationUpdater->updateConfiguration($config);
+		}
+	}
+	
+	return $config;
 	
 	/*
 	TODO: implement the new configuration system.
