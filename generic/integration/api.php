@@ -1,8 +1,8 @@
 <?php
 include 'libwiris.php';
 
-class WIRISPluginAPI {
-	public function WIRISPluginAPI() {
+class com_wiris_plugin_PluginAPI {
+	public function com_wiris_plugin_PluginAPI() {
 	}
 
 	public function mathml2img($mathml, $baseURL, $properties = array()) {
