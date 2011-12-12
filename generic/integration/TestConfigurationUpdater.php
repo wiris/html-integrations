@@ -6,7 +6,7 @@ class com_wiris_plugin_configuration_TestConfigurationUpdater implements com_wir
     public function init() {
     }
     
-    public function  updateConfiguration(&$configuration) {
+    public function updateConfiguration(&$configuration) {
         $configuration['wirisimageserviceversion'] = '1.0';
         $configuration['wiristransparency'] = 'false';
         $configuration['wirisimagebgcolor'] = '#ff0000';
