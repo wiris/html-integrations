@@ -219,7 +219,7 @@ function wrs_loadConfig($filePath) {
 		
 		if (isset($parts[0]) && isset($parts[1])) {
 			$file = trim($parts[0]);
-			require_once($file);
+			require_once(dirname(__FILE__) . '/' . $file);
 			
 			$className = trim($parts[1]);
 			$configurationUpdater = new $className();

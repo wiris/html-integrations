@@ -1,4 +1,6 @@
 <?php
+require_once 'ConfigurationUpdater.php';
+
 class com_wiris_plugin_configuration_TestConfigurationUpdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
 	public function com_wiris_plugin_configuration_TestConfigurationUpdater() {
     }

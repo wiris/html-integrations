@@ -3,7 +3,7 @@ include 'api.php';
 
 if (!empty($_POST['mml'])) {
 	try {
-		$api = new WIRISPluginAPI();
+		$api = new com_wiris_plugin_PluginAPI();
 		echo $api->mathml2img($_POST['mml'], dirname($_SERVER['PHP_SELF']), $_POST);
 	}
 	catch (Exception $e) {
