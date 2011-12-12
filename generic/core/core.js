@@ -913,7 +913,7 @@ function wrs_initParse(code) {
  * @return string
  */
 function wrs_initParseEditMode(code) {
-	if (wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
+	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
 		var splitedCode = wrs_splitBody(code);
 		var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
 		var imgList = container.getElementsByTagName('img');
