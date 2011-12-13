@@ -1,5 +1,5 @@
 <?php
-include 'libwiris.php';
+include_once 'libwiris.php';
 
 class com_wiris_plugin_PluginAPI {
 	public function com_wiris_plugin_PluginAPI() {
