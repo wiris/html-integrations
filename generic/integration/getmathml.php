@@ -41,7 +41,7 @@ if (!is_null($digest)) {
 	}
 }
 else if (isset($_POST['latex'])) {
-	$config = wrs_loadConfig(WRS_CONFIG_FILE);
+	//$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	
 	if (isset($config['wirislatextomathmlurl'])) {
 		$url = $config['wirislatextomathmlurl'];

@@ -12,6 +12,8 @@ class com_wiris_plugin_configuration_TestConfigurationUpdater implements com_wir
         $configuration['wirisimageserviceversion'] = '1.0';
         $configuration['wiristransparency'] = 'false';
         $configuration['wirisimagebgcolor'] = '#ff0000';
+		$configuration['wiriscachedirectory'] = 'c:/temp/cache';
+		$configuration['wirisformuladirectory'] = 'c:/temp/formulas';
     }
 }
 ?>

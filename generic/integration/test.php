@@ -63,7 +63,7 @@ function wrs_assert($condition) {
 		<p>
 			<?php
 			echo 'Loading ', WRS_CONFIG_FILE, '... ';
-			$config = wrs_loadConfig(WRS_CONFIG_FILE);
+			//$config = wrs_loadConfig(WRS_CONFIG_FILE);
 			wrs_assert(!empty($config));
 			?>
 		</p>

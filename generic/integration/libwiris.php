@@ -1,8 +1,6 @@
 <?php
 define('WRS_DEFAULT_CONFIG_FILE', '../default_configuration.ini');
 define('WRS_CONFIG_FILE', '../configuration.ini');
-define('WRS_CACHE_DIRECTORY', '../cache');
-define('WRS_FORMULA_DIRECTORY', '../formulas');
 
 global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
@@ -32,6 +30,22 @@ $wrs_xmlFileAttributes = array(
 	'fontIdent',
 	'fontNumber'
 );
+
+$config = wrs_loadConfig(WRS_CONFIG_FILE);
+
+if (isset($config['wiriscachedirectory'])) {
+	define('WRS_CACHE_DIRECTORY', $config['wiriscachedirectory']);
+} else {
+	define('WRS_CACHE_DIRECTORY', '../cache');
+}
+mkdir(WRS_CACHE_DIRECTORY);
+
+if (isset($config['wirisformuladirectory'])) {
+	define('WRS_FORMULA_DIRECTORY', $config['wirisformuladirectory']);
+} else {
+	define('WRS_FORMULA_DIRECTORY', '../formulas');
+}
+mkdir(WRS_FORMULA_DIRECTORY);
 
 function wrs_applyConfigRetrocompatibility($config) {
 	if (isset($config['']['wirisimageserviceprotocol']) && isset($config['']['wirisimageservicehost']) && isset($config['']['wirisimageserviceport']) && isset($config['']['wirisimageservicepath'])) {

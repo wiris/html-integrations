@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php
 include 'libwiris.php';
-$config = wrs_loadConfig(WRS_CONFIG_FILE);
+//$config = wrs_loadConfig(WRS_CONFIG_FILE);
 $availableLanguages = wrs_getAvailableCASLanguages($config['wiriscaslanguages']);
 
 if (isset($_GET['mode']) && $_GET['mode'] == 'applet') {
