@@ -250,9 +250,13 @@ namespace pluginwiris
 
                 if (lineWords.Length == 2)
                 {
+                    
                     string key = lineWords[0].Trim();
-                    string value = lineWords[1].Trim();
-                    toReturn.Add(key, value);
+                    if (!key.StartsWith("#"))
+                    {
+                        string value = lineWords[1].Trim();
+                        toReturn.Add(key, value);
+                    }
                 }
             }
 
