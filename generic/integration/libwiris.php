@@ -38,14 +38,18 @@ if (isset($config['wiriscachedirectory'])) {
 } else {
 	define('WRS_CACHE_DIRECTORY', '../cache');
 }
-mkdir(WRS_CACHE_DIRECTORY);
-
+if (!file_exists(WRS_CACHE_DIRECTORY)) {
+	mkdir(WRS_CACHE_DIRECTORY,0777,true);
+}
+	
 if (isset($config['wirisformuladirectory'])) {
 	define('WRS_FORMULA_DIRECTORY', $config['wirisformuladirectory']);
 } else {
 	define('WRS_FORMULA_DIRECTORY', '../formulas');
 }
-mkdir(WRS_FORMULA_DIRECTORY);
+if (!file_exists(WRS_FORMULA_DIRECTORY)) {
+	mkdir(WRS_FORMULA_DIRECTORY,0777,true);
+}
 
 function wrs_applyConfigRetrocompatibility($config) {
 	if (isset($config['']['wirisimageserviceprotocol']) && isset($config['']['wirisimageservicehost']) && isset($config['']['wirisimageserviceport']) && isset($config['']['wirisimageservicepath'])) {
