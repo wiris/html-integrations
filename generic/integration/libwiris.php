@@ -1,6 +1,6 @@
 <?php
 define('WRS_DEFAULT_CONFIG_FILE', '../default_configuration.ini');
-define('WRS_CONFIG_FILE', '../configuration.ini');
+define('WRS_CONFIG_FILE', dirname(__FILE__) . '/../configuration.ini');
 
 global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
