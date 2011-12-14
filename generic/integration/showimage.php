@@ -138,11 +138,11 @@ if (empty($_GET['formula'])) {
 	echo 'Error: no image name has been sended.';
 }
 else {
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	$formula = rtrim(basename($_GET['formula']), '.png');
-	$formulaPath = WRS_FORMULA_DIRECTORY . '/' . $formula;
+	$formulaPath = wrs_getFormulaDirectory($config) . '/' . $formula;
 	$extension = (is_file($formulaPath . '.ini')) ? 'ini' : 'xml';
-	$imagePath = WRS_CACHE_DIRECTORY . '/' . $formula . '.png';
-	//$config = wrs_loadConfig(WRS_CONFIG_FILE);
+	$imagePath = wrs_getCacheDirectory($config) . '/' . $formula . '.png';
 	
 	if (is_file($imagePath) || createImage($config, $formulaPath, $extension, $imagePath)) {
 		header('Content-Type: image/png');

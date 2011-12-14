@@ -5,8 +5,9 @@ if (empty($_GET['formula'])) {
 	echo 'Error: no image name has been sended.';
 }
 else {
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	$formula = basename($_GET['formula']);
-	$filePath = WRS_CACHE_DIRECTORY . '/' . $formula;
+	$filePath = wrs_getCacheDirectory($config) . '/' . $formula;
 	
 	if (is_file($filePath)) {
 		header('Content-Type: image/png');

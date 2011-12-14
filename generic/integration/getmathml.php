@@ -9,8 +9,10 @@ else if (isset($_POST['digest'])) {		// Support for future integrations (where m
 	$digest = $_POST['digest'];
 }
 
+$config = wrs_loadConfig(WRS_CONFIG_FILE);
+
 if (!is_null($digest)) {
-	$filePath = WRS_FORMULA_DIRECTORY . '/' . basename($digest);
+	$filePath = wrs_getFormulaDirectory($config) . '/' . basename($digest);
 
 	if (is_file($filePath . '.ini')) {
 		$formula = wrs_parseIni($filePath . '.ini');
@@ -41,8 +43,6 @@ if (!is_null($digest)) {
 	}
 }
 else if (isset($_POST['latex'])) {
-	//$config = wrs_loadConfig(WRS_CONFIG_FILE);
-	
 	if (isset($config['wirislatextomathmlurl'])) {
 		$url = $config['wirislatextomathmlurl'];
 	}

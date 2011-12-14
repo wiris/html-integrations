@@ -5,7 +5,7 @@ $currentPath = dirname($_SERVER['PHP_SELF']) . '/';
 
 if (isset($_POST['image'])) {
 	$fileName = md5($_POST['image']);
-	$formulaPath = WRS_FORMULA_DIRECTORY . '/' . $fileName . '.xml';
+	$formulaPath = wrs_getFormulaDirectory(wrs_loadConfig(WRS_CONFIG_FILE)) . '/' . $fileName . '.xml';
 	
 	if (isset($_POST['mml']) && !is_file($formulaPath)) {
 		file_put_contents($formulaPath, $_POST['mml']);

@@ -1,6 +1,8 @@
 <?php
-define('WRS_DEFAULT_CONFIG_FILE', '../default_configuration.ini');
+define('WRS_DEFAULT_CONFIG_FILE', dirname(__FILE__) . '/../default_configuration.ini');
 define('WRS_CONFIG_FILE', dirname(__FILE__) . '/../configuration.ini');
+define('WRS_CACHE_DIRECTORY', dirname(__FILE__) . '/../cache');
+define('WRS_FORMULA_DIRECTORY', dirname(__FILE__) . '/../formulas');
 
 global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
@@ -30,26 +32,6 @@ $wrs_xmlFileAttributes = array(
 	'fontIdent',
 	'fontNumber'
 );
-
-$config = wrs_loadConfig(WRS_CONFIG_FILE);
-
-if (isset($config['wiriscachedirectory'])) {
-	define('WRS_CACHE_DIRECTORY', $config['wiriscachedirectory']);
-} else {
-	define('WRS_CACHE_DIRECTORY', '../cache');
-}
-if (!file_exists(WRS_CACHE_DIRECTORY)) {
-	mkdir(WRS_CACHE_DIRECTORY,0777,true);
-}
-	
-if (isset($config['wirisformuladirectory'])) {
-	define('WRS_FORMULA_DIRECTORY', $config['wirisformuladirectory']);
-} else {
-	define('WRS_FORMULA_DIRECTORY', '../formulas');
-}
-if (!file_exists(WRS_FORMULA_DIRECTORY)) {
-	mkdir(WRS_FORMULA_DIRECTORY,0777,true);
-}
 
 function wrs_applyConfigRetrocompatibility($config) {
 	if (isset($config['']['wirisimageserviceprotocol']) && isset($config['']['wirisimageservicehost']) && isset($config['']['wirisimageserviceport']) && isset($config['']['wirisimageservicepath'])) {
@@ -186,14 +168,27 @@ function wrs_getAvailableCASLanguages($languageString) {
 	return $availableLanguages;
 }
 
+function wrs_getCacheDirectory($config) {
+	if (isset($config['wiriscachedirectory'])) {
+		return $config['wiriscachedirectory'];
+	}
+	
+	return WRS_CACHE_DIRECTORY;
+}
+
 function wrs_getContents($url, $postVariables = NULL) {
+	$referer = ((isset($_SERVER['HTTPS'])) ? '' : '') . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
+	
 	if (is_null($postVariables)) {
-		$httpConfiguration = array('method' => 'GET');
+		$httpConfiguration = array(
+			'method' => 'GET',
+			'header' => 'Referer: ' . $referer
+		);
 	}
 	else {
 		$httpConfiguration = array(
 			'method'  => 'POST',
-			'header'  => 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+			'header'  => 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' . "\r\n" . 'Referer: ' . $referer,
 			'content' => http_build_query($postVariables, '', '&')
 		);
 	}
@@ -207,6 +202,14 @@ function wrs_getContents($url, $postVariables = NULL) {
 	
 	$context = stream_context_create($contextArray);
 	return file_get_contents($url, false, $context);
+}
+
+function wrs_getFormulaDirectory($config) {
+	if (isset($config['wirisformuladirectory'])) {
+		return $config['wirisformuladirectory'];
+	}
+	
+	return WRS_FORMULA_DIRECTORY;
 }
 
 function wrs_getImageServiceURL($config, $service) {
@@ -237,6 +240,7 @@ function wrs_loadConfig($filePath) {
 		
 		if (isset($parts[0]) && isset($parts[1])) {
 			$file = trim($parts[0]);
+			require_once(dirname(__FILE__) . '/ConfigurationUpdater.php');
 			require_once(dirname(__FILE__) . '/' . $file);
 			
 			$className = trim($parts[1]);

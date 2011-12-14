@@ -63,7 +63,7 @@ function wrs_assert($condition) {
 		<p>
 			<?php
 			echo 'Loading ', WRS_CONFIG_FILE, '... ';
-			//$config = wrs_loadConfig(WRS_CONFIG_FILE);
+			$config = wrs_loadConfig(WRS_CONFIG_FILE);
 			wrs_assert(!empty($config));
 			?>
 		</p>
@@ -81,7 +81,7 @@ function wrs_assert($condition) {
 		
 		<p>
 			<?php
-			$file = WRS_FORMULA_DIRECTORY . '/test.xml';
+			$file = wrs_getFormulaDirectory($config) . '/test.xml';
 			echo 'Writing file ', $file, '... ';
 			wrs_assert(fopen($file, 'w') !== false);
 			?>
@@ -100,7 +100,7 @@ function wrs_assert($condition) {
 		
 		<p>
 			<?php
-			$file = WRS_CACHE_DIRECTORY . '/test.png';
+			$file = wrs_getCacheDirectory($config) . '/test.png';
 			echo 'Writing file ', $file, '... ';
 			wrs_assert(fopen($file, 'w') !== false);
 			?>
