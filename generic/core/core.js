@@ -914,28 +914,30 @@ function wrs_initParse(code) {
  */
 function wrs_initParseEditMode(code) {
 	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
-		var splitedCode = wrs_splitBody(code);
-		var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
-		var imgList = container.getElementsByTagName('img');
+		var imgList = wrs_getElementsByNameFromString(code, 'img', true);
 		var token = 'encoding="LaTeX">';
+		var carry = 0;			// While replacing images with latex, the indexes of the found images changes respecting the original code, so this carry is needed.
 		
 		for (var i = 0; i < imgList.length; ++i) {
-			if (imgList[i].className == 'Wirisformula') {
-				var mathml = wrs_mathmlDecode(imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute));
+			var imgCode = code.substring(imgList[i].start + carry, imgList[i].end + carry);
+			
+			if (imgCode.indexOf(' class="Wirisformula"') != -1) {
+				var mathmlStart = imgCode.indexOf(' ' + _wrs_conf_imageMathmlAttribute + '="') + (' ' + _wrs_conf_imageMathmlAttribute + '="').length;
+				var mathmlEnd = imgCode.indexOf('"', mathmlStart);
+				var mathml = wrs_mathmlDecode(imgCode.substring(mathmlStart, mathmlEnd));
 				var latexStartPosition = mathml.indexOf(token);
 				
 				if (latexStartPosition != -1) {
 					latexStartPosition += token.length;
 					var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
 					var latex = mathml.substring(latexStartPosition, latexEndPosition);
-					var textNode = document.createTextNode('$$' + wrs_htmlentitiesDecode(latex) + '$$');
-					imgList[i].parentNode.replaceChild(textNode, imgList[i]);
-					--i;		// An image has been replaced.
+					
+					var replaceText = '$$' + wrs_htmlentitiesDecode(latex) + '$$';
+					code = code.substring(0, imgList[i].start + carry) + replaceText + code.substring(imgList[i].end + carry);
+					carry += replaceText.length - (imgList[i].end - imgList[i].start);
 				}
 			}
 		}
-		
-		code = splitedCode.prefix + container.innerHTML + splitedCode.sufix;
 	}
 	
 	return code;
@@ -962,27 +964,69 @@ function wrs_initParseSaveMode(code) {
 		}
 	}
 	
-	var splitedCode = wrs_splitBody(code);
-	var container = wrs_createObject('<div>' + splitedCode.code + '</div>');
-	var appletList = container.getElementsByTagName('applet');
+	var appletList = wrs_getElementsByNameFromString(code, 'applet', false);
+	var carry = 0;			// While replacing applets with images, the indexes of the found applets changes respecting the original code, so this carry is needed.
 	
 	for (var i = 0; i < appletList.length; ++i) {
-		if (appletList[i].className == 'Wiriscas' || appletList[i].getAttribute('class') == 'Wiriscas') {		// Internet Explorer can't read className correctly
-			var imgObject = wrs_createElement('img');
-			imgObject.title = 'Double click to edit';
-			imgObject.src = appletList[i].getAttribute('src');
-			imgObject.align = 'middle';
+		var appletCode = code.substring(appletList[i].start + carry, appletList[i].end + carry);
+		
+		if (appletCode.indexOf(' class="Wiriscas"') != -1) {
+			var srcStart = appletCode.indexOf(' src="') + ' src="'.length;
+			var srcEnd = appletCode.indexOf('"', srcStart);
+			var src = appletCode.substring(srcStart, srcEnd);
+			var imgCode = '<img title="Double click to edit" align="middle" class="Wiriscas" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
 			
-			var appletCode = wrs_createObjectCode(appletList[i]);
-			imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
-			imgObject.className = 'Wiriscas';
-			
-			appletList[i].parentNode.replaceChild(imgObject, appletList[i]);
-			--i;		// An applet has been replaced.
+			code = code.substring(0, appletList[i].start + carry) + imgCode + code.substring(appletList[i].end + carry);
+			carry += imgCode.length - (appletList[i].end - appletList[i].start);
 		}
 	}
 	
-	return splitedCode.prefix + container.innerHTML + splitedCode.sufix;
+	return code;
+}
+
+/**
+ * Looks for elements that match the given name in a HTML code string.
+ * Important: this function is very concrete for WIRIS code. It takes as preconditions lots of behaviors that are not the general case.
+ *
+ * @param string code HTML code
+ * @param string name Element names
+ * @param boolean autoClosed True if the elements are autoClosed.
+ * @return array
+ */
+function wrs_getElementsByNameFromString(code, name, autoClosed) {
+	var elements = [];
+	var code = code.toLowerCase();
+	name = name.toLowerCase();
+	var start = code.indexOf('<' + name + ' ');
+	
+	while (start != -1) {						// Look for nodes.
+		var endString;
+		
+		if (autoClosed) {
+			endString = '>';
+		}
+		else {
+			endString = '</' + name + '>';
+		}
+		
+		var end = code.indexOf(endString, start);
+		
+		if (end != -1) {
+			end += endString.length;
+			
+			elements.push({
+				'start': start,
+				'end': end
+			});
+		}
+		else {
+			end = start + 1;
+		}
+		
+		start = code.indexOf('<' + name + ' ', end);
+	}
+	
+	return elements;
 }
 
 /**
