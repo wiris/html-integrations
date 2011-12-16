@@ -169,11 +169,9 @@ function wrs_getAvailableCASLanguages($languageString) {
 }
 
 function wrs_getCacheDirectory($config) {
-	if (isset($config['wiriscachedirectory'])) {
-		return $config['wiriscachedirectory'];
-	}
-	
-	return WRS_CACHE_DIRECTORY;
+	$cacheDirectory = (isset($config['wiriscachedirectory'])) $config['wiriscachedirectory'] : WRS_CACHE_DIRECTORY;
+	mkdir($cacheDirectory, 0755, true);
+	return $cacheDirectory;
 }
 
 function wrs_getContents($url, $postVariables = NULL) {
@@ -205,11 +203,9 @@ function wrs_getContents($url, $postVariables = NULL) {
 }
 
 function wrs_getFormulaDirectory($config) {
-	if (isset($config['wirisformuladirectory'])) {
-		return $config['wirisformuladirectory'];
-	}
-	
-	return WRS_FORMULA_DIRECTORY;
+	$formulaDirectory = (isset($config['wirisformuladirectory'])) $config['wirisformuladirectory'] : WRS_FORMULA_DIRECTORY;
+	mkdir($formulaDirectory, 0755, true);
+	return $formulaDirectory;
 }
 
 function wrs_getImageServiceURL($config, $service) {
