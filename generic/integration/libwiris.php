@@ -169,8 +169,8 @@ function wrs_getAvailableCASLanguages($languageString) {
 }
 
 function wrs_getCacheDirectory($config) {
-	$cacheDirectory = (isset($config['wiriscachedirectory'])) $config['wiriscachedirectory'] : WRS_CACHE_DIRECTORY;
-	mkdir($cacheDirectory, 0755, true);
+	$cacheDirectory = (isset($config['wiriscachedirectory'])) ? $config['wiriscachedirectory'] : WRS_CACHE_DIRECTORY;
+	@mkdir($cacheDirectory, 0755, true);
 	return $cacheDirectory;
 }
 
@@ -203,8 +203,8 @@ function wrs_getContents($url, $postVariables = NULL) {
 }
 
 function wrs_getFormulaDirectory($config) {
-	$formulaDirectory = (isset($config['wirisformuladirectory'])) $config['wirisformuladirectory'] : WRS_FORMULA_DIRECTORY;
-	mkdir($formulaDirectory, 0755, true);
+	$formulaDirectory = (isset($config['wirisformuladirectory'])) ? $config['wirisformuladirectory'] : WRS_FORMULA_DIRECTORY;
+	@mkdir($formulaDirectory, 0755, true);
 	return $formulaDirectory;
 }
 
