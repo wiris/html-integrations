@@ -177,7 +177,7 @@ function wrs_getCacheDirectory($config) {
 }
 
 function wrs_getContents($url, $postVariables = NULL) {
-	$referer = ((isset($_SERVER['HTTPS'])) ? '' : '') . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
+	$referer = ((isset($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
 	
 	if (is_null($postVariables)) {
 		$httpConfiguration = array(
