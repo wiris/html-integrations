@@ -5,14 +5,15 @@ $currentPath = dirname($_SERVER['PHP_SELF']) . '/';
 
 if (isset($_POST['image'])) {
 	$fileName = md5($_POST['image']);
-	$formulaPath = wrs_getFormulaDirectory(wrs_loadConfig(WRS_CONFIG_FILE)) . '/' . $fileName . '.xml';
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
+	$formulaPath = wrs_getFormulaDirectory($config) . '/' . $fileName . '.xml';
 	
 	if (isset($_POST['mml']) && !is_file($formulaPath)) {
 		file_put_contents($formulaPath, $_POST['mml']);
 	}
 	
 	$url = $currentPath . 'showcasimage.php?formula=' . $fileName . '.png';
-	$imagePath = WRS_CACHE_DIRECTORY . '/' . $fileName . '.png';
+	$imagePath = wrs_getCacheDirectory($config) . '/' . $fileName . '.png';
 	
 	if (!is_file($imagePath)) {
 		if (file_put_contents($imagePath, base64_decode($_POST['image'])) !== false) {
