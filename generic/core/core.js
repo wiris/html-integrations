@@ -1102,6 +1102,28 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 }
 
 /**
+ * Checks if the mathml at position i is inside an HTML attribute or not.
+ * @param string content
+ * @param string i
+ * @return bool True if is inside an HTML attribute. In other case, false.
+ */
+function wrs_isMathmlInAttribute(content, i) {
+	//regex = '^[\'"][\\s]*=[\\s]*[\\w-]+([\\s]*("[^"]*"|\'[^\']*\')[\\s]*=[\\s]*[\\w-]+[\\s]*)*[\\s]+gmi<';
+	var math_att = '[\'"][\\s]*=[\\s]*[\\w-]+';  						// "=att OR '=att
+	var att_content = '"[^"]*"|\'[^\']*\'';		 						// "blabla" OR 'blabla'
+	var att = '[\\s]*(' + att_content + ')[\\s]*=[\\s]*[\\w-]+[\\s]*';	// "blabla"=att OR 'blabla'=att
+	var atts = '(' + att + ')*';										// "blabla"=att1 "blabla"=att2
+	var regex = '^' + math_att + atts + '[\\s]+gmi<';					// "=att "blabla"=att1 "blabla"=att2 gmi<
+	var expression = new RegExp(regex);
+	
+	var actual_content = content.substring(0, i);
+	var reversed = actual_content.split('').reverse().join('');
+	var exists = expression.test(reversed);
+	
+	return exists;
+}
+
+/**
  * WIRIS special encoding.
  * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
  * @param string input
@@ -1309,9 +1331,15 @@ function wrs_parseMathmlToImg(content, characters) {
 			end += mathTagEnd.length;
 		}
 		
-		var mathml = content.substring(start, end);
-		mathml = (characters == _wrs_safeXmlCharacters) ? wrs_mathmlDecode(mathml) : wrs_mathmlEntities(mathml);
-		output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+		if (!wrs_isMathmlInAttribute(content, start)){
+			var mathml = content.substring(start, end);
+			mathml = (characters == _wrs_safeXmlCharacters) ? wrs_mathmlDecode(mathml) : wrs_mathmlEntities(mathml);
+			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+		}
+		else {
+			output += content.substring(start, end);
+		}
+		
 		start = content.indexOf(mathTagBegin, end);
 	}
 	
