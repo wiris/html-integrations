@@ -34,8 +34,24 @@ var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_language = 'en';
 
-// Plugin integration
+/*
+ * Fix for a bug in CKEditor when there is more than one editor in the same page
+ * It removes wiris element from config array when more than one is found
+ */
+var wirisButtonIncluded = false;
 
+for (var i = 0; i < CKEDITOR.config.toolbar_Full.length; ++i) {
+	if (CKEDITOR.config.toolbar_Full[i].name == 'wiris') {
+		if (!wirisButtonIncluded) {
+			wirisButtonIncluded = true;
+		}
+		else {
+			CKEDITOR.config.toolbar_Full.splice(i, 1);
+		}
+	}
+}
+
+// Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
 	'init': function (editor) {
 		var iframe;
