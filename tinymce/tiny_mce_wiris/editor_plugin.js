@@ -36,8 +36,8 @@ var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' o
 //var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
 /* Vars */
-var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-formula.gif';
-var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/wiris-cas.gif';
+var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
+var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
@@ -101,7 +101,7 @@ var _wrs_int_language = 'en';
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
 					title: 'WIRIS editor',
 					cmd: 'tiny_mce_wiris_openFormulaEditor',
-					image: url + '/core/wiris-formula.gif'
+					image: _wrs_int_editorIcon
 				});
 			}
 			
@@ -114,7 +114,7 @@ var _wrs_int_language = 'en';
 				editor.addButton('tiny_mce_wiris_CAS', {
 					title: 'WIRIS cas',
 					cmd: 'tiny_mce_wiris_openCAS',
-					image: url + '/core/wiris-cas.gif'
+					image: _wrs_int_CASIcon
 				});
 			}
 		},

@@ -26,8 +26,8 @@ var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' o
 //var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
 // Vars
-var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-formula.gif';
-var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/wiris-cas.gif';
+var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';
+var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
