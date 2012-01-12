@@ -1058,7 +1058,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 			}
 			else {
 				var selection = windowTarget.getSelection();
-				
+
 				try {
 					var range = selection.getRangeAt(0);
 				}
@@ -1075,10 +1075,16 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 				if (node.nodeType == 3) {		// TEXT_NODE
 					node = node.splitText(position);
 					node.parentNode.insertBefore(element, node);
+					node = node.parentNode;
 				}
 				else if (node.nodeType == 1) {	// ELEMENT_NODE
 					node.insertBefore(element, node.childNodes[position]);
 				}
+				
+				//Fix to set the caret after the inserted image
+				range.selectNode(element);
+				position = range.endOffset;
+				selection.collapse(node, position);
 			}
 		}
 		else if (_wrs_temporalRange) {
