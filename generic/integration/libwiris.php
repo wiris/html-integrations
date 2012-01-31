@@ -174,8 +174,13 @@ function wrs_getCacheDirectory($config) {
 	return $cacheDirectory;
 }
 
-function wrs_getContents($url, $postVariables = NULL) {
+function wrs_getContents($config, $url, $postVariables = NULL) {
 	$referer = ((isset($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
+
+	//If cURL is used it's possible to disable the directive allow_url_fopen
+	if (function_exists('curl_init')){
+		return wrs_fileGetContentsCurl($url, $postVariables, $config);
+	}
 	
 	if (is_null($postVariables)) {
 		$httpConfiguration = array(
@@ -199,7 +204,29 @@ function wrs_getContents($url, $postVariables = NULL) {
 	}
 	
 	$context = stream_context_create($contextArray);
+	
 	return file_get_contents($url, false, $context);
+}
+
+function wrs_fileGetContentsCurl($url, $postVariables, $config) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	
+	//POST method
+	if (!is_null($postVariables)) {
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postVariables, '', '&'));
+	}
+	
+	//PROXY is used	
+	if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true') {
+		curl_setopt($ch, CURLOPT_PROXY, $config['wirisproxy_host']);
+		curl_setopt($ch, CURLOPT_PROXYPORT, $config['wirisproxy_port']);
+	}
+	
+	$data = curl_exec($ch);	
+	curl_close($ch);
+
+	return $data;
 }
 
 function wrs_getFormulaDirectory($config) {
@@ -231,6 +258,7 @@ function wrs_getImageServiceURL($config, $service) {
 function wrs_loadConfig($filePath) {
 	$config = wrs_parseIni($filePath, false, array());
 	
+	
 	if (isset($config['wirisconfigurationclass'])) {
 		$parts = explode(';', $config['wirisconfigurationclass'], 2);
 		
@@ -245,7 +273,7 @@ function wrs_loadConfig($filePath) {
 			$configurationUpdater->updateConfiguration($config);
 		}
 	}
-	
+
 	return $config;
 	
 	/*

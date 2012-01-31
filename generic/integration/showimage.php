@@ -119,15 +119,16 @@ function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
 				}
 			}
 		}
-
+		
 		// Query.
-		$response = wrs_getContents(wrs_getImageServiceURL($config, NULL), array_merge($configAndFonts['fonts'], $properties));
+		$response = wrs_getContents($config, wrs_getImageServiceURL($config, NULL), array_merge($configAndFonts['fonts'], $properties));
 		
 		if ($response === false) {
 			return false;
 		}
 
 		file_put_contents($imagePath, $response);
+		
 		return true;
 	}
 	

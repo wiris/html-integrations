@@ -58,7 +58,7 @@ else if (isset($_POST['latex'])) {
 		$data['saveLatex'] = '';
 	}
 	
-	$response = wrs_getContents($url, $data);
+	$response = wrs_getContents($config, $url, $data);
 
 	if ($response !== false) {
 		echo $response;
