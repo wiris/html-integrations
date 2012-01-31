@@ -179,7 +179,7 @@ function wrs_getContents($config, $url, $postVariables = NULL) {
 
 	//If cURL is used it's possible to disable the directive allow_url_fopen
 	if (function_exists('curl_init')){
-		return wrs_fileGetContentsCurl($url, $postVariables, $config);
+		return wrs_fileGetContentsCurl($url, $postVariables, $config, $referer);
 	}
 	
 	if (is_null($postVariables)) {
@@ -208,12 +208,15 @@ function wrs_getContents($config, $url, $postVariables = NULL) {
 	return file_get_contents($url, false, $context);
 }
 
-function wrs_fileGetContentsCurl($url, $postVariables, $config) {
+function wrs_fileGetContentsCurl($url, $postVariables, $config, $referer) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	
+	curl_setopt($ch, CURLOPT_REFERER, $referer);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
 	//POST method
 	if (!is_null($postVariables)) {
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/x-www-form-urlencoded; charset=UTF-8'));
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postVariables, '', '&'));
 	}
 	
