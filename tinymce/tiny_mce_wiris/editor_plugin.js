@@ -94,8 +94,14 @@ var _wrs_int_language = 'en';
 						'numberColor': editor.settings['wirisimagenumbercolor'],
 						'identColor': editor.settings['wirisimageidentcolor']
 					};
+
+					var language = editor.settings.language;
 					
-					wrs_int_openNewFormulaEditor(iframe, editor.settings['wirisformulaeditorlang']);
+					if (editor.settings['wirisformulaeditorlang']) {
+						language = editor.settings['wirisformulaeditorlang'];
+					}
+					
+					wrs_int_openNewFormulaEditor(iframe, language);
 				});
 			
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
