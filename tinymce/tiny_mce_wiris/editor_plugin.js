@@ -84,6 +84,12 @@ var _wrs_int_language = 'en';
 				params.content = wrs_endParse(params.content);
 			});
 			
+			if (editor.settings.wiris_plugin_enabled){
+				var wiris_plugin_enabled_arr = editor.settings.wiris_plugin_enabled.split(",");
+				_wrs_conf_editorEnabled = Boolean(parseFloat(wiris_plugin_enabled_arr[0]));
+				_wrs_conf_CASEnabled = Boolean(parseFloat(wiris_plugin_enabled_arr[1]));
+			}			
+			
 			if (_wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
 					_wrs_int_wirisProperties = {
