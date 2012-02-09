@@ -414,16 +414,17 @@ function wrs_endParseEditMode(code, wirisProperties) {
 			output += code.substring(endPosition, startPosition);
 			endPosition = code.indexOf('$$', startPosition + 2);
 			
-			if (endPosition == -1) {
-				endPosition = code.length;
-			}
-			else {
+			if (endPosition != -1) {
 				var latex = code.substring(startPosition + 2, endPosition);
 				latex = wrs_htmlentitiesDecode(latex);
 				var mathml = wrs_getMathMLFromLatex(latex, true);
 				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties);
 				output += wrs_createObjectCode(imgObject);
 				endPosition += 2;
+			}
+			else {
+				output += '$$';
+				endPosition = startPosition + 2;
 			}
 			
 			startPosition = code.indexOf('$$', endPosition);
