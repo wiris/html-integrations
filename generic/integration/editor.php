@@ -1,8 +1,12 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
+include 'libwiris.php';
+$config = wrs_loadConfig(WRS_CONFIG_FILE);
+?>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-		<script type="text/javascript" src="../editor/editor.js"></script>
+		<script type="text/javascript" src="<?php echo wrs_getImageServiceURL($config, 'editor'); ?>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
 		<title>WIRIS Formula Editor</title>
 		
