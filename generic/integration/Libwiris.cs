@@ -142,7 +142,7 @@ namespace pluginwiris
             return availableLanguages;
         }
 		
-		static public Stream getContents(string url, Hashtable postVariables)
+		static public Stream getContents(string url, Hashtable postVariables, string referer)
 		{
 			string postdata = Libwiris.httpBuildQuery(postVariables);
 
@@ -150,6 +150,7 @@ namespace pluginwiris
 			byte[] data = encode.GetBytes(postdata);
 			
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Referer = referer;
 			
 			if (postVariables == null)
 			{
@@ -187,6 +188,11 @@ namespace pluginwiris
 			}
 
 			return protocol + "://" + domain + port + path;
+		}
+		
+		static public string getReferer(HttpRequest request)
+		{
+            return request.Url.Scheme + "://" + request.Url.Host + ":" + request.Url.Port + request.Url.PathAndQuery;
 		}
 		
         static public string httpBuildQuery(Hashtable properties)

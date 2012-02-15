@@ -44,7 +44,7 @@ namespace pluginwiris
 				Hashtable properties = new Hashtable();
 				properties["mml"] = this.Request.QueryString["mml"];
 				
-				Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties);
+				Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties, Libwiris.getReferer(this.Request));
 				this.saveImage(imagePath, responseStream);
 				responseStream.Close();
 				
@@ -194,7 +194,7 @@ namespace pluginwiris
 				properties[(string)entry.Key] = fonts[(string)entry.Key];
 			}
 			
-			Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties);
+			Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties, Libwiris.getReferer(this.Request));
 			this.saveImage(imagePath, responseStream);
 			responseStream.Close();
 		}

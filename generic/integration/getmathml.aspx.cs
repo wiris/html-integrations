@@ -57,7 +57,7 @@ namespace pluginwiris
 					data["saveLatex"] = "";
 				}
 			
-				Stream response = Libwiris.getContents(url, data);
+				Stream response = Libwiris.getContents(url, data, Libwiris.getReferer(this.Request));
 				StreamReader responseReader = new StreamReader(response);
 				this.Response.Write(responseReader.ReadToEnd());
 			}
