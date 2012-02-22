@@ -34,7 +34,7 @@ var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wi
 var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php'		// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
-//var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
+var _wrs_conf_parseModes = [];							// This value can contain 'latex'.
 
 /* Vars */
 var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
