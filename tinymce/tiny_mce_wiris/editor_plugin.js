@@ -53,7 +53,7 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	var httpRequest;
 
 	if (typeof XMLHttpRequest != 'undefined') {
-		httpRequest = XMLHttpRequest();
+		httpRequest = new XMLHttpRequest();
 	}
 	else {
 		try {
