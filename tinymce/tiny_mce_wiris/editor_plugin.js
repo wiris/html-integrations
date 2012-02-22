@@ -31,6 +31,7 @@ var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_
 
 var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getlatex.php';				// Specifies where is the getlatex script.
+var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php'		// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 //var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
@@ -45,6 +46,50 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_language = 'en';
 
+/* Configuration loading */
+var configuration = {};
+
+if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php') {
+	var httpRequest;
+
+	if (typeof XMLHttpRequest != 'undefined') {
+		httpRequest = XMLHttpRequest();
+	}
+	else {
+		try {
+			httpRequest = new ActiveXObject('Msxml2.XMLHTTP');
+		}
+		catch (e) {
+			try {
+				httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+			catch (oc) {
+			}
+		}
+	}
+
+	if (_wrs_conf_getconfigPath.substr(0, 1) == '/' || _wrs_conf_getconfigPath.substr(0, 7) == 'http://' || _wrs_conf_getconfigPath.substr(0, 8) == 'https://') {
+		httpRequest.open('GET', _wrs_conf_getconfigPath, false);
+	}
+	else {
+		httpRequest.open('GET', _wrs_currentPath + _wrs_conf_getconfigPath, false);
+	}
+	
+	httpRequest.send(null);
+	configuration = eval('(' + httpRequest.responseText + ')');
+}
+
+if ('wirisparselatex' in configuration && Boolean(configuration.wirisparselatex)) {
+	_wrs_conf_parseModes.push('latex');
+}
+
+if ('wirisformulaeditoractive' in configuration) {
+	_wrs_conf_editorEnabled = Boolean(configuration.wirisformulaeditoractive);
+}
+
+if ('wiriscasactive' in configuration) {
+	_wrs_conf_CASEnabled = Boolean(configuration.wiriscasactive);
+}
 /* Plugin integration */
 (function () {
 	var plugin = {
@@ -84,11 +129,6 @@ var _wrs_int_language = 'en';
 				params.content = wrs_endParse(params.content);
 			});
 			
-			if (editor.settings.wiris_plugin_enabled){
-				var wiris_plugin_enabled_arr = editor.settings.wiris_plugin_enabled.split(",");
-				_wrs_conf_editorEnabled = Boolean(parseFloat(wiris_plugin_enabled_arr[0]));
-				_wrs_conf_CASEnabled = Boolean(parseFloat(wiris_plugin_enabled_arr[1]));
-			}			
 			
 			if (_wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
