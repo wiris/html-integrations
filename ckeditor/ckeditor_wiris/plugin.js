@@ -47,6 +47,7 @@ for (var i = 0; i < CKEDITOR.config.toolbar_Full.length; ++i) {
 		}
 		else {
 			CKEDITOR.config.toolbar_Full.splice(i, 1);
+			i--;
 		}
 	}
 }
