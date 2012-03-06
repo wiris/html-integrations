@@ -76,7 +76,12 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	}
 	
 	httpRequest.send(null);
-	configuration = eval('(' + httpRequest.responseText + ')');
+
+	try {
+		configuration = eval('(' + httpRequest.responseText + ')');
+	}
+	catch (e) {
+	}
 }
 
 if ('wirisparselatex' in configuration && Boolean(configuration.wirisparselatex)) {
