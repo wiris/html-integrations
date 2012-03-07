@@ -34,7 +34,7 @@ var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wi
 var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php'		// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = [];							// This value can contain 'latex'.
+var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
 
 /* Vars */
 var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
@@ -84,17 +84,24 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	}
 }
 
-if ('wirisparselatex' in configuration && Boolean(configuration.wirisparselatex)) {
-	_wrs_conf_parseModes.push('latex');
+if (configuration.wirisparselatex == 'false') {
+	var pos = _wrs_conf_parseModes.indexOf('latex');
+	if (pos != -1){
+		_wrs_conf_parseModes.splice(pos, 1);
+	}
+}else{
+	var pos = _wrs_conf_parseModes.indexOf('latex');
+	if (pos == -1){
+		_wrs_conf_parseModes.push('latex');
+	}
 }
-
 if ('wirisformulaeditoractive' in configuration) {
-	_wrs_conf_editorEnabled = Boolean(configuration.wirisformulaeditoractive);
+	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == 'true');
+}
+if ('wiriscasactive' in configuration) {
+	_wrs_conf_CASEnabled = (configuration.wiriscasactive == 'true');
 }
 
-if ('wiriscasactive' in configuration) {
-	_wrs_conf_CASEnabled = Boolean(configuration.wiriscasactive);
-}
 /* Plugin integration */
 (function () {
 	var plugin = {
