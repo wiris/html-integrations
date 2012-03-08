@@ -89,7 +89,7 @@ if (configuration.wirisparselatex == 'false') {
 	if (pos != -1){
 		_wrs_conf_parseModes.splice(pos, 1);
 	}
-}else{
+}else if (configuration.wirisparselatex == 'true') {
 	var pos = _wrs_conf_parseModes.indexOf('latex');
 	if (pos == -1){
 		_wrs_conf_parseModes.push('latex');
