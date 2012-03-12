@@ -24,7 +24,15 @@ else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 /* FCKeditor integration end */
 
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
-	var editor = com.wiris.jsEditor.JsEditor.newInstance();
+	var editor;
+
+	if (com.wiris.jsEditor.defaultBasePath) {
+		editor = com.wiris.jsEditor.JsEditor.newInstance();
+	}
+	else {
+		editor = new com.wiris.jsEditor.JsEditor('editor', null);
+	}
+	
 	var editorElement = editor.getElement();
 	var editorContainer = document.getElementById('editorContainer');
 	editorContainer.appendChild(editorElement);

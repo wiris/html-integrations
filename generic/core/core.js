@@ -270,7 +270,16 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 		data['returnDigest'] = 'true';
 	}
 	
-	return wrs_getContent(_wrs_conf_createimagePath, data);
+	var result = wrs_getContent(_wrs_conf_createimagePath, data);
+	
+	if (result.indexOf('@BASE@') != -1) {
+		// Replacing '@BASE@' with the base URL of createimage.
+		var baseParts = _wrs_conf_createimagePath.split('/');
+		baseParts.pop();
+		result = result.split('@BASE@').join(baseParts.join('/'));
+	}
+	
+	return result;
 }
 
 /**

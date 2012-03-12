@@ -6,7 +6,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 		<script type="text/javascript" src="<% this.Response.Write(Libwiris.getImageServiceURL(this.config, "editor")); %>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
-		<title>WIRIS Formula Editor</title>
+		<title>WIRIS editor</title>
 		
 		<style type="text/css">
 			/*<!--*/
