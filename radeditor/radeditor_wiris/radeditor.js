@@ -14,12 +14,16 @@ var _wrs_int_window_opened = false;
 var _wrs_conf_editorEnabled = true; 	// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true; 	// Specifies if WIRIS cas is enabled.
 
+var _wrs_conf_getmathmlPath = _wrs_currentPath + '/radeditor_wiris/integration/getmathml.aspx';			// Specifies where is the getmathml script.
+
 var _wrs_int_temporalIframe;
 var _wrs_int_currentEditor;
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes'; 						// Specifies WIRIS cas window options.
 var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes'; 						// Specifies formula editor window options.
 
 var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
+//var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
+
 
 function WIRIScas_CallbackFunction(appletCode, image, width, height) {
     if (appletCode) {
@@ -35,22 +39,23 @@ function WIRISformula_CallbackFunction(mathml, editMode) {
     }
 }
 
-function OnClientInit(editor)
-{
+function OnClientLoad(editor, args){
+
+	editor.add_submit(function (){
+		editor.set_html(wrs_endParse(editor.get_html(true)));
+	});
+
 	function whenDocReady() {
 		if (window.wrs_initParse) {
-			alert(wrs_initParse(editor.get_text()));
-			
-			//editor.pasteHtml('<span style="width:100px;border: 1px solid red;background-color: blue;color: white;">sample content</span>');
-			
-			alert(1);
+			editor.set_html(wrs_initParse(editor.get_html()));
 
-			/*editor.setContent(wrs_initParse(textarea.value));
+			/*
 			iframe = editor.getContentAreaContainer().firstChild;
 			
 			wrs_addIframeEvents(iframe, function (iframe, element) {
 				wrs_int_doubleClickHandler(editor, iframe, element);
-			}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);*/
+			}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+			*/
 		}
 		else {
 			setTimeout(whenDocReady, 50);
@@ -58,7 +63,7 @@ function OnClientInit(editor)
 	}
 	
 	whenDocReady();
-} 
+}
 
 Telerik.Web.UI.Editor.CommandList["WIRIScas"] = function(commandName, editor, args) {
     _wrs_int_currentEditor = editor;
