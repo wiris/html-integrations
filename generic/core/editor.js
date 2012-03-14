@@ -48,9 +48,16 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			mathml = wrs_int_opener.wrs_mathmlDecode(wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute));
 		}
 		
-		setTimeout(function () {
-			editor.setMathML(mathml);
-		}, 100);
+		function setMathML() {
+			if (editor.isReady()) {
+				editor.setMathML(mathml);
+			}
+			else {
+				setTimeout(setMathML, 50);
+			}
+		}
+		
+		setMathML();
 	}
 	
 	// Submit button.
