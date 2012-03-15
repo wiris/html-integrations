@@ -847,6 +847,10 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
 			
 			var xmlCode = imgObject.getAttribute(_wrs_conf_imageMathmlAttribute);
 			
+			if (xmlCode == null) {
+				xmlCode = imgObject.getAttribute('alt');
+			}
+			
 			if (!convertToSafeXml) {
 				xmlCode = wrs_mathmlDecode(xmlCode);
 			}
@@ -932,19 +936,29 @@ function wrs_initParseEditMode(code) {
 			var imgCode = code.substring(imgList[i].start + carry, imgList[i].end + carry);
 			
 			if (imgCode.indexOf(' class="Wirisformula"') != -1) {
-				var mathmlStart = imgCode.indexOf(' ' + _wrs_conf_imageMathmlAttribute + '="') + (' ' + _wrs_conf_imageMathmlAttribute + '="').length;
-				var mathmlEnd = imgCode.indexOf('"', mathmlStart);
-				var mathml = wrs_mathmlDecode(imgCode.substring(mathmlStart, mathmlEnd));
-				var latexStartPosition = mathml.indexOf(token);
+				var mathmlStartToken = ' ' + _wrs_conf_imageMathmlAttribute + '="';
+				var mathmlStart = imgCode.indexOf(mathmlStartToken);
 				
-				if (latexStartPosition != -1) {
-					latexStartPosition += token.length;
-					var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
-					var latex = mathml.substring(latexStartPosition, latexEndPosition);
+				if (mathmlStart == -1) {
+					mathmlStartToken = ' alt="';
+					mathmlStart = imgCode.indexOf(mathmlStartToken);
+				}
+				
+				if (mathmlStart != -1) {
+					mathmlStart += mathmlStartToken.length;
+					var mathmlEnd = imgCode.indexOf('"', mathmlStart);
+					var mathml = wrs_mathmlDecode(imgCode.substring(mathmlStart, mathmlEnd));
+					var latexStartPosition = mathml.indexOf(token);
 					
-					var replaceText = '$$' + wrs_htmlentitiesDecode(latex) + '$$';
-					code = code.substring(0, imgList[i].start + carry) + replaceText + code.substring(imgList[i].end + carry);
-					carry += replaceText.length - (imgList[i].end - imgList[i].start);
+					if (latexStartPosition != -1) {
+						latexStartPosition += token.length;
+						var latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
+						var latex = mathml.substring(latexStartPosition, latexEndPosition);
+						
+						var replaceText = '$$' + wrs_htmlentitiesDecode(latex) + '$$';
+						code = code.substring(0, imgList[i].start + carry) + replaceText + code.substring(imgList[i].end + carry);
+						carry += replaceText.length - (imgList[i].end - imgList[i].start);
+					}
 				}
 			}
 		}

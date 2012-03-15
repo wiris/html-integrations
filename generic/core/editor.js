@@ -40,12 +40,17 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	// Mathml content
 	if (!wrs_int_opener._wrs_isNewElement) {
 		var mathml;
+		var attributeValue = wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute);
+			
+		if (attributeValue == null) {
+			attributeValue = wrs_int_opener._wrs_temporalImage.getAttribute('alt');
+		}
 		
 		if (wrs_int_opener._wrs_conf_useDigestInsteadOfMathml) {
-			mathml = wrs_int_opener.wrs_getCode(wrs_int_opener._wrs_conf_digestPostVariable, wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute));
+			mathml = wrs_int_opener.wrs_getCode(wrs_int_opener._wrs_conf_digestPostVariable, attributeValue);
 		}
 		else {
-			mathml = wrs_int_opener.wrs_mathmlDecode(wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute));
+			mathml = wrs_int_opener.wrs_mathmlDecode(attributeValue);
 		}
 		
 		function setMathML() {
