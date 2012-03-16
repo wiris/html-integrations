@@ -2,6 +2,8 @@
 include 'libwiris.php';
 
 if (isset($_POST['service'])) {
+	global $config;
+	
 	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	$url = wrs_getImageServiceURL($config, $_POST['service']);
 	$data = array();
