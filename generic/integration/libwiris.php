@@ -239,6 +239,14 @@ function wrs_getFormulaDirectory($config) {
 }
 
 function wrs_getImageServiceURL($config, $service) {
+	if ($service == 'latex2mathml' && config.Exists('wirislatextomathmlurl')) {
+		return $config['wirislatextomathmlurl'];
+	}
+	
+	if ($service == 'mathml2latex' && config.Exists('wirismathmltolatexurl')) {
+		return $config['wirismathmltolatexurl'];
+	}
+
 	// Protocol.
 	$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
 
