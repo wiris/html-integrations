@@ -20,7 +20,7 @@ var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/int
 var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script.
 
 var _wrs_conf_getmathmlPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
-var _wrs_conf_getlatexPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getlatex.php';			// Specifies where is the getlatex script.
+var _wrs_conf_servicePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/service.php';			// Specifies where is the service script.
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 //var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.

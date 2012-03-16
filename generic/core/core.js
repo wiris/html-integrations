@@ -574,10 +574,11 @@ function wrs_getInnerHTML(element) {
  */
 function wrs_getLatexFromMathML(mathml) {
 	var data = {
+		'service': 'mathml2latex',
 		'mml': mathml
 	};
 	
-	return wrs_getContent(_wrs_conf_getlatexPath, data);
+	return wrs_getContent(_wrs_conf_servicePath, data);
 }
 
 /**
@@ -688,6 +689,7 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
  */
 function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
 	var data = {
+		'service': 'latex2mathml',
 		'latex': latex
 	};
 	
@@ -695,7 +697,7 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
 		data['saveLatex'] = '';
 	}
 	
-	var mathML = wrs_getContent(_wrs_conf_getmathmlPath, data);
+	var mathML = wrs_getContent(_wrs_conf_servicePath, data);
 	return mathML.split("\r").join('').split("\n").join(' ');
 }
 

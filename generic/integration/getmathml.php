@@ -9,9 +9,8 @@ else if (isset($_POST['digest'])) {		// Support for future integrations (where m
 	$digest = $_POST['digest'];
 }
 
-$config = wrs_loadConfig(WRS_CONFIG_FILE);
-
 if (!is_null($digest)) {
+	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	$filePath = wrs_getFormulaDirectory($config) . '/' . basename($digest);
 
 	if (is_file($filePath . '.ini')) {
@@ -42,32 +41,7 @@ if (!is_null($digest)) {
 		echo 'Error: formula not found.';
 	}
 }
-else if (isset($_POST['latex'])) {
-	if (isset($config['wirislatextomathmlurl'])) {
-		$url = $config['wirislatextomathmlurl'];
-	}
-	else {
-		$url = wrs_getImageServiceURL($config, 'latex2mathml');
-	}
-	
-	$data = array(
-		'latex' => $_POST['latex']
-	);
-	
-	if (isset($_POST['saveLatex'])) {
-		$data['saveLatex'] = '';
-	}
-	
-	$response = wrs_getContents($config, $url, $data);
-
-	if ($response !== false) {
-		echo $response;
-	}
-	else {
-		echo 'Error: could not connect to the latex translator service.';
-	}
-}
 else {
-	echo 'Error: no digest or latex has been sent.';
+	echo 'Error: no digest has been sent.';
 }
 ?>

@@ -30,8 +30,8 @@ var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce
 var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';		// Specifies where is the createcasimage script.
 
 var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
-var _wrs_conf_getlatexPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getlatex.php';				// Specifies where is the getlatex script.
-var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php'		// Specifies from where it returns the configuration using AJAX
+var _wrs_conf_servicePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/service.php';				// Specifies where is the service script.
+var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php';			// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
