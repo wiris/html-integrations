@@ -1,18 +1,18 @@
-var wrs_opener;
+var wrs_int_opener;
 var appletObject;
 var initialXML = '';
 var closeFunction;
 
 if (window.opener) {							// For popup mode.
-	wrs_opener = window.opener;
+	wrs_int_opener = window.opener;
 	closeFunction = window.close;
 }
 // FCKeditor integration begin
 else {											// For iframe mode.
-	wrs_opener = window.parent;
+	wrs_int_opener = window.parent;
 	
-	while (wrs_opener.InnerDialogLoaded) {
-		wrs_opener = wrs_opener.parent;
+	while (wrs_int_opener.InnerDialogLoaded) {
+		wrs_int_opener = wrs_int_opener.parent;
 	}
 }
 
@@ -21,13 +21,13 @@ if (window.parent.InnerDialogLoaded) {			// Iframe mode.
 	closeFunction = window.parent.Cancel;
 }
 else if (window.opener.parent.FCKeditorAPI) {	// Popup mode.
-	wrs_opener = window.opener.parent;
+	wrs_int_opener = window.opener.parent;
 }
 // FCKeditor integration end
 
 function getMathmlFromAppletCode(appletCode) {
 	var optionForm = document.getElementById('optionForm');
-	appletObject = wrs_opener.wrs_createObject(appletCode, document);
+	appletObject = wrs_int_opener.wrs_createObject(appletCode, document);
 	
 	optionForm.width.value = parseInt(appletObject.width);
 	optionForm.height.value = parseInt(appletObject.height);
@@ -57,11 +57,11 @@ function getMathmlFromAppletCode(appletCode) {
 }
 
 function createIframePath(params) {
-	var iframePath = wrs_opener._wrs_conf_CASPath;
+	var iframePath = wrs_int_opener._wrs_conf_CASPath;
 	iframePath += ((iframePath.indexOf('?') == -1) ? '?' : '&') + 'mode=applet&';
 	
 	for (var i in params) {
-		iframePath += wrs_opener.wrs_urlencode(i) + '=' + wrs_opener.wrs_urlencode(params[i]);
+		iframePath += wrs_int_opener.wrs_urlencode(i) + '=' + wrs_int_opener.wrs_urlencode(params[i]);
 	}
 	
 	return iframePath;
@@ -75,7 +75,7 @@ function createIframe(params) {
 	iframe.height = '100%';
 	iframe.frameBorder = 0;
 	
-	wrs_opener.wrs_addEvent(iframe, 'load', function () {
+	wrs_int_opener.wrs_addEvent(iframe, 'load', function () {
 		if (initialXML.length > 0) {
 			var applet = iframe.contentWindow.document.getElementById('applet');
 			
@@ -109,28 +109,28 @@ function reloadIframe(params) {
 	iframe.src = createIframePath(params);
 }
 
-wrs_opener.wrs_addEvent(window, 'load', function () {
+wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	// Getting language list <select> object.
 	var languageList = document.getElementById('languageList');
 	
 	// When the language list <select> object changes its value, the iframe should be refreshed.
 	
-	wrs_opener.wrs_addEvent(languageList, 'change', function () {
+	wrs_int_opener.wrs_addEvent(languageList, 'change', function () {
 		reloadIframe({
 			'lang': languageList.value
 		});
 	});
 	
 	// Setting iframe language.
-	
 	var language;
 	
-	if (wrs_opener._wrs_isNewElement) {
-		language = wrs_opener._wrs_int_language;
+	if (wrs_int_opener._wrs_isNewElement) {
+		var queryParams = wrs_int_opener.wrs_getQueryParams(window);
+		language = (queryParams['lang']) ? queryParams['lang'] : wrs_int_opener._wrs_int_language;
 	}
 	else {
-		var appletCode = wrs_opener._wrs_temporalImage.getAttribute(wrs_opener._wrs_conf_CASMathmlAttribute);
-		initialXML = getMathmlFromAppletCode(wrs_opener.wrs_mathmlDecode(appletCode));
+		var appletCode = wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_CASMathmlAttribute);
+		initialXML = getMathmlFromAppletCode(wrs_int_opener.wrs_mathmlDecode(appletCode));
 		
 		var language = '';
 		
@@ -163,7 +163,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 	
 	// More events.
 	
-	wrs_opener.wrs_addEvent(document.getElementById('submit'), 'click', function () {
+	wrs_int_opener.wrs_addEvent(document.getElementById('submit'), 'click', function () {
 		var applet = document.getElementById('appletContainerIframe').contentWindow.document.getElementById('applet');
 		
 		// Creating new applet code
@@ -181,7 +181,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		appletCode += '<param name="toolbar" value="' + (optionForm.toolbar.checked ? 'true' : 'floating') + '"></param>';
 		appletCode += '<param name="requestfocus" value="' + (optionForm.focusonload.checked ? 'true' : 'false') + '"></param>';
 		appletCode += '<param name="level" value="' + (optionForm.level.checked ? 'primary' : 'false') + '"></param>';
-		appletCode += '<param name="xmlinitialtext" value="' + wrs_opener.wrs_htmlentities(applet.getXML()) + '"></param>';
+		appletCode += '<param name="xmlinitialtext" value="' + wrs_int_opener.wrs_htmlentities(applet.getXML()) + '"></param>';
 		appletCode += '<param name="interface" value="false"></param><param name="commands" value="false"></param><param name="command" value="false"></param>';
 		
 		appletCode += '</applet>';
@@ -203,11 +203,11 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 				// FCKeditor integration begin
 				if (window.parent.InnerDialogLoaded && window.parent.FCKBrowserInfo.IsIE) {			// On IE, we must close the dialog for push the caret on the correct position.
 					closeFunction();
-					wrs_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
+					wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
 				}
 				// FCKeditor integration end
 				else {
-					wrs_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
+					wrs_int_opener.wrs_int_updateCAS(appletCode, image, newWidth, newHeight);
 					closeFunction();
 				}
 			}
@@ -216,7 +216,7 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 		finish();
 	});
 
-	wrs_opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
+	wrs_int_opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
 		closeFunction();
 	});
 	
@@ -227,6 +227,6 @@ wrs_opener.wrs_addEvent(window, 'load', function () {
 	}, 100);
 });
 
-wrs_opener.wrs_addEvent(window, 'unload', function () {
-	wrs_opener.wrs_int_notifyWindowClosed();
+wrs_int_opener.wrs_addEvent(window, 'unload', function () {
+	wrs_int_opener.wrs_int_notifyWindowClosed();
 });

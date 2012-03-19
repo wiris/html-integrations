@@ -401,19 +401,23 @@ function wrs_createObjectCode(object) {
 /**
  * Parses end HTML code.
  * @param string code
+ * @param object wirisProperties Extra attributes for the formula.
+ * @param string language Language for the formula.
  * @return string
  */
-function wrs_endParse(code, wirisProperties) {
-	code = wrs_endParseEditMode(code);
+function wrs_endParse(code, wirisProperties, language) {
+	code = wrs_endParseEditMode(code, wirisProperties, language);
 	return wrs_endParseSaveMode(code);
 }
 
 /**
  * Parses end HTML code depending on the edit mode.
  * @param string code
+ * @param object wirisProperties Extra formula attributes.
+ * @param string language Language for the formula.
  * @return string
  */
-function wrs_endParseEditMode(code, wirisProperties) {
+function wrs_endParseEditMode(code, wirisProperties, language) {
 	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
 		var output = '';
 		var endPosition = 0;
@@ -427,7 +431,7 @@ function wrs_endParseEditMode(code, wirisProperties) {
 				var latex = code.substring(startPosition + 2, endPosition);
 				latex = wrs_htmlentitiesDecode(latex);
 				var mathml = wrs_getMathMLFromLatex(latex, true);
-				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties);
+				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
 				output += wrs_createObjectCode(imgObject);
 				endPosition += 2;
 			}
@@ -732,6 +736,24 @@ function wrs_getNodeLength(node) {
 }
 
 /**
+ * Parses the query string and returns it as a Hash table.
+ * @return object
+ */
+function wrs_getQueryParams(windowObject) {
+	var data = {};
+	var start = windowObject.location.search.indexOf('?');
+	start = (start == -1) ? 0 : start + 1;
+	var queryStringParts = windowObject.location.search.substr(start).split('&');
+	
+	for (var i = 0; i < queryStringParts.length; ++i) {
+		var paramParts = queryStringParts[i].split('=', 2);
+		data[paramParts[0]] = wrs_urldecode(paramParts[1]);
+	}
+	
+	return data;
+}
+
+/**
  * Gets the selected node or text.
  * If the caret is on a text node, concatenates it with all the previous and next text nodes.
  * @param object target The editable element
@@ -919,11 +941,12 @@ function wrs_httpBuildQuery(properties) {
 /**
  * Parses initial HTML code.
  * @param string code
+ * @param string language Language for the formula.
  * @return string
  */
-function wrs_initParse(code) {
+function wrs_initParse(code, language) {
 	code = wrs_initParseEditMode(code);
-	return wrs_initParseSaveMode(code);
+	return wrs_initParseSaveMode(code, language);
 }
 
 /**
@@ -975,9 +998,10 @@ function wrs_initParseEditMode(code) {
 /**
  * Parses initial HTML code depending on the save mode.
  * @param string code
+ * @param string language Language for the formula.
  * @return string
  */
-function wrs_initParseSaveMode(code) {
+function wrs_initParseSaveMode(code, language) {
 	if (window._wrs_conf_saveMode) {
 		var safeXml = (_wrs_conf_saveMode == 'safeXml');
 		var characters = _wrs_xmlCharacters;
@@ -989,7 +1013,7 @@ function wrs_initParseSaveMode(code) {
 		
 		if (safeXml || _wrs_conf_saveMode == 'xml') {
 			// Converting XML to tags.
-			code = wrs_parseMathmlToImg(code, characters);
+			code = wrs_parseMathmlToImg(code, characters, language);
 		}
 	}
 	
@@ -1221,15 +1245,35 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
+ * Gets the accessible text of a given formula.
+ * @param string mathml
+ * @param string language
+ * @return string
+ */
+function wrs_mathmlToAccessible(mathml, language) {
+	var data = {
+		'service': 'mathml2accessible',
+		'mml': mathml
+	};
+	
+	if (language) {
+		data['language'] = language;
+	}
+	
+	return wrs_getContent(_wrs_conf_servicePath, data);
+}
+
+/**
  * Converts mathml to img object.
  * @param object creator Object with "createElement" method
  * @param string mathml Mathml code
  * @return object
  */
-function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
+function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	var imgObject = creator.createElement('img');
 	imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
+	imgObject.alt = wrs_mathmlToAccessible(mathml, language);
 	imgObject.className = 'Wirisformula';
 	
 	var result = wrs_createImageSrc(mathml, wirisProperties);
@@ -1251,9 +1295,10 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties) {
  * Opens a new CAS window.
  * @param object target The editable element
  * @param boolean isIframe Specifies if target is an iframe or not
+ * @param string language
  * @return object The opened window
  */
-function wrs_openCASWindow(target, isIframe) {
+function wrs_openCASWindow(target, isIframe, language) {
 	if (isIframe === undefined) {
 		isIframe = true;
 	}
@@ -1268,8 +1313,14 @@ function wrs_openCASWindow(target, isIframe) {
 			_wrs_isNewElement = false;
 		}
 	}
+	
+	var path = _wrs_conf_CASPath;
+	
+	if (language) {
+		path += '?lang=' + language;
+	}
 
-	return window.open(_wrs_conf_CASPath, 'WIRISCAS', _wrs_conf_CASAttributes);
+	return window.open(path, 'WIRISCAS', _wrs_conf_CASAttributes);
 }
 
 /**
@@ -1285,7 +1336,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	}
 	
 	var path = _wrs_conf_editorPath;
-	
+
 	if (language) {
 		path += '?lang=' + language;
 	}
@@ -1348,7 +1399,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
  * @param string content
  * @return string
  */
-function wrs_parseMathmlToImg(content, characters) {
+function wrs_parseMathmlToImg(content, characters, language) {
 	var output = '';
 	var mathTagBegin = characters.tagOpener + 'math';
 	var mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
@@ -1369,7 +1420,7 @@ function wrs_parseMathmlToImg(content, characters) {
 		if (!wrs_isMathmlInAttribute(content, start)){
 			var mathml = content.substring(start, end);
 			mathml = (characters == _wrs_safeXmlCharacters) ? wrs_mathmlDecode(mathml) : wrs_mathmlEntities(mathml);
-			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml));
+			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml, null, language));
 		}
 		else {
 			output += content.substring(start, end);
@@ -1482,15 +1533,18 @@ function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth
  * @param object focusElement Element to be focused
  * @param object windowTarget Window where the editable content is
  * @param string mathml Mathml code
+ * @param object wirisProperties Extra attributes for the formula (like background color or font size).
+ * @param string editMode Current edit mode.
+ * @param string language Language for the formula.
  */
-function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode) {
+function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode, language) {
 	if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
 		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
 		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
 	}
 	else {
-		var imgObject = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties);
+		var imgObject = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
 		wrs_insertElementOnSelection(imgObject, focusElement, windowTarget);
 	}
 }

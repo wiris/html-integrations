@@ -44,7 +44,6 @@ var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
-var _wrs_int_language = 'en';
 
 /* Configuration loading */
 var configuration = {};
@@ -113,7 +112,13 @@ if ('wiriscasactive' in configuration) {
 				
 				function whenDocReady() {
 					if (window.wrs_initParse) {
-						editor.setContent(wrs_initParse(textarea.value));
+						var language = editor.settings.language;
+				
+						if (editor.settings['wirisformulaeditorlang']) {
+							language = editor.settings['wirisformulaeditorlang'];
+						}
+				
+						editor.setContent(wrs_initParse(textarea.value, language));
 						iframe = editor.getContentAreaContainer().firstChild;
 						
 						wrs_addIframeEvents(iframe, function (iframe, element) {
@@ -138,7 +143,13 @@ if ('wiriscasactive' in configuration) {
 					'identColor': editor.settings['wirisimageidentcolor']
 				};
 				
-				params.content = wrs_endParse(params.content);
+				var language = editor.settings.language;
+				
+				if (editor.settings['wirisformulaeditorlang']) {
+					language = editor.settings['wirisformulaeditorlang'];
+				}
+				
+				params.content = wrs_endParse(params.content, _wrs_int_wirisProperties, language);
 			});
 			
 			
@@ -171,8 +182,13 @@ if ('wiriscasactive' in configuration) {
 			
 			if (_wrs_conf_CASEnabled) {
 				editor.addCommand('tiny_mce_wiris_openCAS', function () {
-					_wrs_int_language = editor.settings.language;
-					wrs_int_openNewCAS(iframe);
+					var language = editor.settings.language;
+				
+					if (editor.settings['wirisformulaeditorlang']) {
+						language = editor.settings['wirisformulaeditorlang'];
+					}
+					
+					wrs_int_openNewCAS(iframe, language);
 				});
 			
 				editor.addButton('tiny_mce_wiris_CAS', {
@@ -217,8 +233,9 @@ function wrs_int_openNewFormulaEditor(iframe, language) {
 /**
  * Opens CAS.
  * @param object iframe Target
+ * @param string language
  */
-function wrs_int_openNewCAS(iframe) {
+function wrs_int_openNewCAS(iframe, language) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
@@ -226,7 +243,7 @@ function wrs_int_openNewCAS(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow(iframe, true);
+		_wrs_int_window = wrs_openCASWindow(iframe, true, language);
 	}
 }
 
@@ -248,8 +265,14 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
 			};
 			
 			if (!_wrs_int_window_opened) {
+				var language = editor.settings.language;
+			
+				if (editor.settings['wirisformulaeditorlang']) {
+					language = editor.settings['wirisformulaeditorlang'];
+				}
+				
 				_wrs_temporalImage = element;
-				wrs_int_openExistingFormulaEditor(iframe, editor.settings['wirisformulaeditorlang']);
+				wrs_int_openExistingFormulaEditor(iframe, language);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -257,8 +280,14 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
 		}
 		else if (wrs_containsClass(element, 'Wiriscas')) {
 			if (!_wrs_int_window_opened) {
+				var language = editor.settings.language;
+			
+				if (editor.settings['wirisformulaeditorlang']) {
+					language = editor.settings['wirisformulaeditorlang'];
+				}
+				
 				_wrs_temporalImage = element;
-				wrs_int_openExistingCAS(iframe);
+				wrs_int_openExistingCAS(iframe, language);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -281,12 +310,13 @@ function wrs_int_openExistingFormulaEditor(iframe, language) {
 /**
  * Opens CAS to edit an existing formula.
  * @param object iframe Target
+ * @parma string language
  */
-function wrs_int_openExistingCAS(iframe) {
+function wrs_int_openExistingCAS(iframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openCASWindow(iframe, true);
+	_wrs_int_window = wrs_openCASWindow(iframe, true, language);
 }
 
 /**
@@ -319,8 +349,8 @@ function wrs_int_mouseupHandler() {
  * Calls wrs_updateFormula with well params.
  * @param string mathml
  */
-function wrs_int_updateFormula(mathml, editMode) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode);
+function wrs_int_updateFormula(mathml, editMode, language) {
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
 }
 
 /**
