@@ -239,11 +239,11 @@ function wrs_getFormulaDirectory($config) {
 }
 
 function wrs_getImageServiceURL($config, $service) {
-	if ($service == 'latex2mathml' && config.Exists('wirislatextomathmlurl')) {
+	if ($service == 'latex2mathml' && isset($config['wirislatextomathmlurl'])) {
 		return $config['wirislatextomathmlurl'];
 	}
 	
-	if ($service == 'mathml2latex' && config.Exists('wirismathmltolatexurl')) {
+	if ($service == 'mathml2latex' && isset($config['wirismathmltolatexurl'])) {
 		return $config['wirismathmltolatexurl'];
 	}
 
