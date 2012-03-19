@@ -79,15 +79,17 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			mathml = wrs_int_opener.wrs_mathmlEntities(mathml);		// Apply a parse.
 		}
 		
+		var queryParams = wrs_int_opener.wrs_getQueryParams(window);
+		
 		/* FCKeditor integration begin */
 		if (window.parent.InnerDialogLoaded && window.parent.FCKBrowserInfo.IsIE) {			// On IE, we must close the dialog for push the caret on the correct position.
 			closeFunction();
-			wrs_int_opener.wrs_int_updateFormula(mathml, wrs_int_opener._wrs_editMode);
+			wrs_int_opener.wrs_int_updateFormula(mathml, wrs_int_opener._wrs_editMode, queryParams['lang']);
 		}
 		/* FCKeditor integration end */
 		else {
 			if (wrs_int_opener.wrs_int_updateFormula) {
-				wrs_int_opener.wrs_int_updateFormula(mathml, wrs_int_opener._wrs_editMode);
+				wrs_int_opener.wrs_int_updateFormula(mathml, wrs_int_opener._wrs_editMode, queryParams['lang']);
 			}
 			
 			closeFunction();

@@ -32,7 +32,6 @@ var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
-var _wrs_int_language = 'en';
 
 /*
  * Fix for a bug in CKEditor when there is more than one editor in the same page
@@ -90,7 +89,10 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				var newIframe = document.getElementById('cke_contents_' + editor.name).getElementsByTagName('iframe')[0];
 				
 				if (iframe != newIframe) {
-					wrs_addIframeEvents(newIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					wrs_addIframeEvents(newIframe, function (iframe, element) {
+						wrs_int_doubleClickHandler(editor, iframe, element);
+					}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					
 					iframe = newIframe;
 				}
 			}
@@ -108,7 +110,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'editorFocus': false,
 				
 				'exec': function (editor) {
-					wrs_int_openNewFormulaEditor(iframe);
+					wrs_int_openNewFormulaEditor(iframe, editor.langCode);
 				}
 			});
 			
@@ -126,8 +128,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'editorFocus': false,
 				
 				'exec': function (editor) {
-					_wrs_int_language = editor.langCode;
-					wrs_int_openNewCAS(iframe);
+					wrs_int_openNewCAS(iframe, editor.langCode);
 				}
 			});
 			
@@ -144,7 +145,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
  * Opens formula editor.
  * @param object iframe Target
  */
-function wrs_int_openNewFormulaEditor(iframe) {
+function wrs_int_openNewFormulaEditor(iframe, language) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
@@ -152,7 +153,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openEditorWindow(null, iframe, true);
+		_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
 	}
 }
 
@@ -160,7 +161,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
  * Opens CAS.
  * @param object iframe Target
  */
-function wrs_int_openNewCAS(iframe) {
+function wrs_int_openNewCAS(iframe, language) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
@@ -168,7 +169,7 @@ function wrs_int_openNewCAS(iframe) {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow(iframe, true);
+		_wrs_int_window = wrs_openCASWindow(iframe, true, language);
 	}
 }
 
@@ -177,12 +178,12 @@ function wrs_int_openNewCAS(iframe) {
  * @param object iframe Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandler(iframe, element) {
+function wrs_int_doubleClickHandler(editor, iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingFormulaEditor(iframe);
+				wrs_int_openExistingFormulaEditor(iframe, editor.langCode);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -191,7 +192,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
 		else if (wrs_containsClass(element, 'Wiriscas')) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingCAS(iframe);
+				wrs_int_openExistingCAS(iframe, editor.langCode);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -204,22 +205,22 @@ function wrs_int_doubleClickHandler(iframe, element) {
  * Opens formula editor to edit an existing formula.
  * @param object iframe Target
  */
-function wrs_int_openExistingFormulaEditor(iframe) {
+function wrs_int_openExistingFormulaEditor(iframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openEditorWindow(null, iframe, true);
+	_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
 }
 
 /**
  * Opens CAS to edit an existing formula.
  * @param object iframe Target
  */
-function wrs_int_openExistingCAS(iframe) {
+function wrs_int_openExistingCAS(iframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
 	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openCASWindow(iframe, true);
+	_wrs_int_window = wrs_openCASWindow(iframe, true, language);
 }
 
 /**
@@ -252,8 +253,8 @@ function wrs_int_mouseupHandler() {
  * Calls wrs_updateFormula with well params.
  * @param string mathml
  */
-function wrs_int_updateFormula(mathml, editMode) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode);
+function wrs_int_updateFormula(mathml, editMode, language) {
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, language);
 }
 
 /**
