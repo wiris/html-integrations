@@ -466,19 +466,22 @@ function wrs_endParseSaveMode(code) {
 		}
 	}
 	
-	var upperCaseCode = code.toUpperCase();
 	var endPosition = 0;
-	var startPosition = upperCaseCode.indexOf('<IMG');
+	var pattern = /<img/gi;
+	var patternLength = pattern.source.length;
 	
-	while (startPosition != -1) {
+	while (pattern.test(code)==true) {
+		var startPosition = pattern.lastIndex - patternLength;
 		output += code.substring(endPosition, startPosition);
+		
 		var i = startPosition + 1;
 		
 		while (i < code.length && endPosition <= startPosition) {
 			var character = code.charAt(i);
 			
 			if (character == '"' || character == '\'') {
-				var characterNextPosition = upperCaseCode.indexOf(character, i + 1);
+				
+				var characterNextPosition = code.indexOf(character, i + 1);
 				
 				if (characterNextPosition == -1) {
 					i = code.length;		// End while.
@@ -501,9 +504,9 @@ function wrs_endParseSaveMode(code) {
 		
 		var imgCode = code.substring(startPosition, endPosition);
 		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
-		startPosition = upperCaseCode.indexOf('<IMG', endPosition);
+
 	}
-	
+
 	output += code.substring(endPosition, code.length);
 	return output;
 }
