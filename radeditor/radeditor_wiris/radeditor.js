@@ -2,11 +2,12 @@
 var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = 'alt'; 	// Specifies the image tag where we should save the formula editor mathml code
+var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt'; 		// Specifies the image tag where we should save the WIRIS CAS mathml code
 
 var _wrs_conf_editorPath = _wrs_currentPath + 'radeditor_wiris/integration/editor.aspx'; 					// Specifies where is the editor HTML code (for popup window)
-var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes'; 						// Specifies formula editor window options.
+//var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes'; 						// Specifies formula editor window options.
+var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';	// Specifies formula editor
 
 var _wrs_conf_CASPath = _wrs_currentPath + 'radeditor_wiris/integration/cas.aspx'; 							// Specifies where is the WIRIS CAS HTML code (for popup window)
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes'; 							// Specifies WIRIS cas window options.
@@ -14,14 +15,13 @@ var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';
 var _wrs_conf_createimagePath = _wrs_currentPath + 'radeditor_wiris/integration/createimage.aspx'; 			// Specifies where is createimage script
 var _wrs_conf_createcasimagePath = _wrs_currentPath + 'radeditor_wiris/integration/createcasimage.aspx';	// Specifies where is createcasimage script
 
-var _wrs_conf_getmathmlPath = _wrs_currentPath + '/radeditor_wiris/integration/getmathml.aspx';				// Specifies where is the getmathml script.
-//var _wrs_conf_getlatexPath = _wrs_currentPath + '/radeditor_wiris/integration/getlatex.aspx';				// Specifies where is the getlatex script.
-var _wrs_conf_getconfigPath = _wrs_currentPath + '/radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
-var _wrs_conf_servicePath = _wrs_currentPath + '/radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
+var _wrs_conf_getmathmlPath = _wrs_currentPath + 'radeditor_wiris/integration/getmathml.aspx';				// Specifies where is the getmathml script.
+var _wrs_conf_servicePath = _wrs_currentPath + 'radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
+var _wrs_conf_getconfigPath = _wrs_currentPath + 'radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
 
 //var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = ['latex'];			// This value can contain 'latex'.
-
+var _wrs_conf_parseModes = [@PARSE_LATEX@];			// This value can contain 'latex'.
+var _wrs_int_wirisProperties = {};
 
 /* Vars */
 var _wrs_int_temporalIframe;
@@ -67,12 +67,12 @@ function OnClientLoad(editor, args){
 	wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 	
 	editor.add_submit(function (){
-		editor.set_html(wrs_endParse(editor.get_html(true)));
+		editor.set_html(wrs_endParse(editor.get_html(true), null, 'en'));
 	});
 
 	function whenDocReady() {
 		if (window.wrs_initParse) {
-			editor.set_html(wrs_initParse(editor.get_html()));
+			editor.set_html(wrs_initParse(editor.get_html(), 'en'));
 		}
 		else {
 			setTimeout(whenDocReady, 50);
@@ -95,17 +95,19 @@ Telerik.Web.UI.Editor.CommandList["WIRISformula"] = function(commandName, editor
 };
 
 function wrs_int_updateCAS(appletCode, image, width, height) {
-    if (appletCode) {
+	wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
+    /*if (appletCode) {
         var imgObject = wrs_appletCodeToImgObject(_wrs_int_currentEditor.get_document(), appletCode, image, width, height);
         _wrs_int_currentEditor.pasteHtml($telerik.getOuterHtml(imgObject));
-    }	
+    }*/	
 }
 
 function wrs_int_updateFormula(mathml, editMode) {
-    if (mathml) {
-        var imgObject = wrs_mathmlToImgObject(_wrs_int_currentEditor.get_document(), mathml);
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, 'en');
+    /*if (mathml) {
+        var imgObject = wrs_mathmlToImgObject(_wrs_int_currentEditor.get_document(), mathml, null, 'en');
         _wrs_int_currentEditor.pasteHtml($telerik.getOuterHtml(imgObject));
-    }	
+    }*/	
 }
 
 /**
