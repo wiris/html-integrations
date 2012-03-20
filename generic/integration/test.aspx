@@ -1,4 +1,4 @@
-﻿<%@ Page language="c#" Codebehind="test.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.test" %>
+<%@ Page language="c#" Codebehind="test.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.test" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 	<head>

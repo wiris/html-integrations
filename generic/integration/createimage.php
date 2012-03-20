@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'api.php';
 
 if (!empty($_POST['mml'])) {

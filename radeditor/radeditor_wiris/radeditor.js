@@ -1,4 +1,4 @@
-﻿/* Configuration */
+/* Configuration */
 var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = false; 				// Specifies if WIRIS cas is enabled.
 

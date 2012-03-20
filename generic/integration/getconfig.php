@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'libwiris.php';
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 /*
