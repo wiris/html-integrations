@@ -1,5 +1,5 @@
 /* Configuration */
-var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
+var _wrs_conf_editorEnabled = false; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = false; 				// Specifies if WIRIS cas is enabled.
 
 var _wrs_conf_imageMathmlAttribute = 'alt'; 	// Specifies the image tag where we should save the formula editor mathml code
@@ -15,8 +15,9 @@ var _wrs_conf_createimagePath = _wrs_currentPath + 'radeditor_wiris/integration/
 var _wrs_conf_createcasimagePath = _wrs_currentPath + 'radeditor_wiris/integration/createcasimage.aspx';	// Specifies where is createcasimage script
 
 var _wrs_conf_getmathmlPath = _wrs_currentPath + '/radeditor_wiris/integration/getmathml.aspx';				// Specifies where is the getmathml script.
-var _wrs_conf_getlatexPath = _wrs_currentPath + '/radeditor_wiris/integration/getlatex.aspx';				// Specifies where is the getlatex script.
+//var _wrs_conf_getlatexPath = _wrs_currentPath + '/radeditor_wiris/integration/getlatex.aspx';				// Specifies where is the getlatex script.
 var _wrs_conf_getconfigPath = _wrs_currentPath + '/radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
+var _wrs_conf_servicePath = _wrs_currentPath + '/radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
 
 //var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = ['latex'];			// This value can contain 'latex'.
@@ -34,11 +35,14 @@ function OnClientLoad(editor, args){
 	_wrs_int_currentEditor = editor;
 	_wrs_int_temporalIframe = editor._contentAreaElement;
 	
+	var lis = new Array();
+	
 	if (!_wrs_conf_CASEnabled) {
 		var as = document.getElementsByTagName('a');
 		for (var i = 0; i < as.length; i++){
 			if (as[i].getAttribute('title') == 'WIRIScas'){
 				var li = as[i].parentNode;
+				lis.push(li);
 				li.style.display = 'none';
 			}
 		}
@@ -49,10 +53,16 @@ function OnClientLoad(editor, args){
 		for (var i = 0; i < as.length; i++){
 			if (as[i].getAttribute('title') == 'WIRISformula'){
 				var li = as[i].parentNode;
+				lis.push(li);
 				li.style.display = 'none';
 			}
 		}
 	}
+	
+	if (lis.length == 2){
+		lis[0].parentNode.style.display = 'none';
+	}
+	
 	
 	wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 	
