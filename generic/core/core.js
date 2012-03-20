@@ -1,4 +1,4 @@
-﻿// Vars
+// Vars
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_editMode;
 var _wrs_isNewElement = true;
