@@ -131,7 +131,13 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
 	imgObject.width = imageWidth;
 	imgObject.height = imageHeight;
 	imgObject.setAttribute(_wrs_conf_CASMathmlAttribute, wrs_mathmlEncode(appletCode));
-	imgObject.className = 'Wiriscas';
+	
+	if (window._wrs_conf_typeAttribute && _wrs_conf_typeAttribute != 'class') {
+		imgObject.setAttribute(_wrs_conf_typeAttribute, 'Wiriscas');
+	}
+	else {
+		imgObject.className = 'Wiriscas';
+	}
 	
 	return imgObject;
 }
@@ -156,10 +162,11 @@ function wrs_arrayContains(stack, element) {
  * Checks if an element contains a class.
  * @param object element
  * @param string className
+ * @param string classAttribute Optional, specifies the attribute where the classes are specified. By default 'class'.
  * @return bool
  */
 function wrs_containsClass(element, className) {
-	var currentClasses = element.className.split(' ');
+	var currentClasses = ((window._wrs_conf_typeAttribute && _wrs_conf_typeAttribute != 'class') ? element.getAttribute(_wrs_conf_typeAttribute) : element.className).split(' ');
 	
 	for (var i = currentClasses.length - 1; i >= 0; --i) {
 		if (currentClasses[i] == className) {
@@ -867,7 +874,7 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
 	var imgObject = wrs_createObject(imgCode);
 	
 	if (imgObject) {
-		if (imgObject.className == 'Wirisformula') {
+		if (wrs_containsClass(imgObject, 'Wirisformula')) {
 			if (!convertToXml) {
 				return imgCode;
 			}
@@ -884,7 +891,7 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
 			
 			return xmlCode;
 		}
-		else if (imgObject.className == 'Wiriscas') {
+		else if (wrs_containsClass(imgObject, 'Wiriscas')) {
 			var appletCode = imgObject.getAttribute(_wrs_conf_CASMathmlAttribute);
 			appletCode = wrs_mathmlDecode(appletCode);
 			var appletObject = wrs_createObject(appletCode);
@@ -962,8 +969,9 @@ function wrs_initParseEditMode(code) {
 		
 		for (var i = 0; i < imgList.length; ++i) {
 			var imgCode = code.substring(imgList[i].start + carry, imgList[i].end + carry);
+			var classAttribute = (window._wrs_conf_typeAttribute) ? _wrs_conf_typeAttribute : 'class';
 			
-			if (imgCode.indexOf(' class="Wirisformula"') != -1) {
+			if (imgCode.indexOf(' ' + classAttribute + '="Wirisformula"') != -1) {
 				var mathmlStartToken = ' ' + _wrs_conf_imageMathmlAttribute + '="';
 				var mathmlStart = imgCode.indexOf(mathmlStartToken);
 				
@@ -1022,12 +1030,13 @@ function wrs_initParseSaveMode(code, language) {
 	
 	for (var i = 0; i < appletList.length; ++i) {
 		var appletCode = code.substring(appletList[i].start + carry, appletList[i].end + carry);
+		var classAttribute = (window._wrs_conf_typeAttribute) ? _wrs_conf_typeAttribute : 'class';
 		
-		if (appletCode.indexOf(' class="Wiriscas"') != -1) {
+		if (appletCode.indexOf(' ' + classAttribute + '="Wiriscas"') != -1) {
 			var srcStart = appletCode.indexOf(' src="') + ' src="'.length;
 			var srcEnd = appletCode.indexOf('"', srcStart);
 			var src = appletCode.substring(srcStart, srcEnd);
-			var imgCode = '<img title="Double click to edit" align="middle" class="Wiriscas" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
+			var imgCode = '<img title="Double click to edit" align="middle" ' + classAttribute + '="Wiriscas" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
 			
 			code = code.substring(0, appletList[i].start + carry) + imgCode + code.substring(appletList[i].end + carry);
 			carry += imgCode.length - (appletList[i].end - appletList[i].start);
@@ -1274,6 +1283,14 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
 	//imgObject.alt = wrs_mathmlToAccessible(mathml, language);
+	
+	if (window._wrs_conf_typeAttribute && _wrs_conf_typeAttribute != 'class') {
+		imgObject.setAttribute(_wrs_conf_typeAttribute, 'Wirisformula');
+	}
+	else {
+		imgObject.className = 'Wirisformula';
+	}
+
 	imgObject.className = 'Wirisformula';
 	
 	var result = wrs_createImageSrc(mathml, wirisProperties);
@@ -1308,7 +1325,7 @@ function wrs_openCASWindow(target, isIframe, language) {
 	if (target) {
 		var selectedItem = wrs_getSelectedItem(target, isIframe);
 		
-		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wiriscas') {
+		if (selectedItem != null && selectedItem.caretPosition === undefined && selectedItem.node.nodeName.toUpperCase() == 'IMG' && wrs_containsClass(selectedItem.node, 'Wiriscas')) {
 			_wrs_temporalImage = selectedItem.node;
 			_wrs_isNewElement = false;
 		}
@@ -1349,7 +1366,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		
 		if (selectedItem != null) {
 			if (selectedItem.caretPosition === undefined) {
-				if (selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == 'Wirisformula') {
+				if (selectedItem.node.nodeName.toUpperCase() == 'IMG' && wrs_containsClass(selectedItem.node, 'Wirisformula')) {
 					_wrs_temporalImage = selectedItem.node;
 					_wrs_isNewElement = false;
 				}
