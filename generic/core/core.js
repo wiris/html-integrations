@@ -1273,7 +1273,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	var imgObject = creator.createElement('img');
 	imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
-	imgObject.alt = wrs_mathmlToAccessible(mathml, language);
+	//imgObject.alt = wrs_mathmlToAccessible(mathml, language);
 	imgObject.className = 'Wirisformula';
 	
 	var result = wrs_createImageSrc(mathml, wirisProperties);
