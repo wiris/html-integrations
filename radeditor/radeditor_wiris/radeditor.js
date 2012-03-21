@@ -19,7 +19,7 @@ var _wrs_conf_getmathmlPath = _wrs_currentPath + 'radeditor_wiris/integration/ge
 var _wrs_conf_servicePath = _wrs_currentPath + 'radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
 var _wrs_conf_getconfigPath = _wrs_currentPath + 'radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
 
-//var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
+var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];			// This value can contain 'latex'.
 var _wrs_int_wirisProperties = {};
 
@@ -67,12 +67,12 @@ function OnClientLoad(editor, args){
 	wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 	
 	editor.add_submit(function (){
-		editor.set_html(wrs_endParse(editor.get_html(true), null, 'en'));
+		editor.set_html(wrs_endParse(editor.get_html(true), null, _wrs_int_language));
 	});
 
 	function whenDocReady() {
 		if (window.wrs_initParse) {
-			editor.set_html(wrs_initParse(editor.get_html(), 'en'));
+			editor.set_html(wrs_initParse(editor.get_html(), _wrs_int_language));
 		}
 		else {
 			setTimeout(whenDocReady, 50);
@@ -84,37 +84,29 @@ function OnClientLoad(editor, args){
 
 Telerik.Web.UI.Editor.CommandList["WIRIScas"] = function(commandName, editor, args) {
     if (_wrs_conf_CASEnabled) {
-        wrs_int_openNewCAS(_wrs_int_temporalIframe);
+        wrs_int_openNewCAS(_wrs_int_temporalIframe, _wrs_int_language);
     }
 };
 
 Telerik.Web.UI.Editor.CommandList["WIRISformula"] = function(commandName, editor, args) {
     if (_wrs_conf_editorEnabled) {
-        wrs_int_openNewFormulaEditor(_wrs_int_temporalIframe);
+        wrs_int_openNewFormulaEditor(_wrs_int_temporalIframe, _wrs_int_language);
     }
 };
 
 function wrs_int_updateCAS(appletCode, image, width, height) {
 	wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
-    /*if (appletCode) {
-        var imgObject = wrs_appletCodeToImgObject(_wrs_int_currentEditor.get_document(), appletCode, image, width, height);
-        _wrs_int_currentEditor.pasteHtml($telerik.getOuterHtml(imgObject));
-    }*/	
 }
 
-function wrs_int_updateFormula(mathml, editMode) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, 'en');
-    /*if (mathml) {
-        var imgObject = wrs_mathmlToImgObject(_wrs_int_currentEditor.get_document(), mathml, null, 'en');
-        _wrs_int_currentEditor.pasteHtml($telerik.getOuterHtml(imgObject));
-    }*/	
+function wrs_int_updateFormula(mathml, editMode, language) {
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, language);
 }
 
 /**
 * Opens formula editor.
 * @param object iframe Target
 */
-function wrs_int_openNewFormulaEditor(iframe) {
+function wrs_int_openNewFormulaEditor(iframe, language) {
     if (_wrs_int_window_opened) {
         _wrs_int_window.focus();
     }
@@ -122,7 +114,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
         _wrs_int_window_opened = true;
         _wrs_isNewElement = true;
         _wrs_int_temporalIframe = iframe;
-        _wrs_int_window = wrs_openEditorWindow(null, iframe, true);
+        _wrs_int_window = wrs_openEditorWindow(language, iframe, true);
     }
 }
 
@@ -130,7 +122,7 @@ function wrs_int_openNewFormulaEditor(iframe) {
 * Opens CAS.
 * @param object iframe Target
 */
-function wrs_int_openNewCAS(iframe) {
+function wrs_int_openNewCAS(iframe, language) {
     if (_wrs_int_window_opened) {
         _wrs_int_window.focus();
     }
@@ -138,7 +130,7 @@ function wrs_int_openNewCAS(iframe) {
         _wrs_int_window_opened = true;
         _wrs_isNewElement = true;
         _wrs_int_temporalIframe = iframe;
-        _wrs_int_window = wrs_openCASWindow(iframe, true);
+        _wrs_int_window = wrs_openCASWindow(iframe, true, language);
     }
 }
 
@@ -153,7 +145,7 @@ function wrs_int_doubleClickHandler(Iframe, element) {
         if (wrs_containsClass(element, 'Wirisformula')) {
             if (!_wrs_int_window_opened) {
                 _wrs_temporalImage = element;
-                wrs_int_openExistingFormulaEditor(_wrs_int_temporalIframe);
+                wrs_int_openExistingFormulaEditor(_wrs_int_temporalIframe, _wrs_int_language);
             }
             else {
                 _wrs_int_window.focus();
@@ -162,7 +154,7 @@ function wrs_int_doubleClickHandler(Iframe, element) {
         else if (wrs_containsClass(element, 'Wiriscas')) {
             if (!_wrs_int_window_opened) {
                 _wrs_temporalImage = element;
-                wrs_int_openExistingCAS(_wrs_int_temporalIframe);
+                wrs_int_openExistingCAS(_wrs_int_temporalIframe, _wrs_int_language);
             }
             else {
                 _wrs_int_window.focus();
@@ -175,22 +167,22 @@ function wrs_int_doubleClickHandler(Iframe, element) {
 * Opens formula editor to edit an existing formula.
 * @param object iframe Target
 */
-function wrs_int_openExistingFormulaEditor(iframe) {
+function wrs_int_openExistingFormulaEditor(iframe, language) {
     _wrs_int_window_opened = true;
     _wrs_isNewElement = false;
     _wrs_int_temporalIframe = iframe;
-    _wrs_int_window = wrs_openEditorWindow(null, iframe, true);
+    _wrs_int_window = wrs_openEditorWindow(language, iframe, true);
 }
 
 /**
 * Opens CAS to edit an existing formula.
 * @param object iframe Target
 */
-function wrs_int_openExistingCAS(iframe) {
+function wrs_int_openExistingCAS(iframe, language) {
     _wrs_int_window_opened = true;
     _wrs_isNewElement = false;
     _wrs_int_temporalIframe = iframe;
-    _wrs_int_window = wrs_openCASWindow(iframe, true);
+    _wrs_int_window = wrs_openCASWindow(iframe, true, language);
 }
 
 
@@ -200,24 +192,24 @@ function wrs_int_openExistingCAS(iframe) {
 * @param object element Element mouse downed
 */
 function wrs_int_mousedownHandler(Iframe, element) {
-    /*if (element.nodeName.toLowerCase() == 'img') {
+    if (element.nodeName.toLowerCase() == 'img') {
         if (wrs_containsClass(element, 'Wirisformula') || wrs_containsClass(element, 'Wiriscas')) {
             _wrs_int_temporalImageResizing = element;
         }
-    }*/
+    }
 }
 
 /**
 * Handles a mouse up event on the iframe.
 */
 function wrs_int_mouseupHandler(Iframe, element) {
-    /*if (_wrs_int_temporalImageResizing) {
+    if (_wrs_int_temporalImageResizing) {
         setTimeout(function() {
             _wrs_int_temporalImageResizing.removeAttribute('style');
             _wrs_int_temporalImageResizing.removeAttribute('width');
             _wrs_int_temporalImageResizing.removeAttribute('height');
         }, 10);
-    }*/
+    }
 }
 
 /**
