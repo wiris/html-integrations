@@ -23,6 +23,8 @@ var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 
 var _wrs_conf_parseModes = [@PARSE_LATEX@];			// This value can contain 'latex'.
 var _wrs_int_wirisProperties = {};
 
+var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
+
 /* Vars */
 var _wrs_int_temporalIframe;
 var _wrs_int_currentEditor;

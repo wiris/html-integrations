@@ -137,7 +137,7 @@ function wrs_addTextareaEvents(textarea, clickHandler) {
 function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, imageHeight) {
 	var imageSrc = wrs_createImageCASSrc(image);
 	var imgObject = creator.createElement('img');
-	imgObject.title = 'Double click to edit';
+	//imgObject.title = 'Double click to edit';
 	imgObject.src = imageSrc;
 	imgObject.align = 'middle';
 	imgObject.width = imageWidth;
@@ -1039,7 +1039,9 @@ function wrs_initParseSaveMode(code, language) {
 			var srcStart = appletCode.indexOf(' src="') + ' src="'.length;
 			var srcEnd = appletCode.indexOf('"', srcStart);
 			var src = appletCode.substring(srcStart, srcEnd);
-			var imgCode = '<img title="Double click to edit" align="middle" class="' + _wrs_conf_CASClassName + '" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
+			
+			// 'Double click to edit' has been removed here.
+			var imgCode = '<img align="middle" class="' + _wrs_conf_CASClassName + '" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
 			
 			code = code.substring(0, appletList[i].start + carry) + imgCode + code.substring(appletList[i].end + carry);
 			carry += imgCode.length - (appletList[i].end - appletList[i].start);
@@ -1283,9 +1285,13 @@ function wrs_mathmlToAccessible(mathml, language) {
  */
 function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	var imgObject = creator.createElement('img');
-	imgObject.title = 'Double click to edit';
+	//imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
-	imgObject.alt = wrs_mathmlToAccessible(mathml, language);
+	
+	if (window._wrs_conf_enableAccessibility && _wrs_conf_enableAccessibility) {
+		imgObject.alt = wrs_mathmlToAccessible(mathml, language);
+	}
+	
 	imgObject.className = _wrs_conf_imageClassName;
 	
 	var result = wrs_createImageSrc(mathml, wirisProperties);

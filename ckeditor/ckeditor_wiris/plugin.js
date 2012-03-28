@@ -25,6 +25,8 @@ var _wrs_conf_servicePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integra
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 //var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
+var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
+
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';
 var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/cas.gif';
