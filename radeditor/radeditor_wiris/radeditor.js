@@ -31,6 +31,8 @@ var _wrs_int_currentEditor;
 var _wrs_int_window_opened = false;
 var _wrs_int_language = 'en';
 var _wrs_int_radeditor_id;
+var _wrs_int_temporalImageResizing;
+
 
 /* Plugin integration */
 function OnClientLoad(editor, args){
