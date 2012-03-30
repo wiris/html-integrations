@@ -35,7 +35,7 @@ var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_w
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
-var _wrs_conf_defaultEditMode = 'iframes';				// This value can be 'images', 'latex' or 'iframes'.
+var _wrs_conf_defaultEditMode = '@DEFAULT_EDIT_MODE@';				// This value can be 'images', 'latex' or 'iframes'.
 
 var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
 
