@@ -41,7 +41,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	if (!wrs_int_opener._wrs_isNewElement) {
 		var mathml;
 		var attributeValue = wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_imageMathmlAttribute);
-			
+		
 		if (attributeValue == null) {
 			attributeValue = wrs_int_opener._wrs_temporalImage.getAttribute('alt');
 		}
@@ -53,16 +53,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			mathml = wrs_int_opener.wrs_mathmlDecode(attributeValue);
 		}
 		
-		function setMathML() {
-			if (editor.isReady()) {
-				editor.setMathML(mathml);
-			}
-			else {
-				setTimeout(setMathML, 50);
-			}
-		}
-		
-		setMathML();
+		editor.setMathML(mathml);
 	}
 	
 	// Submit button.

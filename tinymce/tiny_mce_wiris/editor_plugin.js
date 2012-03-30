@@ -35,6 +35,7 @@ var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_w
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
+var _wrs_conf_defaultEditMode = 'iframes';				// This value can be 'images', 'latex' or 'iframes'.
 
 var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
 
@@ -122,6 +123,7 @@ if ('wiriscasactive' in configuration) {
 				
 						editor.setContent(wrs_initParse(textarea.value, language));
 						iframe = editor.getContentAreaContainer().firstChild;
+						wrs_initParseImgToIframes(iframe.contentWindow);
 						
 						wrs_addIframeEvents(iframe, function (iframe, element) {
 							wrs_int_doubleClickHandler(editor, iframe, element);
@@ -255,7 +257,9 @@ function wrs_int_openNewCAS(iframe, language) {
  * @param object element Element double clicked
  */
 function wrs_int_doubleClickHandler(editor, iframe, element) {
-	if (element.nodeName.toLowerCase() == 'img') {
+	var elementName = element.nodeName.toLowerCase();
+	
+	if (elementName == 'img' || elementName == 'iframe') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
 			_wrs_int_wirisProperties = {
 				'bgColor': editor.settings['wirisimagebgcolor'],

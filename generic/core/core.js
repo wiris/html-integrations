@@ -430,6 +430,8 @@ function wrs_endParse(code, wirisProperties, language) {
  * @return string
  */
 function wrs_endParseEditMode(code, wirisProperties, language) {
+	// Converting LaTeX to images.
+	
 	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex')) {
 		var output = '';
 		var endPosition = 0;
@@ -456,37 +458,16 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
 		}
 		
 		output += code.substring(endPosition, code.length);
-		return output;
+		code = output;
 	}
 	
-	return code;
-}
-
-/**
- * Parses end HTML code depending on the save mode.
- * @param string code
- * @return string
- */
-function wrs_endParseSaveMode(code) {
+	// Converting iframes to images.
 	var output = '';
-	var convertToXml = false;
-	var convertToSafeXml = false;
-	
-	if (window._wrs_conf_saveMode) {
-		if (_wrs_conf_saveMode == 'safeXml') {
-			convertToXml = true;
-			convertToSafeXml = true;
-		}
-		else if (_wrs_conf_saveMode == 'xml') {
-			convertToXml = true;
-		}
-	}
-	
 	var endPosition = 0;
-	var pattern = /<img/gi;
+	var pattern = /<iframe/gi;
 	var patternLength = pattern.source.length;
 	
-	while (pattern.test(code)==true) {
+	while (pattern.test(code)) {
 		var startPosition = pattern.lastIndex - patternLength;
 		output += code.substring(endPosition, startPosition);
 		
@@ -518,13 +499,105 @@ function wrs_endParseSaveMode(code) {
 			return output;
 		}
 		
-		var imgCode = code.substring(startPosition, endPosition);
-		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
-
+		var iframeCode = code.substring(startPosition, endPosition);
+		
+		if (iframeCode.indexOf(' class="' + _wrs_conf_imageClassName + '"') != -1) {
+			var iframeObject = wrs_createObject(iframeCode);
+			var mathml = iframeObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+			
+			if (mathml == null) {
+				mathml = iframeObject.getAttribute('alt');
+			}
+			
+			var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
+			output += wrs_createObjectCode(imgObject);
+		}
+		else {
+			output += iframeCode;
+		}
 	}
 
 	output += code.substring(endPosition, code.length);
 	return output;
+}
+
+/**
+ * Parses end HTML code depending on the save mode.
+ * @param string code
+ * @return string
+ */
+function wrs_endParseSaveMode(code) {
+	var output = '';
+	var convertToXml = false;
+	var convertToSafeXml = false;
+	
+	if (window._wrs_conf_saveMode) {
+		if (_wrs_conf_saveMode == 'safeXml') {
+			convertToXml = true;
+			convertToSafeXml = true;
+		}
+		else if (_wrs_conf_saveMode == 'xml') {
+			convertToXml = true;
+		}
+	}
+	
+	var endPosition = 0;
+	var pattern = /<img/gi;
+	var patternLength = pattern.source.length;
+	
+	while (pattern.test(code)) {
+		var startPosition = pattern.lastIndex - patternLength;
+		output += code.substring(endPosition, startPosition);
+		
+		var i = startPosition + 1;
+		
+		while (i < code.length && endPosition <= startPosition) {
+			var character = code.charAt(i);
+			
+			if (character == '"' || character == '\'') {
+				var characterNextPosition = code.indexOf(character, i + 1);
+				
+				if (characterNextPosition == -1) {
+					i = code.length;		// End while.
+				}
+				else {
+					i = characterNextPosition;
+				}
+			}
+			else if (character == '>') {
+				endPosition = i + 1;
+			}
+			
+			++i;
+		}
+		
+		if (endPosition < startPosition) {		// The img tag is stripped.
+			output += code.substring(startPosition, code.length);
+			return output;
+		}
+		
+		var imgCode = code.substring(startPosition, endPosition);
+		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
+	}
+
+	output += code.substring(endPosition, code.length);
+	return output;
+}
+
+/**
+ * Fires an element event.
+ * @param object element
+ * @param string event
+ */
+function wrs_fireEvent(element, event) {
+	if (document.createEventObject){
+		var eventObject = document.createEventObject();
+		return element.fireEvent('on' + event, eventObject)
+    }
+    
+    var eventObject = document.createEvent('HTMLEvents');
+    eventObject.initEvent(event, true, true);
+	return !element.dispatchEvent(eventObject);
 }
 
 /**
@@ -961,6 +1034,27 @@ function wrs_initParse(code, language) {
 	return wrs_initParseSaveMode(code, language);
 }
 
+function wrs_initParseImgToIframes(windowTarget) {
+	var imgList = windowTarget.document.getElementsByTagName('img');
+	var i = 0;
+	
+	while (i < imgList.length) {
+		if (imgList[i].className == _wrs_conf_imageClassName) {
+			var mathml = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
+			
+			if (mathml == null) {
+				mathml = imgList[i].getAttribute('alt');
+			}
+		
+			var iframe = wrs_mathmlToIframeObject(windowTarget.document, wrs_mathmlDecode(mathml));
+			imgList[i].parentNode.replaceChild(iframe, imgList[i]);
+		}
+		else {
+			++i;
+		}
+	}
+}
+
 /**
  * Parses initial HTML code depending on the edit mode.
  * @param string code
@@ -1278,9 +1372,69 @@ function wrs_mathmlToAccessible(mathml, language) {
 }
 
 /**
+ * Converts mathml to an iframe object.
+ * @return object
+ */
+function wrs_mathmlToIframeObject(creator, mathml) {
+	var iframe = creator.createElement('iframe');
+	
+	wrs_addEvent(iframe, 'load', function () {
+		iframe.contentWindow.document.body.innerHTML = mathml;
+		iframe.className = _wrs_conf_imageClassName;
+		iframe.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+		
+		var viewerScript = iframe.contentWindow.document.createElement('script');
+		viewerScript.src = _wrs_conf_editorBasePath + '/viewer.js';
+		iframe.contentWindow.document.getElementsByTagName('head')[0].appendChild(viewerScript);
+		
+		iframe.style.display = 'inline';
+		iframe.style.border = 'none';
+		iframe.style.height = iframe.contentWindow.document.body.offsetHeight + 'px';
+		iframe.style.width = '100px';
+		iframe.contentWindow.document.body.style.cursor = 'pointer';
+		iframe.contentWindow.document.body.style.margin = '0';
+		iframe.contentWindow.document.body.style.margin = '0';
+		iframe.contentWindow.document.body.style.overflow = 'hidden';
+		
+		function paintFormula() {
+			if (iframe.contentWindow.com) {
+				iframe.contentWindow._wrs_conf_editorBasePath = _wrs_conf_editorBasePath;
+				var script = iframe.contentWindow.document.createElement('script');
+				script.innerHTML = 'window.viewer = new com.wiris.jsEditor.JsViewerMain(_wrs_conf_editorBasePath);window.viewer.run();';
+				iframe.contentWindow.document.body.appendChild(script);
+				
+				function prepareIframe() {
+					if (iframe.contentWindow.viewer && iframe.contentWindow.viewer.isReady()) {
+						wrs_addEvent(iframe.contentWindow.document, 'click', function () {
+							wrs_fireEvent(iframe, 'dblclick');
+						});
+						
+						iframe.style.height = iframe.contentWindow.document.body.firstChild.style.height;
+						iframe.style.width = iframe.contentWindow.document.body.firstChild.style.width;
+						iframe.style.verticalAlign = iframe.contentWindow.document.body.firstChild.style.verticalAlign;
+					}
+					else {
+						setTimeout(prepareIframe, 100);
+					}
+				};
+				
+				prepareIframe();
+			}
+			else {
+				setTimeout(paintFormula, 100);
+			}
+		}
+		
+		paintFormula();
+	});
+	
+	return iframe;
+}
+
+/**
  * Converts mathml to img object.
- * @param object creator Object with "createElement" method
- * @param string mathml Mathml code
+ * @param object creator Object with the "createElement" method
+ * @param string mathml MathML code
  * @return object
  */
 function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
@@ -1359,7 +1513,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		path += '?lang=' + language;
 	}
 	
-	_wrs_editMode = 'images';
+	_wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
 	_wrs_temporalRange = null;
 	
 	if (target) {
@@ -1367,7 +1521,14 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		
 		if (selectedItem != null) {
 			if (selectedItem.caretPosition === undefined) {
-				if (selectedItem.node.nodeName.toUpperCase() == 'IMG' && selectedItem.node.className == _wrs_conf_imageClassName) {
+				if (selectedItem.node.className == _wrs_conf_imageClassName) {
+					if (selectedItem.node.nodeName.toUpperCase() == 'IMG') {
+						_wrs_editMode = 'images';
+					}
+					else if (selectedItem.node.nodeName.toUpperCase() == 'IFRAME') {
+						_wrs_editMode = 'iframes';
+					}
+					
 					_wrs_temporalImage = selectedItem.node;
 					_wrs_isNewElement = false;
 				}
@@ -1560,6 +1721,10 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
 		var latex = wrs_getLatexFromMathML(mathml);
 		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
 		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
+	}
+	else if (editMode == 'iframes') {
+		var iframe = wrs_mathmlToIframeObject(windowTarget.document, mathml);
+		wrs_insertElementOnSelection(iframe, focusElement, windowTarget);
 	}
 	else {
 		var imgObject = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
