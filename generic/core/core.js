@@ -1035,22 +1035,24 @@ function wrs_initParse(code, language) {
 }
 
 function wrs_initParseImgToIframes(windowTarget) {
-	var imgList = windowTarget.document.getElementsByTagName('img');
-	var i = 0;
-	
-	while (i < imgList.length) {
-		if (imgList[i].className == _wrs_conf_imageClassName) {
-			var mathml = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
-			
-			if (mathml == null) {
-				mathml = imgList[i].getAttribute('alt');
-			}
+	if (window._wrs_conf_defaultEditMode && _wrs_conf_defaultEditMode == 'iframes') {
+		var imgList = windowTarget.document.getElementsByTagName('img');
+		var i = 0;
 		
-			var iframe = wrs_mathmlToIframeObject(windowTarget.document, wrs_mathmlDecode(mathml));
-			imgList[i].parentNode.replaceChild(iframe, imgList[i]);
-		}
-		else {
-			++i;
+		while (i < imgList.length) {
+			if (imgList[i].className == _wrs_conf_imageClassName) {
+				var mathml = imgList[i].getAttribute(_wrs_conf_imageMathmlAttribute);
+				
+				if (mathml == null) {
+					mathml = imgList[i].getAttribute('alt');
+				}
+			
+				var iframe = wrs_mathmlToIframeObject(windowTarget.document, wrs_mathmlDecode(mathml));
+				imgList[i].parentNode.replaceChild(iframe, imgList[i]);
+			}
+			else {
+				++i;
+			}
 		}
 	}
 }
