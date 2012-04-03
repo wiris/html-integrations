@@ -24,10 +24,13 @@ else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 /* FCKeditor integration end */
 
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
+	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
 
 	if (com.wiris.jsEditor.defaultBasePath) {
-		editor = com.wiris.jsEditor.JsEditor.newInstance();
+		editor = com.wiris.jsEditor.JsEditor.newInstance({
+			'language' : queryParams['lang']
+		});
 	}
 	else {
 		editor = new com.wiris.jsEditor.JsEditor('editor', null);
@@ -69,8 +72,6 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			mathml += editor.getMathML();							// If isn't empty, get mathml code to mathml variable.
 			mathml = wrs_int_opener.wrs_mathmlEntities(mathml);		// Apply a parse.
 		}
-		
-		var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 		
 		/* FCKeditor integration begin */
 		if (window.parent.InnerDialogLoaded && window.parent.FCKBrowserInfo.IsIE) {			// On IE, we must close the dialog for push the caret on the correct position.
