@@ -254,6 +254,10 @@ function wrs_createElement(elementName, attributes, creator) {
  * @return object
  */
 function wrs_createHttpRequest() {
+	if (_wrs_currentPath.substr(0, 7) == 'file://') {
+		throw 'Cross site scripting is only allowed for HTTP.';
+	}
+	
 	if (typeof XMLHttpRequest != 'undefined') {
 		return new XMLHttpRequest();
 	}
@@ -637,28 +641,33 @@ function wrs_getCode(variableName, imageHashCode) {
  * @return string
  */
 function wrs_getContent(url, postVariables) {
-	var httpRequest = wrs_createHttpRequest();
-	
-	if (httpRequest) {
-		if (url.substr(0, 1) == '/' || url.substr(0, 7) == 'http://' || url.substr(0, 8) == 'https://') {
-			httpRequest.open('POST', url, false);
-		}
-		else {
-			httpRequest.open('POST', _wrs_currentPath + url, false);
+	try {
+		var httpRequest = wrs_createHttpRequest();
+		
+		if (httpRequest) {
+			if (url.substr(0, 1) == '/' || url.substr(0, 7) == 'http://' || url.substr(0, 8) == 'https://') {
+				httpRequest.open('POST', url, false);
+			}
+			else {
+				httpRequest.open('POST', _wrs_currentPath + url, false);
+			}
+			
+			if (postVariables !== undefined) {
+				httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+				httpRequest.send(wrs_httpBuildQuery(postVariables));
+			}
+			else {
+				httpRequest.send(null);
+			}
+			
+			return httpRequest.responseText;
 		}
 		
-		if (postVariables !== undefined) {
-			httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			httpRequest.send(wrs_httpBuildQuery(postVariables));
-		}
-		else {
-			httpRequest.send(null);
-		}
-		
-		return httpRequest.responseText;
+		alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+	}
+	catch (e) {
 	}
 	
-	alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
 	return '';
 }
 
@@ -1397,57 +1406,37 @@ function wrs_mathmlToAccessible(mathml, language) {
  */
 function wrs_mathmlToIframeObject(creator, mathml) {
 	var iframe = creator.createElement('iframe');
+	iframe.className = _wrs_conf_imageClassName;
+	iframe.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+	iframe.style.display = 'inline';
+	iframe.style.border = 'none';
+	iframe.style.height = '1px';
+	iframe.style.width = '1px';
+	iframe.setAttribute('scrolling', 'no');
+	iframe.setAttribute('frameBorder', '0');
 	
 	wrs_addEvent(iframe, 'load', function () {
-		iframe.contentWindow.document.body.innerHTML = mathml;
-		iframe.className = _wrs_conf_imageClassName;
-		iframe.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+		iframe.contentWindow.paintFormula(mathml);
 		
-		var viewerScript = iframe.contentWindow.document.createElement('script');
-		viewerScript.src = _wrs_conf_editorBasePath + '/viewer.js';
-		iframe.contentWindow.document.getElementsByTagName('head')[0].appendChild(viewerScript);
-		
-		iframe.style.display = 'inline';
-		iframe.style.border = 'none';
-		iframe.style.height = iframe.contentWindow.document.body.offsetHeight + 'px';
-		iframe.style.width = '100px';
-		iframe.contentWindow.document.body.style.cursor = 'pointer';
-		iframe.contentWindow.document.body.style.margin = '0';
-		iframe.contentWindow.document.body.style.margin = '0';
-		iframe.contentWindow.document.body.style.overflow = 'hidden';
-		
-		function paintFormula() {
-			if (iframe.contentWindow.com) {
-				iframe.contentWindow._wrs_conf_editorBasePath = _wrs_conf_editorBasePath;
-				var script = iframe.contentWindow.document.createElement('script');
-				script.innerHTML = 'window.viewer = new com.wiris.jsEditor.JsViewerMain(_wrs_conf_editorBasePath);window.viewer.run();';
-				iframe.contentWindow.document.body.appendChild(script);
+		function prepareIframe() {
+			if (iframe.contentWindow.viewer.isReady()) {
+				wrs_addEvent(iframe.contentWindow.document, 'click', function () {
+					wrs_fireEvent(iframe, 'dblclick');
+				});
 				
-				function prepareIframe() {
-					if (iframe.contentWindow.viewer && iframe.contentWindow.viewer.isReady()) {
-						wrs_addEvent(iframe.contentWindow.document, 'click', function () {
-							wrs_fireEvent(iframe, 'dblclick');
-						});
-						
-						iframe.style.height = iframe.contentWindow.document.body.firstChild.style.height;
-						iframe.style.width = iframe.contentWindow.document.body.firstChild.style.width;
-						iframe.style.verticalAlign = iframe.contentWindow.document.body.firstChild.style.verticalAlign;
-					}
-					else {
-						setTimeout(prepareIframe, 100);
-					}
-				};
-				
-				prepareIframe();
+				iframe.style.height = iframe.contentWindow.formulaContainer.style.height;
+				iframe.style.width = iframe.contentWindow.formulaContainer.style.width;
+				iframe.style.verticalAlign = iframe.contentWindow.formulaContainer.style.verticalAlign;
 			}
 			else {
-				setTimeout(paintFormula, 100);
+				setTimeout(prepareIframe, 100);
 			}
-		}
+		};
 		
-		paintFormula();
+		prepareIframe();
 	});
 	
+	iframe.src = _wrs_conf_pluginBasePath + '/core/iframe.html';
 	return iframe;
 }
 

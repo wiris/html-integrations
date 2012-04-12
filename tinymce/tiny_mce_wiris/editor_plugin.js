@@ -39,6 +39,8 @@ var _wrs_conf_defaultEditMode = '@DEFAULT_EDIT_MODE@';				// This value can be '
 
 var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
 
+var _wrs_conf_pluginBasePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris';
+
 /* Vars */
 var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
 var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/cas.gif';
