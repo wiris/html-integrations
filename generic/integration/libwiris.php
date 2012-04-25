@@ -253,7 +253,9 @@ function wrs_fileGetContentsCurl($url, $postVariables, $config, $referer) {
 
 function wrs_getFormulaDirectory($config) {
 	$formulaDirectory = (isset($config['wirisformuladirectory'])) ? $config['wirisformuladirectory'] : WRS_FORMULA_DIRECTORY;
-	@mkdir($formulaDirectory, 0755, true);
+	if (!is_dir($formulaDirectory)){
+		@mkdir($formulaDirectory, 0755, true);    
+	}
 	return $formulaDirectory;
 }
 
@@ -373,7 +375,9 @@ function wrs_secureStripslashes($element) {
 	return stripslashes($element);
 }
 
-@set_magic_quotes_runtime(0);
+if (get_magic_quotes_runtime()) {
+    @set_magic_quotes_runtime(0);
+}
 
 if (get_magic_quotes_gpc() == 1) {
 	$_REQUEST = array_map('wrs_secureStripslashes', $_REQUEST);
