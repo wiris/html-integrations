@@ -57,7 +57,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 ?>
 <html>
 	<head>
-		<title>Plugin WIRIS test page</title>
+		<title>WIRIS Plugin test page</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 		<style type="text/css">
@@ -76,7 +76,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 	</head>
 	
 	<body>
-		<h1>Plugin WIRIS test page</h1>
+		<h1>WIRIS plugin test page</h1>
 		
 		<table>
 				<tr>
@@ -84,6 +84,20 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 					<th>Report</th>
 					<th>Status</th>
 				</tr>
+				<tr>
+				<?php
+					$test_name = 'WIRIS plugin version';
+					$file = '../VERSION';
+					if (@fopen($file, 'r')){
+						$content = file($file);
+						$report_text = '<b>' . $content[0] . '</b>';
+					}else{
+						$report_text = "";
+					}
+					$solution_link = '';
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, @fopen($file, 'r') !== false);
+				?>				
+				</tr>				
 				<tr>
 				<?php
 					$test_name = 'Loading configuration';
