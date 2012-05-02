@@ -100,10 +100,10 @@ if (configuration.wirisparselatex == 'false') {
 	}
 }
 if ('wirisformulaeditoractive' in configuration) {
-	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == 'true');
+	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == true);
 }
 if ('wiriscasactive' in configuration) {
-	_wrs_conf_CASEnabled = (configuration.wiriscasactive == 'true');
+	_wrs_conf_CASEnabled = (configuration.wiriscasactive == true);
 }
 
 /* Plugin integration */
