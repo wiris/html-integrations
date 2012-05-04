@@ -612,14 +612,14 @@ function wrs_endParseSaveMode(code) {
  * @param string event
  */
 function wrs_fireEvent(element, event) {
-	if (document.createEventObject){
-		var eventObject = document.createEventObject();
-		return element.fireEvent('on' + event, eventObject)
+	if (document.createEvent){
+		var eventObject = document.createEvent('HTMLEvents');
+		eventObject.initEvent(event, true, true);
+		return !element.dispatchEvent(eventObject);
     }
     
-    var eventObject = document.createEvent('HTMLEvents');
-    eventObject.initEvent(event, true, true);
-	return !element.dispatchEvent(eventObject);
+	var eventObject = document.createEventObject();
+	return element.fireEvent('on' + event, eventObject)
 }
 
 /**
