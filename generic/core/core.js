@@ -1405,38 +1405,22 @@ function wrs_mathmlToAccessible(mathml, language) {
  * @return object
  */
 function wrs_mathmlToIframeObject(creator, mathml) {
+	creator.wrs_assignIframeEvents = function (myIframe) {
+		wrs_addEvent(myIframe.contentWindow.document, 'click', function () {
+			wrs_fireEvent(myIframe, 'dblclick');
+		});
+	};
+
 	var iframe = creator.createElement('iframe');
 	iframe.className = _wrs_conf_imageClassName;
 	iframe.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
 	iframe.style.display = 'inline';
 	iframe.style.border = 'none';
-	iframe.style.height = '1px';
-	iframe.style.width = '1px';
+	iframe.setAttribute('height', '1');
+	iframe.setAttribute('width', '1');
 	iframe.setAttribute('scrolling', 'no');
 	iframe.setAttribute('frameBorder', '0');
-	
-	wrs_addEvent(iframe, 'load', function () {
-		iframe.contentWindow.paintFormula(mathml);
-		
-		function prepareIframe() {
-			if (iframe.contentWindow.viewer.isReady()) {
-				wrs_addEvent(iframe.contentWindow.document, 'click', function () {
-					wrs_fireEvent(iframe, 'dblclick');
-				});
-				
-				iframe.style.height = iframe.contentWindow.formulaContainer.style.height;
-				iframe.style.width = iframe.contentWindow.formulaContainer.style.width;
-				iframe.style.verticalAlign = iframe.contentWindow.formulaContainer.style.verticalAlign;
-			}
-			else {
-				setTimeout(prepareIframe, 100);
-			}
-		};
-		
-		prepareIframe();
-	});
-	
-	iframe.src = _wrs_conf_pluginBasePath + '/core/iframe.html';
+	iframe.src = _wrs_conf_pluginBasePath + '/core/iframe.html#' + _wrs_conf_imageMathmlAttribute;
 	return iframe;
 }
 

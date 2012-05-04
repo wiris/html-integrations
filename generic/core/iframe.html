@@ -13,15 +13,47 @@
 		<script type="text/javascript" src="../integration/editor/viewer.js"></script>
 		
 		<script type="text/javascript">
-			function paintFormula(mathml) {
-				window.viewer = new com.wiris.jsEditor.JsViewerMain('../integration/editor');
-				window.viewer.insertCSS();
+			window.onload = function () {
+				var myIframe = null;
+				var iframes = parent.document.getElementsByTagName('iframe');
 				
-				window.formulaContainer = document.createElement('div');
-				document.body.appendChild(window.formulaContainer);
+				for (var i = 0; i < iframes.length && myIframe == null; ++i) {
+					if (iframes[i].contentWindow == this) {
+						myIframe = iframes[i];
+					}
+				}
 				
-				window.viewer.paintFormulaOnContainer(mathml, window.formulaContainer, null);
-			}
+				if (myIframe != null) {
+					var viewer = new com.wiris.jsEditor.JsViewerMain('../integration/editor');
+					viewer.insertCSS();
+					
+					var formulaContainer = document.createElement('div');
+					document.body.appendChild(formulaContainer);
+					
+					var mathml = myIframe.getAttribute(document.location.hash.substring(1));
+					
+					if (mathml == null) {
+						alert('Error: MathML attribute on iframe not found.');
+					}
+					else {
+						viewer.paintFormulaOnContainer(mathml, formulaContainer, null);
+						
+						function prepareIframe() {
+							if (viewer.isReady()) {
+								parent.document.wrs_assignIframeEvents(myIframe);
+								myIframe.style.height = formulaContainer.style.height;
+								myIframe.style.width = formulaContainer.style.width;
+								myIframe.style.verticalAlign = formulaContainer.style.verticalAlign;
+							}
+							else {
+								setTimeout(prepareIframe, 100);
+							}
+						};
+						
+						prepareIframe();
+					}
+				}
+			};
 		</script>
 	</head>
 	<body>
