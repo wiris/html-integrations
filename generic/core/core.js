@@ -1056,9 +1056,13 @@ function wrs_httpBuildQuery(properties) {
  * @param string language Language for the formula.
  * @return string
  */
+ /* Note: The code inside this function has been inverted.
+ 	If you invert again the code then you cannot use correctly LaTeX 
+	in Moodle.
+ */
 function wrs_initParse(code, language) {
-	code = wrs_initParseEditMode(code);
-	return wrs_initParseSaveMode(code, language);
+	code = wrs_initParseSaveMode(code, language);
+	return wrs_initParseEditMode(code);
 }
 
 function wrs_initParseImgToIframes(windowTarget) {
