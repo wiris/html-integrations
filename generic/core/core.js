@@ -444,6 +444,11 @@ function wrs_endParse(code, wirisProperties, language) {
 	return wrs_endParseSaveMode(code);
 }
 
+function wrs_regexpIndexOf(input, regexp, start) {
+	var index = input.substring(start || 0).search(regexp);
+    return (index >= 0) ? (index + (start || 0)) : index;
+}
+
 /**
  * Parses end HTML code depending on the edit mode.
  * @param string code
@@ -485,60 +490,105 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
 	
 	// Converting iframes to images.
 	var output = '';
+	var pattern = ' class="' + _wrs_conf_imageClassName + '"';
+	var formulaPosition = code.indexOf(pattern);
 	var endPosition = 0;
-	var pattern = /<iframe/gi;
-	var patternLength = pattern.source.length;
 	
-	while (pattern.test(code)) {
-		var startPosition = pattern.lastIndex - patternLength;
-		output += code.substring(endPosition, startPosition);
+	while (formulaPosition != -1) {
+		// Looking for the actual startPosition.
+		startPosition = formulaPosition;
+		var i = formulaPosition;
+		var startTagFound = false;
 		
-		var i = startPosition + 1;
-		
-		while (i < code.length && endPosition <= startPosition) {
+		while (i >= 0 && !startTagFound) {		// Going backwards until the start tag '<' is found.
 			var character = code.charAt(i);
 			
 			if (character == '"' || character == '\'') {
-				
-				var characterNextPosition = code.indexOf(character, i + 1);
-				
-				if (characterNextPosition == -1) {
-					i = code.length;		// End while.
-				}
-				else {
-					i = characterNextPosition;
-				}
+				var characterNextPosition = code.lastIndexOf(character, i);
+				i = (characterNextPosition == -1) ? -1 : characterNextPosition;
+			}
+			else if (character == '<') {
+				startPosition = i;
+				startTagFound = true;
 			}
 			else if (character == '>') {
-				endPosition = i + 1;
+				i = -1;					// Break: we are inside a text node.
 			}
 			
-			++i;
+			--i;
 		}
 		
-		if (endPosition < startPosition) {		// The img tag is stripped.
-			output += code.substring(startPosition, code.length);
-			return output;
-		}
+		// Appending the previous code.
+		output += code.substring(endPosition, startPosition);
 		
-		var iframeCode = code.substring(startPosition, endPosition);
+		// Looking for the endPosition.
 		
-		if (iframeCode.indexOf(' class="' + _wrs_conf_imageClassName + '"') != -1) {
-			var iframeObject = wrs_createObject(iframeCode);
-			var mathml = iframeObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+		if (startTagFound) {
+			i = formulaPosition;
+			var counter = 1;
 			
-			if (mathml == null) {
-				mathml = iframeObject.getAttribute('alt');
+			while (i < code.length && counter > 0) {
+				var character = code.charAt(i);
+				
+				if (character == '"' || character == '\'') {
+					var characterNextPosition = code.indexOf(character, i);
+					i = (characterNextPosition == -1) ? code.length : characterNextPosition;
+				}
+				else if (character == '<') {
+					if (i + 1 < code.length && code.charAt(i + 1) == '/') {
+						--counter;
+						
+						if (counter == 0) {
+							endPosition = code.indexOf('>', i) + 1;
+							
+							if (endPosition == -1) {
+								// End tag stripped.
+								counter = -1;		// to be != 0 and to break the loop.
+							}
+						}
+					}
+					else {
+						++counter;
+					}
+				}
+				else if (character == '>' && code.charAt(i - 1) == '/') {
+					--counter;
+					
+					if (counter == 0) {
+						endPosition = i + 1;
+					}
+				}
+			
+				++i;
 			}
 			
-			var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
-			output += wrs_createObjectCode(imgObject);
+			if (counter == 0) {
+				var formulaTagCode = code.substring(startPosition, endPosition);
+				var formulaTagObject = wrs_createObject(formulaTagCode);
+				var mathml = formulaTagObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+				
+				if (mathml == null) {
+					mathml = formulaTagObject.getAttribute('alt');
+				}
+				
+				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
+				output += wrs_createObjectCode(imgObject);
+			}
+			else {
+				// Start tag found but no end tag found. No process is done. A character is appended to avoid infinite loop in the next search.
+				output += code.charAt(formulaPosition);
+				endPosition = formulaPosition + 1;
+			}
 		}
 		else {
-			output += iframeCode;
+			// No start tag is found. No process is done. A character is appended to avoid infinite loop in the next search.
+			output += code.charAt(formulaPosition);
+			endPosition = formulaPosition + 1;
 		}
+		
+		formulaPosition = code.indexOf(pattern, endPosition);
 	}
-
+	
 	output += code.substring(endPosition, code.length);
 	return output;
 }
@@ -1078,7 +1128,7 @@ function wrs_initParseImgToIframes(windowTarget) {
 					mathml = imgList[i].getAttribute('alt');
 				}
 			
-				var iframe = wrs_mathmlToIframeObject(windowTarget.document, wrs_mathmlDecode(mathml));
+				var iframe = wrs_mathmlToIframeObject(windowTarget, wrs_mathmlDecode(mathml));
 				imgList[i].parentNode.replaceChild(iframe, imgList[i]);
 			}
 			else {
@@ -1408,14 +1458,69 @@ function wrs_mathmlToAccessible(mathml, language) {
  * Converts mathml to an iframe object.
  * @return object
  */
-function wrs_mathmlToIframeObject(creator, mathml) {
-	creator.wrs_assignIframeEvents = function (myIframe) {
+function wrs_mathmlToIframeObject(windowTarget, mathml) {
+	if (window.navigator.userAgent.toLowerCase().indexOf('webkit') != -1) {
+		// In WebKit, the formula is represented by a div instead of an iframe.
+		var container = windowTarget.document.createElement('span');
+		container.className = _wrs_conf_imageClassName;
+		container.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
+		container.setAttribute('height', '1');
+		container.setAttribute('width', '1');
+		container.style.display = 'inline-block';
+		container.style.cursor = 'pointer';
+		container.style.webkitUserModify = 'read-only';
+		container.style.webkitUserSelect = 'all';
+		
+		var formulaContainer = windowTarget.document.createElement('span');
+		formulaContainer.style.display = 'inline';
+		container.appendChild(formulaContainer);
+
+		function waitForViewer() {
+			if (windowTarget.com && windowTarget.com.wiris) {
+				if (!('_wrs_viewer' in windowTarget)) {
+					windowTarget._wrs_viewer = new windowTarget.com.wiris.jsEditor.JsViewerMain(_wrs_conf_pluginBasePath + '/integration/editor');
+					windowTarget._wrs_viewer.insertCSS(null, windowTarget.document);
+				}
+				
+				windowTarget._wrs_viewer.paintFormulaOnContainer(mathml, formulaContainer, null);
+				
+				function prepareDiv() {
+					if (windowTarget._wrs_viewer.isReady()) {
+						container.style.height = formulaContainer.style.height;
+						container.style.width = formulaContainer.style.width;
+						container.style.verticalAlign = formulaContainer.style.verticalAlign;
+					}
+					else {
+						setTimeout(prepareDiv, 100);
+					}
+				};
+				
+				prepareDiv();
+			}
+			else {
+				setTimeout(waitForViewer, 100);
+			}
+		}
+		
+		if (!('_wrs_viewerAppended' in windowTarget)) {
+			var viewerScript = windowTarget.document.createElement('script');
+			viewerScript.src = _wrs_conf_pluginBasePath + '/integration/editor/viewer.js';
+			windowTarget.document.getElementsByTagName('head')[0].appendChild(viewerScript);
+			windowTarget._wrs_viewerAppended = true;
+		}
+		
+		waitForViewer();
+		
+		return container;
+	}
+	
+	windowTarget.document.wrs_assignIframeEvents = function (myIframe) {
 		wrs_addEvent(myIframe.contentWindow.document, 'click', function () {
 			wrs_fireEvent(myIframe, 'dblclick');
 		});
 	};
 
-	var iframe = creator.createElement('iframe');
+	var iframe = windowTarget.document.createElement('iframe');
 	iframe.className = _wrs_conf_imageClassName;
 	iframe.setAttribute(_wrs_conf_imageMathmlAttribute, mathml);
 	iframe.style.display = 'inline';
@@ -1720,7 +1825,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
 		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
 	}
 	else if (editMode == 'iframes') {
-		var iframe = wrs_mathmlToIframeObject(windowTarget.document, mathml);
+		var iframe = wrs_mathmlToIframeObject(windowTarget, mathml);
 		wrs_insertElementOnSelection(iframe, focusElement, windowTarget);
 	}
 	else {

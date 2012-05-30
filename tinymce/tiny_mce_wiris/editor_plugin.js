@@ -259,9 +259,15 @@ function wrs_int_openNewCAS(iframe, language) {
  * @param object element Element double clicked
  */
 function wrs_int_doubleClickHandler(editor, iframe, element) {
+	// This loop allows the double clicking on the formulas represented with span's.
+	
+	while (!wrs_containsClass(element, 'Wirisformula') && element.parentNode) {
+		element = element.parentNode;
+	}
+	
 	var elementName = element.nodeName.toLowerCase();
 	
-	if (elementName == 'img' || elementName == 'iframe') {
+	if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
 			_wrs_int_wirisProperties = {
 				'bgColor': editor.settings['wirisimagebgcolor'],
