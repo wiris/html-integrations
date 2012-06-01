@@ -36,13 +36,15 @@ var _wrs_safeXmlCharacters = {
 	'tagCloser': '»',		// \xBB
 	'doubleQuote': '¨',		// \xA8
 	'ampersand': '§',		// \xA7
-	'quote': '`'			// \xB4
+	'quote': '`',			// \xB4
+	'realDoubleQuote': '¨'
 };
 
 var _wrs_safeXmlCharactersEntities = {
 	'tagOpener': '&laquo;',
 	'tagCloser': '&raquo;',
-	'doubleQuote': '&uml;'
+	'doubleQuote': '&uml;',
+	'realDoubleQuote': '&quot;'
 }
 
 var _wrs_staticNodeLengths = {
@@ -1384,7 +1386,9 @@ function wrs_mathmlDecode(input) {
 	input = input.split(_wrs_safeXmlCharactersEntities.tagOpener).join(_wrs_safeXmlCharacters.tagOpener);
 	input = input.split(_wrs_safeXmlCharactersEntities.tagCloser).join(_wrs_safeXmlCharacters.tagCloser);
 	input = input.split(_wrs_safeXmlCharactersEntities.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote);
-
+	//Added to fix problem due to import from 1.9.x
+	input = input.split(_wrs_safeXmlCharactersEntities.realDoubleQuote).join(_wrs_safeXmlCharacters.realDoubleQuote);
+	
 	// Decoding characters.
 	input = input.split(_wrs_safeXmlCharacters.tagOpener).join(_wrs_xmlCharacters.tagOpener);
 	input = input.split(_wrs_safeXmlCharacters.tagCloser).join(_wrs_xmlCharacters.tagCloser);
