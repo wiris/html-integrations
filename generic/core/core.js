@@ -490,109 +490,113 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
 		code = output;
 	}
 	
-	// Converting iframes to images.
-	var output = '';
-	var pattern = ' class="' + _wrs_conf_imageClassName + '"';
-	var formulaPosition = code.indexOf(pattern);
-	var endPosition = 0;
-	
-	while (formulaPosition != -1) {
-		// Looking for the actual startPosition.
-		startPosition = formulaPosition;
-		var i = formulaPosition;
-		var startTagFound = false;
+	if (window._wrs_conf_defaultEditMode && _wrs_conf_defaultEditMode == 'iframes') {
+		// Converting iframes to images.
+		var output = '';
+		var pattern = ' class="' + _wrs_conf_imageClassName + '"';
+		var formulaPosition = code.indexOf(pattern);
+		var endPosition = 0;
 		
-		while (i >= 0 && !startTagFound) {		// Going backwards until the start tag '<' is found.
-			var character = code.charAt(i);
+		while (formulaPosition != -1) {
+			// Looking for the actual startPosition.
+			startPosition = formulaPosition;
+			var i = formulaPosition;
+			var startTagFound = false;
 			
-			if (character == '"' || character == '\'') {
-				var characterNextPosition = code.lastIndexOf(character, i);
-				i = (characterNextPosition == -1) ? -1 : characterNextPosition;
-			}
-			else if (character == '<') {
-				startPosition = i;
-				startTagFound = true;
-			}
-			else if (character == '>') {
-				i = -1;					// Break: we are inside a text node.
-			}
-			
-			--i;
-		}
-		
-		// Appending the previous code.
-		output += code.substring(endPosition, startPosition);
-		
-		// Looking for the endPosition.
-		
-		if (startTagFound) {
-			i = formulaPosition;
-			var counter = 1;
-			
-			while (i < code.length && counter > 0) {
+			while (i >= 0 && !startTagFound) {		// Going backwards until the start tag '<' is found.
 				var character = code.charAt(i);
 				
 				if (character == '"' || character == '\'') {
-					var characterNextPosition = code.indexOf(character, i);
-					i = (characterNextPosition == -1) ? code.length : characterNextPosition;
+					var characterNextPosition = code.lastIndexOf(character, i);
+					i = (characterNextPosition == -1) ? -1 : characterNextPosition;
 				}
 				else if (character == '<') {
-					if (i + 1 < code.length && code.charAt(i + 1) == '/') {
+					startPosition = i;
+					startTagFound = true;
+				}
+				else if (character == '>') {
+					i = -1;					// Break: we are inside a text node.
+				}
+				
+				--i;
+			}
+			
+			// Appending the previous code.
+			output += code.substring(endPosition, startPosition);
+			
+			// Looking for the endPosition.
+			
+			if (startTagFound) {
+				i = formulaPosition;
+				var counter = 1;
+				
+				while (i < code.length && counter > 0) {
+					var character = code.charAt(i);
+					
+					if (character == '"' || character == '\'') {
+						var characterNextPosition = code.indexOf(character, i);
+						i = (characterNextPosition == -1) ? code.length : characterNextPosition;
+					}
+					else if (character == '<') {
+						if (i + 1 < code.length && code.charAt(i + 1) == '/') {
+							--counter;
+							
+							if (counter == 0) {
+								endPosition = code.indexOf('>', i) + 1;
+								
+								if (endPosition == -1) {
+									// End tag stripped.
+									counter = -1;		// to be != 0 and to break the loop.
+								}
+							}
+						}
+						else {
+							++counter;
+						}
+					}
+					else if (character == '>' && code.charAt(i - 1) == '/') {
 						--counter;
 						
 						if (counter == 0) {
-							endPosition = code.indexOf('>', i) + 1;
-							
-							if (endPosition == -1) {
-								// End tag stripped.
-								counter = -1;		// to be != 0 and to break the loop.
-							}
+							endPosition = i + 1;
 						}
 					}
-					else {
-						++counter;
-					}
+				
+					++i;
 				}
-				else if (character == '>' && code.charAt(i - 1) == '/') {
-					--counter;
+				
+				if (counter == 0) {
+					var formulaTagCode = code.substring(startPosition, endPosition);
+					var formulaTagObject = wrs_createObject(formulaTagCode);
+					var mathml = formulaTagObject.getAttribute(_wrs_conf_imageMathmlAttribute);
 					
-					if (counter == 0) {
-						endPosition = i + 1;
+					if (mathml == null) {
+						mathml = formulaTagObject.getAttribute('alt');
 					}
+					
+					var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
+					output += wrs_createObjectCode(imgObject);
 				}
-			
-				++i;
-			}
-			
-			if (counter == 0) {
-				var formulaTagCode = code.substring(startPosition, endPosition);
-				var formulaTagObject = wrs_createObject(formulaTagCode);
-				var mathml = formulaTagObject.getAttribute(_wrs_conf_imageMathmlAttribute);
-				
-				if (mathml == null) {
-					mathml = formulaTagObject.getAttribute('alt');
+				else {
+					// Start tag found but no end tag found. No process is done. A character is appended to avoid infinite loop in the next search.
+					output += code.charAt(formulaPosition);
+					endPosition = formulaPosition + 1;
 				}
-				
-				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
-				output += wrs_createObjectCode(imgObject);
 			}
 			else {
-				// Start tag found but no end tag found. No process is done. A character is appended to avoid infinite loop in the next search.
+				// No start tag is found. No process is done. A character is appended to avoid infinite loop in the next search.
 				output += code.charAt(formulaPosition);
 				endPosition = formulaPosition + 1;
 			}
-		}
-		else {
-			// No start tag is found. No process is done. A character is appended to avoid infinite loop in the next search.
-			output += code.charAt(formulaPosition);
-			endPosition = formulaPosition + 1;
+			
+			formulaPosition = code.indexOf(pattern, endPosition);
 		}
 		
-		formulaPosition = code.indexOf(pattern, endPosition);
+		output += code.substring(endPosition, code.length);
+		code = output;
 	}
 	
-	output += code.substring(endPosition, code.length);
-	return output;
+	return code;
 }
 
 /**
