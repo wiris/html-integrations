@@ -113,7 +113,8 @@ if ('wiriscasactive' in configuration) {
 			var iframe;
 			
 			editor.onInit.add(function (editor) {
-				var textarea = editor.getElement();
+				var editorElement = editor.getElement();
+				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
 				
 				function whenDocReady() {
 					if (window.wrs_initParse) {
@@ -123,7 +124,7 @@ if ('wiriscasactive' in configuration) {
 							language = editor.settings['wirisformulaeditorlang'];
 						}
 				
-						editor.setContent(wrs_initParse(textarea.value, language));
+						editor.setContent(wrs_initParse(content, language));
 						iframe = editor.getContentAreaContainer().firstChild;
 						wrs_initParseImgToIframes(iframe.contentWindow);
 						
