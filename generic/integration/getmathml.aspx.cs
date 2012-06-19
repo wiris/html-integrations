@@ -19,9 +19,12 @@ namespace pluginwiris
     {
         private void Page_Load(object sender, System.EventArgs e)
         {
+			Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+			
             if (this.Request.Form["md5"] != null)
             {
-                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + Path.GetFileName(this.Request.Form["md5"]));
+				string filePath = (Libwiris.getFormulaDirectory(config) != null) ? Libwiris.getFormulaDirectory(config) : this.MapPath(Libwiris.FormulaDirectory);
+				filePath += "/" + Path.GetFileName(this.Request.Form["md5"]);
 
 				if (File.Exists(filePath + ".ini"))
 				{
@@ -40,7 +43,6 @@ namespace pluginwiris
                 }
             }
 			else if (this.Request.Form["latex"] != null) {
-				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
 				string url;
 				
 				if (config["wirislatextomathmlurl"] != null) {

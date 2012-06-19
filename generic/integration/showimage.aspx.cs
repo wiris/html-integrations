@@ -19,15 +19,18 @@ namespace pluginwiris
 	{
 		private void Page_Load(object sender, System.EventArgs e)
 		{
+			Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+		
 			if (this.Request.QueryString["formula"] != null) 
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
-				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula + ".png");
-
+				string imagePath = (Libwiris.getCacheDirectory(config) != null) ? Libwiris.getCacheDirectory(config) : this.MapPath(Libwiris.CacheDirectory);
+				imagePath += "/" + formula + ".png";
+				
 				if (!File.Exists(imagePath))
 				{
-					Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
-					string formulaPath = this.MapPath(Libwiris.FormulaDirectory + "/" + formula);
+					string formulaPath = (Libwiris.getFormulaDirectory(config) != null) ? Libwiris.getFormulaDirectory(config) : this.MapPath(Libwiris.FormulaDirectory);
+					formulaPath += "/" + formula;
 					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
 					this.createImage(config, formulaPath, extension, imagePath);
 				}
@@ -37,9 +40,8 @@ namespace pluginwiris
 			}
 			else if (this.Request.QueryString["mml"] != null)
 			{
-				string imagePath = this.MapPath(Libwiris.CacheDirectory + "/temp.png");
-				
-				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+				string imagePath = (Libwiris.getCacheDirectory(config) != null) ? Libwiris.getCacheDirectory(config) : this.MapPath(Libwiris.CacheDirectory);
+				imagePath += "/temp.png";
 				
 				Hashtable properties = new Hashtable();
 				properties["mml"] = this.Request.QueryString["mml"];

@@ -25,8 +25,11 @@ namespace pluginwiris
 			}
 			else
 			{
+				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+				
 				string formula = Path.GetFileName(this.Request.QueryString["formula"]);
-				string filePath = this.MapPath(Libwiris.CacheDirectory + "/" + formula);
+				string filePath = (Libwiris.getCacheDirectory(config) != null) ? Libwiris.getCacheDirectory(config) : this.MapPath(Libwiris.CacheDirectory);
+				filePath += "/" + formula;
 
 				if (File.Exists(filePath)) 
 				{

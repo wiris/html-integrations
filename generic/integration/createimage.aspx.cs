@@ -29,10 +29,13 @@ namespace pluginwiris
 					}
 				}
 			
+				Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+			
 				string toSave = Libwiris.createIni(properties);
                 string fileName = Libwiris.md5(toSave);
                 string url = this.Page.ResolveUrl("showimage.aspx") + "?formula=" + fileName + ".png";
-                string filePath = this.MapPath(Libwiris.FormulaDirectory + "/" + fileName + ".ini");
+				string filePath = (Libwiris.getFormulaDirectory(config) != null) ? Libwiris.getFormulaDirectory(config) : this.MapPath(Libwiris.FormulaDirectory);
+				filePath += "/" + fileName + ".ini";
 
                 if (!File.Exists(filePath))
                 {

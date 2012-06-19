@@ -78,7 +78,8 @@
 		
 		<p>
 		        <%
-                                String file = this.MapPath(pluginwiris.Libwiris.FormulaDirectory + "/test.xml");
+								string file = (pluginwiris.Libwiris.getFormulaDirectory(config) != null) ? pluginwiris.Libwiris.getFormulaDirectory(config) : this.MapPath(pluginwiris.Libwiris.FormulaDirectory);
+								file += "/test.xml";
                                 this.Response.Write("Writing file " + file + "... ");
 
                                 try
@@ -117,7 +118,8 @@
 		
 		<p>
 		        <%
-                                file = this.MapPath(pluginwiris.Libwiris.CacheDirectory + "/test.png");
+								file = (pluginwiris.Libwiris.getCacheDirectory(config) != null) ? pluginwiris.Libwiris.getCacheDirectory(config) : this.MapPath(pluginwiris.Libwiris.CacheDirectory);
+								file += "/test.png";
                                 this.Response.Write("Writing file " + file + "... ");
 
                                 try
