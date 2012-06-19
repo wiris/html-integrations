@@ -141,6 +141,15 @@ namespace pluginwiris
 
             return availableLanguages;
         }
+
+		static public string getCacheDirectory(Hashtable config)
+		{
+			string cacheDirectory = (config["wiriscachedirectory"] != null) ? (string)config["wiriscachedirectory"] : null;
+			if (cacheDirectory != null && !Directory.Exists(cacheDirectory)){
+				Directory.CreateDirectory(cacheDirectory);
+			}
+			return cacheDirectory;
+		}
 		
 		static public Stream getContents(string url, Hashtable postVariables, string referer)
 		{
@@ -167,6 +176,15 @@ namespace pluginwiris
 			requestStream.Close();
 			WebResponse response = request.GetResponse();
 			return response.GetResponseStream();
+		}
+		
+		static public string getFormulaDirectory(Hashtable config)
+		{
+			string formulaDirectory = (config["wirisformuladirectory"] != null) ? (string)config["wirisformuladirectory"] : null;
+			if (formulaDirectory != null && !Directory.Exists(formulaDirectory)){
+				Directory.CreateDirectory(formulaDirectory);
+			}			
+			return formulaDirectory;
 		}
 		
 		static public string getImageServiceURL(Hashtable config, string service)
