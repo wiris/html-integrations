@@ -176,12 +176,12 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
  */
 function wrs_arrayContains(stack, element) {
 	for (var i = stack.length - 1; i >= 0; --i) {
-		if (stack[i] == element) {
-			return true;
+		if (stack[i] === element) {
+			return i;
 		}
 	}
 	
-	return false;
+	return -1;
 }
 
 /**
@@ -1293,7 +1293,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 			if (document.selection) {
 				var range = windowTarget.document.selection.createRange();
 				windowTarget.document.execCommand('InsertImage', false, element.src);
-
+				
 				if (range.parentElement) {
 					var temporalObject = range.parentElement();
 					
