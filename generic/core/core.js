@@ -461,7 +461,7 @@ function wrs_regexpIndexOf(input, regexp, start) {
 function wrs_endParseEditMode(code, wirisProperties, language) {
 	// Converting LaTeX to images.
 	
-	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex') == -1) {
+	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex') != -1) {
 		var output = '';
 		var endPosition = 0;
 		var startPosition = code.indexOf('$$');
@@ -1150,7 +1150,7 @@ function wrs_initParseImgToIframes(windowTarget) {
  * @return string
  */
 function wrs_initParseEditMode(code) {
-	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex') == -1) {
+	if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex') != -1) {
 		var imgList = wrs_getElementsByNameFromString(code, 'img', true);
 		var token = 'encoding="LaTeX">';
 		var carry = 0;			// While replacing images with latex, the indexes of the found images changes respecting the original code, so this carry is needed.
