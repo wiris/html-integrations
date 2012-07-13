@@ -1294,7 +1294,13 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 				var range = windowTarget.document.selection.createRange();
 				windowTarget.document.execCommand('InsertImage', false, element.src);
 				
-				if (range.parentElement) {
+				if (!('parentElement' in range)) {
+					windowTarget.document.execCommand('delete', false);
+					range = windowTarget.document.selection.createRange();
+					windowTarget.document.execCommand('InsertImage', false, element.src);
+				}
+				
+				if ('parentElement' in range) {
 					var temporalObject = range.parentElement();
 					
 					if (temporalObject.nodeName.toUpperCase() == 'IMG') {
