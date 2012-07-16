@@ -88,17 +88,26 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	}
 }
 
-if (configuration.wirisparselatex == false) {
-	var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-	if (pos != -1){
-		_wrs_conf_parseModes.splice(pos, 1);
-	}
-}else if (configuration.wirisparselatex == true) {
-	var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-	if (pos == -1){
-		_wrs_conf_parseModes.push('latex');
+function configureLatex(){
+	if (window.wrs_arrayContains){
+		if (configuration.wirisparselatex == false) {
+			var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
+			if (pos != -1){
+				_wrs_conf_parseModes.splice(pos, 1);
+			}
+		}else if (configuration.wirisparselatex == true) {
+			var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
+			if (pos == -1){
+				_wrs_conf_parseModes.push('latex');
+			}
+		}		
+	}else{
+		setTimeout(configureLatex, 50);
 	}
 }
+
+configureLatex();
+
 if ('wirisformulaeditoractive' in configuration) {
 	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == true);
 }
