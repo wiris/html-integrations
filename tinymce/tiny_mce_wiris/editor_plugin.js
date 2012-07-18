@@ -271,7 +271,7 @@ function wrs_int_openNewCAS(iframe, language) {
 function wrs_int_doubleClickHandler(editor, iframe, element) {
 	// This loop allows the double clicking on the formulas represented with span's.
 	
-	while (!wrs_containsClass(element, 'Wirisformula') && element.parentNode) {
+	while (!wrs_containsClass(element, 'Wirisformula') && !wrs_containsClass(element, 'Wiriscas') && element.parentNode) {
 		element = element.parentNode;
 	}
 	

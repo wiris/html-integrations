@@ -191,6 +191,10 @@ function wrs_arrayContains(stack, element) {
  * @return bool
  */
 function wrs_containsClass(element, className) {
+	if (!('className' in element)){
+		return false;
+	}
+	
 	var currentClasses = element.className.split(' ');
 	
 	for (var i = currentClasses.length - 1; i >= 0; --i) {
