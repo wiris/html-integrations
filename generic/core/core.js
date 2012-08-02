@@ -1466,7 +1466,7 @@ function wrs_mathmlToAccessible(mathml, language) {
 	};
 	
 	if (language) {
-		data['language'] = language;
+		data['lang'] = language;
 	}
 	
 	return wrs_getContent(_wrs_conf_servicePath, data);
