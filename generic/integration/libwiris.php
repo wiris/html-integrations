@@ -246,6 +246,12 @@ function wrs_fileGetContentsCurl($url, $postVariables, $config, $referer) {
 	}
 	
 	$data = curl_exec($ch);	
+	
+	//Without this conversion accents are not returned correctly
+	if (isset($_POST['service']) && $_POST['service'] == 'mathml2accessible'){
+		$data = mb_convert_encoding($data, "UTF-8");    
+	}
+	
 	curl_close($ch);
 
 	return $data;
