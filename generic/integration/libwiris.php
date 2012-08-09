@@ -232,6 +232,7 @@ function wrs_fileGetContentsCurl($url, $postVariables, $config, $referer) {
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_REFERER, $referer);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
 	//POST method
 	if (!is_null($postVariables)) {
