@@ -56,7 +56,8 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	
 	var editorElement = editor.getElement();
 	var editorContainer = document.getElementById('editorContainer');
-	editorContainer.appendChild(editorElement);
+	editor.insertInto(editorContainer);
+	//editorContainer.appendChild(editorElement);
 	
 	// Mathml content
 	if (!wrs_int_opener._wrs_isNewElement) {
