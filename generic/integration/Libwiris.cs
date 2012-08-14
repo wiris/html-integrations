@@ -34,7 +34,9 @@ namespace pluginwiris
             "identMathvariant",
             "numberMathvariant",
             "fontIdent",
-            "fontNumber"
+            "fontNumber",
+            "zoom",
+            "dpi"
         };
 
         static Libwiris()
@@ -305,6 +307,17 @@ namespace pluginwiris
             }
 
             return stringBuilder.ToString();
+        }
+
+        static public void copyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[32768];
+            int read;
+
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, read);
+            }
         }
 
         #region Component Designer generated code

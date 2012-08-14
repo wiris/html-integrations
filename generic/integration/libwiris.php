@@ -49,7 +49,9 @@ $wrs_xmlFileAttributes = array(
 	'identMathvariant',
 	'numberMathvariant',
 	'fontIdent',
-	'fontNumber'
+	'fontNumber',
+	'zoom',
+	'dpi'
 );
 
 function wrs_applyConfigRetrocompatibility($config) {

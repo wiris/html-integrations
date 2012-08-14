@@ -93,7 +93,7 @@ function getConfigurationAndFontsFromIni($config, $formulaPath) {
 	);
 }
 
-function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
+function createImage($config, $formulaPath, $formulaPathExtension, $useParams) {
 	$configAndFonts = ($formulaPathExtension == 'ini') ? getConfigurationAndFontsFromIni($config, $formulaPath . '.ini') : getConfigurationAndFonts($config, $formulaPath . '.xml');
 	
 	if ($configAndFonts !== false) {
@@ -139,19 +139,52 @@ function createImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
 			}
 		}
 		
+		// User params.
+		
+		if ($useParams) {
+			global $wrs_xmlFileAttributes;
+			
+			foreach ($_GET as $key => $value) {
+				if (in_array($key, $wrs_xmlFileAttributes) || substr($key, 0, 4) == 'font') {
+					$properties[$key] = $value;
+				}
+			}
+		}
+		
 		// Query.
 		$response = wrs_getContents($config, wrs_getImageServiceURL($config, NULL), array_merge($configAndFonts['fonts'], $properties));
 		
 		if ($response === false) {
-			return false;
+			return null;
 		}
 
-		file_put_contents($imagePath, $response);
-		
-		return true;
+		return $response;
 	}
 	
-	return false;
+	return null;
+}
+
+function createAndSaveImage($config, $formulaPath, $formulaPathExtension, $imagePath) {
+	$imageStream = createImage($config, $formulaPath, $formulaPathExtension, false);
+	
+	if (is_null($imageStream)) {
+		return false;
+	}
+	
+	file_put_contents($imagePath, $imageStream);
+	return true;
+}
+
+function mustBeCached() {
+	global $wrs_xmlFileAttributes;
+	
+	foreach ($_GET as $key => $value) {
+		if (in_array($key, $wrs_xmlFileAttributes) || substr($key, 0, 4) == 'font') {
+			return false;
+		}
+	}
+	
+	return true;
 }
 
 if (empty($_GET['formula'])) {
@@ -162,14 +195,28 @@ else {
 	$formula = rtrim(basename($_GET['formula']), '.png');
 	$formulaPath = wrs_getFormulaDirectory($config) . '/' . $formula;
 	$extension = (is_file($formulaPath . '.ini')) ? 'ini' : 'xml';
-	$imagePath = wrs_getCacheDirectory($config) . '/' . $formula . '.png';
 	
-	if (is_file($imagePath) || createImage($config, $formulaPath, $extension, $imagePath)) {
-		header('Content-Type: image/png');
-		readfile($imagePath);
+	if (mustBeCached()) {
+		$imagePath = wrs_getCacheDirectory($config) . '/' . $formula . '.png';
+		
+		if (is_file($imagePath) || createAndSaveImage($config, $formulaPath, $extension, $imagePath)) {
+			header('Content-Type: image/png');
+			readfile($imagePath);
+		}
+		else {
+			echo 'Error creating the image.';
+		}
 	}
 	else {
-		echo 'Error creating the image.';
+		$imageStream = createImage($config, $formulaPath, $extension, true);
+		
+		if (is_null($imageStream)) {
+			echo 'Error creating the image.';
+		}
+		else {
+			header('Content-Type: image/png');
+			echo $imageStream;
+		}
 	}
 }
 ?>

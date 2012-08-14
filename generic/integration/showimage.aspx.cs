@@ -24,19 +24,29 @@ namespace pluginwiris
 			if (this.Request.QueryString["formula"] != null) 
 			{
 				string formula = Path.GetFileNameWithoutExtension(this.Request.QueryString["formula"]);
-				string imagePath = (Libwiris.getCacheDirectory(config) != null) ? Libwiris.getCacheDirectory(config) : this.MapPath(Libwiris.CacheDirectory);
-				imagePath += "/" + formula + ".png";
-				
-				if (!File.Exists(imagePath))
-				{
-					string formulaPath = (Libwiris.getFormulaDirectory(config) != null) ? Libwiris.getFormulaDirectory(config) : this.MapPath(Libwiris.FormulaDirectory);
-					formulaPath += "/" + formula;
-					string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
-					this.createImage(config, formulaPath, extension, imagePath);
-				}
-				
-				this.Response.ContentType = "image/png";
-				this.Response.WriteFile(imagePath);
+                string formulaPath = (Libwiris.getFormulaDirectory(config) != null) ? Libwiris.getFormulaDirectory(config) : this.MapPath(Libwiris.FormulaDirectory);
+                formulaPath += "/" + formula;
+                string extension = (File.Exists(formulaPath + ".ini")) ? "ini" : "xml";
+
+                if (this.mustBeCached())
+                {
+                    string imagePath = (Libwiris.getCacheDirectory(config) != null) ? Libwiris.getCacheDirectory(config) : this.MapPath(Libwiris.CacheDirectory);
+                    imagePath += "/" + formula + ".png";
+
+                    if (!File.Exists(imagePath))
+                    {
+                        this.createAndSaveImage(config, formulaPath, extension, imagePath);
+                    }
+
+                    this.Response.ContentType = "image/png";
+                    this.Response.WriteFile(imagePath);
+                }
+                else
+                {
+                    Stream imageStream = this.createImage(config, formulaPath, extension, true);
+                    this.Response.ContentType = "image/png";
+                    Libwiris.copyStream(imageStream, this.Response.OutputStream);
+                }
 			}
 			else if (this.Request.QueryString["mml"] != null)
 			{
@@ -136,7 +146,7 @@ namespace pluginwiris
 			return toReturn;
 		}
 
-		private void createImage(Hashtable config, string formulaPath, string formulaPathExtension, string imagePath) 
+		private Stream createImage(Hashtable config, string formulaPath, string formulaPathExtension, bool useParams) 
 		{
 			Hashtable configAndFonts = (formulaPathExtension == "ini") ? this.getConfigurationAndFontsFromIni(config, formulaPath + ".ini") : this.getConfigurationAndFonts(config, formulaPath + ".xml");
 			config = (Hashtable)configAndFonts["config"];
@@ -195,11 +205,42 @@ namespace pluginwiris
 			{
 				properties[(string)entry.Key] = fonts[(string)entry.Key];
 			}
+
+            // User params.
+
+            if (useParams)
+            {
+                foreach (string key in this.Request.QueryString.AllKeys)
+                {
+                    if (key != null && (Libwiris.inArray(key, Libwiris.xmlFileAttributes) || (key.Length >= 4 && key.Substring(0, 4) == "font")))
+                    {
+                        properties[key] = this.Request.QueryString[key];
+                    }
+                }
+            }
 			
-			Stream responseStream = Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties, Libwiris.getReferer(this.Request));
-			this.saveImage(imagePath, responseStream);
-			responseStream.Close();
+			return Libwiris.getContents(Libwiris.getImageServiceURL(config, null), properties, Libwiris.getReferer(this.Request));
 		}
+
+        private void createAndSaveImage(Hashtable config, string formulaPath, string formulaPathExtension, string imagePath)
+        {
+            Stream imageStream = this.createImage(config, formulaPath, formulaPathExtension, false);
+            this.saveImage(imagePath, imageStream);
+            imageStream.Close();
+        }
+
+        private bool mustBeCached()
+        {
+            foreach (string key in this.Request.QueryString.AllKeys)
+            {
+                if (key != null && (Libwiris.inArray(key, Libwiris.xmlFileAttributes) || (key.Length >= 4 && key.Substring(0, 4) == "font")))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 		
 		private void saveImage(string imagePath, Stream stream)
 		{
