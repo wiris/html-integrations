@@ -19,10 +19,8 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require 'libwiris.php';
+//require 'libwiris.php';
 require_once 'api.php';
-
-error_reporting(E_ALL);
 
 function wrs_assert_simple($condition) {
 	if ($condition) {
@@ -100,6 +98,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				</tr>				
 				<tr>
 				<?php
+                    require_once dirname(__FILE__) . '/../../../../../../../../config.php';                                
 					$test_name = 'Loading configuration';
 					$report_text = 'Loading ' . WRS_CONFIG_FILE;
 					$solution_link = '';
@@ -107,6 +106,30 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 					echo wrs_createTableRow($test_name, $report_text, $solution_link, !empty($config));
 				?>				
 				</tr>
+				<tr>
+				<?php
+					$test_name = 'Checking $CFG';
+					$report_text = '';
+					$solution_link = '';
+					$exists = false;
+					$handle = fopen("c:\\wamp\\www\\moodle-test-215\\config.php", "r");
+					if ($handle) {
+						$needle = 'global $CFG;';
+						while (($buffer = fgets($handle)) !== false) {
+							if (strpos($buffer, $needle) !== false){
+								$exists = true;
+							}
+						}
+						fclose($handle);
+					}                         
+					if (!$exists){
+						$report_text = 'global $CFG not found';
+					}else{
+						$report_text = 'global $CFG found.';
+					}
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, $exists);
+				?>				
+				</tr>                    
 				<tr>
 				<?php
 					$test_name = 'Checking if WIRIS server is reachable';
@@ -178,9 +201,16 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 					$mathml='<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>' . rand(0,9999) . '</mn><mo>+</mo><mn>' . rand(0,9999) . '</mn></mrow></math>';
 					$api = new com_wiris_plugin_PluginAPI;
 					$src = $api->mathml2img($mathml, 'http://' . dirname($_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]));
+					$query = parse_url($src, PHP_URL_QUERY);
+					$query_array = array();
+					parse_str($query, $query_array);
 					$report_text = '<img align="middle" src="' . $src . '" />';
 					$solution_link = '';
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, @fopen($src, 'r') !== false);
+					$imageFile = wrs_getCacheDirectory($config) . '/' . $query_array['formula'];
+					//Used to create the image
+					@fopen($src, 'r');
+					//*******
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, file_exists($imageFile));
 				?>				
 				</tr>	
 		</table>
@@ -259,5 +289,27 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				</td>					
 			</tr>			
 		</table>
+
+		<br/>
+		<h1>Extra tests</h1>
+		<table>
+			<tr>
+				<th>Test</th>
+				<th>Status</th>
+			</tr>	                    
+			<tr>
+				<td>mod_security</td>
+				<td>
+					<?php
+						$disabled = true;
+						@$result = file_get_contents('http://' . $_SERVER['SERVER_NAME'] . '/?test=<>');
+						if ($result == ''){
+							$disabled = false;    
+						}
+						echo wrs_assert_simple($disabled);
+					?>
+				</td>					
+			</tr>			
+		</table>                
 	</body>
 </html>
