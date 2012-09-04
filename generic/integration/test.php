@@ -112,7 +112,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 					$report_text = '';
 					$solution_link = '';
 					$exists = false;
-					$handle = fopen("c:\\wamp\\www\\moodle-test-215\\config.php", "r");
+					$handle = fopen($CFG->dirroot . "/config.php", "r");
 					if ($handle) {
 						$needle = 'global $CFG;';
 						while (($buffer = fgets($handle)) !== false) {
