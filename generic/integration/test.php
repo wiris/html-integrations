@@ -55,7 +55,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 ?>
 <html>
 	<head>
-		<title>WIRIS Plugin test page</title>
+		<title>WIRIS plugin test page</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 		<style type="text/css">
@@ -217,7 +217,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 
 		<br/>
 		<h1>PHP tests</h1>
-		<h3>Checking the existence of PHP functions that Plugin WIRIS uses</h3>
+		<h3>Checking the existence of PHP functions that WIRIS plugin uses</h3>
 		
 		<table>
 			<tr>
