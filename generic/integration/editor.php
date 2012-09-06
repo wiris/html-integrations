@@ -21,12 +21,25 @@
 
 include 'libwiris.php';
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
+
+if (isset($_GET['lang'])) {
+	$wirisformulaeditorlang = $_GET['lang'];
+}
+if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
+	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
+}else if(file_exists('../lang/' . substr($wirisformulaeditorlang, 0, 2) . '/strings.js')){
+		$wirisformulaeditorlang = substr($wirisformulaeditorlang, 0, 2);
+		$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
+}else{
+	$config['wirisformulaeditorlang'] = 'en';
+}
 ?>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 		<script type="text/javascript" src="<?php echo wrs_getImageServiceURL($config, 'editor'); ?>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
+		<script type="text/javascript" src="<?php echo '../lang/' . $config['wirisformulaeditorlang'] . '/strings.js' ?>"></script>
 		<title>WIRIS editor</title>
 		
 		<style type="text/css">

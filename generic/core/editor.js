@@ -82,7 +82,12 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var controls = document.getElementById('controls');
 	var submitButton = document.createElement('input');
 	submitButton.type = 'button';
-	submitButton.value = 'Accept';
+	if (strings['accept'] != null){
+		submitButton.value = strings['accept'];
+	}else{
+		submitButton.value = 'Accept';
+	}
+	
 	
 	wrs_int_opener.wrs_addEvent(submitButton, 'click', function () {
 		var mathml = '';
@@ -112,7 +117,12 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	// Cancel button.
 	var cancelButton = document.createElement('input');
 	cancelButton.type = 'button';
-	cancelButton.value = 'Cancel';
+	if (strings['cancel'] != null){
+		cancelButton.value = strings['cancel'];
+	}else{
+		cancelButton.value = 'Cancel';
+	}
+
 	
 	wrs_int_opener.wrs_addEvent(cancelButton, 'click', function () {
 		closeFunction();
