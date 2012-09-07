@@ -23,15 +23,16 @@ include 'libwiris.php';
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 $availableLanguages = wrs_getAvailableCASLanguages($config['wiriscaslanguages']);
 
+if (isset($_GET['lang']) && in_array($_GET['lang'], $availableLanguages)) {			//Check lang is present in the list of available languages
+	$language = $_GET['lang'];														
+}else if (isset($_GET['lang']) && in_array(substr($_GET['lang'], 0, 2), $availableLanguages)){	//lang could be es_es, if it's not available it looks for es
+	$language = substr($_GET['lang'], 0, 2);
+}else{																				// If not available it takes the first available language
+	$language = $availableLanguages[0];
+}
+
+
 if (isset($_GET['mode']) && $_GET['mode'] == 'applet') {
-	if (isset($_GET['lang']) && in_array($_GET['lang'], $availableLanguages)) {			//Check lang is present in the list of available languages
-		$language = $_GET['lang'];														
-	}else if (isset($_GET['lang']) && in_array(substr($_GET['lang'], 0, 2), $availableLanguages)){	//lang could be es_es, if it's not available it looks for es
-		$language = substr($_GET['lang'], 0, 2);
-	}else{																				// If not available it takes the first available language
-		$language = $availableLanguages[0];
-	}
-	
 	$codebase = wrs_replaceVariable($config['wiriscascodebase'], 'LANG', $language);
 	$archive = wrs_replaceVariable($config['wiriscasarchive'], 'LANG', $language);
 	$className = wrs_replaceVariable($config['wiriscasclass'], 'LANG', $language);
@@ -71,6 +72,7 @@ else {
 	<html>
 		<head>
 			<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+			<script type="text/javascript" src="<?php echo '../lang/' . $language . '/strings.js' ?>"></script>
 			<script type="text/javascript" src="../core/cas.js"></script>
 			<title>WIRIS CAS</title>
 			

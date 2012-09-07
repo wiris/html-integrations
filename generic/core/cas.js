@@ -238,9 +238,18 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	wrs_int_opener.wrs_addEvent(document.getElementById('cancel'), 'click', function () {
 		closeFunction();
 	});
+
+	var acceptButton = document.getElementById('submit');
+	if (strings['accept'] != null){
+		acceptButton.value = strings['accept'];
+	}
+
+	var cancelButton = document.getElementById('cancel');
+	if (strings['cancel'] != null){
+		cancelButton.value = strings['cancel'];
+	}
 	
 	// Auto resizing
-	
 	setInterval(function () {
 		document.getElementById('appletContainer').style.height = (document.getElementById('optionForm').offsetHeight - document.getElementById('controls').offsetHeight - 5) + 'px';
 	}, 100);
