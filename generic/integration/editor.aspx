@@ -1,11 +1,28 @@
 <%@ Page language="c#" Codebehind="editor.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.editor" %>
 <%@ Import Namespace="pluginwiris" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%
+Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+string wirisformulaeditorlang = "en";
+if (this.Request.QueryString["lang"] != null){
+	wirisformulaeditorlang = this.Request.QueryString["lang"];
+}
+
+if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"))){
+	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
+}else if(File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang.Substring(0, 2) + "/strings.js"))){
+	wirisformulaeditorlang = wirisformulaeditorlang.Substring(0, 2);
+	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
+}else{
+	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
+}
+%>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 		<script type="text/javascript" src="<% this.Response.Write(Libwiris.getImageServiceURL(this.config, "editor")); %>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
+		<script type="text/javascript" src="<%= "../lang/" + config["wirisformulaeditorlang"] + "/strings.js" %>"></script>
 		<title>WIRIS editor</title>
 		
 		<style type="text/css">
@@ -42,7 +59,7 @@
 			
 			<div id="links">
 				<a href="#" onclick="window.open('../latex.html', 'LaTeX', 'left=100, top=100, width=500, height=280, scroll=no, resizable=no');">LaTeX</a> | 
-				<a href="http://www.wiris.com/editor3/docs/manual" target="_blank">Manual</a>
+				<a href="http://www.wiris.com/editor3/docs/manual" target="_blank" id="a_manual">Manual</a>
 			</div>
 		</div>
 	</body>
