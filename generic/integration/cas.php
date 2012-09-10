@@ -74,6 +74,7 @@ else {
 			<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 			<script type="text/javascript" src="<?php echo '../lang/' . $language . '/strings.js' ?>"></script>
 			<script type="text/javascript" src="../core/cas.js"></script>
+			<script type="text/javascript" src="../core/core.js"></script>
 			<title>WIRIS CAS</title>
 			
 			<style type="text/css">
