@@ -1,5 +1,25 @@
 <%@ Page language="c#" Codebehind="cas.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.cas" %>
+<%@ Import Namespace="pluginwiris" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%
+Hashtable config = Libwiris.loadConfig(this.MapPath(Libwiris.configFile));
+string[] availableLanguages = Libwiris.getAvailableCASLanguages((string)config["wiriscaslanguages"]);
+
+string language = "";
+string reqLang = "";
+
+if (this.Request.QueryString["lang"] != null) {
+	reqLang = this.Request.QueryString["lang"];
+}
+
+if (Libwiris.inArray(reqLang, availableLanguages)){
+	language = reqLang;
+}else if (Libwiris.inArray(reqLang.Substring(0,2), availableLanguages)){
+	language = reqLang.Substring(0,2);
+}else{
+	language = availableLanguages[0];
+}
+%>
 <%
         if (this.Request.QueryString["mode"] == "applet")
         {
@@ -40,7 +60,9 @@
                 <html>
                         <head>
                                 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+								<script type="text/javascript" src="<%= "../lang/" + language + "/strings.js" %>"></script>
                                 <script type="text/javascript" src="../core/cas.js"></script>
+								<script type="text/javascript" src="../core/core.js"></script>
                                 <title>WIRIS CAS</title>
                                 
                                 <style type="text/css">
