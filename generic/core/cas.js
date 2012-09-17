@@ -138,20 +138,6 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		reloadIframe({
 			'lang': languageList.value
 		});
-		//Used to change the button text when selecting a new language from the select list.
-		/*
-		var responseText = wrs_getContent('../lang/' + languageList.value + '/strings.js', null);
-		eval(responseText);
-		var acceptButton = document.getElementById('submit');
-		if (strings['accept'] != null){
-			acceptButton.value = strings['accept'];
-		}
-
-		var cancelButton = document.getElementById('cancel');
-		if (strings['cancel'] != null){
-			cancelButton.value = strings['cancel'];
-		}
-		*/
 	});
 	
 	// Setting iframe language.
