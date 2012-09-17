@@ -22,6 +22,7 @@
 include 'libwiris.php';
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 
+$wirisformulaeditorlang = '';
 if (isset($_GET['lang'])) {
 	$wirisformulaeditorlang = $_GET['lang'];
 }
