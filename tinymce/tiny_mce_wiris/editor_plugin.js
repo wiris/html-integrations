@@ -9,10 +9,8 @@ wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
 }
 
 /* Including core.js */
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js';
-document.getElementsByTagName('head')[0].appendChild(script);
+tinymce.ScriptLoader.load(wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js');
+while (tinymce.ScriptLoader.isDone(wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js'));
 
 /* Configuration */
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
