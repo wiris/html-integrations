@@ -191,14 +191,27 @@ namespace pluginwiris
 		
 		static public string getImageServiceURL(Hashtable config, string service)
 		{
-			// Protocol.
-			string protocol = (config["wirisimageserviceprotocol"] != null) ? (string)config["wirisimageserviceprotocol"] : "http";
+			// Protocol and Port.
+			string protocol = "";
+			string port = "";
+			
+			if (config["wirisimageserviceprotocol"] != null && config["wirisimageserviceport"] != null){
+				protocol = (string)config["wirisimageserviceprotocol"];
+				port = (string)config["wirisimageserviceport"];
+			}else{
+				string str_url = HttpContext.Current.Request.Url.AbsoluteUri;
+				Uri url = new Uri(str_url);
+				if (url.Scheme == "https"){
+					protocol = "https";
+					port = ":443";
+				}else{
+					protocol = "http";
+					port = ":80";				
+				}
+			}
 
 			// Domain.
 			string domain = (string)config["wirisimageservicehost"];
-
-			// Port.
-			string port = (config["wirisimageserviceport"] != null) ? ":" + (string)config["wirisimageserviceport"] : "";
 
 			// Path.
 			string path = (string)config["wirisimageservicepath"];

@@ -277,14 +277,22 @@ function wrs_getImageServiceURL($config, $service) {
 		return $config['wirismathmltolatexurl'];
 	}
 
-	// Protocol.
-	$protocol = (isset($config['wirisimageserviceprotocol'])) ? $config['wirisimageserviceprotocol'] : 'http';
+	// Protocol and Port.
+	if (isset($config['wirisimageserviceprotocol']) && isset($config['wirisimageserviceport'])){
+		$protocol = $config['wirisimageserviceprotocol'];
+		$port = ':' . $config['wirisimageserviceport'];
+	}else{
+		if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'){
+			$protocol = 'https';
+			$port = ':443';
+		}else{
+			$protocol = 'http';
+			$port = ':80';
+		}
+	}	
 
 	// Domain.
 	$domain = $config['wirisimageservicehost'];
-
-	// Port.
-	$port = (isset($config['wirisimageserviceport'])) ? ':' . $config['wirisimageserviceport'] : '';
 
 	// Path.
 	$path = $config['wirisimageservicepath'];
