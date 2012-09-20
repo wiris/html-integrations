@@ -98,7 +98,11 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				</tr>				
 				<tr>
 				<?php
-                    require_once dirname(__FILE__) . '/../../../../../../../../config.php';                                
+					$moodle = false;
+					if (file_exists(dirname(__FILE__) . '/../../../../../../../../config.php')){
+						require_once dirname(__FILE__) . '/../../../../../../../../config.php';                                
+						$moodle = true;
+					}
 					$test_name = 'Loading configuration';
 					$report_text = 'Loading ' . WRS_CONFIG_FILE;
 					$solution_link = '';
@@ -108,31 +112,36 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				</tr>
 				<tr>
 				<?php
-					$test_name = 'Checking $CFG';
-					$report_text = '';
-					$solution_link = '';
-					$exists = false;
-					$handle = fopen($CFG->dirroot . "/config.php", "r");
-					if ($handle) {
-						$needle = 'global $CFG;';
-						while (($buffer = fgets($handle)) !== false) {
-							if (strpos($buffer, $needle) !== false){
-								$exists = true;
+					if ($moodle){
+						$test_name = 'Checking $CFG';
+						$report_text = '';
+						$solution_link = '';
+						$exists = false;
+						$handle = fopen($CFG->dirroot . "/config.php", "r");
+						if ($handle) {
+							$needle = 'global $CFG;';
+							while (($buffer = fgets($handle)) !== false) {
+								if (strpos($buffer, $needle) !== false){
+									$exists = true;
+								}
 							}
+							fclose($handle);
+						}                         
+						if (!$exists){
+							$report_text = 'global $CFG not found';
+						}else{
+							$report_text = 'global $CFG found.';
 						}
-						fclose($handle);
-					}                         
-					if (!$exists){
-						$report_text = 'global $CFG not found';
-					}else{
-						$report_text = 'global $CFG found.';
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, $exists);
 					}
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $exists);
 				?>				
 				</tr>                    
 				<tr>
 				<?php
 					$test_name = 'Checking if WIRIS server is reachable';
+					if (!isset($config['wirisimageserviceport'])){
+						$config['wirisimageserviceport'] = '80';
+					}
 					$report_text = 'Connecting to ' . $config['wirisimageservicehost'] . ' on port ' . $config['wirisimageserviceport'];
 					$solution_link = '';
 					echo wrs_createTableRow($test_name, $report_text, $solution_link, fsockopen($config['wirisimageservicehost'], $config['wirisimageserviceport']));
