@@ -307,11 +307,24 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				<th>Status</th>
 			</tr>	                    
 			<tr>
-				<td>mod_security</td>
+				<td>mod_security1</td>
 				<td>
 					<?php
 						$disabled = true;
 						@$result = file_get_contents('http://' . $_SERVER['SERVER_NAME'] . '/?test=<>');
+						if ($result == ''){
+							$disabled = false;    
+						}
+						echo wrs_assert_simple($disabled);
+					?>
+				</td>					
+			</tr>			
+			<tr>
+				<td>mod_security2</td>
+				<td>
+					<?php
+						$disabled = true;
+						@$result = file_get_contents('http://' . $_SERVER['SERVER_NAME'] . '/?test=><');
 						if ($result == ''){
 							$disabled = false;    
 						}
