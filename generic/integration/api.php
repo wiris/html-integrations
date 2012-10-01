@@ -50,6 +50,14 @@ class com_wiris_plugin_PluginAPI {
 		return $url;
 	}
 
+	public function mathml2accessible($data){
+		$config = wrs_loadConfig(WRS_CONFIG_FILE);
+		$url = wrs_getImageServiceURL($config, 'mathml2accessible');
+		$response = wrs_getContents($config, $url, $data);
+		
+		return $response;
+	}	
+	
 	private function initfilter($type){
 		global $CFG;
 		require_once($CFG->libdir . '/textlib.class.php');
@@ -208,9 +216,15 @@ class com_wiris_plugin_PluginAPI {
 		include $CFG->dirroot . '/lib/editor/tinymce/version.php';
 
 		$src = $this->mathml2img($mathml, $CFG->wwwroot . "/lib/editor/tinymce/tiny_mce/" . $plugin->release . "/plugins/tiny_mce_wiris/integration");
-		$output = '<img align="middle" src="';
-		$output .= $src;
-		$output .= '" />'; 
+		
+		$lang = substr(current_language(), 0, 2);
+		$data = array('mml' => $mathml, 'lang' => $lang);
+		$accessible = $this->mathml2accessible($data);
+				
+		$output = '<img align="middle" ';
+		$output .= 'src="' . $src . '" ';
+		$output .= 'alt="' . $accessible . '" ';
+		$output .= ' />'; 
 
 		return $output;
 	}        
