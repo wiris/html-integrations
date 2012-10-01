@@ -139,12 +139,9 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				<tr>
 				<?php
 					$test_name = 'Checking if WIRIS server is reachable';
-					if (!isset($config['wirisimageserviceport'])){
-						$config['wirisimageserviceport'] = '80';
-					}
-					$report_text = 'Connecting to ' . $config['wirisimageservicehost'] . ' on port ' . $config['wirisimageserviceport'];
+					$report_text = 'Connecting to ' . $config['wirisimageservicehost'];
 					$solution_link = '';
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, fsockopen($config['wirisimageservicehost'], $config['wirisimageserviceport']));
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, fsockopen($config['wirisimageservicehost'], '80') && fsockopen($config['wirisimageservicehost'], '443'));
 				?>				
 				</tr>		
 				<tr>
