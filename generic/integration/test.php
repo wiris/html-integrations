@@ -135,15 +135,36 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 						echo wrs_createTableRow($test_name, $report_text, $solution_link, $exists);
 					}
 				?>				
-				</tr>                    
+				</tr>      
 				<tr>
 				<?php
-					$test_name = 'Checking if WIRIS server is reachable';
+				$test_name = 'Checking proxy';
+				$report_text = 'Disabled';
+				$solution_link = '';
+				if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true'){
+					$conn = @fsockopen($config['wirisproxy_host'], $config['wirisproxy_port']);
+					if ($conn){
+						$report_text = 'Enabled';
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, true);
+					}else{
+						$report_text = 'Enabled but a connection error has been encountered.';    
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, false);    
+					}
+				}else{
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, true);    
+				}
+				?>				
+				</tr>
+				<tr>
+				<?php
+				if (!isset($config['wirisproxy']) || $config['wirisproxy'] != 'true'){
+					$test_name = 'Checking if WIRIS server is reachable';    
 					$report_text = 'Connecting to ' . $config['wirisimageservicehost'];
 					$solution_link = '';
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, fsockopen($config['wirisimageservicehost'], '80') && fsockopen($config['wirisimageservicehost'], '443'));
+					echo wrs_createTableRow($test_name, $report_text, $solution_link, @fsockopen($config['wirisimageservicehost'], '80') && fsockopen($config['wirisimageservicehost'], '443'));
+				}
 				?>				
-				</tr>		
+				</tr>
 				<tr>
 				<?php
 					$test_name = 'Connecting to WIRIS image server';
