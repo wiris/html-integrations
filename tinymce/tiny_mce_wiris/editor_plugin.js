@@ -55,7 +55,20 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	var httpRequest;
 
 	if (typeof XMLHttpRequest != 'undefined') {
-		httpRequest = new XMLHttpRequest();
+		if (navigator.appName == 'Microsoft Internet Explorer' && navigator.appVersion.indexOf('MSIE 8.0') != -1) {
+			try {
+				httpRequest = new ActiveXObject('Msxml2.XMLHTTP');
+			}
+			catch (e) {
+				try {
+					httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
+				}
+				catch (oc) {
+				}
+			}
+		}else{
+			httpRequest = new XMLHttpRequest();
+		}
 	}
 	else {
 		try {
