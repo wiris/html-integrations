@@ -1887,25 +1887,7 @@ function wrs_urldecode(input) {
  */
 function wrs_urlencode(clearString) {
 	var output = '';
-	var x = 0;
-	clearString = clearString.toString();
-	var regex = /(^[a-zA-Z0-9_.]*)/;
-	
-	var clearString_length = ((typeof clearString.length) == 'function') ? clearString.length() : clearString.length;
-
-	while (x < clearString_length) {
-		var match = regex.exec(clearString.substr(x));
-		if (match != null && match.length > 1 && match[1] != '') {
-			output += match[1];
-			x += match[1].length;
-		}
-		else {
-			var charCode = clearString.charCodeAt(x);
-			var hexVal = charCode.toString(16);
-			output += '%' + ( hexVal.length < 2 ? '0' : '' ) + hexVal.toUpperCase();
-			++x;
-		}
-	}
-	
+	//encodeURIComponent doesn't encode !'()*~
+	output = encodeURIComponent(clearString).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/~/g, '%7E');	
 	return output;
 }
