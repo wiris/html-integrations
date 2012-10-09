@@ -36,7 +36,8 @@ namespace pluginwiris
             "fontIdent",
             "fontNumber",
             "zoom",
-            "dpi"
+            "dpi",
+			"color"
         };
 
         static Libwiris()
@@ -52,6 +53,7 @@ namespace pluginwiris
             Libwiris.imageConfigProperties["fontIdent"] = "wirisimagefontident";
             Libwiris.imageConfigProperties["fontNumber"] = "wirisimagefontnumber";
 			Libwiris.imageConfigProperties["version"] = "wirisimageserviceversion";
+			Libwiris.imageConfigProperties["color"] = "wiriscolor";
         }
 
         public Libwiris(System.ComponentModel.IContainer container)
