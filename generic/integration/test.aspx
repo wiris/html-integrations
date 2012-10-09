@@ -2,179 +2,153 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 	<head>
-		<title>Plugin WIRIS test page</title>
+		<title>WIRIS plugin test page</title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		
 		<style type="text/css">
-			/*<!--*/
-			
-			html {
-				font-family: sans-serif;
+			body{font-family: Arial;}
+			span{font-weight: bold;}
+			span.ok {color: #009900;}
+			span.error {color: #dd0000;}
+			table, th, td, tr {
+				border: solid 1px #000000;
+				border-collapse:collapse;
+				padding: 5px;
 			}
-			
-			h2 {
-				margin-left: 1em;
-			}
-			
-			h3 {
-				margin-left: 2em;
-			}
-			
-			p {
-				margin-left: 3em;
-			}
-			
-			p.concrete {
-				margin-left: 4em;
-			}
-			
-			.ok {
-				font-weight: bold;
-				color: #0c0;
-			}
-			
-			.error {
-				font-weight: bold;
-				color: #f00;
-			}
-			
-			/*-->*/
-		</style>
+			th{background-color: #eeeeee;}
+			img{border:none;}
+		</style>		
 	</head>
 	
 	<body>
-		<h1>Plugin WIRIS test page</h1>
+		<h1>WIRIS plugin test page</h1>
 		
-		<h2>Loading configuration</h2>
-		
-		<p>
-                        <%
-                                this.Response.Write("Loading " + this.MapPath(pluginwiris.Libwiris.configFile) + "... ");
-                                Hashtable config = pluginwiris.Libwiris.loadConfig(this.MapPath(pluginwiris.Libwiris.configFile));
-                                this.wrs_assert(config.Count > 0);
-			%>
-		</p>
-		
-		<h2>Connecting to WIRIS image server</h2>
-		
-		<p>
-		        <%
-                                this.Response.Write("Connecting to " + config["wirisimageservicehost"] + " on port " + config["wirisimageserviceport"] + "... ");
+		<table>
+				<tr>
+					<th>Test</th>
+					<th>Report</th>
+					<th>Status</th>
+				</tr>
+				<tr>
+					<%
+						string testName = "Loading configuration";
+						string reportText = "Loading " + this.MapPath(pluginwiris.Libwiris.configFile) + "... ";
+						string solutionLink = "";
+						Hashtable config = pluginwiris.Libwiris.loadConfig(this.MapPath(pluginwiris.Libwiris.configFile));
+						this.wrs_createTableRow(testName, reportText, solutionLink, config.Count > 0);
+					%>
+				</tr>
+				<tr>
+					<%
+						testName = "Connecting to WIRIS image server";
+						string port;
+						if (config["wirisimageserviceport"] != null){
+							port = (string)config["wirisimageserviceport"];
+						}else{
+							port = "80";
+						}
+						reportText = "Connecting to " + config["wirisimageservicehost"] + " on port " + port + "... ";
+						try	{
+							System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient((string)config["wirisimageservicehost"], Convert.ToInt32((string)port));
+							this.wrs_createTableRow(testName, reportText, solutionLink, true);
+							socket.Close();
+						}
+						catch{
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						}						
+					%>
+				</tr>
+				<tr>
+					<%
+						testName = "Writing a formula file";
+						string file = (pluginwiris.Libwiris.getFormulaDirectory(config) != null) ? pluginwiris.Libwiris.getFormulaDirectory(config) : this.MapPath(pluginwiris.Libwiris.FormulaDirectory);
+						file += "/test.xml";						
+						reportText = "Writing file " + file + "... ";
+						try{
+							System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
+							fileWriter.Close();
+							this.wrs_createTableRow(testName, reportText, solutionLink, true);
+						}
+						catch{
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						}
+					%>
+				</tr>
+				<tr>
+					<%
+						testName = "Reading a formula file";
+						reportText = "Reading file " + file + "... ";
+						try{
+							System.IO.TextReader fileReader = new System.IO.StreamReader(file);
+							fileReader.Close();
+							this.wrs_createTableRow(testName, reportText, solutionLink, true);
+						}
+						catch{
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						}						
+					%>
+				</tr>
+				<tr>
+					<%
+						testName = "Writing an image file";
+						file = (pluginwiris.Libwiris.getCacheDirectory(config) != null) ? pluginwiris.Libwiris.getCacheDirectory(config) : this.MapPath(pluginwiris.Libwiris.CacheDirectory);
+						file += "/test.png";						
+						reportText = "Writing file " + file + "... ";
+						try	{
+							System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
+							fileWriter.Close();
+							this.wrs_createTableRow(testName, reportText, solutionLink, true);
+						}
+						catch{
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						}						
+					%>
+				</tr>
+				<tr>
+					<%
+						testName = "Reading an image file";
+						reportText = "Reading file " + file + "... ";
+						try{
+							System.IO.TextReader fileReader = new System.IO.StreamReader(file);
+							fileReader.Close();
+							this.wrs_createTableRow(testName, reportText, solutionLink, true);
+						}
+						catch{
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						} 						
+					%>
+				</tr>
+		</table>
 
-                                try
-                                {
-                                        System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient((string)config["wirisimageservicehost"], Convert.ToInt32((string)config["wirisimageserviceport"]));
-                                        this.wrs_assert(true);
-                                        socket.Close();
-                                }
-                                catch
-                                {
-                                        this.wrs_assert(false);
-                                }
-                        %>
-		</p>
+		<br/>
+		<h1>ASP.NET tests</h1>
+		<h2>Checking ASP.NET security filters</h2>
 		
-		<h2>Writing a formula file</h2>
-		
-		<p>
-		        <%
-								string file = (pluginwiris.Libwiris.getFormulaDirectory(config) != null) ? pluginwiris.Libwiris.getFormulaDirectory(config) : this.MapPath(pluginwiris.Libwiris.FormulaDirectory);
-								file += "/test.xml";
-                                this.Response.Write("Writing file " + file + "... ");
+		<table>
+			<tr>
+				<th>Function</th>
+				<th>Report</th>
+				<th>Status</th>
+			</tr>
+			<tr>
+				<%
+				if (this.Request.QueryString["html"] == null || this.Request.QueryString["sql"] == null)
+				{
+					this.Response.Redirect(this.Page.ResolveUrl("test.aspx") + "?html=" + HttpUtility.UrlEncodeUnicode(HTML_STRING) + "&sql=" + HttpUtility.UrlEncodeUnicode(SQL_STRING));
+				}
+				else
+				{
+					testName = "Checking for HTML filter";
+					reportText = "should be disabled";					
+					this.wrs_createTableRow(testName, reportText, solutionLink, this.Request.QueryString["html"] == HTML_STRING);
 
-                                try
-                                {
-                                        System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
-                                        fileWriter.Close();
-                                        this.wrs_assert(true);
-                                }
-                                catch
-                                {
-                                        this.wrs_assert(false);
-                                }
-		        %>
-		</p>
-		
-		<h2>Reading a formula file</h2>
-		
-		<p>
-		        <%
-                                this.Response.Write("Reading file " + file + "... ");
+					testName = "Checking for SQL filter";
+					reportText = "should be disabled";					
+					this.wrs_createTableRow(testName, reportText, solutionLink, this.Request.QueryString["sql"] == SQL_STRING);
+				}				
+				%>
+			</tr>
+			
+		</table>
 
-                                try
-                                {
-                                        System.IO.TextReader fileReader = new System.IO.StreamReader(file);
-                                        fileReader.Close();
-                                        this.wrs_assert(true);
-                                }
-                                catch
-                                {
-                                        this.wrs_assert(false);
-                                }                        
-		        %>
-		</p>
-		
-		<h2>Writing an image file</h2>
-		
-		<p>
-		        <%
-								file = (pluginwiris.Libwiris.getCacheDirectory(config) != null) ? pluginwiris.Libwiris.getCacheDirectory(config) : this.MapPath(pluginwiris.Libwiris.CacheDirectory);
-								file += "/test.png";
-                                this.Response.Write("Writing file " + file + "... ");
-
-                                try
-                                {
-                                        System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
-                                        fileWriter.Close();
-                                        this.wrs_assert(true);
-                                }
-                                catch
-                                {
-                                        this.wrs_assert(false);
-                                }
-		        %>
-		</p>
-		
-		<h2>Reading an image file</h2>
-		
-		<p>
-			<%
-                                this.Response.Write("Reading file " + file + "... ");
-
-                                try
-                                {
-                                        System.IO.TextReader fileReader = new System.IO.StreamReader(file);
-                                        fileReader.Close();
-                                        this.wrs_assert(true);
-                                }
-                                catch
-                                {
-                                        this.wrs_assert(false);
-                                }                        
-		        %>
-		</p>
-		
-		<h2>ASP.NET tests</h2>
-		
-		<h3>Checking ASP.NET security filters</h3>
-		
-		<p class="concrete">
-		        <%
-                                // Redirect if it hasn't done the filter test.
-
-                                if (this.Request.QueryString["html"] == null || this.Request.QueryString["sql"] == null)
-                                {
-                                        this.Response.Redirect(this.Page.ResolveUrl("test.aspx") + "?html=" + HttpUtility.UrlEncodeUnicode(HTML_STRING) + "&sql=" + HttpUtility.UrlEncodeUnicode(SQL_STRING));
-                                }
-                                else
-                                {
-                                        this.Response.Write("Checking for HTML filter (should be disabled)... ");
-                                        this.wrs_assert(this.Request.QueryString["html"] == HTML_STRING);
-
-                                        this.Response.Write("<br/>Checking for SQL filter (should be disabled)... ");
-                                        this.wrs_assert(this.Request.QueryString["sql"] == SQL_STRING);
-                                }
-		        %>
-		</p>
 	</body>
 </html>

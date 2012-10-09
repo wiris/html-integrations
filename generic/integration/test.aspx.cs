@@ -35,6 +35,20 @@ namespace pluginwiris
             }
         }
 
+		protected void wrs_createTableRow(string testName, string reportText, string solutionLink, bool condition){
+			this.Response.Write("<tr>");
+			this.Response.Write("<td>" + testName + "</td>");
+			this.Response.Write("<td>" + reportText + "</td>");
+			this.Response.Write("<td>");
+			if (condition) {
+				this.Response.Write("<span class=\"ok\">OK</span><br/>");
+			} else {
+				this.Response.Write("<span class=\"error\">ERROR</span><br/>");
+			}
+			this.Response.Write("</td>");
+			this.Response.Write("</tr>");			
+		}
+		
         #region Web Form Designer generated code
         override protected void OnInit(EventArgs e)
         {
