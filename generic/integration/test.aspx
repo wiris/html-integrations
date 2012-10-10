@@ -30,9 +30,30 @@
 				</tr>
 				<tr>
 					<%
-						string testName = "Loading configuration";
-						string reportText = "Loading " + this.MapPath(pluginwiris.Libwiris.configFile) + "... ";
-						string solutionLink = "";
+						string testName = "WIRIS plugin version";
+						string reportText = "";
+						string solutionLink = "";						
+						string file = this.MapPath("../VERSION");
+						try{
+							using (System.IO.StreamReader sr = new System.IO.StreamReader(file)) 
+							{
+								String line;
+								line = sr.ReadLine();
+								reportText = "<b>" + line + "</b>";
+								this.wrs_createTableRow(testName, reportText, solutionLink, true);
+							}
+						}
+						catch (Exception e) {
+							reportText = "The file could not be read:";
+							this.wrs_createTableRow(testName, reportText, solutionLink, false);
+						}						
+					%>
+				</tr>				
+				<tr>
+					<%
+						testName = "Loading configuration";
+						reportText = "Loading " + this.MapPath(pluginwiris.Libwiris.configFile);
+						solutionLink = "";
 						Hashtable config = pluginwiris.Libwiris.loadConfig(this.MapPath(pluginwiris.Libwiris.configFile));
 						this.wrs_createTableRow(testName, reportText, solutionLink, config.Count > 0);
 					%>
@@ -46,7 +67,7 @@
 						}else{
 							port = "80";
 						}
-						reportText = "Connecting to " + config["wirisimageservicehost"] + " on port " + port + "... ";
+						reportText = "Connecting to " + config["wirisimageservicehost"] + " on port " + port;
 						try	{
 							System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient((string)config["wirisimageservicehost"], Convert.ToInt32((string)port));
 							this.wrs_createTableRow(testName, reportText, solutionLink, true);
@@ -60,9 +81,9 @@
 				<tr>
 					<%
 						testName = "Writing a formula file";
-						string file = (pluginwiris.Libwiris.getFormulaDirectory(config) != null) ? pluginwiris.Libwiris.getFormulaDirectory(config) : this.MapPath(pluginwiris.Libwiris.FormulaDirectory);
+						file = (pluginwiris.Libwiris.getFormulaDirectory(config) != null) ? pluginwiris.Libwiris.getFormulaDirectory(config) : this.MapPath(pluginwiris.Libwiris.FormulaDirectory);
 						file += "/test.xml";						
-						reportText = "Writing file " + file + "... ";
+						reportText = "Writing file " + file;
 						try{
 							System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
 							fileWriter.Close();
@@ -76,7 +97,7 @@
 				<tr>
 					<%
 						testName = "Reading a formula file";
-						reportText = "Reading file " + file + "... ";
+						reportText = "Reading file " + file;
 						try{
 							System.IO.TextReader fileReader = new System.IO.StreamReader(file);
 							fileReader.Close();
@@ -92,7 +113,7 @@
 						testName = "Writing an image file";
 						file = (pluginwiris.Libwiris.getCacheDirectory(config) != null) ? pluginwiris.Libwiris.getCacheDirectory(config) : this.MapPath(pluginwiris.Libwiris.CacheDirectory);
 						file += "/test.png";						
-						reportText = "Writing file " + file + "... ";
+						reportText = "Writing file " + file;
 						try	{
 							System.IO.TextWriter fileWriter = new System.IO.StreamWriter(file);
 							fileWriter.Close();
@@ -106,7 +127,7 @@
 				<tr>
 					<%
 						testName = "Reading an image file";
-						reportText = "Reading file " + file + "... ";
+						reportText = "Reading file " + file;
 						try{
 							System.IO.TextReader fileReader = new System.IO.StreamReader(file);
 							fileReader.Close();
