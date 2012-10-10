@@ -22,9 +22,11 @@ require_once dirname(__FILE__) . '/libwiris.php';
 
 class com_wiris_plugin_PluginAPI {
 	private $formulaDirectory;
+	private $TAGS;
 	
 	public function com_wiris_plugin_PluginAPI() {
 		$this->formulaDirectory = wrs_getFormulaDirectory(wrs_loadConfig(WRS_CONFIG_FILE));
+		$this->TAGS = new stdClass();
 	}
 
 	public function mathml2img($mathml, $baseURL, $properties = array()) {
