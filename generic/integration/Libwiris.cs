@@ -211,7 +211,7 @@ namespace pluginwiris
 			// Port
 			string port = "";
 			if (config["wirisimageserviceport"] != null){
-				port = (string)config["wirisimageserviceport"];
+				port = ":" + (string)config["wirisimageserviceport"];
 			}else{
 				port = "";
 			}
