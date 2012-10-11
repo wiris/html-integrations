@@ -145,7 +145,19 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	
 	if (wrs_int_opener._wrs_isNewElement) {
 		var queryParams = wrs_int_opener.wrs_getQueryParams(window);
-		language = (queryParams['lang']) ? queryParams['lang'] : wrs_int_opener._wrs_int_language;
+
+		var availableLangs = new Array();
+		for (var i = 0; i < languageList.options.length; i++){
+			availableLangs[i] = languageList.options[i].value;
+		}
+		
+		if (typeof queryParams['lang'] != 'undefined' && wrs_int_opener.wrs_arrayContains(availableLangs, queryParams['lang']) != -1){
+			language = queryParams['lang'];
+		}else if (typeof queryParams['lang'] != 'undefined' && wrs_int_opener.wrs_arrayContains(availableLangs, queryParams['lang'].substr(0,2)) != -1){
+			language = queryParams['lang'].substr(0,2);
+		}else{
+			language = wrs_int_opener._wrs_int_language
+		}
 	}
 	else {
 		var appletCode = wrs_int_opener._wrs_temporalImage.getAttribute(wrs_int_opener._wrs_conf_CASMathmlAttribute);

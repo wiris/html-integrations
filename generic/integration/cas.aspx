@@ -23,6 +23,9 @@ if (Libwiris.inArray(reqLang, availableLanguages)){
 <%
         if (this.Request.QueryString["mode"] == "applet")
         {
+			codebase = Libwiris.replaceVariable((string)config["wiriscascodebase"], "LANG", language);
+			archive = Libwiris.replaceVariable((string)config["wiriscasarchive"], "LANG", language);
+			className = Libwiris.replaceVariable((string)config["wiriscasclass"], "LANG", language);
                 %>
 		<html>
 			<head>
