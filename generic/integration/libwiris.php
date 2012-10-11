@@ -280,18 +280,22 @@ function wrs_getImageServiceURL($config, $service) {
 	}
 
 	// Protocol and Port.
-	if (isset($config['wirisimageserviceprotocol']) && isset($config['wirisimageserviceport'])){
+	if (isset($config['wirisimageserviceprotocol'])){
 		$protocol = $config['wirisimageserviceprotocol'];
-		$port = ':' . $config['wirisimageserviceport'];
 	}else{
 		if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'){
 			$protocol = 'https';
-			$port = ':443';
 		}else{
 			$protocol = 'http';
-			$port = ':80';
 		}
-	}	
+	}
+	
+	if (isset($config['wirisimageserviceport'])){
+		$port = ':' . $config['wirisimageserviceport'];
+	}
+	else {
+		$port = '';
+	}
 
 	// Domain.
 	$domain = $config['wirisimageservicehost'];
