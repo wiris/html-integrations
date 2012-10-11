@@ -279,7 +279,7 @@ function wrs_getImageServiceURL($config, $service) {
 		return $config['wirismathmltolatexurl'];
 	}
 
-	// Protocol and Port.
+	// Protocol 
 	if (isset($config['wirisimageserviceprotocol'])){
 		$protocol = $config['wirisimageserviceprotocol'];
 	}else{
@@ -290,6 +290,7 @@ function wrs_getImageServiceURL($config, $service) {
 		}
 	}
 	
+	// Port
 	if (isset($config['wirisimageserviceport'])){
 		$port = ':' . $config['wirisimageserviceport'];
 	}
