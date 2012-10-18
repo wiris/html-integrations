@@ -25,6 +25,8 @@ $config = wrs_loadConfig(WRS_CONFIG_FILE);
 $wirisformulaeditorlang = '';
 if (isset($_GET['lang'])) {
 	$wirisformulaeditorlang = $_GET['lang'];
+	$wirisformulaeditorlang = strtolower($wirisformulaeditorlang);
+	$wirisformulaeditorlang = str_replace("-", "_", $wirisformulaeditorlang);
 }
 if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
