@@ -9,19 +9,22 @@ if (this.Request.QueryString["lang"] != null){
 	wirisformulaeditorlang = this.Request.QueryString["lang"];
 }
 
+wirisformulaeditorlang = wirisformulaeditorlang.ToLower();
+wirisformulaeditorlang = wirisformulaeditorlang.Replace("-", "_");
+
 if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"))){
 	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
 }else if(File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang.Substring(0, 2) + "/strings.js"))){
 	wirisformulaeditorlang = wirisformulaeditorlang.Substring(0, 2);
 	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
 }else{
-	config["wirisformulaeditorlang"] = wirisformulaeditorlang;
+	config["wirisformulaeditorlang"] = "en";
 }
 %>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-		<script type="text/javascript" src="<% this.Response.Write(Libwiris.getImageServiceURL(this.config, "editor")); %>"></script>
+		<script type="text/javascript" src="<% this.Response.Write(Libwiris.getImageServiceURL(this.config, "editor") + "?lang=" + Server.UrlEncode(wirisformulaeditorlang));%>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
 		<script type="text/javascript" src="<%= "../lang/" + config["wirisformulaeditorlang"] + "/strings.js" %>"></script>
 		<title>WIRIS editor</title>
@@ -59,7 +62,7 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 			</div>
 			
 			<div id="links">
-				<a href="#" onclick="window.open('../latex.html', 'LaTeX', 'left=100, top=100, width=500, height=280, scroll=no, resizable=no');">LaTeX</a> | 
+				<a href="#" id="a_latex" onclick="window.open('../latex.html', 'LaTeX', 'left=100, top=100, width=500, height=280, scroll=no, resizable=no');">LaTeX</a> | 
 				<a href="http://www.wiris.com/editor3/docs/manual" target="_blank" id="a_manual">Manual</a>
 			</div>
 		</div>
