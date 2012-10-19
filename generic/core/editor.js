@@ -131,10 +131,15 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	controls.appendChild(cancelButton);
 
 	var manualLink = document.getElementById('a_manual');
-	if (strings['manual'] != null){
+	if (typeof manualLink != 'undefined' && strings['manual'] != null){
 		manualLink.innerHTML = strings['manual'];
 	}
 
+	var latexLink = document.getElementById('a_latex');
+	if (typeof latexLink != 'undefined' && strings['latex'] != null){
+		latexLink.innerHTML = strings['latex'];
+	}
+	
 	// Auto resizing.
 	setInterval(function () {
 		editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 10) + 'px';
