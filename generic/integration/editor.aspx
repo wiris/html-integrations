@@ -62,7 +62,7 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 			</div>
 			
 			<div id="links">
-				<a href="#" id="a_latex" onclick="window.open('../latex.html', 'LaTeX', 'left=100, top=100, width=500, height=280, scroll=no, resizable=no');">LaTeX</a> | 
+				<a href="http://www.wiris.com/editor3/docs/manual/latex-support" target="_blank" id="a_latex" >LaTeX</a> | 
 				<a href="http://www.wiris.com/editor3/docs/manual" target="_blank" id="a_manual">Manual</a>
 			</div>
 		</div>
