@@ -45,11 +45,17 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
 
-	if (com.wiris.jsEditor.defaultBasePath) {
-		editor = com.wiris.jsEditor.JsEditor.newInstance({
+	if (typeof attributes != 'undefined'){
+		attributes.language = queryParams['lang'];
+	}else{
+		attributes = {
 			'language' : queryParams['lang']
-		});
+		};
 	}
+	
+	if (com.wiris.jsEditor.defaultBasePath) {
+		editor = com.wiris.jsEditor.JsEditor.newInstance(attributes);
+	}	
 	else {
 		editor = new com.wiris.jsEditor.JsEditor('editor', null);
 	}

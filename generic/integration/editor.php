@@ -40,6 +40,24 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<?php 
+			$attr =  '';
+			$i = 0;			
+			foreach($wrs_imageConfigProperties as $key => $value){
+				if (isset($config[$value])){
+					if ($i != 0){
+						$attr .= ',';
+					}else{
+						$i++;
+					}
+					$attr .= '\'' . $key . '\' : \'' . $config[$value] . '\'';
+				}
+			}
+			if ($i > 0){
+				$attr = '<script type="text/javascript">var attributes = {' . $attr . '};</script>' . "\n";
+				echo $attr;
+			}
+		?>
 		<script type="text/javascript" src="<?php echo wrs_getImageServiceURL($config, 'editor') . '?lang=' . rawurlencode($config['wirisformulaeditorlang']); ?>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
 		<script type="text/javascript" src="<?php echo '../lang/' . $config['wirisformulaeditorlang'] . '/strings.js' ?>"></script>
