@@ -37,12 +37,15 @@ namespace pluginwiris
             "fontNumber",
             "zoom",
             "dpi",
-			"color"
+			"color",
+			"backgroundColor",
+			"fontFamily"
         };
-
+	
         static Libwiris()
         {
             Libwiris.imageConfigProperties["bgColor"] = "wirisimagebgcolor";
+			Libwiris.imageConfigProperties["backgroundColor"] = "wirisbackgroundcolor";
             Libwiris.imageConfigProperties["symbolColor"] = "wirisimagesymbolcolor";
             Libwiris.imageConfigProperties["transparency"] = "wiristransparency";
             Libwiris.imageConfigProperties["fontSize"] = "wirisimagefontsize";
@@ -54,6 +57,8 @@ namespace pluginwiris
             Libwiris.imageConfigProperties["fontNumber"] = "wirisimagefontnumber";
 			Libwiris.imageConfigProperties["version"] = "wirisimageserviceversion";
 			Libwiris.imageConfigProperties["color"] = "wiriscolor";
+			Libwiris.imageConfigProperties["dpi"] = "wirisdpi";
+			Libwiris.imageConfigProperties["fontFamily"] = "wirisfontfamily";
         }
 
         public Libwiris(System.ComponentModel.IContainer container)

@@ -24,6 +24,24 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+		<%
+			int i = 0;
+			string attr = "";
+			foreach (DictionaryEntry entry in Libwiris.imageConfigProperties){
+				if (config[entry.Value] != null){
+					if(i != 0){
+						attr += ",";
+					}else{
+						i++;
+					}
+					attr += "'" + entry.Key + "' : '" + config[entry.Value] + "'";
+				}
+			}
+			if (i > 0){%>
+		<script type="text/javascript"><% this.Response.Write("window.wrs_attributes = {" + attr + "};"); %></script>
+			<%
+			}
+			%>		
 		<script type="text/javascript" src="<% this.Response.Write(Libwiris.getImageServiceURL(this.config, "editor") + "?lang=" + Server.UrlEncode(wirisformulaeditorlang));%>"></script>
 		<script type="text/javascript" src="../core/editor.js"></script>
 		<script type="text/javascript" src="<%= "../lang/" + config["wirisformulaeditorlang"] + "/strings.js" %>"></script>

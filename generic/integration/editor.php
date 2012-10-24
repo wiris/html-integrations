@@ -54,7 +54,7 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 				}
 			}
 			if ($i > 0){
-				$attr = '<script type="text/javascript">var attributes = {' . $attr . '};</script>' . "\n";
+				$attr = '<script type="text/javascript">window.wrs_attributes = {' . $attr . '};</script>' . "\n";
 				echo $attr;
 			}
 		?>

@@ -27,6 +27,7 @@ global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
 $wrs_imageConfigProperties = array(
 	'bgColor' => 'wirisimagebgcolor',
+	'backgroundColor' => 'wirisbackgroundcolor',
 	'symbolColor' => 'wirisimagesymbolcolor',
 	'transparency' => 'wiristransparency',
 	'fontSize' => 'wirisimagefontsize',
@@ -37,7 +38,9 @@ $wrs_imageConfigProperties = array(
 	'fontIdent' => 'wirisimagefontident',
 	'fontNumber' => 'wirisimagefontnumber',
 	'version' => 'wirisimageserviceversion',
-	'color' => 'wiriscolor'
+	'color' => 'wiriscolor',
+	'dpi' => 'wirisdpi',
+	'fontFamily' => 'wirisfontfamily'
 );
 
 $wrs_xmlFileAttributes = array(
@@ -53,7 +56,9 @@ $wrs_xmlFileAttributes = array(
 	'fontNumber',
 	'zoom',
 	'dpi', 
-	'color'
+	'color',
+	'backgroundColor',
+	'fontFamily'
 );
 
 function wrs_applyConfigRetrocompatibility($config) {
