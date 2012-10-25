@@ -45,7 +45,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
 
-	if (window.wrs_attributes){
+	if ('wrs_attributes' in window){
 		wrs_attributes.language = queryParams['lang'];
 	}else{
 		wrs_attributes = {
