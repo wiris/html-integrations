@@ -50,7 +50,12 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 					}else{
 						$i++;
 					}
-					$attr .= '\'' . $key . '\' : \'' . $config[$value] . '\'';
+
+					$confVal = $config[$value];
+					$confVal = str_replace('\\', '\\\\', $confVal);
+					$confVal = str_replace('\'', '\\\'', $confVal);
+					
+					$attr .= '\'' . $key . '\' : \'' . $confVal . '\'';
 				}
 			}
 			if ($i > 0){
