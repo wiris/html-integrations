@@ -45,7 +45,7 @@ namespace pluginwiris
         static Libwiris()
         {
             Libwiris.imageConfigProperties["bgColor"] = "wirisimagebgcolor";
-			Libwiris.imageConfigProperties["backgroundColor"] = "wirisbackgroundcolor";
+			Libwiris.imageConfigProperties["backgroundColor"] = "wirisimagebackgroundcolor";
             Libwiris.imageConfigProperties["symbolColor"] = "wirisimagesymbolcolor";
             Libwiris.imageConfigProperties["transparency"] = "wiristransparency";
             Libwiris.imageConfigProperties["fontSize"] = "wirisimagefontsize";
@@ -56,7 +56,7 @@ namespace pluginwiris
             Libwiris.imageConfigProperties["fontIdent"] = "wirisimagefontident";
             Libwiris.imageConfigProperties["fontNumber"] = "wirisimagefontnumber";
 			Libwiris.imageConfigProperties["version"] = "wirisimageserviceversion";
-			Libwiris.imageConfigProperties["color"] = "wiriscolor";
+			Libwiris.imageConfigProperties["color"] = "wirisimagecolor";
 			Libwiris.imageConfigProperties["dpi"] = "wirisdpi";
 			Libwiris.imageConfigProperties["fontFamily"] = "wirisfontfamily";
         }

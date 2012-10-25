@@ -172,7 +172,11 @@ if ('wiriscasactive' in configuration) {
 					'transparency': editor.settings['wiristransparency'],
 					'fontSize': editor.settings['wirisimagefontsize'],
 					'numberColor': editor.settings['wirisimagenumbercolor'],
-					'identColor': editor.settings['wirisimageidentcolor']
+					'identColor': editor.settings['wirisimageidentcolor'],
+					'color' : editor.settings['wirisimagecolor'],
+					'dpi' : editor.settings['wirisdpi'],
+					'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+					'fontFamily' : editor.settings['wirisfontfamily']
 				};
 				
 				var language = editor.settings.language;
@@ -193,7 +197,11 @@ if ('wiriscasactive' in configuration) {
 						'transparency': editor.settings['wiristransparency'],
 						'fontSize': editor.settings['wirisimagefontsize'],
 						'numberColor': editor.settings['wirisimagenumbercolor'],
-						'identColor': editor.settings['wirisimageidentcolor']
+						'identColor': editor.settings['wirisimageidentcolor'],
+						'color' : editor.settings['wirisimagecolor'],
+						'dpi' : editor.settings['wirisdpi'],
+						'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+						'fontFamily' : editor.settings['wirisfontfamily']
 					};
 
 					var language = editor.settings.language;
@@ -301,7 +309,11 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
 				'transparency': editor.settings['wiristransparency'],
 				'fontSize': editor.settings['wirisimagefontsize'],
 				'numberColor': editor.settings['wirisimagenumbercolor'],
-				'identColor': editor.settings['wirisimageidentcolor']
+				'identColor': editor.settings['wirisimageidentcolor'],
+				'color' : editor.settings['wirisimagecolor'],
+				'dpi' : editor.settings['wirisdpi'],
+				'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+				'fontFamily' : editor.settings['wirisfontfamily']
 			};
 			
 			if (!_wrs_int_window_opened) {

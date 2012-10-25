@@ -27,7 +27,7 @@ global $wrs_imageConfigProperties, $wrs_xmlFileAttributes;
 
 $wrs_imageConfigProperties = array(
 	'bgColor' => 'wirisimagebgcolor',
-	'backgroundColor' => 'wirisbackgroundcolor',
+	'backgroundColor' => 'wirisimagebackgroundcolor',
 	'symbolColor' => 'wirisimagesymbolcolor',
 	'transparency' => 'wiristransparency',
 	'fontSize' => 'wirisimagefontsize',
@@ -38,7 +38,7 @@ $wrs_imageConfigProperties = array(
 	'fontIdent' => 'wirisimagefontident',
 	'fontNumber' => 'wirisimagefontnumber',
 	'version' => 'wirisimageserviceversion',
-	'color' => 'wiriscolor',
+	'color' => 'wirisimagecolor',
 	'dpi' => 'wirisdpi',
 	'fontFamily' => 'wirisfontfamily'
 );

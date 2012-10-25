@@ -34,6 +34,7 @@ var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
+var _wrs_int_wirisProperties;
 
 /*
  * Fix for a bug in CKEditor when there is more than one editor in the same page
@@ -121,6 +122,44 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});
+
+			_wrs_int_wirisProperties = {};
+
+			if ('wirisimagecolor' in editor.config) {
+				_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
+			}			
+			
+			if ('wirisimagebgcolor' in editor.config) {
+				_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
+			}
+
+			if ('wirisbackgroundcolor' in editor.config) {
+				_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
+			}
+			
+			if ('wirisimagesymbolcolor' in editor.config) {
+				_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
+			}
+
+			if ('wirisimagenumbercolor' in editor.config) {
+				_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
+			}
+
+			if ('wirisimageidentcolor' in editor.config) {
+				_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
+			}
+			
+			if ('wiristransparency' in editor.config) {
+				_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
+			}
+			
+			if ('wirisimagefontsize' in editor.config) {
+				_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
+			}
+
+			if ('wirisdpi' in editor.config) {
+				_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
+			}
 		}
 		
 		if (_wrs_conf_CASEnabled) {
@@ -256,7 +295,7 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, language);
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
 }
 
 /**
