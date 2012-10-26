@@ -27,6 +27,7 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 		<%
 			int i = 0;
 			string attr = "";
+			string confVal = "";			
 			foreach (DictionaryEntry entry in Libwiris.imageConfigProperties){
 				if (config[entry.Value] != null){
 					if(i != 0){
@@ -34,7 +35,12 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 					}else{
 						i++;
 					}
-					attr += "'" + entry.Key + "' : '" + config[entry.Value] + "'";
+
+					confVal = (string)config[entry.Value];
+					confVal = confVal.Replace("\\", "\\\\");
+					confVal = confVal.Replace("\'", "\\\'");
+					
+					attr += "'" + entry.Key + "' : '" + confVal + "'";
 				}
 			}
 			if (i > 0){%>
