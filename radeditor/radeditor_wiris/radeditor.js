@@ -21,7 +21,7 @@ var _wrs_conf_getconfigPath = _wrs_currentPath + 'radeditor_wiris/integration/ge
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];			// This value can contain 'latex'.
-var _wrs_int_wirisProperties = {};
+var _wrs_int_wirisProperties;
 
 var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
 
@@ -36,8 +36,55 @@ var _wrs_int_temporalImageResizing;
 
 /* Plugin integration */
 function OnClientLoad(editor, args){
+	var attribute;
 	_wrs_int_currentEditor = editor;
 	_wrs_int_temporalIframe = editor._contentAreaElement;
+
+	_wrs_int_wirisProperties = {};
+	attribute = editor.get_element().getAttribute("wirisimagecolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['color'] = attribute;
+	}
+
+	attribute = editor.get_element().getAttribute("wirisimagebgcolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['bgColor'] = attribute;
+	}
+
+	attribute = editor.get_element().getAttribute("wirisimagebackgroundcolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['backgroundColor'] = attribute;
+	}
+	
+	attribute = editor.get_element().getAttribute("wirisimagesymbolcolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['symbolColor'] = attribute;
+	}
+
+	attribute = editor.get_element().getAttribute("wirisimagenumbercolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['numberColor'] = attribute;
+	}
+	
+	attribute = editor.get_element().getAttribute("wirisimageidentcolor");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['identColor'] = attribute;
+	}
+	
+	attribute = editor.get_element().getAttribute("wiristransparency");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['transparency'] = attribute;
+	}
+	
+	attribute = editor.get_element().getAttribute("wirisimagefontsize");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['fontSize'] = attribute;
+	}
+	
+	attribute = editor.get_element().getAttribute("wirisdpi");
+	if (attribute != 'undefined') {
+		_wrs_int_wirisProperties['dpi'] = attribute;
+	}
 	
 	var lis = new Array();
 	
@@ -103,7 +150,7 @@ function wrs_int_updateCAS(appletCode, image, width, height) {
 }
 
 function wrs_int_updateFormula(mathml, editMode, language) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode, language);
+	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
 }
 
 /**
