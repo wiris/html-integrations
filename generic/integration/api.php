@@ -52,14 +52,42 @@ class com_wiris_plugin_PluginAPI {
 		return $url;
 	}
 
-	public function mathml2accessible($data){
-		$config = wrs_loadConfig(WRS_CONFIG_FILE);
+	public function mathml2accessible($data, $config){
+		$availableLangs = array('en', 'es');
+		$parsedUrl = parse_url($data['src']);
+		parse_str($parsedUrl['query']);
+		$md5 = substr($formula, 0, strlen($formula) - 4);
+		
+		$lang = 'en';
+		if (in_array($data['lang'], $availableLangs)){
+			$lang = $data['lang'];
+		}
+		
+		$accessibilityTextPath = wrs_getCacheDirectory($config) . '/' . $md5 . '.' . $lang . '.txt';
+
+		if (is_file($accessibilityTextPath) || $this->createAndSaveAccessibilityText($config, $accessibilityTextPath, $data)) {
+			return file_get_contents($accessibilityTextPath);
+		}
+		else {
+			echo 'Error creating the accessibility file.';
+		}                
+	}	
+	
+	private function createAndSaveAccessibilityText($config, $accessibilityTextPath, $data){
 		$url = wrs_getImageServiceURL($config, 'mathml2accessible');
 		$response = wrs_getContents($config, $url, $data);
 		
-		return $response;
-	}	
-	
+		if (is_null($response)) {
+			return false;
+		}            
+		
+		if (!is_file($accessibilityTextPath) && file_put_contents($accessibilityTextPath, $response) === false) {
+			throw new Exception('Unable to create accessibility text file.');
+		}            
+		
+		return true;
+	}
+		
 	private function initfilter($type){
 		global $CFG;
 		require_once($CFG->libdir . '/textlib.class.php');
@@ -214,20 +242,24 @@ class com_wiris_plugin_PluginAPI {
 	 */
 	private function math_image($mathml) {
 		global $CFG;
-
+		$config = wrs_loadConfig(WRS_CONFIG_FILE);
+		
 		include $CFG->dirroot . '/lib/editor/tinymce/version.php';
 
 		$src = $this->mathml2img($mathml, $CFG->wwwroot . "/lib/editor/tinymce/tiny_mce/" . $plugin->release . "/plugins/tiny_mce_wiris/integration");
 		
 		$lang = substr(current_language(), 0, 2);
-		$data = array('mml' => $mathml, 'lang' => $lang);
-		$accessible = $this->mathml2accessible($data);
-				
+		$data = array('mml' => $mathml, 'lang' => $lang, 'src' => $src);
+		
 		$output = '<img align="middle" ';
 		$output .= 'src="' . $src . '" ';
-		$output .= 'alt="' . $accessible . '" ';
-		$output .= ' />'; 
+		
+		if (isset($config['wirisaccessibilityenabled']) && $config['wirisaccessibilityenabled']){
+			$accessible = $this->mathml2accessible($data, $config);    
+			$output .= 'alt="' . $accessible . '" ';    
+		}
 
+		$output .= ' />'; 
 		return $output;
 	}        
 }
