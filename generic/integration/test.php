@@ -19,7 +19,6 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-//require 'libwiris.php';
 require_once 'api.php';
 
 function wrs_assert_simple($condition) {
@@ -36,7 +35,11 @@ function wrs_assert($condition, $report_text, $solution_link) {
 		return $report_text;
 	}
 	else{
-		return '<span class="error">' . $report_text . '</span>' . '<a target="_blank" href="' . $solution_link . '"><img alt="" src="img/help.gif" /></a>';
+		$report_text = '<span class="error">' . $report_text . '</span>';
+		if ($solution_link != ''){
+			$report_text .= '<a target="_blank" href="' . $solution_link . '"><img alt="" src="../core/help.gif" /></a>';
+		}
+		return $report_text;
 	}
 }
 
