@@ -70,11 +70,19 @@ if (File.Exists(this.MapPath("../lang/" + wirisformulaeditorlang + "/strings.js"
 				text-align: right;
 				margin-right: 20px;
 			}
+
+			#links_rtl {
+				text-align: left;
+				margin-left: 20px;
+			}
 			
 			#controls {
 				float: left;
 			}
-			
+
+			#controls_rtl {
+				float: right;
+			}			
 			/*-->*/
 		</style>
 	</head>

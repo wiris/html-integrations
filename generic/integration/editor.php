@@ -67,7 +67,6 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 		<script type="text/javascript" src="../core/editor.js"></script>
 		<script type="text/javascript" src="<?php echo '../lang/' . $config['wirisformulaeditorlang'] . '/strings.js' ?>"></script>
 		<title>WIRIS editor</title>
-		
 		<style type="text/css">
 			/*<!--*/
 			
@@ -85,11 +84,19 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 				text-align: right;
 				margin-right: 20px;
 			}
+
+			#links_rtl {
+				text-align: left;
+				margin-left: 20px;
+			}
 			
 			#controls {
 				float: left;
 			}
-			
+
+			#controls_rtl {
+				float: right;
+			}			
 			/*-->*/
 		</style>
 	</head>
