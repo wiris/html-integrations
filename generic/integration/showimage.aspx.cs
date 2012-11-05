@@ -64,7 +64,7 @@ namespace pluginwiris
 				this.Response.WriteFile(imagePath);
 			}
 			else {
-				this.Response.Write("Error: no digest or mathml has been sended");
+				this.Response.Write("Error: no digest or mathml has been sent");
 			}
 		}
 		

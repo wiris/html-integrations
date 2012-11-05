@@ -187,10 +187,7 @@ function mustBeCached() {
 	return true;
 }
 
-if (empty($_GET['formula'])) {
-	echo 'Error: no image name has been sended.';
-}
-else {
+if (!empty($_GET['formula'])){	
 	$config = wrs_loadConfig(WRS_CONFIG_FILE);
 	$formula = rtrim(basename($_GET['formula']), '.png');
 	$formulaPath = wrs_getFormulaDirectory($config) . '/' . $formula;
@@ -209,14 +206,28 @@ else {
 	}
 	else {
 		$imageStream = createImage($config, $formulaPath, $extension, true);
-		
+
 		if (is_null($imageStream)) {
-			echo 'Error creating the image.';
+				echo 'Error creating the image.';
 		}
 		else {
-			header('Content-Type: image/png');
-			echo $imageStream;
+				header('Content-Type: image/png');
+				echo $imageStream;
 		}
 	}
+}else if(!empty($_GET['mml'])){
+    $config = wrs_loadConfig(WRS_CONFIG_FILE);
+	$properties = array('mml' => $_GET['mml']);
+	$imageStream = wrs_getContents($config, wrs_getImageServiceURL($config, NULL), $properties, null);
+
+	if (is_null($imageStream)) {
+		echo 'Error creating the image.';
+	}
+	else {
+		header('Content-Type: image/png');
+		echo $imageStream;
+	}	
+}else{
+	echo 'Error: no digest or mathml has been sent.';
 }
 ?>
