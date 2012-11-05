@@ -89,7 +89,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		function checkIframe() {
 			try {
-				var newIframe = document.getElementById('cke_contents_' + editor.name).getElementsByTagName('iframe')[0];
+				var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+				var newIframe = elem.getElementsByTagName('iframe')[0];
 				
 				if (iframe != newIframe) {
 					wrs_addIframeEvents(newIframe, function (iframe, element) {
