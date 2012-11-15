@@ -1,16 +1,10 @@
-/* Enabling support for all tinyMCE versions */
-var wrs_int_tinyManager = function () {};
-
-wrs_int_tinyManager.baseURL = tinymce.baseURL;
-
-wrs_int_tinyManager.addPlugin = function (pluginName, plugin) {
-	tinymce.create('tinymce.plugins.' + pluginName, plugin);
-	tinymce.PluginManager.add(pluginName, tinymce.plugins[pluginName]);
+if (typeof _wrs_baseURL == 'undefined') {
+	_wrs_baseURL = tinymce.baseURL;
 }
 
 /* Including core.js */
-tinymce.ScriptLoader.load(wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js');
-while (tinymce.ScriptLoader.isDone(wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/core.js'));
+tinymce.ScriptLoader.load(_wrs_baseURL + '/plugins/tiny_mce_wiris/core/core.js');
+while (tinymce.ScriptLoader.isDone(_wrs_baseURL + '/plugins/tiny_mce_wiris/core/core.js'));
 
 /* Configuration */
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
@@ -19,17 +13,17 @@ var _wrs_conf_CASEnabled = @CAS_ENABLED@;		// Specifies if WIRIS cas is enabled.
 var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
-var _wrs_conf_editorPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/editor.php';				// Specifies where is the editor HTML code (for popup window).
+var _wrs_conf_editorPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/editor.php';				// Specifies where is the editor HTML code (for popup window).
 var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
+var _wrs_conf_CASPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';										// Specifies WIRIS cas window options.
 
-var _wrs_conf_createimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createimage.php';			// Specifies where is the createimage script.
-var _wrs_conf_createcasimagePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';		// Specifies where is the createcasimage script.
+var _wrs_conf_createimagePath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/createimage.php';			// Specifies where is the createimage script.
+var _wrs_conf_createcasimagePath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/createcasimage.php';		// Specifies where is the createcasimage script.
 
-var _wrs_conf_getmathmlPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/service.php';				// Specifies where is the service script.
-var _wrs_conf_getconfigPath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php';			// Specifies from where it returns the configuration using AJAX
+var _wrs_conf_getmathmlPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
+var _wrs_conf_servicePath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/service.php';				// Specifies where is the service script.
+var _wrs_conf_getconfigPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php';			// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
@@ -37,11 +31,11 @@ var _wrs_conf_defaultEditMode = '@DEFAULT_EDIT_MODE@';				// This value can be '
 
 var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
 
-var _wrs_conf_pluginBasePath = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris';
+var _wrs_conf_pluginBasePath = _wrs_baseURL + '/plugins/tiny_mce_wiris';
 
 /* Vars */
-var _wrs_int_editorIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
-var _wrs_int_CASIcon = wrs_int_tinyManager.baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/cas.gif';
+var _wrs_int_editorIcon = _wrs_baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
+var _wrs_int_CASIcon = _wrs_baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
@@ -128,7 +122,7 @@ if ('wiriscasactive' in configuration) {
 
 /* Plugin integration */
 (function () {
-	var plugin = {
+	tinymce.create('tinymce.plugins.tiny_mce_wiris', {
 		init: function (editor, url) {
 			var iframe;
 			
@@ -249,9 +243,9 @@ if ('wiriscasactive' in configuration) {
 				version : '1.0'
 			};
 		}	
-	};
+	});
 
-	wrs_int_tinyManager.addPlugin('tiny_mce_wiris', plugin);
+	tinymce.PluginManager.add('tiny_mce_wiris', tinymce.plugins.tiny_mce_wiris);
 })();
 
 /**
