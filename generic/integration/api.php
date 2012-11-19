@@ -245,8 +245,15 @@ class com_wiris_plugin_PluginAPI {
 		$config = wrs_loadConfig(WRS_CONFIG_FILE);
 		
 		include $CFG->dirroot . '/lib/editor/tinymce/version.php';
-
-		$src = $this->mathml2img($mathml, $CFG->wwwroot . "/lib/editor/tinymce/tiny_mce/" . $plugin->release . "/plugins/tiny_mce_wiris/integration");
+                
+                //Moodle older than 2.4
+                $integration_folder = "/lib/editor/tinymce/tiny_mce/" . $plugin->release . "/plugins/tiny_mce_wiris/integration";
+                
+                if (!file_exists($CFG->dirroot . $integration_folder)){
+                    $integration_folder = "/lib/editor/tinymce/plugins/tiny_mce_wiris/integration";
+                }
+                $integration_url = $CFG->wwwroot . $integration_folder;
+		$src = $this->mathml2img($mathml, $integration_url);
 		
 		$lang = substr(current_language(), 0, 2);
 		$data = array('mml' => $mathml, 'lang' => $lang, 'src' => $src);
