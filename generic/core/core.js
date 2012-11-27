@@ -22,6 +22,7 @@ var _wrs_editMode;
 var _wrs_isNewElement = true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
+var _wrs_androidRange;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -1317,17 +1318,23 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 				}
 			}
 			else {
-				var selection = windowTarget.getSelection();
+				var isAndroid = false;
+				if (_wrs_androidRange){
+					var isAndroid = true;
+					var range = _wrs_androidRange;
+				}else{
+					var selection = windowTarget.getSelection();
 
-				try {
-					var range = selection.getRangeAt(0);
+					try {
+						var range = selection.getRangeAt(0);
+					}
+					catch (e) {
+						var range = windowTarget.document.createRange();
+					}
+					selection.removeAllRanges();
 				}
-				catch (e) {
-					var range = windowTarget.document.createRange();
-				}
-				
-				selection.removeAllRanges();
-				range.deleteContents();
+
+				range.deleteContents();				
 				
 				var node = range.startContainer;
 				var position = range.startOffset;
@@ -1341,10 +1348,12 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 					node.insertBefore(element, node.childNodes[position]);
 				}
 				
-				//Fix to set the caret after the inserted image
-				range.selectNode(element);
-				position = range.endOffset;
-				selection.collapse(node, position);
+				if (!isAndroid){
+					//Fix to set the caret after the inserted image
+					range.selectNode(element);
+					position = range.endOffset;
+					selection.collapse(node, position);
+				}
 			}
 		}
 		else if (_wrs_temporalRange) {
@@ -1623,6 +1632,13 @@ function wrs_openCASWindow(target, isIframe, language) {
  * @return object The opened window
  */
 function wrs_openEditorWindow(language, target, isIframe) {
+	var ua = navigator.userAgent.toLowerCase();
+	var isAndroid = ua.indexOf("android") > -1; 
+	if(isAndroid) {
+		var selection = target.contentWindow.getSelection();
+		_wrs_androidRange = selection.getRangeAt(0);
+	}
+
 	if (isIframe === undefined) {
 		isIframe = true;
 	}
