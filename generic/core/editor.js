@@ -146,7 +146,12 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		latexLink.innerHTML = strings['latex'];
 	}
 
-	if ((queryParams['dir'] == 'rtl') || ((queryParams['lang'].substr(0, 2) == 'he' || queryParams['lang'].substr(0, 2) == 'ar') && queryParams['dir'] != 'ltr')){
+	var queryLang = '';
+	if ('lang' in queryParams){
+		queryLang = queryParams['lang'].substr(0, 2);
+	}
+	
+	if ((queryParams['dir'] == 'rtl') || ((queryLang == 'he' || queryLang == 'ar') && queryParams['dir'] != 'ltr')){
 		var body = document.getElementsByTagName('BODY');
 		body[0].setAttribute("dir","rtl");
 		var links = document.getElementById('links');
