@@ -1649,7 +1649,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		path += '?lang=' + language;
 	}
 
-	if (_wrs_int_directionality == 'rtl'){
+	var availableDirs = new Array('rtl', 'ltr');
+	if (typeof _wrs_int_directionality != 'undefined' && wrs_arrayContains(availableDirs, _wrs_int_directionality) != -1){
 		path += '&dir=' + _wrs_int_directionality;
 	}
 	
