@@ -146,13 +146,13 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		latexLink.innerHTML = strings['latex'];
 	}
 
-	if (queryParams['lang'].substr(0, 2) == 'he' || queryParams['lang'].substr(0, 2) == 'ar' || queryParams['dir'] == 'rtl'){
+	if ((queryParams['dir'] == 'rtl') || ((queryParams['lang'].substr(0, 2) == 'he' || queryParams['lang'].substr(0, 2) == 'ar') && queryParams['dir'] != 'ltr')){
 		var body = document.getElementsByTagName('BODY');
 		body[0].setAttribute("dir","rtl");
 		var links = document.getElementById('links');
 		links.id = 'links_rtl';
 		var controls = document.getElementById('controls');
-		controls.id = 'controls_rtl';		
+		controls.id = 'controls_rtl';
 	}
 	
 	// Auto resizing.
