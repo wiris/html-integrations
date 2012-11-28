@@ -41,6 +41,7 @@ var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
+var _wrs_int_directionality; 
 
 /* Configuration loading */
 var configuration = {};
@@ -132,7 +133,8 @@ if ('wiriscasactive' in configuration) {
 				
 				function whenDocReady() {
 					if (window.wrs_initParse) {
-						var language = editor.settings.language;
+						var language = editor.getParam('language');
+						_wrs_int_directionality = editor.getParam('directionality');
 				
 						if (editor.settings['wirisformulaeditorlang']) {
 							language = editor.settings['wirisformulaeditorlang'];
@@ -173,7 +175,8 @@ if ('wiriscasactive' in configuration) {
 					'fontFamily' : editor.settings['wirisfontfamily']
 				};
 				
-				var language = editor.settings.language;
+				var language = editor.getParam('language');
+				_wrs_int_directionality = editor.getParam('directionality');
 				
 				if (editor.settings['wirisformulaeditorlang']) {
 					language = editor.settings['wirisformulaeditorlang'];
@@ -198,7 +201,8 @@ if ('wiriscasactive' in configuration) {
 						'fontFamily' : editor.settings['wirisfontfamily']
 					};
 
-					var language = editor.settings.language;
+					var language = editor.getParam('language');
+					_wrs_int_directionality = editor.getParam('directionality');
 					
 					if (editor.settings['wirisformulaeditorlang']) {
 						language = editor.settings['wirisformulaeditorlang'];

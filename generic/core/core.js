@@ -1648,6 +1648,10 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	if (language) {
 		path += '?lang=' + language;
 	}
+
+	if (_wrs_int_directionality == 'rtl'){
+		path += '&dir=' + _wrs_int_directionality;
+	}
 	
 	_wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
 	_wrs_temporalRange = null;

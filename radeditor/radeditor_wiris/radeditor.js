@@ -32,7 +32,7 @@ var _wrs_int_window_opened = false;
 var _wrs_int_language = currentLanguage;
 var _wrs_int_radeditor_id;
 var _wrs_int_temporalImageResizing;
-
+var _wrs_int_directionality = '';
 
 /* Plugin integration */
 function OnClientLoad(editor, args){

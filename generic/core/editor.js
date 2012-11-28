@@ -146,7 +146,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		latexLink.innerHTML = strings['latex'];
 	}
 
-	if (queryParams['lang'] == 'he' || queryParams['lang'] == 'ar'){
+	if (queryParams['lang'].substr(0, 2) == 'he' || queryParams['lang'].substr(0, 2) == 'ar' || queryParams['dir'] == 'rtl'){
 		var body = document.getElementsByTagName('BODY');
 		body[0].setAttribute("dir","rtl");
 		var links = document.getElementById('links');
