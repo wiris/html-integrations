@@ -35,7 +35,7 @@ var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
-var _wrs_directionality;
+var _wrs_int_directionality;
 
 /*
  * Fix for a bug in CKEditor when there is more than one editor in the same page
@@ -60,7 +60,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 	'init': function (editor) {
 		var iframe;
 		
-		_wrs_directionality = editor.config.contentsLangDirection;
+		_wrs_int_directionality = editor.config.contentsLangDirection;
 		
 		function whenDocReady() {
 			if (window.wrs_initParse) {
@@ -111,6 +111,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		setInterval(checkIframe, 500);
 		
 		if (_wrs_conf_editorEnabled) {
+			_wrs_int_directionality = editor.config.contentsLangDirection;
+		
 			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
 				'async': false,
 				'canUndo': false,
