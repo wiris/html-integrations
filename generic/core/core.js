@@ -23,7 +23,6 @@ var _wrs_isNewElement = true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
-var _wrs_blackboard = false;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -1426,7 +1425,7 @@ function wrs_mathmlDecode(input) {
 	input = input.split(_wrs_safeXmlCharactersEntities.realDoubleQuote).join(_wrs_safeXmlCharacters.realDoubleQuote);
 
 	//Blackboard
-	if (_wrs_blackboard){
+	if ('_wrs_blackboard' in window && window._wrs_blackboard){
 		input = input.split(_wrs_safeBadBlackboardCharacters.ltElement).join(_wrs_safeGoodBlackboardCharacters.ltElement);
 		input = input.split(_wrs_safeBadBlackboardCharacters.gtElement).join(_wrs_safeGoodBlackboardCharacters.gtElement);
 		input = input.split(_wrs_safeBadBlackboardCharacters.ampElement).join(_wrs_safeGoodBlackboardCharacters.ampElement);
