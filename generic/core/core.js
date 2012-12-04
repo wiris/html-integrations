@@ -23,6 +23,7 @@ var _wrs_isNewElement = true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
+var _wrs_blackboard = false;
 
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
@@ -46,6 +47,18 @@ var _wrs_safeXmlCharactersEntities = {
 	'tagCloser': '&raquo;',
 	'doubleQuote': '&uml;',
 	'realDoubleQuote': '&quot;'
+}
+
+var _wrs_safeBadBlackboardCharacters = {
+	'ltElement': '«mo»<«/mo»',
+	'gtElement': '«mo»>«/mo»',
+	'ampElement': '«mo»&«/mo»'
+}
+
+var _wrs_safeGoodBlackboardCharacters = {
+	'ltElement': '«mo»§lt;«/mo»',
+	'gtElement': '«mo»§gt;«/mo»',
+	'ampElement': '«mo»§amp;«/mo»'
 }
 
 var _wrs_staticNodeLengths = {
@@ -1411,6 +1424,24 @@ function wrs_mathmlDecode(input) {
 	input = input.split(_wrs_safeXmlCharactersEntities.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote);
 	//Added to fix problem due to import from 1.9.x
 	input = input.split(_wrs_safeXmlCharactersEntities.realDoubleQuote).join(_wrs_safeXmlCharacters.realDoubleQuote);
+
+	//Blackboard
+	if (_wrs_blackboard){
+		input = input.split(_wrs_safeBadBlackboardCharacters.ltElement).join(_wrs_safeGoodBlackboardCharacters.ltElement);
+		input = input.split(_wrs_safeBadBlackboardCharacters.gtElement).join(_wrs_safeGoodBlackboardCharacters.gtElement);
+		input = input.split(_wrs_safeBadBlackboardCharacters.ampElement).join(_wrs_safeGoodBlackboardCharacters.ampElement);
+		
+		/*var regex = /«mtext».*[<>&].*«\/mtext»/;
+
+		var result = regex.exec(input);
+		while(result){
+			var changedResult = result[0].split(_wrs_xmlCharacters.tagOpener).join('§lt;');
+			changedResult = changedResult.split(_wrs_xmlCharacters.tagCloser).join('§gt;');
+			changedResult = changedResult.split(_wrs_xmlCharacters.ampersand).join('§amp;');
+			input = input.replace(result, changedResult);
+			result = regex.exec(input);
+		}*/
+	}
 	
 	// Decoding characters.
 	input = input.split(_wrs_safeXmlCharacters.tagOpener).join(_wrs_xmlCharacters.tagOpener);
