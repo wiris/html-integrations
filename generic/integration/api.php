@@ -93,15 +93,14 @@ class com_wiris_plugin_PluginAPI {
 		require_once($CFG->libdir . '/textlib.class.php');
 
 		if ($type == 'safeXML'){
-			$convertor = textlib_get_instance();
-			$this->TAGS->in_open = $convertor->convert('«', 'utf8');
-			$this->TAGS->in_close = $convertor->convert('»', 'utf8');
-			$this->TAGS->in_entity = $convertor->convert('§', 'utf8');
-			$this->TAGS->in_appletopen = $convertor->convert('«applet', 'utf8');
-			$this->TAGS->in_appletclose = $convertor->convert('«/applet»', 'utf8');			
-			$this->TAGS->in_mathopen = $convertor->convert('«math', 'utf8');
-			$this->TAGS->in_mathclose = $convertor->convert('«/math»', 'utf8');		
-			$this->TAGS->in_double_quote = $convertor->convert('¨', 'utf8');
+			$this->TAGS->in_open = '«';
+			$this->TAGS->in_close = '»';
+			$this->TAGS->in_entity = '§';
+			$this->TAGS->in_appletopen = '«applet';
+			$this->TAGS->in_appletclose = '«/applet»';			
+			$this->TAGS->in_mathopen = '«math';
+			$this->TAGS->in_mathclose = '«/math»';		
+			$this->TAGS->in_double_quote = '¨';			
 			$this->TAGS->out_open = '<';
 			$this->TAGS->out_close = '>';
 			$this->TAGS->out_entity = '&';
