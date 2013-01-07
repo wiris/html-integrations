@@ -19,6 +19,7 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
+require_once 'bootstrap.php';
 require_once 'api.php';
 
 function wrs_assert_simple($condition) {
