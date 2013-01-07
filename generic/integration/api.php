@@ -243,10 +243,11 @@ class com_wiris_plugin_PluginAPI {
 		global $CFG;
 		$config = wrs_loadConfig(WRS_CONFIG_FILE);
 		
-		include $CFG->dirroot . '/lib/editor/tinymce/version.php';
+                include_once $CFG->dirroot . '/lib/editor/tinymce/lib.php';
+                $tinyEditor = new tinymce_texteditor();
                 
                 //Moodle older than 2.4
-                $integration_folder = "/lib/editor/tinymce/tiny_mce/" . $plugin->release . "/plugins/tiny_mce_wiris/integration";
+                $integration_folder = "/lib/editor/tinymce/tiny_mce/" . $tinyEditor->version . "/plugins/tiny_mce_wiris/integration";
                 
                 if (!file_exists($CFG->dirroot . $integration_folder)){
                     $integration_folder = "/lib/editor/tinymce/plugins/tiny_mce_wiris/integration";
