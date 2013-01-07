@@ -31,10 +31,10 @@ $cookie = $GLOBALS['_COOKIE'];
 $isMoodle = moodleCookiePresent($GLOBALS['_COOKIE']);*/
 
 $moodleLib   = dirname(__FILE__) . '/../../../../../../../../lib/moodlelib.php';
-$moodle24Lib = dirname(__FILE__) . '/../../../../../lib/moodlelib.php';
+$moodle24Lib = dirname(__FILE__) . '/../../../../../../lib/moodlelib.php';
 
 $moodleConfig   = dirname(__FILE__) . '/../../../../../../../../config.php';
-$moodle24Config = dirname(__FILE__) . '/../../../../../config.php';
+$moodle24Config = dirname(__FILE__) . '/../../../../../../config.php';
 
 if (is_file($moodleLib) || is_file($moodle24Lib)){
     if (is_file($moodleConfig)){
@@ -44,7 +44,7 @@ if (is_file($moodleLib) || is_file($moodle24Lib)){
     }else if (is_file($moodle24Config)){
         require_once $moodle24Config;
         global $wirisconfigurationclass;
-        $wirisconfigurationclass = '../../../../../../../../filter/wiris/MoodleConfigurationUpdater.php;com_wiris_plugin_configuration_MoodleConfigurationUpdater';
+        $wirisconfigurationclass = '../../../../../../filter/wiris/MoodleConfigurationUpdater.php;com_wiris_plugin_configuration_MoodleConfigurationUpdater';
     }
 }
 
