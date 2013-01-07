@@ -18,6 +18,7 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
+require_once 'bootstrap.php';
 include 'api.php';
 
 if (!empty($_POST['mml'])) {

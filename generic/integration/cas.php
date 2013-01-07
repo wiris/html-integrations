@@ -18,8 +18,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
-
+require_once 'bootstrap.php';
 include 'libwiris.php';
+
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 $availableLanguages = wrs_getAvailableCASLanguages($config['wiriscaslanguages']);
 

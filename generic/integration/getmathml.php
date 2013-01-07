@@ -18,7 +18,9 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
+require_once 'bootstrap.php';
 include 'libwiris.php';
+
 $digest = NULL;
 
 if (isset($_POST['md5']) && mb_strlen($_POST['md5']) == 32) {		// Support for "generic simple" integration.

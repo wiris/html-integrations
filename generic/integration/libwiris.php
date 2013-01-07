@@ -317,8 +317,12 @@ function wrs_getImageServiceURL($config, $service) {
 }
 
 function wrs_loadConfig($filePath) {
+        global $wirisconfigurationclass;
 	$config = wrs_parseIni($filePath, false, array());
 	
+        if (isset($wirisconfigurationclass)){
+            $config['wirisconfigurationclass'] = $wirisconfigurationclass;
+        }
 	
 	if (isset($config['wirisconfigurationclass'])) {
 		$parts = explode(';', $config['wirisconfigurationclass'], 2);

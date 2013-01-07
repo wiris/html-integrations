@@ -18,7 +18,9 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
+require_once 'bootstrap.php';
 include 'libwiris.php';
+
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 /*
 $accessibleParameters = array('wirisimageservicehost', 'wirisimageserviceport', 'wirisimageservicepath', 'wirisimageserviceprotocol', 

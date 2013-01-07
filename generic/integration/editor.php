@@ -20,6 +20,8 @@
 //
 
 include 'libwiris.php';
+require_once 'bootstrap.php';
+
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 
 $wirisformulaeditorlang = '';
