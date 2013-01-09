@@ -134,6 +134,10 @@ if ('wiriscasactive' in configuration) {
 		init: function (editor, url) {
 			var iframe;
 			
+			if (_wrs_isMoodle24){
+				editor.settings.extended_valid_elements += ',img[*]';    
+			}
+			
 			editor.onInit.add(function (editor) {
 				var editorElement = editor.getElement();
 				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
