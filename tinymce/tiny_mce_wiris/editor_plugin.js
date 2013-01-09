@@ -134,7 +134,8 @@ if ('wiriscasactive' in configuration) {
 		init: function (editor, url) {
 			var iframe;
 			
-			if (_wrs_isMoodle24){
+			//Fix a Moodle 2.4 bug. data-mathml was lost without this.
+			if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
 				editor.settings.extended_valid_elements += ',img[*]';    
 			}
 			
