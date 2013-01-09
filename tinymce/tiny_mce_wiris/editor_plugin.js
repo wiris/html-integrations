@@ -1,5 +1,12 @@
-if (typeof _wrs_baseURL == 'undefined') {
+var _wrs_baseURL;
+
+if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_baseURL = tinymce.baseURL;
+}else{
+	var base = tinymce.baseURL;
+	var search = 'lib/editor/tinymce';
+	var pos = base.indexOf(search);
+	_wrs_baseURL = tinymce.baseURL.substr(0, pos + search.length);
 }
 
 /* Including core.js */
