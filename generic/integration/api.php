@@ -262,7 +262,7 @@ class com_wiris_plugin_PluginAPI {
 		$output .= 'src="' . $src . '" ';
 		
 		if (isset($config['wirisaccessibilityenabled']) && $config['wirisaccessibilityenabled']){
-			$accessible = $this->mathml2accessible($data, $config);    
+			$accessible = htmlspecialchars($this->mathml2accessible($data, $config), ENT_COMPAT, "UTF-8");    
 			$output .= 'alt="' . $accessible . '" ';    
 		}
 
