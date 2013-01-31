@@ -24,7 +24,7 @@ include 'api.php';
 if (!empty($_POST['mml'])) {
 	try {
 		$api = new com_wiris_plugin_PluginAPI();
-		echo $api->mathml2img($_POST['mml'], dirname($_SERVER['PHP_SELF']), $_POST);
+		echo $api->mathml2img($_POST['mml'], dirname($_SERVER['REQUEST_URI']), $_POST);
 	}
 	catch (Exception $e) {
 		echo $e->getMessage();

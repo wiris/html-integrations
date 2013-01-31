@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <?php
 
 //
@@ -231,17 +231,36 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 					$test_name = 'Creating a random image';
 					$mathml='<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>' . rand(0,9999) . '</mn><mo>+</mo><mn>' . rand(0,9999) . '</mn></mrow></math>';
 					$api = new com_wiris_plugin_PluginAPI;
-					$src = $api->mathml2img($mathml, 'http://' . dirname($_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]));
+					$src = $api->mathml2img($mathml, dirname($_SERVER["REQUEST_URI"]));
+					
+					$prefix = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https://' : 'http://';
+					if (isset($_SERVER['HTTP_HOST'])){
+						$host = $_SERVER['HTTP_HOST'] . '/';
+					}else{
+						$host = $_SERVER['SERVER_NAME'] . '/';
+					}
+                                        
 					$query = parse_url($src, PHP_URL_QUERY);
 					$query_array = array();
 					parse_str($query, $query_array);
 					$report_text = '<img align="middle" src="' . $src . '" />';
 					$solution_link = '';
 					$imageFile = wrs_getCacheDirectory($config) . '/' . $query_array['formula'];
-					//Used to create the image
-					@fopen($src, 'r');
-					//*******
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, file_exists($imageFile));
+					if (ini_get('allow_url_fopen')){
+						@fopen($prefix.$host.$src, 'r');
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, file_exists($imageFile));    
+					}else if (function_exists('curl_init')){
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $prefix.$host.$src);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						$content = curl_exec( $ch );
+						curl_close( $ch );
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, file_exists($imageFile));    
+					}
+					else{
+						echo wrs_createTableRow($test_name, $report_text, $solution_link, false, false);    
+					}
+					
 				?>				
 				</tr>	
 		</table>
@@ -283,7 +302,7 @@ function wrs_createTableRow($test_name, $report_text, $solution_link, $condition
 				<td>fopen</td>
 				<td>
 					<?php
-						echo wrs_assert_simple(function_exists('fopen'));
+                        echo wrs_assert_simple(function_exists('fopen'));
 					?>
 				</td>					
 			</tr>			
