@@ -1225,6 +1225,7 @@ function wrs_initParseSaveMode(code, language) {
 		
 		if (safeXml || _wrs_conf_saveMode == 'xml') {
 			// Converting XML to tags.
+			code = wrs_parseMathmlToLatex(code, characters);			
 			code = wrs_parseMathmlToImg(code, characters, language);
 		}
 	}
@@ -1742,6 +1743,50 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	}
 	
 	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+}
+
+/**
+ * Converts all occurrences of mathml code to LATEX.
+ * @param string content
+ * @return string
+ */
+function wrs_parseMathmlToLatex(content, characters){
+	var output = '';
+	var mathTagBegin = characters.tagOpener + 'math';
+	var mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
+	var openTarget = characters.tagOpener + 'annotation encoding=' + characters.doubleQuote + 'LaTeX' + characters.doubleQuote + characters.tagCloser;
+	var closeTarget = characters.tagOpener + '/annotation' + characters.tagCloser;
+	var start = content.indexOf(mathTagBegin);
+	var end = 0;
+	var mathml, startAnnotation, closeAnnotation;
+	
+	while (start != -1) {
+		output += content.substring(end, start);
+		end = content.indexOf(mathTagEnd, start);
+		
+		if (end == -1) {
+			end = content.length - 1;
+		}
+		else {
+			end += mathTagEnd.length;
+		}
+
+		mathml = content.substring(start, end);
+	
+		startAnnotation = mathml.indexOf(openTarget);
+		if (startAnnotation != -1){
+			startAnnotation += openTarget.length;
+			closeAnnotation = mathml.indexOf(closeTarget);
+			output += '$$' + mathml.substring(startAnnotation, closeAnnotation) + '$$';
+		}else{
+			output += mathml;
+		}
+		
+		start = content.indexOf(mathTagBegin, end);
+	}
+	
+	output += content.substring(end, content.length);
+	return output;
 }
 
 /**

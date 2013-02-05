@@ -101,26 +101,6 @@ if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php'
 	}
 }
 
-function configureLatex(){
-	if (window.wrs_arrayContains){
-		if (configuration.wirisparselatex == false) {
-			var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-			if (pos != -1){
-				_wrs_conf_parseModes.splice(pos, 1);
-			}
-		}else if (configuration.wirisparselatex == true) {
-			var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-			if (pos == -1){
-				_wrs_conf_parseModes.push('latex');
-			}
-		}		
-	}else{
-		setTimeout(configureLatex, 50);
-	}
-}
-
-configureLatex();
-
 if ('wirisformulaeditoractive' in configuration) {
 	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == true);
 }
@@ -151,6 +131,18 @@ if ('wiriscasactive' in configuration) {
 						if (editor.settings['wirisformulaeditorlang']) {
 							language = editor.settings['wirisformulaeditorlang'];
 						}
+						
+						if (configuration.wirisparselatex == false) {
+							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
+							if (pos != -1){
+								_wrs_conf_parseModes.splice(pos, 1);
+							}
+						}else if (configuration.wirisparselatex == true) {
+							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
+							if (pos == -1){
+								_wrs_conf_parseModes.push('latex');
+							}
+						}		
 				
 						//Bug fix: In Moodle2.x when TinyMCE is set to full screen 
 						//the content doesn't need to be filtered.
