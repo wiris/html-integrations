@@ -198,7 +198,9 @@ function wrs_getAvailableCASLanguages($languageString) {
 
 function wrs_getCacheDirectory($config) {
 	$cacheDirectory = (isset($config['wiriscachedirectory'])) ? $config['wiriscachedirectory'] : WRS_CACHE_DIRECTORY;
-	@mkdir($cacheDirectory, 0755, true);
+	if (!file_exists($cacheDirectory)){
+		@mkdir($cacheDirectory, 0755, true);
+	}
 	return $cacheDirectory;
 }
 
