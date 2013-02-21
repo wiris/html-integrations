@@ -37,7 +37,7 @@ var _wrs_safeXmlCharacters = {
 	'tagCloser': '»',		// \xBB
 	'doubleQuote': '¨',		// \xA8
 	'ampersand': '§',		// \xA7
-	'quote': '`',			// \xB4
+	'quote': '`',			// \x60
 	'realDoubleQuote': '¨'
 };
 
@@ -217,6 +217,33 @@ function wrs_containsClass(element, className) {
 	}
 	
 	return false;
+}
+
+/**
+ * Converts old xmlinitialtext attribute (with «») to the correct one(with §lt;§gt;)
+ * @param string text
+ * @return string
+ */
+function wrs_convertOldXmlinitialtextAttribute(text){
+	//Used to fix a bug with Cas imported from Moodle 1.9 to Moodle 2.x
+	//This could be removed in future
+	var val = 'value=';
+	
+	var xitpos = text.indexOf('xmlinitialtext');
+	var valpos = text.indexOf(val, xitpos);
+	var quote = text.charAt(valpos + val.length);
+	var startquote = valpos + val.length + 1;
+	var endquote = text.indexOf(quote, startquote);
+
+	var value = text.substring(startquote, endquote);
+	
+	var newvalue = value.split('«').join('§lt;');
+	newvalue = newvalue.split('»').join('§gt;');
+	newvalue = newvalue.split('&').join('§');
+	newvalue = newvalue.split('¨').join('§quot;');
+	
+	text = text.split(value).join(newvalue);
+	return text;
 }
 
 /**
@@ -1236,10 +1263,27 @@ function wrs_initParseSaveMode(code, language) {
 	for (var i = 0; i < appletList.length; ++i) {
 		var appletCode = code.substring(appletList[i].start + carry, appletList[i].end + carry);
 		
-		if (appletCode.indexOf(' class="' + _wrs_conf_CASClassName + '"') != -1) {
-			var srcStart = appletCode.indexOf(' src="') + ' src="'.length;
-			var srcEnd = appletCode.indexOf('"', srcStart);
-			var src = appletCode.substring(srcStart, srcEnd);
+		//The second control in the if is used to find WIRIS applet which don't have Wiriscas class (as it was in old CAS applets).
+		if (appletCode.indexOf(' class="' + _wrs_conf_CASClassName + '"') != -1 || appletCode.toUpperCase().indexOf('WIRIS') != -1) {
+			if (appletCode.indexOf(' src="') != -1){
+				var srcStart = appletCode.indexOf(' src="') + ' src="'.length;
+				var srcEnd = appletCode.indexOf('"', srcStart);
+				var src = appletCode.substring(srcStart, srcEnd);
+			}else{
+				//This should happen only with old CAS imported from Moodle 1 to Moodle 2
+				if (typeof(_wrs_conf_pluginBasePath) != 'undefined'){
+					var src = _wrs_conf_pluginBasePath + '/integration/showcasimage.php?formula=noimage';
+				}else{
+					var src = '';
+				}
+				if (appletCode.indexOf(' class="' + _wrs_conf_CASClassName + '"') == -1){
+					var closeSymbol = appletCode.indexOf('>');
+					var appletTag = appletCode.substring(0, closeSymbol);
+					var newAppletTag = appletTag.split(' width=').join(' class="Wiriscas" width=');
+					appletCode = appletCode.split(appletTag).join(newAppletTag);
+					appletCode = appletCode.split('\'').join('"');
+				}
+			}
 			
 			// 'Double click to edit' has been removed here.
 			var imgCode = '<img align="middle" class="' + _wrs_conf_CASClassName + '" ' + _wrs_conf_CASMathmlAttribute + '="' + wrs_mathmlEncode(appletCode) + '" src="' + src + '" />';
@@ -1840,6 +1884,7 @@ function wrs_parseSafeAppletsToObjects(content) {
 	var upperCaseContent = content.toUpperCase();
 	var start = upperCaseContent.indexOf(appletTagBegin);
 	var end = 0;
+	var applet;
 	
 	while (start != -1) {
 		output += content.substring(end, start);
@@ -1852,7 +1897,9 @@ function wrs_parseSafeAppletsToObjects(content) {
 			end += appletTagEnd.length;
 		}
 		
-		output += wrs_mathmlDecode(content.substring(start, end));
+		applet = wrs_convertOldXmlinitialtextAttribute(content.substring(start, end));
+		
+		output += wrs_mathmlDecode(applet);
 		start = upperCaseContent.indexOf(appletTagBegin, end);
 	}
 	
