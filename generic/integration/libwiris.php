@@ -259,6 +259,10 @@ function wrs_fileGetContentsCurl($url, $postVariables, $config, $referer) {
 	
 	//PROXY is used	
 	if (isset($config['wirisproxy']) && $config['wirisproxy'] == 'true') {
+		if (isset($config['wirisproxy_user']) && isset($config['wirisproxy_password'])) {
+			curl_setopt($ch, CURLOPT_PROXYUSERPWD, $config['wirisproxy_user'] . ':' . $config['wirisproxy_password']);
+		}
+		
 		curl_setopt($ch, CURLOPT_PROXY, $config['wirisproxy_host']);
 		curl_setopt($ch, CURLOPT_PROXYPORT, $config['wirisproxy_port']);
 	}
