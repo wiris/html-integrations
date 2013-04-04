@@ -25,17 +25,21 @@ require_once 'bootstrap.php';
 $config = wrs_loadConfig(WRS_CONFIG_FILE);
 
 $wirisformulaeditorlang = '';
+
 if (isset($_GET['lang'])) {
 	$wirisformulaeditorlang = $_GET['lang'];
 	$wirisformulaeditorlang = strtolower($wirisformulaeditorlang);
-	$wirisformulaeditorlang = str_replace("-", "_", $wirisformulaeditorlang);
+	$wirisformulaeditorlang = str_replace('-', '_', $wirisformulaeditorlang);
 }
+
 if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
-}else if(file_exists('../lang/' . substr($wirisformulaeditorlang, 0, 2) . '/strings.js')){
-		$wirisformulaeditorlang = substr($wirisformulaeditorlang, 0, 2);
-		$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
-}else{
+}
+else if (file_exists('../lang/' . substr($wirisformulaeditorlang, 0, 2) . '/strings.js')){
+	$wirisformulaeditorlang = substr($wirisformulaeditorlang, 0, 2);
+	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
+}
+else{
 	$config['wirisformulaeditorlang'] = 'en';
 }
 ?>
@@ -45,11 +49,13 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 		<?php 
 			$attr =  '';
 			$i = 0;			
+			
 			foreach($wrs_imageConfigProperties as $key => $value){
 				if (isset($config[$value])){
 					if ($i != 0){
 						$attr .= ',';
-					}else{
+					}
+					else{
 						$i++;
 					}
 
@@ -60,6 +66,7 @@ if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
 					$attr .= '\'' . $key . '\' : \'' . $confVal . '\'';
 				}
 			}
+			
 			if ($i > 0){
 				$attr = '<script type="text/javascript">window.wrs_attributes = {' . $attr . '};</script>' . "\n";
 				echo $attr;

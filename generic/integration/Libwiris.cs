@@ -59,6 +59,11 @@ namespace pluginwiris
 			Libwiris.imageConfigProperties["color"] = "wirisimagecolor";
 			Libwiris.imageConfigProperties["dpi"] = "wirisdpi";
 			Libwiris.imageConfigProperties["fontFamily"] = "wirisfontfamily";
+			Libwiris.imageConfigProperties["rtlLanguages"] = "wirisrtllanguages";
+			Libwiris.imageConfigProperties["ltrLanguages"] = "wirisltrlanguages";
+			Libwiris.imageConfigProperties["arabicIndicLanguages"] = "wirisarabicindiclanguages";
+			Libwiris.imageConfigProperties["easternArabicIndicLanguages"] = "wiriseasternarabicindiclanguages";
+			Libwiris.imageConfigProperties["europeanLanguages"] = "wiriseuropeanlanguages";
         }
 
         public Libwiris(System.ComponentModel.IContainer container)

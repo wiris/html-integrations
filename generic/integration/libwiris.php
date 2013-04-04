@@ -40,7 +40,12 @@ $wrs_imageConfigProperties = array(
 	'version' => 'wirisimageserviceversion',
 	'color' => 'wirisimagecolor',
 	'dpi' => 'wirisdpi',
-	'fontFamily' => 'wirisfontfamily'
+	'fontFamily' => 'wirisfontfamily',
+	'rtlLanguages' => 'wirisrtllanguages',
+	'ltrLanguages' => 'wirisltrlanguages',
+	'arabicIndicLanguages' => 'wirisarabicindiclanguages',
+	'easternArabicIndicLanguages' => 'wiriseasternarabicindiclanguages',
+	'europeanLanguages' => 'wiriseuropeanlanguages'
 );
 
 $wrs_xmlFileAttributes = array(
