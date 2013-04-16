@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "editors", ".", "{B7C20451-F056-4C2D-865F-BDA7639FEB7E}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "generic", ".", "{B7C20451-F056-4C2D-865F-BDA7639FEB7E}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "2.0"
 		Debug.AspNetCompiler.VirtualPath = "/plugins-site"
@@ -18,7 +18,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "editors", ".", "{B7C20451-F
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "61323"
+		VWDPort = "49400"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
