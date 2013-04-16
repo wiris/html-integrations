@@ -11,7 +11,7 @@ using System.Web.UI.HtmlControls;
 
 namespace pluginwiris
 {
-    public class cas : System.Web.UI.Page
+    public partial class cas : System.Web.UI.Page
     {
 		public string availableLanguagesString;
 	    public string archive;

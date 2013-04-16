@@ -1,0 +1,85 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="keywords" content="math,science" />
+		<link rel="stylesheet" type="text/css" href="demo_style.css" />
+		<script type="text/javascript" src="core/display.js"></script>
+		<script type="text/javascript" src="core/core.js"></script>
+		<script type="text/javascript" src="generic_demo.aspx.js"></script>
+		
+		<script type="text/javascript">
+			wrs_addEvent(window, 'load', function () {
+				// Hide the textarea
+				var textarea = document.getElementById('example');
+				textarea.style.display = 'none';
+
+				// Create the toolbar
+				var toolbar = document.createElement('div');
+				toolbar.id = textarea.id + '_toolbar';
+				
+				// Create the WYSIWYG editor
+				var iframe = document.createElement('iframe');
+				iframe.id = textarea.id + '_iframe';
+				
+				wrs_addEvent(iframe, 'load', function () {
+					// Setting design mode ON
+					iframe.contentWindow.document.designMode = 'on';
+					
+					// Setting the content
+					if (iframe.contentWindow.document.body) {
+						iframe.contentWindow.document.body.innerHTML = textarea.value;
+					
+						// WE INIT THE WIRIS PLUGIN HERE
+						wrs_int_init(textarea.id);
+					}
+				});
+				
+				iframe.src = 'generic_demo.html';		// We set an empty document instead of about:blank for use relative paths for images
+				iframe.width = 600;
+				iframe.height = 370;
+
+				// Insert the WYSIWYG editor before the textarea
+				textarea.parentNode.insertBefore(iframe, textarea);
+				
+				// Insert the toolbar before the WYSIWYG editor
+				iframe.parentNode.insertBefore(toolbar, iframe);
+				
+				// When the user submits the form, set the textarea value with the WYSIWYG editor content
+				var form = document.getElementById('exampleForm');
+				
+				wrs_addEvent(form, 'submit', function () {
+					//textarea.value = iframe.contentWindow.document.body.innerHTML;
+					// In our case, the plugin is who sets the textarea content.
+				});
+			});
+		</script>
+		
+		<title>WIRIS Plugin generic integration on PHP | Educational mathematics</title>
+	</head>
+	<body>
+		<h1>WIRIS Plugin generic integration on PHP</h1>
+
+		<h2>New icons in the editor</h2>
+		
+		<form id="exampleForm" method="POST">
+			<textarea id="example" name="content" cols="50" rows="15">
+			Copy content from url
+			</textarea><br />
+			
+			<input id="previewButton" type="submit" value="Preview"/>
+		</form>
+		
+		<h2>Preview</h2>
+		
+		<div id="previewBox">
+			Set output content here
+		</div>
+		
+		<div id="logo">
+			<a href="http://www.wiris.com"><img src="http://www.wiris.com/en/system/files/attachments/889/wiris_50.png" title="WIRIS" /></a>
+		</div>
+		
+		<script src="google_analytics.js"></script>
+	</body>
+</html>

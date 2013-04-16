@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="editor.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.editor" %>
+<%@ Page language="c#" CodeFile="editor.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.editor" %>
 <%@ Import Namespace="pluginwiris" %>
 <%@ Import Namespace="System.IO" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

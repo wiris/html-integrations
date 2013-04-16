@@ -1,1 +1,1 @@
-<%@ Page language="c#" Codebehind="createimage.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.createimage" %>
+<%@ Page language="c#" CodeFile="createimage.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.createimage" %>

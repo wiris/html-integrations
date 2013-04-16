@@ -14,7 +14,7 @@ namespace pluginwiris
     /// <summary>
     /// Summary description for editor.
     /// </summary>
-    public class editor : System.Web.UI.Page
+    public partial class editor : System.Web.UI.Page
     {
         public string appletParams;
         public Hashtable config;

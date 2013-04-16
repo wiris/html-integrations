@@ -1,1 +1,1 @@
-<%@ Page language="c#" Codebehind="service.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.service" %>
+<%@ Page language="c#" CodeFile="service.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.service" %>

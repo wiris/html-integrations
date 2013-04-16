@@ -15,7 +15,7 @@ namespace pluginwiris
 	/// <summary>
 	/// Summary description for showcasimage.
 	/// </summary>
-	public class showcasimage : System.Web.UI.Page
+    public partial class showcasimage : System.Web.UI.Page
 	{
 		private void Page_Load(object sender, System.EventArgs e)
 		{

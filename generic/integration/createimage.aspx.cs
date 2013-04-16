@@ -12,7 +12,7 @@ using System.IO;
 
 namespace pluginwiris
 {
-    public class createimage : System.Web.UI.Page
+    public partial class createimage : System.Web.UI.Page
     {
 		//Page_Load with some configuration is launched twice
 		//The boolean load is to run it just once

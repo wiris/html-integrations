@@ -15,7 +15,7 @@ namespace pluginwiris
     /// <summary>
     /// Summary description for createcasimage.
     /// </summary>
-    public class createcasimage : System.Web.UI.Page
+    public partial class createcasimage : System.Web.UI.Page
     {
         private void Page_Load(object sender, System.EventArgs e)
         {

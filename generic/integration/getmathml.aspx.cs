@@ -15,7 +15,7 @@ namespace pluginwiris
     /// <summary>
     /// Summary description for getmathml.
     /// </summary>
-    public class getmathml : System.Web.UI.Page
+    public partial class getmathml : System.Web.UI.Page
     {
         private void Page_Load(object sender, System.EventArgs e)
         {
