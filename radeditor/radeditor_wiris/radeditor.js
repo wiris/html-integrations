@@ -2,12 +2,12 @@
 var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
+var _wrs_conf_imageMathmlAttribute = 'data-mathml';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt'; 		// Specifies the image tag where we should save the WIRIS CAS mathml code
 
 var _wrs_conf_editorPath = _wrs_currentPath + 'radeditor_wiris/integration/editor.aspx'; 					// Specifies where is the editor HTML code (for popup window)
 //var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes'; 						// Specifies formula editor window options.
-var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';	// Specifies formula editor
+var _wrs_conf_editorAttributes = 'width=570, height=450, scroll=no, resizable=yes';	// Specifies formula editor
 
 var _wrs_conf_CASPath = _wrs_currentPath + 'radeditor_wiris/integration/cas.aspx'; 							// Specifies where is the WIRIS CAS HTML code (for popup window)
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes'; 							// Specifies WIRIS cas window options.
@@ -19,11 +19,11 @@ var _wrs_conf_getmathmlPath = _wrs_currentPath + 'radeditor_wiris/integration/ge
 var _wrs_conf_servicePath = _wrs_currentPath + 'radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
 var _wrs_conf_getconfigPath = _wrs_currentPath + 'radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
 
-var _wrs_conf_saveMode = '@SAVE_MODE@';			// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = [@PARSE_LATEX@];			// This value can contain 'latex'.
+var _wrs_conf_saveMode = 'xml';			// This value can be 'tags', 'xml' or 'safeXml'.
+var _wrs_conf_parseModes = ['latex'];			// This value can contain 'latex'.
 var _wrs_int_wirisProperties;
 
-var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
+var _wrs_conf_enableAccessibility = true;
 
 /* Vars */
 var _wrs_int_temporalIframe;
@@ -141,13 +141,13 @@ function OnClientLoad(editor, args){
 
 Telerik.Web.UI.Editor.CommandList["WIRIScas"] = function(commandName, editor, args) {
     if (_wrs_conf_CASEnabled) {
-        wrs_int_openNewCAS(_wrs_int_temporalIframe, _wrs_int_language);
+        wrs_int_openNewCAS(editor._contentAreaElement, _wrs_int_language);
     }
 };
 
 Telerik.Web.UI.Editor.CommandList["WIRISformula"] = function(commandName, editor, args) {
     if (_wrs_conf_editorEnabled) {
-        wrs_int_openNewFormulaEditor(_wrs_int_temporalIframe, _wrs_int_language);
+        wrs_int_openNewFormulaEditor(editor._contentAreaElement, _wrs_int_language);
     }
 };
 
