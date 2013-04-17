@@ -5,16 +5,16 @@ var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled
 var _wrs_conf_imageMathmlAttribute = 'data-mathml';	// Specifies the image tag where we should save the formula editor mathml code
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code
 
-var _wrs_conf_editorPath = _wrs_currentPath + '/integration/editor.php';	// Specifies where is the editor HTML code (for popup window)
+var _wrs_conf_editorPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/editor' + _wrs_config_extension;	// Specifies where is the editor HTML code (for popup window)
 var _wrs_conf_editorAttributes = 'width=570, height=450, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = _wrs_currentPath + '/integration/cas.php';			// Specifies where is the WIRIS cas HTML code (for popup window)
+var _wrs_conf_CASPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/cas' + _wrs_config_extension;			// Specifies where is the WIRIS cas HTML code (for popup window)
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';		// Specifies WIRIS cas window options
 
-var _wrs_conf_createimagePath = _wrs_currentPath + '/integration/createimage.php';			// Specifies where is createimage script
-var _wrs_conf_createcasimagePath = _wrs_currentPath + '/integration/createcasimage.php';	// Specifies where is createcasimage script
+var _wrs_conf_createimagePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/createimage' + _wrs_config_extension;			// Specifies where is createimage script
+var _wrs_conf_createcasimagePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/createcasimage' + _wrs_config_extension;	// Specifies where is createcasimage script
 
-var _wrs_conf_getmathmlPath = _wrs_currentPath + '/integration/getmathml.php';			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = _wrs_currentPath + '/integration/service.php';				// Specifies where is the service script.
+var _wrs_conf_getmathmlPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/getmathml' + _wrs_config_extension;			// Specifies where is the getmathml script.
+var _wrs_conf_servicePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/service' + _wrs_config_extension;				// Specifies where is the service script.
 
 var _wrs_conf_saveMode = 'tags';					// this value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
@@ -22,8 +22,8 @@ var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 var _wrs_conf_enableAccessibility = true;
 
 // Vars
-var _wrs_int_editorIcon = _wrs_currentPath + '/core/icons/formula.gif';
-var _wrs_int_CASIcon = _wrs_currentPath + '/core/icons/cas.gif';
+var _wrs_int_editorIcon = (_wrs_config_relative?_wrs_currentPath:"") + 'core/icons/formula.gif';
+var _wrs_int_CASIcon = (_wrs_config_relative?_wrs_currentPath:"") + 'core/icons/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;

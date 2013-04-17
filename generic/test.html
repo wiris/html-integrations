@@ -4,6 +4,30 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="keywords" content="math,science" />
 		<link rel="stylesheet" type="text/css" href="demo_style.css" />
+		<script type="text/javascript">
+		    var tech = new RegExp("tech=(.*)","i").exec(window.location);
+		    var _wrs_config_relative;
+		    var _wrs_config_script;
+		    var _wrs_config_extension;
+		    if (tech!=null && tech.length>1) {
+		        tech = tech[1];
+		        if (tech=="php") {
+		            _wrs_config_relative  = true;
+		            _wrs_config_extension  = ".php";
+		            _wrs_config_script = "integration";
+		        } else if (tech=="aspx") {
+		            _wrs_config_relative  = true;
+		            _wrs_config_extension = ".aspx";
+		            _wrs_config_script = "integration";
+		        } else if (tech=="java") {
+		            _wrs_config_relative  = true;
+		            _wrs_config_extension = "";
+		            _wrs_config_script = "app";
+		        }
+		    } else {
+		        window.location = "choose.html";
+		    }
+		</script>
 		<script type="text/javascript" src="core/display.js"></script>
 		<script type="text/javascript" src="core/core.js"></script>
 		<script type="text/javascript" src="generic_demo.js"></script>
