@@ -4,6 +4,9 @@ script.type = 'text/javascript';
 script.src = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
+var _wrs_conf_server_scripts_path = @param.js.server.scripts.path@;
+var _wrs_conf_server_scripts_ext = @param.js.server.scripts.ext@;
+
 // Configuration
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
@@ -11,16 +14,17 @@ var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 var _wrs_conf_imageMathmlAttribute = '@param.js.image.mathml.attribute@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
-var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window).
+var _wrs_conf_editorPath = _wrs_conf_server_scripts_path + 'editor' + _wrs_conf_server_scripts_ext;				// Specifies where is the editor HTML code (for popup window).
 var _wrs_conf_editorAttributes = 'width=@param.js.editor.window.width@, height=@param.js.editor.window.height@, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';							// Specifies WIRIS cas window options.
+var _wrs_conf_CASPath = _wrs_conf_server_scripts_path + 'cas' + _wrs_conf_server_scripts_ext;					// Specifies where is the WIRIS cas HTML code (for popup window).
+var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';										// Specifies WIRIS cas window options.
 
-var _wrs_conf_createimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createimage.php';			// Specifies where is createimage script.
-var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/createcasimage.php';	// Specifies where is createcasimage script.
+var _wrs_conf_createimagePath = _wrs_conf_server_scripts_path + 'createimage' + _wrs_conf_server_scripts_ext;			// Specifies where is the createimage script.
+var _wrs_conf_createcasimagePath = _wrs_conf_server_scripts_path + 'createcasimage' + _wrs_conf_server_scripts_ext;		// Specifies where is the createcasimage script.
 
-var _wrs_conf_getmathmlPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/service.php';			// Specifies where is the service script.
+var _wrs_conf_getmathmlPath = _wrs_conf_server_scripts_path + 'getmathml' + _wrs_conf_server_scripts_ext;			// Specifies where is the getmathml script.
+var _wrs_conf_servicePath = _wrs_conf_server_scripts_path + 'service' + _wrs_conf_server_scripts_ext;				// Specifies where is the service script.
+var _wrs_conf_getconfigPath = _wrs_conf_server_scripts_path + 'getconfig' + _wrs_conf_server_scripts_ext;			// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
 //var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
