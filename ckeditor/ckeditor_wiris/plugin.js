@@ -8,11 +8,11 @@ document.getElementsByTagName('head')[0].appendChild(script);
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
+var _wrs_conf_imageMathmlAttribute = '@param.js.image.mathml.attribute@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
 var _wrs_conf_editorPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/editor.php';			// Specifies where is the editor HTML code (for popup window).
-var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';							// Specifies formula editor window options.
+var _wrs_conf_editorAttributes = 'width=@param.js.editor.window.width@, height=@param.js.editor.window.height@, scroll=no, resizable=yes';							// Specifies formula editor window options.
 var _wrs_conf_CASPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';							// Specifies WIRIS cas window options.
 
@@ -22,10 +22,10 @@ var _wrs_conf_createcasimagePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/
 var _wrs_conf_getmathmlPath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/getmathml.php';			// Specifies where is the getmathml script.
 var _wrs_conf_servicePath = CKEDITOR.basePath + '/plugins/ckeditor_wiris/integration/service.php';			// Specifies where is the service script.
 
-var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
-//var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
+var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
+//var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
 
-var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
+var _wrs_conf_enableAccessibility = @param.js.accessibility.state@;
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';

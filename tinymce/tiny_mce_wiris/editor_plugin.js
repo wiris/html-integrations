@@ -15,13 +15,13 @@ while (tinymce.ScriptLoader.isDone(_wrs_baseURL + '/plugins/tiny_mce_wiris/core/
 
 /* Configuration */
 var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
-var _wrs_conf_CASEnabled = @CAS_ENABLED@;		// Specifies if WIRIS cas is enabled.
+var _wrs_conf_CASEnabled = @param.js.cas.enabled@;		// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = '@IMAGE_MATHML_ATTRIBUTE@';	// Specifies the image tag where we should save the formula editor mathml code.
+var _wrs_conf_imageMathmlAttribute = '@param.js.image.mathml.attribute@';	// Specifies the image tag where we should save the formula editor mathml code.
 var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
 
 var _wrs_conf_editorPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/editor.php';				// Specifies where is the editor HTML code (for popup window).
-var _wrs_conf_editorAttributes = 'width=@EDITOR_WINDOW_WIDTH@, height=@EDITOR_WINDOW_HEIGHT@, scroll=no, resizable=yes';							// Specifies formula editor window options.
+var _wrs_conf_editorAttributes = 'width=@param.js.editor.window.width@, height=@param.js.editor.window.height@, scroll=no, resizable=yes';							// Specifies formula editor window options.
 var _wrs_conf_CASPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/cas.php';					// Specifies where is the WIRIS cas HTML code (for popup window).
 var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';										// Specifies WIRIS cas window options.
 
@@ -32,11 +32,11 @@ var _wrs_conf_getmathmlPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integratio
 var _wrs_conf_servicePath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/service.php';				// Specifies where is the service script.
 var _wrs_conf_getconfigPath = _wrs_baseURL + '/plugins/tiny_mce_wiris/integration/getconfig.php';			// Specifies from where it returns the configuration using AJAX
 
-var _wrs_conf_saveMode = '@SAVE_MODE@';					// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = [@PARSE_LATEX@];				// This value can contain 'latex'.
-var _wrs_conf_defaultEditMode = '@DEFAULT_EDIT_MODE@';				// This value can be 'images', 'latex' or 'iframes'.
+var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
+var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
+var _wrs_conf_defaultEditMode = '@param.js.default.edit.mode@';				// This value can be 'images', 'latex' or 'iframes'.
 
-var _wrs_conf_enableAccessibility = @ACCESSIBILITY_STATE@;
+var _wrs_conf_enableAccessibility = @param.js.accessibility.state@;
 
 var _wrs_conf_pluginBasePath = _wrs_baseURL + '/plugins/tiny_mce_wiris';
 
