@@ -27,7 +27,7 @@ var _wrs_conf_servicePath = _wrs_conf_server_scripts_path + 'service' + _wrs_con
 var _wrs_conf_getconfigPath = _wrs_conf_server_scripts_path + 'getconfig' + _wrs_conf_server_scripts_ext;			// Specifies from where it returns the configuration using AJAX
 
 var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
-//var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
+var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
 
 var _wrs_conf_enableAccessibility = @param.js.accessibility.state@;
 
