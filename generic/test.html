@@ -3,14 +3,21 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="keywords" content="math,science" />
-		<link rel="stylesheet" type="text/css" href="demo_style.css" />
 		<script type="text/javascript">
-		    var tech = new RegExp("tech=(.*)","i").exec(window.location);
+			function getParameter(name) {
+				var value = new RegExp(name+"=([^&]*)","i").exec(window.location);
+				if (value!=null && value.length>1) {
+					value = decodeURIComponent(value[1].replace(/\+/g,' '));
+				} else {
+					value = null;
+				}
+				return value;
+			}
+		    var tech = getParameter("tech");
 		    var _wrs_config_relative;
 		    var _wrs_config_script;
 		    var _wrs_config_extension;
-		    if (tech!=null && tech.length>1) {
-		        tech = tech[1];
+		    if (tech!=null) {
 		        if (tech=="php") {
 		            _wrs_config_relative  = true;
 		            _wrs_config_extension  = ".php";
@@ -27,6 +34,8 @@
 		    } else {
 		        window.location = "tests/choose.html";
 		    }
+			
+			var content = getParameter("content");
 		</script>
 		<script type="text/javascript" src="core/display.js"></script>
 		<script type="text/javascript" src="core/core.js"></script>
@@ -60,8 +69,8 @@
 				});
 				
 				iframe.src = 'tests/generic_demo.html';		// We set an empty document instead of about:blank for use relative paths for images
-				iframe.width = 600;
-				iframe.height = 370;
+				iframe.width = 500;
+				iframe.height = 200;
 
 				// Insert the WYSIWYG editor before the textarea
 				textarea.parentNode.insertBefore(iframe, textarea);
@@ -82,14 +91,17 @@
 		<title>WIRIS Plugin generic integration on PHP | Educational mathematics</title>
 	</head>
 	<body>
-		<h1>WIRIS Plugin generic integration on PHP</h1>
-
-		<h2>New icons in the editor</h2>
-		
-		<form id="exampleForm" method="POST">
-			<textarea id="example" name="content" cols="50" rows="15">
+		<h1><a href="http://www.wiris.com"><img src="http://www.wiris.com/en/system/files/attachments/889/wiris_50.png" title="WIRIS" /></a> Test page for WIRIS plugins</h1>
+	
+		<form id="exampleForm" method="GET">
+			<textarea id="example" name="content" cols="50" rows="10">
 			Copy content from url
 			</textarea><br />
+			<input type="hidden" id="tech" name="tech" />
+			<script>
+				document.getElementById("tech").value = tech;
+				document.getElementById("example").value = content;
+			</script>
 			
 			<input id="previewButton" type="submit" value="Preview"/>
 		</form>
@@ -97,13 +109,13 @@
 		<h2>Preview</h2>
 		
 		<div id="previewBox">
-			Set output content here
+			<script>
+				if (content!=null && content.length>0) {
+					document.write(content);
+				} else {
+					document.write('<span id="previewMessage">Press the "Preview" button.</span>');
+				}
+			</script>
 		</div>
-		
-		<div id="logo">
-			<a href="http://www.wiris.com"><img src="http://www.wiris.com/en/system/files/attachments/889/wiris_50.png" title="WIRIS" /></a>
-		</div>
-		
-		<script src="google_analytics.js"></script>
 	</body>
 </html>

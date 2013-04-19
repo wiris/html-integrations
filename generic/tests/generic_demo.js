@@ -16,7 +16,7 @@ var _wrs_conf_createcasimagePath = (_wrs_config_relative?_wrs_currentPath:"") + 
 var _wrs_conf_getmathmlPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/getmathml' + _wrs_config_extension;			// Specifies where is the getmathml script.
 var _wrs_conf_servicePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/service' + _wrs_config_extension;				// Specifies where is the service script.
 
-var _wrs_conf_saveMode = 'tags';					// this value can be 'tags', 'xml' or 'safeXml'.
+var _wrs_conf_saveMode = 'xml';					// this value can be 'tags', 'xml' or 'safeXml'.
 var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
 
 var _wrs_conf_enableAccessibility = true;
