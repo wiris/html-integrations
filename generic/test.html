@@ -25,12 +25,12 @@
 		            _wrs_config_script = "app";
 		        }
 		    } else {
-		        window.location = "choose.html";
+		        window.location = "tests/choose.html";
 		    }
 		</script>
 		<script type="text/javascript" src="core/display.js"></script>
 		<script type="text/javascript" src="core/core.js"></script>
-		<script type="text/javascript" src="generic_demo.js"></script>
+		<script type="text/javascript" src="tests/generic_demo.js"></script>
 		
 		<script type="text/javascript">
 			wrs_addEvent(window, 'load', function () {
@@ -59,7 +59,7 @@
 					}
 				});
 				
-				iframe.src = 'generic_demo.html';		// We set an empty document instead of about:blank for use relative paths for images
+				iframe.src = 'tests/generic_demo.html';		// We set an empty document instead of about:blank for use relative paths for images
 				iframe.width = 600;
 				iframe.height = 370;
 

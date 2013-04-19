@@ -1,0 +1,31 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<script type="text/javascript">
+			done = false;
+			xmlhttp= new XMLHttpRequest();
+			xmlhttp.open("GET","../integration/isaspx.aspx",false);
+			xmlhttp.send(null);
+			if (xmlhttp.status === 200) {  //check if "OK" (200)
+			    if (xmlhttp.responseText.trim()=="true") {
+				    window.location="../test.html?tech=aspx";
+					done = true;
+				}
+				// alert(xmlhttp.responseText);
+			}
+			xmlhttp= new XMLHttpRequest();
+			xmlhttp.open("GET","../integration/isphp.php",false);
+			xmlhttp.send(null);
+			if (xmlhttp.status === 200) {  //check if "OK" (200)
+			    if (xmlhttp.responseText.trim()=="true") {
+				    window.location="../test.html?tech=php";
+					done = true;
+				}
+				// alert(xmlhttp.responseText);
+			}
+			if (!done) {
+				window.location="../test.html?tech=java";
+			}
+		</script>
+	</head>
+</html>
