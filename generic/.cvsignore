@@ -1,1 +1,5 @@
 plugins.suo
+bin
+obj
+Properties
+App_Data
