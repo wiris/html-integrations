@@ -1,1 +1,1 @@
-<%@ Page language="c#" CodeFile="getmathml.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.getmathml" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="getmathml.aspx.cs" Inherits="plugin_web.getmathml" %>

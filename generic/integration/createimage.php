@@ -21,10 +21,12 @@
 require_once 'bootstrap.php';
 include 'api.php';
 
-if (!empty($_POST['mml'])) {
+$PARAMS = array_merge($_GET, $_POST);
+
+if (!empty($PARAMS['mml'])) {
 	try {
 		$api = new com_wiris_plugin_PluginAPI();
-		echo $api->mathml2img($_POST['mml'], dirname($_SERVER['REQUEST_URI']), $_POST);
+		echo $api->mathml2img($PARAMS['mml'], dirname($_SERVER['REQUEST_URI']), $PARAMS);
 	}
 	catch (Exception $e) {
 		echo $e->getMessage();

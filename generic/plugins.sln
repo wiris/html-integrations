@@ -1,34 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "generic", ".", "{B7C20451-F056-4C2D-865F-BDA7639FEB7E}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "2.0"
-		Debug.AspNetCompiler.VirtualPath = "/plugins-site"
-		Debug.AspNetCompiler.PhysicalPath = "."
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite2\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/plugins-site"
-		Release.AspNetCompiler.PhysicalPath = "."
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\WebSite2\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "50795"
-		DefaultWebSiteLanguage = "Visual C#"
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugin", "..\..\aspx\plugin.csproj", "{F8E02775-8F5B-4287-9584-1FA837E54FDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plugin-web", "plugin-web.csproj", "{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7C20451-F056-4C2D-865F-BDA7639FEB7E}.Debug|.NET.ActiveCfg = Debug|.NET
-		{B7C20451-F056-4C2D-865F-BDA7639FEB7E}.Debug|.NET.Build.0 = Debug|.NET
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|.NET.Build.0 = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Release|.NET.ActiveCfg = Release|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F8E02775-8F5B-4287-9584-1FA837E54FDF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Release|.NET.ActiveCfg = Release|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A70FD1C0-07C4-4543-ABA4-97DDADBFA210}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,9 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="keywords" content="math,science" />
+		<script type="text/javascript" src="core/WIRISplugins.js?viewer=image"></script>
 		<script type="text/javascript">
+			String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 			function getParameter(name) {
 				var value = new RegExp(name+"=([^&]*)","i").exec(window.location);
 				if (value!=null && value.length>1) {
@@ -13,7 +15,23 @@
 				}
 				return value;
 			}
-		    var tech = getParameter("tech");
+			function insertHtml(content) {
+				if (content!=null && content.length>0) {
+					document.write(content);
+				}
+			}
+			function setValue(id, content) {
+				if (content!=null && content.length>0) {
+					document.getElementById(id).value = content;
+				}
+			}
+			
+			var con = new XMLHttpRequest();
+			con.open("GET", "tech.txt", false);
+			con.send(null);
+			var s = con.responseText;
+			tech = s.split("#")[0].trim();
+
 		    var _wrs_config_relative;
 		    var _wrs_config_script;
 		    var _wrs_config_extension;
@@ -91,31 +109,34 @@
 		<title>WIRIS Plugin generic integration on PHP | Educational mathematics</title>
 	</head>
 	<body>
-		<h1><a href="http://www.wiris.com"><img src="http://www.wiris.com/en/system/files/attachments/889/wiris_50.png" title="WIRIS" /></a> Test page for WIRIS plugins</h1>
+		<h1><a href="http://www.wiris.com"><img src="http://www.wiris.com/en/system/files/attachments/889/wiris_50.png" title="WIRIS" /></a> Test page for WIRIS plugins
+			"<script>
+			document.write(tech);
+			</script>"
+		
+		</h1>
 	
 		<form id="exampleForm" method="GET">
-			<textarea id="example" name="content" cols="50" rows="10">
-			Copy content from url
-			</textarea><br />
-			<input type="hidden" id="tech" name="tech" />
-			<script>
-				document.getElementById("tech").value = tech;
-				document.getElementById("example").value = content;
-			</script>
+			<textarea id="example" name="content" cols="50" rows="10"><!-- content value --></textarea>
+			<br />
+			<script>setValue("example",content);</script>
 			
 			<input id="previewButton" type="submit" value="Preview"/>
 		</form>
 		
-		<h2>Preview</h2>
-		
+		<h2>Preview</h2>		
+
 		<div id="previewBox">
-			<script>
-				if (content!=null && content.length>0) {
-					document.write(content);
-				} else {
-					document.write('<span id="previewMessage">Press the "Preview" button.</span>');
-				}
-			</script>
+			<script>insertHtml(content);</script>
 		</div>
+
+		<script>
+			var value = document.getElementById("example").value;
+			if (value.length==0 || value=="<!-- content "+"value -->") {
+				document.getElementById("previewBox").innerHTML = '<span id="previewMessage">Press the "Preview" button.</span>';
+			}
+		</script>
+
+		</script>
 	</body>
 </html>

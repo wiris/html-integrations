@@ -1,1 +1,1 @@
-<%@ Page language="c#" CodeFile="showimage.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.showimage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="showimage.aspx.cs" Inherits="plugin_web.showimage" %>
