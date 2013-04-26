@@ -19,107 +19,12 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-include 'libwiris.php';
-require_once 'bootstrap.php';
+require_once 'lib/php/Boot.class.php';
 
-$config = wrs_loadConfig(WRS_CONFIG_FILE);
-
-$wirisformulaeditorlang = '';
-
-if (isset($_GET['lang'])) {
-	$wirisformulaeditorlang = $_GET['lang'];
-	$wirisformulaeditorlang = strtolower($wirisformulaeditorlang);
-	$wirisformulaeditorlang = str_replace('-', '_', $wirisformulaeditorlang);
-}
-
-if (file_exists('../lang/' . $wirisformulaeditorlang . '/strings.js')){
-	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
-}
-else if (file_exists('../lang/' . substr($wirisformulaeditorlang, 0, 2) . '/strings.js')){
-	$wirisformulaeditorlang = substr($wirisformulaeditorlang, 0, 2);
-	$config['wirisformulaeditorlang'] = $wirisformulaeditorlang;
-}
-else{
-	$config['wirisformulaeditorlang'] = 'en';
-}
+$PARAMS = array_merge($_GET, $_POST);
+$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
+$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+$render = $pb->newEditor();
+$lang = isset($PARAMS['lang']) ? $PARAMS['lang']:null;
+echo $render->editor($lang);
 ?>
-<html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-		<?php 
-			$attr =  '';
-			$i = 0;			
-			
-			foreach($wrs_imageConfigProperties as $key => $value){
-				if (isset($config[$value])){
-					if ($i != 0){
-						$attr .= ',';
-					}
-					else{
-						$i++;
-					}
-
-					$confVal = $config[$value];
-					$confVal = str_replace('\\', '\\\\', $confVal);
-					$confVal = str_replace('\'', '\\\'', $confVal);
-					
-					$attr .= '\'' . $key . '\' : \'' . $confVal . '\'';
-				}
-			}
-			
-			if ($i > 0){
-				$attr = '<script type="text/javascript">window.wrs_attributes = {' . $attr . '};</script>' . "\n";
-				echo $attr;
-			}
-		?>
-		<script type="text/javascript" src="<?php echo wrs_getImageServiceURL($config, 'editor') . '?lang=' . rawurlencode($config['wirisformulaeditorlang']); ?>"></script>
-		<script type="text/javascript" src="../core/editor.js"></script>
-		<script type="text/javascript" src="<?php echo '../lang/' . $config['wirisformulaeditorlang'] . '/strings.js' ?>"></script>
-		<title>WIRIS editor</title>
-		<style type="text/css">
-			/*<!--*/
-			
-			html,
-			body,
-			#container {
-				height: 100%;
-			}
-			
-			body {
-				margin: 0;
-			}
-			
-			#links {
-				text-align: right;
-				margin-right: 20px;
-			}
-
-			#links_rtl {
-				text-align: left;
-				margin-left: 20px;
-			}
-			
-			#controls {
-				float: left;
-			}
-
-			#controls_rtl {
-				float: right;
-			}			
-			/*-->*/
-		</style>
-	</head>
-	<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
-		<div id="container">
-			<div id="editorContainer"></div>
-			
-			<div id="controls">
-			</div>
-			
-			<div id="links">
-				<a href="http://www.wiris.com/editor3/docs/manual/latex-support" target="_blank" id="a_latex" >LaTeX</a> | 
-				<a href="http://www.wiris.com/editor3/docs/manual" target="_blank" id="a_manual" >Manual</a>
-			</div>
-		</div>
-	</body>
-</html>

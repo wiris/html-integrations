@@ -18,24 +18,13 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'bootstrap.php';
-include 'libwiris.php';
+require_once 'lib/php/Boot.class.php';
+$PARAMS = array_merge($_GET, $_POST);
 
-if (empty($_GET['formula'])) {
-	echo 'Error: no image name has been sended.';
-}
-else {
-	$config = wrs_loadConfig(WRS_CONFIG_FILE);
-	$formula = basename($_GET['formula']);
-	$filePath = wrs_getCacheDirectory($config) . '/' . $formula;
-	
-	if (is_file($filePath)) {
-		header('Content-Type: image/png');
-		readfile($filePath);
-	}
-	else {
-		header('Content-Type: image/gif');
-		readfile('../core/cas.gif');
-	}
-}
+$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
+$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+$render = $pb->newRender();
+$r = $render->showImage($PARAMS['digest'], $PARAMS['mml'], $PARAMS);
+header('Content-Type: image/png');
+echo $r;
 ?>

@@ -18,51 +18,17 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'bootstrap.php';
-include 'libwiris.php';
+require_once 'lib/php/Boot.class.php';
+$PARAMS = array_merge($_GET, $_POST);
 
-$digest = NULL;
+$digest = isset($PARAMS['digest'])?$PARAMS['digest']:null;
+if ($digest==null) {
+    $digest = isset($PARAMS['md5'])?$PARAMS['md5']:null;
+}
+$latex = isset($PARAMS['latex'])?$PARAMS['latex']:null;
+$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
+$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+$render = $pb->newTextService();
+echo $render->getMathML($digest, $latex);
 
-if (isset($_POST['md5']) && mb_strlen($_POST['md5']) == 32) {		// Support for "generic simple" integration.
-	$digest = $_POST['md5'];
-}
-else if (isset($_POST['digest'])) {		// Support for future integrations (where maybe they aren't using md5 sums).
-	$digest = $_POST['digest'];
-}
-
-if (!is_null($digest)) {
-	$config = wrs_loadConfig(WRS_CONFIG_FILE);
-	$filePath = wrs_getFormulaDirectory($config) . '/' . basename($digest);
-
-	if (is_file($filePath . '.ini')) {
-		$formula = wrs_parseIni($filePath . '.ini');
-		
-		if ($formula !== false) {
-			if (isset($formula['mml'])) {
-				echo $formula['mml'];
-			}
-		}
-		else {
-			echo 'Error: could not read the formula. Check your file permissions.';
-		}
-	}
-	else if (is_file($filePath . '.xml')) {
-		if (($handle = fopen($filePath, 'r')) !== false) {
-			if (($line = fgets($handle)) !== false) {
-				echo $line;
-			}
-			
-			fclose($handle);
-		}
-		else {
-			echo 'Error: could not read the formula. Check your file permissions.';
-		}
-	}
-	else {
-		echo 'Error: formula not found.';
-	}
-}
-else {
-	echo 'Error: no digest has been sent.';
-}
 ?>

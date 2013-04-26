@@ -18,21 +18,11 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'bootstrap.php';
-include 'api.php';
-
+require_once 'lib/php/Boot.class.php';
 $PARAMS = array_merge($_GET, $_POST);
 
-if (!empty($PARAMS['mml'])) {
-	try {
-		$api = new com_wiris_plugin_PluginAPI();
-		echo $api->mathml2img($PARAMS['mml'], dirname($_SERVER['REQUEST_URI']), $PARAMS);
-	}
-	catch (Exception $e) {
-		echo $e->getMessage();
-	}
-}
-else {
-	echo 'Error: no mathml has been sent.';
-}
+$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
+$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+$render = $pb->newRender();
+echo $render->createImage($PARAMS['mml'], $PARAMS);
 ?>
