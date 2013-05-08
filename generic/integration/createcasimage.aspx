@@ -1,1 +1,0 @@
-<%@ Page language="c#" CodeFile="createcasimage.aspx.cs" AutoEventWireup="false" Inherits="pluginwiris.createcasimage" %>
