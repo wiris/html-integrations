@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\Libwiris.cs" />
+    <Content Include="integration\service.aspx" />
     <Content Include="integration\test.aspx" />
     <Compile Include="integration\createimage.aspx.cs">
       <DependentUpon>createimage.aspx</DependentUpon>
@@ -75,6 +76,10 @@
       <DependentUpon>isaspx.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="integration\service.aspx.cs">
+      <DependentUpon>service.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="integration\showimage.aspx.cs">
       <DependentUpon>showimage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -83,6 +88,9 @@
       <DependentUpon>test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="configuration.ini" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
