@@ -1,3 +1,8 @@
+#
+# You can optinally rename this file to configuration.ini 
+# and set any desired value
+#
+
 wirisimageservicehost = www.wiris.net
 #wirisimageserviceport = 80
 wirisimageservicepath = /demo/editor/render
@@ -35,9 +40,6 @@ wiristransparency = true
 wirisparselatex = true
 #wirisaccessibilityenabled = false
 
-wirisformulaeditorcodebase = http://www.wiris.net:80/demo/formula/codebase/
-wirisformulaeditorarchive = wiriseditor.jar
-wirisformulaeditorcode = WirisFormulaEditor
 wirisformulaeditorlang = en
 
 wiriscascodebase = http://www.wiris.net/demo/wiris/wiris-codebase
@@ -61,7 +63,7 @@ wirisconfigurationrefreshtime = 10000
 #wirisintegrationpath = http://localhost:8080/pluginwiris_engine
 
 # Place to store the cached images.
-wiriscachedirectory = c:/temp/cache
+#wiriscachedirectory = /var/cache
 
 # Place to store the formulas.
-wirisformuladirectory = c:/temp/formulas
+#wirisformuladirectory = /var/formulas

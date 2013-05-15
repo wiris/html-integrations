@@ -3,6 +3,7 @@
     <appSettings/>
     <connectionStrings/>
     <system.web>
+      <httpRuntime requestValidationMode="2.0" />
       <compilation debug="true" />
       <pages validateRequest="false" />
     </system.web>

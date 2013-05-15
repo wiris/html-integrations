@@ -44,10 +44,14 @@
 		            _wrs_config_relative  = true;
 		            _wrs_config_extension = ".aspx";
 		            _wrs_config_script = "integration";
-		        } else if (tech=="java") {
+		        } else if (tech=="local-java") {
 		            _wrs_config_relative  = true;
 		            _wrs_config_extension = "";
 		            _wrs_config_script = "app";
+		        } else if (tech=="java") {
+		            _wrs_config_relative  = false;
+		            _wrs_config_extension = "";
+		            _wrs_config_script = "/pluginwiris_engine/app";
 		        }
 		    } else {
 		        window.location = "tests/choose.html";
