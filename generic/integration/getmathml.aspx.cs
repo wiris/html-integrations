@@ -11,11 +11,11 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
-            String latex = pb.newEditor().editor(Request.Params["latex"]);
-            String digest = pb.newEditor().editor(Request.Params["digest"]);
+            String latex = Request.Params["latex"];
+            String digest = Request.Params["digest"];
             if (digest == null || digest.Length == 0)
             {
-                digest = pb.newEditor().editor(Request.Params["md5"]);
+                digest = Request.Params["md5"];
             }
             String r = pb.newTextService().getMathML(digest, latex);
             Response.ContentType = "text/plain; charset=utf-8";
