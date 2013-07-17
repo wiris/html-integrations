@@ -11,7 +11,8 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
-            String r = pb.newEditor().editor(Request.Params["lang"]);
+            Dictionary<string, string> param = DispatcherUtils.getParameterMap(Request.Params);
+            String r = pb.newEditor().editor(Request.Params["lang"],param);
             Response.ContentType = "text/html; charset=utf-8";
             Response.Write(r);
         }

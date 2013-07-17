@@ -1721,12 +1721,18 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	var path = _wrs_conf_editorPath;
 
 	if (language) {
-		path += '?lang=' + language;
+		path = wrs_addArgument(path,"lang",language);
+		// path += '?lang=' + language;
+	}
+
+	if (location.protocol=='https:') {
+		path = wrs_addArgument(path,"secure","true");
 	}
 
 	var availableDirs = new Array('rtl', 'ltr');
 	if (typeof _wrs_int_directionality != 'undefined' && wrs_arrayContains(availableDirs, _wrs_int_directionality) != -1){
-		path += '&dir=' + _wrs_int_directionality;
+		//path += '&dir=' + _wrs_int_directionality;
+		path = wrs_addArgument(path,"dir",_wrs_int_directionality);
 	}
 	
 	_wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
@@ -2033,4 +2039,13 @@ function wrs_urlencode(clearString) {
 	//encodeURIComponent doesn't encode !'()*~
 	output = encodeURIComponent(clearString).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/~/g, '%7E');	
 	return output;
+}
+
+function wrs_addArgument(path,key,value) {
+	if (path.indexOf("?")>0) {
+		sep = "&";
+	} else {
+		sep = "?";
+	}
+	return path+sep+key+"="+value;
 }

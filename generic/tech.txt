@@ -1,2 +1,2 @@
-java
+local-java
 # java, aspx, php, local-java
