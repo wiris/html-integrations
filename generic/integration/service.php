@@ -18,32 +18,13 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'bootstrap.php';
-include 'libwiris.php';
-
-if (isset($_POST['service'])) {
-	global $config;
-	
-	$config = wrs_loadConfig(WRS_CONFIG_FILE);
-	$url = wrs_getImageServiceURL($config, $_POST['service']);
-	$data = array();
-	
-	foreach ($_POST as $key => $value) {
-		if ($key != 'service') {
-			$data[$key] = $value;
-		}
-	}
-
-	$response = wrs_getContents($config, $url, $data);
-
-	if ($response !== false) {
-		echo $response;
-	}
-	else {
-		echo 'Error: the service is unavailable.';
-	}
-}
-else {
-	echo 'Error: undefined service.';
-}
+require_once 'lib/php/Boot.class.php';
+$PARAMS = array_merge($_GET, $_POST);
+$service = $PARAMS['service'];
+$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
+$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+$render = $pb->newTextService();
+$r = $render->service($service, $PARAMS);
+header('Content-Type: text/plain; charset=utf-8');
+echo $r;
 ?>
