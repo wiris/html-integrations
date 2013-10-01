@@ -2049,3 +2049,37 @@ function wrs_addArgument(path,key,value) {
 	}
 	return path+sep+key+"="+value;
 }
+
+function wrs_loadConfiguration() {
+	if (typeof _wrs_conf_path == 'undefined') {
+		// Discover path
+		var scriptName = "core/core.js";
+		var col = document.getElementsByTagName("script");
+		for (i=0;i<col.length;i++) {
+			var d;
+			var src; 
+			d = col[i];
+			src = d.src;
+			var j = src.lastIndexOf(scriptName);
+			if (j >= 0) {
+				// That's my script!
+				baseURL = src.substr(0, j - 1);
+			}
+		}
+		_wrs_conf_path = baseURL;
+	}
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	script.src = configUrl;
+	// _wrs_conf_path = path+'/';
+	document.getElementsByTagName('head')[0].appendChild(script); // asynchronous load of configuration
+}
+
+var _wrs_conf_core_loaded = true;
+
+if (typeof _wrs_conf_configuration_loaded == 'undefined') {
+	wrs_loadConfiguration();
+} else {
+	_wrs_conf_plugin_loaded = true;
+}

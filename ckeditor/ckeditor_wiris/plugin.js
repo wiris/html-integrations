@@ -1,35 +1,27 @@
+// Define variables needed by core/core.js
+var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_int_conf_async = true;
+
+var _wrs_conf_path = CKEDITOR.basePath + '/plugins/ckeditor_wiris';
+
+// Load configuration synchronously
+if (!_wrs_int_conf_async) {
+	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	httpRequest.open('GET', configUrl, false);
+	httpRequest.send(null);
+	eval(httpRequest.responseText);
+}
+
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/core.js';
+script.src = _wrs_conf_path + '/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
-var _wrs_conf_server_scripts_path = @param.js.server.scripts.path@;
-var _wrs_conf_server_scripts_ext = @param.js.server.scripts.ext@;
-
-// Configuration
-var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
-var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
-
-var _wrs_conf_imageMathmlAttribute = '@param.js.image.mathml.attribute@';	// Specifies the image tag where we should save the formula editor mathml code.
-var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
-
-var _wrs_conf_editorPath = _wrs_conf_server_scripts_path + 'editor' + _wrs_conf_server_scripts_ext;				// Specifies where is the editor HTML code (for popup window).
-var _wrs_conf_editorAttributes = 'width=@param.js.editor.window.width@, height=@param.js.editor.window.height@, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = _wrs_conf_server_scripts_path + 'cas' + _wrs_conf_server_scripts_ext;					// Specifies where is the WIRIS cas HTML code (for popup window).
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';										// Specifies WIRIS cas window options.
-
-var _wrs_conf_createimagePath = _wrs_conf_server_scripts_path + 'createimage' + _wrs_conf_server_scripts_ext;			// Specifies where is the createimage script.
-var _wrs_conf_createcasimagePath = _wrs_conf_server_scripts_path + 'createcasimage' + _wrs_conf_server_scripts_ext;		// Specifies where is the createcasimage script.
-
-var _wrs_conf_getmathmlPath = _wrs_conf_server_scripts_path + 'getmathml' + _wrs_conf_server_scripts_ext;			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = _wrs_conf_server_scripts_path + 'service' + _wrs_conf_server_scripts_ext;				// Specifies where is the service script.
-var _wrs_conf_getconfigPath = _wrs_conf_server_scripts_path + 'getconfig' + _wrs_conf_server_scripts_ext;			// Specifies from where it returns the configuration using AJAX
-
-var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
-
-var _wrs_conf_enableAccessibility = @param.js.accessibility.state@;
+// Define variables needed at initialization time
+// var _wrs_conf_editorEnabled = true;		// Specifies if formula editor is enabled.
+// var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';
@@ -69,7 +61,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		_wrs_int_directionality = editor.config.contentsLangDirection;
 		
 		function whenDocReady() {
-			if (window.wrs_initParse) {
+			if (typeof _wrs_conf_configuration_loaded!= 'undefined') { // WIRIS plugin core.js and configuration loaded properly
 				editor.setData(wrs_initParse(editor.getData()), function () {
 					editor.on('beforeGetData', function () {
 						if (typeof editor._.data != 'string') {
@@ -115,10 +107,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		// CKEditor replaces several times the iframe element during its execution, so we must assign the events again.
 		setInterval(checkIframe, 500);
-		
-		if (_wrs_conf_editorEnabled) {
-			_wrs_int_directionality = editor.config.contentsLangDirection;
-		
+	
+		if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
 			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
 				'async': false,
 				'canUndo': false,
@@ -174,7 +164,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			}
 		}
 		
-		if (_wrs_conf_CASEnabled) {
+		if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
 			editor.addCommand('ckeditor_wiris_openCAS', {
 				'async': false,								// The command need some time to complete after exec function returns.
 				'canUndo': false,
@@ -192,7 +182,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			});
 		}
 	}
-});
+})
 
 /**
  * Opens formula editor.

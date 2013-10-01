@@ -1,35 +1,14 @@
 // Configuration
-var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled
-var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled
-
-var _wrs_conf_imageMathmlAttribute = 'data-mathml';	// Specifies the image tag where we should save the formula editor mathml code
-var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code
-
-var _wrs_conf_editorPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/editor' + _wrs_config_extension;	// Specifies where is the editor HTML code (for popup window)
-var _wrs_conf_editorAttributes = 'width=570, height=450, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/cas' + _wrs_config_extension;			// Specifies where is the WIRIS cas HTML code (for popup window)
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';		// Specifies WIRIS cas window options
-
-var _wrs_conf_createimagePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/createimage' + _wrs_config_extension;			// Specifies where is createimage script
-var _wrs_conf_createcasimagePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/createcasimage' + _wrs_config_extension;	// Specifies where is createcasimage script
-
-var _wrs_conf_getmathmlPath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/getmathml' + _wrs_config_extension;			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = (_wrs_config_relative?_wrs_currentPath:"") + _wrs_config_script + '/service' + _wrs_config_extension;				// Specifies where is the service script.
-
-var _wrs_conf_saveMode = 'xml';					// this value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = ['latex'];				// This value can contain 'latex'.
-
-var _wrs_conf_enableAccessibility = true;
-
-// Vars
-var _wrs_int_editorIcon = (_wrs_config_relative?_wrs_currentPath:"") + 'core/icons/formula.gif';
-var _wrs_int_CASIcon = (_wrs_config_relative?_wrs_currentPath:"") + 'core/icons/cas.gif';
+var _wrs_int_conf_async = true;
+var _wrs_int_editorIcon = '/core/icons/formula.gif';
+var _wrs_int_CASIcon = '/core/icons/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_language;
 var _wrs_int_directionality = '';
+
 
 if (navigator.userLanguage) {
 	_wrs_int_language = navigator.userLanguage;
@@ -41,6 +20,30 @@ else {
 	_wrs_int_language = 'en';
 }
 
+// Get _wrs_conf_path (plugin URL)
+var col = document.getElementsByTagName("script");
+var scriptName = "generic_demo.js";
+for (i=0;i<col.length;i++) {
+	j = col[i].src.lastIndexOf(scriptName);
+	if (j >= 0) baseURL = col[i].src.substr(0, j - 1);
+}
+_wrs_conf_path = baseURL + "/..";
+
+// Including core.js
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = _wrs_conf_path + '/core/core.js';
+document.getElementsByTagName('head')[0].appendChild(script);
+
+// Load configuration synchronously
+if (!_wrs_int_conf_async) {
+	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Msxml2.XMLHTTP');
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	httpRequest.open('GET', configUrl, false);
+	httpRequest.send(null);
+	eval(httpRequest.responseText);
+}
+
 // Plugin integration
 
 /**
@@ -48,6 +51,17 @@ else {
  * @param string target Textarea target ID.
  */
 function wrs_int_init(target) {
+	wrs_int_init0 = function() {
+		if (typeof _wrs_conf_core_loaded == 'undefined') {
+			setTimeout(wrs_int_init0,100);
+		} else {
+			wrs_int_init_handler(target);
+		}
+	}
+	wrs_int_init0();
+}
+
+function wrs_int_init_handler(target) {
 	/* Assigning events to the WYSIWYG editor */
 	var iframe = document.getElementById(target + '_iframe');
 	wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
@@ -69,7 +83,7 @@ function wrs_int_init(target) {
 	
 	if (_wrs_conf_editorEnabled) {
 		var formulaButton = document.createElement('img');
-		formulaButton.src = _wrs_int_editorIcon;
+		formulaButton.src = _wrs_conf_path + _wrs_int_editorIcon;
 		formulaButton.style.cursor = 'pointer';
 		
 		wrs_addEvent(formulaButton, 'click', function () {
@@ -81,7 +95,7 @@ function wrs_int_init(target) {
 	
 	if (_wrs_conf_CASEnabled) {
 		var CASButton = document.createElement('img');
-		CASButton.src = _wrs_int_CASIcon;
+		CASButton.src = _wrs_conf_path + _wrs_int_CASIcon;
 		CASButton.style.cursor = 'pointer';
 		
 		wrs_addEvent(CASButton, 'click', function () {

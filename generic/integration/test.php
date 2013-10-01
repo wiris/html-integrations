@@ -19,10 +19,7 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'lib/php/Boot.class.php';
-
-$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
-$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
-$render = $pb->newTest();
+require_once 'pluginbuilder.php';
+$render = $pluginBuilder->newTest();
 echo $render->getTestPage();
 ?>

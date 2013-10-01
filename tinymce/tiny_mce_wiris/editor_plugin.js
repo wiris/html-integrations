@@ -1,115 +1,44 @@
+var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_int_conf_async = true;
 var _wrs_baseURL;
 
+// Define _wrs_conf_path (path where configuration is found)
 if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_baseURL = tinymce.baseURL;
+	_wrs_conf_path = _wrs_baseURL + '/plugins/tiny_mce_wiris/'; // TODO use the same variable name always
 }else{
 	var base = tinymce.baseURL;
 	var search = 'lib/editor/tinymce';
 	var pos = base.indexOf(search);
 	_wrs_baseURL = tinymce.baseURL.substr(0, pos + search.length);
+	_wrs_conf_path = _wrs_baseURL + '/plugins/tiny_mce_wiris/tinymce/'; // TODO use the same variable name always
+	_wrs_int_conf_async = false; // For sure!
+}
+
+// Load configuration synchronously
+if (!_wrs_int_conf_async) {
+	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	httpRequest.open('GET', configUrl, false);
+	httpRequest.send(null);
+	eval(httpRequest.responseText);
 }
 
 /* Including core.js */
-tinymce.ScriptLoader.load(_wrs_baseURL + '/plugins/tiny_mce_wiris/core/core.js');
-while (tinymce.ScriptLoader.isDone(_wrs_baseURL + '/plugins/tiny_mce_wiris/core/core.js'));
+tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
+while (tinymce.ScriptLoader.isDone(_wrs_conf_path + 'core/core.js'));
 
-var _wrs_conf_server_scripts_path = @param.js.server.scripts.path@;
-var _wrs_conf_server_scripts_ext = @param.js.server.scripts.ext@;
-
-/* Configuration */
-var _wrs_conf_editorEnabled = true;		// Specifies if fomula editor is enabled.
-var _wrs_conf_CASEnabled = @param.js.cas.enabled@;		// Specifies if WIRIS cas is enabled.
-
-var _wrs_conf_imageMathmlAttribute = '@param.js.image.mathml.attribute@';	// Specifies the image tag where we should save the formula editor mathml code.
-var _wrs_conf_CASMathmlAttribute = 'alt';	// Specifies the image tag where we should save the WIRIS cas mathml code.
-
-var _wrs_conf_editorPath = _wrs_conf_server_scripts_path + 'editor' + _wrs_conf_server_scripts_ext;				// Specifies where is the editor HTML code (for popup window).
-var _wrs_conf_editorAttributes = 'width=@param.js.editor.window.width@, height=@param.js.editor.window.height@, scroll=no, resizable=yes';							// Specifies formula editor window options.
-var _wrs_conf_CASPath = _wrs_conf_server_scripts_path + 'cas' + _wrs_conf_server_scripts_ext;					// Specifies where is the WIRIS cas HTML code (for popup window).
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes';										// Specifies WIRIS cas window options.
-
-var _wrs_conf_createimagePath = _wrs_conf_server_scripts_path + 'createimage' + _wrs_conf_server_scripts_ext;			// Specifies where is the createimage script.
-var _wrs_conf_createcasimagePath = _wrs_conf_server_scripts_path + 'createcasimage' + _wrs_conf_server_scripts_ext;		// Specifies where is the createcasimage script.
-
-var _wrs_conf_getmathmlPath = _wrs_conf_server_scripts_path + 'getmathml' + _wrs_conf_server_scripts_ext;			// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = _wrs_conf_server_scripts_path + 'service' + _wrs_conf_server_scripts_ext;				// Specifies where is the service script.
-var _wrs_conf_getconfigPath = _wrs_conf_server_scripts_path + 'getconfig' + _wrs_conf_server_scripts_ext;			// Specifies from where it returns the configuration using AJAX
-
-var _wrs_conf_saveMode = '@param.js.save.mode@';					// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = [@param.js.parse.latex@];				// This value can contain 'latex'.
-var _wrs_conf_defaultEditMode = '@param.js.default.edit.mode@';				// This value can be 'images', 'latex' or 'iframes'.
-
-var _wrs_conf_enableAccessibility = @param.js.accessibility.state@;
-
-var _wrs_conf_pluginBasePath = _wrs_baseURL + '/plugins/tiny_mce_wiris';
+var _wrs_conf_pluginBasePath = _wrs_conf_path; // _wrs_baseURL + '/plugins/tiny_mce_wiris';
 
 /* Vars */
-var _wrs_int_editorIcon = _wrs_baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/formula.gif';
-var _wrs_int_CASIcon = _wrs_baseURL + '/plugins/tiny_mce_wiris/core/icons/tiny_mce/cas.gif';
+var _wrs_int_editorIcon = _wrs_conf_path + 'core/icons/tiny_mce/formula.gif';
+var _wrs_int_CASIcon = _wrs_conf_path + 'core/icons/tiny_mce/cas.gif';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality; 
-
-/* Configuration loading */
-var configuration = {};
-
-if (_wrs_conf_getconfigPath.substr(_wrs_conf_getconfigPath.length - 4) == '.php') {
-	var httpRequest;
-
-	if (typeof XMLHttpRequest != 'undefined') {
-		if (navigator.appName == 'Microsoft Internet Explorer' && navigator.appVersion.indexOf('MSIE 8.0') != -1) {
-			try {
-				httpRequest = new ActiveXObject('Msxml2.XMLHTTP');
-			}
-			catch (e) {
-				try {
-					httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
-				}
-				catch (oc) {
-				}
-			}
-		}else{
-			httpRequest = new XMLHttpRequest();
-		}
-	}
-	else {
-		try {
-			httpRequest = new ActiveXObject('Msxml2.XMLHTTP');
-		}
-		catch (e) {
-			try {
-				httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
-			}
-			catch (oc) {
-			}
-		}
-	}
-
-	if (_wrs_conf_getconfigPath.substr(0, 1) == '/' || _wrs_conf_getconfigPath.substr(0, 7) == 'http://' || _wrs_conf_getconfigPath.substr(0, 8) == 'https://') {
-		httpRequest.open('GET', _wrs_conf_getconfigPath, false);
-	}
-	else {
-		httpRequest.open('GET', _wrs_currentPath + _wrs_conf_getconfigPath, false);
-	}
-	
-	httpRequest.send(null);
-
-	try {
-		configuration = eval('(' + httpRequest.responseText + ')');
-	}
-	catch (e) {
-	}
-}
-
-if ('wirisformulaeditoractive' in configuration) {
-	_wrs_conf_editorEnabled = (configuration.wirisformulaeditoractive == true);
-}
-if ('wiriscasactive' in configuration) {
-	_wrs_conf_CASEnabled = (configuration.wiriscasactive == true);
-}
 
 /* Plugin integration */
 (function () {
@@ -127,7 +56,7 @@ if ('wiriscasactive' in configuration) {
 				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
 				
 				function whenDocReady() {
-					if (window.wrs_initParse) {
+					if (typeof _wrs_conf_plugin_loaded!= 'undefined') {
 						var language = editor.getParam('language');
 						_wrs_int_directionality = editor.getParam('directionality');
 				
@@ -135,17 +64,17 @@ if ('wiriscasactive' in configuration) {
 							language = editor.settings['wirisformulaeditorlang'];
 						}
 						
-						if (configuration.wirisparselatex == false) {
+						/* if (true || configuration.wirisparselatex == false) {
 							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
 							if (pos != -1){
 								_wrs_conf_parseModes.splice(pos, 1);
 							}
-						}else if (configuration.wirisparselatex == true) {
+						}else if (true || configuration.wirisparselatex == true) {
 							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
 							if (pos == -1){
 								_wrs_conf_parseModes.push('latex');
 							}
-						}		
+						} */	
 				
 						//Bug fix: In Moodle2.x when TinyMCE is set to full screen 
 						//the content doesn't need to be filtered.
@@ -193,7 +122,7 @@ if ('wiriscasactive' in configuration) {
 			});
 			
 			
-			if (_wrs_conf_editorEnabled) {
+			if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
 					_wrs_int_wirisProperties = {
 						'bgColor': editor.settings['wirisimagebgcolor'],
@@ -224,8 +153,8 @@ if ('wiriscasactive' in configuration) {
 					image: _wrs_int_editorIcon
 				});
 			}
-			
-			if (_wrs_conf_CASEnabled) {
+
+			if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
 				editor.addCommand('tiny_mce_wiris_openCAS', function () {
 					var language = editor.settings.language;
 				

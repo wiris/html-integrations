@@ -18,11 +18,8 @@
 //  along with WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
 //
 
-require_once 'lib/php/Boot.class.php';
+require_once 'pluginbuilder.php';
 $PARAMS = array_merge($_GET, $_POST);
-
-$pb = com_wiris_plugin_api_PluginBuilder::getInstance();
-$pb->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
-$render = $pb->newRender();
+$render = $pluginBuilder->newRender();
 echo $render->createImage($PARAMS['mml'], $PARAMS);
 ?>
