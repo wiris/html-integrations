@@ -16,7 +16,7 @@ namespace plugin_web
             }
             Dictionary<string, string> param = DispatcherUtils.getParameterMap(Request.Params);
             PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
-            string r = pb.newRender().createImage(mml, param);
+            string r = pb.newRender().createImage(mml, param, null);
             this.Response.Write(r);
         }
 
