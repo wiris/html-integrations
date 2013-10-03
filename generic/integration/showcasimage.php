@@ -27,4 +27,3 @@ $render = $pb->newRender();
 $r = $render->showImage($PARAMS['digest'], $PARAMS['mml'], $PARAMS);
 header('Content-Type: image/png');
 echo $r;
-?>

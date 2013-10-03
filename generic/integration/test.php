@@ -22,4 +22,3 @@
 require_once 'pluginbuilder.php';
 $render = $pluginBuilder->newTest();
 echo $render->getTestPage();
-?>

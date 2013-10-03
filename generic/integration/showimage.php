@@ -26,4 +26,3 @@ $render = $pluginBuilder->newRender();
 $r = $render->showImage($digest, $mml, $PARAMS);
 header('Content-Type: image/png');
 echo $r;
-?>

@@ -27,4 +27,3 @@ $render = $pb->newTextService();
 $r = $render->service($service, $PARAMS);
 header('Content-Type: text/plain; charset=utf-8');
 echo $r;
-?>

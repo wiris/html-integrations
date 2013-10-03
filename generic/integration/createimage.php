@@ -21,6 +21,5 @@
 require_once 'pluginbuilder.php';
 $PARAMS = array_merge($_GET, $_POST);
 $render = $pluginBuilder->newRender();
-$outp = array();
+$outp = null;
 echo $render->createImage($PARAMS['mml'], $PARAMS, $outp);
-?>

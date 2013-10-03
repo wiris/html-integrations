@@ -35,4 +35,3 @@ echo   "var _wrs_conf_servicePath = _wrs_conf_path + '/integration/service.php';
 require_once 'pluginbuilder.php';
 $conf = $pluginBuilder->getConfiguration();
 echo $conf->getJavaScriptConfiguration();
-?>
