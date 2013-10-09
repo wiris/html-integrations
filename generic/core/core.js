@@ -24,6 +24,8 @@ var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
 
+// var _wrs_conf_setSize = true;
+
 var _wrs_xmlCharacters = {
 	'tagOpener': '<',		// \x3C
 	'tagCloser': '>',		// \x3E
@@ -348,6 +350,12 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 	
 	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
 		data['returnDigest'] = 'true';
+	}
+	
+	if (_wrs_conf_setSize) {
+		// Request metrics of the generated image
+		data['metrics'] = 'true';
+		data['centerbaseline'] = 'false';
 	}
 	
 	var result = wrs_getContent(_wrs_conf_createimagePath, data);
@@ -1642,6 +1650,9 @@ function wrs_mathmlToIframeObject(windowTarget, mathml) {
  * @return object
  */
 function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
+	var width;
+	var height;
+	var baseline;
 	var imgObject = creator.createElement('img');
 	//imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
@@ -1653,6 +1664,19 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	imgObject.className = _wrs_conf_imageClassName;
 	
 	var result = wrs_createImageSrc(mathml, wirisProperties);
+	/* if (_wrs_conf_setSize) {
+		var ar = wrs_urlToAssArray(result);
+		width = ar['cw'];
+		height = ar['ch'];
+		baseline = ar['cb'];
+		dpi = ar['dpi'];
+		if (dpi) {
+			width = width * 96/dpi;
+			height = height * 96/dpi;
+			baseline = baseline * 96/dpi;
+		}
+		// result = wrs_assArrayToUrl(ar);
+	}*/
 	
 	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
 		var parts = result.split(':', 2);
@@ -1662,6 +1686,12 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	else {
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
 		imgObject.src = result;
+		if (_wrs_conf_setSize) {
+			wrs_setImgSize(imgObject,result);
+			//imgObject.width = width;
+			//imgObject.height = height;
+			//imgObject.style.verticalAlign = "-" + (height - baseline) + "px";
+		}
 	}
 	
 	return imgObject;
@@ -2048,6 +2078,54 @@ function wrs_addArgument(path,key,value) {
 		sep = "?";
 	}
 	return path+sep+key+"="+value;
+}
+
+function wrs_urlToAssArray(url) {
+	var i;
+	i = url.indexOf("?");
+	if (i>0) {
+		var query = url.substring(i+1);
+		var ss  = query.split("&");
+		var h = new Object();
+		for (i=0;i<ss.length;i++) {
+			var s = ss[i];
+			var kv = s.split("=");
+			if (kv.length>1) {
+				h[kv[0]] = decodeURIComponent(kv[1].replace(/\+/g, ' '));
+			}
+		}
+		return h;
+	} else {
+		return new Object();
+	}
+}
+
+function wrs_setImgSize(img, url) {
+	var ar = wrs_urlToAssArray(url);
+	var width = ar['cw'];
+	if (!width) {
+		return;
+	}
+	var height = ar['ch'];
+	var baseline = ar['cb'];
+	var dpi = ar['dpi'];
+	if (dpi) {
+		width = width * 96/dpi;
+		height = height * 96/dpi;
+		baseline = baseline * 96/dpi;
+	}
+	img.width = width;
+	img.height = height;
+	img.style.verticalAlign = "-" + (height - baseline) + "px";
+}
+
+function wrs_fixAfterResize(img) {
+	img.removeAttribute('style');
+	img.removeAttribute('width');
+	img.removeAttribute('height');
+	if (_wrs_conf_setSize) {
+		wrs_setImgSize(img,img.src);
+	}
 }
 
 function wrs_loadConfiguration() {

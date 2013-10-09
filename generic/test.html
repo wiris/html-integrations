@@ -99,6 +99,15 @@
 					// In our case, the plugin is who sets the textarea content.
 				});
 			});
+			
+			function changeDPI() {
+				ls = document.getElementsByClassName('Wirisformula');
+				for (i=0;i<ls.length;i++) {
+					img = ls[i];
+					img.width = img.clientWidth;
+					img.src = img.src + "&dpi=600";
+				}
+			}
 		</script>
 		
 		<title>WIRIS Plugin generic integration on PHP | Educational mathematics</title>
