@@ -1,69 +1,78 @@
 #
-# You can optinally rename this file to configuration.ini 
-# and set any desired value
+# This is a sample configuration file
+# You can uncomment any line and rename this file to configuration.ini
 #
 
-wirisimageservicehost = www.wiris.net
-#wirisimageserviceport = 80
-wirisimageservicepath = /demo/editor/render
-#wirisimageserviceprotocol = http
-wirisimageserviceversion = 2.0
+#wirisimageserviceversion = 3.0
 
+#
+# Connection properties
+#
+#wirisimageservicehost = www.wiris.net
+#wirisimageservicepath = /demo/editor/render
+#wirisimageserviceport = 80
+#wirisimageserviceprotocol = http
+#wirisproxy = false
+#wirisproxy_host = 
+#wirisproxy_port = 
+
+#
+# Folder properties
+#
+# Place to store the cached images.
+#wiriscachedirectory = /var/cache
+# Place to store the formulas.
+#wirisformuladirectory = /var/formulas
+
+#
+# Class overridables
+#
+#wirisstorageclass = com.wiris.plugin.storage.FileStorageAndCache
+#wirisconfigurationclass = com.wiris.plugin.servlets.configuration.ParameterServletConfigurationUpdater
+#wirisconfigurationrefreshtime = 10000
+
+#
+# Editor behaviour
+#
+#wiriseditorenabled = true
+#wiriseditormathmlattribute = data-mathml
+#wiriseditorsavemode = xml
+#wiriseditorparselatex = true
+#wiriseditorwindowattributes = width=570, height=450, scroll=no, resizable=yes
+#wiriseditorsetsize = false
+
+#
+# Language properties
+#
 #wirisrtllanguages = ar
 #wirisltrlanguages = ar_ma
 #wirisarabicindiclanguages = ar_eg, ar_sd, ar_sa
 #wiriseasternarabicindiclanguages = fa, ps, ur
 #wiriseuropeanlanguages =
 
-wiristransparency = true
+#
+# Styling
+#
+#wiristransparency = true
 #wirisimagecolor = #000000
 #wirisimagebackgroundcolor = #ffffff
 #wirisimagefontsize = 16px
-#wirisdpi = 90
-#wirisfontfamily = Dialog
-#wirisimageidentmathvariant = italic-sans-serif
-#wirisimagenumbermathvariant = sans-serif
-#wirisimagefontident = Courier
-#wirisimagefontnumber = Dialog
-#wirisimagefontranges = font1, font2
-#font1 = x3b1-x3ff;DialogInput,105
-#font2 = x41-x5A;FreeSans
+#wirisimagedpi = 96
+#wirisfontfamily = Arial
 
-# Editor 2
-#wirisimagebgcolor = #ffffff
-#wirisimageidentcolor = #000000
-#wirisimagenumbercolor = #000000
-#wirisimagesymbolcolor = #000000
+#
+# Accessibility
+#
+#wirisaccessibilityenabled = true
 
-#wirislatextomathmlurl = 
-#wirismathmltolatexurl = 
-wirisparselatex = true
-#wirisaccessibilityenabled = false
+#
+# WIRIS cas
+#
+#wiriscascodebase = http://www.wiris.net/demo/wiris/wiris-codebase
+#wiriscasarchive = wrs_net_%LANG.jar
+#wiriscasclass = WirisApplet_net_%LANG
+#wiriscaslanguages = en, es, fr, it, nl, et, ca, eu, pt, de
+#CAS_width = 450
+#CAS_height = 400
 
-wirisformulaeditorlang = en
-
-wiriscascodebase = http://www.wiris.net/demo/wiris/wiris-codebase
-wiriscasarchive = wrs_net_%LANG.jar
-wiriscasclass = WirisApplet_net_%LANG
-wiriscaslanguages = en, es, fr, it, nl, et, ca, eu, pt, de
-CAS_width = 450
-CAS_height = 400
-
-# Only for PHP integration.
-wirisproxy = false
-#wirisproxy_host = 
-#wirisproxy_port = 
-#wirisconfigurationclass = TestConfigurationUpdater.php;com_wiris_plugin_configuration_TestConfigurationUpdater
-
-# Only for java integration.
-#wirisstorageclass = com.wiris.plugin.storage.FileStorageAndCache
-#wiriscontainerstorageclass = com.wiris.plugin.storage.FileStorageAndCache
-##wirisconfigurationclass = com.wiris.plugin.servlets.configuration.ParameterServletConfigurationUpdater
-wirisconfigurationrefreshtime = 10000
-#wirisintegrationpath = http://localhost:8080/pluginwiris_engine
-
-# Place to store the cached images.
-#wiriscachedirectory = /var/cache
-
-# Place to store the formulas.
-#wirisformuladirectory = /var/formulas
+# End of file
