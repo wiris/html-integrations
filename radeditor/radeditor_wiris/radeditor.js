@@ -1,29 +1,24 @@
 /* Configuration */
+var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_int_conf_async = true;
+
+// Including core.js
+
+var col = document.getElementsByTagName("script");
+for (i=0;i<col.length;i++) {
+	var src = col[i].src;
+	var j = src.lastIndexOf("radeditor.js");
+	if (j >= 0) {baseURL = src.substr(0, j - 1);}
+}
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = baseURL+'/core/core.js';
+document.getElementsByTagName('head')[0].appendChild(script);
+
 var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
 
-var _wrs_conf_imageMathmlAttribute = 'data-mathml';	// Specifies the image tag where we should save the formula editor mathml code.
-var _wrs_conf_CASMathmlAttribute = 'alt'; 		// Specifies the image tag where we should save the WIRIS CAS mathml code
-
-var _wrs_conf_editorPath = _wrs_currentPath + 'radeditor_wiris/integration/editor.aspx'; 					// Specifies where is the editor HTML code (for popup window)
-//var _wrs_conf_editorAttributes = 'width=500, height=400, scroll=no, resizable=yes'; 						// Specifies formula editor window options.
-var _wrs_conf_editorAttributes = 'width=570, height=450, scroll=no, resizable=yes';	// Specifies formula editor
-
-var _wrs_conf_CASPath = _wrs_currentPath + 'radeditor_wiris/integration/cas.aspx'; 							// Specifies where is the WIRIS CAS HTML code (for popup window)
-var _wrs_conf_CASAttributes = 'width=640, height=480, scroll=no, resizable=yes'; 							// Specifies WIRIS cas window options.
-
-var _wrs_conf_createimagePath = _wrs_currentPath + 'radeditor_wiris/integration/createimage.aspx'; 			// Specifies where is createimage script
-var _wrs_conf_createcasimagePath = _wrs_currentPath + 'radeditor_wiris/integration/createcasimage.aspx';	// Specifies where is createcasimage script
-
-var _wrs_conf_getmathmlPath = _wrs_currentPath + 'radeditor_wiris/integration/getmathml.aspx';				// Specifies where is the getmathml script.
-var _wrs_conf_servicePath = _wrs_currentPath + 'radeditor_wiris/integration/service.aspx';				// Specifies where is the service script.
-var _wrs_conf_getconfigPath = _wrs_currentPath + 'radeditor_wiris/integration/getconfig.aspx'				// Specifies from where it returns the configuration using AJAX
-
-var _wrs_conf_saveMode = 'xml';			// This value can be 'tags', 'xml' or 'safeXml'.
-var _wrs_conf_parseModes = ['latex'];			// This value can contain 'latex'.
 var _wrs_int_wirisProperties;
-
-var _wrs_conf_enableAccessibility = true;
 
 /* Vars */
 var _wrs_int_temporalIframe;
@@ -120,15 +115,13 @@ function OnClientLoad(editor, args){
 		lis[0].parentNode.style.display = 'none';
 	}
 	
-	
-	wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-	
 	editor.add_submit(function (){
 		editor.set_html(wrs_endParse(editor.get_html(true), null, _wrs_int_language));
 	});
 
 	function whenDocReady() {
-		if (window.wrs_initParse) {
+		if (typeof _wrs_conf_plugin_loaded!= 'undefined') {
+			wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			editor.set_html(wrs_initParse(editor.get_html(), _wrs_int_language));
 		}
 		else {
