@@ -57,7 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\Libwiris.cs" />
     <Content Include="integration\service.aspx" />
     <Content Include="integration\test.aspx" />
     <Content Include="integration\configurationjs.aspx" />
@@ -98,6 +97,7 @@
     <None Include="configuration.ini" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Properties\" />
   </ItemGroup>
