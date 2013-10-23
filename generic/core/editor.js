@@ -53,7 +53,6 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 			'language' : queryParams['lang']
 		};
 	}
-	alert(wrs_int_opener._wrs_conf_editorToolbar);
 	if (wrs_int_opener._wrs_conf_editorToolbar.length>0) {
 		wrs_attributes['toolbar'] = wrs_int_opener._wrs_conf_editorToolbar;
 	}
