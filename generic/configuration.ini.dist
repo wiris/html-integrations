@@ -40,6 +40,7 @@
 #wiriseditorparselatex = true
 #wiriseditorwindowattributes = width=570, height=450, scroll=no, resizable=yes
 #wiriseditorsetsize = false
+#wiriseditortoolbar = quizzes
 
 #
 # Language properties
