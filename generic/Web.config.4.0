@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0"?>
 <configuration>
-    <appSettings/>
+    <appSettings>
+		<add key="com.wiris.plugin.wirisfontfamily" value="Times New Roman" />
+	</appSettings>
     <connectionStrings/>
     <system.web>
         <httpRuntime requestValidationMode="2.0" />
