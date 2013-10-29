@@ -3,6 +3,7 @@
 # You can uncomment any line and rename this file to configuration.ini
 #
 
+#wirisdebug = false
 #wirisimageserviceversion = 3.0
 
 #
