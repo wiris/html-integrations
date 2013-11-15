@@ -20,6 +20,6 @@
 
 require_once 'pluginbuilder.php';
 $PARAMS = array_merge($_GET, $_POST);
-$render = $pluginBuilder->newCas();
+$cas = $pluginBuilder->newCas();
 $outp = array();
-echo $render->createCasImage($PARAMS['image'], '');
+echo $cas->createCasImage($PARAMS['image']);

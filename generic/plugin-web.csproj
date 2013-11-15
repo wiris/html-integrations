@@ -57,9 +57,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="integration\cas.aspx" />
+    <Content Include="integration\createcasimage.aspx" />
     <Content Include="integration\service.aspx" />
+    <Content Include="integration\showcasimage.aspx" />
     <Content Include="integration\test.aspx" />
     <Content Include="integration\configurationjs.aspx" />
+    <Compile Include="integration\cas.aspx.cs">
+      <DependentUpon>cas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="integration\createcasimage.aspx.cs">
+      <DependentUpon>createcasimage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="integration\createimage.aspx.cs">
       <DependentUpon>createimage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -78,6 +89,10 @@
     </Compile>
     <Compile Include="integration\service.aspx.cs">
       <DependentUpon>service.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="integration\showcasimage.aspx.cs">
+      <DependentUpon>showcasimage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="integration\showimage.aspx.cs">
