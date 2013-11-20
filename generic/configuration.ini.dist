@@ -13,9 +13,13 @@
 #wirisimageservicepath = /demo/editor/render
 #wirisimageserviceport = 80
 #wirisimageserviceprotocol = http
+# Proxy configuration
 #wirisproxy = false
 #wirisproxy_host = 
 #wirisproxy_port = 
+# Basic authentication proxy configuration
+#wirisproxy_user = 
+#wirisproxy_pass = 
 
 #
 # Folder properties
