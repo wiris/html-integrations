@@ -1,3 +1,4 @@
+// Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_int_conf_async = true;
 var _wrs_baseURL;
@@ -18,7 +19,7 @@ if (typeof _wrs_isMoodle24 == 'undefined') {
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
 	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
-	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	var configUrl = (_wrs_int_conf_file.indexOf('/')==0 || _wrs_int_conf_file.indexOf('http') == 0) ? _wrs_int_conf_file : _wrs_conf_path + '/' + _wrs_int_conf_file;
 	httpRequest.open('GET', configUrl, false);
 	httpRequest.send(null);
 	eval(httpRequest.responseText);
@@ -26,7 +27,6 @@ if (!_wrs_int_conf_async) {
 
 /* Including core.js */
 tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
-while (tinymce.ScriptLoader.isDone(_wrs_conf_path + 'core/core.js'));
 
 var _wrs_conf_pluginBasePath = _wrs_conf_path; // _wrs_baseURL + '/plugins/tiny_mce_wiris';
 
@@ -51,7 +51,7 @@ var _wrs_int_directionality;
 				editor.settings.extended_valid_elements += ',img[*]';    
 			}
 			
-			editor.onInit.add(function (editor) {
+			var onInit = function (editor) {
 				var editorElement = editor.getElement();
 				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
 				
@@ -64,18 +64,6 @@ var _wrs_int_directionality;
 							language = editor.settings['wirisformulaeditorlang'];
 						}
 						
-						/* if (true || configuration.wirisparselatex == false) {
-							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-							if (pos != -1){
-								_wrs_conf_parseModes.splice(pos, 1);
-							}
-						}else if (true || configuration.wirisparselatex == true) {
-							var pos = wrs_arrayContains(_wrs_conf_parseModes, 'latex');
-							if (pos == -1){
-								_wrs_conf_parseModes.push('latex');
-							}
-						} */	
-				
 						//Bug fix: In Moodle2.x when TinyMCE is set to full screen 
 						//the content doesn't need to be filtered.
 						if (!editor.getParam('fullscreen_is_enabled')){
@@ -95,9 +83,18 @@ var _wrs_int_directionality;
 				}
 				
 				whenDocReady();
-			});
+			}
 			
-			editor.onSaveContent.add(function (editor, params) {
+			if ('onInit' in editor) {
+				editor.onInit.add(onInit);
+			}
+			else {
+				editor.on('init', function () {
+					onInit(editor);
+				});
+			}
+			
+			var onSave = function (editor, params) {
 				_wrs_int_wirisProperties = {
 					'bgColor': editor.settings['wirisimagebgcolor'],
 					'symbolColor': editor.settings['wirisimagesymbolcolor'],
@@ -119,8 +116,16 @@ var _wrs_int_directionality;
 				}
 				
 				params.content = wrs_endParse(params.content, _wrs_int_wirisProperties, language);
-			});
+			}
 			
+			if ('onSaveContent' in editor) {
+				editor.onSaveContent.add(onSave);
+			}
+			else {
+				editor.on('saveContent', function (params) {
+					onSave(editor, params);
+				});
+			}
 			
 			if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
@@ -177,9 +182,9 @@ var _wrs_int_directionality;
 		getInfo: function () {
 			return {
 				longname : 'tiny_mce_wiris',
-				author : 'Juan Lao Tebar - Maths for More',
+				author : 'Maths for More',
 				authorurl : 'http://www.wiris.com',
-				infourl : 'http://www.mathsformore.com',
+				infourl : 'http://www.wiris.com',
 				version : '1.0'
 			};
 		}	
