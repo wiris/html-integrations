@@ -26,7 +26,8 @@ document.getElementsByTagName('head')[0].appendChild(script);
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';
 var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/cas.gif';
-var _wrs_int_temporalIframe;
+var _wrs_int_temporalElement;
+var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
@@ -60,24 +61,69 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		_wrs_int_directionality = editor.config.contentsLangDirection;
 		
+		var lastDataSet = null;
+		
+		editor.on('dataReady', function (e) {
+			lastDataSet = editor.getData();
+		});
+		
 		function whenDocReady() {
-			if (typeof _wrs_conf_configuration_loaded!= 'undefined') { // WIRIS plugin core.js and configuration loaded properly
-				editor.setData(wrs_initParse(editor.getData()), function () {
-					editor.on('beforeGetData', function () {
-						if (typeof editor._.data != 'string') {
-							if (editor.element && editor.elementMode == 1) {
-								editor._.data = editor.element.is('textarea') ? editor.element.getValue() : editor.element.getHtml();
-							}
-							else {
-								editor._.data = '';
-							}
-						}
-						
-						editor._.data = wrs_endParse(editor._.data);
+			if (typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
+				editor.setData(wrs_initParse(lastDataSet), function () {
+					var changingMode = false;
+					
+					editor.on('beforeSetMode', function (e) {
+						changingMode = true;
 					});
 					
-					if (editor._.events.doubleclick) {					// When the iframe is double clicked, a dialog is open. This should be avoided.
+					editor.on('mode', function (e) {
+						changingMode = false;
+					});
+					
+					editor.on('getData', function (e) {
+						if (changingMode) {
+							return;
+						}
+						
+						e.data.dataValue = wrs_endParse(e.data.dataValue);
+					});
+					
+					if (editor._.events.doubleclick) {					// When the element is double clicked, a dialog is open. This must be avoided.
 						editor._.events.doubleclick.listeners = [];
+					}
+				});
+				
+				// editor command
+				editor.addCommand('ckeditor_wiris_openFormulaEditor', {
+					'async': false,
+					'canUndo': false,
+					'editorFocus': false,
+					'allowedContent': 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)',
+					'requiredContent': 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](Wirisformula)',
+					
+					'exec': function (editor) {
+						wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE);
+					}
+				});
+				
+				// CAS command
+				var allowedContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](!Wiriscas); ';
+				allowedContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
+				allowedContent += 'param[name,value]';
+				
+				var requiredContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](Wiriscas); ';
+				requiredContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
+				requiredContent += 'param[name,value]';
+				
+				editor.addCommand('ckeditor_wiris_openCAS', {
+					'async': false,								// The command need some time to complete after exec function returns.
+					'canUndo': false,
+					'editorFocus': false,
+					'allowedContent': allowedContent,
+					'requiredContent': requiredContent,
+					
+					'exec': function (editor) {
+						wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE, editor.langCode);
 					}
 				});
 			}
@@ -88,37 +134,43 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		whenDocReady();
 		
-		function checkIframe() {
+		var element = null;
+		
+		function checkElement() {
 			try {
-				var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
-				var newIframe = elem.getElementsByTagName('iframe')[0];
+				var newElement;
 				
-				if (iframe != newIframe) {
-					wrs_addIframeEvents(newIframe, function (iframe, element) {
-						wrs_int_doubleClickHandler(editor, iframe, element);
-					}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-					
-					iframe = newIframe;
+				if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+					newElement = editor.element.$;
+				}
+				else {
+					var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+					newElement = elem.getElementsByTagName('iframe')[0];
+				}
+				
+				if (element != newElement) {
+					if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+						wrs_addElementEvents(newElement, function (div, element) {
+							wrs_int_doubleClickHandlerForDiv(editor, div, element);
+						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					}
+					else {
+						wrs_addIframeEvents(newElement, function (iframe, element) {
+							wrs_int_doubleClickHandlerForIframe(editor, iframe, element);
+						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					}
+						
+					element = newElement;
 				}
 			}
 			catch (e) {
 			}
 		}
 		
-		// CKEditor replaces several times the iframe element during its execution, so we must assign the events again.
-		setInterval(checkIframe, 500);
+		// CKEditor replaces several times the element element during its execution, so we must assign the events again.
+		setInterval(checkElement, 500);
 	
 		if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
-			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
-				'async': false,
-				'canUndo': false,
-				'editorFocus': false,
-				
-				'exec': function (editor) {
-					wrs_int_openNewFormulaEditor(iframe, editor.langCode);
-				}
-			});
-			
 			editor.ui.addButton('ckeditor_wiris_formulaEditor', {
 				'label': 'WIRIS editor',
 				'command': 'ckeditor_wiris_openFormulaEditor',
@@ -165,16 +217,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		}
 		
 		if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
-			editor.addCommand('ckeditor_wiris_openCAS', {
-				'async': false,								// The command need some time to complete after exec function returns.
-				'canUndo': false,
-				'editorFocus': false,
-				
-				'exec': function (editor) {
-					wrs_int_openNewCAS(iframe, editor.langCode);
-				}
-			});
-			
 			editor.ui.addButton('ckeditor_wiris_CAS', {
 				'label': 'WIRIS cas',
 				'command': 'ckeditor_wiris_openCAS',
@@ -186,56 +228,76 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
 /**
  * Opens formula editor.
- * @param object iframe Target
+ * @param object element Target
  */
-function wrs_int_openNewFormulaEditor(iframe, language) {
+function wrs_int_openNewFormulaEditor(element, language, isIframe) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
 	else {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
-		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
+		_wrs_int_temporalElement = element;
+		_wrs_int_temporalElementIsIframe = isIframe;
+		_wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
 	}
 }
 
 /**
  * Opens CAS.
- * @param object iframe Target
+ * @param object element Target
  */
-function wrs_int_openNewCAS(iframe, language) {
+function wrs_int_openNewCAS(element, isIframe, language) {
 	if (_wrs_int_window_opened) {
 		_wrs_int_window.focus();
 	}
 	else {
 		_wrs_int_window_opened = true;
 		_wrs_isNewElement = true;
-		_wrs_int_temporalIframe = iframe;
-		_wrs_int_window = wrs_openCASWindow(iframe, true, language);
+		_wrs_int_temporalElement = element;
+		_wrs_int_temporalElementIsIframe = isIframe;
+		_wrs_int_window = wrs_openCASWindow(element, isIframe, language);
 	}
 }
 
 /**
- * Handles a double click on the iframe.
- * @param object iframe Target
+ * Handles a double click on the contentEditable div.
+ * @param object div Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandler(editor, iframe, element) {
+function wrs_int_doubleClickHandlerForDiv(editor, div, element) {
+	wrs_int_doubleClickHandler(editor, div, false, element);
+}
+
+/**
+ * Handles a double click on the iframe.
+ * @param object div Target
+ * @param object element Element double clicked
+ */
+function wrs_int_doubleClickHandlerForIframe(editor, iframe, element) {
+	wrs_int_doubleClickHandler(editor, iframe, true, element);
+}
+
+/**
+ * Handles a double click.
+ * @param object target Target
+ * @param object element Element double clicked
+ */
+function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
-		if (wrs_containsClass(element, 'Wirisformula')) {
+		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingFormulaEditor(iframe, editor.langCode);
+				wrs_int_openExistingFormulaEditor(target, isIframe, editor.langCode);
 			}
 			else {
 				_wrs_int_window.focus();
 			}
 		}
-		else if (wrs_containsClass(element, 'Wiriscas')) {
+		else if (wrs_containsClass(element, _wrs_conf_CASClassName)) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
-				wrs_int_openExistingCAS(iframe, editor.langCode);
+				wrs_int_openExistingCAS(target, isIframe, editor.langCode);
 			}
 			else {
 				_wrs_int_window.focus();
@@ -246,24 +308,27 @@ function wrs_int_doubleClickHandler(editor, iframe, element) {
 
 /**
  * Opens formula editor to edit an existing formula.
- * @param object iframe Target
+ * @param object element Target
+ * @param boolean isIframe
  */
-function wrs_int_openExistingFormulaEditor(iframe, language) {
+function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
-	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openEditorWindow(language, iframe, true);
+	_wrs_int_temporalElement = element;
+	_wrs_int_temporalElementIsIframe = isIframe;
+	_wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
 }
 
 /**
  * Opens CAS to edit an existing formula.
  * @param object iframe Target
  */
-function wrs_int_openExistingCAS(iframe, language) {
+function wrs_int_openExistingCAS(element, isIframe, language) {
 	_wrs_int_window_opened = true;
 	_wrs_isNewElement = false;
-	_wrs_int_temporalIframe = iframe;
-	_wrs_int_window = wrs_openCASWindow(iframe, true, language);
+	_wrs_int_temporalElement = element;
+	_wrs_int_temporalElementIsIframe = isIframe;
+	_wrs_int_window = wrs_openCASWindow(element, isIframe, language);
 }
 
 /**
@@ -297,7 +362,12 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
-	wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+	if (_wrs_int_temporalElementIsIframe) {
+		wrs_updateFormula(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+	}
+	else {
+		wrs_updateFormula(_wrs_int_temporalElement, window, mathml, _wrs_int_wirisProperties, editMode, language);
+	}
 }
 
 /**
@@ -308,7 +378,12 @@ function wrs_int_updateFormula(mathml, editMode, language) {
  * @param int height
  */
 function wrs_int_updateCAS(appletCode, image, width, height) {
-	wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
+	if (_wrs_int_temporalElementIsIframe) {
+		wrs_updateCAS(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, appletCode, image, width, height);
+	}
+	else {
+		wrs_updateCAS(_wrs_int_temporalElement, window, appletCode, image, width, height);
+	}
 }
 
 /**
