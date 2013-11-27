@@ -7,7 +7,7 @@
 
 require_once 'pluginbuilder.php';
 $text = $pluginBuilder->newTextService();
-$input = "<html><body>Fraction <math><mfrac><mn>1</mn><mi>x</mi></mfrac></math></body>";
+$input = "<html><body><b>Formula: </b><math><mfrac><mi>x</mi><mn>1000</mn></mfrac></math></body></html>";
 $params = null;
 $output = $text->filter($input, $params);
 
