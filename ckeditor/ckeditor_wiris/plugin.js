@@ -33,6 +33,7 @@ var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
+var _wrs_int_disableDoubleClick = false;
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
@@ -86,6 +87,23 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						}
 						
 						e.data.dataValue = wrs_endParse(e.data.dataValue);
+					});
+					
+					if (editor._.events.doubleclick) {					// When the element is double clicked, a dialog is open. This must be avoided.
+						editor._.events.doubleclick.disabledListeners = editor._.events.doubleclick.listeners;
+						editor._.events.doubleclick.listeners = [];
+					}
+					
+					editor.on('doubleclick', function (event) {
+						setTimeout(function () {
+							if (!_wrs_int_disableDoubleClick) {
+								for (var i = 0; i < editor._.events.doubleclick.disabledListeners.length; ++i) {
+									editor._.events.doubleclick.disabledListeners[i](event.editor, event.data, event.stop, event.cancel);
+								}
+							}
+							
+							_wrs_int_disableDoubleClick = false;
+						}, 1);
 					});
 				});
 				
@@ -280,8 +298,11 @@ function wrs_int_doubleClickHandlerForIframe(editor, iframe, element) {
  * @param object element Element double clicked
  */
 function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
+
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
+			_wrs_int_disableDoubleClick = true;
+			
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(target, isIframe, editor.langCode);
@@ -289,12 +310,10 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 			else {
 				_wrs_int_window.focus();
 			}
-			
-			setTimeout(function () {
-				CKEDITOR.dialog.getCurrent().hide();
-			}, 1);
 		}
 		else if (wrs_containsClass(element, _wrs_conf_CASClassName)) {
+			_wrs_int_disableDoubleClick = true;
+		
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingCAS(target, isIframe, editor.langCode);
@@ -302,10 +321,6 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 			else {
 				_wrs_int_window.focus();
 			}
-			
-			setTimeout(function () {
-				CKEDITOR.dialog.getCurrent().hide();
-			}, 1);
 		}
 	}
 }
