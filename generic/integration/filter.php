@@ -3,7 +3,7 @@
 
 
 // Please, set if called from the command line
-// $_SERVER['SCRIPT_NAME'] = "/generic/integration/convert.php";
+// $_SERVER['SCRIPT_NAME'] = "/generic/integration/filter.php";
 
 require_once 'pluginbuilder.php';
 $text = $pluginBuilder->newTextService();

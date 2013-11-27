@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.UI;
-using com.wiris.plugin.web;
+using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 
@@ -10,7 +10,7 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
             string test = pb.newTest().getTestPage();
             Response.ContentType = "text/html; charset=utf-8";
             Response.Write(test);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.UI;
-using com.wiris.plugin.web;
+using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using System.Web;
@@ -19,8 +19,8 @@ namespace plugin_web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Dictionary<string, string> param = DispatcherUtils.getParameterMap(Request.Params);
-            PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
+            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
             string r = pb.getConfiguration().getJavaScriptConfiguration();
             outVar(Response,"createimagePath","createimage");
             outVar(Response,"editorPath","editor");

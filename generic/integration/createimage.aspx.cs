@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.UI;
-using com.wiris.plugin.web;
+using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 
@@ -14,8 +14,8 @@ namespace plugin_web
             if (mml==null) {
                 throw new Exception("Missing parameter 'mml'.");
             }
-            Dictionary<string, string> param = DispatcherUtils.getParameterMap(Request.Params);
-            PluginBuilder pb = DispatcherUtils.getPluginBuilder(Request);
+            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
             string r = pb.newRender().createImage(mml, param, null);
             this.Response.Write(r);
         }

@@ -63,6 +63,7 @@
     <Content Include="integration\showcasimage.aspx" />
     <Content Include="integration\test.aspx" />
     <Content Include="integration\configurationjs.aspx" />
+    <Content Include="integration\testfilter.aspx" />
     <Compile Include="integration\cas.aspx.cs">
       <DependentUpon>cas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -107,6 +108,10 @@
       <DependentUpon>configurationjs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="integration\testfilter.aspx.cs">
+      <DependentUpon>testfilter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="configuration.ini" />
@@ -131,7 +136,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>50022</DevelopmentServerPort>
+          <DevelopmentServerPort>50026</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
