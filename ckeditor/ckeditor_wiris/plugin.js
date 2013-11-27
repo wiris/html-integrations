@@ -1,6 +1,6 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
-var _wrs_int_conf_async = true;
+var _wrs_int_conf_async = false;
 
 var _wrs_conf_path = CKEDITOR.basePath + '/plugins/ckeditor_wiris';
 
@@ -106,40 +106,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						}, 1);
 					});
 				});
-				
-				// editor command
-				editor.addCommand('ckeditor_wiris_openFormulaEditor', {
-					'async': false,
-					'canUndo': false,
-					'editorFocus': false,
-					'allowedContent': 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)',
-					'requiredContent': 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](Wirisformula)',
-					
-					'exec': function (editor) {
-						wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE);
-					}
-				});
-				
-				// CAS command
-				var allowedContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](!Wiriscas); ';
-				allowedContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
-				allowedContent += 'param[name,value]';
-				
-				var requiredContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](Wiriscas); ';
-				requiredContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
-				requiredContent += 'param[name,value]';
-				
-				editor.addCommand('ckeditor_wiris_openCAS', {
-					'async': false,								// The command need some time to complete after exec function returns.
-					'canUndo': false,
-					'editorFocus': false,
-					'allowedContent': allowedContent,
-					'requiredContent': requiredContent,
-					
-					'exec': function (editor) {
-						wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE, editor.langCode);
-					}
-				});
 			}
 			else {
 				setTimeout(whenDocReady, 50);
@@ -183,14 +149,30 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		// CKEditor replaces several times the element element during its execution, so we must assign the events again.
 		setInterval(checkElement, 500);
-	
-		if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
+		
+		// editor command
+		
+		if (_wrs_conf_editorEnabled) {
+			var allowedContent = 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)';
+			
+			editor.addCommand('ckeditor_wiris_openFormulaEditor', {
+				'async': false,
+				'canUndo': true,
+				'editorFocus': true,
+				'allowedContent': allowedContent,
+				'requiredContent': allowedContent,
+				
+				'exec': function (editor) {
+					wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE);
+				}
+			});
+			
 			editor.ui.addButton('ckeditor_wiris_formulaEditor', {
 				'label': 'WIRIS editor',
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});
-
+			
 			_wrs_int_wirisProperties = {};
 
 			if ('wirisimagecolor' in editor.config) {
@@ -230,7 +212,25 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			}
 		}
 		
-		if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
+		// CAS command
+		
+		if (_wrs_conf_CASEnabled) {
+			allowedContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](!Wiriscas); ';
+			allowedContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
+			allowedContent += 'param[name,value]';
+			
+			editor.addCommand('ckeditor_wiris_openCAS', {
+				'async': false,								// The command need some time to complete after exec function returns.
+				'canUndo': true,
+				'editorFocus': true,
+				'allowedContent': allowedContent,
+				'requiredContent': allowedContent,
+				
+				'exec': function (editor) {
+					wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE, editor.langCode);
+				}
+			});
+			
 			editor.ui.addButton('ckeditor_wiris_CAS', {
 				'label': 'WIRIS cas',
 				'command': 'ckeditor_wiris_openCAS',
