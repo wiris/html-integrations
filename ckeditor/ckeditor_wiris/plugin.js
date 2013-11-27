@@ -87,10 +87,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						
 						e.data.dataValue = wrs_endParse(e.data.dataValue);
 					});
-					
-					if (editor._.events.doubleclick) {					// When the element is double clicked, a dialog is open. This must be avoided.
-						editor._.events.doubleclick.listeners = [];
-					}
 				});
 				
 				// editor command
@@ -293,6 +289,10 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 			else {
 				_wrs_int_window.focus();
 			}
+			
+			setTimeout(function () {
+				CKEDITOR.dialog.getCurrent().hide();
+			}, 1);
 		}
 		else if (wrs_containsClass(element, _wrs_conf_CASClassName)) {
 			if (!_wrs_int_window_opened) {
@@ -302,6 +302,10 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 			else {
 				_wrs_int_window.focus();
 			}
+			
+			setTimeout(function () {
+				CKEDITOR.dialog.getCurrent().hide();
+			}, 1);
 		}
 	}
 }
