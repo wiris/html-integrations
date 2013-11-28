@@ -118,17 +118,20 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		
 		function checkElement() {
 			try {
+				var sameElement = false;
 				var newElement;
 				
 				if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 					newElement = editor.element.$;
+					sameElement = (newElement == element);
 				}
 				else {
 					var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
 					newElement = elem.getElementsByTagName('iframe')[0];
+					sameElement = (element != null && 'contentWindow' in element && newElement.contentWindow.document == element.contentWindow.document);
 				}
 				
-				if (element != newElement) {
+				if (!sameElement) {
 					if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 						wrs_addElementEvents(newElement, function (div, element) {
 							wrs_int_doubleClickHandlerForDiv(editor, div, element);
@@ -139,7 +142,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 							wrs_int_doubleClickHandlerForIframe(editor, iframe, element);
 						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 					}
-						
+					
 					element = newElement;
 				}
 			}
