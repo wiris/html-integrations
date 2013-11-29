@@ -68,6 +68,14 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			lastDataSet = editor.getData();
 		});
 		
+		editor.on('doubleclick', function (event) {
+			if (event.data.element.$.nodeName.toLowerCase() == 'img' && wrs_containsClass(event.data.element.$, _wrs_conf_imageClassName) || wrs_containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
+				event.data.dialog = null;
+			}
+		});
+		
+		var element = null;
+		
 		function whenDocReady() {
 			if (typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
 				editor.setData(wrs_initParse(lastDataSet), function () {
@@ -89,22 +97,44 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						e.data.dataValue = wrs_endParse(e.data.dataValue);
 					});
 					
-					if (editor._.events.doubleclick) {					// When the element is double clicked, a dialog is open. This must be avoided.
-						editor._.events.doubleclick.disabledListeners = editor._.events.doubleclick.listeners;
-						editor._.events.doubleclick.listeners = [];
-					}
-					
-					editor.on('doubleclick', function (event) {
-						setTimeout(function () {
-							if (!_wrs_int_disableDoubleClick) {
-								for (var i = 0; i < editor._.events.doubleclick.disabledListeners.length; ++i) {
-									editor._.events.doubleclick.disabledListeners[i](event.editor, event.data, event.stop, event.cancel);
-								}
+					function checkElement() {
+						try {
+							var newElement;
+							
+							if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+								newElement = editor.element.$;
+							}
+							else {
+								var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+								newElement = elem.getElementsByTagName('iframe')[0];
 							}
 							
-							_wrs_int_disableDoubleClick = false;
-						}, 1);
-					});
+							if (!newElement.wirisActive) {
+								if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+									wrs_addElementEvents(newElement, function (div, element, event) {
+										wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+									
+									newElement.wirisActive = true;
+									element = newElement;
+								}
+								else if (newElement.contentWindow != null) {
+									wrs_addIframeEvents(newElement, function (iframe, element, event) {
+										wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event);
+									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+									
+									newElement.wirisActive = true;
+									element = newElement;
+								}
+							}
+						}
+						catch (e) {
+							alert('Error while assigning events to the editable area.');
+						}
+					}
+					
+					// CKEditor replaces several times the element element during its execution, so we must assign the events again.
+					setInterval(checkElement, 500);
 				});
 			}
 			else {
@@ -113,45 +143,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		}
 		
 		whenDocReady();
-		
-		var element = null;
-		
-		function checkElement() {
-			try {
-				var sameElement = false;
-				var newElement;
-				
-				if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-					newElement = editor.element.$;
-					sameElement = (newElement == element);
-				}
-				else {
-					var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
-					newElement = elem.getElementsByTagName('iframe')[0];
-					sameElement = (element != null && 'contentWindow' in element && newElement.contentWindow.document == element.contentWindow.document);
-				}
-				
-				if (!sameElement) {
-					if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-						wrs_addElementEvents(newElement, function (div, element) {
-							wrs_int_doubleClickHandlerForDiv(editor, div, element);
-						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-					}
-					else {
-						wrs_addIframeEvents(newElement, function (iframe, element) {
-							wrs_int_doubleClickHandlerForIframe(editor, iframe, element);
-						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-					}
-					
-					element = newElement;
-				}
-			}
-			catch (e) {
-			}
-		}
-		
-		// CKEditor replaces several times the element element during its execution, so we must assign the events again.
-		setInterval(checkElement, 500);
 		
 		// editor command
 		
@@ -282,8 +273,8 @@ function wrs_int_openNewCAS(element, isIframe, language) {
  * @param object div Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandlerForDiv(editor, div, element) {
-	wrs_int_doubleClickHandler(editor, div, false, element);
+function wrs_int_doubleClickHandlerForDiv(editor, div, element, event) {
+	wrs_int_doubleClickHandler(editor, div, false, element, event);
 }
 
 /**
@@ -291,8 +282,8 @@ function wrs_int_doubleClickHandlerForDiv(editor, div, element) {
  * @param object div Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandlerForIframe(editor, iframe, element) {
-	wrs_int_doubleClickHandler(editor, iframe, true, element);
+function wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event) {
+	wrs_int_doubleClickHandler(editor, iframe, true, element, event);
 }
 
 /**
@@ -300,12 +291,9 @@ function wrs_int_doubleClickHandlerForIframe(editor, iframe, element) {
  * @param object target Target
  * @param object element Element double clicked
  */
-function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
-
+function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
-			_wrs_int_disableDoubleClick = true;
-			
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(target, isIframe, editor.langCode);
@@ -315,8 +303,6 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 			}
 		}
 		else if (wrs_containsClass(element, _wrs_conf_CASClassName)) {
-			_wrs_int_disableDoubleClick = true;
-		
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingCAS(target, isIframe, editor.langCode);
