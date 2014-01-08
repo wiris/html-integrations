@@ -1509,7 +1509,7 @@ function wrs_mathmlEncode(input) {
 }
 
 /**
- * Converts special symbols (> 128) to entities.
+ * Converts special symbols (> 128) to entities and replaces all textual entities by its number entities.
  * @param string mathml
  * @return string
  */
@@ -1517,12 +1517,27 @@ function wrs_mathmlEntities(mathml) {
 	var toReturn = '';
 	
 	for (var i = 0; i < mathml.length; ++i) {
+		var character = mathml.charAt(i);
+
 		//parsing > 128 characters
 		if (mathml.charCodeAt(i) > 128) {
 			toReturn += '&#' + mathml.charCodeAt(i) + ';';
 		}
+		else if (character == '&') {
+			var end = mathml.indexOf(';', i + 1);
+
+			if (end >= 0) {
+				var container = document.createElement('span');
+				container.innerHTML = mathml.substring(i, end + 1);
+				toReturn += '&#' + (container.innerText || container.textContent).charCodeAt(0) + ';';
+				i = end;
+			}
+			else {
+				toReturn += character;
+			}
+		}
 		else {
-			toReturn += mathml.charAt(i);
+			toReturn += character;
 		}
 	}
 	
