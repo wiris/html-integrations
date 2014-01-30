@@ -56,7 +56,7 @@ var _wrs_int_directionality;
 				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
 				
 				function whenDocReady() {
-					if (typeof _wrs_conf_plugin_loaded!= 'undefined') {
+					if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
 						var language = editor.getParam('language');
 						_wrs_int_directionality = editor.getParam('directionality');
 				

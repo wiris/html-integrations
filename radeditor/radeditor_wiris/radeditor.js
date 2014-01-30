@@ -120,7 +120,7 @@ function OnClientLoad(editor, args){
 	});
 
 	function whenDocReady() {
-		if (typeof _wrs_conf_plugin_loaded!= 'undefined') {
+		if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
 			wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 			editor.set_html(wrs_initParse(editor.get_html(), _wrs_int_language));
 		}

@@ -81,7 +81,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		var element = null;
 		
 		function whenDocReady() {
-			if (typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
+			if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
 				editor.setData(wrs_initParse(lastDataSet), function () {
 					var changingMode = false;
 					
