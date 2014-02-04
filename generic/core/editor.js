@@ -24,6 +24,11 @@ else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 	wrs_int_opener = window.opener.parent;
 }
 /* FCKeditor integration end */
+if ('wrs_attributes' in window){
+	alert(wrs_attributes);
+} else {
+	alert("hello");
+}
 
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
