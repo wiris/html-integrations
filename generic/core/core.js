@@ -290,6 +290,10 @@ function wrs_createHttpRequest() {
 		throw 'Cross site scripting is only allowed for HTTP.';
 	}
 	
+	//if (typeof XDomainRequest != 'undefined') { // ie8, ie9
+	//	return new XDomainRequest();
+	//}
+
 	if (typeof XMLHttpRequest != 'undefined') {
 		return new XMLHttpRequest();
 	}
@@ -1747,7 +1751,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		isIframe = true;
 	}
 	
-	var path = _wrs_conf_editorPath;
+	var path = _wrs_conf_path + "/core/editor.html"; // _wrs_conf_editorPath;
 
 	if (language) {
 		path = wrs_addArgument(path,"lang",language);

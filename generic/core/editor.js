@@ -16,6 +16,27 @@ else {											// For iframe mode
 	}
 }
 
+// Insert editor
+var lang = new RegExp("lang=([^&]*)","i").exec(window.location);
+lang = (lang!=null && lang.length>1) ? lang[1]:"en";
+var script = document.createElement('script');
+script.type = 'text/javascript';
+var editorUrl = wrs_int_opener._wrs_conf_editorUrl;
+// Change to https if necessary
+if (true || window.location.href.indexOf("https://")==0) {
+	if (editorUrl.indexOf("http://")==0) {
+		editorUrl = "https"+editorUrl.substring(4);
+	}
+}
+script.src = editorUrl+"?lang="+lang;
+document.getElementsByTagName('head')[0].appendChild(script);
+
+// Insert strings
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = "../lang/"+lang+"/strings.js";
+document.getElementsByTagName('head')[0].appendChild(script);
+
 if (window.parent.InnerDialogLoaded) {			// iframe mode
 	window.parent.InnerDialogLoaded();
 	closeFunction = window.parent.Cancel;
@@ -28,19 +49,14 @@ else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
+	
+	wrs_attributes = wrs_int_opener._wrs_conf_editorParameters;
+	wrs_attributes.language = queryParams['lang'];
 
-	if ('wrs_attributes' in window){
-		wrs_attributes.language = queryParams['lang'];
-	}
-	else{
-		wrs_attributes = {
-			'language' : queryParams['lang']
-		};
-	}
 	if (wrs_int_opener._wrs_conf_editorToolbar.length>0) {
 		wrs_attributes['toolbar'] = wrs_int_opener._wrs_conf_editorToolbar;
 	}
-	
+
 	if (com.wiris.jsEditor.defaultBasePath) {
 		editor = com.wiris.jsEditor.JsEditor.newInstance(wrs_attributes);
 	}	

@@ -3,7 +3,6 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta name="keywords" content="math,science" />
-		<script type="text/javascript" src="core/WIRISplugins.js?viewer=image"></script>
 		<script type="text/javascript">
 			String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 			function getParameter(name) {
@@ -30,6 +29,7 @@
 			con.open("GET", "tech.txt", false);
 			con.send(null);
 			var s = con.responseText;
+			WIRISplugins_js = "core/WIRISplugins.js";
 			tech = s.split("#")[0].trim();
 		    if (tech=="php") {
 				_wrs_int_conf_file = "integration/loadconfig.php";
@@ -39,7 +39,15 @@
 				_wrs_int_conf_file = "app/configurationjs";
 	        } else if (tech=="java") {
 				_wrs_int_conf_file = "/pluginwiris_engineapp/configurationjs";
+	        } else if (tech=="nodejs") {
+				_wrs_int_conf_file = "integration/configurationjs";
+				WIRISplugins_js = "/integration/WIRISplugins.js";
 	        }
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = WIRISplugins_js + "?viewer=image";
+			document.getElementsByTagName('head')[0].appendChild(script);
+
 			var content = getParameter("content");
 		</script>
 		<script type="text/javascript" src="core/display.js"></script>
