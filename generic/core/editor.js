@@ -88,6 +88,10 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		editor.setMathML(mathml);
 	}
 	
+	if (typeof strings == 'undefined') {
+		strings = new Object();
+	}
+	
 	// Submit button.
 	var controls = document.getElementById('controls');
 	var submitButton = document.createElement('input');

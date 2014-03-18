@@ -32,15 +32,15 @@
 			WIRISplugins_js = "core/WIRISplugins.js";
 			tech = s.split("#")[0].trim();
 		    if (tech=="php") {
-				_wrs_int_conf_file = "integration/loadconfig.php";
+				_wrs_int_conf_file_override = "integration/loadconfig.php";
 			} else if (tech=="aspx") {
-				_wrs_int_conf_file = "integration/configurationjs.aspx";
+				_wrs_int_conf_file_override = "integration/configurationjs.aspx";
 	        } else if (tech=="local-java") {
-				_wrs_int_conf_file = "app/configurationjs";
+				_wrs_int_conf_file_override = "app/configurationjs";
 	        } else if (tech=="java") {
-				_wrs_int_conf_file = "/pluginwiris_engineapp/configurationjs";
+				_wrs_int_conf_file_override = "/pluginwiris_engineapp/configurationjs";
 	        } else if (tech=="nodejs") {
-				_wrs_int_conf_file = "integration/configurationjs";
+				_wrs_int_conf_file_override = "integration/configurationjs";
 				WIRISplugins_js = "/integration/WIRISplugins.js";
 	        }
 			var script = document.createElement('script');
@@ -51,7 +51,7 @@
 			var content = getParameter("content");
 		</script>
 		<script type="text/javascript" src="core/display.js"></script>
-		<script type="text/javascript" src="tests/generic_demo.js"></script>
+		<script type="text/javascript" src="wirisplugin-generic.js"></script>
 
 		<script type="text/javascript">
 			function wrs_addEvent(element, event, func) {
@@ -85,7 +85,7 @@
 						iframe.contentWindow.document.body.innerHTML = textarea.value;
 					
 						// WE INIT THE WIRIS PLUGIN HERE
-						wrs_int_init(textarea.id);
+						wrs_int_init(iframe,toolbar);
 					}
 				});
 				
@@ -103,11 +103,11 @@
 				var form = document.getElementById('exampleForm');
 				
 				wrs_addEvent(form, 'submit', function () {
-					//textarea.value = iframe.contentWindow.document.body.innerHTML;
-					// In our case, the plugin is who sets the textarea content.
+					// Set the textarea content and call "wrs_endParse"
+					textarea.value = wrs_endParse(iframe.contentWindow.document.body.innerHTML);
 				});
 			});
-			
+
 			function changeDPI() {
 				ls = document.getElementsByClassName('Wirisformula');
 				for (i=0;i<ls.length;i++) {
