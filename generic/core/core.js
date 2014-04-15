@@ -512,11 +512,18 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
 			
 			if (endPosition != -1) {
 				var latex = code.substring(startPosition + 2, endPosition);
-				latex = wrs_htmlentitiesDecode(latex);
-				var mathml = wrs_getMathMLFromLatex(latex, true);
-				var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
-				output += wrs_createObjectCode(imgObject);
-				endPosition += 2;
+
+				if (latex.indexOf('<') == -1) {
+					latex = wrs_htmlentitiesDecode(latex);
+					var mathml = wrs_getMathMLFromLatex(latex, true);
+					var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
+					output += wrs_createObjectCode(imgObject);
+					endPosition += 2;
+				}
+				else {
+					output += '$$';
+					endPosition = startPosition + 2;
+				}
 			}
 			else {
 				output += '$$';
