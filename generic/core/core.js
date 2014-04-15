@@ -1503,10 +1503,38 @@ function wrs_mathmlDecode(input) {
 	input = input.split(_wrs_safeXmlCharacters.ampersand).join(_wrs_xmlCharacters.ampersand);
 	input = input.split(_wrs_safeXmlCharacters.quote).join(_wrs_xmlCharacters.quote);
 	
-	// We are replacing $ by & for retrocompatibility. Now, the standard is replace § by &
-	input = input.split('$').join('&');
+	// We are replacing $ by & when its part of an entity for retrocompatibility. Now, the standard is replace § by &
+	var returnValue = '';
+	var currentEntity = null;
+
+	for (var i = 0; i < input.length; ++i) {
+		var character = input.charAt(i);
+
+		if (currentEntity == null) {
+			if (character == '$') {
+				currentEntity = '';
+			}
+			else {
+				returnValue += character;
+			}
+		}
+		else {
+			if (character == ';') {
+				returnValue += '&' + currentEntity + ';';
+				currentEntity = null;
+			}
+			else if (character.match(/([a-zA-Z0-9#._-] | '-')/)) {	// character is part of an entity
+				currentEntity += character;
+			}
+			else {
+				returnValue += '$' + currentEntity;		// Is not an entity
+				currentEntity = null;
+				--i;									// Parse again the current character
+			}
+		}
+	}
 	
-	return input;
+	return returnValue;
 }
 
 /**
