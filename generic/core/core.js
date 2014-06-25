@@ -1901,7 +1901,11 @@ function wrs_parseMathmlToLatex(content, characters){
 		if (startAnnotation != -1){
 			startAnnotation += openTarget.length;
 			closeAnnotation = mathml.indexOf(closeTarget);
-			output += '$$' + mathml.substring(startAnnotation, closeAnnotation) + '$$';
+			var latex = mathml.substring(startAnnotation, closeAnnotation);
+			if (characters == _wrs_safeXmlCharacters) {
+				latex = wrs_mathmlDecode(latex);
+			}
+			output += '$$' + latex + '$$';
 		}else{
 			output += mathml;
 		}
