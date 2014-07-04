@@ -120,6 +120,8 @@ function wrs_addEvent(element, event, func) {
  * @param function mouseupHandler Function to run when user mouseups the iframe
  */
 function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
+	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
+	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml';
 	wrs_addElementEvents(iframe.contentWindow.document, function (target, element, event) {
 			doubleClickHandler(iframe, element, event);
 		}, function (target, element, event) {
