@@ -7,22 +7,20 @@ require_once 'lib/php/Boot.class.php';
 $pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
 
 // Moodle base dir is 6 or 7 folders up, depending on the text editor.
-$moodle_dirrot = '../../../../../../../..';
+$moodle_dirrot = '../../../../../..';
 $moodle = false;
-
 if (file_exists($moodle_dirrot . '/lib/moodlelib.php')) {
     $moodle = true;
-} elseif (file_exists(substr($moodle_dirrot, 0, -3) . '/../lib/moodlelib.php')) {
-    $moodle_dirrot .= substr($moodle_dirrot, 0, -3);
+} elseif (file_exists($moodle_dirrot . '/../lib/moodlelib.php')) {
+    $moodle_dirrot .= '/..';
     $moodle = true;
-} else if (file_exists(substr($moodle_dirrot, 0, -6) . '/../../lib/moodlelib.php')) {
-  	$moodle_dirrot .= substr($moodle_dirrot, 0, -6);
+}  elseif (file_exists($moodle_dirrot . '/../../lib/moodlelib.php')) {
+    $moodle_dirrot .= '/..';
     $moodle = true;
 }
-
 if ($moodle) {
     $wirisFilter = $moodle_dirrot . '/filter/wiris/MoodleConfigurationUpdater.php';
-    $config = $moodle_dirrot . '/config.php';	
+    $config = $moodle_dirrot . '/config.php';   
     define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
     include_once $config;
     include_once $wirisFilter;
