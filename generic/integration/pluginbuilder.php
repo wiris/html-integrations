@@ -15,7 +15,7 @@ if (file_exists($moodle_dirrot . '/lib/moodlelib.php')) {
     $moodle_dirrot .= '/..';
     $moodle = true;
 }  elseif (file_exists($moodle_dirrot . '/../../lib/moodlelib.php')) {
-    $moodle_dirrot .= '/..';
+    $moodle_dirrot .= '/../..';
     $moodle = true;
 }
 if ($moodle) {
