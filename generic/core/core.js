@@ -120,8 +120,7 @@ function wrs_addEvent(element, event, func) {
  * @param function mouseupHandler Function to run when user mouseups the iframe
  */
 function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
-	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
-	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml';
+	wrs_initSetSize();
 	wrs_addElementEvents(iframe.contentWindow.document, function (target, element, event) {
 			doubleClickHandler(iframe, element, event);
 		}, function (target, element, event) {
@@ -1172,6 +1171,7 @@ function wrs_httpBuildQuery(properties) {
 	in Moodle.
  */
 function wrs_initParse(code, language) {
+	wrs_initSetSize();
 	code = wrs_initParseSaveMode(code, language);
 	return wrs_initParseEditMode(code);
 }
@@ -2176,6 +2176,11 @@ function wrs_fixAfterResize(img) {
 	if (_wrs_conf_setSize) {
 		wrs_setImgSize(img,img.src);
 	}
+}
+
+function wrs_initSetSize() {
+	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
+	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml';
 }
 
 function wrs_loadConfiguration() {
