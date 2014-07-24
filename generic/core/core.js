@@ -974,9 +974,10 @@ function wrs_getQueryParams(windowObject) {
  * If the caret is on a text node, concatenates it with all the previous and next text nodes.
  * @param object target The editable element
  * @param boolean isIframe Specifies if the target is an iframe or not
+ * @param forceGetSelection If true, ignores IE system to get the current selection and uses window.getSelection()
  * @return object An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text
  */
-function wrs_getSelectedItem(target, isIframe) {
+function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
 	var windowTarget;
 	
 	if (isIframe) {
@@ -988,7 +989,7 @@ function wrs_getSelectedItem(target, isIframe) {
 		target.focus();
 	}
 	
-	if (document.selection) {
+	if (document.selection && !forceGetSelection) {
 		var range = windowTarget.document.selection.createRange();
 
 		if (range.parentElement) {
@@ -1064,6 +1065,10 @@ function wrs_getSelectedItem(target, isIframe) {
 				'node': node,
 				'caretPosition': range.startOffset
 			};
+		}
+
+		if (node != range.endContainer) {
+			return null;
 		}
 		
 		if (node.nodeType == 1) {	// ELEMENT_NODE
