@@ -20,11 +20,20 @@ if (file_exists($moodle_dirrot . '/lib/moodlelib.php')) {
 }
 if ($moodle) {
     $wirisFilter = $moodle_dirrot . '/filter/wiris/MoodleConfigurationUpdater.php';
-    $config = $moodle_dirrot . '/config.php';   
+    $config = $moodle_dirrot . '/config.php';
+
     define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
+     $scriptName = explode('/', $_SERVER["SCRIPT_FILENAME"]);
+        $scriptName = array_pop($scriptName);
+
+        if ($scriptName == 'showimage.php') {
+            define('ABORT_AFTER_CONFIG', true);
+        }
     include_once $config;
     include_once $wirisFilter;
+    
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_configuration_MoodleConfigurationUpdater());
+    
 }
 
 $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
