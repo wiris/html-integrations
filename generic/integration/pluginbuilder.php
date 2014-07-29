@@ -28,6 +28,7 @@ if ($moodle) {
 
         if ($scriptName == 'showimage.php') {
             define('ABORT_AFTER_CONFIG', true);
+            define('MOODLE_INTERNAL', true); // Moodle 2.2 - 2.5 min config doesn't define 'MOODLE_INTERNAL'.
         }
     include_once $config;
     include_once $wirisFilter;
