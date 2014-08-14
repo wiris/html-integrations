@@ -23,7 +23,7 @@ var script = document.createElement('script');
 script.type = 'text/javascript';
 var editorUrl = wrs_int_opener._wrs_conf_editorUrl;
 // Change to https if necessary
-if (window.location.href.indexOf("https://")==0) {
+if (true || window.location.href.indexOf("https://")==0) {
 	if (editorUrl.indexOf("http://")==0) {
 		editorUrl = "https"+editorUrl.substring(4);
 	}
@@ -36,13 +36,17 @@ var script = document.createElement('script');
 script.type = 'text/javascript';
 script.src = "../lang/"+lang+"/strings.js";
 document.getElementsByTagName('head')[0].appendChild(script);
-
-if (window.parent.InnerDialogLoaded) {			// iframe mode
-	window.parent.InnerDialogLoaded();
-	closeFunction = window.parent.Cancel;
+try { // Catch exception: window.opener.parent and radeditor in different domain (same origin policy)
+	
+	if (window.parent.InnerDialogLoaded) {			// iframe mode
+		window.parent.InnerDialogLoaded();
+		closeFunction = window.parent.Cancel;
+	}
+	else if (window.opener.parent.FCKeditorAPI) {	// popup mode
+		wrs_int_opener = window.opener.parent;
+	}
 }
-else if (window.opener.parent.FCKeditorAPI) {	// popup mode
-	wrs_int_opener = window.opener.parent;
+catch (e) {
 }
 /* FCKeditor integration end */
 
