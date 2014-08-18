@@ -23,7 +23,7 @@ var script = document.createElement('script');
 script.type = 'text/javascript';
 var editorUrl = wrs_int_opener._wrs_conf_editorUrl;
 // Change to https if necessary
-if (true || window.location.href.indexOf("https://")==0) {
+if (window.location.href.indexOf("https://")==0) {
 	if (editorUrl.indexOf("http://")==0) {
 		editorUrl = "https"+editorUrl.substring(4);
 	}
