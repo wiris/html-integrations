@@ -45,7 +45,7 @@ var _wrs_int_directionality;
 (function () {
 	tinymce.create('tinymce.plugins.tiny_mce_wiris', {
 		init: function (editor, url) {
-			var iframe;
+			var element;
 			
 			//Fix a Moodle 2.4 bug. data-mathml was lost without this.
 			if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
@@ -216,7 +216,7 @@ function wrs_int_openNewFormulaEditor(element, language, isIframe) {
 		_wrs_isNewElement = true;
 		_wrs_int_temporalIframe = element;
 		_wrs_int_temporalElementIsIframe = isIframe;
-		_wrs_int_window = wrs_openEditorWindow(language, element, false);
+		_wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
 	}
 }
 
