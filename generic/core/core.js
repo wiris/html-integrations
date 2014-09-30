@@ -7,6 +7,7 @@ var _wrs_isNewElement = true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
+var _wrs_iosRange;
 
 // var _wrs_conf_setSize = true;
 
@@ -1395,6 +1396,9 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 				if (_wrs_androidRange){
 					var isAndroid = true;
 					var range = _wrs_androidRange;
+				} else if (_wrs_iosRange){
+					var isIOS = true;
+					var range = _wrs_iosRange;
 				}else{
 					var selection = windowTarget.getSelection();
 
@@ -1421,7 +1425,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 					node.insertBefore(element, node.childNodes[position]);
 				}
 				
-				if (!isAndroid){
+				if (!isAndroid && !isIOS){
 					//Fix to set the caret after the inserted image
 					range.selectNode(element);
 					position = range.endOffset;
@@ -1789,10 +1793,16 @@ function wrs_openCASWindow(target, isIframe, language) {
  */
 function wrs_openEditorWindow(language, target, isIframe) {
 	var ua = navigator.userAgent.toLowerCase();
-	var isAndroid = ua.indexOf("android") > -1; 
+	var isAndroid = ua.indexOf("android") > -1;
+	var isIOS =  ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
 	if(isAndroid) {
 		var selection = target.contentWindow.getSelection();
 		_wrs_androidRange = selection.getRangeAt(0);
+	}
+
+	if(isIOS) {
+		var selection = target.contentWindow.getSelection();
+		_wrs_iosRange = selection.getRangeAt(0);
 	}
 
 	if (isIframe === undefined) {
