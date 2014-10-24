@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta name="keywords" content="math,science" />
+		<meta name="keywords" content="math,science" />		
 		<script type="text/javascript">
 			String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 			function getParameter(name) {
@@ -24,17 +24,18 @@
 					document.getElementById(id).value = content;
 				}
 			}
-			
+
 			var con = new XMLHttpRequest();
 			con.open("GET", "tech.txt", false);
 			con.send(null);
 			var s = con.responseText;
 			WIRISplugins_js = "core/WIRISplugins.js";
 			tech = s.split("#")[0].trim();
+			window._wrs_int_path = window._wrs_int_path == null ? "" : window._wrs_int_path;
 		    if (tech=="php") {
-				_wrs_int_conf_file_override = "integration/loadconfig.php";
+				_wrs_int_conf_file_override = window._wrs_int_path.length > 0 ? window._wrs_int_path + "/integration/configurationjs.php" : "integration/configurationjs.php";
 			} else if (tech=="aspx") {
-				_wrs_int_conf_file_override = "integration/configurationjs.aspx";
+				_wrs_int_conf_file_override = window._wrs_int_path.length > 0 ? window._wrs_int_path + "/integration/configurationjs.aspx" : "integration/configurationjs.aspx";
 	        } else if (tech=="local-java") {
 				_wrs_int_conf_file_override = "app/configurationjs";
 	        } else if (tech=="java") {
