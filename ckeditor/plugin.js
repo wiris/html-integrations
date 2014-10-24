@@ -4,6 +4,11 @@ var _wrs_int_conf_async = false;
 
 var _wrs_conf_path = CKEDITOR.basePath + '/plugins/ckeditor_wiris';
 
+if (window._wrs_int_path == null) {
+	window._wrs_int_path = _wrs_conf_path;
+}
+
+
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
 	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');

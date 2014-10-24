@@ -1,1 +1,1 @@
-<%@ Page Language="C#" AutoEventWireup="false" CodeFile="service.aspx.cs" Inherits="plugin_web.service" %>
+<%@ Page Language="C#" AutoEventWireup="false" CodeFile="service.aspx.cs" Inherits="plugin_web.service" validateRequest="false" %>
