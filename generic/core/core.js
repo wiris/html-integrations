@@ -2216,14 +2216,10 @@ function wrs_loadConfiguration() {
 		}
 		_wrs_conf_path = baseURL;
 	}
-	// If global variable _wrs_int_path is not defined, integration path equals to confpath.
-	var isSetIntPath = (window._wrs_int_path != null);
-	if (!isSetIntPath || window._wrs_int_path.length == 0) {
-		window._wrs_int_path = _wrs_conf_path;
-	}
+
 	var script = document.createElement('script');
 	script.type = 'text/javascript';
-	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : window._wrs_int_path + "/" + _wrs_int_conf_file;
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
 	script.src = configUrl;
 	// _wrs_conf_path = path+'/';
 	document.getElementsByTagName('head')[0].appendChild(script); // asynchronous load of configuration

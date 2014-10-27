@@ -15,6 +15,11 @@ script.type = 'text/javascript';
 script.src = baseURL+'/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
+var _wrs_int_path = _wrs_int_conf_file.split("/");
+_wrs_int_path.pop();
+_wrs_int_path = _wrs_int_path.join("/");
+_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : baseURL + "/" + _wrs_int_path;
+
 var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
 var _wrs_conf_CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
 

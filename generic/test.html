@@ -29,13 +29,13 @@
 			con.open("GET", "tech.txt", false);
 			con.send(null);
 			var s = con.responseText;
-			WIRISplugins_js = "core/WIRISplugins.js";
+			WIRISplugins_js = "integration/WIRISplugins.js";
 			tech = s.split("#")[0].trim();
 			window._wrs_int_path = window._wrs_int_path == null ? "" : window._wrs_int_path;
 		    if (tech=="php") {
-				_wrs_int_conf_file_override = window._wrs_int_path.length > 0 ? window._wrs_int_path + "/integration/configurationjs.php" : "integration/configurationjs.php";
+				_wrs_int_conf_file_override = _wrs_int_path > 0 ? _wrs_int_path + "/configurationjs.php" : "integration/configurationjs.php";
 			} else if (tech=="aspx") {
-				_wrs_int_conf_file_override = window._wrs_int_path.length > 0 ? window._wrs_int_path + "/integration/configurationjs.aspx" : "integration/configurationjs.aspx";
+				_wrs_int_conf_file_override = _wrs_int_path > 0 ? _wrs_int_path + "/configurationjs.aspx" : "integration/configurationjs.aspx";
 	        } else if (tech=="local-java") {
 				_wrs_int_conf_file_override = "app/configurationjs";
 	        } else if (tech=="java") {

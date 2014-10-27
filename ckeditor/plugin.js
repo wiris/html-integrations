@@ -1,13 +1,14 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
+
 var _wrs_int_conf_async = false;
 
 var _wrs_conf_path = CKEDITOR.basePath + '/plugins/ckeditor_wiris';
 
-if (window._wrs_int_path == null) {
-	window._wrs_int_path = _wrs_conf_path;
-}
-
+var _wrs_int_path = _wrs_int_conf_file.split("/");
+_wrs_int_path.pop();
+_wrs_int_path = _wrs_int_path.join("/");
+_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + "/" + _wrs_int_path;
 
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {

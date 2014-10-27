@@ -16,6 +16,11 @@ if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_int_conf_async = false; // For sure!
 }
 
+var _wrs_int_path = _wrs_int_conf_file.split("/");
+_wrs_int_path.pop();
+_wrs_int_path = _wrs_int_path.join("/");
+_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + "/" + _wrs_int_path;
+
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
 	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
