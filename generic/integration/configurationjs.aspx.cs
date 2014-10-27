@@ -12,7 +12,7 @@ namespace plugin_web
         private void outVar(HttpResponse output, string key, string script) {
             output.Write("var _wrs_conf_");
             output.Write(key);
-            output.Write(" = _wrs_int_path +'/integration/");
+            output.Write(" = _wrs_int_path +'/");
             output.Write(script);
             output.Write(".aspx';\r\n");
         }
