@@ -19,7 +19,7 @@
 #wirisproxy_port = 
 # Basic authentication proxy configuration
 #wirisproxy_user = 
-#wirisproxy_pass = 
+#wirisproxy_password = 
 
 #
 # Folder properties
