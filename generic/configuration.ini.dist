@@ -33,7 +33,7 @@
 # Class overridables
 #
 #wirisstorageclass = com.wiris.plugin.storage.FileStorageAndCache
-#wirisconfigurationclass = com.wiris.plugin.servlets.configuration.ParameterServletConfigurationUpdater
+#wirisconfigurationclass = 
 #wirisconfigurationrefreshtime = 10000
 
 #
