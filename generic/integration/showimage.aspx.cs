@@ -15,6 +15,12 @@ namespace plugin_web
             if (digest==null && mml==null) {
                 throw new Exception("Missing parameters 'formula' or 'mml'.");
             }
+            // Backwards compatibility
+            // showimage.php?formula.png --> showimage.php?formula
+            // because formula is md5 string, remove all extensions.
+            if (digest.LastIndexOf(".") >= 0) {
+                digest = digest.Substring(0, digest.LastIndexOf("."));
+            }
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
             byte [] bs = pb.newRender().showImage(digest,mml,param);
