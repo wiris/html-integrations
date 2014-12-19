@@ -10,7 +10,8 @@ $render = $pluginBuilder->newRender();
 // Backwards compatibility
 // showimage.php?formula.png --> showimage.php?formula
 // because formula is md5 string, remove all extensions.
-$digest = array_shift(explode(".", $digest));
+$a = explode(".", $digest);
+$digest = array_shift($a);
 
 $r = $render->showImage($digest, $mml, $PARAMS);
 header('Content-Type: image/png');
