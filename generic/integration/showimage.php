@@ -10,7 +10,7 @@ $render = $pluginBuilder->newRender();
 // Backwards compatibility
 // showimage.php?formula.png --> showimage.php?formula
 // because formula is md5 string, remove all extensions.
-$extpos = strrpos($digest, "ini");
+$extpos = strrpos($digest, "png");
 if ($extpos) {
 	$digest=substr($digest, 0, $extpos-1);
 }
