@@ -5,6 +5,15 @@
 header('Content-Type: application/x-javascript');
 $NL = "\r\n";
 
+// Loaded from configuration
+require_once 'pluginbuilder.php';
+
+// Adding - if necessary - CORS headers
+$origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
+$res = new com_wiris_system_service_HttpResponse();
+$pluginBuilder->addCorsHeaders($res, $origin);
+
+
 // Scripts
 echo   "// Scripts".$NL;
 echo   "var _wrs_conf_createimagePath = _wrs_int_path + '/createimage.php';".$NL;
@@ -15,7 +24,5 @@ echo   "var _wrs_conf_createcasimagePath = _wrs_int_path + '/createcasimage.php'
 echo   "var _wrs_conf_getmathmlPath = _wrs_int_path + '/getmathml.php'; // Specifies where is the getmathml script.".$NL;
 echo   "var _wrs_conf_servicePath = _wrs_int_path + '/service.php'; // Specifies where is the service script.".$NL;
 
-// Loaded from configuration
-require_once 'pluginbuilder.php';
 $conf = $pluginBuilder->getConfiguration();
 echo $conf->getJavaScriptConfiguration();
