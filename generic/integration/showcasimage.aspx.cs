@@ -3,6 +3,7 @@ using System.Web.UI;
 using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
+using com.wiris.system.service;
 
 namespace plugin_web
 {
@@ -12,6 +13,12 @@ namespace plugin_web
         {
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            
+            // Adding - if necessary - CORS headers
+            HttpResponse res = new HttpResponse(this.Response);
+            String origin = this.Request.Headers.Get("origin");
+            pb.addCorsHeaders(res, origin);
+
             byte[] bs = pb.newCas().showCasImage(param["formula"],param);
             Response.ContentType = "image/png";
             Response.OutputStream.Write(bs, 0, bs.Length);

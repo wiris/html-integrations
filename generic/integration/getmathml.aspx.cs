@@ -3,6 +3,7 @@ using System.Web.UI;
 using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
+using com.wiris.system.service;
 
 namespace plugin_web
 {
@@ -17,6 +18,12 @@ namespace plugin_web
             {
                 digest = Request.Params["md5"];
             }
+
+            // Adding - if necessary - CORS headers
+            HttpResponse res = new HttpResponse(this.Response);
+            String origin = this.Request.Headers.Get("origin");
+            pb.addCorsHeaders(res, origin);
+
             String r = pb.newTextService().getMathML(digest, latex);
             Response.ContentType = "text/plain; charset=utf-8";
             Response.Write(r);

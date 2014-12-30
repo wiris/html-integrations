@@ -4,12 +4,15 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using System.Web;
+using com.wiris.system.service;
 
+using SystemHttpResponse = System.Web.HttpResponse;
+using WirisHttpResponse = com.wiris.system.service.HttpResponse;
 namespace plugin_web
 {
     public partial class configurationjs : System.Web.UI.Page
     {
-        private void outVar(HttpResponse output, string key, string script) {
+        private void outVar(SystemHttpResponse output, string key, string script) {
             output.Write("var _wrs_conf_");
             output.Write(key);
             output.Write(" = _wrs_int_path +'/");
@@ -21,6 +24,12 @@ namespace plugin_web
         {
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+
+            // Adding - if necessary - CORS headers            
+            WirisHttpResponse res = new WirisHttpResponse(this.Response);
+            String origin = this.Request.Headers.Get("origin");
+            pb.addCorsHeaders(res, origin);
+
             string r = pb.getConfiguration().getJavaScriptConfiguration();
             outVar(Response,"createimagePath","createimage");
             outVar(Response,"editorPath","editor");
