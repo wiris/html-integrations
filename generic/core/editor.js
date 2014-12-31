@@ -108,13 +108,21 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	
 	
 	wrs_int_opener.wrs_addEvent(submitButton, 'click', function () {
+		// In order to avoid n-formulas on n-clicks
+		// submit button is disabled 1 second
+		submitButton.disabled = true;
+
+		setTimeout(function()
+			{submitButton.disabled=false;
+			}, 1000);
+
 		var mathml = '';
-	
+
 		if (!editor.isFormulaEmpty()) {
 			mathml += editor.getMathML();							// If isn't empty, get mathml code to mathml variable.
 			mathml = wrs_int_opener.wrs_mathmlEntities(mathml);		// Apply a parse.
 		}
-		
+	
 		/* FCKeditor integration begin */
 		if (window.parent.InnerDialogLoaded && window.parent.FCKBrowserInfo.IsIE) {			// On IE, we must close the dialog for push the caret on the correct position.
 			closeFunction();
