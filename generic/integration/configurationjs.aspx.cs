@@ -6,13 +6,11 @@ using com.wiris.plugin.api;
 using System.Web;
 using com.wiris.system.service;
 
-using SystemHttpResponse = System.Web.HttpResponse;
-using WirisHttpResponse = com.wiris.system.service.HttpResponse;
 namespace plugin_web
 {
     public partial class configurationjs : System.Web.UI.Page
     {
-        private void outVar(SystemHttpResponse output, string key, string script) {
+        private void outVar(System.Web.HttpResponse output, string key, string script) {
             output.Write("var _wrs_conf_");
             output.Write(key);
             output.Write(" = _wrs_int_path +'/");
@@ -26,7 +24,7 @@ namespace plugin_web
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
 
             // Adding - if necessary - CORS headers            
-            WirisHttpResponse res = new WirisHttpResponse(this.Response);
+            com.wiris.system.service.HttpResponse res = new com.wiris.system.service.HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
