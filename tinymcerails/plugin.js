@@ -19,7 +19,7 @@ var _wrs_conf_imageMathmlAttribute = "data-mathml";
 // Define _wrs_conf_path (path where configuration is found)
 if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_baseURL = tinymce.baseURL;
-	_wrs_conf_path = _wrs_baseURL + '/plugins/wirisplugin/'; // TODO use the same variable name always
+	_wrs_conf_path = _wrs_baseURL + '/plugins/tiny_mce_wiris/'; // TODO use the same variable name always
 }else{
 	var base = tinymce.baseURL;
 	var search = 'lib/editor/tinymce';
@@ -64,7 +64,7 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 /* Plugin integration */
 (function () {
-	tinymce.create('tinymce.plugins.wirisplugin', {
+	tinymce.create('tinymce.plugins.tiny_mce_wiris', {
 		init: function (editor, url) {
 			var element;
 			
@@ -157,7 +157,7 @@ var _wrs_int_directionality;
 			}
 			
 			if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
-				editor.addCommand('wirisplugin_openFormulaEditor', function () {
+				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
 					_wrs_int_wirisProperties = {
 						'bgColor': editor.settings['wirisimagebgcolor'],
 						'symbolColor': editor.settings['wirisimagesymbolcolor'],
@@ -181,15 +181,15 @@ var _wrs_int_directionality;
 					wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
 				});
 			
-				editor.addButton('wirisplugin_formulaEditor', {
+				editor.addButton('tiny_mce_wiris_formulaEditor', {
 					title: 'WIRIS editor',
-					cmd: 'wirisplugin_openFormulaEditor',
+					cmd: 'tiny_mce_wiris_openFormulaEditor',
 					image: _wrs_int_editorIcon
 				});
 			}
 
 			if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
-				editor.addCommand('wirisplugin_openCAS', function () {
+				editor.addCommand('tiny_mce_wiris_openCAS', function () {
 					var language = editor.settings.language;
 				
 					if (editor.settings['wirisformulaeditorlang']) {
@@ -199,9 +199,9 @@ var _wrs_int_directionality;
 					wrs_int_openNewCAS(element, language, editor.inline ? false : true);
 				});
 			
-				editor.addButton('wirisplugin_CAS', {
+				editor.addButton('tiny_mce_wiris_CAS', {
 					title: 'WIRIS cas',
-					cmd: 'wirisplugin_openCAS',
+					cmd: 'tiny_mce_wiris_openCAS',
 					image: _wrs_int_CASIcon
 				});
 			}
@@ -210,7 +210,7 @@ var _wrs_int_directionality;
 		// all versions
 		getInfo: function () {
 			return {
-				longname : 'wirisplugin',
+				longname : 'tiny_mce_wiris',
 				author : 'Maths for More',
 				authorurl : 'http://www.wiris.com',
 				infourl : 'http://www.wiris.com',
@@ -219,7 +219,7 @@ var _wrs_int_directionality;
 		}	
 	});
 
-	tinymce.PluginManager.add('wirisplugin', tinymce.plugins.wirisplugin);
+	tinymce.PluginManager.add('tiny_mce_wiris', tinymce.plugins.tiny_mce_wiris);
 })();
 
 /**
