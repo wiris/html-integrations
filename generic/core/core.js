@@ -1446,6 +1446,9 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 			}
 		}
 		else {
+			if (!element) { // Editor empty, formula has been erased on edit.
+				_wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
+			}
 			_wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
 		}
 	}
@@ -2081,6 +2084,9 @@ function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth
  * @param string language Language for the formula.
  */
 function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode, language) {
+	if (mathml.length == 0) {
+		wrs_insertElementOnSelection(null, focusElement, windowTarget);
+	}
 	if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
 		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
