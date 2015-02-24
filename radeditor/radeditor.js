@@ -260,9 +260,7 @@ function wrs_int_mousedownHandler(Iframe, element) {
 function wrs_int_mouseupHandler(Iframe, element) {
     if (_wrs_int_temporalImageResizing) {
         setTimeout(function() {
-            _wrs_int_temporalImageResizing.removeAttribute('style');
-            _wrs_int_temporalImageResizing.removeAttribute('width');
-            _wrs_int_temporalImageResizing.removeAttribute('height');
+           	wrs_fixAfterResize(_wrs_int_temporalImageResizing);
         }, 10);
     }
 }
