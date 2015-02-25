@@ -2087,7 +2087,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
 	if (mathml.length == 0) {
 		wrs_insertElementOnSelection(null, focusElement, windowTarget);
 	}
-	if (editMode == 'latex') {
+	else if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
 		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
 		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
