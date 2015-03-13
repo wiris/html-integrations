@@ -1,0 +1,108 @@
+body.wrs_modal_open {
+	overflow: hidden;
+	position: fixed;
+}
+
+.wrs_modal_overlay {
+	overflow: scroll;
+	position: fixed;
+	font-family: arial, sans-serif;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:1;
+	pointer-events: auto;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+}
+
+.wrs_modal_overlay.wrs_modal_ios {
+	position: absolute;
+}
+
+.wrs_modal_title {
+	color : #FFFFFF;
+	font-weight : bold;
+	padding : 5px 0px 5px 10px;
+}
+
+.wrs_modal_close_button {
+	float : right;
+	cursor : pointer;
+	color : #FFFFFF;
+	font-weight : bold;
+	padding : 5px 10px 5px 0px;
+}
+
+.wrs_modal_iframe {
+	display : block;
+}
+
+.wrs_modal_title_bar {
+	font-weight : bold;
+	font-family : arial, sans-serif;
+	display : block;
+	background-color: #778e9a;
+}
+
+.wrs_modal_dialogContainer {
+	overflow: hidden;
+	border-style: solid;
+	border-width: 1px;
+	background: #fff;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_desktop {
+	margin: 40px auto;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_android {
+	margin: auto;
+}
+
+.wrs_modal_iframe.wrs_modal_android {
+	margin : auto;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_ios {
+	margin: auto;
+}
+
+.wrs_modal_iframe.wrs_modal_android {
+	margin : auto;
+}
+
+@media all and (orientation : portrait) {
+
+	.wrs_modal_dialogContainer.wrs_modal_mobile {
+		width: 100vmin;
+		height: 100vmax;
+		margin: 1vh auto;
+	}
+
+	.wrs_modal_iframe.wrs_modal_mobile {
+		width : 99vmin;
+		height : 95vmax;
+		margin : auto;
+	}
+}
+
+
+@media all and (orientation : landscape) {
+
+	.wrs_modal_dialogContainer.wrs_modal_mobile {
+		width: 100vmax;
+		height: 100vmin;
+		margin: 1vh auto;
+	}
+
+	.wrs_modal_iframe.wrs_modal_mobile {
+		width : 99vmax;
+		height : 95vmin;
+		margin : auto;
+	}
+}
