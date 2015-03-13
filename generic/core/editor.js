@@ -6,6 +6,9 @@ var closeFunction;
 if (window.opener) {							// For popup mode
 	wrs_int_opener = window.opener;
 	closeFunction = window.close;
+} else if (window.parent._wrs_conf_modalWindow ) {
+		wrs_int_opener = window.parent;
+		closeFunction = wrs_int_opener.wrs_closeModalWindow;
 }
 /* FCKeditor integration begin */
 else {											// For iframe mode
@@ -41,6 +44,8 @@ try { // Catch exception: window.opener.parent and radeditor in different domain
 	if (window.parent.InnerDialogLoaded) {			// iframe mode
 		window.parent.InnerDialogLoaded();
 		closeFunction = window.parent.Cancel;
+	}else if (window.parent._wrs_conf_modalWindow ) {
+			closeFunction =  wrs_int_opener.wrs_closeModalWindow;
 	}
 	else if (window.opener.parent.FCKeditorAPI) {	// popup mode
 		wrs_int_opener = window.opener.parent;
@@ -50,7 +55,10 @@ catch (e) {
 }
 /* FCKeditor integration end */
 
+
+
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
+
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
 	
@@ -100,6 +108,10 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var controls = document.getElementById('controls');
 	var submitButton = document.createElement('input');
 	submitButton.type = 'button';
+	submitButton.className = 'wrs_button_accept';
+	submitButton.background = '#778e9a';
+	submitButton.color = '#ffffff'
+
 	if (strings['accept'] != null){
 		submitButton.value = strings['accept'];
 	}else{
@@ -143,6 +155,8 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	// Cancel button.
 	var cancelButton = document.createElement('input');
 	cancelButton.type = 'button';
+	cancelButton.className = 'wrs_button_cancel';
+
 	if (strings['cancel'] != null){
 		cancelButton.value = strings['cancel'];
 	}else{
@@ -156,7 +170,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	
 	controls.appendChild(cancelButton);
 
-	var manualLink = document.getElementById('a_manual');
+	/*var manualLink = document.getElementById('a_manual');
 	if (typeof manualLink != 'undefined' && strings['manual'] != null){
 		manualLink.innerHTML = strings['manual'];
 	}
@@ -164,7 +178,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 	var latexLink = document.getElementById('a_latex');
 	if (typeof latexLink != 'undefined' && strings['latex'] != null){
 		latexLink.innerHTML = strings['latex'];
-	}
+	}*/
 
 	var queryLang = '';
 	if ('lang' in queryParams){
@@ -192,4 +206,4 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 
 wrs_int_opener.wrs_addEvent(window, 'unload', function () {
 	wrs_int_opener.wrs_int_notifyWindowClosed();
-});
+});	

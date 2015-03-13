@@ -8,6 +8,8 @@ var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
 var _wrs_iosRange;
+// We need a variable to send device properties to editor.js on modal mode.
+var _wrs_deviceProperties = {}
 
 // var _wrs_conf_setSize = true;
 
@@ -1044,7 +1046,7 @@ function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
 			'node': range.item(0)
 		};
 	}
-	
+1	
 	if (windowTarget.getSelection) {
 		var selection = windowTarget.getSelection();
 		
@@ -1792,6 +1794,7 @@ function wrs_openCASWindow(target, isIframe, language) {
  * @param string language Language code for the editor
  * @param object target The editable element
  * @param boolean isIframe Specifies if the target is an iframe or not
+ * @param boolean isModal Specifies if the target is a modal window or not
  * @return object The opened window
  */
 function wrs_openEditorWindow(language, target, isIframe) {
@@ -1801,11 +1804,13 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	if(isAndroid) {
 		var selection = target.contentWindow.getSelection();
 		_wrs_androidRange = selection.getRangeAt(0);
+		_wrs_conf_modalWindow = true; // conf property must be overrided on tablet/phone devices
 	}
 
 	if(isIOS) {
 		var selection = target.contentWindow.getSelection();
 		_wrs_iosRange = selection.getRangeAt(0);
+		_wrs_conf_modalWindow = true; // conf property must be overrided on tablet/phone devices
 	}
 
 	if (isIframe === undefined) {
@@ -1831,7 +1836,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	
 	_wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
 	_wrs_temporalRange = null;
-	
+
 	if (target) {
 		var selectedItem = wrs_getSelectedItem(target, isIframe);
 		
@@ -1885,9 +1890,36 @@ function wrs_openEditorWindow(language, target, isIframe) {
 			}
 		}
 	}
-	
-	return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+
+
+	if (!_wrs_conf_modalWindow) {
+		return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+	}
+	else {
+		var deviceWidth = window.outerWidth;
+		var deviceHeight = window.outerHeight;
+
+		var landscape = deviceWidth > deviceHeight;
+		var portrait = deviceWidth < deviceHeight;
+
+		var iframeAttributes  = {};
+		iframeAttributes['width'] =  _wrs_conf_editorAttributes.split(' ').join('').split(',')[0].split("=")[1];
+		iframeAttributes['height'] = _wrs_conf_editorAttributes.split(' ').join('').split(',')[1].split("=")[1];
+		iframeAttributes['src'] = _wrs_conf_path + "/core/editor.html";
+
+		var isMobile = (landscape && iframeAttributes['height'] > deviceHeight) || (portrait && iframeAttributes['width'] > deviceWidth) ? true : false;
+
+		// Device object properties
+		_wrs_deviceProperties['orientation'] = landscape ? 'landscape' : 'portait';
+		_wrs_deviceProperties['isAndroid'] = window.parent._wrs_androidRange ? true : false;
+		_wrs_deviceProperties['isIOS'] = window.parent._wrs_iosRange ? true : false;
+		_wrs_deviceProperties['isMobile'] = isMobile;
+
+		wrs_int_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties);
+	}
 }
+
+
 
 /**
  * Converts all occurrences of mathml code to LATEX.
@@ -2237,4 +2269,263 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
 	wrs_loadConfiguration();
 } else {
 	_wrs_conf_plugin_loaded = true;
+}
+
+
+
+/**
+ * Create modal window with embebbed iframe
+ * @title Modal window title
+ * @iframeParams iframe attributes
+ * @deviceProperties device properties like orientation, OS..
+ */
+
+function wrs_int_createModalWindow(title, iframeParams, deviceProperties) {
+
+	// Adding css stylesheet
+    var fileref = document.createElement("link");
+    fileref.setAttribute("rel", "stylesheet");
+	fileref.setAttribute("type", "text/css");
+	fileref.setAttribute("href", window.parent._wrs_conf_path + '/core/modal.css');
+
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+  	var attributes = {};
+
+  	attributes['class'] = 'wrs_modal_overlay';
+	var modalDiv = wrs_createElement('div', attributes);
+
+	attributes['class'] = 'wrs_modal_title_bar';
+	var barModalDiv = wrs_createElement('div', attributes);
+
+	attributes = {};
+	attributes['class'] = 'wrs_modal_title';
+	var titleModalDiv = wrs_createElement('div', attributes);
+	titleModalDiv.innerHTML = title;
+
+	attributes = {};
+	attributes['class'] = 'wrs_modal_close_button'
+	var closeDiv = wrs_createElement('div', attributes);
+	closeDiv.innerHTML = "X";
+
+
+	attributes = {};
+	attributes['class'] = 'wrs_modal_dialogContainer';
+	var containerDiv = wrs_createElement('div', attributes);
+	containerDiv.style.overflow = 'hidden';
+
+	attributes = {};
+	attributes['class'] = 'wrs_modal_iframe';
+	attributes['src'] = iframeParams['src'];
+	attributes['frameBorder'] = "0";
+
+	var iframe = wrs_createElement('iframe', attributes);
+
+	barModalDiv.appendChild(closeDiv);
+	barModalDiv.appendChild(titleModalDiv);
+	modalDiv.appendChild(containerDiv);
+
+	if (!deviceProperties['isMobile']) {
+		containerDiv.appendChild(barModalDiv);
+	}
+	containerDiv.appendChild(iframe);
+
+	document.body.className = document.body.className + "wrs_modal_open";
+
+	if (!deviceProperties['isMobile'] && !deviceProperties['isIOS'] && !deviceProperties['isAndroid']) { // Desktop
+		wrs_int_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams);
+	}
+	else if (deviceProperties['isAndroid'] && !deviceProperties['isMobile']) {
+		wrs_int_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams);
+	}
+	else if (deviceProperties['isIOS'] && !deviceProperties['isMobile']) {
+		wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams);
+	}
+	else if (deviceProperties['isMobile']) {
+		wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams);
+	}
+
+	document.documentElement.appendChild(modalDiv);
+
+	wrs_addEvent(closeDiv, 'click', function() {
+				wrs_closeModalWindow();
+	});
+
+}
+
+/**
+ * Create modal dialog for desktop OS.
+ * @param  modalDiv modal overlay div.
+ * @param  containerDiv modal window div.
+ * @param  iframe embedded iframe.
+ * @param  iframeParams  embedded iframe params (height, width).
+ */
+
+function wrs_int_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams) {
+	modalDiv.className = modalDiv.className + " wrs_modal_desktop";
+	containerDiv.className = containerDiv.className + " wrs_modal_desktop";
+	iframe.className = iframe.className + " wrs_modal_android"
+	var modalHeight = parseInt(iframeParams['height']) + 30;
+	var modalWidth = parseInt(iframeParams['width']) + 10;
+
+	containerDiv.style.width = modalWidth + 'px';
+	containerDiv.style.height = modalHeight + 'px';
+	iframe.style.width = iframeParams['width'] + 'px';
+	iframe.style.height =  iframeParams['height'] + 'px';
+	iframe.style.margin = '6px';
+
+	document.documentElement.appendChild(modalDiv);
+}
+
+/**
+ * Create modal dialog for non mobile android devices.
+ * @param  modalDiv modal overlay div.
+ * @param  containerDiv modal window div.
+ * @param  iframe embedded iframe.
+ * @param  iframeParams  embedded iframe params (height, width).
+ */
+
+function wrs_int_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams) {
+	modalDiv.className = modalDiv.className + " wrs_modal_android";
+	containerDiv.className = containerDiv.className + " wrs_modal_android";
+	iframe.className = iframe.className + " wrs_modal_android";
+
+	// Android portrait
+	if (window.outerWidth < window.outerHeight) {
+
+		var modalHeight = parseInt(iframeParams['height']) + 30;
+		var modalWidth = parseInt(iframeParams['width']) + 10;
+
+		containerDiv.style.width = modalWidth + 'px';
+		containerDiv.style.height = modalHeight + 'px';
+
+		iframe.style.width = iframeParams['width'] + 'px';
+		iframe.style.height =  iframeParams['height'] + 'px';
+	}
+
+	else {
+		var modalHeight = parseInt(iframeParams['height']) + 30;
+		var modalWidth = parseInt(iframeParams['width']) + 10;
+
+		containerDiv.style.width = modalWidth + 'px';
+		containerDiv.style.height = modalHeight + 'px';
+
+		iframe.style.width = iframeParams['width'] + 'px';
+		iframe.style.height =  iframeParams['height'] + 'px';
+		iframe.style.margin = '6px';
+	}
+
+	if (window.outerWidth < window.outerHeight) {
+			var portraitZoom = (window.outerWidth/modalWidth).toFixed(2);
+			wrs_addMetaViewport("device-width", portraitZoom, portraitZoom, portraitZoom);
+	} else {
+			wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+	}
+
+	window.addEventListener('orientationchange', function() {
+		if (window.outerWidth > window.outerHeight) { // Portrait --> landscape
+			wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+		} else { // Landscape --> portrait
+			var portraitZoom = (window.outerWidth/modalWidth).toFixed(2);
+			wrs_addMetaViewport("device-width", portraitZoom, portraitZoom, portraitZoom);
+		}
+	});
+}
+
+/**
+ * Create modal dialog for non mobile iOS devices.
+ * @param  modalDiv modal overlay div.
+ * @param  containerDiv modal window div.
+ * @param  iframe embedded iframe.
+ * @param  iframeParams  embedded iframe params (height, width).
+ */
+
+function wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) {
+	modalDiv.className = modalDiv.className + " wrs_modal_ios";
+	containerDiv.className = containerDiv.className + " wrs_modal_ios";
+	iframe.className = iframe.className + " wrs_modal_ios";
+
+	wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+
+	var modalHeight = parseInt(iframeParams['height']) + 30;
+	var modalWidth = parseInt(iframeParams['width']) + 10;
+
+	containerDiv.style.width = modalWidth + 'px';
+	containerDiv.style.height = modalHeight + 'px';
+
+	iframe.style.width = iframeParams['width'] + 'px';
+	iframe.style.height =  iframeParams['height'] + 'px';
+}
+
+/**
+ * Create modal dialog for mobile devices.
+ * @param  modalDiv modal overlay div.
+ * @param  containerDiv modal window div.
+ * @param  iframe embedded iframe.
+ * @param  iframeParams  embedded iframe params (height, width).
+ */
+
+function wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams) {
+
+	modalDiv.className = modalDiv.className + " wrs_modal_mobile";
+	containerDiv.className = containerDiv.className + " wrs_modal_mobile";
+	iframe.className = iframe.className + " wrs_modal_mobile";
+
+
+	wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+
+	var modalTitleBar = document.getElementsByClassName('wrs_modal_title')[0]
+
+	if (modalTitleBar) {
+		document.removeChild(modalTitleBar);
+	}
+}
+
+function wrs_int_createModalWindowAndroidStackNavigator(modalDiv, containerDiv, iframe, iframeParams) {
+	wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+
+	var modalTitleBar = document.getElementsByClassName('wrs_modal_title')[0]
+
+	if (modalTitleBar) {
+		document.removeChild(modalTitleBar);
+	}
+
+	if (window.outerHeight > window.outerWidth) {
+		containerDiv.style.height = window.outerHeight + 'px';
+		iframe.style.width = window.outerHeight * 0.9 + 'px';
+	} else {
+		containerDiv.style.height = window.outerWidth + 'px';
+		iframe.style.width = window.outerWidth * 0.9 + 'px';
+	}
+}
+
+/**
+ * Add viewport header for scale control.
+ *
+ * @width  width of the layout viewport.
+ * @initialScale Sets the initial zoom of the page and the width of the layout viewport.
+ * @minimumScale Sets the minimum zoom level (i.e. how much the user can zoom out).
+ * @maximumScale Sets the maximum zoom level (i.e. how much the user can zoom in).
+ */
+function wrs_addMetaViewport(width, initialScale, minimumScale, maximumScale) {
+	_wrs_originalMetaViewport = document.querySelector('meta[name=viewport]') ? document.querySelector('meta[name=viewport]').content : null;
+	if (_wrs_originalMetaViewport) {
+		document.querySelector('meta[name=viewport]').content = "width=" + width + ", initial-scale=" + initialScale +", minimum-scale=" + minimumScale + ", maximum-scale=" + maximumScale;
+	} else {
+		var attributes = {};
+		attributes['name'] = 'viewport';
+		attributes['content'] = "width=" + width + ", initial-scale=" + initialScale +", minimum-scale=" + minimumScale + ", maximum-scale=" + maximumScale;
+		var meta = wrs_createElement('meta', attributes);
+		document.getElementsByTagName("head")[0].appendChild(meta);
+	}
+}
+
+
+function wrs_closeModalWindow() {
+		if (document.querySelector('meta[name=viewport]')) {
+			document.querySelector('meta[name=viewport]').content = "";
+		}
+		document.body.className = document.body.className.replace('wrs_modal_open', '');
+		var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
+		closeFunction = document.documentElement.removeChild(modalDiv);
 }
