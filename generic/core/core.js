@@ -2342,13 +2342,17 @@ function wrs_int_createModalWindow(title, iframeParams, deviceProperties) {
 		wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams);
 	}
 	else if (deviceProperties['isMobile']) {
-		wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams);
+		if (!isBadStockAndroid()) {
+			wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams);
+		} else {
+			wrs_int_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams);
+		}
 	}
 
 	document.documentElement.appendChild(modalDiv);
 
 	wrs_addEvent(closeDiv, 'click', function() {
-				wrs_closeModalWindow();
+		wrs_closeModalWindow();
 	});
 
 }
@@ -2481,22 +2485,30 @@ function wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeP
 	}
 }
 
-function wrs_int_createModalWindowAndroidStackNavigator(modalDiv, containerDiv, iframe, iframeParams) {
+
+function wrs_int_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams) {
+	modalDiv.className = modalDiv.className + " wrs_modal_badStock";
+	containerDiv.className = containerDiv.className + " wrs_modal_badStock";
+	iframe.className = iframe.className + " wrs_modal_badStock";
+
+	if (window.outerWidth < parseInt(iframeParams['width'])) {
+		var modalWidth = parseInt(iframeParams['width']) + 10;
+		containerDiv.style.width = iframeParams['width'] + 'px';
+		iframe.style.width = iframeParams['width'] + 'px';
+	}
+
+	window.addEventListener('orientationchange', function() {
+		if (window.outerWidth > parseInt(iframeParams['width']) + 10) {
+			var modalWidth = parseInt(iframeParams['width']) + 10;
+			containerDiv.style.width = modalWidth + 'px';
+			iframe.style.width = iframeParams['width'] + 'px';
+		} else {
+			containerDiv.style.width = null;
+			iframe.style.width = null;
+		}
+	});
+
 	wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
-
-	var modalTitleBar = document.getElementsByClassName('wrs_modal_title')[0]
-
-	if (modalTitleBar) {
-		document.removeChild(modalTitleBar);
-	}
-
-	if (window.outerHeight > window.outerWidth) {
-		containerDiv.style.height = window.outerHeight + 'px';
-		iframe.style.width = window.outerHeight * 0.9 + 'px';
-	} else {
-		containerDiv.style.height = window.outerWidth + 'px';
-		iframe.style.width = window.outerWidth * 0.9 + 'px';
-	}
 }
 
 /**
@@ -2520,7 +2532,6 @@ function wrs_addMetaViewport(width, initialScale, minimumScale, maximumScale) {
 	}
 }
 
-
 function wrs_closeModalWindow() {
 		if (document.querySelector('meta[name=viewport]')) {
 			document.querySelector('meta[name=viewport]').content = "";
@@ -2529,3 +2540,22 @@ function wrs_closeModalWindow() {
 		var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
 		closeFunction = document.documentElement.removeChild(modalDiv);
 }
+
+function isBadStockAndroid () {
+	var userAgent = window.navigator.userAgent;
+    // Android stock browser test derived from
+    // http://stackoverflow.com/questions/24926221/distinguish-android-chrome-from-stock-browser-stock-browsers-user-agent-contai
+    var isAndroid = userAgent.indexOf(' Android ') > -1;
+    if (!isAndroid) {
+      return false;
+    }
+
+    var isStockAndroid = userAgent.indexOf('Version/') > -1;
+    if (!isStockAndroid) {
+      return false;
+    }
+
+    var versionNumber = parseFloat((userAgent.match('Android ([0-9.]+)') || [])[1]);
+    // anything below 4.4 uses WebKit without *any* viewport support.
+    return versionNumber <= 4.3;
+  }
