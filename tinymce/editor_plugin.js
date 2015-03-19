@@ -56,6 +56,13 @@ var _wrs_int_directionality;
 			if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
 				editor.settings.extended_valid_elements += ',img[*]';
 			}
+
+			// On inline mode, we can't recover unfiltered text
+			// mathml tags must be added to editor valid_elements.
+			if (editor.inline) {
+				editor.settings.extended_valid_elements += ",math[*],menclose[*],merror[*],mfenced[*],mfrac[*],mglyph[*],mi[*],mlabeledtr[*],mmultiscripts[*],mn[*],mo[*],mover[*],mpadded[*],mphantom[*],mroot[*],mrow[*],ms[*],mspace[*],msqrt[*],mstyle[*],msub[*],msubsup[*],msup[*],mtable[*],mtd[*],mtext[*],mtr[*],munder[*],munderover[*],semantics[*],maction[*]";
+				editor.settings.extended_valid_elements += ",annotation[*]"; // LaTeX parse
+			}
 			
 			var onInit = function (editor) {
 				var editorElement = editor.getElement();
