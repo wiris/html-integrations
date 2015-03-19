@@ -1905,7 +1905,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		var iframeAttributes  = {};
 		iframeAttributes['width'] =  _wrs_conf_editorAttributes.split(' ').join('').split(',')[0].split("=")[1];
 		iframeAttributes['height'] = _wrs_conf_editorAttributes.split(' ').join('').split(',')[1].split("=")[1];
-		iframeAttributes['src'] = _wrs_conf_path + "/core/editor.html";
+		iframeAttributes['src'] = path;
 
 		var isMobile = (landscape && iframeAttributes['height'] > deviceHeight) || (portrait && iframeAttributes['width'] > deviceWidth) ? true : false;
 
@@ -1915,7 +1915,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		_wrs_deviceProperties['isIOS'] = window.parent._wrs_iosRange ? true : false;
 		_wrs_deviceProperties['isMobile'] = isMobile;
 
-		wrs_int_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties);
+		wrs_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties);
 	}
 }
 
@@ -2275,12 +2275,13 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
 
 /**
  * Create modal window with embebbed iframe
+ *
  * @title Modal window title
  * @iframeParams iframe attributes
  * @deviceProperties device properties like orientation, OS..
  */
 
-function wrs_int_createModalWindow(title, iframeParams, deviceProperties) {
+function wrs_createModalWindow(title, iframeParams, deviceProperties) {
 
 	// Adding css stylesheet
     var fileref = document.createElement("link");
@@ -2333,19 +2334,19 @@ function wrs_int_createModalWindow(title, iframeParams, deviceProperties) {
 	document.body.className = document.body.className + "wrs_modal_open";
 
 	if (!deviceProperties['isMobile'] && !deviceProperties['isIOS'] && !deviceProperties['isAndroid']) { // Desktop
-		wrs_int_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams);
+		wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams);
 	}
 	else if (deviceProperties['isAndroid'] && !deviceProperties['isMobile']) {
-		wrs_int_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams);
+		wrs_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams);
 	}
 	else if (deviceProperties['isIOS'] && !deviceProperties['isMobile']) {
-		wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams);
+		wrs_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams);
 	}
 	else if (deviceProperties['isMobile']) {
-		if (!isBadStockAndroid()) {
-			wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams);
+		if (!wrs_isBadStockAndroid()) {
+			wrs_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams);
 		} else {
-			wrs_int_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams);
+			wrs_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams);
 		}
 	}
 
@@ -2365,7 +2366,7 @@ function wrs_int_createModalWindow(title, iframeParams, deviceProperties) {
  * @param  iframeParams  embedded iframe params (height, width).
  */
 
-function wrs_int_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams) {
+function wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams) {
 	modalDiv.className = modalDiv.className + " wrs_modal_desktop";
 	containerDiv.className = containerDiv.className + " wrs_modal_desktop";
 	iframe.className = iframe.className + " wrs_modal_android"
@@ -2389,7 +2390,7 @@ function wrs_int_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframe
  * @param  iframeParams  embedded iframe params (height, width).
  */
 
-function wrs_int_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams) {
+function wrs_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams) {
 	modalDiv.className = modalDiv.className + " wrs_modal_android";
 	containerDiv.className = containerDiv.className + " wrs_modal_android";
 	iframe.className = iframe.className + " wrs_modal_android";
@@ -2444,7 +2445,7 @@ function wrs_int_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframe
  * @param  iframeParams  embedded iframe params (height, width).
  */
 
-function wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) {
+function wrs_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) {
 	modalDiv.className = modalDiv.className + " wrs_modal_ios";
 	containerDiv.className = containerDiv.className + " wrs_modal_ios";
 	iframe.className = iframe.className + " wrs_modal_ios";
@@ -2463,13 +2464,14 @@ function wrs_int_createModalWindowIos(modalDiv, containerDiv, iframe, iframePara
 
 /**
  * Create modal dialog for mobile devices.
+ *
  * @param  modalDiv modal overlay div.
  * @param  containerDiv modal window div.
  * @param  iframe embedded iframe.
  * @param  iframeParams  embedded iframe params (height, width).
  */
 
-function wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams) {
+function wrs_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams) {
 
 	modalDiv.className = modalDiv.className + " wrs_modal_mobile";
 	containerDiv.className = containerDiv.className + " wrs_modal_mobile";
@@ -2485,8 +2487,15 @@ function wrs_int_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeP
 	}
 }
 
-
-function wrs_int_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams) {
+/**
+ * Create modal dialog for Androir mobile devices with an old stock browser (<=4.3).
+ *
+ * @param  modalDiv modal overlay div.
+ * @param  containerDiv modal window div.
+ * @param  iframe embedded iframe.
+ * @param  iframeParams  embedded iframe params (height, width).
+ */
+function wrs_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams) {
 	modalDiv.className = modalDiv.className + " wrs_modal_badStock";
 	containerDiv.className = containerDiv.className + " wrs_modal_badStock";
 	iframe.className = iframe.className + " wrs_modal_badStock";
@@ -2532,6 +2541,9 @@ function wrs_addMetaViewport(width, initialScale, minimumScale, maximumScale) {
 	}
 }
 
+/**
+ * Closes modal window and restores viewport header.
+ */
 function wrs_closeModalWindow() {
 		if (document.querySelector('meta[name=viewport]')) {
 			document.querySelector('meta[name=viewport]').content = "";
@@ -2540,7 +2552,12 @@ function wrs_closeModalWindow() {
 		var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
 		closeFunction = document.documentElement.removeChild(modalDiv);
 }
-
+/**
+ *  Android stock browser test
+ *  http://stackoverflow.com/questions/24926221/distinguish-android-chrome-from-stock-browser-stock-browsers-user-agent-contai
+ *
+ *  @return {Boolean} true if user agent is from an Android stock browser (<= 4.3)
+ */
 function isBadStockAndroid () {
 	var userAgent = window.navigator.userAgent;
     // Android stock browser test derived from
