@@ -2350,7 +2350,7 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties) {
 		}
 	}
 
-	document.documentElement.appendChild(modalDiv);
+	document.body.appendChild(modalDiv);
 
 	wrs_addEvent(closeDiv, 'click', function() {
 		wrs_closeModalWindow();
@@ -2378,8 +2378,6 @@ function wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframePara
 	iframe.style.width = iframeParams['width'] + 'px';
 	iframe.style.height =  iframeParams['height'] + 'px';
 	iframe.style.margin = '6px';
-
-	document.documentElement.appendChild(modalDiv);
 }
 
 /**
@@ -2550,7 +2548,7 @@ function wrs_closeModalWindow() {
 		}
 		document.body.className = document.body.className.replace('wrs_modal_open', '');
 		var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
-		closeFunction = document.documentElement.removeChild(modalDiv);
+		closeFunction = document.body.removeChild(modalDiv);
 }
 /**
  *  Android stock browser test
@@ -2558,7 +2556,7 @@ function wrs_closeModalWindow() {
  *
  *  @return {Boolean} true if user agent is from an Android stock browser (<= 4.3)
  */
-function isBadStockAndroid () {
+function wrs_isBadStockAndroid () {
 	var userAgent = window.navigator.userAgent;
     // Android stock browser test derived from
     // http://stackoverflow.com/questions/24926221/distinguish-android-chrome-from-stock-browser-stock-browsers-user-agent-contai
