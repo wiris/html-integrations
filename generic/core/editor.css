@@ -47,3 +47,9 @@
     width: 20px;
     cursor: pointer;
 }
+
+@media only screen and (max-device-width: 480px) and (orientation: portrait) {
+	#container {
+		width : 140%;
+	}
+}
