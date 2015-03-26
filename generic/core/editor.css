@@ -47,6 +47,13 @@
     width: 20px;
     cursor: pointer;
 }
+.wrs_buttonContainer {
+	padding-left: 6px;
+}
+
+.wrs_modal_open .wrs_buttonContainer {
+	padding-left: 0px;
+}
 
 @media only screen and (max-device-width: 480px) and (orientation: portrait) {
 	#container {

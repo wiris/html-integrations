@@ -6,7 +6,7 @@ var closeFunction;
 if (window.opener) {							// For popup mode
 	wrs_int_opener = window.opener;
 	closeFunction = window.close;
-} else if (window.parent._wrs_conf_modalWindow ) {
+} else if (window.parent._wrs_conf_modalWindow) {
 		wrs_int_opener = window.parent;
 		closeFunction = wrs_int_opener.wrs_closeModalWindow;
 }
@@ -58,6 +58,11 @@ catch (e) {
 
 
 wrs_int_opener.wrs_addEvent(window, 'load', function () {
+
+	// Class for modal dialog.
+	if (window.parent._wrs_conf_modalWindow) {
+		document.body.className += document.body.className + "wrs_modal_open";
+	}
 
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
 	var editor;
@@ -150,7 +155,8 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		}
 	});
 	
-	controls.appendChild(submitButton);
+	var buttonContainer = document.getElementById('buttonContainer');
+	buttonContainer.appendChild(submitButton);
 
 	// Cancel button.
 	var cancelButton = document.createElement('input');
@@ -168,7 +174,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		closeFunction();
 	});
 	
-	controls.appendChild(cancelButton);
+	buttonContainer.appendChild(cancelButton);
 
 	/*var manualLink = document.getElementById('a_manual');
 	if (typeof manualLink != 'undefined' && strings['manual'] != null){
@@ -190,7 +196,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		body[0].setAttribute("dir","rtl");
 		var links = document.getElementById('links');
 		links.id = 'links_rtl';
-		var controls = document.getElementById('controls');
+		var controls = document.getElementById('buttonContainer');
 		controls.id = 'controls_rtl';
 	}
 	
