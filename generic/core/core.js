@@ -1802,15 +1802,19 @@ function wrs_openEditorWindow(language, target, isIframe) {
 	var isAndroid = ua.indexOf("android") > -1;
 	var isIOS =  ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
 	if(isAndroid) {
-		var selection = target.contentWindow.getSelection();
-		_wrs_androidRange = selection.getRangeAt(0);
+		if (isIframe) { // contentWindow have sense only on a iframe context.
+			var selection = target.contentWindow.getSelection();
+			_wrs_androidRange = selection.getRangeAt(0);
+		}
 		_wrs_conf_modalWindow = true; // conf property must be overrided on tablet/phone devices
 	}
 
 	if(isIOS) {
-		var selection = target.contentWindow.getSelection();
-		_wrs_iosRange = selection.getRangeAt(0);
-		_wrs_conf_modalWindow = true; // conf property must be overrided on tablet/phone devices
+		if (isIframe) {
+			var selection = target.contentWindow.getSelection();
+			_wrs_iosRange = selection.getRangeAt(0);
+		}
+			_wrs_conf_modalWindow = true; // conf property must be overrided on tablet/phone devices
 	}
 
 	if (isIframe === undefined) {
