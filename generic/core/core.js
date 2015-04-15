@@ -1270,13 +1270,17 @@ function wrs_initParseSaveMode(code, language) {
 		
 		if (safeXml) {
 			characters = _wrs_safeXmlCharacters;
-			code = wrs_parseSafeAppletsToObjects(code);
+			// code = wrs_parseSafeAppletsToObjects(code);
 		}
 		
 		if (safeXml || _wrs_conf_saveMode == 'xml') {
 			// Converting XML to tags.
-			code = wrs_parseMathmlToLatex(code, characters);			
-			code = wrs_parseMathmlToImg(code, characters, language);
+			code = wrs_parseMathmlToLatex(code, characters);
+			// safeXml and xml must be parsed regardeless of save mode.
+			// Order is important here, safeXml must be parsed first in order to avoid conflicts with data-mathml img attribute.
+			code = wrs_parseSafeAppletsToObjects(code);
+			code = wrs_parseMathmlToImg(code, _wrs_safeXmlCharacters, language);
+			code = wrs_parseMathmlToImg(code, _wrs_xmlCharacters, language);
 		}
 	}
 	
