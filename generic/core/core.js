@@ -10,6 +10,7 @@ var _wrs_androidRange;
 var _wrs_iosRange;
 // We need a variable to send device properties to editor.js on modal mode.
 var _wrs_deviceProperties = {}
+var _wrs_int_LatexCache = {};
 
 // var _wrs_conf_setSize = true;
 
@@ -914,6 +915,9 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
  * @return string
  */
 function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
+	if (_wrs_int_LatexCache.hasOwnProperty(latex)) {
+		return _wrs_int_LatexCache[latex];
+	}
 	var data = {
 		'service': 'latex2mathml',
 		'latex': latex
@@ -1962,6 +1966,8 @@ function wrs_parseMathmlToLatex(content, characters){
 				latex = wrs_mathmlDecode(latex);
 			}
 			output += '$$' + latex + '$$';
+			// Populate latex into cache.
+			wrs_populateLatexCache(latex, mathml);
 		}else{
 			output += mathml;
 		}
@@ -2126,6 +2132,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
 	else if (editMode == 'latex') {
 		var latex = wrs_getLatexFromMathML(mathml);
 		var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
+		wrs_populateLatexCache(latex, mathml);
 		wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
 	}
 	else if (editMode == 'iframes') {
@@ -2578,3 +2585,47 @@ function wrs_isBadStockAndroid () {
     // anything below 4.4 uses WebKit without *any* viewport support.
     return versionNumber <= 4.3;
   }
+
+/**
+* Populates LaTeX cache into _wrs_int_LatexCache global variable.
+*
+* @latex LaTeX code (with $$ separators)
+* @mathml matml LaTeX translation.*
+*/
+function wrs_populateLatexCache(latex, mathml) {
+	if (mathml.indexOf('semantics') == -1 && mathml.indexOf('annotation') == -1 ) {
+		mathml = wrs_insertSemanticsMathml(mathml, latex);
+	}
+  	if (!_wrs_int_LatexCache.hasOwnProperty(latex)) {
+  		_wrs_int_LatexCache[latex] = mathml;
+  	}
+}
+
+/**
+ * Add annotation tag to mathml without it (mathml comes from LaTeX string)
+ * @param  string mathml
+ * @param  string latex
+ * @return string new mathml containing LaTeX
+ */
+function wrs_insertSemanticsMathml(mathml, latex) {
+
+	var firstEndTag = '>';
+	var mathTagEnd = '<' + '/math' + '>';
+	var openSemantics = '<' + 'semantics' + '>';
+	var closeSemantics = '<' + '/semantics' + '>';
+	var openTarget = '<annotation encoding="LaTeX">';
+	var closeTarget = '<' + '/annotation' + '>';
+
+	var indexMathBegin = mathml.indexOf(firstEndTag);
+	var indexMathEnd = mathml.indexOf(mathTagEnd);
+	var mathBeginExists = mathml.substring(mathml.indexOf('<'), mathml.indexOf('>')).indexOf('math');
+
+	if (indexMathBegin != -1 && indexMathEnd != -1 && mathBeginExists)  {
+		var mathmlContent = mathml.substring(indexMathBegin+1, indexMathEnd);
+		var mathmlContentSemantics = openSemantics + mathmlContent + openTarget + latex + closeTarget + closeSemantics;
+		return mathml.replace(mathmlContent, mathmlContentSemantics);
+	} else {
+		return mathml;
+	}
+
+}
