@@ -110,6 +110,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 					function checkElement() {
 						try {
 							var newElement;
+							divIframe = false;
 							
 							if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 								newElement = editor.element.$;
@@ -117,6 +118,11 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 							else {
 								var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
 								newElement = elem.getElementsByTagName('iframe')[0];
+							}
+
+							if (!newElement) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
+								newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+								divIframe = true;
 							}
 							
 							if (!newElement.wirisActive) {
@@ -131,6 +137,14 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 								else if (newElement.contentWindow != null) {
 									wrs_addIframeEvents(newElement, function (iframe, element, event) {
 										wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event);
+									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+									
+									newElement.wirisActive = true;
+									element = newElement;
+								}
+								else if (divIframe) {
+									wrs_addElementEvents(newElement, function (div, element, event) {
+										wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
 									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 									
 									newElement.wirisActive = true;
@@ -166,7 +180,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'requiredContent': allowedContent,
 				
 				'exec': function (editor) {
-					wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE);
+					wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
 				}
 			});
 			
@@ -230,7 +244,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'requiredContent': allowedContent,
 				
 				'exec': function (editor) {
-					wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE, editor.langCode);
+					wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe , editor.langCode);
 				}
 			});
 			
