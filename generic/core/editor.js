@@ -31,7 +31,13 @@ if (window.location.href.indexOf("https://")==0) {
 		editorUrl = "https"+editorUrl.substring(4);
 	}
 }
-script.src = editorUrl+"?lang="+lang;
+// /editor stats
+
+statEditor = wrs_int_opener._wrs_conf_editor;
+statSaveMode = wrs_int_opener._wrs_conf_saveMode;
+statVersion = wrs_int_opener._wrs_conf_version;
+
+script.src = editorUrl+"?lang="+lang + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Insert strings
