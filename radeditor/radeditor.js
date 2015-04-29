@@ -2,6 +2,9 @@
 var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_int_conf_async = true;
 
+// Stats editor (needed by core/editor.js)
+var _wrs_conf_editor = "RadEditor";
+
 // Including core.js
 
 var col = document.getElementsByTagName("script");

@@ -3,6 +3,9 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_int_conf_async = true;
 var _wrs_baseURL;
 
+// Stats editor (needed by core/editor.js)
+var _wrs_conf_editor = "TinyMCE";
+
 // Define _wrs_conf_path (path where configuration is found)
 if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_baseURL = tinymce.baseURL;
