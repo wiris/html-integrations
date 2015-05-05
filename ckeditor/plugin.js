@@ -130,10 +130,19 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 							
 							if (!newElement.wirisActive) {
 								if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-									wrs_addElementEvents(newElement, function (div, element, event) {
-										wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
-									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-									
+									if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
+										var eventElements = document.getElementsByClassName("cke_textarea_inline");
+										Array.prototype.forEach.call(eventElements, function(entry) {
+											wrs_addElementEvents(entry, function (div, element, event) {
+											wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+											}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+										});
+									} else {
+										wrs_addElementEvents(newElement, function (div, element, event) {
+											wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+										}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);	
+									}
+
 									newElement.wirisActive = true;
 									element = newElement;
 								}
