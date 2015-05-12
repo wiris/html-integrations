@@ -350,6 +350,11 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 		data['metrics'] = 'true';
 		data['centerbaseline'] = 'false';
 	}
+
+	// Absolute base64 method (edit & save)
+	if (_wrs_conf_saveMode == 'base64') {
+		data['base64'] = true;
+	}
 	
 	var result = wrs_getContent(_wrs_conf_createimagePath, data);
 	
@@ -670,48 +675,14 @@ function wrs_endParseSaveMode(code) {
 			convertToXml = true;
 		}
 	}
-	
-	var endPosition = 0;
-	var pattern = /<img/gi;
-	var patternLength = pattern.source.length;
-	
-	while (pattern.test(code)) {
-		var startPosition = pattern.lastIndex - patternLength;
-		output += code.substring(endPosition, startPosition);
-		
-		var i = startPosition + 1;
-		
-		while (i < code.length && endPosition <= startPosition) {
-			var character = code.charAt(i);
-			
-			if (character == '"' || character == '\'') {
-				var characterNextPosition = code.indexOf(character, i + 1);
-				
-				if (characterNextPosition == -1) {
-					i = code.length;		// End while.
-				}
-				else {
-					i = characterNextPosition;
-				}
-			}
-			else if (character == '>') {
-				endPosition = i + 1;
-			}
-			
-			++i;
-		}
-		
-		if (endPosition < startPosition) {		// The img tag is stripped.
-			output += code.substring(startPosition, code.length);
-			return output;
-		}
-		
-		var imgCode = code.substring(startPosition, endPosition);
-		output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
+
+	if (_wrs_conf_saveMode == 'base64js') {
+		code = wrs_codeImgTransform(code, 'img264');
+	} else if (convertToXml || convertToSafeXml) {
+		code = wrs_codeImgTransform(code, 'img2mathml');
 	}
 
-	output += code.substring(endPosition, code.length);
-	return output;
+	return code;
 }
 
 /**
@@ -1282,6 +1253,10 @@ function wrs_initParseSaveMode(code, language) {
 			code = wrs_parseMathmlToImg(code, _wrs_safeXmlCharacters, language);
 			code = wrs_parseMathmlToImg(code, _wrs_xmlCharacters, language);
 		}
+
+		if (_wrs_conf_saveMode == 'base64js') {
+			code = wrs_codeImgTransform(code, 'base642showimage');
+		}
 	}
 	
 	var appletList = wrs_getElementsByNameFromString(code, 'applet', false);
@@ -1753,7 +1728,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	}
 	else {
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
-		imgObject.src = result;
+		imgObject.src = (_wrs_conf_saveMode == 'base64' ? wrs_cleanSrcBase64(result) : result);
 		if (_wrs_conf_setSize) {
 			wrs_setImgSize(imgObject,result);
 			//imgObject.width = width;
@@ -2248,7 +2223,7 @@ function wrs_fixAfterResize(img) {
 
 function wrs_initSetSize() {
 	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
-	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml';
+	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml' || _wrs_conf_saveMode=='base64' || _wrs_conf_saveMode=='base64js';
 }
 
 function wrs_loadConfiguration() {
@@ -2632,4 +2607,95 @@ function wrs_insertSemanticsMathml(mathml, latex) {
 		return mathml;
 	}
 
+}
+
+/**
+ * Transform html img tags inside a html code to mathml, base64 img tags (i.e with base64 on src) or showimage img tags (i.e with showimage.php on src)
+ *
+ * @param  String code html code
+ * @param  String mode base642showimage or img2mathml or img264 transform.
+ * @return String html code transformed.
+ */
+function wrs_codeImgTransform(code, mode) {
+	output = '';
+
+	var endPosition = 0;
+	var pattern = /<img/gi;
+	var patternLength = pattern.source.length;
+
+	while (pattern.test(code)) {
+		var startPosition = pattern.lastIndex - patternLength;
+		output += code.substring(endPosition, startPosition);
+
+		var i = startPosition + 1;
+
+		while (i < code.length && endPosition <= startPosition) {
+			var character = code.charAt(i);
+
+			if (character == '"' || character == '\'') {
+				var characterNextPosition = code.indexOf(character, i + 1);
+
+				if (characterNextPosition == -1) {
+					i = code.length;		// End while.
+				}
+				else {
+					i = characterNextPosition;
+				}
+			}
+			else if (character == '>') {
+				endPosition = i + 1;
+			}
+
+			++i;
+		}
+
+		if (endPosition < startPosition) {		// The img tag is stripped.
+			output += code.substring(startPosition, code.length);
+			return output;
+		}
+		var imgCode = code.substring(startPosition, endPosition);
+		var imgObject = wrs_createObject(imgCode);
+		var xmlCode = imgObject.getAttribute(_wrs_conf_imageMathmlAttribute);
+
+		if (mode == 'base642showimage') {
+			if (xmlCode == null) {
+				xmlCode = imgObject.getAttribute('alt');
+			}
+			xmlCode = wrs_mathmlDecode(xmlCode);
+			imgCode = wrs_mathmlToImgObject(document, xmlCode, null, null);
+			output += wrs_createObjectCode(imgCode);
+		} else if (mode == 'img2mathml') {
+			output += wrs_getWIRISImageOutput(imgCode, true, false);
+		} else if (mode == 'img264') {
+
+			if (xmlCode == null) {
+				xmlCode = imgObject.getAttribute('alt');
+			}
+			xmlCode = wrs_mathmlDecode(xmlCode);
+
+			var properties = {};
+			properties['base64'] = 'true';
+			imgCode = wrs_mathmlToImgObject(document, xmlCode, properties, null)
+
+			// Cleaning params from base64 src.
+			imgCode.src = wrs_cleanSrcBase64(imgCode.src);
+			output += wrs_createObjectCode(imgCode);
+		}
+	}
+	output += code.substring(endPosition, code.length);
+	return output;
+}
+
+
+/**
+ * Cleans base64 "get" params.
+ *
+ * @param  String src base64 string with get params at the end.
+ * @return String base64 string without get params.
+ */
+function wrs_cleanSrcBase64(src) {
+	if (src.indexOf("?") > 0) {
+		src = src.substr(0, src.indexOf("?"));
+	}
+	return src;
 }
