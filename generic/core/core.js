@@ -1021,7 +1021,7 @@ function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
 			'node': range.item(0)
 		};
 	}
-1	
+
 	if (windowTarget.getSelection) {
 		var selection = windowTarget.getSelection();
 		
@@ -1728,7 +1728,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	}
 	else {
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
-		imgObject.src = (_wrs_conf_saveMode == 'base64' ? wrs_cleanSrcBase64(result) : result);
+		imgObject.src = result;
 		if (_wrs_conf_setSize) {
 			wrs_setImgSize(imgObject,result);
 			//imgObject.width = width;
@@ -2193,8 +2193,15 @@ function wrs_urlToAssArray(url) {
 	}
 }
 
-function wrs_setImgSize(img, url) {
-	var ar = wrs_urlToAssArray(url);
+function wrs_setImgSize(img, url, base64) {
+	if (base64) {
+		// Cleaning data:image/png;base64,
+		var base64String = img.src.substr( img.src.indexOf('base64,')+7, img.src.length);
+		bytes = wrs_b64ToByteArray(base64String, 88);
+		var ar = wrs_getMetricsFromBytes(bytes);
+	} else {
+		var ar = wrs_urlToAssArray(url);
+	}
 	var width = ar['cw'];
 	if (!width) {
 		return;
@@ -2217,7 +2224,11 @@ function wrs_fixAfterResize(img) {
 	img.removeAttribute('width');
 	img.removeAttribute('height');
 	if (_wrs_conf_setSize) {
-		wrs_setImgSize(img,img.src);
+		if (_wrs_conf_saveMode == 'base64') {
+			wrs_setImgSize(img,'', true);
+		} else {
+			wrs_setImgSize(img,img.src);
+		}
 	}
 }
 
@@ -2676,9 +2687,9 @@ function wrs_codeImgTransform(code, mode) {
 			var properties = {};
 			properties['base64'] = 'true';
 			imgCode = wrs_mathmlToImgObject(document, xmlCode, properties, null)
+			// Metrics
+			wrs_setImgSize(imgCode, imgCode.src, true);
 
-			// Cleaning params from base64 src.
-			imgCode.src = wrs_cleanSrcBase64(imgCode.src);
 			output += wrs_createObjectCode(imgCode);
 		}
 	}
@@ -2686,16 +2697,147 @@ function wrs_codeImgTransform(code, mode) {
 	return output;
 }
 
+/**
+ * Decode a base64 to its numeric value
+ *
+ * @param  {String} el base64 character.
+ * @return {int} base64 char numeric value.
+ */
+function wrs_decode64(el) {
+
+	var PLUS = '+'.charCodeAt(0);
+	var SLASH = '/'.charCodeAt(0);
+	var NUMBER = '0'.charCodeAt(0);
+	var LOWER = 'a'.charCodeAt(0);
+	var UPPER = 'A'.charCodeAt(0);
+	var PLUS_URL_SAFE = '-'.charCodeAt(0);
+	var SLASH_URL_SAFE = '_'.charCodeAt(0);
+	var code = el.charCodeAt(0);
+
+	if (code === PLUS || code === PLUS_URL_SAFE) return 62 // '+'
+	if (code === SLASH || code === SLASH_URL_SAFE) return 63 // '/'
+	if (code < NUMBER) return -1 // no match
+	if (code < NUMBER + 10) return code - NUMBER + 26 + 26
+	if (code < UPPER + 26) return code - UPPER
+	if (code < LOWER + 26) return code - LOWER + 26
+}
 
 /**
- * Cleans base64 "get" params.
- *
- * @param  String src base64 string with get params at the end.
- * @return String base64 string without get params.
+ * Converts a base64 string to a array of bytes.
+ * @param  {String} b64String base64 string.
+ * @param  {int} len dimension of byte array (by default whole string).
+ * @return {Array} Byte array.
  */
-function wrs_cleanSrcBase64(src) {
-	if (src.indexOf("?") > 0) {
-		src = src.substr(0, src.indexOf("?"));
+function wrs_b64ToByteArray(b64String, len) {
+
+	var tmp;
+
+	if (b64String.length % 4 > 0) {
+	  throw new Error('Invalid string. Length must be a multiple of 4') ; // Tipped base64. Length is fixed.
 	}
-	return src;
+
+	var arr = new Array()
+
+	if (!len) { // All b64String string
+	    var placeHolders = b64String.charAt(b64String.length - 2) === '=' ? 2 : b64String.charAt(b64String.length - 1) === '=' ? 1 : 0
+	    var l = placeHolders > 0 ? b64String.length - 4 : b64String.length;
+	} else {
+		var l = len;
+	}
+
+	for (var i = 0; i < l; i += 4) {
+	  tmp = (wrs_decode64(b64String.charAt(i)) << 18) | (wrs_decode64(b64String.charAt(i + 1)) << 12) | (wrs_decode64(b64String.charAt(i + 2)) << 6) | wrs_decode64(b64String.charAt(i + 3));
+
+	  arr.push((tmp  >> 16) & 0xFF);
+	  arr.push((tmp >> 8)  & 0xFF);
+	  arr.push(tmp & 0xFF);
+	}
+
+	if (placeHolders) {
+		if (placeHolders === 2) {
+		  tmp = (wrs_decode64(b64String.charAt(i)) << 2) | (wrs_decode64(b64String.charAt(i + 1)) >> 4);
+		  arr.push(tmp & 0xFF)
+		} else if (placeHolders === 1) {
+		  tmp = (wrs_decode64(b64String.charAt(i)) << 10) | (wrs_decode64(b64String.charAt(i + 1)) << 4) | (wrs_decode64(b64String.charAt(i + 2)) >> 2)
+		  arr.push((tmp >> 8) & 0xFF)
+		  arr.push(tmp & 0xFF)
+		}
+	}
+
+	return arr
+}
+
+/**
+ * Returns the first 32-bit signed integer from a byte array.
+ * @param  {Array} bytes array of bytes.
+ * @return {int} 32-bit signed integer.
+ */
+function wrs_readInt32(bytes) {
+	if (bytes.length < 4) {
+		return false;
+	}
+	var int32 = bytes.splice(0,4);
+	return (int32[0] << 24 | int32[1] << 16 | int32[2] <<  8 | int32[3] << 0);
+}
+
+/**
+ * Read the first byte from a byte array.
+ * @param  {array} bytes byte array.
+ * @return
+ */
+function wrs_readByte(bytes) {
+	return bytes.shift() << 0;
+}
+
+/**
+ * Read an arbitrary number of bytes, from a fixed position on a byte array.
+ * @param  {array} bytes byte array.
+ * @param  {int} post start position.
+ * @param  {int} len number of bytes to read.
+ * @return {array} byte array.
+ */
+function wrs_readBytes(bytes, pos, len) {
+	return bytes.splice(pos, len);
+}
+
+/**
+ * Get metrics (width, height, baseline and dpi) from a png's byte array.
+ * @param  {array} bytes png byte array.
+ * @return {array} An array containging the png's metrics.
+ */
+function wrs_getMetricsFromBytes(bytes) {
+	wrs_readBytes(bytes, 0, 8);
+	alloc = 10;
+	i = 0;
+	while (bytes.length >= 4) {
+		len = wrs_readInt32(bytes);
+        typ = wrs_readInt32(bytes);
+        if (typ == 0x49484452) {
+            width = wrs_readInt32(bytes);
+            height = wrs_readInt32(bytes);
+            // read 5 bytes
+            wrs_readInt32(bytes);
+            wrs_readByte(bytes);
+        } else if (typ == 0x62615345) { // 'baSE'
+            baseline = wrs_readInt32(bytes);
+		} else if (typ == 0x70485973) { // 'pHYs' (dpis);
+            dpi = wrs_readInt32(bytes);
+            dpi = (Math.round(dpi / 39.37));
+            wrs_readInt32(bytes);
+            wrs_readByte(bytes);
+         }
+         wrs_readInt32(bytes);
+	}
+
+	if (width) {
+		var arr = new Array();
+		arr['cw'] = width;
+		arr['ch'] = height;
+		arr['dpi'] = dpi;
+		if (baseline) {
+			arr['cb'] = baseline;
+		}
+
+		return arr;
+	}
 }
