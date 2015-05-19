@@ -2676,7 +2676,16 @@ function wrs_codeImgTransform(code, mode) {
 			imgCode = wrs_mathmlToImgObject(document, xmlCode, null, null);
 			output += wrs_createObjectCode(imgCode);
 		} else if (mode == 'img2mathml') {
-			output += wrs_getWIRISImageOutput(imgCode, true, false);
+			if (window._wrs_conf_saveMode) {
+				if (_wrs_conf_saveMode == 'safeXml') {
+					convertToXml = true;
+					convertToSafeXml = true;
+				}
+				else if (_wrs_conf_saveMode == 'xml') {
+					convertToXml = true;
+			}
+	}
+			output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
 		} else if (mode == 'img264') {
 
 			if (xmlCode == null) {
