@@ -1730,7 +1730,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
 		imgObject.src = result;
 		if (_wrs_conf_setSize) {
-			wrs_setImgSize(imgObject,result);
+			wrs_setImgSize(imgObject,result, _wrs_conf_saveMode == 'base64' ? true : false);
 			//imgObject.width = width;
 			//imgObject.height = height;
 			//imgObject.style.verticalAlign = "-" + (height - baseline) + "px";
@@ -2233,7 +2233,7 @@ function wrs_fixAfterResize(img) {
 }
 
 function wrs_initSetSize() {
-	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
+	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled (also base64 and base64js)
 	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml' || _wrs_conf_saveMode=='base64' || _wrs_conf_saveMode=='base64js';
 }
 
@@ -2684,8 +2684,8 @@ function wrs_codeImgTransform(code, mode) {
 				else if (_wrs_conf_saveMode == 'xml') {
 					convertToXml = true;
 					convertToSafeXml = false;
+				}
 			}
-	}
 			output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
 		} else if (mode == 'img264') {
 
