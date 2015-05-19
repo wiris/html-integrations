@@ -2683,6 +2683,7 @@ function wrs_codeImgTransform(code, mode) {
 				}
 				else if (_wrs_conf_saveMode == 'xml') {
 					convertToXml = true;
+					convertToSafeXml = false;
 			}
 	}
 			output += wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
