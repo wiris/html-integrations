@@ -1155,6 +1155,12 @@ function wrs_httpBuildQuery(properties) {
  */
 function wrs_initParse(code, language) {
 	wrs_initSetSize();
+	if (window._wrs_conf_saveMode) {
+	_wrs_parseXml = _wrs_conf_saveMode == 'safeXml'|| _wrs_conf_saveMode == 'xml';
+		if (window._wrs_conf_parseModes !== undefined) {
+			_wrs_parseXml = _wrs_parseXml || wrs_arrayContains(_wrs_conf_parseModes, 'xml') != -1;
+		}
+	}
 	code = wrs_initParseSaveMode(code, language);
 	return wrs_initParseEditMode(code);
 }
@@ -1236,17 +1242,10 @@ function wrs_initParseEditMode(code) {
  */
 function wrs_initParseSaveMode(code, language) {
 	if (window._wrs_conf_saveMode) {
-		var safeXml = (_wrs_conf_saveMode == 'safeXml');
-		var characters = _wrs_xmlCharacters;
-		
-		if (safeXml) {
-			characters = _wrs_safeXmlCharacters;
-			// code = wrs_parseSafeAppletsToObjects(code);
-		}
-		
-		if (safeXml || _wrs_conf_saveMode == 'xml') {
+
+		if (_wrs_parseXml) {
 			// Converting XML to tags.
-			code = wrs_parseMathmlToLatex(code, characters);
+			code = wrs_parseMathmlToLatex(code, _wrs_safeXmlCharacters);
 			// safeXml and xml must be parsed regardeless of save mode.
 			// Order is important here, safeXml must be parsed first in order to avoid conflicts with data-mathml img attribute.
 			code = wrs_parseSafeAppletsToObjects(code);
