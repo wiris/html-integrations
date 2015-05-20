@@ -351,8 +351,8 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 		data['centerbaseline'] = 'false';
 	}
 
-	// Absolute base64 method (edit & save)
-	if (_wrs_conf_saveMode == 'base64') {
+	// Full base64 method (edit & save)
+	if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default') {
 		data['base64'] = true;
 	}
 	
@@ -676,7 +676,7 @@ function wrs_endParseSaveMode(code) {
 		}
 	}
 
-	if (_wrs_conf_saveMode == 'base64js') {
+	if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'image') {
 		code = wrs_codeImgTransform(code, 'img264');
 	} else if (convertToXml || convertToSafeXml) {
 		code = wrs_codeImgTransform(code, 'img2mathml');
@@ -1253,7 +1253,7 @@ function wrs_initParseSaveMode(code, language) {
 			code = wrs_parseMathmlToImg(code, _wrs_xmlCharacters, language);
 		}
 
-		if (_wrs_conf_saveMode == 'base64js') {
+		if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'image') {
 			code = wrs_codeImgTransform(code, 'base642showimage');
 		}
 	}
@@ -1729,7 +1729,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
 		imgObject.src = result;
 		if (_wrs_conf_setSize) {
-			wrs_setImgSize(imgObject,result, _wrs_conf_saveMode == 'base64' ? true : false);
+			wrs_setImgSize(imgObject,result, (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default') ? true : false);
 			//imgObject.width = width;
 			//imgObject.height = height;
 			//imgObject.style.verticalAlign = "-" + (height - baseline) + "px";
@@ -2232,8 +2232,8 @@ function wrs_fixAfterResize(img) {
 }
 
 function wrs_initSetSize() {
-	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled (also base64 and base64js)
-	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml' || _wrs_conf_saveMode=='base64' || _wrs_conf_saveMode=='base64js';
+	// override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled
+	_wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode=='xml' || _wrs_conf_saveMode=='safeXml' || (_wrs_conf_saveMode=='base64' && _wrs_conf_editMode == 'default');
 }
 
 function wrs_loadConfiguration() {
