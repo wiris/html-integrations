@@ -21,6 +21,10 @@ body.wrs_modal_open {
 }
 
 .wrs_modal_overlay.wrs_modal_ios {
+	position: inherit;
+}
+
+.wrs_modal_overlay.wrs_modal_ios.moodle {
 	position: absolute;
 }
 

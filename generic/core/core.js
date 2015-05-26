@@ -1897,8 +1897,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
 
 		// Device object properties
 		_wrs_deviceProperties['orientation'] = landscape ? 'landscape' : 'portait';
-		_wrs_deviceProperties['isAndroid'] = window.parent._wrs_androidRange ? true : false;
-		_wrs_deviceProperties['isIOS'] = window.parent._wrs_iosRange ? true : false;
+		_wrs_deviceProperties['isAndroid'] = isAndroid ? true : false;
+		_wrs_deviceProperties['isIOS'] = isIOS ? true : false;
 		_wrs_deviceProperties['isMobile'] = isMobile;
 
 		wrs_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties);
@@ -2445,6 +2445,10 @@ function wrs_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframePara
 
 function wrs_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) {
 	modalDiv.className = modalDiv.className + " wrs_modal_ios";
+	if (typeof _wrs_isMoodle24 != 'undefined') {
+		modalDiv.className = modalDiv.className + " moodle";
+	}
+	
 	containerDiv.className = containerDiv.className + " wrs_modal_ios";
 	iframe.className = iframe.className + " wrs_modal_ios";
 
