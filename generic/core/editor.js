@@ -4,6 +4,9 @@ var wrs_int_opener;
 var closeFunction;
 
 if (window.opener) {							// For popup mode
+	// Sometimes (yes, sometimes) internet explorer security policies hides  popups
+	// popup window focus should be called from child window.
+	window.focus();
 	wrs_int_opener = window.opener;
 	closeFunction = window.close;
 } else if (window.parent._wrs_conf_modalWindow) {
