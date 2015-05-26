@@ -25,7 +25,7 @@ body.wrs_modal_open {
 }
 
 .wrs_modal_overlay.wrs_modal_ios.moodle {
-	position: absolute;
+	position: fixed;
 }
 
 .wrs_modal_title {
