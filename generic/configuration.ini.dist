@@ -42,9 +42,9 @@
 #wiriseditorenabled = true
 #wiriseditormathmlattribute = data-mathml
 #wiriseditorsavemode = xml
-wiriseditoreditmode = default
+#wiriseditoreditmode = default
 #wiriseditorparselatex = true
-wiriseditorparsexml = false
+#wiriseditorparsexml = false
 #wiriseditorwindowattributes = width=570, height=450, scroll=no, resizable=yes
 #wiriseditorsetsize = false
 #wiriseditortoolbar = quizzes
