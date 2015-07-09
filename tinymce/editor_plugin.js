@@ -118,27 +118,29 @@ var _wrs_int_directionality;
 			}
 			
 			var onSave = function (editor, params) {
-				_wrs_int_wirisProperties = {
-					'bgColor': editor.settings['wirisimagebgcolor'],
-					'symbolColor': editor.settings['wirisimagesymbolcolor'],
-					'transparency': editor.settings['wiristransparency'],
-					'fontSize': editor.settings['wirisimagefontsize'],
-					'numberColor': editor.settings['wirisimagenumbercolor'],
-					'identColor': editor.settings['wirisimageidentcolor'],
-					'color' : editor.settings['wirisimagecolor'],
-					'dpi' : editor.settings['wirisdpi'],
-					'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
-					'fontFamily' : editor.settings['wirisfontfamily']
-				};
-				
-				var language = editor.getParam('language');
-				_wrs_int_directionality = editor.getParam('directionality');
-				
-				if (editor.settings['wirisformulaeditorlang']) {
-					language = editor.settings['wirisformulaeditorlang'];
+				if (typeof _wrs_conf_plugin_loaded !== 'undefined') {
+					_wrs_int_wirisProperties = {
+						'bgColor': editor.settings['wirisimagebgcolor'],
+						'symbolColor': editor.settings['wirisimagesymbolcolor'],
+						'transparency': editor.settings['wiristransparency'],
+						'fontSize': editor.settings['wirisimagefontsize'],
+						'numberColor': editor.settings['wirisimagenumbercolor'],
+						'identColor': editor.settings['wirisimageidentcolor'],
+						'color' : editor.settings['wirisimagecolor'],
+						'dpi' : editor.settings['wirisdpi'],
+						'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+						'fontFamily' : editor.settings['wirisfontfamily']
+					};
+					
+					var language = editor.getParam('language');
+					_wrs_int_directionality = editor.getParam('directionality');
+					
+					if (editor.settings['wirisformulaeditorlang']) {
+						language = editor.settings['wirisformulaeditorlang'];
+					}
+					
+					params.content = wrs_endParse(params.content, _wrs_int_wirisProperties, language);
 				}
-				
-				params.content = wrs_endParse(params.content, _wrs_int_wirisProperties, language);
 			}
 			
 			if ('onSaveContent' in editor) {
@@ -146,6 +148,14 @@ var _wrs_int_directionality;
 			}
 			else {
 				editor.on('saveContent', function (params) {
+					onSave(editor, params);
+				});
+			}
+
+			if ('onGetContent' in editor) {
+				editor.onGetContent.add(onSave);
+			} else {
+				editor.on('getContent', function(params) {
 					onSave(editor, params);
 				});
 			}
@@ -373,6 +383,9 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
+	if (typeof tinymce.activeEditor != 'undefined') {
+		tinymce.activeEditor.fire('change');
+	}
 	if (_wrs_int_temporalElementIsIframe) {
 		wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
 	}
