@@ -10,6 +10,11 @@ var _wrs_androidRange;
 var _wrs_iosRange;
 // We need a variable to send device properties to editor.js on modal mode.
 var _wrs_deviceProperties = {}
+// Dragable options
+var _wrs_dragDataObject;
+var _wrs_dragObject;
+
+//LaTex client cache
 var _wrs_int_LatexCache = {};
 
 // var _wrs_conf_setSize = true;
@@ -64,8 +69,6 @@ if (!(window._wrs_conf_imageClassName)) {
 if (!(window._wrs_conf_CASClassName)) {
 	_wrs_conf_CASClassName = 'Wiriscas';
 }
-
-// Functions
 
 /**
  * Adds element events.
@@ -1901,7 +1904,11 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		_wrs_deviceProperties['isIOS'] = isIOS ? true : false;
 		_wrs_deviceProperties['isMobile'] = isMobile;
 
-		wrs_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties);
+		// Modal properties
+		var _wrs_modalProperties = {
+			draggable : true
+		};
+		wrs_createModalWindow('WIRIS editor', iframeAttributes, _wrs_deviceProperties, _wrs_modalProperties);
 	}
 }
 
@@ -2279,9 +2286,10 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
  * @title Modal window title
  * @iframeParams iframe attributes
  * @deviceProperties device properties like orientation, OS..
+ * @modalProperites modal properties (like draggable).
  */
 
-function wrs_createModalWindow(title, iframeParams, deviceProperties) {
+function wrs_createModalWindow(title, iframeParams, deviceProperties, modalProperties) {
 
 	// Adding css stylesheet
     var fileref = document.createElement("link");
@@ -2351,11 +2359,99 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties) {
 	}
 
 	document.body.appendChild(modalDiv);
+	if (modalProperties.draggable) {
+		wrs_addModalListeners();
+	}
 
 	wrs_addEvent(closeDiv, 'click', function() {
 		wrs_closeModalWindow();
 	});
 
+}
+
+/**
+ * Makes an object draggable adding mouse and touch events.
+ *
+ * @param  object draggable object (for example modal dialog).
+ * @param  target target to add the events (for example de titlebar of a modal dialog)
+ */
+function wrs_addModalListeners(object, target) {
+	_wrs_dragObject = document.getElementById('wrs_modal_dialogContainer');
+
+	//Mouse events
+	wrs_addEvent(document.getElementById('wrs_modal_title'), 'mousedown', wrs_startDrag);
+	wrs_addEvent(document.body, 'mousemove', wrs_drag);
+    wrs_addEvent(window, 'mouseup', wrs_stopDrag);
+
+    // Touch Events
+    wrs_addEvent(document.getElementById('wrs_modal_title'), 'touchstart', wrs_startDrag);
+	wrs_addEvent(document.body, 'touchmove', wrs_drag);
+    wrs_addEvent(window, 'touchend', wrs_stopDrag);
+}
+
+/**
+ * Returns mouse or touch coordinates (on touch events ev.ClientX doesn't exists)
+ * @param event ev mnouse or touch event
+ * @return object with the X and Y coordinates.
+ */
+function wrs_eventClient(ev) {
+	if (typeof(ev.clientX) == 'undefined') {
+		var client = {
+	        X : ev.changedTouches[0].X,
+	        Y : ev.changedTouches[0].Y
+	    };
+		return client;
+    } else {
+    	client = {
+	        X : ev.clientX,
+	        Y : ev.clientY
+    	};
+    	return client;
+    }
+}
+
+/**
+ * Start drag function: set the object _wrs_dragDataObject with the draggable object offsets coordinates.
+ * when drag starts (on touchstart or mousedown events).
+ *
+ * @param event ev touchstart or mousedown event.
+ */
+function wrs_startDrag(ev) {
+    if(!_wrs_dragDataObject) {
+        ev = ev||event;
+        _wrs_dragDataObject = {
+  	      x: wrs_eventClient(ev).X-_wrs_dragObject.offsetLeft,
+    	    y: wrs_eventClient(ev).Y-_wrs_dragObject.offsetTop
+        };
+    };
+}
+
+/**
+ * Updates_wrs_dragDataObject with the draggable object coordinates when the draggable object is being moved.
+ *
+ * @param event ev touchmouve or mousemove events.
+ */
+function wrs_drag(ev) {
+		if(_wrs_dragDataObject) {
+		  _wrs_dragObject.style.position = 'absolute';
+		  ev = ev||event;
+		  _wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
+		  _wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject.y+"px";
+		}
+}
+
+/**
+ * Set the _wrs_dragDataObject to null when the drag finish (touchend or mouseup events).
+ *
+ * @param event ev touchend or mouseup event.
+ */
+function wrs_stopDrag(ev) {
+		if(_wrs_dragDataObject) {
+  			ev=ev||event;
+  			_wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
+  			_wrs_dragObject.style.top = wrs_eventClient(ev).Y+"px";
+  			_wrs_dragDataObject=null;
+		}
 }
 
 /**
