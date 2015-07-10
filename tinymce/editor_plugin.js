@@ -383,7 +383,7 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
-	if (typeof tinymce.activeEditor != 'undefined') {
+	if (typeof tinymce.activeEditor.fire != 'undefined') {
 		tinymce.activeEditor.fire('change');
 	}
 	if (_wrs_int_temporalElementIsIframe) {
