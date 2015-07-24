@@ -2376,15 +2376,15 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties, modalPrope
  * @param  target target to add the events (for example de titlebar of a modal dialog)
  */
 function wrs_addModalListeners(object, target) {
-	_wrs_dragObject = document.getElementById('wrs_modal_dialogContainer');
+	_wrs_dragObject = document.getElementsByClassName('wrs_modal_dialogContainer')[0];
 
 	//Mouse events
-	wrs_addEvent(document.getElementById('wrs_modal_title'), 'mousedown', wrs_startDrag);
+	wrs_addEvent(document.body, 'mousedown', wrs_startDrag);
 	wrs_addEvent(document.body, 'mousemove', wrs_drag);
     wrs_addEvent(window, 'mouseup', wrs_stopDrag);
 
     // Touch Events
-    wrs_addEvent(document.getElementById('wrs_modal_title'), 'touchstart', wrs_startDrag);
+    wrs_addEvent(document.getElementsByClassName('wrs_modal_title')[0], 'touchstart', wrs_startDrag);
 	wrs_addEvent(document.body, 'touchmove', wrs_drag);
     wrs_addEvent(window, 'touchend', wrs_stopDrag);
 }
@@ -2397,8 +2397,8 @@ function wrs_addModalListeners(object, target) {
 function wrs_eventClient(ev) {
 	if (typeof(ev.clientX) == 'undefined') {
 		var client = {
-	        X : ev.changedTouches[0].X,
-	        Y : ev.changedTouches[0].Y
+	        X : ev.changedTouches[0].clientX,
+	        Y : ev.changedTouches[0].clientY
 	    };
 		return client;
     } else {
@@ -2417,13 +2417,15 @@ function wrs_eventClient(ev) {
  * @param event ev touchstart or mousedown event.
  */
 function wrs_startDrag(ev) {
-    if(!_wrs_dragDataObject) {
-        ev = ev||event;
-        _wrs_dragDataObject = {
-  	      x: wrs_eventClient(ev).X-_wrs_dragObject.offsetLeft,
-    	    y: wrs_eventClient(ev).Y-_wrs_dragObject.offsetTop
-        };
-    };
+	if (ev.target.className == 'wrs_modal_title') {
+	    if(!_wrs_dragDataObject) {
+	        ev = ev||event;
+	        _wrs_dragDataObject = {
+	  	      x: wrs_eventClient(ev).X-_wrs_dragObject.offsetLeft,
+	    	    y: wrs_eventClient(ev).Y-_wrs_dragObject.offsetTop
+	        };
+	    };
+	}
 }
 
 /**
@@ -2449,7 +2451,7 @@ function wrs_stopDrag(ev) {
 		if(_wrs_dragDataObject) {
   			ev=ev||event;
   			_wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
-  			_wrs_dragObject.style.top = wrs_eventClient(ev).Y+"px";
+  			_wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject+"px";
   			_wrs_dragDataObject=null;
 		}
 }
