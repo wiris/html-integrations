@@ -15,11 +15,11 @@
 #wirisimageserviceprotocol = http
 # Proxy configuration
 #wirisproxy = false
-#wirisproxy_host = 
-#wirisproxy_port = 
+#wirisproxy_host =
+#wirisproxy_port =
 # Basic authentication proxy configuration
-#wirisproxy_user = 
-#wirisproxy_password = 
+#wirisproxy_user =
+#wirisproxy_password =
 
 #
 # Folder properties
@@ -47,27 +47,12 @@
 #wiriseditorparsexml = false
 #wiriseditorwindowattributes = width=570, height=450, scroll=no, resizable=yes
 #wiriseditorsetsize = false
-#wiriseditortoolbar = quizzes
 #wiriseditormodalwindow = false
 
 #
-# Language properties
+# Editor inherit parameters
 #
-#wirisrtllanguages = ar
-#wirisltrlanguages = ar_ma
-#wirisarabicindiclanguages = ar_eg, ar_sd, ar_sa
-#wiriseasternarabicindiclanguages = fa, ps, ur
-#wiriseuropeanlanguages =
-
-#
-# Styling
-#
-#wiristransparency = true
-#wirisimagecolor = #000000
-#wirisimagebackgroundcolor = #ffffff
-#wirisimagefontsize = 16px
-#wirisimagedpi = 96
-#wirisfontfamily = Arial
+#wiriseditorparameters = {}
 
 #
 # Accessibility
@@ -83,5 +68,21 @@
 #wiriscaslanguages = en, es, fr, it, nl, et, ca, eu, pt, de
 #CAS_width = 450
 #CAS_height = 400
+
+#
+# Deprecated. Editor parameters should be parsed as a Json on wiriseditorparameters variale.
+#
+#wiristransparency = true
+#wirisfontfamily = Arial
+#wirisimagecolor = #000000
+#wirisimagebackgroundcolor = #ffffff
+#wirisimagefontsize = 16px
+#wirisimagedpi = 96
+#wiriseditortoolbar = quizzes
+#wirisrtllanguages = ar
+#wirisltrlanguages = ar_ma
+#wirisarabicindiclanguages = ar_eg, ar_sd, ar_sa
+#wiriseasternarabicindiclanguages = fa, ps, ur
+#wiriseuropeanlanguages =
 
 # End of file
