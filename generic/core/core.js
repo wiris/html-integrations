@@ -2421,8 +2421,8 @@ function wrs_startDrag(ev) {
 	    if(!_wrs_dragDataObject) {
 	        ev = ev||event;
 	        _wrs_dragDataObject = {
-	  	      x: wrs_eventClient(ev).X-_wrs_dragObject.offsetLeft,
-	    	    y: wrs_eventClient(ev).Y-_wrs_dragObject.offsetTop
+	  	      x: wrs_eventClient(ev).X- (isNaN(parseInt(window.getComputedStyle(_wrs_dragObject).left)) ? _wrs_dragObject.offsetLeft :  parseInt(window.getComputedStyle(_wrs_dragObject).left)),
+	    	  y: wrs_eventClient(ev).Y- (isNaN(parseInt(window.getComputedStyle(_wrs_dragObject).top)) ? _wrs_dragObject.offsetTop :  parseInt(window.getComputedStyle(_wrs_dragObject).top))
 	        };
 	    };
 	}
@@ -2434,12 +2434,13 @@ function wrs_startDrag(ev) {
  * @param event ev touchmouve or mousemove events.
  */
 function wrs_drag(ev) {
-		if(_wrs_dragDataObject) {
-		  _wrs_dragObject.style.position = 'absolute';
-		  ev = ev||event;
-		  _wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
-		  _wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject.y+"px";
-		}
+	if(_wrs_dragDataObject) {
+	  ev.preventDefault();
+	  _wrs_dragObject.style.position = 'absolute';
+	  ev = ev || event;
+	  _wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
+	  _wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject.y+"px";
+	}
 }
 
 /**
@@ -2448,12 +2449,7 @@ function wrs_drag(ev) {
  * @param event ev touchend or mouseup event.
  */
 function wrs_stopDrag(ev) {
-		if(_wrs_dragDataObject) {
-  			ev=ev||event;
-  			_wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
-  			_wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject+"px";
-  			_wrs_dragDataObject=null;
-		}
+	_wrs_dragDataObject=null;
 }
 
 /**
