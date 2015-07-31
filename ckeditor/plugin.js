@@ -43,6 +43,14 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
+// Current editor
+var _wrs_currentEditor;
+for(var id in CKEDITOR.instances) {
+  CKEDITOR.instances[id].on('focus', function(e) {
+    // Fill some global var here
+    currentEditor = e.editor.name;
+});
+}
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
@@ -408,6 +416,10 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 	}
 	else {
 		wrs_updateFormula(_wrs_int_temporalElement, window, mathml, _wrs_int_wirisProperties, editMode, language);
+	}
+	// Fire onchange event.
+	if (typeof CKEDITOR.instances[currentEditor].fire != undefined) {
+		CKEDITOR.instances[currentEditor].fire('change');
 	}
 }
 
