@@ -112,7 +112,7 @@ function wrs_addElementEvents(target, doubleClickHandler, mousedownHandler, mous
  */
 function wrs_addEvent(element, event, func) {
 	if (element.addEventListener) {
-		element.addEventListener(event, func, false);
+		element.addEventListener(event, func, true);
 	}
 	else if (element.attachEvent) {
 		element.attachEvent('on' + event, func);
@@ -1249,6 +1249,7 @@ function wrs_initParseSaveMode(code, language) {
 		if (_wrs_parseXml) {
 			// Converting XML to tags.
 			code = wrs_parseMathmlToLatex(code, _wrs_safeXmlCharacters);
+			code = wrs_parseMathmlToLatex(code, _wrs_xmlCharacters);
 			// safeXml and xml must be parsed regardeless of save mode.
 			// Order is important here, safeXml must be parsed first in order to avoid conflicts with data-mathml img attribute.
 			code = wrs_parseSafeAppletsToObjects(code);
@@ -2380,8 +2381,10 @@ function wrs_addModalListeners(object, target) {
 
 	//Mouse events
 	wrs_addEvent(document.body, 'mousedown', wrs_startDrag);
-	wrs_addEvent(document.body, 'mousemove', wrs_drag);
     wrs_addEvent(window, 'mouseup', wrs_stopDrag);
+    wrs_addEvent(document, 'mouseup', wrs_stopDrag);
+    wrs_addEvent(document.getElementsByClassName("wrs_modal_iframe")[0], 'mouseup', wrs_stopDrag);
+	wrs_addEvent(document.body, 'mousemove', wrs_drag);
 
     // Touch Events
     wrs_addEvent(document.getElementsByClassName('wrs_modal_title')[0], 'touchstart', wrs_startDrag);
@@ -2421,7 +2424,7 @@ function wrs_startDrag(ev) {
 	    if(!_wrs_dragDataObject) {
 	        ev = ev||event;
 	        _wrs_dragDataObject = {
-	  	      x: wrs_eventClient(ev).X- (isNaN(parseInt(window.getComputedStyle(_wrs_dragObject).left)) ? _wrs_dragObject.offsetLeft :  parseInt(window.getComputedStyle(_wrs_dragObject).left)),
+	  	      x: wrs_eventClient(ev).X- (isNaN(parseInt(window.getComputedStyle(_wrs_dragObject)).left && parseInt(window.getComputedStyle(_wrs_dragObject).left >0 )) ? _wrs_dragObject.offsetLeft :  parseInt(window.getComputedStyle(_wrs_dragObject).left)),
 	    	  y: wrs_eventClient(ev).Y- (isNaN(parseInt(window.getComputedStyle(_wrs_dragObject).top)) ? _wrs_dragObject.offsetTop :  parseInt(window.getComputedStyle(_wrs_dragObject).top))
 	        };
 	    };
@@ -2436,10 +2439,10 @@ function wrs_startDrag(ev) {
 function wrs_drag(ev) {
 	if(_wrs_dragDataObject) {
 	  ev.preventDefault();
-	  _wrs_dragObject.style.position = 'absolute';
 	  ev = ev || event;
 	  _wrs_dragObject.style.left = wrs_eventClient(ev).X-_wrs_dragDataObject.x+"px";
 	  _wrs_dragObject.style.top = wrs_eventClient(ev).Y-_wrs_dragDataObject.y+"px";
+	  _wrs_dragObject.style.position = 'absolute';
 	}
 }
 
