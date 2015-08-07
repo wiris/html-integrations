@@ -1602,11 +1602,18 @@ function wrs_mathmlToAccessible(mathml, language) {
 		'service': 'mathml2accessible',
 		'mml': mathml
 	};
-	
+
+	// All render params must be sent to generate same digest as createImage
 	if (language) {
 		data['lang'] = language;
 	}
-	
+
+	if (_wrs_conf_setSize) {
+		// Request metrics of the generated image
+		data['metrics'] = 'true';
+		data['centerbaseline'] = 'false';
+	}
+
 	return wrs_getContent(_wrs_conf_servicePath, data);
 }
 
