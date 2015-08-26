@@ -340,19 +340,7 @@ function wrs_createImageCASSrc(image, appletCode) {
  * @param wirisProperties
  * @return string Image src
  */
-function wrs_createImageSrc(mathml, wirisProperties) {
-	var data = (wirisProperties) ? wirisProperties : {};
-	data['mml'] = mathml;
-	
-	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
-		data['returnDigest'] = 'true';
-	}
-	
-	if (_wrs_conf_setSize) {
-		// Request metrics of the generated image
-		data['metrics'] = 'true';
-		data['centerbaseline'] = 'false';
-	}
+function wrs_createImageSrc(mathml, data) {
 
 	// Full base64 method (edit & save)
 	if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default') {
@@ -360,14 +348,14 @@ function wrs_createImageSrc(mathml, wirisProperties) {
 	}
 	
 	var result = wrs_getContent(_wrs_conf_createimagePath, data);
-	
+
 	if (result.indexOf('@BASE@') != -1) {
 		// Replacing '@BASE@' with the base URL of createimage.
 		var baseParts = _wrs_conf_createimagePath.split('/');
 		baseParts.pop();
 		result = result.split('@BASE@').join(baseParts.join('/'));
 	}
-	
+
 	return result;
 }
 
@@ -1597,22 +1585,8 @@ function wrs_mathmlEntities(mathml) {
  * @param string language
  * @return string
  */
-function wrs_mathmlToAccessible(mathml, language) {
-	var data = {
-		'service': 'mathml2accessible',
-		'mml': mathml
-	};
-
-	// All render params must be sent to generate same digest as createImage
-	if (language) {
-		data['lang'] = language;
-	}
-
-	if (_wrs_conf_setSize) {
-		// Request metrics of the generated image
-		data['metrics'] = 'true';
-		data['centerbaseline'] = 'false';
-	}
+function wrs_mathmlToAccessible(mathml, language, data) {
+	data['service'] = 'mathml2accessible';
 
 	return wrs_getContent(_wrs_conf_servicePath, data);
 }
@@ -1709,14 +1683,44 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	var imgObject = creator.createElement('img');
 	//imgObject.title = 'Double click to edit';
 	imgObject.align = 'middle';
-	
+
+	// data
+	var data = (wirisProperties) ? wirisProperties : {};
+
+	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
+		data['returnDigest'] = 'true';
+	}
+
+	data['mml'] = mathml;
+
+	if (_wrs_conf_setSize) {
+		// Request metrics of the generated image
+		data['metrics'] = 'true';
+		data['centerbaseline'] = 'false';
+	}
+
+	// Full base64 method (edit & save)
+	if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default') {
+		data['base64'] = true;
+	}
+
+	// _wrs_int_wirisProperties contains some js render params. Since mathml can support render params, js params should be send only to editor, not to render.
+	// Render js params
+	// if (typeof(_wrs_int_wirisProperties != undefined)) {
+	// 	for (var key in _wrs_int_wirisProperties) {
+	// 		 if (_wrs_int_wirisProperties.hasOwnProperty(key)) {
+	//     		 data[key] = _wrs_int_wirisProperties[key];
+	//    		}
+	// 	}
+	// }
+
 	if (window._wrs_conf_enableAccessibility && _wrs_conf_enableAccessibility) {
-		imgObject.alt = wrs_mathmlToAccessible(mathml, language);
+		imgObject.alt = wrs_mathmlToAccessible(mathml, language, data);
 	}
 	
 	imgObject.className = _wrs_conf_imageClassName;
 	
-	var result = wrs_createImageSrc(mathml, wirisProperties);
+	var result = wrs_createImageSrc(mathml, data);
 	/* if (_wrs_conf_setSize) {
 		var ar = wrs_urlToAssArray(result);
 		width = ar['cw'];

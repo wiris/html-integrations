@@ -83,6 +83,13 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 		wrs_attributes['toolbar'] = wrs_int_opener._wrs_conf_editorToolbar;
 	}
 
+	if (typeof(wrs_int_opener._wrs_int_wirisProperties) != 'undefined') {
+		for (var key in wrs_int_opener._wrs_int_wirisProperties) {
+			 if (wrs_int_opener._wrs_int_wirisProperties.hasOwnProperty(key) && typeof(wrs_int_opener._wrs_int_wirisProperties[key]) != 'undefined') {
+	    		 wrs_attributes[key] = wrs_int_opener._wrs_int_wirisProperties[key];
+	   		}
+		}
+	}
 	if (com.wiris.jsEditor.defaultBasePath) {
 		editor = com.wiris.jsEditor.JsEditor.newInstance(wrs_attributes);
 	}	

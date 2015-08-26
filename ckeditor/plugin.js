@@ -209,43 +209,46 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});
-			
-			_wrs_int_wirisProperties = {};
 
-			if ('wirisimagecolor' in editor.config) {
-				_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
-			}			
-			
-			if ('wirisimagebgcolor' in editor.config) {
-				_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
-			}
+			if ('wiriseditorparameters' in editor.config) {
+				_wrs_int_wirisProperties = editor.config['wiriseditorparameters']
+			} else {
+				_wrs_int_wirisProperties = {};
+				if ('wirisimagecolor' in editor.config) {
+					_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
+				}
 
-			if ('wirisbackgroundcolor' in editor.config) {
-				_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
-			}
-			
-			if ('wirisimagesymbolcolor' in editor.config) {
-				_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
-			}
+				if ('wirisimagebgcolor' in editor.config) {
+					_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
+				}
 
-			if ('wirisimagenumbercolor' in editor.config) {
-				_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
-			}
+				if ('wirisbackgroundcolor' in editor.config) {
+					_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
+				}
 
-			if ('wirisimageidentcolor' in editor.config) {
-				_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
-			}
-			
-			if ('wiristransparency' in editor.config) {
-				_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
-			}
-			
-			if ('wirisimagefontsize' in editor.config) {
-				_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
-			}
+				if ('wirisimagesymbolcolor' in editor.config) {
+					_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
+				}
 
-			if ('wirisdpi' in editor.config) {
-				_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
+				if ('wirisimagenumbercolor' in editor.config) {
+					_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
+				}
+
+				if ('wirisimageidentcolor' in editor.config) {
+					_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
+				}
+
+				if ('wiristransparency' in editor.config) {
+					_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
+				}
+
+				if ('wirisimagefontsize' in editor.config) {
+					_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
+				}
+
+				if ('wirisdpi' in editor.config) {
+					_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
+				}
 			}
 		}
 		
@@ -411,11 +414,14 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
+	// _wrs_int_wirisProperties contains some js render params. Since mathml can support render params, js params should be send only to editor, not to render.
 	if (_wrs_int_temporalElementIsIframe) {
-		wrs_updateFormula(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+		// wrs_updateFormula(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+		wrs_updateFormula(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, mathml, {}, editMode, language);
 	}
 	else {
-		wrs_updateFormula(_wrs_int_temporalElement, window, mathml, _wrs_int_wirisProperties, editMode, language);
+		// wrs_updateFormula(_wrs_int_temporalElement, window, mathml, _wrs_int_wirisProperties, editMode, language);
+		wrs_updateFormula(_wrs_int_temporalElement, window, mathml, {}, editMode, language);
 	}
 	// Fire onchange event.
 	if (typeof CKEDITOR.instances[currentEditor].fire != undefined) {

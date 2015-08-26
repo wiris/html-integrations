@@ -75,6 +75,23 @@ var _wrs_int_directionality;
 					if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
 						var language = editor.getParam('language');
 						_wrs_int_directionality = editor.getParam('directionality');
+
+						if ('wiriseditorparameters' in editor.settings) {
+							_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+						} else {
+							_wrs_int_wirisProperties = {
+								'bgColor': editor.settings['wirisimagebgcolor'],
+								'symbolColor': editor.settings['wirisimagesymbolcolor'],
+								'transparency': editor.settings['wiristransparency'],
+								'fontSize': editor.settings['wirisimagefontsize'],
+								'numberColor': editor.settings['wirisimagenumbercolor'],
+								'identColor': editor.settings['wirisimageidentcolor'],
+								'color' : editor.settings['wirisimagecolor'],
+								'dpi' : editor.settings['wirisdpi'],
+								'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+								'fontFamily' : editor.settings['wirisfontfamily']
+							};
+						}
 				
 						if (editor.settings['wirisformulaeditorlang']) {
 							language = editor.settings['wirisformulaeditorlang'];
@@ -119,18 +136,22 @@ var _wrs_int_directionality;
 			
 			var onSave = function (editor, params) {
 				if (typeof _wrs_conf_plugin_loaded !== 'undefined') {
-					_wrs_int_wirisProperties = {
-						'bgColor': editor.settings['wirisimagebgcolor'],
-						'symbolColor': editor.settings['wirisimagesymbolcolor'],
-						'transparency': editor.settings['wiristransparency'],
-						'fontSize': editor.settings['wirisimagefontsize'],
-						'numberColor': editor.settings['wirisimagenumbercolor'],
-						'identColor': editor.settings['wirisimageidentcolor'],
-						'color' : editor.settings['wirisimagecolor'],
-						'dpi' : editor.settings['wirisdpi'],
-						'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
-						'fontFamily' : editor.settings['wirisfontfamily']
-					};
+					// if ('wiriseditorparameters' in editor.config) {
+					// 	_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+					// } else {
+					// 	_wrs_int_wirisProperties = {
+					// 		'bgColor': editor.settings['wirisimagebgcolor'],
+					// 		'symbolColor': editor.settings['wirisimagesymbolcolor'],
+					// 		'transparency': editor.settings['wiristransparency'],
+					// 		'fontSize': editor.settings['wirisimagefontsize'],
+					// 		'numberColor': editor.settings['wirisimagenumbercolor'],
+					// 		'identColor': editor.settings['wirisimageidentcolor'],
+					// 		'color' : editor.settings['wirisimagecolor'],
+					// 		'dpi' : editor.settings['wirisdpi'],
+					// 		'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+					// 		'fontFamily' : editor.settings['wirisfontfamily']
+					// 	};
+					// }
 					
 					var language = editor.getParam('language');
 					_wrs_int_directionality = editor.getParam('directionality');
@@ -162,18 +183,22 @@ var _wrs_int_directionality;
 			
 			if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
-					_wrs_int_wirisProperties = {
-						'bgColor': editor.settings['wirisimagebgcolor'],
-						'symbolColor': editor.settings['wirisimagesymbolcolor'],
-						'transparency': editor.settings['wiristransparency'],
-						'fontSize': editor.settings['wirisimagefontsize'],
-						'numberColor': editor.settings['wirisimagenumbercolor'],
-						'identColor': editor.settings['wirisimageidentcolor'],
-						'color' : editor.settings['wirisimagecolor'],
-						'dpi' : editor.settings['wirisdpi'],
-						'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
-						'fontFamily' : editor.settings['wirisfontfamily']
-					};
+					if ('wiriseditorparameters' in editor.settings) {
+						_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+					} else {
+						_wrs_int_wirisProperties = {
+							'bgColor': editor.settings['wirisimagebgcolor'],
+							'symbolColor': editor.settings['wirisimagesymbolcolor'],
+							'transparency': editor.settings['wiristransparency'],
+							'fontSize': editor.settings['wirisimagefontsize'],
+							'numberColor': editor.settings['wirisimagenumbercolor'],
+							'identColor': editor.settings['wirisimageidentcolor'],
+							'color' : editor.settings['wirisimagecolor'],
+							'dpi' : editor.settings['wirisdpi'],
+							'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+							'fontFamily' : editor.settings['wirisfontfamily']
+						};
+					}
 
 					var language = editor.getParam('language');
 					_wrs_int_directionality = editor.getParam('directionality');
@@ -282,18 +307,22 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 	
 	if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
-			_wrs_int_wirisProperties = {
-				'bgColor': editor.settings['wirisimagebgcolor'],
-				'symbolColor': editor.settings['wirisimagesymbolcolor'],
-				'transparency': editor.settings['wiristransparency'],
-				'fontSize': editor.settings['wirisimagefontsize'],
-				'numberColor': editor.settings['wirisimagenumbercolor'],
-				'identColor': editor.settings['wirisimageidentcolor'],
-				'color' : editor.settings['wirisimagecolor'],
-				'dpi' : editor.settings['wirisdpi'],
-				'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
-				'fontFamily' : editor.settings['wirisfontfamily']
-			};
+			if ('wiriseditorparameters' in editor.settings) {
+				_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+			} else {
+				_wrs_int_wirisProperties = {
+					'bgColor': editor.settings['wirisimagebgcolor'],
+					'symbolColor': editor.settings['wirisimagesymbolcolor'],
+					'transparency': editor.settings['wiristransparency'],
+					'fontSize': editor.settings['wirisimagefontsize'],
+					'numberColor': editor.settings['wirisimagenumbercolor'],
+					'identColor': editor.settings['wirisimageidentcolor'],
+					'color' : editor.settings['wirisimagecolor'],
+					'dpi' : editor.settings['wirisdpi'],
+					'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+					'fontFamily' : editor.settings['wirisfontfamily']
+				};
+			}
 			
 			if (!_wrs_int_window_opened) {
 				var language = editor.settings.language;
@@ -386,11 +415,14 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 	if (typeof tinymce.activeEditor.fire != 'undefined') {
 		tinymce.activeEditor.fire('change');
 	}
+	// _wrs_int_wirisProperties contains some js render params. Since mathml can support render params, js params should be send only to editor, not to render.
 	if (_wrs_int_temporalElementIsIframe) {
-		wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+		//wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, _wrs_int_wirisProperties, editMode, language);
+		wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, {}, editMode, language);
 	}
 	else {
-		wrs_updateFormula(_wrs_int_temporalIframe, window, mathml, _wrs_int_wirisProperties, editMode, language);
+		// wrs_updateFormula(_wrs_int_temporalIframe, window, mathml, _wrs_int_wirisProperties, editMode, language);
+		wrs_updateFormula(_wrs_int_temporalIframe, window, mathml, {}, editMode, language);
 	}
 }
 
