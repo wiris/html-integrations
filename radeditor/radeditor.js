@@ -50,49 +50,54 @@ function OnClientLoad(editor, args){
 	_wrs_int_temporalIframe = editor._contentAreaElement;
 
 	_wrs_int_wirisProperties = {};
-	attribute = editor.get_element().getAttribute("wirisimagecolor");
+	attribute = editor.get_element().getAttribute("wiriseditorparameters");
 	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['color'] = attribute;
-	}
+		_wrs_int_wirisProperties = attribute;
+	} else {
+		attribute = editor.get_element().getAttribute("wirisimagecolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['color'] = attribute;
+		}
 
-	attribute = editor.get_element().getAttribute("wirisimagebgcolor");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['bgColor'] = attribute;
-	}
+		attribute = editor.get_element().getAttribute("wirisimagebgcolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['bgColor'] = attribute;
+		}
 
-	attribute = editor.get_element().getAttribute("wirisimagebackgroundcolor");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['backgroundColor'] = attribute;
-	}
-	
-	attribute = editor.get_element().getAttribute("wirisimagesymbolcolor");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['symbolColor'] = attribute;
-	}
+		attribute = editor.get_element().getAttribute("wirisimagebackgroundcolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['backgroundColor'] = attribute;
+		}
+		
+		attribute = editor.get_element().getAttribute("wirisimagesymbolcolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['symbolColor'] = attribute;
+		}
 
-	attribute = editor.get_element().getAttribute("wirisimagenumbercolor");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['numberColor'] = attribute;
-	}
-	
-	attribute = editor.get_element().getAttribute("wirisimageidentcolor");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['identColor'] = attribute;
-	}
-	
-	attribute = editor.get_element().getAttribute("wiristransparency");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['transparency'] = attribute;
-	}
-	
-	attribute = editor.get_element().getAttribute("wirisimagefontsize");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['fontSize'] = attribute;
-	}
-	
-	attribute = editor.get_element().getAttribute("wirisdpi");
-	if (attribute != 'undefined') {
-		_wrs_int_wirisProperties['dpi'] = attribute;
+		attribute = editor.get_element().getAttribute("wirisimagenumbercolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['numberColor'] = attribute;
+		}
+		
+		attribute = editor.get_element().getAttribute("wirisimageidentcolor");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['identColor'] = attribute;
+		}
+		
+		attribute = editor.get_element().getAttribute("wiristransparency");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['transparency'] = attribute;
+		}
+		
+		attribute = editor.get_element().getAttribute("wirisimagefontsize");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['fontSize'] = attribute;
+		}
+		
+		attribute = editor.get_element().getAttribute("wirisdpi");
+		if (attribute != 'undefined') {
+			_wrs_int_wirisProperties['dpi'] = attribute;
+		}
 	}
 	
 	var lis = new Array();
