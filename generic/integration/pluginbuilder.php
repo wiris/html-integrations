@@ -1,10 +1,12 @@
 <?php
 
 // ${license.statement}
+require_once 'plugin.php';
 
-require_once 'lib/php/Boot.class.php';
-
+$wrap = com_wiris_system_CallWrapper::getInstance();
+$wrap->start();
 $pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
+$wrap->stop();
 
 // Moodle base dir is 6 or 7 folders up, depending on the text editor.
 // If open_basedir is defined, we only check moodlelib.php inside open_basedir environment
@@ -52,11 +54,13 @@ if ($moodle) {
             define('ABORT_AFTER_CONFIG', true);
             define('MOODLE_INTERNAL', true); // Moodle 2.2 - 2.5 min config doesn't define 'MOODLE_INTERNAL'.
         }
+
+    $wrap->stop();
     include_once $config;
     include_once $wirisFilter;
-
+    $wrap->start();
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_configuration_MoodleConfigurationUpdater());
-
+    $wrap->stop();
 }
-
+$wrap->start();
 $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
