@@ -47,14 +47,16 @@ var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
-var _wrs_int_directionality; 
+var _wrs_int_directionality;
+// Variable to control first wrs_initParse call.
+var _wrs_int_initParsed = false;
 
 /* Plugin integration */
 (function () {
 	tinymce.create('tinymce.plugins.tiny_mce_wiris', {
 		init: function (editor, url) {
 			var element;
-			
+
 			//Fix a Moodle 2.4 bug. data-mathml was lost without this.
 			if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
 				editor.settings.extended_valid_elements += ',img[*]';
@@ -66,11 +68,11 @@ var _wrs_int_directionality;
 				editor.settings.extended_valid_elements += ",math[*],menclose[*],merror[*],mfenced[*],mfrac[*],mglyph[*],mi[*],mlabeledtr[*],mmultiscripts[*],mn[*],mo[*],mover[*],mpadded[*],mphantom[*],mroot[*],mrow[*],ms[*],mspace[*],msqrt[*],mstyle[*],msub[*],msubsup[*],msup[*],mtable[*],mtd[*],mtext[*],mtr[*],munder[*],munderover[*],semantics[*],maction[*]";
 				editor.settings.extended_valid_elements += ",annotation[*]"; // LaTeX parse
 			}
-			
+
 			var onInit = function (editor) {
 				var editorElement = editor.getElement();
 				var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
-				
+
 				function whenDocReady() {
 					if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
 						var language = editor.getParam('language');
@@ -92,15 +94,19 @@ var _wrs_int_directionality;
 								'fontFamily' : editor.settings['wirisfontfamily']
 							};
 						}
-				
+
 						if (editor.settings['wirisformulaeditorlang']) {
 							language = editor.settings['wirisformulaeditorlang'];
 						}
-						
-						//Bug fix: In Moodle2.x when TinyMCE is set to full screen 
+
+						//Bug fix: In Moodle2.x when TinyMCE is set to full screen
 						//the content doesn't need to be filtered.
 						if (!editor.getParam('fullscreen_is_enabled')){
 							editor.setContent(wrs_initParse(content, language));
+							// Init parsing OK. If a setContent method is called
+							// wrs_initParse is called again.
+							// Now if source code is edited the returned code is parsed.
+							_wrs_int_initParsed = true;
 						}
 
 						if (!editor.inline) {
@@ -121,10 +127,10 @@ var _wrs_int_directionality;
 						setTimeout(whenDocReady, 50);
 					}
 				}
-				
+
 				whenDocReady();
 			}
-			
+
 			if ('onInit' in editor) {
 				editor.onInit.add(onInit);
 			}
@@ -133,7 +139,7 @@ var _wrs_int_directionality;
 					onInit(editor);
 				});
 			}
-			
+
 			var onSave = function (editor, params) {
 				if (typeof _wrs_conf_plugin_loaded !== 'undefined') {
 					// if ('wiriseditorparameters' in editor.config) {
@@ -152,18 +158,18 @@ var _wrs_int_directionality;
 					// 		'fontFamily' : editor.settings['wirisfontfamily']
 					// 	};
 					// }
-					
+
 					var language = editor.getParam('language');
 					_wrs_int_directionality = editor.getParam('directionality');
-					
+
 					if (editor.settings['wirisformulaeditorlang']) {
 						language = editor.settings['wirisformulaeditorlang'];
 					}
-					
+
 					params.content = wrs_endParse(params.content, _wrs_int_wirisProperties, language);
 				}
 			}
-			
+
 			if ('onSaveContent' in editor) {
 				editor.onSaveContent.add(onSave);
 			}
@@ -180,7 +186,21 @@ var _wrs_int_directionality;
 					onSave(editor, params);
 				});
 			}
-			
+
+			if ('onBeforeSetContent' in editor) {
+				editor.onBeforeSetContent.add(function(e,params) {
+					if (_wrs_int_initParsed) {
+						params.content = wrs_initParse(params.content, editor.getParam('language'));
+					}
+				});
+			} else {
+				editor.on('beforeSetContent', function(params){
+					if (_wrs_int_initParsed) {
+						params.content = wrs_initParse(params.content, editor.getParam('language'));
+					}
+				});
+			}
+
 			if (_wrs_int_conf_async || _wrs_conf_editorEnabled) {
 				editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
 					if ('wiriseditorparameters' in editor.settings) {
@@ -202,14 +222,14 @@ var _wrs_int_directionality;
 
 					var language = editor.getParam('language');
 					_wrs_int_directionality = editor.getParam('directionality');
-					
+
 					if (editor.settings['wirisformulaeditorlang']) {
 						language = editor.settings['wirisformulaeditorlang'];
 					}
-					
+
 					wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
 				});
-			
+
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
 					title: 'WIRIS editor',
 					cmd: 'tiny_mce_wiris_openFormulaEditor',
@@ -220,14 +240,14 @@ var _wrs_int_directionality;
 			if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
 				editor.addCommand('tiny_mce_wiris_openCAS', function () {
 					var language = editor.settings.language;
-				
+
 					if (editor.settings['wirisformulaeditorlang']) {
 						language = editor.settings['wirisformulaeditorlang'];
 					}
-					
+
 					wrs_int_openNewCAS(element, language, editor.inline ? false : true);
 				});
-			
+
 				editor.addButton('tiny_mce_wiris_CAS', {
 					title: 'WIRIS cas',
 					cmd: 'tiny_mce_wiris_openCAS',
@@ -235,7 +255,7 @@ var _wrs_int_directionality;
 				});
 			}
 		},
-		
+
 		// all versions
 		getInfo: function () {
 			return {
@@ -245,7 +265,7 @@ var _wrs_int_directionality;
 				infourl : 'http://www.wiris.com',
 				version : '1.0'
 			};
-		}	
+		}
 	});
 
 	tinymce.PluginManager.add('tiny_mce_wiris', tinymce.plugins.tiny_mce_wiris);
@@ -254,7 +274,7 @@ var _wrs_int_directionality;
 /**
  * Opens formula editor.
  * @param object element Target
- * @param string language 
+ * @param string language
  * @param bool isIframe
  */
 function wrs_int_openNewFormulaEditor(element, language, isIframe) {
@@ -298,13 +318,13 @@ function wrs_int_openNewCAS(element, language, isIframe) {
  */
 function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 	// This loop allows the double clicking on the formulas represented with span's.
-	
+
 	while (!wrs_containsClass(element, 'Wirisformula') && !wrs_containsClass(element, 'Wiriscas') && element.parentNode) {
 		element = element.parentNode;
 	}
-	
+
 	var elementName = element.nodeName.toLowerCase();
-	
+
 	if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
 			if ('wiriseditorparameters' in editor.settings) {
@@ -323,14 +343,14 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 					'fontFamily' : editor.settings['wirisfontfamily']
 				};
 			}
-			
+
 			if (!_wrs_int_window_opened) {
 				var language = editor.settings.language;
-			
+
 				if (editor.settings['wirisformulaeditorlang']) {
 					language = editor.settings['wirisformulaeditorlang'];
 				}
-				
+
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(target, isIframe, language);
 			}
@@ -341,11 +361,11 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 		else if (wrs_containsClass(element, 'Wiriscas')) {
 			if (!_wrs_int_window_opened) {
 				var language = editor.settings.language;
-			
+
 				if (editor.settings['wirisformulaeditorlang']) {
 					language = editor.settings['wirisformulaeditorlang'];
 				}
-				
+
 				_wrs_temporalImage = element;
 				wrs_int_openExistingCAS(target, isIframe, language);
 			}
