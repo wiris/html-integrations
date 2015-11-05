@@ -135,8 +135,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 								newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
 								divIframe = true;
 							}
-							
-							if (!newElement.wirisActive) {
+
+							if (!newElement.wirisActive && element == null) {
 								if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 									if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
 										var eventElements = document.getElementsByClassName("cke_textarea_inline");
