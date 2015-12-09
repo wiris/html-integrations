@@ -43,13 +43,16 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
-// Current editor
-var _wrs_currentEditor;
-for(var id in CKEDITOR.instances) {
-  CKEDITOR.instances[id].on('focus', function(e) {
-    // Fill some global var here
-    currentEditor = e.editor.name;
-});
+
+// Current editor 
+// This global variable will be use only on non modal window mode.
+if (!_wrs_conf_modalWindow) {			
+	for(var id in CKEDITOR.instances) {
+	  CKEDITOR.instances[id].on('focus', function(e) {
+	    // Fill some ugly global var here
+	    window._wrs_currentEditor = e.editor.name;
+	});
+	}
 }
 
 // Plugin integration
@@ -423,9 +426,15 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 		// wrs_updateFormula(_wrs_int_temporalElement, window, mathml, _wrs_int_wirisProperties, editMode, language);
 		wrs_updateFormula(_wrs_int_temporalElement, window, mathml, {}, editMode, language);
 	}
+
 	// Fire onchange event.
-	if (typeof CKEDITOR.instances[currentEditor].fire != undefined) {
-		CKEDITOR.instances[currentEditor].fire('change');
+	// Try to use first CKEDITOR default method currenInstance first (only works if editor has been focused).	
+	if (CKEDITOR.currentInstance != null && CKEDITOR.currentInstance && CKEDITOR.currentInstance.fire('change'))
+		 {
+		 	CKEDITOR.currentInstance.fire('change')
+		 }
+	else if (typeof CKEDITOR.instances[_wrs_currentEditor].fire != undefined) {
+		CKEDITOR.instances[_wrs_currentEditor].fire('change');
 	}
 }
 
