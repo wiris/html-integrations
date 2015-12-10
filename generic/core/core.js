@@ -2351,7 +2351,7 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties, modalPrope
 	}
 	containerDiv.appendChild(iframe);
 
-	document.body.className = document.body.className + "wrs_modal_open";
+	document.body.className = !(document.body.className) ? "wrs_modal_open" : document.body.className + " wrs_modal_open";
 
 	if (!deviceProperties['isMobile'] && !deviceProperties['isIOS'] && !deviceProperties['isAndroid']) { // Desktop
 		wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams);
@@ -2658,7 +2658,7 @@ function wrs_closeModalWindow() {
 		if (document.querySelector('meta[name=viewport]')) {
 			document.querySelector('meta[name=viewport]').content = "";
 		}
-		document.body.className = document.body.className.replace('wrs_modal_open', '');
+		document.body.className = document.body.className != 'wrs_modal_open' ? document.body.className.replace(' wrs_modal_open', '') : document.body.className = ""
 		var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
 		closeFunction = document.body.removeChild(modalDiv);
 }

@@ -70,7 +70,7 @@ wrs_int_opener.wrs_addEvent(window, 'load', function () {
 
 	// Class for modal dialog.
 	if (window.parent._wrs_conf_modalWindow) {
-		document.body.className += document.body.className + "wrs_modal_open";
+		document.body.className = !(document.body.className) ? "wrs_modal_open" : document.body.className + " wrs_modal_open";
 	}
 
 	var queryParams = wrs_int_opener.wrs_getQueryParams(window);
