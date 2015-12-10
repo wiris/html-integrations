@@ -3,7 +3,7 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 
 var _wrs_int_conf_async = false;
 
-var _wrs_conf_path = CKEDITOR.basePath + '/plugins/ckeditor_wiris';
+var _wrs_conf_path = CKEDITOR.plugins.getPath('ckeditor_wiris');
 
 // Stats editor (needed by core/editor.js)
 var _wrs_conf_editor = "CKEditor4";
@@ -25,7 +25,7 @@ if (!_wrs_int_conf_async) {
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = _wrs_conf_path + '/core/core.js';
+script.src = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Define variables needed at initialization time
@@ -33,8 +33,8 @@ document.getElementsByTagName('head')[0].appendChild(script);
 // var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
 // Vars
-var _wrs_int_editorIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/formula.gif';
-var _wrs_int_CASIcon = CKEDITOR.basePath + '/plugins/ckeditor_wiris/core/icons/cas.gif';
+var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/formula.gif';
+var _wrs_int_CASIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/cas.gif';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
