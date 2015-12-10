@@ -1,5 +1,7 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
+// Check if the synchronous request has a 200 status.
+var _wrs_int_conf_file_loaded = false;
 
 var _wrs_int_conf_async = false;
 
@@ -19,7 +21,11 @@ if (!_wrs_int_conf_async) {
 	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
 	httpRequest.open('GET', configUrl, false);
 	httpRequest.send(null);
-	eval(httpRequest.responseText);
+	
+	if (httpRequest.status == 200) {
+		eval(httpRequest.responseText);
+		_wrs_int_conf_file_loaded = true;
+	}
 }
 
 // Including core.js
@@ -44,20 +50,25 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 
-// Current editor 
-// This global variable will be use only on non modal window mode.
-if (!_wrs_conf_modalWindow) {			
-	for(var id in CKEDITOR.instances) {
-	  CKEDITOR.instances[id].on('focus', function(e) {
-	    // Fill some ugly global var here
-	    window._wrs_currentEditor = e.editor.name;
-	});
-	}
-}
-
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
 	'init': function (editor) {
+		// Synchronous request failed, avoid 
+		// CKEDITOR loading fails.
+		if (! _wrs_int_conf_file_loaded) {
+			return;
+		}
+		// Current editor 
+		// This global variable will be use only on non modal window mode.
+		if (!_wrs_conf_modalWindow) {			
+			for(var id in CKEDITOR.instances) {
+			  CKEDITOR.instances[id].on('focus', function(e) {
+			    // Fill some ugly global var here
+			    window._wrs_currentEditor = e.editor.name;
+			});
+			}
+		}
+
 		var iframe;
 		
 		if (parseFloat(CKEDITOR.version) < 4.0){
