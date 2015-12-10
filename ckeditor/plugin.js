@@ -187,8 +187,9 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				setTimeout(whenDocReady, 50);
 			}
 		}
-		
-		whenDocReady();
+		// CKEditor bug #10501.
+		// whenDocReady() first calls could cause a crash if ckeditor event's (like setData) are not loaded so we put a 500 ms timeout.
+		setTimeout(whenDocReady, 500);
 		
 		// editor command
 		
