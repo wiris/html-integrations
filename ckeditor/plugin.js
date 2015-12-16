@@ -119,21 +119,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				});
 				
 				editor.setData(lastDataSet, function (e) {
-					var changingMode = false;
-					
-					editor.on('beforeSetMode', function (e) {
-						changingMode = true;
-					});
-					
-					editor.on('mode', function (e) {
-						changingMode = false;
-					});
-					
 					editor.on('getData', function (e) {
-						if (changingMode) {
-							return;
-						}
-						
 						e.data.dataValue = wrs_endParse(e.data.dataValue);
 					});
 					
@@ -145,17 +131,17 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 							if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 								newElement = editor.element.$;
 							}
-							else {
+							else {															
 								var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
 								newElement = elem.getElementsByTagName('iframe')[0];
 							}
 
-							if (!newElement) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
+							if (newElement == null) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
 								newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
 								divIframe = true;
 							}
 
-							if (!newElement.wirisActive && element == null) {
+							if ((!newElement.wirisActive && element == null) || newElement != element) {
 								if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
 									if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
 										var eventElements = document.getElementsByClassName("cke_textarea_inline");
