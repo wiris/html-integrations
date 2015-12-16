@@ -1564,7 +1564,7 @@ function wrs_mathmlEntities(mathml) {
 			if (end >= 0) {
 				var container = document.createElement('span');
 				container.innerHTML = mathml.substring(i, end + 1);
-				toReturn += '&#' + (container.innerText || container.textContent).charCodeAt(0) + ';';
+				toReturn += '&#' + wrs_fixedCharCodeAt((container.innerText || container.textContent),0) + ';';
 				i = end;
 			}
 			else {
@@ -1577,6 +1577,36 @@ function wrs_mathmlEntities(mathml) {
 	}
 	
 	return toReturn;
+}
+
+/**
+ * Fix charCodeAt() javascript function to handle non-Basic-Multilingual-Plane characters.
+ * @param string string
+ * @param int idx
+ * @return int
+ */
+
+function wrs_fixedCharCodeAt(str, idx) {  
+  idx = idx || 0;
+  var code = str.charCodeAt(idx);
+  var hi, low;
+  
+  // High surrogate (could change last hex to 0xDB7F to treat high
+  // private surrogates as single characters)
+  if (0xD800 <= code && code <= 0xDBFF) {
+    hi = code;
+    low = str.charCodeAt(idx + 1);
+    if (isNaN(low)) {
+      throw 'High surrogate not followed by low surrogate in fixedCharCodeAt()';
+    }
+    return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+  }
+  if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate
+    // We return false to allow loops to skip this iteration since should have
+    // already handled high surrogate above in the previous iteration
+    return false;    
+  }
+  return code;
 }
 
 /**
