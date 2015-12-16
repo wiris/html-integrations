@@ -64,7 +64,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			for(var id in CKEDITOR.instances) {
 			  CKEDITOR.instances[id].on('focus', function(e) {
 			    // Fill some ugly global var here
-			    window._wrs_currentEditor = e.editor.name;
+			    window._wrs_currentEditor = e.editor;
 			});
 			}
 		}
@@ -436,8 +436,8 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 		 {
 		 	CKEDITOR.currentInstance.fire('change')
 		 }
-	else if (typeof CKEDITOR.instances[_wrs_currentEditor].fire != undefined) {
-		CKEDITOR.instances[_wrs_currentEditor].fire('change');
+	else if (_wrs_currentEditor && _wrs_currentEditor.fire) {
+		_wrs_currentEditor.fire('change');
 	}
 }
 
