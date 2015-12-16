@@ -1,5 +1,14 @@
 // Define variables needed by core/core.js
-var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_int_conf_file;
+// Searching wiriscontextpath on CKEditor config.
+var _wrs_cont_contextPath = CKEDITOR.config.wiriscontextpath;
+for(var id in CKEDITOR.instances) {
+		if (CKEDITOR.instances[id].config.wiriscontextpath) _wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath
+}
+_wrs_int_conf_file = (_wrs_cont_contextPath) ? _wrs_cont_contextPath + "@param.js.configuration.path@" : "@param.js.configuration.path@";
+
+
+
 // Check if the synchronous request has a 200 status.
 var _wrs_int_conf_file_loaded = false;
 
