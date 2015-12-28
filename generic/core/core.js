@@ -1580,6 +1580,25 @@ function wrs_mathmlEntities(mathml) {
 }
 
 /**
+ * Add wrs::type attribute to mathml if the mathml has been created with a custom editor
+ * for example, chemistry.
+ */
+function wrs_mathmlAddEditorAttribute(mathml) {
+	var toReturn = '';
+
+	var start = mathml.indexOf('<math');
+	if (start == 0 ) {
+		end = mathml.indexOf('>');
+		// Adding custom editor type
+		toReturn = mathml.substr(start, end) + ' xmlns:wrs="http://www.wiris.com/xml/mathml-extension" wrs:type="' + wrs_int_getCustomEditorEnabled().toolbar + '">';		
+		toReturn += mathml.substr(end+1, mathml.length);
+		return toReturn;
+	}
+	return mathml;
+
+}
+
+/**
  * Fix charCodeAt() javascript function to handle non-Basic-Multilingual-Plane characters.
  * @param string string
  * @param int idx
@@ -1749,6 +1768,18 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	}
 	
 	imgObject.className = _wrs_conf_imageClassName;
+
+	
+	// TODO Custom Editors: wrs:type="toolbar" should be given by the editor
+	// so the first condition shouldn't be longer necessary.
+	if (customEditor = wrs_int_getCustomEditorEnabled()) {
+		imgObject.setAttribute('data-custom-editor', customEditor.toolbar);
+	} else if (mathml.indexOf('wrs:type="') != -1) { // We check here if the mathmnl has been created from a customEditor (such chemistry) 
+		//  to add data-custom-editor attribute to img object (if necessary).
+		mathmlSubstring = mathml.substring(mathml.indexOf('wrs:type="')+'wrs:type="'.length, mathml.length);
+		mathmlSubstring = mathmlSubstring.substring(0, mathmlSubstring.indexOf('"'))
+		imgObject.setAttribute('data-custom-editor', mathmlSubstring);
+	}
 	
 	var result = wrs_createImageSrc(mathml, data);
 	/* if (_wrs_conf_setSize) {
@@ -1764,7 +1795,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 		}
 		// result = wrs_assArrayToUrl(ar);
 	}*/
-	
+
 	if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
 		var parts = result.split(':', 2);
 		imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, parts[0]);
@@ -2990,5 +3021,40 @@ function wrs_getMetricsFromBytes(bytes) {
 		}
 
 		return arr;
+	}
+}
+
+/**
+ * Get custom active editor
+ */
+function wrs_int_getCustomEditorEnabled() {
+	var customEditorEnabled = null;
+	Object.keys(_wrs_int_customEditors).forEach(function(key) {		
+			if (_wrs_int_customEditors[key].enabled) {
+				customEditorEnabled = _wrs_int_customEditors[key]
+			}
+	});
+
+	return customEditorEnabled;	
+}
+
+/**
+ * Disable all custom editors
+ */
+function wrs_int_disableCustomEditors(){
+	Object.keys(_wrs_int_customEditors).forEach(function(key) {
+			_wrs_int_customEditors[key].enabled = false;								
+	}); 
+}
+
+/**
+ * Enable a custom editor
+ * @param string editor
+ */
+function wrs_int_enableCustomEditor(editor) {
+	// Only one custom editor enabled at the same time.
+	wrs_int_disableCustomEditors();
+	if (_wrs_int_customEditors[editor]) {
+		_wrs_int_customEditors[editor].enabled = true;
 	}
 }

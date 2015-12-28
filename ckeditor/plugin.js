@@ -58,6 +58,8 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
+// Custom Editors: 
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
@@ -292,6 +294,76 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				'icon': _wrs_int_CASIcon
 			});
 		}
+
+		// Dynamic customEditors buttons.
+
+		Object.keys(_wrs_int_customEditors).forEach(function(key) {			
+			if (window[_wrs_int_customEditors[key].confVariable]) {
+				var allowedContent = 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)';
+			
+				var command = 'ckeditor_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
+				editor.addCommand(command, {
+					'async': false,
+					'canUndo': true,
+					'editorFocus': true,
+					'allowedContent': allowedContent,
+					'requiredContent': allowedContent,
+					
+					'exec': function (editor) {
+						wrs_int_enableCustomEditor(key);
+						wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
+					}
+				});
+				
+				var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name; 
+				editor.ui.addButton(buttonName, {
+					'label': 'WIRIS editor',
+					'command': command,
+					'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/' +_wrs_int_customEditors[key].icon
+				});
+
+				if ('wiriseditorparameters' in editor.config) {
+					_wrs_int_wirisProperties = editor.config['wiriseditorparameters']
+				} else {
+					_wrs_int_wirisProperties = {};
+					if ('wirisimagecolor' in editor.config) {
+						_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
+					}
+
+					if ('wirisimagebgcolor' in editor.config) {
+						_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
+					}
+
+					if ('wirisbackgroundcolor' in editor.config) {
+						_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
+					}
+
+					if ('wirisimagesymbolcolor' in editor.config) {
+						_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
+					}
+
+					if ('wirisimagenumbercolor' in editor.config) {
+						_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
+					}
+
+					if ('wirisimageidentcolor' in editor.config) {
+						_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
+					}
+
+					if ('wiristransparency' in editor.config) {
+						_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
+					}
+
+					if ('wirisimagefontsize' in editor.config) {
+						_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
+					}
+
+					if ('wirisdpi' in editor.config) {
+						_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
+					}
+				}
+			}
+		}); 
 	}
 })
 
@@ -355,6 +427,9 @@ function wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event) {
 function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
+			if (customEditor = element.getAttribute('data-custom-editor')) {
+				wrs_int_enableCustomEditor(customEditor);
+			}
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(target, isIframe, editor.langCode);

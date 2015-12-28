@@ -42,7 +42,8 @@ var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_language;
 var _wrs_int_directionality = '';
-
+// Custom Editors: 
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 if (navigator.userLanguage) {
 	_wrs_int_language = navigator.userLanguage;
@@ -122,6 +123,23 @@ function wrs_int_init_handler(target,toolbar) {
 			
 			toolbar.appendChild(CASButton);
 		}
+
+		// Dynamic customEditors buttons.
+		Object.keys(_wrs_int_customEditors).forEach(function(key) {			
+			if (window[_wrs_int_customEditors[key].confVariable]) {
+				var customEditorButton = document.createElement('img');
+				customEditorButton.src = _wrs_conf_path + '/core/icons/' + _wrs_int_customEditors[key].icon;
+				customEditorButton.id = key + "Icon";
+				customEditorButton.style.cursor = 'pointer';
+				
+				wrs_addEvent(customEditorButton, 'click', function () {
+					wrs_int_enableCustomEditor(key);
+					wrs_int_openNewFormulaEditor(target, _wrs_int_language);
+				});
+				
+				toolbar.appendChild(customEditorButton);
+			}
+		}); 
 	}
 }
 
@@ -165,6 +183,9 @@ function wrs_int_openNewCAS(iframe, language) {
  */
 function wrs_int_doubleClickHandler(iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
+		if (customEditor = element.getAttribute('data-custom-editor')) {
+			wrs_int_enableCustomEditor(customEditor);
+		}
 		if (wrs_containsClass(element, 'Wirisformula')) {
 			if (!_wrs_int_window_opened) {
 				_wrs_temporalImage = element;
@@ -256,4 +277,39 @@ function wrs_int_updateCAS(appletCode, image, width, height) {
  */
 function wrs_int_notifyWindowClosed() {
 	_wrs_int_window_opened = false;
+}
+
+/**
+ * Get custom active editor
+ */
+function wrs_int_getCustomEditorEnabled() {
+	var customEditorEnabled = null;
+	Object.keys(_wrs_int_customEditors).forEach(function(key) {		
+			if (_wrs_int_customEditors[key].enabled) {
+				customEditorEnabled = _wrs_int_customEditors[key]
+			}
+	});
+
+	return customEditorEnabled;	
+}
+
+/**
+ * Disable all custom editors
+ */
+function wrs_int_disableCustomEditors(){
+	Object.keys(_wrs_int_customEditors).forEach(function(key) {
+			_wrs_int_customEditors[key].enabled = false;								
+	}); 
+}
+
+/**
+ * Enable a custom editor
+ * @param string editor
+ */
+function wrs_int_enableCustomEditor(editor) {
+	// Only one custom editor enabled at the same time.
+	wrs_int_disableCustomEditors();
+	if (_wrs_int_customEditors[editor]) {
+		_wrs_int_customEditors[editor].enabled = true;
+	}
 }

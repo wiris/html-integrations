@@ -48,6 +48,9 @@ var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
+// Custom Editors: 
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+
 // Variable to control first wrs_initParse call.
 var _wrs_int_initParsed = false;
 
@@ -254,6 +257,48 @@ var _wrs_int_initParsed = false;
 					image: _wrs_int_CASIcon
 				});
 			}
+			
+			// Dynamic customEditors buttons.
+			Object.keys(_wrs_int_customEditors).forEach(function(key) {
+				if (_wrs_int_conf_async || window[_wrs_int_customEditors[key].confVariable]) {
+					
+					var cmd = 'tiny_mce_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
+					editor.addCommand(cmd, function () {
+						if ('wiriseditorparameters' in editor.settings) {
+							_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+						} else {
+							_wrs_int_wirisProperties = {
+								'bgColor': editor.settings['wirisimagebgcolor'],
+								'symbolColor': editor.settings['wirisimagesymbolcolor'],
+								'transparency': editor.settings['wiristransparency'],
+								'fontSize': editor.settings['wirisimagefontsize'],
+								'numberColor': editor.settings['wirisimagenumbercolor'],
+								'identColor': editor.settings['wirisimageidentcolor'],
+								'color' : editor.settings['wirisimagecolor'],
+								'dpi' : editor.settings['wirisdpi'],
+								'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+								'fontFamily' : editor.settings['wirisfontfamily']
+							};
+						}
+
+						var language = editor.getParam('language');
+						_wrs_int_directionality = editor.getParam('directionality');
+
+						if (editor.settings['wirisformulaeditorlang']) {
+							language = editor.settings['wirisformulaeditorlang'];
+						}
+						wrs_int_enableCustomEditor(key);
+						wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
+					});
+
+					editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
+						title: 'WIRIS editor',
+						cmd: cmd,
+						image: _wrs_conf_path + 'core/icons/tiny_mce/' + _wrs_int_customEditors[key].icon
+					});
+
+				}
+			});
 		},
 
 		// all versions
@@ -327,6 +372,11 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
 
 	if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
 		if (wrs_containsClass(element, 'Wirisformula')) {
+			if (customEditor = element.getAttribute('data-custom-editor')) {				
+				if (window[_wrs_int_customEditors[customEditor].confVariable]) {
+					wrs_int_enableCustomEditor(customEditor);				
+				}
+			}
 			if ('wiriseditorparameters' in editor.settings) {
 				_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
 			} else {
