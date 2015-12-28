@@ -36,6 +36,8 @@ var _wrs_int_language;
 var _wrs_int_radeditor_id;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_directionality = '';
+// Custom Editors: 
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 if (typeof currentLanguage != 'undefined'){
 	_wrs_int_language = currentLanguage;
@@ -158,6 +160,14 @@ Telerik.Web.UI.Editor.CommandList["WIRISformula"] = function(commandName, editor
     }
 };
 
+// Custom Editors
+Object.keys(_wrs_int_customEditors).forEach(function(key) {		
+		Telerik.Web.UI.Editor.CommandList["WIRISformula"+ _wrs_int_customEditors[key].name] = function(commandName, editor, args) {
+			wrs_int_enableCustomEditor(key);
+        	wrs_int_openNewFormulaEditor(editor._contentAreaElement, _wrs_int_language); 
+		};	
+});
+
 function wrs_int_updateCAS(appletCode, image, width, height) {
 	wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
 }
@@ -207,6 +217,9 @@ function wrs_int_openNewCAS(iframe, language) {
 function wrs_int_doubleClickHandler(Iframe, element) {
     if (element.nodeName.toLowerCase() == 'img') {
         if (wrs_containsClass(element, 'Wirisformula')) {
+        	if (customEditor = element.getAttribute('data-custom-editor')) {
+				wrs_int_enableCustomEditor(customEditor);
+			}
             if (!_wrs_int_window_opened) {
                 _wrs_temporalImage = element;
                 wrs_int_openExistingFormulaEditor(_wrs_int_temporalIframe, _wrs_int_language);
