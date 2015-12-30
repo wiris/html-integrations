@@ -1345,7 +1345,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
 		focusElement.focus();
 		
 		if (_wrs_isNewElement) {
-			if (document.selection) {
+			if (document.selection && document.getSelection != 0) {
 				var range = windowTarget.document.selection.createRange();
 				windowTarget.document.execCommand('InsertImage', false, element.src);
 				
