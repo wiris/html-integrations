@@ -1589,9 +1589,11 @@ function wrs_mathmlAddEditorAttribute(mathml) {
 	var start = mathml.indexOf('<math');
 	if (start == 0 ) {
 		end = mathml.indexOf('>');
-		// Adding custom editor type
-		toReturn = mathml.substr(start, end) + ' xmlns:wrs="http://www.wiris.com/xml/mathml-extension" wrs:type="' + wrs_int_getCustomEditorEnabled().toolbar + '">';		
-		toReturn += mathml.substr(end+1, mathml.length);
+		if (mathml.indexOf("class") == -1 ) {
+			// Adding custom editor type
+			toReturn = mathml.substr(start, end) + ' class="wrs_'  + wrs_int_getCustomEditorEnabled().toolbar + '">';		
+			toReturn += mathml.substr(end+1, mathml.length);
+		}
 		return toReturn;
 	}
 	return mathml;
@@ -1774,10 +1776,12 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	// so the first condition shouldn't be longer necessary.
 	if (customEditor = wrs_int_getCustomEditorEnabled()) {
 		imgObject.setAttribute('data-custom-editor', customEditor.toolbar);
-	} else if (mathml.indexOf('wrs:type="') != -1) { // We check here if the mathmnl has been created from a customEditor (such chemistry) 
+	} else if (mathml.indexOf('class="') != -1) { // We check here if the mathmnl has been created from a customEditor (such chemistry) 
 		//  to add data-custom-editor attribute to img object (if necessary).
-		mathmlSubstring = mathml.substring(mathml.indexOf('wrs:type="')+'wrs:type="'.length, mathml.length);
+		mathmlSubstring = mathml.substring(mathml.indexOf('class="')+'class="'.length, mathml.length);
 		mathmlSubstring = mathmlSubstring.substring(0, mathmlSubstring.indexOf('"'))
+		// class=wrs_toolbar (wrs_.length = 4)
+		mathmlSubstring = mathmlSubstring.substring(4,mathmlSubstring.length);		
 		imgObject.setAttribute('data-custom-editor', mathmlSubstring);
 	}
 	
