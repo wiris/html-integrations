@@ -1591,7 +1591,7 @@ function wrs_mathmlAddEditorAttribute(mathml) {
 		end = mathml.indexOf('>');
 		if (mathml.indexOf("class") == -1 ) {
 			// Adding custom editor type
-			toReturn = mathml.substr(start, end) + ' class="wrs_'  + wrs_int_getCustomEditorEnabled().toolbar + '">';		
+			toReturn = mathml.substr(start, end) + ' class="wrs_' + wrs_int_getCustomEditorEnabled().toolbar + '">';		
 			toReturn += mathml.substr(end+1, mathml.length);
 		}
 		return toReturn;
@@ -1772,7 +1772,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 	imgObject.className = _wrs_conf_imageClassName;
 
 	
-	// TODO Custom Editors: wrs:type="toolbar" should be given by the editor
+	// TODO Custom Editors: class="wrs_toolbar" should be given by the editor
 	// so the first condition shouldn't be longer necessary.
 	if (customEditor = wrs_int_getCustomEditorEnabled()) {
 		imgObject.setAttribute('data-custom-editor', customEditor.toolbar);
