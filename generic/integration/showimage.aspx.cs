@@ -30,7 +30,11 @@ namespace plugin_web
             pb.addCorsHeaders(res, origin);
 
             byte [] bs = pb.newRender().showImage(digest,mml,param);
-            Response.ContentType = "image/png";
+			if (pb.getConfiguration().getProperty("wirisimageformat", "png").LastIndexOf("svg") >= 0) {
+				Response.ContentType = "image/svg+xml";
+			} else {
+				Response.ContentType = "image/png";
+			}
             Response.OutputStream.Write(bs,0,bs.Length);
         }
 

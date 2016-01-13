@@ -22,5 +22,9 @@ $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
 $r = $render->showImage($digest, $mml, $PARAMS);
-header('Content-Type: image/png');
+if ($pluginBuilder->getConfiguration()->getProperty("wirisimageformat", "png") == "svg") {
+	header('Content-Type: image/svg+xml');		
+} else {
+	header('Content-Type: image/png');	
+}
 echo $r;

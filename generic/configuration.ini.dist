@@ -49,6 +49,7 @@
 #wiriseditorsetsize = false
 #wiriseditormodalwindow = false
 #wirischemeditorenabled = true
+#wirisimageformat = png
 
 #
 # Editor inherit parameters
