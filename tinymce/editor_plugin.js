@@ -234,7 +234,7 @@ var _wrs_int_initParsed = false;
 				});
 
 				editor.addButton('tiny_mce_wiris_formulaEditor', {
-					title: 'WIRIS editor',
+					title: 'Math editor',
 					cmd: 'tiny_mce_wiris_openFormulaEditor',
 					image: _wrs_int_editorIcon
 				});
@@ -252,7 +252,7 @@ var _wrs_int_initParsed = false;
 				});
 
 				editor.addButton('tiny_mce_wiris_CAS', {
-					title: 'WIRIS cas',
+					title: 'Calculator',
 					cmd: 'tiny_mce_wiris_openCAS',
 					image: _wrs_int_CASIcon
 				});
@@ -292,7 +292,7 @@ var _wrs_int_initParsed = false;
 					});
 
 					editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
-						title: 'WIRIS editor',
+						title:  _wrs_int_customEditors[key].name + ' editor',
 						cmd: cmd,
 						image: _wrs_conf_path + 'core/icons/tiny_mce/' + _wrs_int_customEditors[key].icon
 					});
