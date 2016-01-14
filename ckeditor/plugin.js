@@ -427,6 +427,10 @@ function wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event) {
 function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 	if (element.nodeName.toLowerCase() == 'img') {
 		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
+			// Some plugins (image2, image) open a dialog on double click. On Wiris formulas
+			// doubleclick event ends here.
+			event.stopPropagation();
+			
 			if (customEditor = element.getAttribute('data-custom-editor')) {
 				wrs_int_enableCustomEditor(customEditor);
 			}
