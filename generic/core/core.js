@@ -70,6 +70,18 @@ if (!(window._wrs_conf_CASClassName)) {
 	_wrs_conf_CASClassName = 'Wiriscas';
 }
 
+// Mutation observers to avoid wiris image formulas class be removed.
+
+var wrs_observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' ) {
+    	mutation.target.className = _wrs_conf_imageClassName ;
+    }
+  });
+});
+
+var wrs_observer_config = { attributes: true, attributeOldValue:true };
+
 /**
  * Adds element events.
  * @param object target Target
@@ -1816,6 +1828,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 		}
 	}
 	
+	wrs_observer.observe(imgObject, wrs_observer_config);
 	return imgObject;
 }
 

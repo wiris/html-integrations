@@ -118,11 +118,19 @@ var _wrs_int_initParsed = false;
 							wrs_addIframeEvents(element, function (iframe, element) {
 							wrs_int_doubleClickHandler(editor, iframe, true, element);
 						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+							// Attaching obsevers to wiris images.
+							Array.prototype.forEach.call(element.contentDocument.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages){
+								wrs_observer.observe(wirisImages, wrs_observer_config);
+							});
 						} else { // Inline
 							element = editorElement;
 							wrs_addElementEvents(element, function (div, element) {
 							wrs_int_doubleClickHandler(editor, div, false, element);
 						},  wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+							// Attaching obsevers to wiris  images.
+							Array.prototype.forEach.call(document.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages){
+							wrs_observer.observe(wirisImages, wrs_observer_config);
+						});
 						}
 
 					}
