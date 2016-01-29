@@ -2068,16 +2068,22 @@ function wrs_parseMathmlToImg(content, characters, language) {
 	
 	while (start != -1) {
 		output += content.substring(end, start);
+		// Avoid WIRIS images to be parsed.
+		imageMathmlAtrribute = content.indexOf(_wrs_conf_imageMathmlAttribute);
 		end = content.indexOf(mathTagEnd, start);
 		
 		if (end == -1) {
 			end = content.length - 1;
+		} else if (imageMathmlAtrribute != -1) {
+			// First close tag of img attribute 
+			// If a mathmlAttribute exists should be inside a img tag.
+			end += content.indexOf("/>", start);
 		}
 		else {
 			end += mathTagEnd.length;
 		}
-		
-		if (!wrs_isMathmlInAttribute(content, start)){
+
+		if (!wrs_isMathmlInAttribute(content, start) && imageMathmlAtrribute == -1){
 			var mathml = content.substring(start, end);
 			mathml = (characters == _wrs_safeXmlCharacters) ? wrs_mathmlDecode(mathml) : wrs_mathmlEntities(mathml);
 			output += wrs_createObjectCode(wrs_mathmlToImgObject(document, mathml, null, language));
