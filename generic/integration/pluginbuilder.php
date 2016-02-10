@@ -8,37 +8,22 @@ $wrap->start();
 $pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
 $wrap->stop();
 
-// Moodle base dir is 6 or 7 folders up, depending on the text editor.
-// If open_basedir is defined, we only check moodlelib.php inside open_basedir environment
-//
-$moodle_dirrot = '../../../../../..';
-$moodle = false;
-// $deep = 10 allow to check all cases.
-$deep = 10;
 
-if ($openbasedir = get_cfg_var("open_basedir")) {
-    $openbasedirarray = explode(DIRECTORY_SEPARATOR, $openbasedir);
-    $currentscriptarray = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
-    $deep = count(array_diff($currentscriptarray, $openbasedirarray));
+$moodle = false;
+
+// Check if platform is Moodle.
+if (file_exists(".." . DIRECTORY_SEPARATOR . "version.php")) { // Atto
+    $moodle=true;
+    $moodle_dirrot= $moodle_dirrot = "../../../../../.."; // Moodle 2.7 and upwards.
 }
 
-if ($deep >= 6) {
-    if (file_exists($moodle_dirrot . '/lib/moodlelib.php')) {
-        $moodle = true;
+if (strrpos(getcwd(),"lib".DIRECTORY_SEPARATOR."editor".DIRECTORY_SEPARATOR."tinymce")) { // TinyMCE.
+    if (file_exists(".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "version.php")) { // Tinymce on Moodle 2.4 and upwards         .
+        $moodle=true;
+        $moodle_dirrot= "../../../../../../.."; // Moodle 2.4 and upwards.
     } else {
-        if ($deep >= 7) {
-            if (file_exists($moodle_dirrot . '/../lib/moodlelib.php')) {
-                $moodle_dirrot .= '/..';
-                $moodle = true;
-            } else {
-                if ($deep >= 8) {
-                    if (file_exists($moodle_dirrot . '/../../lib/moodlelib.php')) {
-                        $moodle_dirrot .= '/../..';
-                        $moodle = true;
-                    }
-                }
-            }
-        }
+        $moodle = true;
+        $moodle_dirrot = "../../../../../../../.."; // Moodle 2.2 & 2.3.
     }
 }
 
