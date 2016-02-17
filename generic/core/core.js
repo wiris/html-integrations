@@ -1,9 +1,31 @@
 // ${license.statement}
+var _wrs_popupWindow;
+
+wrs_addEvent(window, 'message', function (e) {
+    if (e.source = _wrs_popupWindow) {
+		var postVariable = {};
+		postVariable.id = e.data.id;
+		if (e.data.hasOwnProperty('methodName')) {
+			var object = (e.data.objectName == null) ? this : window[e.data.objectName];
+			postVariable.value = object[e.data.methodName].apply(object, e.data.arguments);
+		} else {
+	    	var postVariables = {};
+	    	e.data.varNames.forEach(function(varName){
+				// postVariable.id = e.data.id;
+				postVariables[varName] = window[varName];
+			});
+			postVariable.value = postVariables;
+	    }
+		if (typeof(e.source) != 'undefined') { // Avoid sent message when popupWindows has been closed.
+			e.source.postMessage(postVariable, _wrs_conf_path);
+		}
+	}
+});
 
 // Vars
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
-var _wrs_editMode;
-var _wrs_isNewElement = true;
+var _wrs_editMode = typeof _wrs_editMode != 'undefined' ? _wrs_editMode : undefined;
+var _wrs_isNewElement = typeof _wrs_isNewElement != 'undefined' ? _wrs_isNewElement : true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_androidRange;
@@ -71,16 +93,17 @@ if (!(window._wrs_conf_CASClassName)) {
 }
 
 // Mutation observers to avoid wiris image formulas class be removed.
+if (typeof MutationObserver != 'undefined') {
+	var wrs_observer = new MutationObserver(function(mutations) {
+	  mutations.forEach(function(mutation) {
+	    if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' ) {
+	    	mutation.target.className = _wrs_conf_imageClassName ;
+	    }
+	  });
+	});
 
-var wrs_observer = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' ) {
-    	mutation.target.className = _wrs_conf_imageClassName ;
-    }
-  });
-});
-
-var wrs_observer_config = { attributes: true, attributeOldValue:true };
+	var wrs_observer_config = { attributes: true, attributeOldValue:true };
+}
 
 /**
  * Adds element events.
@@ -1912,6 +1935,9 @@ function wrs_openEditorWindow(language, target, isIframe) {
 		//path += '&dir=' + _wrs_int_directionality;
 		path = wrs_addArgument(path,"dir",_wrs_int_directionality);
 	}
+
+	// Cross Domain Policy
+	wrs_addArgument(path, 'host', 'localhost');
 	
 	_wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
 	_wrs_temporalRange = null;
@@ -1972,7 +1998,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
 
 
 	if (!_wrs_conf_modalWindow) {
-		return window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+		_wrs_popupWindow = window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+		return _wrs_popupWindow;
 	}
 	else {
 		var deviceWidth = window.outerWidth;
@@ -2462,6 +2489,7 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties, modalPrope
 	wrs_addEvent(closeDiv, 'click', function() {
 		wrs_closeModalWindow();
 	});
+	_wrs_popupWindow = iframe.contentWindow;
 
 }
 
