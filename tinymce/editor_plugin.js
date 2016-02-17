@@ -19,10 +19,7 @@ if (typeof _wrs_isMoodle24 == 'undefined') {
 	_wrs_int_conf_async = false; // For sure!
 }
 
-var _wrs_int_path = _wrs_int_conf_file.split("/");
-_wrs_int_path.pop();
-_wrs_int_path = _wrs_int_path.join("/");
-_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + "/" + _wrs_int_path;
+var _wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
 
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
@@ -33,14 +30,11 @@ if (!_wrs_int_conf_async) {
 	eval(httpRequest.responseText);
 }
 
-/* Including core.js */
-tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
-
 var _wrs_conf_pluginBasePath = _wrs_conf_path; // _wrs_baseURL + '/plugins/tiny_mce_wiris';
 
 /* Vars */
-var _wrs_int_editorIcon = _wrs_conf_path + 'core/icons/tiny_mce/formula.gif';
-var _wrs_int_CASIcon = _wrs_conf_path + 'core/icons/tiny_mce/cas.gif';
+var _wrs_int_editorIcon;
+var _wrs_int_CASIcon;
 var _wrs_int_temporalIframe;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
@@ -58,6 +52,20 @@ var _wrs_int_initParsed = false;
 (function () {
 	tinymce.create('tinymce.plugins.tiny_mce_wiris', {
 		init: function (editor, url) {
+			/* Including core.js */
+			// First of all: recalculating _wrs_conf_path if WIRIS plugin has been loaded as an external plugin.
+			// Cant access editor params since now.
+			if (typeof editor.getParam('external_plugins') != 'undefined' && typeof editor.getParam('external_plugins')['tiny_mce_wiris'] != 'undefined') {
+				var external_url = editor.getParam('external_plugins')['tiny_mce_wiris'];
+				_wrs_conf_path = external_url.substring(0,external_url.lastIndexOf("/")+1)
+				// New int path.
+				_wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
+			}
+			_wrs_int_editorIcon = _wrs_conf_path + 'core/icons/tiny_mce/formula.gif';
+			_wrs_int_CASIcon = _wrs_conf_path + 'core/icons/tiny_mce/cas.gif';
+			tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
+			tinymce.ScriptLoader.loadQueue();
+
 			var element;
 
 			//Fix a Moodle 2.4 bug. data-mathml was lost without this.
@@ -323,6 +331,14 @@ var _wrs_int_initParsed = false;
 
 	tinymce.PluginManager.add('tiny_mce_wiris', tinymce.plugins.tiny_mce_wiris);
 })();
+
+function wrs_intPath(intFile, confPath) {
+	var intPath = intFile.split("/");
+	intPath.pop();
+	intPath = intPath.join("/");
+	intPath =  intPath.indexOf("/")==0 || intPath.indexOf("http")==0 ? intPath : confPath + "/" + intPath;
+	return intPath;
+}
 
 /**
  * Opens formula editor.
