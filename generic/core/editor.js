@@ -158,7 +158,7 @@
 	 * @return {[type]} [description]
 	 */
 	function wrs_waitForCore() {
-		if (typeof _wrs_conf_core_loaded != 'undefined') {
+		if (typeof _wrs_conf_core_loaded != 'undefined' && typeof _wrs_conf_configuration_loaded != 'undefined' && _wrs_conf_configuration_loaded  == true) {
 			// Insert editor
 			var lang = new RegExp("lang=([^&]*)","i").exec(window.location);
 			lang = (lang!=null && lang.length>1) ? lang[1]:"en";
