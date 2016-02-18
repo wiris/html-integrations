@@ -130,9 +130,11 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				});
 
 				editor.on('afterSetData', function(e){
-					Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), function(wirisImages){
-						wrs_observer.observe(wirisImages, wrs_observer_config);
-					});
+					if (typeof wrs_observer != 'undefined') {
+						Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), function(wirisImages){
+							wrs_observer.observe(wirisImages, wrs_observer_config);
+						});
+					}
 				});
 				
 				editor.setData(lastDataSet, function (e) {
@@ -303,73 +305,73 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
 		// Dynamic customEditors buttons.
 
-		Object.keys(_wrs_int_customEditors).forEach(function(key) {			
-			if (window[_wrs_int_customEditors[key].confVariable]) {
-				var allowedContent = 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)';
-			
-				var command = 'ckeditor_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
-				editor.addCommand(command, {
-					'async': false,
-					'canUndo': true,
-					'editorFocus': true,
-					'allowedContent': allowedContent,
-					'requiredContent': allowedContent,
-					
-					'exec': function (editor) {
-						wrs_int_enableCustomEditor(key);
-						wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
-					}
-				});
-				
-				var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name; 
-				editor.ui.addButton(buttonName, {
-					'label': 'WIRIS editor',
-					'command': command,
-					'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/' +_wrs_int_customEditors[key].icon
-				});
+		for (var key in _wrs_int_customEditors) {
+			if (_wrs_int_customEditors.hasOwnProperty(key)) {
+				if (window[_wrs_int_customEditors[key].confVariable]) {
+					var allowedContent = 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)';
+					var command = 'ckeditor_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
+					editor.addCommand(command, {
+						'async': false,
+						'canUndo': true,
+						'editorFocus': true,
+						'allowedContent': allowedContent,
+						'requiredContent': allowedContent,
+						'exec': function (editor) {
+							wrs_int_enableCustomEditor(key);
+							wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
+						}
+					});
 
-				if ('wiriseditorparameters' in editor.config) {
-					_wrs_int_wirisProperties = editor.config['wiriseditorparameters']
-				} else {
-					_wrs_int_wirisProperties = {};
-					if ('wirisimagecolor' in editor.config) {
-						_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
-					}
-
-					if ('wirisimagebgcolor' in editor.config) {
-						_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
-					}
-
-					if ('wirisbackgroundcolor' in editor.config) {
-						_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
-					}
-
-					if ('wirisimagesymbolcolor' in editor.config) {
-						_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
-					}
-
-					if ('wirisimagenumbercolor' in editor.config) {
-						_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
-					}
-
-					if ('wirisimageidentcolor' in editor.config) {
-						_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
-					}
-
-					if ('wiristransparency' in editor.config) {
-						_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
-					}
-
-					if ('wirisimagefontsize' in editor.config) {
-						_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
-					}
-
-					if ('wirisdpi' in editor.config) {
-						_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
-					}
+					var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name; 
+					editor.ui.addButton(buttonName, {
+						'label': 'WIRIS editor',
+						'command': command,
+						'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/' +_wrs_int_customEditors[key].icon
+					});
 				}
 			}
-		}); 
+		}
+
+		if ('wiriseditorparameters' in editor.config) {
+			_wrs_int_wirisProperties = editor.config['wiriseditorparameters']
+		} else {
+			_wrs_int_wirisProperties = {};
+			if ('wirisimagecolor' in editor.config) {
+				_wrs_int_wirisProperties['color'] = editor.config['wirisimagecolor'];
+			}
+
+			if ('wirisimagebgcolor' in editor.config) {
+				_wrs_int_wirisProperties['bgColor'] = editor.config['wirisimagebgcolor'];
+			}
+
+			if ('wirisbackgroundcolor' in editor.config) {
+				_wrs_int_wirisProperties['backgroundColor'] = editor.config['wirisbackgroundcolor'];
+			}
+
+			if ('wirisimagesymbolcolor' in editor.config) {
+				_wrs_int_wirisProperties['symbolColor'] = editor.config['wirisimagesymbolcolor'];
+			}
+
+			if ('wirisimagenumbercolor' in editor.config) {
+				_wrs_int_wirisProperties['numberColor'] = editor.config['wirisimagenumbercolor'];
+			}
+
+			if ('wirisimageidentcolor' in editor.config) {
+				_wrs_int_wirisProperties['identColor'] = editor.config['wirisimageidentcolor'];
+			}
+
+			if ('wiristransparency' in editor.config) {
+				_wrs_int_wirisProperties['transparency'] = editor.config['wiristransparency'];
+			}
+
+			if ('wirisimagefontsize' in editor.config) {
+				_wrs_int_wirisProperties['fontSize'] = editor.config['wirisimagefontsize'];
+			}
+
+			if ('wirisdpi' in editor.config) {
+				_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
+			}
+		}
 	}
 })
 
@@ -435,7 +437,11 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 		if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
 			// Some plugins (image2, image) open a dialog on double click. On Wiris formulas
 			// doubleclick event ends here.
-			event.stopPropagation();
+			if (typeof event.stopPropagation != 'undefined') { // old I.E compatibility.
+				event.stopPropagation();
+			} else {
+				event.returnValue = false;
+			}
 			
 			if (customEditor = element.getAttribute('data-custom-editor')) {
 				wrs_int_enableCustomEditor(customEditor);

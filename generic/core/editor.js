@@ -1,4 +1,7 @@
 // ${license.statement}
+
+var _wrs_isNewElement; // Unfortunately we need this variabels as global variable for old I.E compatibility.
+
 (function(){
 	// Set wrs_int_opener variable and close method.
 	// For popup window opener is window.opener. For modal window window.parent
@@ -105,7 +108,13 @@
 		}
 		catch (err) { // postMessage not defined (I.E 7 & 8 ) or not competible with window object (I.E 9).
 			var object = (objectName == null) ? wrs_int_opener : wrs_int_opener[objectName];
-			callback(object[methodName].apply(object, arguments));
+			if (objectName == null) {
+				callback(object[methodName].apply(object, arguments));
+		    } else { // Can't call apply method from some objects on old I.E.
+				var argumentsStrings = arguments.join(',');
+				var result = object[methodName](argumentsStrings);
+				callback(result);
+			}
 			_wrs_callbacks.splice(_wrs_callId, 1);
 		}
 	}
@@ -252,7 +261,6 @@
 
 				// Mathml content
 				if (!_wrs_isNewElement) {
-					console.log("now new element");
 					var mathml;
 
 					if (typeof _wrs_conf_useDigestInsteadOfMathml != 'undefined' && _wrs_conf_useDigestInsteadOfMathml) {

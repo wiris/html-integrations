@@ -79,7 +79,7 @@ if (!_wrs_int_conf_async) {
  */
 function wrs_int_init(target,toolbar) {
 	wrs_int_init0 = function() {
-		if (typeof _wrs_conf_core_loaded == 'undefined') {
+		if (typeof _wrs_conf_plugin_loaded == 'undefined') {
 			setTimeout(wrs_int_init0,100);
 		} else {
 			wrs_int_init_handler(target,toolbar);
@@ -125,21 +125,23 @@ function wrs_int_init_handler(target,toolbar) {
 		}
 
 		// Dynamic customEditors buttons.
-		Object.keys(_wrs_int_customEditors).forEach(function(key) {			
-			if (window[_wrs_int_customEditors[key].confVariable]) {
-				var customEditorButton = document.createElement('img');
-				customEditorButton.src = _wrs_conf_path + '/core/icons/' + _wrs_int_customEditors[key].icon;
-				customEditorButton.id = key + "Icon";
-				customEditorButton.style.cursor = 'pointer';
-				
-				wrs_addEvent(customEditorButton, 'click', function () {
-					wrs_int_enableCustomEditor(key);
-					wrs_int_openNewFormulaEditor(target, _wrs_int_language);
-				});
-				
-				toolbar.appendChild(customEditorButton);
+		for (var key in _wrs_int_customEditors) {
+			if (_wrs_int_customEditors.hasOwnProperty(key)) {
+				if (window[_wrs_int_customEditors[key].confVariable]) {
+					var customEditorButton = document.createElement('img');
+					customEditorButton.src = _wrs_conf_path + '/core/icons/' + _wrs_int_customEditors[key].icon;
+					customEditorButton.id = key + "Icon";
+					customEditorButton.style.cursor = 'pointer';
+
+					wrs_addEvent(customEditorButton, 'click', function () {
+						wrs_int_enableCustomEditor(key);
+						wrs_int_openNewFormulaEditor(target, _wrs_int_language);
+					});
+
+					toolbar.appendChild(customEditorButton);
+				}
 			}
-		}); 
+		}
 	}
 }
 

@@ -127,9 +127,11 @@ var _wrs_int_initParsed = false;
 							wrs_int_doubleClickHandler(editor, iframe, true, element);
 						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 							// Attaching obsevers to wiris images.
-							Array.prototype.forEach.call(element.contentDocument.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages){
-								wrs_observer.observe(wirisImages, wrs_observer_config);
-							});
+							if (typeof wrs_observer != 'undefined') {
+								Array.prototype.forEach.call(element.contentDocument.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages){
+									wrs_observer.observe(wirisImages, wrs_observer_config);
+								});
+							}
 						} else { // Inline
 							element = editorElement;
 							wrs_addElementEvents(element, function (div, element) {
@@ -275,46 +277,48 @@ var _wrs_int_initParsed = false;
 			}
 			
 			// Dynamic customEditors buttons.
-			Object.keys(_wrs_int_customEditors).forEach(function(key) {
-				if (_wrs_int_conf_async || window[_wrs_int_customEditors[key].confVariable]) {
-					
-					var cmd = 'tiny_mce_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
-					editor.addCommand(cmd, function () {
-						if ('wiriseditorparameters' in editor.settings) {
-							_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
-						} else {
-							_wrs_int_wirisProperties = {
-								'bgColor': editor.settings['wirisimagebgcolor'],
-								'symbolColor': editor.settings['wirisimagesymbolcolor'],
-								'transparency': editor.settings['wiristransparency'],
-								'fontSize': editor.settings['wirisimagefontsize'],
-								'numberColor': editor.settings['wirisimagenumbercolor'],
-								'identColor': editor.settings['wirisimageidentcolor'],
-								'color' : editor.settings['wirisimagecolor'],
-								'dpi' : editor.settings['wirisdpi'],
-								'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
-								'fontFamily' : editor.settings['wirisfontfamily']
-							};
-						}
+			for (var key in _wrs_int_customEditors) {
+				if (_wrs_int_customEditors.hasOwnProperty(key)) {
+					if (_wrs_int_conf_async || window[_wrs_int_customEditors[key].confVariable]) {
 
-						var language = editor.getParam('language');
-						_wrs_int_directionality = editor.getParam('directionality');
+						var cmd = 'tiny_mce_wiris_openFormulaEditor' + _wrs_int_customEditors[key].name;
+						editor.addCommand(cmd, function () {
+							if ('wiriseditorparameters' in editor.settings) {
+								_wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
+							} else {
+								_wrs_int_wirisProperties = {
+									'bgColor': editor.settings['wirisimagebgcolor'],
+									'symbolColor': editor.settings['wirisimagesymbolcolor'],
+									'transparency': editor.settings['wiristransparency'],
+									'fontSize': editor.settings['wirisimagefontsize'],
+									'numberColor': editor.settings['wirisimagenumbercolor'],
+									'identColor': editor.settings['wirisimageidentcolor'],
+									'color' : editor.settings['wirisimagecolor'],
+									'dpi' : editor.settings['wirisdpi'],
+									'backgroundColor' : editor.settings['wirisimagebackgroundcolor'],
+									'fontFamily' : editor.settings['wirisfontfamily']
+								};
+							}
 
-						if (editor.settings['wirisformulaeditorlang']) {
-							language = editor.settings['wirisformulaeditorlang'];
-						}
-						wrs_int_enableCustomEditor(key);
-						wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
-					});
+							var language = editor.getParam('language');
+							_wrs_int_directionality = editor.getParam('directionality');
 
-					editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
-						title:  _wrs_int_customEditors[key].name + ' editor',
-						cmd: cmd,
-						image: _wrs_conf_path + 'core/icons/tiny_mce/' + _wrs_int_customEditors[key].icon
-					});
+							if (editor.settings['wirisformulaeditorlang']) {
+								language = editor.settings['wirisformulaeditorlang'];
+							}
+							wrs_int_enableCustomEditor(key);
+							wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
+						});
 
+						editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
+							title:  _wrs_int_customEditors[key].name + ' editor',
+							cmd: cmd,
+							image: _wrs_conf_path + 'core/icons/tiny_mce/' + _wrs_int_customEditors[key].icon
+						});
+
+					}
 				}
-			});
+			}
 		},
 
 		// all versions
