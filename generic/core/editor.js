@@ -228,9 +228,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 				wrs_attributes = _wrs_conf_editorParameters;
 				wrs_attributes.language = queryParams['lang'];
 
-				wrs_attributes['toolbar'] = null;
-
-				if (_wrs_conf_editorToolbar.length>0) {
+				if (typeof wrs_attributes['toolbar'] == 'undefined'&& _wrs_conf_editorToolbar.length>0) {
 					wrs_attributes['toolbar'] = _wrs_conf_editorToolbar;
 				}
 
