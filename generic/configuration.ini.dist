@@ -87,4 +87,9 @@
 #wiriseasternarabicindiclanguages = fa, ps, ur
 #wiriseuropeanlanguages =
 
+#
+# External plugin
+#
+#wirisexternalplugin = false;
+
 # End of file
