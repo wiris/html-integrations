@@ -34,8 +34,8 @@ if (!_wrs_int_conf_async) {
 	eval(httpRequest.responseText);
 }
 
-var _wrs_int_editorIcon = '/core/icons/formula.gif';
-var _wrs_int_CASIcon = '/core/icons/cas.gif';
+var _wrs_int_editorIcon = '/icons/formula.png';
+var _wrs_int_CASIcon = '/icons/cas.png';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
@@ -43,7 +43,7 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_language;
 var _wrs_int_directionality = '';
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 if (navigator.userLanguage) {
 	_wrs_int_language = navigator.userLanguage;
@@ -129,7 +129,7 @@ function wrs_int_init_handler(target,toolbar) {
 			if (_wrs_int_customEditors.hasOwnProperty(key)) {
 				if (window[_wrs_int_customEditors[key].confVariable]) {
 					var customEditorButton = document.createElement('img');
-					customEditorButton.src = _wrs_conf_path + '/core/icons/' + _wrs_int_customEditors[key].icon;
+					customEditorButton.src = _wrs_conf_path + '/icons/' + _wrs_int_customEditors[key].icon;
 					customEditorButton.id = key + "Icon";
 					customEditorButton.style.cursor = 'pointer';
 

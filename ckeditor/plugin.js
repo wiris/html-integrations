@@ -48,8 +48,8 @@ document.getElementsByTagName('head')[0].appendChild(script);
 // var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
 // Vars
-var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/formula.gif';
-var _wrs_int_CASIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/icons/cas.gif';
+var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/formula.png';
+var _wrs_int_CASIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/cas.png';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
@@ -59,7 +59,7 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {

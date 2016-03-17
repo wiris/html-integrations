@@ -43,7 +43,7 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 // Variable to control first wrs_initParse call.
 var _wrs_int_initParsed = false;
@@ -61,8 +61,8 @@ var _wrs_int_initParsed = false;
 				// New int path.
 				_wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
 			}
-			_wrs_int_editorIcon = _wrs_conf_path + 'core/icons/tiny_mce/formula.gif';
-			_wrs_int_CASIcon = _wrs_conf_path + 'core/icons/tiny_mce/cas.gif';
+			_wrs_int_editorIcon = _wrs_conf_path + 'icons/formula.png';
+			_wrs_int_CASIcon = _wrs_conf_path + 'icons/cas.png';
 			tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
 			tinymce.ScriptLoader.loadQueue();
 
@@ -313,7 +313,7 @@ var _wrs_int_initParsed = false;
 						editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
 							title:  _wrs_int_customEditors[key].name + ' editor',
 							cmd: cmd,
-							image: _wrs_conf_path + 'core/icons/tiny_mce/' + _wrs_int_customEditors[key].icon
+							image: _wrs_conf_path + 'icons/' + _wrs_int_customEditors[key].icon
 						});
 
 					}

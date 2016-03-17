@@ -37,7 +37,7 @@ var _wrs_int_radeditor_id;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_directionality = '';
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.gif', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
 
 if (typeof currentLanguage != 'undefined'){
 	_wrs_int_language = currentLanguage;
