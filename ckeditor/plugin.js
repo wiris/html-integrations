@@ -202,6 +202,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 					
 					// CKEditor replaces several times the element element during its execution, so we must assign the events again.
 					setInterval(checkElement, 500);
+					editor.resetDirty();
 				});
 			}
 			else {
