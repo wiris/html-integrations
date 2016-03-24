@@ -1628,8 +1628,8 @@ function wrs_mathmlAddEditorAttribute(mathml) {
 			// Adding custom editor type
 			toReturn = mathml.substr(start, end) + ' class="wrs_' + wrs_int_getCustomEditorEnabled().toolbar + '">';		
 			toReturn += mathml.substr(end+1, mathml.length);
+			return toReturn;
 		}
-		return toReturn;
 	}
 	return mathml;
 

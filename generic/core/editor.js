@@ -289,8 +289,9 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 					submitButton.value = 'Accept';
 				}
 
-				wrs_addEvent(window, 'beforeunload', function() {
-					wrs_int_disableCustomEditors();
+				wrs_addEvent(window, 'beforeunload', function() {					
+					getMethod(null, 'wrs_int_disableCustomEditors', [], function(){
+					});
 				});
 
 				wrs_addEvent(submitButton, 'click', function () {
