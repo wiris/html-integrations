@@ -61,8 +61,13 @@ var _wrs_int_initParsed = false;
 				// New int path.
 				_wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
 			}
-			_wrs_int_editorIcon = _wrs_conf_path + 'icons/formula.png';
-			_wrs_int_CASIcon = _wrs_conf_path + 'icons/cas.png';
+			if (typeof _wrs_conf_hostPlatform  != 'undefined' && _wrs_conf_hostPlatform == 'Moodle' && _wrs_conf_versionPlatform  < 2013111800) {
+				_wrs_int_editorIcon = _wrs_conf_path + 'icons/tinymce3/formula.png';
+				_wrs_int_CASIcon = _wrs_conf_path + 'icons/tinymce3/cas.png';
+			} else {
+				_wrs_int_editorIcon = _wrs_conf_path + 'icons/formula.png';
+				_wrs_int_CASIcon = _wrs_conf_path + 'icons/cas.png';
+			}
 			tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
 			tinymce.ScriptLoader.loadQueue();
 
@@ -310,10 +315,17 @@ var _wrs_int_initParsed = false;
 							wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
 						});
 
+						var imagePath;
+						if (typeof _wrs_conf_hostPlatform  != 'undefined' && _wrs_conf_hostPlatform == 'Moodle' && _wrs_conf_versionPlatform  < 2013111800) {
+							imagePath = _wrs_conf_path + 'icons/tinymce3/' + _wrs_int_customEditors[key].icon;
+						} else {
+							imagePath = _wrs_conf_path + 'icons/' + _wrs_int_customEditors[key].icon;
+						}
+
 						editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
 							title:  _wrs_int_customEditors[key].name + ' editor',
 							cmd: cmd,
-							image: _wrs_conf_path + 'icons/' + _wrs_int_customEditors[key].icon
+							image: imagePath
 						});
 
 					}
