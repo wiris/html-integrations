@@ -68,14 +68,19 @@ var _wrs_int_initParsed = false;
 				_wrs_int_editorIcon = _wrs_conf_path + 'icons/formula.png';
 				_wrs_int_CASIcon = _wrs_conf_path + 'icons/cas.png';
 			}
-			tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
-			tinymce.ScriptLoader.loadQueue();
-
 			var element;
 
 			//Fix a Moodle 2.4 bug. data-mathml was lost without this.
 			if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
 				editor.settings.extended_valid_elements += ',img[*]';
+
+				// Conflict between tinyMCE Moodle scriptLoader. Create a new one.
+				var scriptLoader = new tinymce.dom.ScriptLoader();
+				scriptLoader.add(_wrs_conf_path + 'core/core.js');
+				scriptLoader.loadQueue();
+			} else {
+				tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
+				tinymce.ScriptLoader.loadQueue();
 			}
 
 			// On inline mode, we can't recover unfiltered text
