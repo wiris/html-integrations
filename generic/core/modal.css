@@ -1,134 +1,134 @@
 body.wrs_modal_open {
-	overflow: hidden;
-	position: fixed;
+    overflow: hidden;
+    position: fixed;
 }
 
 .wrs_modal_overlay {
-	overflow: scroll;
-	position: fixed;
-	font-family: arial, sans-serif;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	background: rgba(0,0,0,0.8);
-	z-index: 99999;
-	opacity:1;
-	pointer-events: auto;
-	-webkit-transition: opacity 400ms ease-in;
-	-moz-transition: opacity 400ms ease-in;
-	transition: opacity 400ms ease-in;
+    overflow: scroll;
+    position: fixed;
+    font-family: arial, sans-serif;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99999;
+    opacity:1;
+    pointer-events: auto;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
 }
 
 .wrs_modal_overlay.wrs_modal_ios {
-	position: inherit;
+    position: inherit;
 }
 
 .wrs_modal_overlay.wrs_modal_ios.moodle {
-	position: fixed;
+    position: fixed;
 }
 
 .wrs_modal_title {
-	color : #FFFFFF;
-	font-weight : bold;
-	padding : 5px 0px 5px 10px;
+    color : #FFFFFF;
+    font-weight : bold;
+    padding : 5px 0px 5px 10px;
 }
 
 .wrs_modal_close_button {
-	float : right;
-	cursor : pointer;
-	color : #FFFFFF;
-	font-weight : bold;
-	padding : 5px 10px 5px 0px;
+    float : right;
+    cursor : pointer;
+    color : #FFFFFF;
+    font-weight : bold;
+    padding : 5px 10px 5px 0px;
 }
 
 .wrs_modal_iframe {
-	display : block;
+    display : block;
 }
 
 .wrs_modal_title_bar {
-	font-weight : bold;
-	font-family : arial, sans-serif;
-	display : block;
-	background-color: #778e9a;
+    font-weight : bold;
+    font-family : arial, sans-serif;
+    display : block;
+    background-color: #778e9a;
 }
 
 .wrs_modal_dialogContainer {
-	overflow: hidden;
-	border-style: solid;
-	border-width: 1px;
-	background: #fff;
+    overflow: hidden;
+    border-style: solid;
+    border-width: 1px;
+    background: #fff;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop {
-	position: relative;
-	top: 10px;
-	margin: 40px auto;
+    position: relative;
+    top: 10px;
+    margin: 40px auto;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_android {
-	margin: auto;
+    margin: auto;
 }
 
 .wrs_modal_iframe.wrs_modal_android {
-	margin : auto;
+    margin : auto;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_ios {
-	margin: auto;
+    margin: auto;
 }
 
 .wrs_modal_iframe.wrs_modal_ios {
-	margin: 3px auto;
+    margin: 3px auto;
 }
 
 .wrs_modal_iframe.wrs_modal_android {
-	margin : auto;
+    margin : auto;
 }
 
 @media all and (orientation : portrait) {
 
-	.wrs_modal_dialogContainer.wrs_modal_mobile {
-		width: 100vmin;
-		height: 100vmin;
-		margin: auto;
-		border-width: 0px;
-	}
+    .wrs_modal_dialogContainer.wrs_modal_mobile {
+        width: 100vmin;
+        height: 100vmin;
+        margin: auto;
+        border-width: 0px;
+    }
 
-	.wrs_modal_iframe.wrs_modal_mobile {
-		width : 100vmin;
-		height : 100vmin;
-		margin : auto;
-	}
+    .wrs_modal_iframe.wrs_modal_mobile {
+        width : 100vmin;
+        height : 100vmin;
+        margin : auto;
+    }
 }
 
 
 @media all and (orientation : landscape) {
 
-	.wrs_modal_dialogContainer.wrs_modal_mobile {
-		width: 100vmax;
-		height: 100vmin;
-		margin: 0px auto;
-		border-width: 0px;
-	}
+    .wrs_modal_dialogContainer.wrs_modal_mobile {
+        width: 100vmax;
+        height: 100vmin;
+        margin: 0px auto;
+        border-width: 0px;
+    }
 
-	.wrs_modal_iframe.wrs_modal_mobile {
-		width : 100vmax;
-		height : 100vmin;
-		margin : 0px auto;
-	}
+    .wrs_modal_iframe.wrs_modal_mobile {
+        width : 100vmax;
+        height : 100vmin;
+        margin : 0px auto;
+    }
 }
 
 .wrs_modal_dialogContainer.wrs_modal_badStock {
-	width: 100%;
-	height: 280px;
-	margin: 0px auto;
-	border-width: 0px;
+    width: 100%;
+    height: 280px;
+    margin: 0px auto;
+    border-width: 0px;
 }
 
 .wrs_modal_iframe.wrs_modal_badStock {
-	width : 100%;
-	height : 280px;
-	margin: 0px auto;
-	border-width: 0px;
+    width : 100%;
+    height : 280px;
+    margin: 0px auto;
+    border-width: 0px;
 }
