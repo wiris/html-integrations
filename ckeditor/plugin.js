@@ -121,7 +121,13 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		});
 		
 		var element = null;
-		
+		// Avoid WIRIS images to be upcasted.
+		if (typeof editor.widgets != 'undefined') {
+			editor.widgets.addUpcastCallback( function( element ) {
+			    if ( element.name == 'img' && element.hasClass(_wrs_conf_imageClassName) )
+			        return false;
+			} );
+		}
 		function whenDocReady() {
 			if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
 				
