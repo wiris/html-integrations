@@ -1,7 +1,8 @@
 var _wrs_popupWindow;
 
 wrs_addEvent(window, 'message', function (e) {
-    if (e.source = _wrs_popupWindow) {
+   if (e.source = _wrs_popupWindow && typeof e.wrs_processed == 'undefined') {
+        e.wrs_processed = true;
         var postVariable = {};
         postVariable.id = e.data.id;
         if (e.data.hasOwnProperty('methodName')) {
