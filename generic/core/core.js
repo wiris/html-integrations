@@ -1836,6 +1836,9 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
     if (typeof wrs_observer != 'undefined') {
         wrs_observer.observe(imgObject, wrs_observer_config);
     }
+
+    // Role math https://www.w3.org/TR/wai-aria/roles#math.
+    imgObject.setAttribute('role', 'math');
     return imgObject;
 }
 
