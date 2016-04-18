@@ -48,6 +48,9 @@ var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemist
 // Variable to control first wrs_initParse call.
 var _wrs_int_initParsed = false;
 
+// Core added to queue.
+var _wrs_addCoreQueue = typeof _wrs_addCoreQueue == 'undefined' ? false : _wrs_addCoreQueue;
+
 /* Plugin integration */
 (function () {
     tinymce.create('tinymce.plugins.tiny_mce_wiris', {
@@ -75,12 +78,20 @@ var _wrs_int_initParsed = false;
                 editor.settings.extended_valid_elements += ',img[*]';
 
                 // Conflict between tinyMCE Moodle scriptLoader. Create a new one.
-                var scriptLoader = new tinymce.dom.ScriptLoader();
-                scriptLoader.add(_wrs_conf_path + 'core/core.js');
-                scriptLoader.loadQueue();
+                // When multiple editors are loaded (an essay for example)
+                // Moodle call scriptLoader multiple times. _wrs_addCoreQueue global variable avoid core multiple loading.
+                if (!_wrs_addCoreQueue) {
+                    var scriptLoader = new tinymce.dom.ScriptLoader();
+                    scriptLoader.add(_wrs_conf_path + 'core/core.js');
+                    scriptLoader.loadQueue();
+                    _wrs_addCoreQueue = true;
+                }
             } else {
-                tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
-                tinymce.ScriptLoader.loadQueue();
+                if (!_wrs_addCoreQueue) {
+                    tinymce.ScriptLoader.load(_wrs_conf_path + 'core/core.js');
+                    tinymce.ScriptLoader.loadQueue();
+                    _wrs_addCoreQueue = true;
+                }
             }
 
             // On inline mode, we can't recover unfiltered text
