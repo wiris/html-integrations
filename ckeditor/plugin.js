@@ -333,7 +333,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 					editor.ui.addButton(buttonName, {
 						'label': 'WIRIS editor',
 						'command': command,
-						'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +_wrs_int_customEditors[key].icon
+						'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +'/icons/' + _wrs_int_customEditors[key].icon
 					});
 				}
 			}
