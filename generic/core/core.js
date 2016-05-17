@@ -108,10 +108,10 @@ var wrs_pluginListeners = [];
 
 /**
  * Adds element events.
- * @param object target Target
- * @param function doubleClickHandler Function to run when user double clicks the element
- * @param function mousedownHandler Function to run when user mousedowns the element
- * @param function mouseupHandler Function to run when user mouseups the element
+ * @param {object} target Target
+ * @param {function} doubleClickHandler Function to run when user double clicks the element
+ * @param {function} mousedownHandler Function to run when user mousedowns the element
+ * @param {function} mouseupHandler Function to run when user mouseups the element
  */
 function wrs_addElementEvents(target, doubleClickHandler, mousedownHandler, mouseupHandler) {
     if (doubleClickHandler) {
@@ -2878,9 +2878,9 @@ function wrs_insertSemanticsMathml(mathml, latex) {
 /**
  * Transform html img tags inside a html code to mathml, base64 img tags (i.e with base64 on src) or showimage img tags (i.e with showimage.php on src)
  *
- * @param  String code html code
- * @param  String mode base642showimage or img2mathml or img264 transform.
- * @return String html code transformed.
+ * @param  {String} code html code
+ * @param  {String} mode base642showimage or img2mathml or img264 transform.
+ * @return {String} html code transformed.
  */
 function wrs_codeImgTransform(code, mode) {
     output = '';
@@ -3069,7 +3069,7 @@ function wrs_readInt32(bytes) {
 /**
  * Read the first byte from a byte array.
  * @param  {array} bytes byte array.
- * @return
+ * @return {int} first byte of the byte array.
  */
 function wrs_readByte(bytes) {
     // @codingStandardsIgnoreStart
@@ -3212,7 +3212,6 @@ if (!Object.keys) {
 /**
  * Add a new callback to a WIRIS plugins listener
  * @param  Object listener an Object containing listener name and a callback.
- * For example {'onBeforeFormulaInsertion' : function(params) {}};
  */
 function wrs_addPluginListener(listener) {
     wrs_pluginListeners.push(listener);
