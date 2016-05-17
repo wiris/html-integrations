@@ -102,6 +102,10 @@ if (typeof MutationObserver != 'undefined') {
     var wrs_observer_config = { attributes: true, attributeOldValue:true };
 }
 
+// Plugin listeners for custom callbacks. This variable
+// can be setted by the user using wrs_addPluginListener.
+var wrs_pluginListeners = [];
+
 /**
  * Adds element events.
  * @param object target Target
@@ -2219,22 +2223,67 @@ function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth
  * @param string language Language for the formula.
  */
 function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode, language) {
+    // Before update listener.
+
+    // Params on beforeUpdate listener
+    // - mathml
+    // - editMode (read only)
+    // - wirisProperties
+    // - language (read only)
+    var params = {};
+    params.mathml = mathml;
+
+    // Cloning wirisProperties object
+    // We don't want wirisProperties object modified.
+    params.wirisProperties = {};
+
+    for (var attr in wirisProperties) {
+        params.wirisProperties[attr] = wirisProperties[attr];
+    }
+
+    // Read only
+    params.language = language;
+    params.editMode = editMode;
+
+    for (var pluginListener in wrs_pluginListeners) {
+        if (wrs_pluginListeners[pluginListener].onBeforeFormulaInsertion) {
+            // Calling listener.
+            wrs_pluginListeners[pluginListener].onBeforeFormulaInsertion(params)
+        }
+    }
+
+    mathml = params.mathml;
+    wirisProperties = params.wirisProperties;
+
+    // Setting empty params for after.
+    params = {};
+    params.editMode = editMode;
+    params.windowTarget = windowTarget;
+    params.focusElement = focusElement;
+
     if (mathml.length == 0) {
         wrs_insertElementOnSelection(null, focusElement, windowTarget);
     }
     else if (editMode == 'latex') {
-        var latex = wrs_getLatexFromMathML(mathml);
-        var textNode = windowTarget.document.createTextNode('$$' + latex + '$$');
-        wrs_populateLatexCache(latex, mathml);
-        wrs_insertElementOnSelection(textNode, focusElement, windowTarget);
+        params.latex = wrs_getLatexFromMathML(mathml);
+        params.node = windowTarget.document.createTextNode('$$' + params.latex + '$$');
+        wrs_populateLatexCache(params.latex, mathml);
+        wrs_insertElementOnSelection(params.node, focusElement, windowTarget);
     }
     else if (editMode == 'iframes') {
         var iframe = wrs_mathmlToIframeObject(windowTarget, mathml);
         wrs_insertElementOnSelection(iframe, focusElement, windowTarget);
     }
     else {
-        var imgObject = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
-        wrs_insertElementOnSelection(imgObject, focusElement, windowTarget);
+        params.node = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
+        wrs_insertElementOnSelection(params.node, focusElement, windowTarget);
+    }
+    // After Update listener
+    for (var pluginListener in wrs_pluginListeners) {
+        if (wrs_pluginListeners[pluginListener].onAfterFormulaInsertion) {
+            // Calling listener.
+            wrs_pluginListeners[pluginListener].onAfterFormulaInsertion(params)
+        }
     }
 }
 
@@ -3158,6 +3207,15 @@ if (!Object.keys) {
             return result;
         };
     }());
+}
+
+/**
+ * Add a new callback to a WIRIS plugins listener
+ * @param  Object listener an Object containing listener name and a callback.
+ * For example {'onBeforeFormulaInsertion' : function(params) {}};
+ */
+function wrs_addPluginListener(listener) {
+    wrs_pluginListeners.push(listener);
 }
 
 // Production steps of ECMA-262, Edition 5, 15.4.4.18
