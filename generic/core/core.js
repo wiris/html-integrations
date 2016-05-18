@@ -2005,7 +2005,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
 
         if (selectedItem != null) {
             if (selectedItem.caretPosition === undefined) {
-                if (selectedItem.node.className == _wrs_conf_imageClassName) {
+                if (wrs_containsClass(selectedItem.node, _wrs_conf_imageClassName)) {
                     if (selectedItem.node.nodeName.toUpperCase() == 'IMG') {
                         _wrs_editMode = 'images';
                     }
