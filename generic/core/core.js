@@ -112,6 +112,7 @@ var wrs_pluginListeners = [];
  * @param {function} doubleClickHandler Function to run when user double clicks the element
  * @param {function} mousedownHandler Function to run when user mousedowns the element
  * @param {function} mouseupHandler Function to run when user mouseups the element
+ * @ignore
  */
 function wrs_addElementEvents(target, doubleClickHandler, mousedownHandler, mouseupHandler) {
     if (doubleClickHandler) {
@@ -145,6 +146,7 @@ function wrs_addElementEvents(target, doubleClickHandler, mousedownHandler, mous
  * @param {object} element Element target
  * @param {event} event Event
  * @param {function} func Function to run
+ * @ignore
  */
 function wrs_addEvent(element, event, func) {
     if (element.addEventListener) {
@@ -161,6 +163,7 @@ function wrs_addEvent(element, event, func) {
  * @param {function} doubleClickHandler Function to run when user double clicks the iframe
  * @param {function} mousedownHandler Function to run when user mousedowns the iframe
  * @param {function} mouseupHandler Function to run when user mouseups the iframe
+ * @ignore
  */
 function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
     wrs_initSetSize();
@@ -181,6 +184,7 @@ function wrs_addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouse
  * Adds textarea events.
  * @param {object} textarea Target
  * @param {function} clickHandler Function to run when user clicks the textarea.
+ * @ignore
  */
 function wrs_addTextareaEvents(textarea, clickHandler) {
     if (clickHandler) {
@@ -199,6 +203,7 @@ function wrs_addTextareaEvents(textarea, clickHandler) {
  * @param {int} imageWidth Image width
  * @param {int} imageHeight Image height
  * @return object img object.
+ * @ignore
  */
 function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, imageHeight) {
     var imageSrc = wrs_createImageCASSrc(image);
@@ -219,6 +224,7 @@ function wrs_appletCodeToImgObject(creator, appletCode, image, imageWidth, image
  * @param {array} stack
  * @param {object} element
  * @return bool
+ * @ignore
  */
 function wrs_arrayContains(stack, element) {
     for (var i = stack.length - 1; i >= 0; --i) {
@@ -235,6 +241,7 @@ function wrs_arrayContains(stack, element) {
  * @param {object} element
  * @param {string} className
  * @return bool
+ * @ignore
  */
 function wrs_containsClass(element, className) {
     if (!('className' in element)){
@@ -256,6 +263,7 @@ function wrs_containsClass(element, className) {
  * Converts old xmlinitialtext attribute (with «») to the correct one(with §lt;§gt;)
  * @param {string} text String containtg safeXml characters
  * @return {string} String with the safeXml charaters parsed.
+ * @ignore
  */
 function wrs_convertOldXmlinitialtextAttribute(text){
     // Used to fix a bug with Cas imported from Moodle 1.9 to Moodle 2.x.
@@ -288,6 +296,7 @@ function wrs_convertOldXmlinitialtextAttribute(text){
  * @param {object} attributes An object where each key is a wished attribute name and each value is its value.
  * @param {object} creator Optional param. If supplied, this function will use the "createElement" method from this param. Else, "document" will be used.
  * @return {object} The DOM element with the specified attributes assignated.
+ * @ignore
  */
 function wrs_createElement(elementName, attributes, creator) {
     if (attributes === undefined) {
@@ -331,6 +340,7 @@ function wrs_createElement(elementName, attributes, creator) {
 /**
  * Cross-browser httpRequest creation.
  * @return {object} httpRequest request object.
+ * @ignore
  */
 function wrs_createHttpRequest() {
     if (_wrs_currentPath.substr(0, 7) == 'file://') {
@@ -359,6 +369,7 @@ function wrs_createHttpRequest() {
  * Gets CAS image src with AJAX.
  * @param {string} image Base 64 image stream
  * @return {string} CAS image src.
+ * @ignore
  */
 function wrs_createImageCASSrc(image, appletCode) {
     var data = {
@@ -374,6 +385,7 @@ function wrs_createImageCASSrc(image, appletCode) {
  * @param {mathml} Mathml code.
  * @param {object} data wiris properties object.
  * @return string Image src.
+ * @ignore
  */
 function wrs_createImageSrc(mathml, data) {
 
@@ -398,6 +410,7 @@ function wrs_createImageSrc(mathml, data) {
  * Creates new object using its html code.
  * @param {string} objectCode html code
  * @return {object} html object.
+ * @ignore
  */
 function wrs_createObject(objectCode, creator) {
     if (creator === undefined) {
@@ -473,6 +486,7 @@ function wrs_createObject(objectCode, creator) {
  * Converts an object to its HTML code.
  * @param {object} object DOM object..
  * @return {string} HTML code.
+ * @ignore
  */
 function wrs_createObjectCode(object) {
     if (object.nodeType == 1) { // ELEMENT_NODE.
@@ -511,7 +525,9 @@ function wrs_createObjectCode(object) {
 }
 
 /**
- * Parses end HTML code.
+ * Parses end HTML code. The end HTML code is HTML code with embedded images or LaTeX formulas created with the WIRIS editor. <br>
+ * By default this method converts the formula images and LaTeX strings in MathML. <br>
+ * If image mode is enabled the images will not be converted into MathML. For further information see {@link http://www.wiris.com/plugins/docs/full-mathml-mode}.
  * @param {string} code String to be parsed.
  * @param {object} wirisProperties Extra attributes for the formula.
  * @param {string} language Language for the formula.
@@ -533,6 +549,7 @@ function wrs_regexpIndexOf(input, regexp, start) {
  * @param {object} wirisProperties Extra formula attributes.
  * @param {string} language Language for the formula.
  * @return {string}
+ * @ignore
  */
 function wrs_endParseEditMode(code, wirisProperties, language) {
     // Converting LaTeX to images.
@@ -686,6 +703,7 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
  * Parses end HTML code depending on the save mode.
  * @param {string} code HTML code
  * @return {string}
+ * @ignore
  */
 function wrs_endParseSaveMode(code) {
     var output = '';
@@ -715,6 +733,7 @@ function wrs_endParseSaveMode(code) {
  * Fires an element event.
  * @param {object} element element where event should be fired.
  * @param {string} event event to fire.
+ * @ignore
  */
 function wrs_fireEvent(element, event) {
     if (document.createEvent){
@@ -732,6 +751,7 @@ function wrs_fireEvent(element, event) {
  * @param {string} variableName Variable to send on POST query to the server.
  * @param {string} imageHashCode image hash code.
  * @return {string} Corresponding mathml code.
+ * @ignore
  */
 function wrs_getCode(variableName, imageHashCode) {
     var data = {};
@@ -744,6 +764,7 @@ function wrs_getCode(variableName, imageHashCode) {
  * @param {string} url target URL.
  * @param {object} postVariables post variables. Null if a GET query should be done.
  * @return {string} content of the target URL.
+ * @ignore
  */
 function wrs_getContent(url, postVariables) {
     try {
@@ -780,6 +801,7 @@ function wrs_getContent(url, postVariables) {
  * Generates the innerHTML of an element.
  * @param {object} element target element.
  * @return {string} innertHTML of the target element.
+ * @ignore
  */
 function wrs_getInnerHTML(element) {
     var innerHTML = '';
@@ -795,6 +817,7 @@ function wrs_getInnerHTML(element) {
  * Converts MathML to LaTeX.
  * @param {string} mathml MathML String
  * @return {string} MathML corresponding LaTeX.
+ * @ignore
  */
 function wrs_getLatexFromMathML(mathml) {
     var data = {
@@ -810,6 +833,7 @@ function wrs_getLatexFromMathML(mathml) {
  * @param {string} textNode test to extract LaTeX
  * @param {int} caretPosition starting position to find LaTeX.
  * @return {object} An object with 3 keys: 'latex', 'start' and 'end'. Null if latex is not found.
+ * @ignore
  */
 function wrs_getLatexFromTextNode(textNode, caretPosition) {
     // Looking for the first textNode.
@@ -911,6 +935,7 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
  * @param {string} latex String
  * @param {bool} includeLatexOnSemantics If true LaTeX would me included into MathML semantics.
  * @return {string} converted mathML
+ * @ignore
  */
 function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
     if (_wrs_int_LatexCache.hasOwnProperty(latex)) {
@@ -933,6 +958,7 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
  * Gets the node length in characters.
  * @param {object} node HTML node.
  * @return {int} node length
+ * @ignore
  */
 function wrs_getNodeLength(node) {
     if (node.nodeType == 3) { // TEXT_NODE.
@@ -960,6 +986,7 @@ function wrs_getNodeLength(node) {
  * Parses the query string and returns it as a Hash table.
  * @param {object} windowObject a window object with a query string.
  * @return {object} a hash table containing the query string.
+ * @ignore
  */
 function wrs_getQueryParams(windowObject) {
     var data = {};
@@ -982,6 +1009,7 @@ function wrs_getQueryParams(windowObject) {
  * @param {boolean} isIframe Specifies if the target is an iframe or not
  * @param {forceGetSelection} If true, ignores IE system to get the current selection and uses window.getSelection()
  * @return {object} An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text
+ * @ignore
  */
 function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
     var windowTarget;
@@ -1099,6 +1127,7 @@ function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
  * @param {bool} convertToXml True if the image should be converted to xml.
  * @param {bool} convertToSafeXml True if the image should be conerte to safeXmll
  * @return {string} the Xml or safeXml of a WIRIS image.
+ * @ignore
  */
 function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
     var imgObject = wrs_createObject(imgCode);
@@ -1144,6 +1173,7 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
  * Parses a text and replaces all HTML special characters by their entities.
  * @param {string} input Text to be paresed.
  * @return {string} the input text with all their special characters replaced by their entities.
+ * @ignore
  */
 function wrs_htmlentities(input) {
     return input.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
@@ -1153,6 +1183,7 @@ function wrs_htmlentities(input) {
  * Parses a text and replaces all the HTML entities by their characters.
  * @param {string} input Text to be parsed
  * @return {string} The input text with all their entities replaced by characters.
+ * @ignore
  */
 function wrs_htmlentitiesDecode(input) {
     return input.split('&quot;').join('"').split('&gt;').join('>').split('&lt;').join('<').split('&amp;').join('&');
@@ -1162,6 +1193,7 @@ function wrs_htmlentitiesDecode(input) {
  * Converts a hash to a HTTP query.
  * @param {hash} properties A key-value Hash
  * @return {string} A HTTP query containing all the key value pairs with all the shpecial characters replaced by their entities.
+ * @ignore
  */
 function wrs_httpBuildQuery(properties) {
     var result = '';
@@ -1176,10 +1208,14 @@ function wrs_httpBuildQuery(properties) {
 }
 
 /**
- * Parses initial HTML code.
- * @param {string} code HTML code
+ * Parses initial HTML code. If the HTML contains data generated by WIRIS, this data would be converted as following:
+ * <pre>
+ * MathML code: Image containing the corresponding MathML formulas.
+ * MathML code with LaTeX annotation : LaTeX.
+ * </pre>
+ * @param {string} code HTML code with data generated by WIRIS plugin.
  * @param {string} language Language for the formula.
- * @return {string}
+ * @return {string} HTML code with the WIRIS data converted into LaTeX and images.
  */
  /* Note: The code inside this function has been inverted.
     If you invert again the code then you cannot use correctly LaTeX
@@ -1200,6 +1236,7 @@ function wrs_initParse(code, language) {
 /**
  * Parses initial HTML code into iframes.
  * @param  {object} windowTarget Target object window.
+ * @ignore
  */
 function wrs_initParseImgToIframes(windowTarget) {
     if (window._wrs_conf_defaultEditMode && _wrs_conf_defaultEditMode == 'iframes') {
@@ -1228,6 +1265,7 @@ function wrs_initParseImgToIframes(windowTarget) {
  * Parses initial HTML code depending on the edit mode.
  * @param {string} code HTML code.
  * @return {string} parsed HTML code.
+ * @ignore
  */
 function wrs_initParseEditMode(code) {
     if (window._wrs_conf_parseModes !== undefined && wrs_arrayContains(_wrs_conf_parseModes, 'latex') != -1) {
@@ -1275,6 +1313,7 @@ function wrs_initParseEditMode(code) {
  * @param {string} code HTML code to be parsed
  * @param {string} language Language for the formula.
  * @return {string} HTML code parsed.
+ * @ignore
  */
 function wrs_initParseSaveMode(code, language) {
     if (window._wrs_conf_saveMode) {
@@ -1342,6 +1381,7 @@ function wrs_initParseSaveMode(code, language) {
  * @param {string} name Element names
  * @param {boolean} autoClosed True if the elements are autoClosed.
  * @return {array} An array containing all HTML elements of code matching the name argument.
+ * @ignore
  */
 function wrs_getElementsByNameFromString(code, name, autoClosed) {
     var elements = [];
@@ -1384,6 +1424,7 @@ function wrs_getElementsByNameFromString(code, name, autoClosed) {
  * @param {object} element Element
  * @param {object} focusElement Element to be focused
  * @param {object} windowTarget Target
+ * @ignore
  */
 function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
     try {
@@ -1482,6 +1523,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
  * @param {string} content A string containing MathML code.
  * @param {string} i Search index.
  * @return {bool} True if is inside an HTML attribute. In other case, false.
+ * @ignore
  */
 function wrs_isMathmlInAttribute(content, i) {
     // Regex = '^[\'"][\\s]*=[\\s]*[\\w-]+([\\s]*("[^"]*"|\'[^\']*\')[\\s]*=[\\s]*[\\w-]+[\\s]*)*[\\s]+gmi<';
@@ -1504,6 +1546,7 @@ function wrs_isMathmlInAttribute(content, i) {
  * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
  * @param {string} input String to be decoded.
  * @return {string} Decoded string.
+ * @ignore
  */
 function wrs_mathmlDecode(input) {
     // Decoding entities.
@@ -1577,6 +1620,7 @@ function wrs_mathmlDecode(input) {
  * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
  * @param {string} input to be encoded
  * @return {string} Encoded string.
+ * @ignore
  */
 function wrs_mathmlEncode(input) {
     input = input.split(_wrs_xmlCharacters.tagOpener).join(_wrs_safeXmlCharacters.tagOpener);
@@ -1592,6 +1636,7 @@ function wrs_mathmlEncode(input) {
  * Converts special symbols (> 128) to entities and replaces all textual entities by its number entities.
  * @param {string} mathml MathML string containing - or not - special symbols
  * @return {string} MathML with all textual entities replaced.
+ * @ignore
  */
 function wrs_mathmlEntities(mathml) {
     var toReturn = '';
@@ -1629,6 +1674,7 @@ function wrs_mathmlEntities(mathml) {
  * for example, chemistry.
  * @param {string} mathml a MathML string created with a custom editor, like chemistry.
  * @return {string} The MathML string with his class containgin the editor toolbar string.
+ * @ignore
  */
 function wrs_mathmlAddEditorAttribute(mathml) {
     var toReturn = '';
@@ -1652,6 +1698,7 @@ function wrs_mathmlAddEditorAttribute(mathml) {
  * @param {string} str String
  * @param {int} idx An integer greater than or equal to 0 and less than the length of the string
  * @return {int} An integer representing the UTF-16 code of the string at the given index.
+ * @ignore
  */
 
 function wrs_fixedCharCodeAt(str, idx) {
@@ -1684,6 +1731,7 @@ function wrs_fixedCharCodeAt(str, idx) {
  * @param {string} mathml MathML to get the accesibility.
  * @param {string} language Language of the accesibility.
  * @return {string} Accessibility from mathml string on language string.
+ * @ignore
  */
 function wrs_mathmlToAccessible(mathml, language, data) {
     data['service'] = 'mathml2accessible';
@@ -1696,6 +1744,7 @@ function wrs_mathmlToAccessible(mathml, language, data) {
  * @param {object} windowTarget Window object.
  * @param {string} mathml MathML to be converted.
  * @return {object} iframe object containging parsed mathml.
+ * @ignore
  */
 function wrs_mathmlToIframeObject(windowTarget, mathml) {
     if (window.navigator.userAgent.toLowerCase().indexOf('webkit') != -1) {
@@ -1779,6 +1828,7 @@ function wrs_mathmlToIframeObject(windowTarget, mathml) {
  * @param {object} wirisProperties object containing WIRIS custom properties
  * @param {language} language Custom language for accesibility. 
  * @return {object} And image containing the formula image corresponding to mathml string.
+ * @ignore
  */
 function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
     var width;
@@ -1869,6 +1919,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
  * @param {boolean} isIframe Specifies if target is an iframe or not
  * @param {string} language CAS language.
  * @return {object} The opened window
+ * @ignore
  */
 function wrs_openCASWindow(target, isIframe, language) {
     if (isIframe === undefined) {
@@ -1902,6 +1953,7 @@ function wrs_openCASWindow(target, isIframe, language) {
  * @param {boolean} isIframe Specifies if the target is an iframe or not
  * @param {boolean} isModal Specifies if the target is a modal window or not
  * @return {object} The opened window
+ * @ignore
  */
 function wrs_openEditorWindow(language, target, isIframe) {
     var ua = navigator.userAgent.toLowerCase();
@@ -2040,6 +2092,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
  * Converts all occurrences of mathml code to LATEX. The MathML code should containg <annotation encoding="LaTeX"/> to be converted.
  * @param {string} content A string containing MathML valid code.
  * @return {string} String with all MathML annotated occurrences replaced by the corresponding LaTeX code.
+ * @ignore
  */
 function wrs_parseMathmlToLatex(content, characters){
     var output = '';
@@ -2092,6 +2145,7 @@ function wrs_parseMathmlToLatex(content, characters){
  * @param {object} characters An object containing xmlCharacters or safeXmlCharacters relation.
  * @param {string} language String containging a valid language code in order to generate formula accesibilty.
  * @return {string} The input string with all the MathML ocurrences replaced by the corresponding image.
+ * @ignore
  */
 function wrs_parseMathmlToImg(content, characters, language) {
     var output = '';
@@ -2137,6 +2191,7 @@ function wrs_parseMathmlToImg(content, characters, language) {
  * Converts all occurrences of safe applet code to the corresponding code.
  * @param {string} content String containging valid applet code <APPLET>...</APPLET>
  * @return {string} String with all the applet code conerted to safe tags.
+ * @ignore
  */
 function wrs_parseSafeAppletsToObjects(content) {
     var output = '';
@@ -2173,6 +2228,7 @@ function wrs_parseSafeAppletsToObjects(content) {
  * @param {object} element Element target
  * @param {event} event Event
  * @param {function} func Function to run
+ * @ignore
  */
 function wrs_removeEvent(element, event, func) {
     if (element.removeEventListener) {
@@ -2187,6 +2243,7 @@ function wrs_removeEvent(element, event, func) {
  * Splits an HTML content in three parts: the code before <body>, the code between <body> and </body> and the code after </body>.
  * @param {string} code HTML code to be splited.
  * @return {objet} An object with the structure {'prefix': xxx, 'code': yyy, 'sufix': zzz}
+ * @ignore
  */
 function wrs_splitBody(code) {
     var prefix = '';
@@ -2225,6 +2282,7 @@ function wrs_splitBody(code) {
  * @param {string} image Base 64 image stream
  * @param {int} imageWidth Image width
  * @param {int} imageHeight Image height
+ * @ignore
  */
 function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth, imageHeight) {
     var imgObject = wrs_appletCodeToImgObject(windowTarget.document, appletCode, image, imageWidth, imageHeight);
@@ -2239,6 +2297,7 @@ function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth
  * @param {object} wirisProperties Extra attributes for the formula (like background color or font size).
  * @param {string} editMode Current edit mode.
  * @param {string} language Language for the formula.
+ * @ignore
  */
 function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode, language) {
     // Before update listener.
@@ -2309,6 +2368,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
  * Inserts or modifies formulas or CAS on a textarea.
  * @param {object} textarea Target
  * @param {string} text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as wrs_updateTextarea(textarea, wrs_createImageSrc(mathml));
+ * @ignore
  */
 function wrs_updateTextarea(textarea, text) {
     if (textarea && text) {
@@ -2328,6 +2388,7 @@ function wrs_updateTextarea(textarea, text) {
  * URL decode function.
  * @param {string} input String to be decoded
  * @return {string} decode string.
+ * @ignore
  */
 function wrs_urldecode(input) {
     return decodeURIComponent(input);
@@ -2337,6 +2398,7 @@ function wrs_urldecode(input) {
  * URL encode function.
  * @param {string} clearString Input string to be encoded
  * @return {string} encoded string.
+ * @ignore
  */
 function wrs_urlencode(clearString) {
     var output = '';
@@ -2461,6 +2523,7 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
  * @param {object} iframeParams iframe attributes
  * @param {object} deviceProperties device properties like orientation, OS..
  * @param {object} modalProperites modal properties (like draggable).
+ * @ignore
  */
 
 function wrs_createModalWindow(title, iframeParams, deviceProperties, modalProperties) {
@@ -2548,6 +2611,7 @@ function wrs_createModalWindow(title, iframeParams, deviceProperties, modalPrope
  *
  * @param  {object} draggable object (for example modal dialog).
  * @param  {target} target to add the events (for example de titlebar of a modal dialog)
+ * @ignore
  */
 function wrs_addModalListeners(object, target) {
     _wrs_dragObject = document.getElementsByClassName('wrs_modal_dialogContainer')[0];
@@ -2569,6 +2633,7 @@ function wrs_addModalListeners(object, target) {
  * Returns mouse or touch coordinates (on touch events ev.ClientX doesn't exists)
  * @param {event} ev mnouse or touch event
  * @return {object} with the X and Y coordinates.
+ * @ignore
  */
 function wrs_eventClient(ev) {
     if (typeof(ev.clientX) == 'undefined') {
@@ -2591,6 +2656,7 @@ function wrs_eventClient(ev) {
  * when drag starts (on touchstart or mousedown events).
  *
  * @param {event} ev touchstart or mousedown event.
+ * @ignore
  */
 function wrs_startDrag(ev) {
     if (ev.target.className == 'wrs_modal_title') {
@@ -2608,6 +2674,7 @@ function wrs_startDrag(ev) {
  * Updates_wrs_dragDataObject with the draggable object coordinates when the draggable object is being moved.
  *
  * @param {event} ev touchmouve or mousemove events.
+ * @ignore
  */
 function wrs_drag(ev) {
     if(_wrs_dragDataObject) {
@@ -2623,6 +2690,7 @@ function wrs_drag(ev) {
  * Set the _wrs_dragDataObject to null when the drag finish (touchend or mouseup events).
  *
  * @param {event} ev touchend or mouseup event.
+ * @ignore
  */
 function wrs_stopDrag(ev) {
     _wrs_dragDataObject = null;
@@ -2634,6 +2702,7 @@ function wrs_stopDrag(ev) {
  * @param  {containerDiv} modal window div.
  * @param  {iframe} embedded iframe.
  * @param  {iframeParams}  embedded iframe params (height, width).
+ * @ignore
  */
 
 function wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframeParams) {
@@ -2656,6 +2725,7 @@ function wrs_createModalWindowDesktop(modalDiv, containerDiv, iframe, iframePara
  * @param  {containerDiv} modal window div.
  * @param  {iframe} embedded iframe.
  * @param  {iframeParams}  embedded iframe params (height, width).
+ * @ignore
  */
 
 function wrs_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframeParams) {
@@ -2711,6 +2781,7 @@ function wrs_createModalWindowAndroid(modalDiv, containerDiv, iframe, iframePara
  * @param  {containerDiv} modal window div.
  * @param  {iframe} embedded iframe.
  * @param  {iframeParams}  embedded iframe params (height, width).
+ * @ignore
  */
 
 function wrs_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) {
@@ -2741,6 +2812,7 @@ function wrs_createModalWindowIos(modalDiv, containerDiv, iframe, iframeParams) 
  * @param  {containerDiv} modal window div.
  * @param  {iframe} embedded iframe.
  * @param  {iframeParams}  embedded iframe params (height, width).
+ * @ignore
  */
 
 function wrs_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParams) {
@@ -2765,6 +2837,7 @@ function wrs_createModalWindowMobile(modalDiv, containerDiv, iframe, iframeParam
  * @param  {containerDiv} modal window div.
  * @param  {iframe} embedded iframe.
  * @param  {iframeParams}  embedded iframe params (height, width).
+ * @ignore
  */
 function wrs_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, iframeParams) {
     modalDiv.className = modalDiv.className + " wrs_modal_badStock";
@@ -2798,6 +2871,7 @@ function wrs_createModalWindowBadStockAndroid(modalDiv, containerDiv, iframe, if
  * @param {int} initialScale Sets the initial zoom of the page and the width of the layout viewport.
  * @param {int} minimumScale Sets the minimum zoom level (i.e. how much the user can zoom out).
  * @param {int} maximumScale Sets the maximum zoom level (i.e. how much the user can zoom in).
+ * @ignore
  */
 function wrs_addMetaViewport(width, initialScale, minimumScale, maximumScale) {
     _wrs_originalMetaViewport = document.querySelector('meta[name=viewport]') ? document.querySelector('meta[name=viewport]').content : null;
@@ -2814,6 +2888,7 @@ function wrs_addMetaViewport(width, initialScale, minimumScale, maximumScale) {
 
 /**
  * Closes modal window and restores viewport header.
+ * @ignore
  */
 function wrs_closeModalWindow() {
     if (document.querySelector('meta[name=viewport]')) {
@@ -2829,6 +2904,7 @@ function wrs_closeModalWindow() {
  * http://stackoverflow.com/questions/24926221/distinguish-android-chrome-from-stock-browser-stock-browsers-user-agent-contai
  *
  * @return {Boolean} true if user agent is from an Android stock browser (<= 4.3)
+ * @ignore
  */
 function wrs_isBadStockAndroid () {
     var userAgent = window.navigator.userAgent;
@@ -2854,6 +2930,7 @@ function wrs_isBadStockAndroid () {
  *
  * @param {string}latex LaTeX code (with $$ separators)
  * @param {string} mathml matml LaTeX translation.
+ * @ignore
  */
 function wrs_populateLatexCache(latex, mathml) {
     if (mathml.indexOf('semantics') == -1 && mathml.indexOf('annotation') == -1 ) {
@@ -2869,6 +2946,7 @@ function wrs_populateLatexCache(latex, mathml) {
  * @param  {string} mathml MathML code generated by a LaTeX string.
  * @param  {string} latex Original LaTeX string
  * @return {string} new mathml containing LaTeX code on annotation tag.
+ * @ignore
  */
 function wrs_insertSemanticsMathml(mathml, latex) {
 
@@ -2899,6 +2977,7 @@ function wrs_insertSemanticsMathml(mathml, latex) {
  * @param  {String} code html code
  * @param  {String} mode base642showimage or img2mathml or img264 transform.
  * @return {String} html code transformed.
+ * @ignore
  */
 function wrs_codeImgTransform(code, mode) {
     output = '';
@@ -2985,6 +3064,7 @@ function wrs_codeImgTransform(code, mode) {
  *
  * @param  {String} el base64 character.
  * @return {int} base64 char numeric value.
+ * @ignore
  */
 function wrs_decode64(el) {
 
@@ -3022,6 +3102,7 @@ function wrs_decode64(el) {
  * @param  {String} b64String base64 string.
  * @param  {int} len dimension of byte array (by default whole string).
  * @return {Array} Byte array.
+ * @ignore
  */
 function wrs_b64ToByteArray(b64String, len) {
 
@@ -3073,6 +3154,7 @@ function wrs_b64ToByteArray(b64String, len) {
  * Returns the first 32-bit signed integer from a byte array.
  * @param  {Array} bytes array of bytes.
  * @return {int} 32-bit signed integer.
+ * @ignore
  */
 function wrs_readInt32(bytes) {
     if (bytes.length < 4) {
@@ -3088,6 +3170,7 @@ function wrs_readInt32(bytes) {
  * Read the first byte from a byte array.
  * @param  {array} bytes byte array.
  * @return {int} first byte of the byte array.
+ * @ignore
  */
 function wrs_readByte(bytes) {
     // @codingStandardsIgnoreStart
@@ -3102,6 +3185,7 @@ function wrs_readByte(bytes) {
  * @param  {int} post start position.
  * @param  {int} len number of bytes to read.
  * @return {array} byte array.
+ * @ignore
  */
 function wrs_readBytes(bytes, pos, len) {
     return bytes.splice(pos, len);
@@ -3111,6 +3195,7 @@ function wrs_readBytes(bytes, pos, len) {
  * Get metrics (width, height, baseline and dpi) from a png's byte array.
  * @param  {array} bytes png byte array.
  * @return {array} An array containging the png's metrics.
+ * @ignore
  */
 function wrs_getMetricsFromBytes(bytes) {
     wrs_readBytes(bytes, 0, 8);
@@ -3151,6 +3236,7 @@ function wrs_getMetricsFromBytes(bytes) {
 
 /**
  * Get custom active editor
+ * @ignore
  */
 function wrs_int_getCustomEditorEnabled() {
     var customEditorEnabled = null;
@@ -3165,6 +3251,7 @@ function wrs_int_getCustomEditorEnabled() {
 
 /**
  * Disable all custom editors
+ * @ignore
  */
 function wrs_int_disableCustomEditors(){
     Object.keys(_wrs_int_customEditors).forEach(function(key) {
@@ -3175,6 +3262,7 @@ function wrs_int_disableCustomEditors(){
 /**
  * Enable a custom editor
  * @param {string} editor a custom editor to be enabled
+ * @ignore
  */
 function wrs_int_enableCustomEditor(editor) {
     // Only one custom editor enabled at the same time.
@@ -3228,7 +3316,7 @@ if (!Object.keys) {
 }
 
 /**
- * Add a new callback to a WIRIS plugins listener
+ * Add a new callback to a WIRIS plugins listener.
  * @param {object} listener an Object containing listener name and a callback.
  */
 function wrs_addPluginListener(listener) {
