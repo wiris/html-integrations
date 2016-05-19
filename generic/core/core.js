@@ -1826,7 +1826,7 @@ function wrs_mathmlToIframeObject(windowTarget, mathml) {
  * @param {object} creator Object with the "createElement" method
  * @param {string} mathml MathML code
  * @param {object} wirisProperties object containing WIRIS custom properties
- * @param {language} language Custom language for accesibility. 
+ * @param {language} language Custom language for accesibility.
  * @return {object} And image containing the formula image corresponding to mathml string.
  * @ignore
  */
@@ -2306,7 +2306,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
     // - mathml
     // - editMode (read only)
     // - wirisProperties
-    // - language (read only)
+    // - language (read only).
     var params = {};
     params.mathml = mathml;
 
@@ -2318,7 +2318,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
         params.wirisProperties[attr] = wirisProperties[attr];
     }
 
-    // Read only
+    // Read only.
     params.language = language;
     params.editMode = editMode;
 
@@ -2355,7 +2355,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
         params.node = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
         wrs_insertElementOnSelection(params.node, focusElement, windowTarget);
     }
-    // After Update listener
+    // After Update listener.
     for (var pluginListener in wrs_pluginListeners) {
         if (wrs_pluginListeners[pluginListener].onAfterFormulaInsertion) {
             // Calling listener.
