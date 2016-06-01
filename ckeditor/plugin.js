@@ -131,22 +131,29 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		function whenDocReady() {
 			if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
 				
-				editor.on('setData', function (e) {
-						e.data.dataValue= wrs_initParse(e.data.dataValue);
-				});
+				// If wirislistenerdisabled=true all listeners should be disabled.
+				// If this happens user should use wrs_initParse() and wrs_endParse() methods.
+				if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
+					editor.on('setData', function (e) {
+							e.data.dataValue= wrs_initParse(e.data.dataValue);
+					});
 
-				editor.on('afterSetData', function(e){
-					if (typeof wrs_observer != 'undefined') {
-						Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), function(wirisImages){
-							wrs_observer.observe(wirisImages, wrs_observer_config);
-						});
-					}
-				});
-				
-				editor.setData(lastDataSet, function (e) {
+					editor.on('afterSetData', function(e){
+						if (typeof wrs_observer != 'undefined') {
+							Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), function(wirisImages){
+								wrs_observer.observe(wirisImages, wrs_observer_config);
+							});
+						}
+					});
+
+
 					editor.on('getData', function (e) {
 						e.data.dataValue = wrs_endParse(e.data.dataValue);
 					});
+				}
+
+				editor.setData(lastDataSet, function (e) {
+					
 					
 					function checkElement() {
 						try {

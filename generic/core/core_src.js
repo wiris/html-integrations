@@ -2341,6 +2341,37 @@ function wrs_updateCAS(focusElement, windowTarget, appletCode, image, imageWidth
     wrs_insertElementOnSelection(imgObject, focusElement, windowTarget);
 }
 
+var wrs_PluginEvent = function () {
+    this.cancelled = false;
+    this.defaultPrevented = false;
+}
+
+wrs_PluginEvent.prototype.cancel = function () {
+    this.cancelled = true;
+}
+
+wrs_PluginEvent.prototype.preventDefault = function () {
+    this.defaultPrevented = true;
+}
+
+/**
+ * Fires one WIRIS event
+ * @param  {String} eventName event name
+ * @param  {Object} e         event properties
+ * @return {bool}             false if event has been prevented.
+ * @ignore
+ */
+function wrs_fireEvent(eventName, e) {
+    for (var i = 0; i < wrs_pluginListeners.length && !e.cancelled; ++i) {
+        if (wrs_pluginListeners[i][eventName]) {
+            // Calling listener.
+            wrs_pluginListeners[i][eventName](e);
+        }
+    }
+
+    return e.defaultPrevented;
+}
+
 /**
  * Inserts or modifies formulas.
  * @param {object} focusElement Element to be focused
@@ -2359,60 +2390,55 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
     // - editMode (read only)
     // - wirisProperties
     // - language (read only).
-    var params = {};
-    params.mathml = mathml;
+    var e = new wrs_PluginEvent();
+
+    e.mathml = mathml;
 
     // Cloning wirisProperties object
     // We don't want wirisProperties object modified.
-    params.wirisProperties = {};
+    e.wirisProperties = {};
 
     for (var attr in wirisProperties) {
-        params.wirisProperties[attr] = wirisProperties[attr];
+        e.wirisProperties[attr] = wirisProperties[attr];
     }
 
     // Read only.
-    params.language = language;
-    params.editMode = editMode;
+    e.language = language;
+    e.editMode = editMode;
 
-    for (var pluginListener in wrs_pluginListeners) {
-        if (wrs_pluginListeners[pluginListener].onBeforeFormulaInsertion) {
-            // Calling listener.
-            wrs_pluginListeners[pluginListener].onBeforeFormulaInsertion(params)
-        }
+    if (wrs_fireEvent('onBeforeFormulaInsertion', e)) {
+        return;
     }
 
-    mathml = params.mathml;
-    wirisProperties = params.wirisProperties;
+    mathml = e.mathml;
+    wirisProperties = e.wirisProperties;
 
     // Setting empty params for after.
-    params = {};
-    params.editMode = editMode;
-    params.windowTarget = windowTarget;
-    params.focusElement = focusElement;
+    e = new wrs_PluginEvent();
+    e.editMode = editMode;
+    e.windowTarget = windowTarget;
+    e.focusElement = focusElement;
 
     if (mathml.length == 0) {
         wrs_insertElementOnSelection(null, focusElement, windowTarget);
     }
     else if (editMode == 'latex') {
-        params.latex = wrs_getLatexFromMathML(mathml);
-        params.node = windowTarget.document.createTextNode('$$' + params.latex + '$$');
-        wrs_populateLatexCache(params.latex, mathml);
-        wrs_insertElementOnSelection(params.node, focusElement, windowTarget);
+        e.latex = wrs_getLatexFromMathML(mathml);
+        e.node = windowTarget.document.createTextNode('$$' + e.latex + '$$');
+        wrs_populateLatexCache(e.latex, mathml);
+        wrs_insertElementOnSelection(e.node, focusElement, windowTarget);
     }
     else if (editMode == 'iframes') {
         var iframe = wrs_mathmlToIframeObject(windowTarget, mathml);
         wrs_insertElementOnSelection(iframe, focusElement, windowTarget);
     }
     else {
-        params.node = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
-        wrs_insertElementOnSelection(params.node, focusElement, windowTarget);
+        e.node = wrs_mathmlToImgObject(windowTarget.document, mathml, wirisProperties, language);
+        wrs_insertElementOnSelection(e.node, focusElement, windowTarget);
     }
-    // After Update listener.
-    for (var pluginListener in wrs_pluginListeners) {
-        if (wrs_pluginListeners[pluginListener].onAfterFormulaInsertion) {
-            // Calling listener.
-            wrs_pluginListeners[pluginListener].onAfterFormulaInsertion(params)
-        }
+
+    if (wrs_fireEvent('onAfterFormulaInsertion', e)) {
+        return;
     }
 }
 
