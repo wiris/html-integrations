@@ -29,13 +29,26 @@ namespace plugin_web
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            byte [] bs = pb.newRender().showImage(digest,mml,param);
-			if (pb.getConfiguration().getProperty("wirisimageformat", "png").LastIndexOf("svg") >= 0) {
-				Response.ContentType = "image/svg+xml";
-			} else {
-				Response.ContentType = "image/png";
-			}
-            Response.OutputStream.Write(bs,0,bs.Length);
+            if (pb.getConfiguration().getProperty("wirispluginperformance", "false") == "true") {
+                Response.ContentType = "application/json";
+                Response.AddHeader("Cache-Control", "max-age=3600");
+                int secondsToCache = 3600;
+                if (digest == null) {
+                    pb.newRender().showImage(digest,mml,param);
+                    digest = pb.newRender().computeDigest(mml, param);
+                }
+                string r = pb.newRender().showImageJson(digest, "en");
+                Response.Write(r);
+            }
+            else if (pb.getConfiguration().getProperty("wirisimageformat", "png").LastIndexOf("svg") >= 0) {
+                byte [] bs = pb.newRender().showImage(digest,mml,param);
+                Response.ContentType = "image/svg+xml";
+                Response.OutputStream.Write(bs,0,bs.Length);
+            } else {
+                byte [] bs = pb.newRender().showImage(digest,mml,param);
+                Response.ContentType = "image/png";
+                Response.OutputStream.Write(bs,0,bs.Length);
+            }
         }
 
         override protected void OnInit(EventArgs e)

@@ -21,10 +21,26 @@ $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
 $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
-$r = $render->showImage($digest, $mml, $PARAMS);
-if ($pluginBuilder->getConfiguration()->getProperty("wirisimageformat", "png") == "svg") {
-	header('Content-Type: image/svg+xml');		
+
+if ($pluginBuilder->getConfiguration()->getProperty("wirispluginperformance", "false") == "true") {
+   header("application/json");
+   $secondsToCache = 3600;
+   $ts = gmdate("D, d M Y H:i:s", time() + $secondsToCache) . " GMT";
+   header("Expires: $ts");
+   header("Cache-Control: max-age=$secondsToCache");
+   $lang = isset($PARAMS['lang'])?$PARAMS['lang']:'en';
+	// If digest == null formula is not in cache.
+	if (is_null($digest)) {
+		$render->showImage(null, $mml, $PARAMS);
+	    $digest = $render->computeDigest($mml, $PARAMS);
+	}
+   $r = $render->showImageJson($digest, $lang);
+}
+else if ($pluginBuilder->getConfiguration()->getProperty("wirisimageformat", "png") == "svg") {
+	header('Content-Type: image/svg+xml');
+	$r = $render->showImage($digest, $mml, $PARAMS);
 } else {
-	header('Content-Type: image/png');	
+	header('Content-Type: image/png');
+	$r = $render->showImage($digest, $mml, $PARAMS);
 }
 echo $r;

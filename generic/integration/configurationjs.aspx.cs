@@ -30,6 +30,7 @@ namespace plugin_web
 
             string r = pb.getConfiguration().getJavaScriptConfiguration();
             outVar(Response,"createimagePath","createimage");
+            outVar(Response, "showimagePath", "showimage");
             outVar(Response,"editorPath","editor");
             outVar(Response,"CASPath","cas");
             outVar(Response,"createimagePath","createimage");

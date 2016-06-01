@@ -72,6 +72,16 @@
 #CAS_height = 400
 
 #
+# External plugin
+#
+#wirisexternalplugin = false
+
+#
+# Experimental settings.
+#
+#wirispluginperformance = false
+
+#
 # Deprecated. Editor parameters should be parsed as a Json on wiriseditorparameters variale.
 #
 #wiristransparency = true
@@ -86,10 +96,5 @@
 #wirisarabicindiclanguages = ar_eg, ar_sd, ar_sa
 #wiriseasternarabicindiclanguages = fa, ps, ur
 #wiriseuropeanlanguages =
-
-#
-# External plugin
-#
-#wirisexternalplugin = false;
 
 # End of file
