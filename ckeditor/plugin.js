@@ -117,7 +117,8 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			editor.on('dataReady', function (e) {
 				lastDataSet = editor.getData();
 			});
-
+		} else {
+			lastDataSet = editor.getData();
 		}
 		
 		editor.on('doubleclick', function (event) {
