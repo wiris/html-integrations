@@ -109,10 +109,16 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		_wrs_int_directionality = editor.config.contentsLangDirection;
 		
 		var lastDataSet = null;
-		
-		editor.on('dataReady', function (e) {
-			lastDataSet = editor.getData();
-		});
+	
+		// If wirislistenerdisabled=true all listeners should be disabled.
+		// If this happens user should use wrs_initParse() and wrs_endParse() method
+		if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
+
+			editor.on('dataReady', function (e) {
+				lastDataSet = editor.getData();
+			});
+
+		}
 		
 		editor.on('doubleclick', function (event) {
 			if (event.data.element.$.nodeName.toLowerCase() == 'img' && wrs_containsClass(event.data.element.$, _wrs_conf_imageClassName) || wrs_containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
@@ -550,7 +556,7 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 		 {
 		 	CKEDITOR.currentInstance.fire('change')
 		 }
-	else if (_wrs_currentEditor && _wrs_currentEditor.fire) {
+	else if (typeof _wrs_currentEditor != 'undefined' && _wrs_currentEditor.fire) {
 		_wrs_currentEditor.fire('change');
 	}
 }
