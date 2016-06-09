@@ -142,7 +142,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				// If this happens user should use wrs_initParse() and wrs_endParse() methods.
 				if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
 					editor.on('setData', function (e) {
-							e.data.dataValue= wrs_initParse(e.data.dataValue);
+							e.data.dataValue= wrs_initParse(e.data.dataValue || "");
 					});
 
 					editor.on('afterSetData', function(e){
@@ -155,7 +155,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
 
 					editor.on('getData', function (e) {
-						e.data.dataValue = wrs_endParse(e.data.dataValue);
+						e.data.dataValue = wrs_endParse(e.data.dataValue || "");
 					});
 				}
 
