@@ -157,73 +157,13 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 					editor.on('getData', function (e) {
 						e.data.dataValue = wrs_endParse(e.data.dataValue || "");
 					});
+
+					editor.setData(lastDataSet);
 				}
-
-				editor.setData(lastDataSet, function (e) {
-					
-					
-					function checkElement() {
-						try {
-							var newElement;
-							divIframe = false;
-							
-							if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-								newElement = editor.element.$;
-							}
-							else {															
-								var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
-								newElement = elem.getElementsByTagName('iframe')[0];
-							}
-
-							if (newElement == null) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
-								newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
-								divIframe = true;
-							}
-
-							if ((!newElement.wirisActive && element == null) || newElement != element) {
-								if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-									if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
-										var eventElements = document.getElementsByClassName("cke_textarea_inline");
-										Array.prototype.forEach.call(eventElements, function(entry) {
-											wrs_addElementEvents(entry, function (div, element, event) {
-											wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
-											}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-										});
-									} else {
-										wrs_addElementEvents(newElement, function (div, element, event) {
-											wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
-										}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);	
-									}
-
-									newElement.wirisActive = true;
-									element = newElement;
-								}
-								else if (newElement.contentWindow != null) {
-									wrs_addIframeEvents(newElement, function (iframe, element, event) {
-										wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event);
-									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-									
-									newElement.wirisActive = true;
-									element = newElement;
-								}
-								else if (divIframe) {
-									wrs_addElementEvents(newElement, function (div, element, event) {
-										wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
-									}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-									
-									newElement.wirisActive = true;
-									element = newElement;
-								}
-							}
-						}
-						catch (e) {
-						}
-					}
-					
-					// CKEditor replaces several times the element element during its execution, so we must assign the events again.
-					setInterval(checkElement, 500);
-					editor.resetDirty();
-				});
+				// CKEditor replaces several times the element element during its execution, so we must assign the events again.
+				// We need to set a callback function to set "element" variable inside CKEDITOR.plugins.add scope.
+				setInterval(checkElement(editor, element, function(el){element = el;}, 500));
+				editor.resetDirty();
 			}
 			else {
 				setTimeout(whenDocReady, 50);
@@ -583,4 +523,67 @@ function wrs_int_updateCAS(appletCode, image, width, height) {
  */
 function wrs_int_notifyWindowClosed() {
 	_wrs_int_window_opened = false;
+}
+
+/**
+ * CKEditor replaces several times the element element during its execution, 
+ * so we must assign the events again to editor element.
+ * @param  {object}   editor   current CKEDITOR instance.
+ * @param  {object}   element  last html editor element.
+ * @param  {Function} callback optional callback. Necessary to replace the last calculated element on a setInterval method.
+ */
+function checkElement(editor, element, callback) {
+	try {
+		var newElement;
+		divIframe = false;
+
+		if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+			newElement = editor.element.$;
+		}
+		else {
+			var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+			newElement = elem.getElementsByTagName('iframe')[0];
+		}
+
+		if (newElement == null) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
+			newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+			divIframe = true;
+		}
+
+		if ((!newElement.wirisActive && element == null) || newElement != element) {
+			if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+				if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
+					var eventElements = document.getElementsByClassName("cke_textarea_inline");
+					Array.prototype.forEach.call(eventElements, function(entry) {
+						wrs_addElementEvents(entry, function (div, element, event) {
+						wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+						}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+					});
+				} else {
+					wrs_addElementEvents(newElement, function (div, element, event) {
+						wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+					}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				}
+				newElement.wirisActive = true;
+				element = newElement;
+			}
+			else if (newElement.contentWindow != null) {
+				wrs_addIframeEvents(newElement, function (iframe, element, event) {
+					wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event);
+				}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				newElement.wirisActive = true;
+				element = newElement;
+			}
+			else if (divIframe) {
+				wrs_addElementEvents(newElement, function (div, element, event) {
+					wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+				}, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+				newElement.wirisActive = true;
+				element = newElement;
+			}
+		}
+		callback(element);
+	}
+	catch (e) {
+	}
 }
