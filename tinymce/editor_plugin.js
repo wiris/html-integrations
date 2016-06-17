@@ -521,15 +521,16 @@ function wrs_int_mouseupHandler() {
  * @param string mathml
  */
 function wrs_int_updateFormula(mathml, editMode, language) {
-    if (typeof tinymce.activeEditor.fire != 'undefined') {
-        tinymce.activeEditor.fire('change');
-    }
     // Var _wrs_int_wirisProperties contains some js render params. Since mathml can support render params, js params should be send only to editor, not to render.
     if (_wrs_int_temporalElementIsIframe) {
         wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, {}, editMode, language);
     }
     else {
         wrs_updateFormula(_wrs_int_temporalIframe, window, mathml, {}, editMode, language);
+    }
+
+    if (typeof tinymce.activeEditor.fire != 'undefined') {
+        tinymce.activeEditor.fire('change');
     }
 }
 
