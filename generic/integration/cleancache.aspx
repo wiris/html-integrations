@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="cleancache.aspx.cs" Inherits="plugin_web.cleancache" %>

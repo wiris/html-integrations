@@ -97,4 +97,8 @@
 #wiriseasternarabicindiclanguages = fa, ps, ur
 #wiriseuropeanlanguages =
 
+# Delete cache parameters.
+# wiriscleancachegui = false
+# wiriscleancachetoken = token
+
 # End of file
