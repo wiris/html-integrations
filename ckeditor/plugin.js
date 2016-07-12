@@ -22,12 +22,12 @@ var _wrs_conf_editor = "CKEditor4";
 var _wrs_int_path = _wrs_int_conf_file.split("/");
 _wrs_int_path.pop();
 _wrs_int_path = _wrs_int_path.join("/");
-_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + "/" + _wrs_int_path;
+_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + _wrs_int_path;
 
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
 	var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
-	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+	var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path +  _wrs_int_conf_file;
 	httpRequest.open('GET', configUrl, false);
 	httpRequest.send(null);
 	
