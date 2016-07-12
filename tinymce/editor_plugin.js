@@ -351,7 +351,7 @@ function wrs_intPath(intFile, confPath) {
     var intPath = intFile.split("/");
     intPath.pop();
     intPath = intPath.join("/");
-    intPath = intPath.indexOf("/") == 0 || intPath.indexOf("http") == 0 ? intPath : confPath + "/" + intPath;
+    intPath = intPath.indexOf("/") == 0 || intPath.indexOf("http") == 0 ? intPath : confPath + intPath;
     return intPath;
 }
 
