@@ -416,19 +416,18 @@ function wrs_createShowImageSrc(mathml, data, language) {
         }
     }
     // Data variables to get.
-    var dataArray = [];
+    var dataObject = {};
     for (var key in data) {
         // We don't need mathml in this request we try to get cached so we only need the formula md5 calculated before.
         if (key != 'mml') {
-            dataArray.push(key + '=' + data[key]);
+            dataObject[key] = data[key];
         }
-    }
-    dataArray.push('format=png-json');
-    dataArray.push('formula=' + com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5)));
-    if (typeof language == 'undefined') {
-        language = 'en';
-    }
-    var result = wrs_getContent(_wrs_conf_showimagePath + '?' + 'formula=' + com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5)) + '&lang=' + language);
+    }    
+    dataObject.jsonformat ='png';
+    dataObject.formula= com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5));
+    dataObject.lang = (typeof language == 'undefined') ? 'en' : language;
+    
+    var result = wrs_getContent(_wrs_conf_showimagePath + '?' + wrs_httpBuildQuery(dataObject));
     return result;
 }
 
@@ -1232,6 +1231,11 @@ function wrs_httpBuildQuery(properties) {
             result += wrs_urlencode(i) + '=' + wrs_urlencode(properties[i]) + '&';
         }
     }
+    
+    // Deleting last '&' empty character.
+    if (result.substring(result.length -1) == '&') {
+        result = result.substring(0, result.length-1);
+    }
 
     return result;
 }
@@ -1906,6 +1910,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
         if (result["status"] == 'warning') {
             // POST call.
+             data['jsonformat'] = 'png'
              result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
         }
         result = result.result;
@@ -3034,6 +3039,8 @@ function wrs_insertSemanticsMathml(mathml, latex) {
     var closeSemantics = '<' + '/semantics' + '>';
     var openTarget = '<annotation encoding="LaTeX">';
     var closeTarget = '<' + '/annotation' + '>';
+    var mrowOpen = '<mrow>';
+    var mrowClose = '</mrow>';
 
     var indexMathBegin = mathml.indexOf(firstEndTag);
     var indexMathEnd = mathml.indexOf(mathTagEnd);
@@ -3041,7 +3048,11 @@ function wrs_insertSemanticsMathml(mathml, latex) {
 
     if (indexMathBegin != -1 && indexMathEnd != -1 && mathBeginExists)  {
         var mathmlContent = mathml.substring(indexMathBegin + 1, indexMathEnd);
-        var mathmlContentSemantics = openSemantics + mathmlContent + openTarget + latex + closeTarget + closeSemantics;
+        if (mathmlContent.indexOf(mrowOpen) != 0) {
+            var mathmlContentSemantics = openSemantics + mrowOpen + mathmlContent + mrowClose + openTarget + latex + closeTarget + closeSemantics;
+        } else {
+            var mathmlContentSemantics = openSemantics + mathmlContent + openTarget + latex + closeTarget + closeSemantics;
+        }
         return mathml.replace(mathmlContent, mathmlContentSemantics);
     } else {
         return mathml;
