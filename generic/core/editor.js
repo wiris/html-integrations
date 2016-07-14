@@ -198,7 +198,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 
     wrs_addEvent(window, 'message', function (e) { // Safely enable cross-origin communication.
         for (var i = 0; i < _wrs_callbacks.length; ++i) {
-            if (_wrs_callbacks[i].id == e.data.id) {
+            if (_wrs_callbacks[i].id == e.data.id && _wrs_callbacks[i].callback != null) {
                 _wrs_callbacks[i].callback(e.data.value);
                 _wrs_callbacks.splice(i, 1);
                 break;

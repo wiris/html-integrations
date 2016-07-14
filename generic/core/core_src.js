@@ -1,7 +1,7 @@
 var _wrs_popupWindow;
 
 wrs_addEvent(window, 'message', function (e) {
-    if (e.source = _wrs_popupWindow && typeof e.wrs_processed == 'undefined') {
+    if (e.source == _wrs_popupWindow && typeof e.wrs_processed == 'undefined') {
         e.wrs_processed = true;
         var postVariable = {};
         postVariable.id = e.data.id;
@@ -1464,7 +1464,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
         focusElement.focus();
 
         if (_wrs_isNewElement) {
-            if (document.selection && document.getSelection != 0) {
+            if (document.selection && document.getSelection == 0) {
                 var range = windowTarget.document.selection.createRange();
                 windowTarget.document.execCommand('InsertImage', false, element.src);
 
@@ -1529,7 +1529,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
             }
         }
         else if (_wrs_temporalRange) {
-            if (document.selection) {
+            if (document.selection && document.getSelection == 0) {
                 _wrs_isNewElement = true;
                 _wrs_temporalRange.select();
                 wrs_insertElementOnSelection(element, focusElement, windowTarget);
