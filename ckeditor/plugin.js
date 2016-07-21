@@ -587,3 +587,13 @@ function checkElement(editor, element, callback) {
 	catch (e) {
 	}
 }
+
+/**
+ * This function is called from wrs_insertElementOnSelection on core.js
+ * Uses CKEDITOR focus method to focus on current editor area.
+ */
+function wrs_int_insertElementOnSelection() {
+	if (typeof _wrs_currentEditor != 'undefined') {
+		_wrs_currentEditor.focus();
+	}
+}

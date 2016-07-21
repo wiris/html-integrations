@@ -1463,6 +1463,16 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
     try {
         focusElement.focus();
 
+        // Integration function
+        // If wrs_int_insertElementOnSelection function exists on
+        // integration script can call focus method from the editor instance.
+        // For example, on CKEditor calls CKEditorInstance.focus() method.
+        // With this method we can call proper focus methods which in some scenarios
+        // help's WIRIS plugin to focus properly on the current editor window.
+        if (typeof wrs_int_insertElementOnSelection != 'undefined') {
+            wrs_int_insertElementOnSelection();
+        }
+
         if (_wrs_isNewElement) {
             if (document.selection && document.getSelection == 0) {
                 var range = windowTarget.document.selection.createRange();
