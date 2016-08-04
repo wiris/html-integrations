@@ -423,7 +423,7 @@ function wrs_createShowImageSrc(mathml, data, language) {
             dataObject[key] = data[key];
         }
     }    
-    dataObject.jsonformat ='png';
+    dataObject.jsonformat = _wrs_conf_imageFormat;
     dataObject.formula= com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5));
     dataObject.lang = (typeof language == 'undefined') ? 'en' : language;
     
