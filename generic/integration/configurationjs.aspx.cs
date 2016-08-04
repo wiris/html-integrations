@@ -23,10 +23,12 @@ namespace plugin_web
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
 
-            // Adding - if necessary - CORS headers            
+            // Adding - if necessary - CORS headers
             com.wiris.system.service.HttpResponse res = new com.wiris.system.service.HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
+
+            Response.ContentType = "application/x-javascript";
 
             string r = pb.getConfiguration().getJavaScriptConfiguration();
             outVar(Response,"createimagePath","createimage");
