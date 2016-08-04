@@ -167,6 +167,11 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						e.data.dataValue = wrs_endParse(e.data.dataValue || "");
 					});
 
+					// When CKEditors changes from WYSIWYG to source element, recalculate "element" variable is mandatory.
+					editor.on('mode', function(e) {
+						checkElement(editor, null, function(el){element = el;});
+					})
+
 					editor.setData(lastDataSet);
 				}
 				// CKEditor replaces several times the element element during its execution, so we must assign the events again.
