@@ -140,7 +140,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		// Avoid WIRIS images to be upcasted.
 		if (typeof editor.widgets != 'undefined') {
 			editor.widgets.addUpcastCallback( function( element ) {
-			    if ( element.name == 'img' && element.hasClass(_wrs_conf_imageClassName) )
+			    if ( element.name == 'img' && typeof(_wrs_conf_imageClassName) != 'undefined' && element.hasClass(_wrs_conf_imageClassName) )
 			        return false;
 			} );
 		}
