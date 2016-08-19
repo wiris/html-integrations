@@ -423,7 +423,6 @@ function wrs_createShowImageSrc(mathml, data, language) {
             dataObject[key] = data[key];
         }
     }    
-    dataObject.jsonformat = _wrs_conf_imageFormat;
     dataObject.formula= com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5));
     dataObject.lang = (typeof language == 'undefined') ? 'en' : language;
     
@@ -1919,12 +1918,12 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
     if (_wrs_conf_wirisPluginPerformance && (_wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml')) {
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
         if (result["status"] == 'warning') {
-            // POST call.
-             data['jsonformat'] = 'png'
+            // POST call.             
              result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
         }
         result = result.result;
-        imgObject.src = 'data:image/png;base64,' + result["pngBase64"];
+        imgObject.src = result['format'] == 'svg' ? 'data:image/svg+xml;base64,' : 'data:image/png;base64,';
+        imgObject.src = imgObject.src + result["base64"];
         imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
         if (_wrs_conf_setSize) {
             wrs_setImgSize(imgObject,result, true);
@@ -2533,8 +2532,12 @@ function wrs_setImgSize(img, url, base64) {
     if (base64) {
         // Cleaning data:image/png;base64.
         var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
-        bytes = wrs_b64ToByteArray(base64String, 88);
-        var ar = wrs_getMetricsFromBytes(bytes);
+        if (_wrs_conf_imageFormat == 'svg') {
+            var ar = getMetricsFromSvgString(atob(base64String));
+        } else {
+            bytes = wrs_b64ToByteArray(base64String, 88);
+            var ar = wrs_getMetricsFromBytes(bytes);
+        }
     } else {
         var ar = wrs_urlToAssArray(url);
     }
@@ -3320,7 +3323,7 @@ function wrs_getMetricsFromBytes(bytes) {
         wrs_readInt32(bytes);
     }
 
-    if (width) {
+    if (typeof width != 'undefined') {
         var arr = new Array();
         arr['cw'] = width;
         arr['ch'] = height;
@@ -3331,6 +3334,32 @@ function wrs_getMetricsFromBytes(bytes) {
 
         return arr;
     }
+}
+
+function getMetricsFromSvgString(svgString) {
+    var first = svgString.indexOf('height="');
+    var last = svgString.indexOf('"',first + 8, svgString.length);
+    var height = svgString.substring(first + 8, last);
+    
+    first = svgString.indexOf('width="');
+    last = svgString.indexOf('"',first + 7, svgString.length);
+    var width = svgString.substring(first + 7, last);
+    
+    first = svgString.indexOf('wrs:baseline="');
+    last = svgString.indexOf('"',first + 14, svgString.length);
+    var baseline = svgString.substring(first + 14, last);
+    
+    if (typeof(width != 'undefined')) {
+        var arr = new Array();
+        arr['cw'] = width;
+        arr['ch'] = height;        
+        if (typeof baseline != 'undefined') {
+            arr['cb'] = baseline
+        }
+        
+        return arr;
+    }
+    
 }
 
 /**

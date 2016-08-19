@@ -13,6 +13,7 @@ namespace plugin_web
         {
             string digest = Request.Params["formula"];
             string mml = Request.Params["mml"];
+
             if (digest==null && mml==null) {
                 throw new Exception("Missing parameters 'formula' or 'mml'.");
             }
@@ -28,8 +29,8 @@ namespace plugin_web
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
-
-            if (pb.getConfiguration().getProperty("wirispluginperformance", "false") == "true") {
+            string jsonFormat = Request.Params["jsonformat"];
+            if (jsonFormat != null && jsonFormat.IndexOf("png") != -1 && pb.getConfiguration().getProperty("wiriseditorsavemode","xml").IndexOf("xml") != -1) {
                 Response.ContentType = "application/json";
                 Response.AddHeader("Cache-Control", "max-age=3600");
                 int secondsToCache = 3600;
@@ -38,15 +39,10 @@ namespace plugin_web
                     digest = pb.newRender().computeDigest(mml, param);
                 }
                 string r = pb.newRender().showImageJson(digest, "en");
-                Response.Write(r);
-            }
-            else if (pb.getConfiguration().getProperty("wirisimageformat", "png").LastIndexOf("svg") >= 0) {
-                byte [] bs = pb.newRender().showImage(digest,mml,param);
-                Response.ContentType = "image/svg+xml";
-                Response.OutputStream.Write(bs,0,bs.Length);
+                Response.Write(r);            
             } else {
                 byte [] bs = pb.newRender().showImage(digest,mml,param);
-                Response.ContentType = "image/png";
+                Response.ContentType = pb.getImageFormatController().getContentType();
                 Response.OutputStream.Write(bs,0,bs.Length);
             }
         }
