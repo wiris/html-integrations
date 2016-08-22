@@ -68,7 +68,7 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', label : 'Chemistry Editor'}}
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
@@ -205,7 +205,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			});
 			
 			editor.ui.addButton('ckeditor_wiris_formulaEditor', {
-				'label': 'WIRIS editor',
+				'label': 'Math Editor',
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});
@@ -297,9 +297,9 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 						}
 					});
 
-					var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name; 
+					var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name;
 					editor.ui.addButton(buttonName, {
-						'label': 'WIRIS editor',
+						'label': _wrs_int_customEditors[key].label,
 						'command': command,
 						'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +'/icons/' + _wrs_int_customEditors[key].icon
 					});
