@@ -1,5 +1,5 @@
 <?php
-class PhpParamsProvider implements com_wiris_plugin_configuration_ParamsProvider {
+class PhpParamsProvider implements com_wiris_plugin_api_ParamsProvider {
 
 	private $parameters = array();
 	private $serviceParamsList=  array('mml', 'lang', 'service', 'latex');

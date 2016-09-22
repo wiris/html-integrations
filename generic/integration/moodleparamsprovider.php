@@ -16,7 +16,7 @@
 
 require_once('../../../lib/moodlelib.php');
 
-class MoodleParamsProvider implements com_wiris_plugin_configuration_ParamsProvider {
+class MoodleParamsProvider implements com_wiris_plugin_api_ParamsProvider {
 
     private $parameters = array();
     private $serviceparamlist = array('mml', 'lang', 'service', 'latex');
