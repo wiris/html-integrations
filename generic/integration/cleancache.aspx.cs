@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,6 +13,7 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
 
             // Adding - if necessary - CORS headers
@@ -20,7 +22,7 @@ namespace plugin_web
             pb.addCorsHeaders(res, origin);
 
             CleanCache cleanCache = pb.newCleanCache();
-            cleanCache.init(param);
+            cleanCache.init(provider);
             string output = cleanCache.getCacheOutput();
             Response.ContentType = cleanCache.getContentType();
             Response.Write(output);

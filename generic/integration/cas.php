@@ -4,7 +4,9 @@
 
 require_once 'pluginbuilder.php';
 
-$PARAMS = array_merge($_GET, $_POST);
+$provider = $pluginBuilder->getCustomParamProvider();
+$lang = $provider->getParameter('lang', 'en');
+$mode = $provider->getParameter('mode', null);
 
 // Adding - if necessary - CORS headers
 $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
@@ -12,6 +14,4 @@ $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
 $cas = $pluginBuilder->newCas();
-$lang = isset($PARAMS['lang']) ? $PARAMS['lang']:null;
-$mode = isset($PARAMS['mode']) ? $PARAMS['mode']:null;
 echo $cas->cas($mode,$lang);

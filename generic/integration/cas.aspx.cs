@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,14 +13,16 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
-            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String mode = provider.getParameter("mode", null);
+            String lang = provider.getParameter("lang", "en");
 
             // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            String r = pb.newCas().cas(Request.Params["mode"],Request.Params["lang"]);
+            String r = pb.newCas().cas(mode, lang);
             Response.ContentType = "text/html; charset=utf-8";
             Response.Write(r);
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using com.wiris.plugin.api;
 using System.Web;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,9 +13,9 @@ namespace plugin_web
     {
 
         protected void Page_Load(object sender, EventArgs e)
-        {
-            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
+        {            
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
 
             // Adding - if necessary - CORS headers
             com.wiris.system.service.HttpResponse res = new com.wiris.system.service.HttpResponse(this.Response);
@@ -22,7 +23,8 @@ namespace plugin_web
             pb.addCorsHeaders(res, origin);
 
             Response.ContentType = "application/json";
-            String r = pb.getConfiguration().getJsonConfiguration(Request.Params["variableKeys"]);
+            String variableKeys = provider.getRequiredParameter("variablekeys");
+            String r = pb.getConfiguration().getJsonConfiguration(variableKeys);
             this.Response.Write(r);
         }
 

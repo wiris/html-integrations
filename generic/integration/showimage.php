@@ -3,11 +3,14 @@
 // ${license.statement}
 
 require_once 'pluginbuilder.php';
-$PARAMS = array_merge($_GET, $_POST);
-$digest = isset($PARAMS['formula'])?$PARAMS['formula']:null;
-$mml = isset($PARAMS['mml'])?$PARAMS['mml']:null;
+
+$provider = $pluginBuilder->getCustomParamsProvider();
+
+$digest = $provider->getParameter('formula', null);
+$mml = $provider->getParameter('mml', null);
 $render = $pluginBuilder->newRender();
-$jsonformat = isset($PARAMS['jsonformat'])?$PARAMS['jsonformat']:false;
+$jsonformat = $provider->getParameter('jsonformat', null);
+$lang = $provider->getParameter('lang', 'en');
 
 // Backwards compatibility
 // showimage.php?formula.png --> showimage.php?formula
@@ -29,16 +32,15 @@ if ($pluginBuilder->getConfiguration()->getProperty("wirispluginperformance", "f
    $ts = gmdate("D, d M Y H:i:s", time() + $secondsToCache) . " GMT";
    header("Expires: $ts");
    header("Cache-Control: max-age=$secondsToCache");
-   $lang = isset($PARAMS['lang'])?$PARAMS['lang']:'en';
 	// If digest == null formula is not in cache.
 	if (is_null($digest)) {
-		$render->showImage(null, $mml, $PARAMS);
-	    $digest = $render->computeDigest($mml, $PARAMS);
+		$render->showImage(null, $mml, $provider);
+	    $digest = $render->computeDigest($mml, $provider->getRenderParameters($pluginBuilder->getConfiguration()));
 	}
    $r = $render->showImageJson($digest, $lang);
 } else {
 	$contentType = $pluginBuilder->getImageFormatController()->getContentType();
 	header('Content-Type: ' . $contentType);
-	$r = $render->showImage($digest, $mml, $PARAMS);
+	$r = $render->showImage($digest, $mml, $provider);
 }
 echo $r;

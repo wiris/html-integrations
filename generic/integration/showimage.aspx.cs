@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -11,8 +12,10 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string digest = Request.Params["formula"];
-            string mml = Request.Params["mml"];
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String digest = provider.getParameter("formula", null);
+            String mml = provider.getParameter("mml", null);            
 
             if (digest==null && mml==null) {
                 throw new Exception("Missing parameters 'formula' or 'mml'.");
@@ -24,24 +27,22 @@ namespace plugin_web
                 digest = digest.Substring(0, digest.LastIndexOf("."));
             }
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
-            // Adding - if necessary - CORS headers
-            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            // Adding - if necessary - CORS headers            
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
-            pb.addCorsHeaders(res, origin);
-            string jsonFormat = Request.Params["jsonformat"];
-            if (jsonFormat != null && jsonFormat.IndexOf("png") != -1 && pb.getConfiguration().getProperty("wiriseditorsavemode","xml").IndexOf("xml") != -1) {
+            pb.addCorsHeaders(res, origin);            
+            if (pb.getConfiguration().getProperty("wirispluginperformance","xml").IndexOf("true") != -1) {
                 Response.ContentType = "application/json";
                 Response.AddHeader("Cache-Control", "max-age=3600");
                 int secondsToCache = 3600;
                 if (digest == null) {
-                    pb.newRender().showImage(digest,mml,param);
-                    digest = pb.newRender().computeDigest(mml, param);
+                    pb.newRender().showImage(digest,mml,provider);
+                    digest = pb.newRender().computeDigest(mml, provider.getParameters());
                 }
                 string r = pb.newRender().showImageJson(digest, "en");
                 Response.Write(r);            
             } else {
-                byte [] bs = pb.newRender().showImage(digest,mml,param);
+                byte [] bs = pb.newRender().showImage(digest,mml,provider);
                 Response.ContentType = pb.getImageFormatController().getContentType();
                 Response.OutputStream.Write(bs,0,bs.Length);
             }

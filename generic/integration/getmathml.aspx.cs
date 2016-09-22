@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,8 +13,9 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
-            String latex = Request.Params["latex"];
-            String digest = Request.Params["digest"];
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String latex = provider.getParameter("latex", null);
+            String digest = provider.getParameter("formula", null);
             if (digest == null || digest.Length == 0)
             {
                 digest = Request.Params["md5"];

@@ -4,7 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
-using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,19 +12,20 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string mml = this.Request.Params["mml"];
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String mml = provider.getRequiredParameter("mml");
             if (mml==null) {
                 throw new Exception("Missing parameter 'mml'.");
             }
-            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
-            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            
             
             // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            string r = pb.newRender().createImage(mml, param, null);
+            string r = pb.newRender().createImage(mml, provider, null);
             this.Response.Write(r);
         }
 

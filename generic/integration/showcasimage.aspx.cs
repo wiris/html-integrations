@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -11,15 +12,16 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String formula = provider.getRequiredParameter("formula");
             
             // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            byte[] bs = pb.newCas().showCasImage(param["formula"],param);
+            byte[] bs = pb.newCas().showCasImage(formula, provider);
             Response.ContentType = "image/png";
             Response.OutputStream.Write(bs, 0, bs.Length);
         }

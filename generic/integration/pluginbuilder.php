@@ -28,7 +28,11 @@ if ($moodle) {
     include_once $wirisFilter;
     $wrap->start();
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_configuration_MoodleConfigurationUpdater());
-    $wrap->stop();
+    require_once('moodleparamsprovider.php');
+    $pluginBuilder->setCustomParamsProvider(new MoodleParamsProvider());
+} else {
+    $wrap->start();
+    require_once('phpparamsprovider.php');
+    $pluginBuilder->setCustomParamsProvider(new PhpParamsProvider());
 }
-$wrap->start();
 $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());

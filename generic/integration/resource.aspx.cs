@@ -4,6 +4,7 @@ using com.wiris.plugin.factory;
 using System.Collections.Generic;
 using com.wiris.plugin.api;
 using com.wiris.system.service;
+using com.wiris.plugin.configuration;
 
 namespace plugin_web
 {
@@ -12,8 +13,8 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
-            Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
-            String resource = Request.Params["resourcefile"];            
+            ParamsProvider provider = pb.getCustomParamsProvider();
+            String resource = provider.getRequiredParameter("resourcefile");
 
             // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);

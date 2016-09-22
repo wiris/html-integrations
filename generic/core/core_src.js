@@ -2720,9 +2720,12 @@ function wrs_addModalListeners(object, target) {
     wrs_addEvent(document.body, 'mousemove', wrs_drag);
 
     // Touch Events.
-    wrs_addEvent(document.getElementsByClassName('wrs_modal_title')[0], 'touchstart', wrs_startDrag);
-    wrs_addEvent(document.body, 'touchmove', wrs_drag);
-    wrs_addEvent(window, 'touchend', wrs_stopDrag);
+    // Don't add touch events on modal window for mobile.
+    if (typeof(document.getElementsByClassName('wrs_modal_title')[0]) != 'undefined') {
+        wrs_addEvent(document.getElementsByClassName('wrs_modal_title')[0], 'touchstart', wrs_startDrag);
+        wrs_addEvent(document.body, 'touchmove', wrs_drag);
+        wrs_addEvent(window, 'touchend', wrs_stopDrag);
+    }
 }
 
 /**
