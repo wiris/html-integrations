@@ -1,3 +1,6 @@
+// This file belongs to a standard javascript demo for testing porpuses 
+// so coding standars are ignored on this file.
+//@codingStandardsIgnoreFile
 // Configuration
 var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_int_conf_async = true;
