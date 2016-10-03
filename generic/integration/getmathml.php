@@ -3,13 +3,15 @@
 // ${license.statement}
 
 require_once 'pluginbuilder.php';
-$PARAMS = array_merge($_GET, $_POST);
 
-$digest = isset($PARAMS['digest'])?$PARAMS['digest']:null;
-if ($digest==null) {
-    $digest = isset($PARAMS['md5'])?$PARAMS['md5']:null;
+$provider = $pluginBuilder->getCustomParamsProvider();
+
+$digest = $provider->getParameter('digest', null);
+if ($digest ==null) {
+    $digest = $provider->getParameter('md5', null);
 }
-$latex = isset($PARAMS['latex'])?$PARAMS['latex']:null;
+
+$latex = $provider->getParameter('latex', null);
 
 // Adding - if necessary - CORS headers
 $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
