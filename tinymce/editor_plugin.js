@@ -63,7 +63,9 @@ var _wrs_addCoreQueue = typeof _wrs_addCoreQueue == 'undefined' ? false : _wrs_a
                 _wrs_conf_path = external_url.substring(0,external_url.lastIndexOf("/") + 1)
                 // New int path.
                 // Absolute URL path needed: integration files are in the same external_url domain.
-                _wrs_int_conf_file = _wrs_conf_path.split('/')[0] + '//' + _wrs_conf_path.split('/')[2] + _wrs_int_conf_file;
+                if (_wrs_int_conf_file.indexOf('/') == 0) {
+                    _wrs_int_conf_file = _wrs_conf_path.split('/')[0] + '//' + _wrs_conf_path.split('/')[2] + _wrs_int_conf_file;
+                }
                 _wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
             }
             if (typeof _wrs_conf_hostPlatform != 'undefined' && _wrs_conf_hostPlatform == 'Moodle' && _wrs_conf_versionPlatform < 2013111800) {

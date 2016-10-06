@@ -1,20 +1,26 @@
 // Define variables needed by core/core.js
-var _wrs_int_conf_file;
+var _wrs_int_conf_file = "@param.js.configuration.path@";
 
 // Searching wiriscontextpath on CKEditor config.
 // If WIRIS plugin is an external plugin contextPath is external plugin domain:
 
 var _wrs_cont_contextPath;
 if (CKEDITOR.plugins.externals.hasOwnProperty('ckeditor_wiris')) {
-	_wrs_cont_contextPath = CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[0]+ '//' + CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[2];
+	if (_wrs_int_conf_file.indexOf('/') == 0) {
+        _wrs_cont_contextPath = CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[0]+ '//' + CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[2];
+     } else {
+         _wrs_cont_contextPath = CKEDITOR.plugins.getPath('ckeditor_wiris');
+     }
 } else {
 	_wrs_cont_contextPath = CKEDITOR.config.wiriscontextpath;
 };
 
 for(var id in CKEDITOR.instances) {
-		if (CKEDITOR.instances[id].config.wiriscontextpath) _wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath
+		if (typeof(CKEDITOR.instances[id].config.wiriscontextpath) != "undefined") {
+			_wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath
+		}
 }
-_wrs_int_conf_file = (_wrs_cont_contextPath) ? _wrs_cont_contextPath + "@param.js.configuration.path@" : "@param.js.configuration.path@";
+_wrs_int_conf_file = (_wrs_cont_contextPath) ? _wrs_cont_contextPath + _wrs_int_conf_file : _wrs_int_conf_file;
 
 
 
