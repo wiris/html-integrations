@@ -20,16 +20,24 @@ class MoodleParamsProvider implements com_wiris_plugin_api_ParamsProvider {
 
     private $parameters = array();
     private $serviceparamlist = array('mml', 'lang', 'service', 'latex');
+    private $wrap;
 
     public function __construct() {
+        $this->wrap = com_wiris_system_CallWrapper::getInstance();
     }
 
     public function getrequiredparameter($paramname) {
-        return required_param($paramname, PARAM_RAW);
+        $this->wrap->stop();
+        $param = required_param($paramname, PARAM_RAW);
+        $this->wrap->start();
+        return $param;
     }
 
     public function getparameter($paramname, $dflt) {
-        return optional_param($paramname, $dflt, PARAM_RAW);
+        $this->wrap->stop();
+        $param = optional_param($paramname, $dflt, PARAM_RAW);
+        $this->wrap->start();
+        return $param;
     }
 
     public function getparameters() {
@@ -37,17 +45,20 @@ class MoodleParamsProvider implements com_wiris_plugin_api_ParamsProvider {
     }
 
     public function getserviceparameters() {
+        $this->wrap->stop();
         $serviceparams = array();
         foreach ($this->serviceparamlist as $key) {
             if ($serviceparam = optional_param($key, false, PARAM_RAW)) {
                 $serviceparams[$key] = $serviceparam;
             }
         }
+        $this->wrap->start();
         return $serviceparams;
 
     }
 
     public function getrenderparameters($configuration) {
+        $this->wrap->stop();
         $renderparams = array();
         // Can't change EDITOR_PARAMETER_LIST variable name so at this point condingStandars should be disabled.
         // @codingStandardsIgnoreStart
@@ -59,7 +70,7 @@ class MoodleParamsProvider implements com_wiris_plugin_api_ParamsProvider {
                 $renderparams[$key] = $renderparam;
             }
         }
-
+        $this->wrap->start();
         return $renderparams;
     }
 }
