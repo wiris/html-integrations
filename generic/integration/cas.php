@@ -4,7 +4,7 @@
 
 require_once 'pluginbuilder.php';
 
-$provider = $pluginBuilder->getCustomParamProvider();
+$provider = $pluginBuilder->getCustomParamsProvider();
 $lang = $provider->getParameter('lang', 'en');
 $mode = $provider->getParameter('mode', null);
 
