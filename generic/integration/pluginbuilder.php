@@ -2,7 +2,6 @@
 
 // ${license.statement}
 require_once 'plugin.php';
-require_once 'moodletreestorageandcache.php';
 
 $wrap = com_wiris_system_CallWrapper::getInstance();
 $wrap->start();
@@ -12,6 +11,7 @@ $wrap->stop();
 $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
 
 if ($moodle) {
+    require_once 'moodletreestorageandcache.php';
     $wirisFilter = '../MoodleConfigurationUpdater.php';
     $config = '../../../' . 'config.php';
 
