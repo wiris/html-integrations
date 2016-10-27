@@ -11,10 +11,10 @@ $wrap->stop();
 $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
 
 if ($moodle) {
-    require_once 'moodletreestorageandcache.php';
-    $wirisFilter = '../MoodleConfigurationUpdater.php';
-    $config = '../../../' . 'config.php';
-
+    require_once('../../../' . 'config.php');
+    require_once('../lib.php');
+    // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
+    wrs_loadclasses();
    // define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
      $scriptName = explode('/', $_SERVER["SCRIPT_FILENAME"]);
         $scriptName = array_pop($scriptName);
@@ -27,17 +27,13 @@ if ($moodle) {
         }
 
     $wrap->stop();
-    if (!defined('MOODLE_INTERNAL')) {
-        require_once $config;
-    }
-    require_once $wirisFilter;
+    $test = new filter_wiris_storageandcache();
     $wrap->start();
-    $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_configuration_MoodleConfigurationUpdater());
-    require_once('moodleparamsprovider.php');
-    $pluginBuilder->setCustomParamsProvider(new MoodleParamsProvider());
+    $pluginBuilder->addConfigurationUpdater(new filter_wiris_configurationupdater());
+    $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
-    $storage = new MoodleStorageAndCache();
+    $storage = new filter_wiris_storageandcache();
     $storage->init(null, $pluginBuilder->getConfiguration()->getFullConfiguration());
     $pluginBuilder->setStorageAndCache($storage);
 } else {
