@@ -23,14 +23,6 @@
         <servlet-name>MainServlet</servlet-name>
         <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>MainServletDev</servlet-name>
-        <servlet-class>com.wiris.plugin.dispatchers.dev.MainServletDev</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MainServletDev</servlet-name>
-        <url-pattern>/app-dev/*</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>35</session-timeout>
     </session-config>
