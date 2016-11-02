@@ -2529,8 +2529,6 @@ function wrs_urlToAssArray(url) {
 }
 
 function wrs_setImgSize(img, url, base64) {
-    // ...svg images have a margin of 0.5px, we need to calculate the alignment.
-    var ALIGN_CONSTANT = 0.5;
 
     if (base64) {
         // Cleaning data:image/png;base64.
@@ -2558,12 +2556,7 @@ function wrs_setImgSize(img, url, base64) {
     }
     img.width = width;
     img.height = height;
-    if (_wrs_conf_imageFormat != 'svg') {
-        img.style.verticalAlign = "-" + (height - baseline) + "px";
-    } else {
-        img.style.verticalAlign = "-" + (height - baseline - ALIGN_CONSTANT) + "px";
-    }
-
+    img.style.verticalAlign = "-" + (height - baseline) + "px";
 }
 
 function wrs_fixAfterResize(img) {
