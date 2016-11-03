@@ -1,11 +1,23 @@
 <?php
-
 // ${license.statement}
 require_once 'plugin.php';
 
 $wrap = com_wiris_system_CallWrapper::getInstance();
 $wrap->start();
-$pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
+if(!isset($_SESSION)) session_start();
+if (isset($_SESSION["pluginbuilder"])) {
+    $pluginBuilder = $_SESSION["pluginbuilder"];
+}
+else {
+    if (!isset($_SESSION["issetter"])) {
+        session_destroy();
+        // It's required to set time in the past in order to delete the current
+        // session cookie.
+        setcookie('PHPSESSID', '', time() - 3600, '/');
+    }
+    $_SESSION["issetter"] = NULL;
+    $pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
+}
 $wrap->stop();
 
 $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
@@ -42,4 +54,3 @@ if ($moodle) {
     $pluginBuilder->setCustomParamsProvider(new PhpParamsProvider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
 }
-
