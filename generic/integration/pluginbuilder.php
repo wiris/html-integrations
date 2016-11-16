@@ -25,6 +25,12 @@ $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
 if ($moodle) {
     require_once('../../../' . 'config.php');
     require_once('../lib.php');
+    if (!class_exists('moodlefilecache')) {
+        require_once('../classes/moodlefilecache.php');
+    }
+    if (!class_exists('moodledbcache')) {
+        require_once('../classes/moodledbcache.php');
+    }
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
     wrs_loadclasses();
    // define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
@@ -45,9 +51,13 @@ if ($moodle) {
     $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
-    $storage = new filter_wiris_storageandcache();
-    $storage->init(null, $pluginBuilder->getConfiguration()->getFullConfiguration());
-    $pluginBuilder->setStorageAndCache($storage);
+    // Class to manage file cache.
+    $cachefile = new moodlefilecache('filter_wiris', 'wirisformulas');
+    $pluginBuilder->setStorageAndCacheCacheObject($cachefile);
+    // Class to manage formulas (i.e plain text) cache.
+    $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
+    $pluginBuilder->setStorageAndCacheCacheFormulaObject($cachedb);
+
 } else {
     $wrap->start();
     require_once('phpparamsprovider.php');
