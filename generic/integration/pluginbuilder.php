@@ -43,8 +43,6 @@ if ($moodle) {
                 define('MOODLE_INTERNAL', true); // Moodle 2.2 - 2.5 min config doesn't define 'MOODLE_INTERNAL'.
             }
         }
-
-    $wrap->stop();    
     $wrap->start();
     $pluginBuilder->addConfigurationUpdater(new filter_wiris_configurationupdater());
     $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
