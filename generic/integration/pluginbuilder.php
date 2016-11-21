@@ -60,4 +60,6 @@ if ($moodle) {
     require_once('phpparamsprovider.php');
     $pluginBuilder->setCustomParamsProvider(new PhpParamsProvider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+    $pluginBuilder->setStorageAndCacheCacheObject(new com_wiris_plugin_impl_CacheImpl($pluginBuilder->getConfiguration()->getFullConfiguration()));
+    $pluginBuilder->setStorageAndCacheCacheFormulaObject(new com_wiris_plugin_impl_CacheFormulaImpl($pluginBuilder->getConfiguration()->getFullConfiguration()));
 }
