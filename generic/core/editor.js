@@ -260,6 +260,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         var classIndexStart = mathml.indexOf('class="wrs_');
                         classIndexEnd = mathml.indexOf(" ", classIndexStart);
                         mathml = mathml.substring(0, classIndexStart) + mathml.substring(classIndexEnd, mathml.lenght);
+                    }
 
                     editor.setMathML(mathml);
                 }
