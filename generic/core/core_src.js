@@ -596,8 +596,7 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
                 if (latex.indexOf('<') == -1) {
                     latex = wrs_htmlentitiesDecode(latex);
                     var mathml = wrs_getMathMLFromLatex(latex, true);
-                    var imgObject = wrs_mathmlToImgObject(document, mathml, wirisProperties, language);
-                    output += wrs_createObjectCode(imgObject);
+                    output += mathml;
                     endPosition += 2;
                 }
                 else {
@@ -981,6 +980,8 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
     }
 
     var mathML = wrs_getContent(_wrs_conf_servicePath, data);
+    // Populate LatexCache
+    wrs_populateLatexCache(latex, mathML);
     return mathML.split("\r").join('').split("\n").join(' ');
 }
 
