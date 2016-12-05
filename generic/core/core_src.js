@@ -1164,7 +1164,7 @@ function wrs_getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
     var imgObject = wrs_createObject(imgCode);
 
     if (imgObject) {
-        if (imgObject.className == _wrs_conf_imageClassName) {
+        if (imgObject.className == _wrs_conf_imageClassName || imgObject.getAttribute(_wrs_conf_imageMathmlAttribute)) {
             if (!convertToXml) {
                 return imgCode;
             }
