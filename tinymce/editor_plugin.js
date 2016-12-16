@@ -535,6 +535,7 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 
     if (typeof tinymce.activeEditor.fire != 'undefined') {
         tinymce.activeEditor.fire('change');
+        tinymce.activeEditor.fire('ExecCommand', {command: "wrs_int_updateFormula", value: mathml});
     }
 }
 
