@@ -980,7 +980,7 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
     }
 
     var mathML = wrs_getContent(_wrs_conf_servicePath, data);
-    // Populate LatexCache
+    // Populate LatexCache.
     wrs_populateLatexCache(latex, mathML);
     return mathML.split("\r").join('').split("\n").join(' ');
 }
@@ -1675,8 +1675,8 @@ function wrs_mathmlEncode(input) {
     input = input.split(_wrs_xmlCharacters.ampersand).join(_wrs_safeXmlCharacters.ampersand);
     input = input.split(_wrs_xmlCharacters.quote).join(_wrs_safeXmlCharacters.quote);
 
-    // "<" --> "&lt;"
-    // ">" --> "&gt;"
+    // Transform "<" --> "&lt;".
+    // Transform ">" --> "&gt;".
     input = input.split(_wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagOpener + _wrs_safeXmlCharacters.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote + "&lt;" + _wrs_safeXmlCharacters.doubleQuote);
     input = input.split(_wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagCloser + _wrs_safeXmlCharacters.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote + "&gt;" + _wrs_safeXmlCharacters.doubleQuote);
 
@@ -2636,8 +2636,8 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
  */
 
 function wrs_createModalWindow(title, iframeParams, deviceProperties, modalProperties) {
-	// Keep the scroll to restore when the modal window is closed.
-	_wrs_mainwindow_scroll = window.scrollY;
+    // Keep the scroll to restore when the modal window is closed.
+    _wrs_mainwindow_scroll = window.scrollY;
     // Adding css stylesheet.
     var fileref = document.createElement("link");
     fileref.setAttribute("rel", "stylesheet");
@@ -3008,9 +3008,9 @@ function wrs_closeModalWindow() {
         document.querySelector('meta[name=viewport]').content = "";
     }
 
-	// Due to this line, the scroll is set to 0 on the main window, so that we need to restore it with the previous value.
-    document.body.className = document.body.className != 'wrs_modal_open' ? document.body.className.replace(' wrs_modal_open', '') : document.body.className = "" 
-	window.scrollTo(0, _wrs_mainwindow_scroll);
+    // Due to this line, the scroll is set to 0 on the main window, so that we need to restore it with the previous value.
+    document.body.className = document.body.className != 'wrs_modal_open' ? document.body.className.replace(' wrs_modal_open', '') : document.body.className = "";
+    window.scrollTo(0, _wrs_mainwindow_scroll);
 
     var modalDiv = document.getElementsByClassName('wrs_modal_overlay')[0];
     closeFunction = document.body.removeChild(modalDiv);
