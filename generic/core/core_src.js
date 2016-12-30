@@ -2054,7 +2054,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
         isIframe = true;
     }
 
-    var path = _wrs_conf_path + "/core/editor.html";
+    // Avoid double slashes.
+    var path = _wrs_conf_path.lastIndexOf('/') == _wrs_conf_path.length - 1 ?  _wrs_conf_path + "core/editor.html" :  _wrs_conf_path + "/core/editor.html";
 
     if (language) {
         path = wrs_addArgument(path, "lang", language);
