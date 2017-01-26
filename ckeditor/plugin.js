@@ -74,7 +74,7 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 // Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', label : 'Chemistry Editor'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {

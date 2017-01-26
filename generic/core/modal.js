@@ -6,7 +6,7 @@
  * @param {Object} editorAttributes Editor attributes (width, height)...
  * @ignore
  */
-function ModalWindow(path, title, editorAttributes) {
+function ModalWindow(path, editorAttributes) {
 
     var ua = navigator.userAgent.toLowerCase();
     var isAndroid = ua.indexOf("android") > -1;
@@ -44,6 +44,8 @@ function ModalWindow(path, title, editorAttributes) {
 
     this.properties.iframeAttributes = iframeAttributes;
 
+    this.title = '';
+
     var attributes = {};
 
     attributes['class'] = 'wrs_modal_overlay';
@@ -57,7 +59,7 @@ function ModalWindow(path, title, editorAttributes) {
     attributes = {};
     attributes['class'] = 'wrs_modal_title';
     var titleModalDiv = wrs_createElement('div', attributes);
-    titleModalDiv.innerHTML = title;
+    titleModalDiv.innerHTML = this.title;
     this.titleDiv = titleModalDiv;
 
     attributes = {};
@@ -128,7 +130,7 @@ ModalWindow.prototype.create = function() {
     else if (this.deviceProperties['isIOS'] && !this.deviceProperties['isMobile']) {
         this.createModalWindowIos();
     }
-    this.addListeners();
+    this.addListeners();    
     _wrs_popupWindow = this.iframe.contentWindow;
     this.properties.open = true;
     this.properties.created = true;
@@ -195,6 +197,11 @@ ModalWindow.prototype.removeClass = function(cls) {
     wrs_removeClass(this.iframe, cls);
 }
 
+ModalWindow.prototype.setTitle = function(title) {
+    this.titleDiv.innerHTML = title;
+    this.title = title;
+
+}
 /**
  * Create modal dialog for desktop OS.
  * @param  {modalDiv} modal overlay div.

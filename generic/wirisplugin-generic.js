@@ -45,7 +45,7 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_language;
 var _wrs_int_directionality = '';
 // Custom Editors.
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 
 if (navigator.userLanguage) {
     _wrs_int_language = navigator.userLanguage;

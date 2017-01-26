@@ -2172,13 +2172,14 @@ function wrs_openEditorWindow(language, target, isIframe) {
         }
     }
 
+    var title = wrs_int_getCustomEditorEnabled() !=  null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
     if (!_wrs_conf_modalWindow) {
-        _wrs_popupWindow = window.open(path, 'WIRISeditor', _wrs_conf_editorAttributes);
+        _wrs_popupWindow = window.open(path, title, _wrs_conf_editorAttributes);
         return _wrs_popupWindow;
     }
     else {
         if (_wrs_modalWindow == null) {
-            _wrs_modalWindow = new ModalWindow(path, 'WIRIS EDITOR', _wrs_conf_editorAttributes);
+            _wrs_modalWindow = new ModalWindow(path, _wrs_conf_editorAttributes);
         }
         if (!_wrs_css_loaded) {
             var fileref = document.createElement("link");
@@ -2188,6 +2189,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
             document.getElementsByTagName("head")[0].appendChild(fileref);
             _wrs_css_loaded = true;
         }
+        _wrs_modalWindow.setTitle(title);
         _wrs_modalWindow.open();
     }
 }
