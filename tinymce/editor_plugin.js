@@ -366,7 +366,7 @@ function wrs_intPath(intFile, confPath) {
  * @param bool isIframe
  */
 function wrs_int_openNewFormulaEditor(element, language, isIframe) {
-    if (_wrs_int_window_opened) {
+    if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
         _wrs_int_window.focus();
     }
     else {
@@ -437,7 +437,7 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
                 };
             }
 
-            if (!_wrs_int_window_opened) {
+            if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
                 var language = editor.settings.language;
 
                 if (editor.settings['wirisformulaeditorlang']) {

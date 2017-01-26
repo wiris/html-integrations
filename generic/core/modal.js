@@ -139,6 +139,7 @@ ModalWindow.prototype.open = function() {
         this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
     } else if (this.properties.created) {
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
+        editor.focus();
         this.properties.open = true;
         if (customEditor = wrs_int_getCustomEditorEnabled()) {
                 toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];

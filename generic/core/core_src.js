@@ -2685,6 +2685,8 @@ function wrs_createModalWindow() {
  */
 function wrs_closeModalWindow() {
     wrs_int_disableCustomEditors();
+    wrs_int_notifyWindowClosed();
+    _wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
     _wrs_modalWindow.close();
 }
 
