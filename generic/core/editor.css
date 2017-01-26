@@ -49,10 +49,13 @@
 }
 .wrs_buttonContainer {
     display: inline;
+}
+
+.wrs_buttonContainer.wrs_modalAndroid {
     padding-left: 6px;
 }
 
-.wrs_modal_open .wrs_buttonContainer {
+..wrs_buttonContainer.wrs_modalDesktop {
     padding-left: 0px;
 }
 

@@ -1,10 +1,10 @@
-body.wrs_modal_open {
+/*body.wrs_modal_open {
     overflow: hidden;
     position: fixed;
 }
-
+*/
 .wrs_modal_overlay {
-    overflow: scroll;
+    /*overflow: scroll;*/
     position: fixed;
     font-family: arial, sans-serif;
     top: 0;
@@ -12,12 +12,23 @@ body.wrs_modal_open {
     left: 0;
     bottom: 0;
     background: rgba(0,0,0,0.8);
-    z-index: 99999;
-    opacity:1;
+    z-index: 99998;
+    opacity:0.65;
     pointer-events: auto;
-    -webkit-transition: opacity 400ms ease-in;
+    /*-webkit-transition: opacity 400ms ease-in;
     -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;*/
+}
+
+.wrs_modal_overlay.wrs_maximized{
+}
+
+.wrs_modal_overlay.wrs_minimized {
+    display: none;
+}
+
+.wrs_modal_overlay.wrs_stack {
+    display: none;
 }
 
 .wrs_modal_overlay.wrs_modal_ios {
@@ -30,7 +41,6 @@ body.wrs_modal_open {
 
 .wrs_modal_title {
     color : #FFFFFF;
-    font-weight : bold;
     padding : 5px 0px 5px 10px;
 }
 
@@ -38,8 +48,36 @@ body.wrs_modal_open {
     float : right;
     cursor : pointer;
     color : #FFFFFF;
-    font-weight : bold;
     padding : 5px 10px 5px 0px;
+}
+
+.wrs_modal_close_button:hover {
+    background: white;
+}
+
+.wrs_modal_minimize_button {
+    float : right;
+    cursor : pointer;
+    color : #FFFFFF;
+    padding : 5px 10px 5px 0px;
+    top: inherit;
+}
+
+.wrs_modal_minimize_button:hover {
+    background: white;
+}
+
+.wrs_modal_stack_button {
+    color: black;
+    float : right;
+    cursor : pointer;
+    color : #FFFFFF;
+    padding : 5px 10px 5px 0px;
+    top: inherit;
+}
+
+.wrs_modal_stack_button:hover {
+    background: white;
 }
 
 .wrs_modal_iframe {
@@ -47,42 +85,108 @@ body.wrs_modal_open {
 }
 
 .wrs_modal_title_bar {
-    font-weight : bold;
-    font-family : arial, sans-serif;
     display : block;
     background-color: #778e9a;
+    /*cursor: pointer;*/
 }
 
 .wrs_modal_dialogContainer {
     overflow: hidden;
-    border-style: solid;
-    border-width: 1px;
-    background: #fff;
+    border: none;
+    background: #fafafa;
+    z-index: 99999;
 }
 
+
 .wrs_modal_dialogContainer.wrs_modal_desktop {
-    position: relative;
-    top: 10px;
-    margin: 40px auto;
+    font-size: 14px;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_maximized {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized {
+    bottom: 0;
+    right: 0;
+    position:fixed;
+    top: inherit;
+    margin: 0px;
+    width: 250px;
+    margin-right: 10px;
+}
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {
+    /*bottom: auto;*/
+}
+
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_stack {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 10px;
+    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px
+}
+
+.wrs_modal_dialogContainer.wrs_drag. {
+    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_drag {
+    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px
 }
 
 .wrs_modal_dialogContainer.wrs_modal_android {
     margin: auto;
+    position: fixed;
+    width: 99%;
+    height: 99%;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.wrs_modal_dialogContainer.wrs_modal_ios {
+    margin: auto;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.wrs_modal_iframeContainer.wrs_maximized {
+}
+
+.wrs_modal_iframeContainer.wrs_minimized {
+    display : none;
+}
+
+.wrs_modal_iframeContainer.wrs_modal_android {
+    width: 100%;
+    height: 100%;
+}
+
+.wrs_modal_iframeContainer.wrs_modal_ios {
+    width: 100%;
+    height: 100%;
 }
 
 .wrs_modal_iframe.wrs_modal_android {
     margin : auto;
 }
 
-.wrs_modal_dialogContainer.wrs_modal_ios {
+.wrs_modal_iframe.wrs_modal_ios {
+    width: 100%;
+    height: 100%;
     margin: auto;
 }
 
-.wrs_modal_iframe.wrs_modal_ios {
-    margin: 3px auto;
-}
-
 .wrs_modal_iframe.wrs_modal_android {
+    height: 100%;
+    width: 100%;
     margin : auto;
 }
 
@@ -106,16 +210,16 @@ body.wrs_modal_open {
 @media all and (orientation : landscape) {
 
     .wrs_modal_dialogContainer.wrs_modal_mobile {
-        width: 100vmax;
+        width: 100vmin;
         height: 100vmin;
-        margin: 0px auto;
+        margin: auto;
         border-width: 0px;
     }
 
     .wrs_modal_iframe.wrs_modal_mobile {
-        width : 100vmax;
+        width : 100vmin;
         height : 100vmin;
-        margin : 0px auto;
+        margin : auto;
     }
 }
 

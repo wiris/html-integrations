@@ -153,7 +153,7 @@ function wrs_int_init_handler(target,toolbar) {
  * @param object iframe Target
  */
 function wrs_int_openNewFormulaEditor(iframe, language) {
-    if (_wrs_int_window_opened) {
+    if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
         _wrs_int_window.focus();
     }
     else {
@@ -191,7 +191,7 @@ function wrs_int_doubleClickHandler(iframe, element) {
             wrs_int_enableCustomEditor(customEditor);
         }
         if (wrs_containsClass(element, 'Wirisformula')) {
-            if (!_wrs_int_window_opened) {
+            if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
                 _wrs_temporalImage = element;
                 wrs_int_openExistingFormulaEditor(iframe, _wrs_int_language);
             }

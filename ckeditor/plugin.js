@@ -361,7 +361,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
  * @param object element Target
  */
 function wrs_int_openNewFormulaEditor(element, language, isIframe) {
-	if (_wrs_int_window_opened) {
+	if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
 		_wrs_int_window.focus();
 	}
 	else {
@@ -423,11 +423,11 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 			} else {
 				event.returnValue = false;
 			}
-			
+
 			if (customEditor = element.getAttribute('data-custom-editor')) {
 				wrs_int_enableCustomEditor(customEditor);
 			}
-			if (!_wrs_int_window_opened) {
+			if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
 				_wrs_temporalImage = element;
 				wrs_int_openExistingFormulaEditor(target, isIframe, editor.langCode);
 			}

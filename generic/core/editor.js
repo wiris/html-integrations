@@ -18,6 +18,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                          '_wrs_int_path' ,
                          '_wrs_int_wirisProperties',
                          '_wrs_int_customEditors',
+                         '_wrs_modalWindowProperties',
                         ];
 
     // Sometimes (yes, sometimes) internet explorer security policies hides popups
@@ -208,10 +209,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
     wrs_addEvent(window, 'load', function () {
         function wrs_waitForEditor() {
             if ((typeof _wrs_conf_core_loaded != 'undefined') && ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris)) {
-                // Class for modal dialog.
-                if (_wrs_conf_modalWindow) {
-                    document.body.className = !(document.body.className) ? "wrs_modal_open" : document.body.className + " wrs_modal_open";
-                }
 
                 var queryParams = wrs_getQueryParams(window);
                 var customEditor;
@@ -235,12 +232,16 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         }
                     }
                 }
+
                 if (com.wiris.jsEditor.defaultBasePath) {
                     editor = com.wiris.jsEditor.JsEditor.newInstance(wrs_attributes);
                 }
                 else {
                     editor = new com.wiris.jsEditor.JsEditor('editor', null);
                 }
+                _wrs_modalWindowProperties.editor = editor;
+                // getMethod(null, 'wrs_editorLoaded', [editor], function(editorLoaded){
+                // });
 
                 var editorElement = editor.getElement();
                 var editorContainer = document.getElementById('editorContainer');
@@ -321,9 +322,9 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 cancelButton.type = 'button';
                 cancelButton.className = 'wrs_button_cancel';
 
-                if (strings['cancel'] != null){
+                if (strings['cancel'] != null) {
                     cancelButton.value = strings['cancel'];
-                }else{
+                } else {
                     cancelButton.value = 'Cancel';
                 }
 
@@ -332,6 +333,15 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 });
 
                 buttonContainer.appendChild(cancelButton);
+
+                // Class for modal dialog.
+                if (_wrs_conf_modalWindow) {
+                    if (_wrs_modalWindowProperties.device == 'android') {
+                        buttonContainer.className = buttonContainer.className + ' wrs_modalAndroid';
+                    } else {
+                        buttonContainer.className = buttonContainer.className + ' wrs_modalDesktop';
+                    }
+                }
 
                 /*var manualLink = document.getElementById('a_manual');
                 if (typeof manualLink != 'undefined' && strings['manual'] != null){
