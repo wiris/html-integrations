@@ -33,6 +33,9 @@ var _wrs_iosRange;
 // LaTex client cache.
 var _wrs_int_LatexCache = {};
 
+// Accessible client cache
+var _wrs_int_AccessibleCache = {};
+
 var _wrs_xmlCharacters = {
     'tagOpener': '<',       // Hex: \x3C.
     'tagCloser': '>',       // Hex: \x3E.
@@ -1813,9 +1816,18 @@ function wrs_fixedCharCodeAt(str, idx) {
  * @ignore
  */
 function wrs_mathmlToAccessible(mathml, language, data) {
-    data['service'] = 'mathml2accessible';
+    var accessibleText;
 
-    return wrs_getContent(_wrs_conf_servicePath, data);
+    if (_wrs_int_AccessibleCache.hasOwnProperty(mathml)) {
+        accessibleText = _wrs_int_AccessibleCache[mathml];
+    }
+    else {
+        data['service'] = 'mathml2accessible';
+        var accessibleText = wrs_getContent(_wrs_conf_servicePath, data);
+    }
+
+    return accessibleText;
+
 }
 
 /**
@@ -1969,6 +1981,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         if (window._wrs_conf_enableAccessibility && _wrs_conf_enableAccessibility) {
             if (typeof result.alt == 'undefined') {
                 imgObject.alt = wrs_mathmlToAccessible(mathml, language, data);
+                wrs_populateAccessibleCache(mathml, imgObject.alt);
             }
             else {
                 imgObject.alt = result.alt;
@@ -1991,6 +2004,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         }
         if (window._wrs_conf_enableAccessibility && _wrs_conf_enableAccessibility) {
             imgObject.alt = wrs_mathmlToAccessible(mathml, language, data);
+            wrs_populateAccessibleCache(mathml, imgObject.alt);
         }
     }
     /* if (_wrs_conf_setSize) {
@@ -2832,6 +2846,19 @@ function wrs_populateLatexCache(latex, mathml) {
     }
     if (!_wrs_int_LatexCache.hasOwnProperty(latex)) {
         _wrs_int_LatexCache[latex] = mathml;
+    }
+}
+
+/**
+ * Puts into _wrs_int_AccessibleCache global variable dictionary the pair mathml=>accessibleText.
+ *
+ * @param {string} mathml MatML text.
+ * @param {string} accessibleText Image accessible text
+ * @ignore
+ */
+function wrs_populateAccessibleCache(mathml, accessibleText) {
+    if (!_wrs_int_AccessibleCache.hasOwnProperty(mathml)) {
+        _wrs_int_AccessibleCache[mathml] = accessibleText;
     }
 }
 
