@@ -49,10 +49,13 @@
     cursor : pointer;
     color : #FFFFFF;
     padding : 5px 10px 5px 0px;
+    background: url('icons/general/close_icon.png');
+    background-size: 10px;
+    margin: 10px 7px 0 0;
 }
 
 .wrs_modal_close_button:hover {
-    background: white;
+    background: url('icons/hover/close_icon_h.png');
 }
 
 .wrs_modal_minimize_button {
@@ -61,10 +64,26 @@
     color : #FFFFFF;
     padding : 5px 10px 5px 0px;
     top: inherit;
+    margin: 10px 7px 0 0;
+}
+
+.wrs_modal_minimize_button.wrs_maximized {
+    background: url('icons/general/min_icon.png');
+    background-size: 10px;
+}
+
+.wrs_modal_minimize_button.wrs_stack {
+    background: url('icons/general/min_icon.png');
+    background-size: 10px;
+}
+
+.wrs_modal_minimize_button.wrs_minimized {
+    background: url('icons/general/max_icon.png');
+    background-size: 10px;
 }
 
 .wrs_modal_minimize_button:hover {
-    background: white;
+    background: url('icons/hover/min_icon_h.png');
 }
 
 .wrs_modal_stack_button {
@@ -72,12 +91,28 @@
     float : right;
     cursor : pointer;
     color : #FFFFFF;
+    margin: 10px 7px 0 0;
     padding : 5px 10px 5px 0px;
     top: inherit;
 }
 
+.wrs_modal_stack_button.wrs_stack {
+    background: url('icons/general/fulls_icon.png');
+    background-size: 10px;
+}
+
+.wrs_modal_stack_button.wrs_minimized {
+    background: url('icons/general/fulls_icon.png');
+    background-size: 10px;
+}
+
+.wrs_modal_stack_button.wrs_maximized {
+    background: url('icons/general/mins_icon.png');
+    background-size: 10px;
+}
+
 .wrs_modal_stack_button:hover {
-    background: white;
+    background: url('icons/hover/fulls_icon_h.png');
 }
 
 .wrs_modal_iframe {

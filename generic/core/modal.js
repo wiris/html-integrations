@@ -65,19 +65,19 @@ function ModalWindow(path, editorAttributes) {
     attributes = {};
     attributes['class'] = 'wrs_modal_close_button';
     var closeModalDiv = wrs_createElement('div', attributes);
-    closeModalDiv.innerHTML = '&times;';
+    // closeModalDiv.innerHTML = '&times;';
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
     var stackModalDiv = wrs_createElement('div', attributes);
-    stackModalDiv.innerHTML = '/';
+    // stackModalDiv.innerHTML = '/';
     this.stackDiv = stackModalDiv;
 
     attribyutes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
     var minimizeModalDiv = wrs_createElement('div', attributes);
-    minimizeModalDiv.innerHTML = "_";
+    // minimizeModalDiv.innerHTML = "_";
     this.minimizeDiv = minimizeModalDiv;
 
     attributes = {};
@@ -186,6 +186,8 @@ ModalWindow.prototype.addClass = function(cls) {
     wrs_addClass(this.containerDiv, cls);
     wrs_addClass(this.iframeContainer, cls);
     wrs_addClass(this.iframe, cls);
+    wrs_addClass(this.stackDiv, cls);
+    wrs_addClass(this.minimizeDiv, cls);
 }
 
 ModalWindow.prototype.removeClass = function(cls) {
@@ -195,6 +197,8 @@ ModalWindow.prototype.removeClass = function(cls) {
     wrs_removeClass(this.containerDiv, cls);
     wrs_removeClass(this.iframeContainer, cls);
     wrs_removeClass(this.iframe, cls);
+    wrs_removeClass(this.stackDiv, cls);
+    wrs_removeClass(this.minimizeDiv, cls);
 }
 
 ModalWindow.prototype.setTitle = function(title) {
