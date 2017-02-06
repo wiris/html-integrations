@@ -130,7 +130,7 @@ ModalWindow.prototype.create = function() {
     else if (this.deviceProperties['isIOS'] && !this.deviceProperties['isMobile']) {
         this.createModalWindowIos();
     }
-    this.addListeners();    
+    this.addListeners();
     _wrs_popupWindow = this.iframe.contentWindow;
     this.properties.open = true;
     this.properties.created = true;
@@ -141,27 +141,38 @@ ModalWindow.prototype.open = function() {
         this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
     } else if (this.properties.created) {
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
-        editor.focus();
+
         this.properties.open = true;
         if (customEditor = wrs_int_getCustomEditorEnabled()) {
                 toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
-                if (editor.params.toolbar != 'undefined' && editor.params.toolbar != toolbar) {
+                if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
                 }
         } else {
-                if (editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
+                if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
                     editor.setParams({'toolbar' : 'general'});
                 }
 
         }
+
         if (_wrs_isNewElement) {
-            editor.setMathML('<math/>');
+            if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIos) {
+                editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+            } else {
+                editor.setMathML('<math/>');
+            }
         } else {
             editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
         }
 
-        this.containerDiv.style.display = null;
-        this.overlayDiv.style.display = null;
+        this.containerDiv.style.visibility = '';
+        this.overlayDiv.style.visibility = '';
+
+
+        editor.focus();
+        if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIos) {
+            this.stackModalWindow();
+        }
     } else {
         this.create();
     }
@@ -172,11 +183,14 @@ ModalWindow.prototype.open = function() {
  * @ignore
  */
 ModalWindow.prototype.close = function() {
-    this.overlayDiv.style.display = 'none';
-    this.containerDiv.style.display = 'none';
+    this.overlayDiv.style.visibility = 'hidden';
+    this.containerDiv.style.visibility = 'hidden';
     this.properties.open = false;
     wrs_int_disableCustomEditors();
     document.getElementsByClassName('wrs_modal_iframe')[0].contentWindow._wrs_modalWindowProperties.editor.setMathML('<math/>');
+    // Properties to initial state
+    this.properties.state = '';
+    this.properties.previousState = '';
 }
 
 ModalWindow.prototype.addClass = function(cls) {

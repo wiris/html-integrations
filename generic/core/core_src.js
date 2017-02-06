@@ -459,6 +459,7 @@ function wrs_createShowImageSrc(mathml, data, language) {
     }
     dataObject.formula = com.wiris.js.JsPluginTools.md5encode(wrs_propertiesToString(dataMd5));
     dataObject.lang = (typeof language == 'undefined') ? 'en' : language;
+    dataObject.version = _wrs_conf_version;
 
     var result = wrs_getContent(_wrs_conf_showimagePath + '?' + wrs_httpBuildQuery(dataObject));
     return result;
@@ -1971,11 +1972,14 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
              result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
         }
         result = result.result;
-        imgObject.src = result['format'] == 'svg' ? 'data:image/svg+xml;base64,' : 'data:image/png;base64,';
-        imgObject.src = imgObject.src + result["base64"];
+        if (result['format'] == 'png') {
+            imgObject.src = 'data:image/png;base64,' + result['content'];
+        } else {
+            imgObject.src = 'data:image/svg+xml;charset=utf8,' + wrs_urlencode(result['content']);
+        }
         imgObject.setAttribute(_wrs_conf_imageMathmlAttribute, wrs_mathmlEncode(mathml));
         if (_wrs_conf_setSize) {
-            wrs_setImgSize(imgObject,result, true);
+            wrs_setImgSize(imgObject, result['content'], true);
         }
 
         if (window._wrs_conf_enableAccessibility && _wrs_conf_enableAccessibility) {
@@ -2570,14 +2574,14 @@ function wrs_urlToAssArray(url) {
     }
 }
 
-function wrs_setImgSize(img, url, base64) {
+function wrs_setImgSize(img, url, json) {
 
-    if (base64) {
+    if (json) {
         // Cleaning data:image/png;base64.
-        var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
         if (_wrs_conf_imageFormat == 'svg') {
-            var ar = getMetricsFromSvgString(atob(base64String));
+            var ar = getMetricsFromSvgString(url);
         } else {
+            var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
             bytes = wrs_b64ToByteArray(base64String, 88);
             var ar = wrs_getMetricsFromBytes(bytes);
         }
