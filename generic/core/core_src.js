@@ -2610,8 +2610,16 @@ function wrs_fixAfterResize(img) {
     img.removeAttribute('width');
     img.removeAttribute('height');
     if (_wrs_conf_setSize) {
-        if (img.src.indexOf("base64") != -1) {
-            wrs_setImgSize(img,'', true);
+        if (img.src.indexOf("data:image") != -1) {
+            if (_wrs_conf_imageFormat == 'svg') {
+                // data:image/svg+xml;charset=utf8, = 32
+                var svg = wrs_urldecode(img.src.substring(32, img.src.length))
+                wrs_setImgSize(img, svg, true);
+            } else {
+                // data:image/png;base64, == 22
+                var base64 = img.src.substring(22,img.src.length);
+                wrs_setImgSize(img, base64, true);
+            }
         } else {
             wrs_setImgSize(img,img.src);
         }
