@@ -32,7 +32,7 @@
 }
 
 .wrs_modal_overlay.wrs_modal_ios {
-    position: inherit;
+    /*position: inherit;*/
 }
 
 .wrs_modal_overlay.wrs_modal_ios.moodle {
@@ -222,11 +222,11 @@
 }
 
 .wrs_modal_dialogContainer.wrs_modal_ios {
+    position: absolute;
     margin: auto;
-    bottom: 0;
-    position: fixed;
-    width: 100%;
-    height: 100%;
+    left: 50%;
+    top: 300px;
+    transform: translate(-50%, -50%);
 }
 
 .wrs_modal_iframeContainer.wrs_maximized {

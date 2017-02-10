@@ -109,7 +109,7 @@ ModalWindow.prototype.create = function() {
     this.titleBardDiv.appendChild(this.titleDiv);
     this.iframeContainer.appendChild(this.iframe);
 
-    if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isIOS'] && !this.deviceProperties['isAndroid']) {
+    if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isAndroid']) {
         this.containerDiv.appendChild(this.titleBardDiv);
     }
     this.containerDiv.appendChild(this.iframeContainer);
@@ -167,6 +167,8 @@ ModalWindow.prototype.open = function() {
 
         this.containerDiv.style.visibility = '';
         this.overlayDiv.style.visibility = '';
+        this.containerDiv.style.display = '';
+        this.overlayDiv.style.display = '';
 
 
         editor.focus();
@@ -185,6 +187,8 @@ ModalWindow.prototype.open = function() {
 ModalWindow.prototype.close = function() {
     this.overlayDiv.style.visibility = 'hidden';
     this.containerDiv.style.visibility = 'hidden';
+    this.containerDiv.style.display = 'none';
+    this.overlayDiv.style.display = 'none';
     this.properties.open = false;
     wrs_int_disableCustomEditors();
     document.getElementsByClassName('wrs_modal_iframe')[0].contentWindow._wrs_modalWindowProperties.editor.setMathML('<math/>');
@@ -252,6 +256,20 @@ ModalWindow.prototype.createModalWindowAndroid = function() {
  */
 
 ModalWindow.prototype.createModalWindowIos = function() {
+    wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
+
+    var modalHeight = parseInt(this.properties.iframeAttributes['height']) + 35;
+    var modalWidth = parseInt(this.properties.iframeAttributes['width']) + 10;
+
+    this.containerDiv.style.width = modalWidth + 'px';
+    this.containerDiv.style.height = modalHeight + 'px';
+
+    this.iframeContainer.style.width = this.properties.iframeAttributes['width'] + 'px';
+    this.iframeContainer.style.height = this.properties.iframeAttributes['height'] + 'px';
+
+    this.iframe.style.width = this.properties.iframeAttributes['width'] + 'px';
+    this.iframe.style.height = this.properties.iframeAttributes['height'] + 'px';
+
     this.addClass('wrs_modal_ios');
 }
 
