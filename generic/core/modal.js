@@ -150,7 +150,12 @@ ModalWindow.prototype.open = function() {
                 }
         } else {
                 if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
-                    editor.setParams({'toolbar' : 'general'});
+                    var properties = {'toolbar' : 'general'};
+                    // Client properties.
+                    properties = typeof _wrs_int_wirisProperties != 'undefined' ? _wrs_int_wirisProperties : properties;
+                    // Server side properties.
+                    properties = typeof _wrs_conf_editorAttributes != 'undefined' ? _wrs_conf_editorAttributes : properties;
+                    editor.setParams(properties);
                 }
 
         }
