@@ -106,7 +106,7 @@ var wrs_pluginListeners = [];
 
 var _wrs_css_loaded = false;
 
-var _wrs_modalWindowProperties =  typeof _wrs_modalWindowProperties != 'undefined' ? _wrs_modalWindowProperties : {};
+var _wrs_modalWindowProperties = typeof _wrs_modalWindowProperties != 'undefined' ? _wrs_modalWindowProperties : {};
 var _wrs_editor = typeof _wrs_editor != 'undefined' ? _wrs_editor : null;
 var _wrs_modalWindow = typeof _wrs_modalWindow != 'undefined' ? _wrs_modalWindow : null;
 
@@ -2101,7 +2101,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
     }
 
     // Avoid double slashes.
-    var path = _wrs_conf_path.lastIndexOf('/') == _wrs_conf_path.length - 1 ?  _wrs_conf_path + "core/editor.html" :  _wrs_conf_path + "/core/editor.html";
+    var path = _wrs_conf_path.lastIndexOf('/') == _wrs_conf_path.length - 1 ? _wrs_conf_path + "core/editor.html" : _wrs_conf_path + "/core/editor.html";
 
     if (language) {
         path = wrs_addArgument(path, "lang", language);
@@ -2176,7 +2176,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
         }
     }
 
-    var title = wrs_int_getCustomEditorEnabled() !=  null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
+    var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
     if (!_wrs_conf_modalWindow) {
         _wrs_popupWindow = window.open(path, title, _wrs_conf_editorAttributes);
         return _wrs_popupWindow;

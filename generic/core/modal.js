@@ -33,7 +33,6 @@ function ModalWindow(path, editorAttributes) {
     deviceProperties['isIOS'] = isIOS ? true : false;
     deviceProperties['isMobile'] = isMobile;
 
-
     this.deviceProperties = deviceProperties;
     this.properties = {
         created : false,
@@ -150,19 +149,19 @@ ModalWindow.prototype.open = function() {
 
         this.properties.open = true;
         if (customEditor = wrs_int_getCustomEditorEnabled()) {
-                toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
-                if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
-                    editor.setParams({'toolbar' : toolbar});
-                }
+            toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
+            if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
+                editor.setParams({'toolbar' : toolbar});
+            }
         } else {
-                if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
-                    var properties = {'toolbar' : 'general'};
-                    // Client properties.
-                    properties = typeof _wrs_int_wirisProperties != 'undefined' ? _wrs_int_wirisProperties : properties;
-                    // Server side properties.
-                    properties = typeof _wrs_conf_editorAttributes != 'undefined' ? _wrs_conf_editorAttributes : properties;
-                    editor.setParams(properties);
-                }
+            if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
+                var properties = {'toolbar' : 'general'};
+                // Client properties.
+                properties = typeof _wrs_int_wirisProperties != 'undefined' ? _wrs_int_wirisProperties : properties;
+                // Server side properties.
+                properties = typeof _wrs_conf_editorAttributes != 'undefined' ? _wrs_conf_editorAttributes : properties;
+                editor.setParams(properties);
+            }
 
         }
 
@@ -175,7 +174,6 @@ ModalWindow.prototype.open = function() {
         } else {
             editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
         }
-       
 
         editor.focus();
         if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIos) {
@@ -300,7 +298,7 @@ ModalWindow.prototype.stackModalWindow = function () {
         this.iframeContainer.style.height = 300 + 'px';
         this.containerDiv.style.width = (modalWidth + 12) + 'px';
         this.iframe.style.width = this.properties.iframeAttributes['width'] + 'px';
-        this.iframe.style.height = (parseInt(300) + 3)+ 'px';
+        this.iframe.style.height = (parseInt(300) + 3) + 'px';
         this.iframe.style.margin = '6px';
         this.removeClass('wrs_maximized');
         this.removeClass('wrs_minimized');
@@ -349,7 +347,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     this.iframeContainer.style.height = modalHeight + 'px';
     this.containerDiv.style.width = (modalWidth + 12) + 'px';
     this.iframe.style.width = this.properties.iframeAttributes['width'] + 'px';
-    this.iframe.style.height = (parseInt(this.properties.iframeAttributes['height']) + 3)+ 'px';
+    this.iframe.style.height = (parseInt(this.properties.iframeAttributes['height']) + 3) + 'px';
     this.iframe.style.margin = '6px';
     this.removeClass('wrs_drag');
     if (wrs_containsClass(this.overlayDiv, 'wrs_minimized')) {
