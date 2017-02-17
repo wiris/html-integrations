@@ -19,6 +19,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                          '_wrs_int_wirisProperties',
                          '_wrs_int_customEditors',
                          '_wrs_modalWindowProperties',
+                         '_wrs_int_langCode'
                         ];
 
     // Sometimes (yes, sometimes) internet explorer security policies hides popups
@@ -161,8 +162,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
     function wrs_waitForCore() {
         if (typeof _wrs_conf_core_loaded != 'undefined' && typeof _wrs_conf_configuration_loaded != 'undefined' && _wrs_conf_configuration_loaded == true) {
             // Insert editor.
-            var lang = new RegExp("lang=([^&]*)","i").exec(window.location);
-            lang = (lang != null && lang.length > 1) ? lang[1] : "en";
             var script = document.createElement('script');
             script.type = 'text/javascript';
             var editorUrl = _wrs_conf_editorUrl;
@@ -179,13 +178,13 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             statSaveMode = _wrs_conf_saveMode;
             statVersion = _wrs_conf_version;
 
-            script.src = editorUrl + "?lang=" + lang + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
+            script.src = editorUrl + "?lang=" + _wrs_int_langCode + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
             document.getElementsByTagName('head')[0].appendChild(script);
 
             // Insert strings.
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = "../lang/" + lang + "/strings.js";
+            script.src = "../lang/" + _wrs_int_langCode + "/strings.js";
             document.getElementsByTagName('head')[0].appendChild(script);
         } else {
             setTimeout(wrs_waitForCore, 200);

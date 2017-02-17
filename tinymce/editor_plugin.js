@@ -51,6 +51,9 @@ var _wrs_int_initParsed = false;
 // Core added to queue.
 var _wrs_addCoreQueue = typeof _wrs_addCoreQueue == 'undefined' ? false : _wrs_addCoreQueue;
 
+// Lang
+var _wrs_int_langCode = 'en';
+
 /* Plugin integration */
 (function () {
     tinymce.create('tinymce.plugins.tiny_mce_wiris', {
@@ -112,6 +115,9 @@ var _wrs_addCoreQueue = typeof _wrs_addCoreQueue == 'undefined' ? false : _wrs_a
                 function whenDocReady() {
                     if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
                         var language = editor.getParam('language');
+                        // The file editor.js gets this variable _wrs_int_langCode variable to set
+                        // WIRIS Editor lang.
+                        _wrs_int_langCode = language;
                         _wrs_int_directionality = editor.getParam('directionality');
 
                         if ('wiriseditorparameters' in editor.settings) {

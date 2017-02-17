@@ -75,6 +75,8 @@ var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 // Custom Editors: 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
+// Lang
+var _wrs_int_langCode = 'en';
 
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
@@ -353,6 +355,9 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				_wrs_int_wirisProperties['dpi'] = editor.config['wirisdpi'];
 			}
 		}
+
+		// Lang defined inside editor
+		_wrs_int_langCode = 'editor.langCode';
 	}
 })
 
