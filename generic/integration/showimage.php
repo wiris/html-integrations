@@ -24,6 +24,10 @@ $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
 if ($pluginBuilder->getConfiguration()->getProperty("wirispluginperformance", "false") == "true") {
+    $useragent = $provider->getParameter('useragent', '');
+    if (strpos($useragent, 'IE') !== false) {
+        $pluginBuilder->getConfiguration()->setProperty("wirisimageformat", "png");
+    }
     header("Content-type: application/json");
     $secondsToCache = 3600;
     $ts = gmdate("D, d M Y H:i:s", time() + $secondsToCache) . " GMT";

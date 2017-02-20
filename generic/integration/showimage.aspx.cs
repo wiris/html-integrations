@@ -32,6 +32,15 @@ namespace plugin_web
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);            
             if (pb.getConfiguration().getProperty("wirispluginperformance","xml").IndexOf("true") != -1) {
+
+                String useragent = provider.getParameter("useragent", "");
+                if (useragent.IndexOf("IE") != -1) {
+                    pb.getConfiguration().setProperty("wirisimageformat", "png");
+                }
+                else {
+                    pb.getConfiguration().setProperty("wirisimageformat", "svg");
+                }
+
                 Response.ContentType = "application/json";
                 Response.AddHeader("Cache-Control", "max-age=3600");
                 int secondsToCache = 3600;
