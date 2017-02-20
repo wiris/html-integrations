@@ -7,7 +7,7 @@ $wrap->start();
 $pluginBuilder = com_wiris_plugin_api_PluginBuilder::getInstance();
 $wrap->stop();
 
-$moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
+$moodle = file_exists('..' . DIRECTORY_SEPARATOR . 'version.php');
 
 if ($moodle) {
     require_once('../../../' . 'config.php');
@@ -18,10 +18,13 @@ if ($moodle) {
     if (!class_exists('moodledbcache')) {
         require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
     }
+    if (!class_exists('moodledbjsoncache')) {
+        require_once($CFG->dirroot . '/filter/wiris/classes/moodledbjsoncache.php');
+    }
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
     wrs_loadclasses();
     // define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
-    $scriptName = explode('/', $_SERVER["SCRIPT_FILENAME"]);
+    $scriptName = explode('/', $_SERVER['SCRIPT_FILENAME']);
     $scriptName = array_pop($scriptName);
 
     if ($scriptName == 'showimage.php') {
@@ -36,7 +39,12 @@ if ($moodle) {
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
     // Class to manage file cache.
-    $cachefile = new moodlefilecache('filter_wiris', 'images');
+    if ($pluginBuilder->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false') {
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+    }
+    else {
+        $cachefile = new moodledbjsoncache('filter_wiris_formulas', 'md5', 'jsoncontent');
+    }
     $pluginBuilder->setStorageAndCacheCacheObject($cachefile);
     // Class to manage formulas (i.e plain text) cache.
     $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
