@@ -357,7 +357,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 		}
 
 		// Lang defined inside editor
-		_wrs_int_langCode = 'editor.langCode';
+		_wrs_int_langCode = editor.langCode;
 	}
 })
 
