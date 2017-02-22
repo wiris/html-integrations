@@ -2668,6 +2668,7 @@ function wrs_loadConfiguration() {
     // With this variable we avoid URL's with doubles //.
     var newConfPath = _wrs_conf_path.lastIndexOf("/") == _wrs_conf_path.length - 1 ? _wrs_conf_path + _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
     var configUrl = _wrs_int_conf_file.indexOf("/") == 0 || _wrs_int_conf_file.indexOf("http") == 0 ? _wrs_int_conf_file : newConfPath;
+    configUrl = configUrl.replace(/([^:]\/)\/+/g, "$1");
     script.src = configUrl;
     document.getElementsByTagName('head')[0].appendChild(script); // Asynchronous load of configuration.
 }
