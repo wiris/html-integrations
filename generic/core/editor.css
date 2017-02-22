@@ -67,9 +67,9 @@
 
 
 /*iPad and iPad Mini*/
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
 and (orientation : portrait) {
 
     .wrs_container.wrs_modalIos {
@@ -89,13 +89,13 @@ and (orientation : portrait) {
 
 }
 
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
 and (orientation : landscape) {
     .wrs_container.wrs_modalIos {
         width: 100vw    !important;
-        height: 100vh   !important; 
+        height: 100vh   !important;
     }
 
     .wrs_editorContainer.wrs_modalIos {
@@ -110,9 +110,9 @@ and (orientation : landscape) {
 }
 
 /*iPhone 5*/
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) 
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 568px)
 and (orientation : portrait) {
 
     .wrs_container.wrs_modalIos {

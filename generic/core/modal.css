@@ -253,12 +253,12 @@
 
 .wrs_modal_iframeContainer.wrs_modal_ios {
     width: 100%    !important;
-    height: 100%   !important; 
+    height: 100%   !important;
 }
 
 .wrs_modal_iframe.wrs_modal_ios {
     width: 100vw    !important;
-    height: 100vh   !important; 
+    height: 100vh   !important;
 }
 
 .wrs_modal_iframe.wrs_modal_android {

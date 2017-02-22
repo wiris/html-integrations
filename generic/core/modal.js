@@ -108,7 +108,6 @@ ModalWindow.prototype.create = function() {
     this.titleBardDiv.appendChild(this.titleDiv);
     this.iframeContainer.appendChild(this.iframe);
 
-
     if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isAndroid'] && !this.deviceProperties['isIOS']) {
         this.containerDiv.appendChild(this.titleBardDiv);
     }

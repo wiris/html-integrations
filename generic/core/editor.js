@@ -242,7 +242,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 // getMethod(null, 'wrs_editorLoaded', [editor], function(editorLoaded){
                 // });
 
-
                 var ua = navigator.userAgent.toLowerCase();
                 var isAndroid = ua.indexOf("android") > -1;
                 var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
@@ -276,7 +275,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 if (typeof strings == 'undefined') {
                     strings = new Object();
                 }
-
 
                 if (isIOS) {
                     // Editor and controls container

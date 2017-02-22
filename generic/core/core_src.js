@@ -1966,7 +1966,6 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
 
     // Experimental settings.
     if (_wrs_conf_wirisPluginPerformance && (_wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml')) {
-        
         // Internet Explorer 6-11
         // http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
         var isIE = /*@cc_on!@*/false || !!document.documentMode;
