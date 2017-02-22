@@ -108,7 +108,8 @@ ModalWindow.prototype.create = function() {
     this.titleBardDiv.appendChild(this.titleDiv);
     this.iframeContainer.appendChild(this.iframe);
 
-    if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isAndroid']) {
+
+    if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isAndroid'] && !this.deviceProperties['isIOS']) {
         this.containerDiv.appendChild(this.titleBardDiv);
     }
     this.containerDiv.appendChild(this.iframeContainer);
@@ -166,7 +167,7 @@ ModalWindow.prototype.open = function() {
         }
 
         if (_wrs_isNewElement) {
-            if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIos) {
+            if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
                 editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
             } else {
                 editor.setMathML('<math/>');
@@ -176,7 +177,7 @@ ModalWindow.prototype.open = function() {
         }
 
         editor.focus();
-        if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIos) {
+        if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIOS) {
             this.stackModalWindow();
         }
     } else {
@@ -260,19 +261,6 @@ ModalWindow.prototype.createModalWindowAndroid = function() {
  */
 
 ModalWindow.prototype.createModalWindowIos = function() {
-    wrs_addMetaViewport("device-width", 1.0, 1.0, 1.0);
-
-    var modalHeight = parseInt(this.properties.iframeAttributes['height']) + 35;
-    var modalWidth = parseInt(this.properties.iframeAttributes['width']) + 10;
-
-    this.containerDiv.style.width = modalWidth + 'px';
-    this.containerDiv.style.height = modalHeight + 'px';
-
-    this.iframeContainer.style.width = this.properties.iframeAttributes['width'] + 'px';
-    this.iframeContainer.style.height = this.properties.iframeAttributes['height'] + 'px';
-
-    this.iframe.style.width = this.properties.iframeAttributes['width'] + 'px';
-    this.iframe.style.height = this.properties.iframeAttributes['height'] + 'px';
 
     this.addClass('wrs_modal_ios');
 }

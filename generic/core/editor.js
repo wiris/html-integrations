@@ -242,8 +242,16 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 // getMethod(null, 'wrs_editorLoaded', [editor], function(editorLoaded){
                 // });
 
+
+                var ua = navigator.userAgent.toLowerCase();
+                var isAndroid = ua.indexOf("android") > -1;
+                var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
+
                 var editorElement = editor.getElement();
                 var editorContainer = document.getElementById('editorContainer');
+                if (isIOS) {
+                    editorContainer.className += ' wrs_editorContainer wrs_modalIos';
+                }
                 editor.insertInto(editorContainer);
 
                 // Mathml content.
@@ -269,8 +277,18 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     strings = new Object();
                 }
 
+
+                if (isIOS) {
+                    // Editor and controls container
+                    var editorAndControlsContainer = document.getElementById('container');
+                    editorAndControlsContainer.className += ' wrs_container wrs_modalIos';
+                }
+
                 // Submit button.
                 var controls = document.getElementById('controls');
+                if (isIOS) {
+                    controls.className += ' wrs_controls wrs_modalIos';
+                }
                 var submitButton = document.createElement('input');
                 submitButton.type = 'button';
                 submitButton.className = 'wrs_button_accept';
