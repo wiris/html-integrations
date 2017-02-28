@@ -1707,10 +1707,10 @@ function wrs_mathmlEncode(input) {
     input = input.split(_wrs_xmlCharacters.ampersand).join(_wrs_safeXmlCharacters.ampersand);
     input = input.split(_wrs_xmlCharacters.quote).join(_wrs_safeXmlCharacters.quote);
 
-    // Transform "<" --> "&lt;".
-    // Transform ">" --> "&gt;".
-    input = input.split(_wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagOpener + _wrs_safeXmlCharacters.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote + "&lt;" + _wrs_safeXmlCharacters.doubleQuote);
-    input = input.split(_wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagCloser + _wrs_safeXmlCharacters.doubleQuote).join(_wrs_safeXmlCharacters.doubleQuote + "&gt;" + _wrs_safeXmlCharacters.doubleQuote);
+    // Transform ="<" --> "&lt;".
+    // Transform =">" --> "&gt;".
+    input = input.split("=" + _wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagOpener + _wrs_safeXmlCharacters.doubleQuote).join("=" + _wrs_safeXmlCharacters.doubleQuote + "&lt;" + _wrs_safeXmlCharacters.doubleQuote);
+    input = input.split("=" + _wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagCloser + _wrs_safeXmlCharacters.doubleQuote).join("=" +_wrs_safeXmlCharacters.doubleQuote + "&gt;" + _wrs_safeXmlCharacters.doubleQuote);
 
     return input;
 }
