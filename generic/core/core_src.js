@@ -1964,19 +1964,8 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         imgObject.setAttribute('data-custom-editor', mathmlSubstring);
     }
 
-    // Experimental settings.
+    // Performance enabled
     if (_wrs_conf_wirisPluginPerformance && (_wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml')) {
-        // Internet Explorer 6-11
-        // http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-        var isIE = /*@cc_on!@*/false || !!document.documentMode;
-        if (isIE) {
-            data['useragent'] = 'IE';
-            _wrs_conf_imageFormat = 'png';
-        }
-        else {
-            data['useragent'] = 'other browser';
-            _wrs_conf_imageFormat = 'svg';
-        }
 
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
         if (result["status"] == 'warning') {
