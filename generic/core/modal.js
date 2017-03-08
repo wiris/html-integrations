@@ -136,6 +136,9 @@ ModalWindow.prototype.create = function() {
 }
 
 ModalWindow.prototype.open = function() {
+
+    this.hideKeyboard();
+
     if (this.properties.open == true) {
         this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
     } else if (this.properties.created) {
@@ -455,4 +458,35 @@ ModalWindow.prototype.drag = function(ev) {
 ModalWindow.prototype.stopDrag = function(ev) {
     wrs_addClass(this.containerDiv, 'wrs_drag');
     this.dragDataObject = null;
+}
+
+/**
+ * Hide soft keyboards.
+ *
+ * @ignore
+ */
+ModalWindow.prototype.hideKeyboard = function() {
+    //creating temp field
+    var field = document.createElement('input');
+    field.setAttribute('type', 'text');
+    //hiding temp field from peoples eyes
+    //-webkit-user-modify is nessesary for Android 4.x
+    field.setAttribute('style', 'position:absolute; top: 0px; opacity: 0; -webkit-user-modify: read-write-plaintext-only; left:0px;');
+    document.body.appendChild(field);
+
+    //adding onfocus event handler for out temp field
+    field.onfocus = function(){
+      //this timeout of 200ms is nessasary for Android 2.3.x
+      setTimeout(function() {
+
+        field.setAttribute('style', 'display:none;');
+        setTimeout(function() {
+          document.body.removeChild(field);
+          document.body.focus();
+        }, 14);
+
+      }, 200);
+    };
+    //focusing it
+    field.focus();
 }

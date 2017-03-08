@@ -27,8 +27,7 @@ var _wrs_editMode = typeof _wrs_editMode != 'undefined' ? _wrs_editMode : undefi
 var _wrs_isNewElement = typeof _wrs_isNewElement != 'undefined' ? _wrs_isNewElement : true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
-var _wrs_androidRange;
-var _wrs_iosRange;
+var _wrs_range;
 
 // LaTex client cache.
 var _wrs_int_LatexCache = {};
@@ -1532,15 +1531,15 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 }
             }
             else {
-                var isAndroid = false;
-                if (_wrs_androidRange){
-                    var isAndroid = true;
-                    var range = _wrs_androidRange;
-                } else if (_wrs_iosRange){
-                    var isIOS = true;
-                    var range = _wrs_iosRange;
-                }else{
-                    var selection = windowTarget.getSelection();
+                var ua = navigator.userAgent.toLowerCase();
+                var isAndroid = ua.indexOf("android") > -1;
+                var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
+                var selection = windowTarget.getSelection();
+                if (_wrs_range) {
+                    var range = _wrs_range;
+                    _wrs_range = null;
+                }
+                else {
 
                     try {
                         var range = selection.getRangeAt(0);
@@ -1548,8 +1547,8 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                     catch (e) {
                         var range = windowTarget.document.createRange();
                     }
-                    selection.removeAllRanges();
                 }
+                selection.removeAllRanges();
 
                 range.deleteContents();
 
@@ -2081,20 +2080,17 @@ function wrs_openEditorWindow(language, target, isIframe) {
     var ua = navigator.userAgent.toLowerCase();
     var isAndroid = ua.indexOf("android") > -1;
     var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
-    if(isAndroid) {
-        if (isIframe) { // Variable contentWindow have sense only on a iframe context.
-            var selection = target.contentWindow.getSelection();
-            _wrs_androidRange = selection.getRangeAt(0);
-        }
+
+    if(isAndroid || isIOS) {
         _wrs_conf_modalWindow = true; // Conf property must be overrided on tablet/phone devices.
     }
 
-    if(isIOS) {
-        if (isIframe) {
-            var selection = target.contentWindow.getSelection();
-            _wrs_iosRange = selection.getRangeAt(0);
-        }
-            _wrs_conf_modalWindow = true; // Conf property must be overrided on tablet/phone devices.
+    try {
+        var selection = target.contentWindow.getSelection();
+        _wrs_range = selection.getRangeAt(0);
+    }
+    catch (e) {
+        _wrs_range = null;
     }
 
     if (isIframe === undefined) {
