@@ -156,16 +156,8 @@ ModalWindow.prototype.open = function() {
             if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                 editor.setParams({'toolbar' : toolbar});
             }
-        } else {
-            if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
-                var properties = {'toolbar' : 'general'};
-                // Client properties.
-                properties = typeof _wrs_int_wirisProperties != 'undefined' ? _wrs_int_wirisProperties : properties;
-                // Server side properties.
-                properties = typeof _wrs_conf_editorAttributes != 'undefined' ? _wrs_conf_editorAttributes : properties;
-                editor.setParams(properties);
-            }
-
+        } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
+            editor.setParams({'toolbar' : 'general'});
         }
 
         if (_wrs_isNewElement) {
