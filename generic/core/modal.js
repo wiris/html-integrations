@@ -63,18 +63,21 @@ function ModalWindow(path, editorAttributes) {
 
     attributes = {};
     attributes['class'] = 'wrs_modal_close_button';
+    attributes['title'] = 'Close';
     var closeModalDiv = wrs_createElement('div', attributes);
     // closeModalDiv.innerHTML = '&times;';
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
+    attributes['title'] = 'Full-screen';
     var stackModalDiv = wrs_createElement('div', attributes);
     // stackModalDiv.innerHTML = '/';
     this.stackDiv = stackModalDiv;
 
-    attribyutes = {};
+    attributes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
+    attributes['title'] = 'Minimise';
     var minimizeModalDiv = wrs_createElement('div', attributes);
     // minimizeModalDiv.innerHTML = "_";
     this.minimizeDiv = minimizeModalDiv;
@@ -266,14 +269,12 @@ ModalWindow.prototype.stackModalWindow = function () {
         this.properties.previousState = this.properties.state;
         this.properties.state = 'stack';
 
-        // We need to remove "width" manually because is calculated by javascript.
-        // containerDiv.style.width = null;
-        // containerDiv.style.left = null;
         this.containerDiv.style.top = null;
-        // this.containerDiv.style.width = null;
         this.containerDiv.style.rifgh = null;
         this.containerDiv.style.left = null;
         this.containerDiv.style.position = null;
+
+        this.stackDiv.title = "Full-screen";
 
         var modalWidth = parseInt(this.properties.iframeAttributes['width']);
         this.iframeContainer.style.width = modalWidth + 'px';
@@ -339,6 +340,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
         this.containerDiv.style.top = null;
         this.removeClass('wrs_stack');
     }
+    this.stackDiv.title = "Exit full-screen";
     this.addClass('wrs_maximized');
 }
 
