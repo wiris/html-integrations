@@ -2120,7 +2120,12 @@ function wrs_openEditorWindow(language, target, isIframe) {
     _wrs_temporalRange = null;
 
     if (target) {
-        var selectedItem = wrs_getSelectedItem(target, isIframe);
+        var selectedItem;
+        if (typeof wrs_int_getSelectedItem != 'undefined') {
+            selectedItem = wrs_int_getSelectedItem(target, isIframe);
+        } else {
+            selectedItem = wrs_getSelectedItem(target, isIframe);
+        }
 
         if (selectedItem != null) {
             if (selectedItem.caretPosition === undefined) {
