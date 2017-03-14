@@ -1935,6 +1935,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
     }
 
     data['mml'] = mathml;
+    data['lang'] = language;
 
     if (_wrs_conf_setSize) {
         // Request metrics of the generated image.
