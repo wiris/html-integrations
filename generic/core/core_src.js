@@ -21,6 +21,35 @@ wrs_addEvent(window, 'message', function (e) {
     }
 });
 
+/**
+ * Fires an element event.
+ * @param {object} element element where event should be fired.
+ * @param {string} event event to fire.
+ * @ignore
+ */
+function wrs_fireEvent(element, event) {
+    if (document.createEvent){
+        var eventObject = document.createEvent('HTMLEvents');
+        eventObject.initEvent(event, true, true);
+        return !element.dispatchEvent(eventObject);
+    }
+
+    var eventObject = document.createEventObject();
+    return element.fireEvent('on' + event, eventObject)
+}
+
+wrs_addEvent(window, 'mouseup', function (e) {
+    if (typeof(_wrs_modalWindow) !== 'undefined' && _wrs_modalWindow != null) {
+        wrs_fireEvent(_wrs_modalWindow.iframe.contentDocument, 'mouseup');
+    }
+});
+
+wrs_addEvent(window, 'mouseout', function (e) {
+    if (typeof(_wrs_modalWindow) !== 'undefined' && _wrs_modalWindow != null) {
+        wrs_fireEvent(_wrs_modalWindow.iframe.contentDocument, 'mouseup');
+    }
+});
+
 // Vars.
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_editMode = typeof _wrs_editMode != 'undefined' ? _wrs_editMode : undefined;
@@ -784,23 +813,6 @@ function wrs_endParseSaveMode(code) {
     }
 
     return code;
-}
-
-/**
- * Fires an element event.
- * @param {object} element element where event should be fired.
- * @param {string} event event to fire.
- * @ignore
- */
-function wrs_fireEvent(element, event) {
-    if (document.createEvent){
-        var eventObject = document.createEvent('HTMLEvents');
-        eventObject.initEvent(event, true, true);
-        return !element.dispatchEvent(eventObject);
-    }
-
-    var eventObject = document.createEventObject();
-    return element.fireEvent('on' + event, eventObject)
 }
 
 /**
@@ -2418,13 +2430,13 @@ wrs_PluginEvent.prototype.preventDefault = function () {
 }
 
 /**
- * Fires one WIRIS event
+ * Fires WIRIS plugin event listeners
  * @param  {String} eventName event name
  * @param  {Object} e         event properties
  * @return {bool}             false if event has been prevented.
  * @ignore
  */
-function wrs_fireEvent(eventName, e) {
+function wrs_fireEventListeners(eventName, e) {
     for (var i = 0; i < wrs_pluginListeners.length && !e.cancelled; ++i) {
         if (wrs_pluginListeners[i][eventName]) {
             // Calling listener.
@@ -2469,7 +2481,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
     e.language = language;
     e.editMode = editMode;
 
-    if (wrs_fireEvent('onBeforeFormulaInsertion', e)) {
+    if (wrs_fireEventListeners('onBeforeFormulaInsertion', e)) {
         return;
     }
 
@@ -2500,7 +2512,7 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
         wrs_insertElementOnSelection(e.node, focusElement, windowTarget);
     }
 
-    if (wrs_fireEvent('onAfterFormulaInsertion', e)) {
+    if (wrs_fireEventListeners('onAfterFormulaInsertion', e)) {
         return;
     }
 }

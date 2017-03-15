@@ -384,7 +384,7 @@ ModalWindow.prototype.removeListeners = function() {
  * @ignore
  */
 ModalWindow.prototype.eventClient = function(ev) {
-    if (typeof(ev.clientX) == 'undefined') {
+    if (typeof(ev.clientX) == 'undefined' && ev.changedTouches) {
         var client = {
             X : ev.changedTouches[0].clientX,
             Y : ev.changedTouches[0].clientY
