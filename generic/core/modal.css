@@ -24,11 +24,9 @@
 }
 
 .wrs_modal_overlay.wrs_minimized {
-    display: none;
 }
 
 .wrs_modal_overlay.wrs_stack {
-    display: none;
 }
 
 .wrs_modal_overlay.wrs_modal_ios {

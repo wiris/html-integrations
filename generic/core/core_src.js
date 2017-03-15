@@ -44,12 +44,6 @@ wrs_addEvent(window, 'mouseup', function (e) {
     }
 });
 
-wrs_addEvent(window, 'mouseout', function (e) {
-    if (typeof(_wrs_modalWindow) !== 'undefined' && _wrs_modalWindow != null) {
-        wrs_fireEvent(_wrs_modalWindow.iframe.contentDocument, 'mouseup');
-    }
-});
-
 // Vars.
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_editMode = typeof _wrs_editMode != 'undefined' ? _wrs_editMode : undefined;

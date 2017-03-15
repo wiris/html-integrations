@@ -111,6 +111,12 @@ ModalWindow.prototype.create = function() {
     this.titleBardDiv.appendChild(this.titleDiv);
     this.iframeContainer.appendChild(this.iframe);
 
+    wrs_addEvent(this.overlayDiv, 'mouseup', function (e) {
+        if (typeof(_wrs_modalWindow) !== 'undefined' && _wrs_modalWindow != null) {
+            wrs_fireEvent(_wrs_modalWindow.iframe.contentDocument, 'mouseup');
+        }
+    });
+
     if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isAndroid'] && !this.deviceProperties['isIOS']) {
         this.containerDiv.appendChild(this.titleBardDiv);
     }
@@ -274,6 +280,8 @@ ModalWindow.prototype.stackModalWindow = function () {
         this.containerDiv.style.left = null;
         this.containerDiv.style.position = null;
 
+        this.overlayDiv.style.background = "rgba(0,0,0,0)";
+
         this.stackDiv.title = "Full-screen";
 
         var modalWidth = parseInt(this.properties.iframeAttributes['width']);
@@ -304,6 +312,8 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.containerDiv.style.left = null;
         this.containerDiv.style.top = null;
         this.containerDiv.style.position = null;
+        this.overlayDiv.style.background = "rgba(0,0,0,0)";
+
 
         if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {
             this.removeClass('wrs_stack');
@@ -341,6 +351,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
         this.removeClass('wrs_stack');
     }
     this.stackDiv.title = "Exit full-screen";
+    this.overlayDiv.style.background = "rgba(0,0,0,0.8)";
     this.addClass('wrs_maximized');
 }
 
