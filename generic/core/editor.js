@@ -323,7 +323,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         mathml = wrs_mathmlEntities(mathml);    // Apply a parse.
                     }
 
-                    getMethod(null, 'wrs_int_updateFormula', [mathml, _wrs_editMode, queryParams['lang']], function(){
+                    getMethod(null, 'wrs_int_updateFormula', [mathml, null, queryParams['lang']], function(){
                             _wrs_closeFunction();
                     });
 

@@ -2462,6 +2462,8 @@ function wrs_updateFormula(focusElement, windowTarget, mathml, wirisProperties, 
     // - editMode (read only)
     // - wirisProperties
     // - language (read only).
+
+    editMode = editMode !== null ? editMode : _wrs_editMode;
     var e = new wrs_PluginEvent();
 
     e.mathml = mathml;
