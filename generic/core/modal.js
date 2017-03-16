@@ -352,6 +352,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     }
     this.stackDiv.title = "Exit full-screen";
     this.overlayDiv.style.background = "rgba(0,0,0,0.8)";
+    this.overlayDiv.style.display = '';
     this.addClass('wrs_maximized');
 }
 
@@ -368,6 +369,7 @@ ModalWindow.prototype.addListeners = function() {
     wrs_addEvent(window, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(document, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(this.iframe.contentWindow, 'mouseup', this.stopDrag.bind(this));
+    wrs_addEvent(this.iframe.contentWindow, 'mousedown', this.setOverlayDiv.bind(this));
     wrs_addEvent(document.body, 'mousemove', this.drag.bind(this));
 }
 
@@ -408,6 +410,17 @@ ModalWindow.prototype.eventClient = function(ev) {
         };
         return client;
     }
+}
+
+
+/**
+ * Set the overlay div display
+ *
+ * @param {event} ev touchstart or mousedown event.
+ * @ignore
+ */
+ModalWindow.prototype.setOverlayDiv = function(ev) {
+    this.overlayDiv.style.display = '';
 }
 
 /**

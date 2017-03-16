@@ -40,6 +40,9 @@ function wrs_fireEvent(element, event) {
 
 wrs_addEvent(window, 'mouseup', function (e) {
     if (typeof(_wrs_modalWindow) !== 'undefined' && _wrs_modalWindow != null) {
+        if (_wrs_modalWindow.properties.state != "maximized") {
+            _wrs_modalWindow.overlayDiv.style.display = 'none';
+        }
         wrs_fireEvent(_wrs_modalWindow.iframe.contentDocument, 'mouseup');
     }
 });
