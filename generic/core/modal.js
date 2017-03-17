@@ -65,21 +65,18 @@ function ModalWindow(path, editorAttributes) {
     attributes['class'] = 'wrs_modal_close_button';
     attributes['title'] = 'Close';
     var closeModalDiv = wrs_createElement('div', attributes);
-    // closeModalDiv.innerHTML = '&times;';
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
     attributes['title'] = 'Full-screen';
     var stackModalDiv = wrs_createElement('div', attributes);
-    // stackModalDiv.innerHTML = '/';
     this.stackDiv = stackModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
     attributes['title'] = 'Minimise';
     var minimizeModalDiv = wrs_createElement('div', attributes);
-    // minimizeModalDiv.innerHTML = "_";
     this.minimizeDiv = minimizeModalDiv;
 
     attributes = {};
@@ -200,7 +197,7 @@ ModalWindow.prototype.close = function() {
     this.properties.open = false;
     wrs_int_disableCustomEditors();
     document.getElementsByClassName('wrs_modal_iframe')[0].contentWindow._wrs_modalWindowProperties.editor.setMathML('<math/>');
-    // Properties to initial state
+    // Properties to initial state.
     this.properties.state = '';
     this.properties.previousState = '';
 }
@@ -313,7 +310,6 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.containerDiv.style.top = null;
         this.containerDiv.style.position = null;
         this.overlayDiv.style.background = "rgba(0,0,0,0)";
-
 
         if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {
             this.removeClass('wrs_stack');

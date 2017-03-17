@@ -58,7 +58,7 @@ var _wrs_range;
 // LaTex client cache.
 var _wrs_int_LatexCache = {};
 
-// Accessible client cache
+// Accessible client cache.
 var _wrs_int_AccessibleCache = {};
 
 var _wrs_xmlCharacters = {
@@ -1715,11 +1715,6 @@ function wrs_mathmlEncode(input) {
     input = input.split(_wrs_xmlCharacters.ampersand).join(_wrs_safeXmlCharacters.ampersand);
     input = input.split(_wrs_xmlCharacters.quote).join(_wrs_safeXmlCharacters.quote);
 
-    // Transform ="<" --> "&lt;".
-    // Transform =">" --> "&gt;".
-    // input = input.split("=" + _wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagOpener + _wrs_safeXmlCharacters.doubleQuote).join("=" + _wrs_safeXmlCharacters.doubleQuote + "&lt;" + _wrs_safeXmlCharacters.doubleQuote);
-    // input = input.split("=" + _wrs_safeXmlCharacters.doubleQuote + _wrs_safeXmlCharacters.tagCloser + _wrs_safeXmlCharacters.doubleQuote).join("=" + _wrs_safeXmlCharacters.doubleQuote + "&gt;" + _wrs_safeXmlCharacters.doubleQuote);
-
     return input;
 }
 
@@ -1973,7 +1968,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         imgObject.setAttribute('data-custom-editor', mathmlSubstring);
     }
 
-    // Performance enabled
+    // Performance enabled.
     if (_wrs_conf_wirisPluginPerformance && (_wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml')) {
 
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
@@ -2626,11 +2621,11 @@ function wrs_fixAfterResize(img) {
     if (_wrs_conf_setSize) {
         if (img.src.indexOf("data:image") != -1) {
             if (_wrs_conf_imageFormat == 'svg') {
-                // data:image/svg+xml;charset=utf8, = 32
+                // ...data:image/svg+xml;charset=utf8, = 32.
                 var svg = wrs_urldecode(img.src.substring(32, img.src.length))
                 wrs_setImgSize(img, svg, true);
             } else {
-                // data:image/png;base64, == 22
+                // ...data:image/png;base64, == 22.
                 var base64 = img.src.substring(22,img.src.length);
                 wrs_setImgSize(img, base64, true);
             }

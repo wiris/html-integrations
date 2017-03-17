@@ -1,10 +1,4 @@
-/*body.wrs_modal_open {
-    overflow: hidden;
-    position: fixed;
-}
-*/
 .wrs_modal_overlay {
-    /*overflow: scroll;*/
     position: fixed;
     font-family: arial, sans-serif;
     top: 0;
@@ -15,9 +9,6 @@
     z-index: 99998;
     opacity:0.65;
     pointer-events: auto;
-    /*-webkit-transition: opacity 400ms ease-in;
-    -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;*/
 }
 
 .wrs_modal_overlay.wrs_maximized{
@@ -30,7 +21,6 @@
 }
 
 .wrs_modal_overlay.wrs_modal_ios {
-    /*position: inherit;*/
 }
 
 .wrs_modal_overlay.wrs_modal_ios.moodle {
@@ -157,7 +147,6 @@
 .wrs_modal_title_bar {
     display : block;
     background-color: #778e9a;
-    /*cursor: pointer;*/
 }
 
 .wrs_modal_dialogContainer {
@@ -189,7 +178,6 @@
     margin-right: 10px;
 }
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {
-    /*bottom: auto;*/
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_stack {

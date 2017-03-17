@@ -51,7 +51,7 @@ var _wrs_int_initParsed = false;
 // Core added to queue.
 var _wrs_addCoreQueue = typeof _wrs_addCoreQueue == 'undefined' ? false : _wrs_addCoreQueue;
 
-// Lang
+// Lang.
 var _wrs_int_langCode = 'en';
 
 /* Plugin integration */
@@ -145,12 +145,10 @@ var _wrs_int_langCode = 'en';
                         // the content doesn't need to be filtered.
                         if (!editor.getParam('fullscreen_is_enabled') && editor.getContent() !== ""){
 
-                            editor.setContent(wrs_initParse(content, language));
                             // Init parsing OK. If a setContent method is called
                             // wrs_initParse is called again.
                             // Now if source code is edited the returned code is parsed.
                             _wrs_int_initParsed = true;
-                            
                         }
 
                         if (!editor.inline) {

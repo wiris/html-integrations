@@ -239,8 +239,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     editor = new com.wiris.jsEditor.JsEditor('editor', null);
                 }
                 _wrs_modalWindowProperties.editor = editor;
-                // getMethod(null, 'wrs_editorLoaded', [editor], function(editorLoaded){
-                // });
 
                 var ua = navigator.userAgent.toLowerCase();
                 var isAndroid = ua.indexOf("android") > -1;
@@ -277,7 +275,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 }
 
                 if (isIOS) {
-                    // Editor and controls container
+                    // Editor and controls container.
                     var editorAndControlsContainer = document.getElementById('container');
                     editorAndControlsContainer.className += ' wrs_container wrs_modalIos';
                 }
