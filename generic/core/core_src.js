@@ -2196,7 +2196,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
             var fileref = document.createElement("link");
             fileref.setAttribute("rel", "stylesheet");
             fileref.setAttribute("type", "text/css");
-            fileref.setAttribute("href", window.parent._wrs_conf_path + '/core/modal.css');
+            fileref.setAttribute("href", wrs_concatenateUrl(window.parent._wrs_conf_path, '/core/modal.css'));
             document.getElementsByTagName("head")[0].appendChild(fileref);
             _wrs_css_loaded = true;
         }
@@ -2670,6 +2670,10 @@ function wrs_loadConfiguration() {
     document.getElementsByTagName('head')[0].appendChild(script); // Asynchronous load of configuration.
 }
 
+function wrs_concatenateUrl(path1, path2) {
+    return (path1 + path2).replace(/([^:]\/)\/+/g, "$1");
+}
+
 var _wrs_conf_core_loaded = true;
 
 if (typeof _wrs_conf_configuration_loaded == 'undefined') {
@@ -2696,7 +2700,7 @@ function wrs_createModalWindow() {
         var fileref = document.createElement("link");
         fileref.setAttribute("rel", "stylesheet");
         fileref.setAttribute("type", "text/css");
-        fileref.setAttribute("href", window.parent._wrs_conf_path + '/core/modal.css');
+        fileref.setAttribute("href", wrs_concatenateUrl(window.parent._wrs_conf_path, '/core/modal.css'));
         document.getElementsByTagName("head")[0].appendChild(fileref);
         _wrs_css_loaded = true;
     }
