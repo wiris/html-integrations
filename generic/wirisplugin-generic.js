@@ -47,14 +47,17 @@ var _wrs_int_directionality = '';
 // Custom Editors.
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 
-if (navigator.userLanguage) {
-    _wrs_int_langCode = navigator.userLanguage;
-}
-else if (navigator.language) {
-    _wrs_int_langCode = navigator.language.substring(0, 2);
-}
-else {
-    _wrs_int_langCode = 'en';
+
+if (typeof _wrs_int_langCode == 'undefined') {
+    if (navigator.userLanguage) {
+        _wrs_int_langCode = navigator.userLanguage;
+    }
+    else if (navigator.language) {
+        _wrs_int_langCode = navigator.language.substring(0, 2);
+    }
+    else {
+        _wrs_int_langCode = 'en';
+    }
 }
 
 // Including core.js.
