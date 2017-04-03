@@ -60,11 +60,9 @@ document.getElementsByTagName('head')[0].appendChild(script);
 
 // Define variables needed at initialization time
 // var _wrs_conf_editorEnabled = true;		// Specifies if formula editor is enabled.
-// var _wrs_conf_CASEnabled = true;		// Specifies if WIRIS cas is enabled.
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/formula.png';
-var _wrs_int_CASIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/cas.png';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
@@ -213,7 +211,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 			});
 			
 			editor.ui.addButton('ckeditor_wiris_formulaEditor', {
-				'label': 'Math Editor',
+				'label': 'WIRIS EDITOR math',
 				'command': 'ckeditor_wiris_openFormulaEditor',
 				'icon': _wrs_int_editorIcon
 			});
@@ -259,32 +257,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 				}
 			}
 		}
-		
-		// CAS command
-		
-		if (_wrs_conf_CASEnabled) {
-			allowedContent = 'img[width,height,align,src,' + _wrs_conf_CASMathmlAttribute + '](!Wiriscas); ';
-			allowedContent += 'applet[width,height,align,code,archive,codebase,alt,src](!Wiriscas); ';
-			allowedContent += 'param[name,value]';
-			
-			editor.addCommand('ckeditor_wiris_openCAS', {
-				'async': false,								// The command need some time to complete after exec function returns.
-				'canUndo': true,
-				'editorFocus': true,
-				'allowedContent': allowedContent,
-				'requiredContent': allowedContent,
-				
-				'exec': function (editor) {
-					wrs_int_openNewCAS(element, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe , editor.langCode);
-				}
-			});
-			
-			editor.ui.addButton('ckeditor_wiris_CAS', {
-				'label': 'WIRIS cas',
-				'command': 'ckeditor_wiris_openCAS',
-				'icon': _wrs_int_CASIcon
-			});
-		}
 
 		// Dynamic customEditors buttons.
 
@@ -307,7 +279,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
 					var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name;
 					editor.ui.addButton(buttonName, {
-						'label': _wrs_int_customEditors[key].label,
+						'label': _wrs_int_customEditors[key].title,
 						'command': command,
 						'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +'/icons/' + _wrs_int_customEditors[key].icon
 					});
@@ -379,23 +351,6 @@ function wrs_int_openNewFormulaEditor(element, language, isIframe) {
 }
 
 /**
- * Opens CAS.
- * @param object element Target
- */
-function wrs_int_openNewCAS(element, isIframe, language) {
-	if (_wrs_int_window_opened) {
-		_wrs_int_window.focus();
-	}
-	else {
-		_wrs_int_window_opened = true;
-		_wrs_isNewElement = true;
-		_wrs_int_temporalElement = element;
-		_wrs_int_temporalElementIsIframe = isIframe;
-		_wrs_int_window = wrs_openCASWindow(element, isIframe, language);
-	}
-}
-
-/**
  * Handles a double click on the contentEditable div.
  * @param object div Target
  * @param object element Element double clicked
@@ -440,15 +395,6 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
 				_wrs_int_window.focus();
 			}
 		}
-		else if (wrs_containsClass(element, _wrs_conf_CASClassName)) {
-			if (!_wrs_int_window_opened) {
-				_wrs_temporalImage = element;
-				wrs_int_openExistingCAS(target, isIframe, editor.langCode);
-			}
-			else {
-				_wrs_int_window.focus();
-			}
-		}
 	}
 }
 
@@ -466,25 +412,13 @@ function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
 }
 
 /**
- * Opens CAS to edit an existing formula.
- * @param object iframe Target
- */
-function wrs_int_openExistingCAS(element, isIframe, language) {
-	_wrs_int_window_opened = true;
-	_wrs_isNewElement = false;
-	_wrs_int_temporalElement = element;
-	_wrs_int_temporalElementIsIframe = isIframe;
-	_wrs_int_window = wrs_openCASWindow(element, isIframe, language);
-}
-
-/**
  * Handles a mouse down event on the iframe.
  * @param object iframe Target
  * @param object element Element mouse downed
  */
 function wrs_int_mousedownHandler(iframe, element) {
 	if (element.nodeName.toLowerCase() == 'img') {
-		if (wrs_containsClass(element, 'Wirisformula') || wrs_containsClass(element, 'Wiriscas')) {
+		if (wrs_containsClass(element, 'Wirisformula')) {
 			_wrs_int_temporalImageResizing = element;
 		}
 	}
@@ -527,21 +461,6 @@ function wrs_int_updateFormula(mathml, editMode, language) {
 	}
 }
 
-/**
- * Calls wrs_updateCAS with well params.
- * @param string appletCode
- * @param string image
- * @param int width
- * @param int height
- */
-function wrs_int_updateCAS(appletCode, image, width, height) {
-	if (_wrs_int_temporalElementIsIframe) {
-		wrs_updateCAS(_wrs_int_temporalElement.contentWindow, _wrs_int_temporalElement.contentWindow, appletCode, image, width, height);
-	}
-	else {
-		wrs_updateCAS(_wrs_int_temporalElement, window, appletCode, image, width, height);
-	}
-}
 
 /**
  * Handles window closing.

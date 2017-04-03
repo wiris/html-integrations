@@ -34,7 +34,6 @@ var _wrs_conf_pluginBasePath = _wrs_conf_path;
 
 /* Vars */
 var _wrs_int_editorIcon;
-var _wrs_int_CASIcon;
 var _wrs_int_temporalIframe;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
@@ -73,10 +72,8 @@ var _wrs_int_langCode = 'en';
             }
             if (typeof _wrs_conf_hostPlatform != 'undefined' && _wrs_conf_hostPlatform == 'Moodle' && _wrs_conf_versionPlatform < 2013111800) {
                 _wrs_int_editorIcon = _wrs_conf_path + 'icons/tinymce3/formula.png';
-                _wrs_int_CASIcon = _wrs_conf_path + 'icons/tinymce3/cas.png';
             } else {
                 _wrs_int_editorIcon = _wrs_conf_path + 'icons/formula.png';
-                _wrs_int_CASIcon = _wrs_conf_path + 'icons/cas.png';
             }
             var element;
 
@@ -267,27 +264,9 @@ var _wrs_int_langCode = 'en';
                 });
 
                 editor.addButton('tiny_mce_wiris_formulaEditor', {
-                    title: 'Math editor',
+                    title: 'WIRIS EDITOR math',
                     cmd: 'tiny_mce_wiris_openFormulaEditor',
                     image: _wrs_int_editorIcon
-                });
-            }
-
-            if (_wrs_int_conf_async || _wrs_conf_CASEnabled) {
-                editor.addCommand('tiny_mce_wiris_openCAS', function () {
-                    var language = editor.settings.language;
-
-                    if (editor.settings['wirisformulaeditorlang']) {
-                        language = editor.settings['wirisformulaeditorlang'];
-                    }
-
-                    wrs_int_openNewCAS(element, language, editor.inline ? false : true);
-                });
-
-                editor.addButton('tiny_mce_wiris_CAS', {
-                    title: 'Calculator',
-                    cmd: 'tiny_mce_wiris_openCAS',
-                    image: _wrs_int_CASIcon
                 });
             }
 
@@ -333,7 +312,7 @@ var _wrs_int_langCode = 'en';
                         }
 
                         editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
-                            title:  _wrs_int_customEditors[key].name + ' editor',
+                            title:  _wrs_int_customEditors[key].title,
                             cmd: cmd,
                             image: imagePath
                         });
@@ -386,25 +365,6 @@ function wrs_int_openNewFormulaEditor(element, language, isIframe) {
 }
 
 /**
- * Opens CAS.
- * @param object element Target
- * @param string language
- * @param bool isIframe
- */
-function wrs_int_openNewCAS(element, language, isIframe) {
-    if (_wrs_int_window_opened) {
-        _wrs_int_window.focus();
-    }
-    else {
-        _wrs_int_window_opened = true;
-        _wrs_isNewElement = true;
-        _wrs_int_temporalIframe = element;
-        _wrs_int_temporalElementIsIframe = isIframe;
-        _wrs_int_window = wrs_openCASWindow(element, isIframe, language);
-    }
-}
-
-/**
  * Handles a double click on the target.
  * @param object editor tinymce active editor
  * @param object target Target
@@ -414,7 +374,7 @@ function wrs_int_openNewCAS(element, language, isIframe) {
 function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
     // This loop allows the double clicking on the formulas represented with span's.
 
-    while (!wrs_containsClass(element, 'Wirisformula') && !wrs_containsClass(element, 'Wiriscas') && element.parentNode) {
+    while (!wrs_containsClass(element, 'Wirisformula') && element.parentNode) {
         element = element.parentNode;
     }
 
@@ -458,21 +418,6 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
                 _wrs_int_window.focus();
             }
         }
-        else if (wrs_containsClass(element, 'Wiriscas')) {
-            if (!_wrs_int_window_opened) {
-                var language = editor.settings.language;
-
-                if (editor.settings['wirisformulaeditorlang']) {
-                    language = editor.settings['wirisformulaeditorlang'];
-                }
-
-                _wrs_temporalImage = element;
-                wrs_int_openExistingCAS(target, isIframe, language);
-            }
-            else {
-                _wrs_int_window.focus();
-            }
-        }
     }
 }
 
@@ -490,27 +435,13 @@ function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
 }
 
 /**
- * Opens CAS to edit an existing formula.
- * @param object element Target
- * @param bool isIframe
- * @param string language
- */
-function wrs_int_openExistingCAS(element, isIframe, language) {
-    _wrs_int_window_opened = true;
-    _wrs_isNewElement = false;
-    _wrs_int_temporalIframe = element;
-    _wrs_int_temporalElementIsIframe = isIframe;
-    _wrs_int_window = wrs_openCASWindow(element, isIframe, language);
-}
-
-/**
  * Handles a mouse down event on the iframe.
  * @param object iframe Target
  * @param object element Element mouse downed
  */
 function wrs_int_mousedownHandler(iframe, element) {
     if (element.nodeName.toLowerCase() == 'img') {
-        if (wrs_containsClass(element, 'Wirisformula') || wrs_containsClass(element, 'Wiriscas')) {
+        if (wrs_containsClass(element, 'Wirisformula')) {
             _wrs_int_temporalImageResizing = element;
         }
     }
@@ -543,21 +474,6 @@ function wrs_int_updateFormula(mathml, editMode, language) {
     if (typeof tinymce.activeEditor.fire != 'undefined') {
         tinymce.activeEditor.fire('change');
         tinymce.activeEditor.fire('ExecCommand', {command: "wrs_int_updateFormula", value: mathml});
-    }
-}
-
-/**
- * Calls wrs_updateCAS with well params.
- * @param string appletCode
- * @param string image
- * @param int width
- * @param int height
- */
-function wrs_int_updateCAS(appletCode, image, width, height) {
-    if (_wrs_int_temporalElementIsIframe) {
-        wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
-    } else {
-        wrs_updateCAS(_wrs_int_temporalIframe, window, appletCode, image, width, height);
     }
 }
 
