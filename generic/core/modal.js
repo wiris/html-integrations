@@ -289,6 +289,7 @@ ModalWindow.prototype.stackModalWindow = function () {
         this.iframe.style.height = (parseInt(300) + 3) + 'px';
         this.iframe.style.margin = '6px';
         this.removeClass('wrs_maximized');
+        this.minimizeDiv.title = "Minimise";
         this.removeClass('wrs_minimized');
         this.addClass('wrs_stack');
     }
@@ -310,6 +311,7 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.containerDiv.style.top = null;
         this.containerDiv.style.position = null;
         this.overlayDiv.style.background = "rgba(0,0,0,0)";
+        this.minimizeDiv.title = "Maximise";
 
         if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {
             this.removeClass('wrs_stack');
@@ -340,6 +342,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     this.iframe.style.margin = '6px';
     this.removeClass('wrs_drag');
     if (wrs_containsClass(this.overlayDiv, 'wrs_minimized')) {
+        this.minimizeDiv.title = "Minimise";
         this.removeClass('wrs_minimized');
     } else if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {
         this.containerDiv.style.left = null;
