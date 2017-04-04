@@ -3,7 +3,7 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 
 // Get _wrs_conf_path (plugin URL).
 var col = document.getElementsByTagName("script");
-var scriptName = "wiris.min.js";
+var scriptName = "wiris.js";
 for (i = 0; i < col.length; i++) {
     j = col[i].src.lastIndexOf(scriptName);
     if (j >= 0) {
@@ -21,7 +21,7 @@ var _wrs_conf_setSize = true;
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = 'froala/js/plugins/wiris/core/core.js';
+script.src = 'froala/js/plugins/froala_wiris/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
