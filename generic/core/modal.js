@@ -455,8 +455,8 @@ ModalWindow.prototype.drag = function(ev) {
     if(this.dragDataObject) {
         ev.preventDefault();
         ev = ev || event;
-        this.containerDiv.style.left = this.eventClient(ev).X - this.dragDataObject.x + scrollX + "px";
-        this.containerDiv.style.top = this.eventClient(ev).Y - this.dragDataObject.y + scrollY + "px";
+        this.containerDiv.style.left = this.eventClient(ev).X - this.dragDataObject.x + window.pageXOffset + "px";
+        this.containerDiv.style.top = this.eventClient(ev).Y - this.dragDataObject.y + window.pageYOffset + "px";
         this.containerDiv.style.position = 'absolute';
         this.containerDiv.style.bottom = null;
         wrs_removeClass(this.containerDiv, 'wrs_stack');
@@ -470,12 +470,15 @@ ModalWindow.prototype.drag = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.stopDrag = function(ev) {
-    if (this.dragDataObject) {
-        // Set with the last position.
-        this.containerDiv.style.left = this.eventClient(ev).X - this.dragDataObject.x + "px";
-        this.containerDiv.style.top = this.eventClient(ev).Y - this.dragDataObject.y + "px";
-    }
     this.containerDiv.style.position = 'fixed';
+    // Due to we have multiple events that call this function, we need only to execute the next modifiers one time,
+    // when the user stops to drag and dragDataObject is not null (the object to drag is attached).
+    if (this.dragDataObject) {
+        // Fixed position makes the coords relative to the main window. So that, we need to transform
+        // the absolute coords to relative removing the scroll.
+        this.containerDiv.style.left = parseInt(this.containerDiv.style.left) - window.pageXOffset + "px";
+        this.containerDiv.style.top = parseInt(this.containerDiv.style.top) - window.pageYOffset + "px";
+    }
     this.containerDiv.style.bottom = null;
     wrs_addClass(this.containerDiv, 'wrs_drag');
     this.dragDataObject = null;
