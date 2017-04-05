@@ -21,8 +21,10 @@ var _wrs_conf_setSize = true;
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = 'froala/js/plugins/froala_wiris/core/core.js';
+script.src = _wrs_conf_path + '/core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
+
+$('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 
@@ -184,6 +186,7 @@ var _wrs_int_window_opened = false;
         // This loop allows the double clicking on the formulas represented with span's.
 
         while (!wrs_containsClass(element, 'Wirisformula')) {
+            if (element == null) return;
             element = element.parentNode;
         }
 
@@ -231,8 +234,10 @@ var _wrs_int_window_opened = false;
     }
   }
 
+  // Icon templates
+  $.FroalaEditor.DefineIconTemplate('wirisplugin', '<i class="icon icon-[NAME]"></i>');
   // Add an option for your plugin.
-  $.FroalaEditor.DefineIcon('wirisEditor', {SRC: _wrs_conf_path +'/icons/formula.png', template: 'image'});
+  $.FroalaEditor.DefineIcon('wirisEditor', {NAME: 'editor', template: 'wirisplugin'});
   $.FroalaEditor.RegisterCommand('wirisEditor', {
       title: 'WIRIS EDITOR math',
       focus: true,
@@ -245,7 +250,7 @@ var _wrs_int_window_opened = false;
     });
 
 
-  $.FroalaEditor.DefineIcon('wirisChemistry', {SRC: _wrs_conf_path +'/icons/chem.png', template: 'image'});
+  $.FroalaEditor.DefineIcon('wirisChemistry', {NAME: 'chemistry', template: 'wirisplugin'});
   $.FroalaEditor.RegisterCommand('wirisChemistry', {
       title: 'WIRIS EDITOR chemistry',
       focus: true,

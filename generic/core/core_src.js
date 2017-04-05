@@ -285,7 +285,7 @@ function wrs_addClass(element, className) {
  * @ignore
  */
 function wrs_containsClass(element, className) {
-    if (!('className' in element)) {
+    if (element == null || !('className' in element)) {
         return false;
     }
 
