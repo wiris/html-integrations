@@ -2196,7 +2196,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
             var fileref = document.createElement("link");
             fileref.setAttribute("rel", "stylesheet");
             fileref.setAttribute("type", "text/css");
-            fileref.setAttribute("href", wrs_concatenateUrl(window.parent._wrs_conf_path, '/core/modal.css'));
+            fileref.setAttribute("href", wrs_concatenateUrl(_wrs_conf_path, '/core/modal.css'));
             document.getElementsByTagName("head")[0].appendChild(fileref);
             _wrs_css_loaded = true;
         }
@@ -2700,7 +2700,7 @@ function wrs_createModalWindow() {
         var fileref = document.createElement("link");
         fileref.setAttribute("rel", "stylesheet");
         fileref.setAttribute("type", "text/css");
-        fileref.setAttribute("href", wrs_concatenateUrl(window.parent._wrs_conf_path, '/core/modal.css'));
+        fileref.setAttribute("href", wrs_concatenateUrl(_wrs_conf_path, '/core/modal.css'));
         document.getElementsByTagName("head")[0].appendChild(fileref);
         _wrs_css_loaded = true;
     }
