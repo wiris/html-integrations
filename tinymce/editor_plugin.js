@@ -142,7 +142,7 @@ var _wrs_int_langCode = 'en';
                         // the content doesn't need to be filtered.
                         if (!editor.getParam('fullscreen_is_enabled') && editor.getContent() !== ""){
 
-                            editor.setContent(wrs_initParse(content, language));
+                            editor.setContent(wrs_initParse(content, language), {format: "raw"});
                             // Init parsing OK. If a setContent method is called
                             // wrs_initParse is called again.
                             // Now if source code is edited the returned code is parsed.
