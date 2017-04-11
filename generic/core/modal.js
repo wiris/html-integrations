@@ -145,44 +145,53 @@ ModalWindow.prototype.open = function() {
 
     this.hideKeyboard();
 
-    if (this.properties.open == true) {
-        this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
-    } else if (this.properties.created) {
-
-        this.containerDiv.style.visibility = '';
-        this.overlayDiv.style.visibility = '';
-        this.containerDiv.style.display = '';
-        this.overlayDiv.style.display = '';
+    if (this.properties.open == true || this.properties.created) {
 
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
-
-        this.properties.open = true;
-        if (customEditor = wrs_int_getCustomEditorEnabled()) {
-            toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
-            if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
-                editor.setParams({'toolbar' : toolbar});
+        var update_toolbar = function() {
+            if (customEditor = wrs_int_getCustomEditorEnabled()) {
+                toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
+                if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
+                    editor.setParams({'toolbar' : toolbar});
+                }
+            } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
+                editor.setParams({'toolbar' : 'general'});
             }
-        } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
-            editor.setParams({'toolbar' : 'general'});
-        }
+        };
 
-        if (_wrs_isNewElement) {
-            if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
-                editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+        if (this.properties.open == true) {
+            update_toolbar();
+            this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+        }
+        else {
+            this.containerDiv.style.visibility = '';
+            this.overlayDiv.style.visibility = '';
+            this.containerDiv.style.display = '';
+            this.overlayDiv.style.display = '';
+
+            this.properties.open = true;
+            update_toolbar();
+
+            if (_wrs_isNewElement) {
+                if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
+                    editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+                } else {
+                    editor.setMathML('<math/>');
+                }
             } else {
-                editor.setMathML('<math/>');
+                editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
-        } else {
-            editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
-        }
 
-        editor.focus();
-        if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIOS) {
-            this.stackModalWindow();
+            editor.focus();
+            if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIOS) {
+                this.stackModalWindow();
+            }
         }
     } else {
         this.create();
     }
+
+    wrs_int_disableCustomEditors();
 }
 
 /**
