@@ -2184,7 +2184,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
     }
 
     var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
-    if (!_wrs_conf_modalWindow) {
+    if (_wrs_conf_modalWindow != 'undefined' && _wrs_conf_modalWindow === false) {
         _wrs_popupWindow = window.open(path, title, _wrs_conf_editorAttributes);
         return _wrs_popupWindow;
     }
