@@ -3223,14 +3223,16 @@ function getMetricsFromSvgString(svgString) {
  */
 function wrs_int_getCustomEditorEnabled() {
     var customEditorEnabled = null;
-    Object.keys(_wrs_int_customEditors).forEach(function(key) {
+    for (var key in _wrs_int_customEditors) {
         if (_wrs_int_customEditors[key].enabled) {
-            customEditorEnabled = _wrs_int_customEditors[key]
+            customEditorEnabled = _wrs_int_customEditors[key];
+            break;
         }
-    });
+    }
 
     return customEditorEnabled;
 }
+
 
 /**
  * Disable all custom editors

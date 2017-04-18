@@ -145,6 +145,7 @@ ModalWindow.prototype.open = function() {
 
     this.hideKeyboard();
 
+
     if (this.properties.open == true || this.properties.created) {
 
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
@@ -153,13 +154,22 @@ ModalWindow.prototype.open = function() {
                 toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
+                    _wrs_modalWindow.setTitle(customEditor.title);
                 }
             } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
                 editor.setParams({'toolbar' : 'general'});
+                _wrs_modalWindow.setTitle('WIRIS EDITOR math');
             }
         };
 
         if (this.properties.open == true) {
+            var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
+            if (customEditorClass) {
+                wrs_int_enableCustomEditor(customEditorClass);
+            }
+            else {
+                wrs_int_disableCustomEditors();
+            }
             update_toolbar();
             this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
         }
@@ -170,7 +180,6 @@ ModalWindow.prototype.open = function() {
             this.overlayDiv.style.display = '';
 
             this.properties.open = true;
-            update_toolbar();
 
             if (_wrs_isNewElement) {
                 if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
@@ -178,7 +187,16 @@ ModalWindow.prototype.open = function() {
                 } else {
                     editor.setMathML('<math/>');
                 }
+                update_toolbar();
             } else {
+                var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
+                if (customEditorClass) {
+                    wrs_int_enableCustomEditor(customEditorClass);
+                }
+                else {
+                    wrs_int_disableCustomEditors();
+                }
+                update_toolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
 
@@ -191,7 +209,6 @@ ModalWindow.prototype.open = function() {
         this.create();
     }
 
-    wrs_int_disableCustomEditors();
 }
 
 /**
