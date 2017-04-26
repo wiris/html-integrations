@@ -39,7 +39,8 @@ if ($moodle) {
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
     // Class to manage file cache.
-    if ($pluginBuilder->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false') {
+    if ($pluginBuilder->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false' || 
+            $pluginBuilder->getConfiguration()->getProperty('wirisimageformat', 'png') == 'png') {
         $cachefile = new moodlefilecache('filter_wiris', 'images');
     }
     else {
