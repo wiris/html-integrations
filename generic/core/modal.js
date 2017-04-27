@@ -539,5 +539,8 @@ ModalWindow.prototype.hideKeyboard = function() {
 
           }, 200);
     };
+    // ...focus function changes scroll value, so we need to restore it.
+    var keepScroll = scrollY;
     field.focus();
+    window.scrollTo(0, keepScroll);
 }
