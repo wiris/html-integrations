@@ -145,7 +145,6 @@ ModalWindow.prototype.open = function() {
 
     this.hideKeyboard();
 
-
     if (this.properties.open == true || this.properties.created) {
 
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
