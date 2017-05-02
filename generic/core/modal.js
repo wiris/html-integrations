@@ -213,7 +213,6 @@ ModalWindow.prototype.open = function() {
         if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
             this.maximizeModalWindow();
         }
-        
     } else {
         this.create();
     }
