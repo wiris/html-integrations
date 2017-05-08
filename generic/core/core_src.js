@@ -2091,8 +2091,14 @@ function wrs_openEditorWindow(language, target, isIframe) {
     }
 
     try {
-        var selection = target.contentWindow.getSelection();
-        _wrs_range = selection.getRangeAt(0);
+        if (isIframe) {
+            var selection = target.contentWindow.getSelection();
+            _wrs_range = selection.getRangeAt(0);
+        }
+        else {
+            var selection = getSelection();
+            _wrs_range = selection.getRangeAt(0);
+        }
     }
     catch (e) {
         _wrs_range = null;
