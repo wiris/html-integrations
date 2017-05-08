@@ -490,7 +490,12 @@ function checkElement(editor, element, callback) {
 		}
 
 		if (newElement == null) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
-			newElement = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
+			var index = 1;
+			for (var key in CKEDITOR.instances) {
+				if (key == editor.name) break;
+				else index++;
+			}
+			newElement = document.getElementById('cke_' + index + '_contents');
 			divIframe = true;
 		}
 
