@@ -15,11 +15,17 @@ if (CKEDITOR.plugins.externals.hasOwnProperty('ckeditor_wiris')) {
     _wrs_cont_contextPath = CKEDITOR.config.wiriscontextpath;
 };
 
-for(var id in CKEDITOR.instances) {
-    if (typeof(CKEDITOR.instances[id].config.wiriscontextpath) != "undefined") {
-        _wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath
+_wrs_cont_contextPath = (function() {
+
+    for (var id in CKEDITOR.instances) {
+        if (typeof(CKEDITOR.instances[id].config.wiriscontextpath) != "undefined") {
+            _wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath;
+        }
     }
-}
+
+    return _wrs_cont_contextPath;
+})();
+
 _wrs_int_conf_file = (_wrs_cont_contextPath) ? _wrs_cont_contextPath + _wrs_int_conf_file : _wrs_int_conf_file;
 
 // Check if the synchronous request has a 200 status.
