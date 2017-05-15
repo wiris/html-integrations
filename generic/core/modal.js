@@ -167,15 +167,17 @@ ModalWindow.prototype.open = function() {
         };
 
         if (this.properties.open == true) {
-            var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
-            if (customEditorClass) {
-                wrs_int_enableCustomEditor(customEditorClass);
+            if (_wrs_temporalImage) {
+                var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
+                if (customEditorClass) {
+                    wrs_int_enableCustomEditor(customEditorClass);
+                }
+                else {
+                    wrs_int_disableCustomEditors();
+                }
+                update_toolbar();
+                this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
-            else {
-                wrs_int_disableCustomEditors();
-            }
-            update_toolbar();
-            this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
         }
         else {
             this.containerDiv.style.visibility = '';
@@ -214,6 +216,8 @@ ModalWindow.prototype.open = function() {
             this.maximizeModalWindow();
         }
     } else {
+        var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
+        _wrs_modalWindow.setTitle(title);
         this.create();
     }
 
@@ -464,6 +468,7 @@ ModalWindow.prototype.setOverlayDiv = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.startDrag = function(ev) {
+    
     if (this.properties.state == 'minimized') {
         return;
     }
@@ -477,9 +482,6 @@ ModalWindow.prototype.startDrag = function(ev) {
         };
     }
 
-    if (typeof dialogContainerDiv != 'undefined') {
-        this.addClass('wrs_drag');
-    }
 }
 
 /**
@@ -517,7 +519,6 @@ ModalWindow.prototype.stopDrag = function(ev) {
         this.containerDiv.style.top = parseInt(this.containerDiv.style.top) - window.pageYOffset + "px";
     }
     this.containerDiv.style.bottom = null;
-    wrs_addClass(this.containerDiv, 'wrs_drag');
     this.dragDataObject = null;
 }
 
