@@ -468,7 +468,6 @@ ModalWindow.prototype.setOverlayDiv = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.startDrag = function(ev) {
-    
     if (this.properties.state == 'minimized') {
         return;
     }
