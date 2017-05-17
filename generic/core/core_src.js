@@ -2206,7 +2206,6 @@ function wrs_openEditorWindow(language, target, isIframe) {
             document.getElementsByTagName("head")[0].appendChild(fileref);
             _wrs_css_loaded = true;
         }
-        _wrs_modalWindow.setTitle(title);
         _wrs_modalWindow.open();
     }
 }

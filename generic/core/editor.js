@@ -303,6 +303,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 });
 
                 wrs_addEvent(submitButton, 'click', function () {
+
                     // In order to avoid n-formulas on n-clicks
                     // submit button is disabled 1 second.
                     submitButton.disabled = true;
@@ -311,18 +312,26 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         submitButton.disabled = false;
                     }, 1000);
 
-                    var mathml = '';
-
-                    if (!editor.isFormulaEmpty()) {
-                        mathml += editor.getMathML(); // If isn't empty, get mathml code to mathml variable.
-                        if (customEditor) {
-                            mathml = wrs_mathmlAddEditorAttribute(mathml);
+                    // There are vars that are updated during the execution in core.js, we need to sync.
+                    var varsToUpdate = ['_wrs_int_customEditors'];
+                    getVars(varsToUpdate, function(object) { // Callback method to set variables.
+                        for (var varName in object) {
+                            window[varName] = object[varName]; // Variables set as global variables on window (core.js is on window can't change the scope).
                         }
-                        mathml = wrs_mathmlEntities(mathml);    // Apply a parse.
-                    }
 
-                    getMethod(null, 'wrs_int_updateFormula', [mathml, null, queryParams['lang']], function(){
-                            _wrs_closeFunction();
+                        var mathml = '';
+
+                        if (!editor.isFormulaEmpty()) {
+                            mathml += editor.getMathML(); // If isn't empty, get mathml code to mathml variable.
+                            if (wrs_int_getCustomEditorEnabled() != null) {
+                                mathml = wrs_mathmlAddEditorAttribute(mathml);
+                            }
+                            mathml = wrs_mathmlEntities(mathml);    // Apply a parse.
+                        }
+
+                        getMethod(null, 'wrs_int_updateFormula', [mathml, null, queryParams['lang']], function(){
+                                _wrs_closeFunction();
+                        });
                     });
 
                 });

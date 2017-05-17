@@ -209,6 +209,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                 'requiredContent': allowedContent,
                 
                 'exec': function (editor) {
+                    wrs_int_disableCustomEditors();
                     wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
                 }
             });
@@ -347,6 +348,7 @@ function wrs_int_openNewFormulaEditor(element, language, isIframe) {
     else {
         _wrs_int_window_opened = true;
         _wrs_isNewElement = true;
+        _wrs_temporalImage = null;
         _wrs_int_temporalElement = element;
         _wrs_int_temporalElementIsIframe = isIframe;
         _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
@@ -410,6 +412,7 @@ function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
     _wrs_int_window_opened = true;
     _wrs_isNewElement = false;
     _wrs_int_temporalElement = element;
+    _wrs_temporalImage = null;
     _wrs_int_temporalElementIsIframe = isIframe;
     _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
 }

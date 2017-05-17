@@ -163,11 +163,12 @@ ModalWindow.prototype.open = function() {
             } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
                 editor.setParams({'toolbar' : 'general'});
                 _wrs_modalWindow.setTitle('WIRIS EDITOR math');
+                wrs_int_disableCustomEditors();
             }
         };
 
         if (this.properties.open == true) {
-            if (_wrs_temporalImage) {
+            if (!_wrs_isNewElement) {
                 var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
                 if (customEditorClass) {
                     wrs_int_enableCustomEditor(customEditorClass);
@@ -177,6 +178,9 @@ ModalWindow.prototype.open = function() {
                 }
                 update_toolbar();
                 this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+            }
+            else {
+                update_toolbar();
             }
         }
         else {
