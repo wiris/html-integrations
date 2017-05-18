@@ -155,15 +155,18 @@ ModalWindow.prototype.open = function() {
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
         var update_toolbar = function() {
             if (customEditor = wrs_int_getCustomEditorEnabled()) {
-                toolbar = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
+                var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
+                _wrs_modalWindow.setTitle(customEditor.title);
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
-                    _wrs_modalWindow.setTitle(customEditor.title);
                 }
-            } else if (typeof editor.params.toolbar != 'undefined' && editor.params.toolbar != 'general') {
-                editor.setParams({'toolbar' : 'general'});
+            } else { 
+                var toolbar = typeof _wrs_int_wirisProperties['toolbar'] == 'undefined' ? 'general' : _wrs_int_wirisProperties['toolbar'];
                 _wrs_modalWindow.setTitle('WIRIS EDITOR math');
-                wrs_int_disableCustomEditors();
+                if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
+                    editor.setParams({'toolbar' : toolbar});
+                    wrs_int_disableCustomEditors();
+                }
             }
         };
 
@@ -472,6 +475,7 @@ ModalWindow.prototype.setOverlayDiv = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.startDrag = function(ev) {
+    
     if (this.properties.state == 'minimized') {
         return;
     }

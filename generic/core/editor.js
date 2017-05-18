@@ -220,16 +220,16 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     wrs_attributes['toolbar'] = _wrs_conf_editorToolbar;
                 }
 
-                if (customEditor = wrs_int_getCustomEditorEnabled()) {
-                    wrs_attributes['toolbar'] = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
-                }
-
                 if (typeof(_wrs_int_wirisProperties) != 'undefined') {
                     for (var key in _wrs_int_wirisProperties) {
                         if (_wrs_int_wirisProperties.hasOwnProperty(key) && typeof(_wrs_int_wirisProperties[key]) != 'undefined') {
                             wrs_attributes[key] = _wrs_int_wirisProperties[key];
                         }
                     }
+                }
+
+                if (customEditor = wrs_int_getCustomEditorEnabled()) {
+                    wrs_attributes['toolbar'] = customEditor.toolbar ? customEditor.toolbar : wrs_attributes['toolbar'];
                 }
 
                 if (com.wiris.jsEditor.defaultBasePath) {

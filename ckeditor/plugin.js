@@ -94,6 +94,9 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             CKEDITOR.instances[id].on('focus', function(e) {
                 // Fill some ugly global var here
                 window._wrs_currentEditor = e.editor;
+                if ('wiriseditorparameters' in e.editor.config) {
+                    window._wrs_int_wirisProperties = e.editor.config['wiriseditorparameters'];
+                }
             });
         }
         
