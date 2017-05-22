@@ -172,13 +172,6 @@ ModalWindow.prototype.open = function() {
 
         if (this.properties.open == true) {
             if (!_wrs_isNewElement) {
-                var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
-                if (customEditorClass) {
-                    wrs_int_enableCustomEditor(customEditorClass);
-                }
-                else {
-                    wrs_int_disableCustomEditors();
-                }
                 update_toolbar();
                 this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
@@ -207,13 +200,6 @@ ModalWindow.prototype.open = function() {
                 }
                 update_toolbar();
             } else {
-                var customEditorClass = _wrs_temporalImage.getAttribute('data-custom-editor');
-                if (customEditorClass) {
-                    wrs_int_enableCustomEditor(customEditorClass);
-                }
-                else {
-                    wrs_int_disableCustomEditors();
-                }
                 update_toolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }

@@ -326,6 +326,13 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                             if (wrs_int_getCustomEditorEnabled() != null) {
                                 mathml = wrs_mathmlAddEditorAttribute(mathml);
                             }
+                            else {
+                                var startIndex = mathml.indexOf(' class="');
+                                if (startIndex != -1) {
+                                    var lastIndex = mathml.indexOf('"', startIndex + 8);
+                                    mathml = mathml.substring(0, startIndex) + mathml.substring(lastIndex + 1);
+                                }
+                            }
                             mathml = wrs_mathmlEntities(mathml);    // Apply a parse.
                         }
 

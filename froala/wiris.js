@@ -86,6 +86,7 @@ var _wrs_int_window_opened = false;
         window.wrs_int_openNewFormulaEditor = wrs_int_openNewFormulaEditor;
         window.wrs_int_getSelectedItem = wrs_int_getSelectedItem;
         window.wrs_int_notifyWindowClosed = wrs_int_notifyWindowClosed;
+        window.wrs_int_hideFroalaPopups = wrs_int_hideFroalaPopups;
 
         waitForCore();
 
@@ -190,6 +191,8 @@ var _wrs_int_window_opened = false;
             element = element.parentNode;
         }
 
+        wrs_int_disableCustomEditors();
+
         var elementName = element.nodeName.toLowerCase();
         if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
             if (wrs_containsClass(element, 'Wirisformula')) {
@@ -229,6 +232,13 @@ var _wrs_int_window_opened = false;
       wrs_int_doubleClickHandler(editor, div, false, element, event);
     }
 
+    function wrs_int_hideFroalaPopups() {
+      var instances =  $.FroalaEditor.INSTANCES;
+      for (var i = 0; i < instances.length; i++) {
+        instances[i].popups.hideAll();
+      }
+    }
+
     return {
       _init: _init,
     }
@@ -245,6 +255,8 @@ var _wrs_int_window_opened = false;
       refreshAfterCallback: true,
       callback: function () {
         this.selection.save();
+        wrs_int_hideFroalaPopups();
+        wrs_int_disableCustomEditors();
         wrs_int_openNewFormulaEditor(this.$iframe != null ? this.$iframe[0] : this.$box[0], this.opts.language, this.$iframe != null ? true : false);
       }
     });
@@ -258,6 +270,7 @@ var _wrs_int_window_opened = false;
       refreshAfterCallback: true,
       callback: function () {
         this.selection.save();
+        wrs_int_hideFroalaPopups();
         wrs_int_enableCustomEditor('chemistry');
         wrs_int_openNewFormulaEditor(this.$iframe != null ? this.$iframe[0] : this.$box[0], this.opts.language, this.$iframe != null ? true : false);
       }
