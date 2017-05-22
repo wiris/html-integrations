@@ -160,7 +160,7 @@ ModalWindow.prototype.open = function() {
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
                 }
-            } else { 
+            } else {
                 var toolbar = typeof _wrs_int_wirisProperties['toolbar'] == 'undefined' ? 'general' : _wrs_int_wirisProperties['toolbar'];
                 _wrs_modalWindow.setTitle('WIRIS EDITOR math');
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
@@ -475,7 +475,6 @@ ModalWindow.prototype.setOverlayDiv = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.startDrag = function(ev) {
-    
     if (this.properties.state == 'minimized') {
         return;
     }
