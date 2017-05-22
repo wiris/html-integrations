@@ -259,7 +259,7 @@ var _wrs_int_langCode = 'en';
                     if (editor.settings['wirisformulaeditorlang']) {
                         language = editor.settings['wirisformulaeditorlang'];
                     }
-
+                    wrs_int_disableCustomEditors();
                     wrs_int_openNewFormulaEditor(element, language, editor.inline ? false : true);
                 });
 

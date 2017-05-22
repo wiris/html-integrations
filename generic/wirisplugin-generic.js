@@ -110,6 +110,7 @@ function wrs_int_init_handler(target,toolbar) {
             formulaButton.style.cursor = 'pointer';
 
             wrs_addEvent(formulaButton, 'click', function () {
+                wrs_int_disableCustomEditors();
                 wrs_int_openNewFormulaEditor(target, _wrs_int_langCode);
             });
 

@@ -160,8 +160,8 @@ ModalWindow.prototype.open = function() {
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
                 }
-            } else {
-                var toolbar = typeof _wrs_int_wirisProperties['toolbar'] == 'undefined' ? 'general' : _wrs_int_wirisProperties['toolbar'];
+            } else { 
+                var toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
                 _wrs_modalWindow.setTitle('WIRIS EDITOR math');
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
@@ -183,6 +183,11 @@ ModalWindow.prototype.open = function() {
                 this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
             else {
+                if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
+                    editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+                } else {
+                    editor.setMathML('<math/>');
+                }
                 update_toolbar();
             }
         }
