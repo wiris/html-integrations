@@ -173,14 +173,10 @@ ModalWindow.prototype.open = function() {
         if (this.properties.open == true) {
             if (!_wrs_isNewElement) {
                 update_toolbar();
-                this.iframe.contentWindow._wrs_modalWindowProperties.editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+                editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
             else {
-                if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
-                    editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-                } else {
-                    editor.setMathML('<math/>');
-                }
+                editor.setMathML(editor.getMathML());
                 update_toolbar();
             }
         }
@@ -193,11 +189,7 @@ ModalWindow.prototype.open = function() {
             this.properties.open = true;
 
             if (_wrs_isNewElement) {
-                if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
-                    editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-                } else {
-                    editor.setMathML('<math/>');
-                }
+                editor.setMathML(editor.getMathML());
                 update_toolbar();
             } else {
                 update_toolbar();
