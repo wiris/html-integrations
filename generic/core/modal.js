@@ -99,6 +99,8 @@ function ModalWindow(path, editorAttributes) {
 
     this.editor = null;
 
+    this.lastImageWasNew = false;
+
 }
 
 ModalWindow.prototype.create = function() {
@@ -172,11 +174,22 @@ ModalWindow.prototype.open = function() {
 
         if (this.properties.open == true) {
             if (!_wrs_isNewElement) {
+                this.lastImageWasNew = false;
                 update_toolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }
             else {
-                editor.setMathML(editor.getMathML());
+                if (!this.lastImageWasNew) {
+                    if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
+                        editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+                    } else {
+                        editor.setMathML('<math/>');
+                    }
+                    this.lastImageWasNew = true;
+                }
+                else {
+                    editor.setMathML(editor.getMathML());
+                }
                 update_toolbar();
             }
         }
@@ -189,9 +202,20 @@ ModalWindow.prototype.open = function() {
             this.properties.open = true;
 
             if (_wrs_isNewElement) {
-                editor.setMathML(editor.getMathML());
+                if (!this.lastImageWasNew) {
+                    if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
+                        editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+                    } else {
+                        editor.setMathML('<math/>');
+                    }
+                    this.lastImageWasNew = true;
+                }
+                else {
+                    editor.setMathML(editor.getMathML());
+                }
                 update_toolbar();
             } else {
+                this.lastImageWasNew = false;
                 update_toolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
             }

@@ -391,7 +391,7 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
             } else {
                 event.returnValue = false;
             }
-
+            wrs_int_disableCustomEditors();
             if (customEditor = element.getAttribute('data-custom-editor')) {
                 wrs_int_enableCustomEditor(customEditor);
             }
