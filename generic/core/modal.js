@@ -155,7 +155,7 @@ ModalWindow.prototype.open = function() {
     if (this.properties.open == true || this.properties.created) {
 
         var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
-        var update_toolbar = function() {
+        var updateToolbar = function() {
             if (customEditor = wrs_int_getCustomEditorEnabled()) {
                 var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
                 _wrs_modalWindow.setTitle(customEditor.title);
@@ -175,7 +175,7 @@ ModalWindow.prototype.open = function() {
         var self = this;
 
         // MobileDevices need to have specific mathml syntax
-        var setMathMLMobileDevices = function () {
+        var setEmptyMathML = function () {
             if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
                 editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
             } else {
@@ -184,23 +184,23 @@ ModalWindow.prototype.open = function() {
         };
 
         // It controls cases where is needed to set an empty mathml or copy the current mathml value.
-        var setMathMLGeneric = function () {
+        var updateMathMLContent = function () {
             if (!self.lastImageWasNew) {
-                setMathMLMobileDevices();
+                setEmptyMathML();
             }
             else {
                 editor.setMathML(editor.getMathML());
             }
-            update_toolbar();
+            updateToolbar();
         };
 
         if (this.properties.open == true) {
             if (_wrs_isNewElement) {
-                setMathMLGeneric();
+                updateMathMLContent();
                 self.lastImageWasNew = true;
             }
             else {
-                update_toolbar();
+                updateToolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
                 this.lastImageWasNew = false;
             }
@@ -214,10 +214,10 @@ ModalWindow.prototype.open = function() {
             this.properties.open = true;
 
             if (_wrs_isNewElement) {
-                setMathMLGeneric();
+                updateMathMLContent();
                 self.lastImageWasNew = true;
             } else {
-                update_toolbar();
+                updateToolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
                 this.lastImageWasNew = false;
             }
