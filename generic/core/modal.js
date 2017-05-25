@@ -99,7 +99,7 @@ function ModalWindow(path, editorAttributes) {
 
     this.editor = null;
 
-    this.lastImageWasNew = false;
+    this.lastImageWasNew = true;
 
 }
 
@@ -172,25 +172,37 @@ ModalWindow.prototype.open = function() {
             }
         };
 
-        if (this.properties.open == true) {
-            if (!_wrs_isNewElement) {
-                this.lastImageWasNew = false;
-                update_toolbar();
-                editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+        var self = this;
+
+        // MobileDevices need to have specific mathml syntax
+        var setMathMLMobileDevices = function () {
+            if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
+                editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+            } else {
+                editor.setMathML('<math/>');
+            }
+        };
+
+        // It controls cases where is needed to set an empty mathml or copy the current mathml value.
+        var setMathMLGeneric = function () {
+            if (!self.lastImageWasNew) {
+                setMathMLMobileDevices();
             }
             else {
-                if (!this.lastImageWasNew) {
-                    if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
-                        editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-                    } else {
-                        editor.setMathML('<math/>');
-                    }
-                    this.lastImageWasNew = true;
-                }
-                else {
-                    editor.setMathML(editor.getMathML());
-                }
+                editor.setMathML(editor.getMathML());
+            }
+            update_toolbar();
+        };
+
+        if (this.properties.open == true) {
+            if (_wrs_isNewElement) {
+                setMathMLGeneric();
+                self.lastImageWasNew = true;
+            }
+            else {
                 update_toolbar();
+                editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+                this.lastImageWasNew = false;
             }
         }
         else {
@@ -202,22 +214,12 @@ ModalWindow.prototype.open = function() {
             this.properties.open = true;
 
             if (_wrs_isNewElement) {
-                if (!this.lastImageWasNew) {
-                    if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
-                        editor.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-                    } else {
-                        editor.setMathML('<math/>');
-                    }
-                    this.lastImageWasNew = true;
-                }
-                else {
-                    editor.setMathML(editor.getMathML());
-                }
-                update_toolbar();
+                setMathMLGeneric();
+                self.lastImageWasNew = true;
             } else {
-                this.lastImageWasNew = false;
                 update_toolbar();
                 editor.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+                this.lastImageWasNew = false;
             }
 
             editor.focus();
