@@ -63,19 +63,19 @@ function ModalWindow(path, editorAttributes) {
 
     attributes = {};
     attributes['class'] = 'wrs_modal_close_button';
-    attributes['title'] = 'Close';
+    attributes['title'] = strings['close'];
     var closeModalDiv = wrs_createElement('div', attributes);
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
-    attributes['title'] = 'Full-screen';
+    attributes['title'] = strings['fullscreen'];
     var stackModalDiv = wrs_createElement('div', attributes);
     this.stackDiv = stackModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
-    attributes['title'] = 'Minimise';
+    attributes['title'] = strings['minimise'];
     var minimizeModalDiv = wrs_createElement('div', attributes);
     this.minimizeDiv = minimizeModalDiv;
 
@@ -162,7 +162,7 @@ ModalWindow.prototype.open = function() {
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {
                     editor.setParams({'toolbar' : toolbar});
                 }
-            } else { 
+            } else {
                 var toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
                 _wrs_modalWindow.setTitle('WIRIS EDITOR math');
                 if (typeof editor.params.toolbar == 'undefined' || editor.params.toolbar != toolbar) {

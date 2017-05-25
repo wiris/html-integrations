@@ -2647,21 +2647,7 @@ function wrs_initSetSize() {
 
 function wrs_loadConfiguration() {
     if (typeof _wrs_conf_path == 'undefined') {
-        // Discover path.
-        var scriptName = "core/core.js";
-        var col = document.getElementsByTagName("script");
-        for (i = 0; i < col.length; i++) {
-            var d;
-            var src;
-            d = col[i];
-            src = d.src;
-            var j = src.lastIndexOf(scriptName);
-            if (j >= 0) {
-                // That's my script!
-                baseURL = src.substr(0, j - 1);
-            }
-        }
-        _wrs_conf_path = baseURL;
+        _wrs_conf_path = wrs_getCorePath();
     }
 
     var script = document.createElement('script');
@@ -2673,6 +2659,29 @@ function wrs_loadConfiguration() {
     configUrl = configUrl.replace(/([^:]\/)\/+/g, "$1");
     script.src = configUrl;
     document.getElementsByTagName('head')[0].appendChild(script); // Asynchronous load of configuration.
+}
+
+function wrs_getCorePath() {
+    var scriptName = "core/core.js";
+        var col = document.getElementsByTagName("script");
+        for (i = 0; i < col.length; i++) {
+            var d;
+            var src;
+            d = col[i];
+            src = d.src;
+            var j = src.lastIndexOf(scriptName);
+            if (j >= 0) {
+                // That's my script!
+                return src.substr(0, j - 1);
+            }
+        }
+}
+
+function wrs_loadLangFile() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js";
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function wrs_concatenateUrl(path1, path2) {
@@ -2687,7 +2696,7 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
     _wrs_conf_plugin_loaded = true;
 }
 
-
+wrs_loadLangFile()
 
 /**
  * Create modal window with embebbed iframe
