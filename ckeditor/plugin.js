@@ -135,7 +135,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
         // If this happens user should use wrs_initParse() and wrs_endParse() method
         if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
 
-            editor.on('dataReady', function (e) {
+            editor.on('instanceReady', function (e) {
                 lastDataSet = editor.getData();
             });
         } else {
@@ -185,6 +185,10 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                     })
 
                     editor.setData(lastDataSet);
+
+                    var range = editor.createRange();
+                    range.moveToElementEditablePosition(editor.editable(), true);
+                    editor.getSelection().selectRanges([range]);
                 }
                 // CKEditor replaces several times the element element during its execution, so we must assign the events again.
                 // We need to set a callback function to set "element" variable inside CKEDITOR.plugins.add scope.
@@ -555,5 +559,12 @@ function wrs_int_insertElementOnSelection() {
     if (editor) {
         var focusManager = new CKEDITOR.focusManager(editor);
         focusManager.focus();
+        // In order to avoid the normal behaviour to get the range saved in the beginning.
+        // _wrs_range = editor.getSelection().getRanges()[0];
+        _wrs_range = new Range;
+        var currentrange = editor.getSelection().getRanges()[0]
+        var startcontainer = currentrange.startContainer.$;
+        var startcontaineroffset = currentrange.startOffset;
+        _wrs_range.setStart(startcontainer, startcontaineroffset);
     }
 }
