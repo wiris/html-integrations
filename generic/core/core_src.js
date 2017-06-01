@@ -894,7 +894,15 @@ function wrs_getLatexFromMathML(mathml) {
         'mml': mathml
     };
 
-    return wrs_getContent(_wrs_conf_servicePath, data);
+    var jsonResponse = JSON.parse(wrs_getContent(_wrs_conf_servicePath, data));
+
+    var latex;
+
+    if (jsonResponse.status == "ok") {
+        latex = jsonResponse.result.text;
+    }
+
+    return latex;
 }
 
 /**
@@ -1019,10 +1027,19 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
         data['saveLatex'] = '';
     }
 
-    var mathML = wrs_getContent(_wrs_conf_servicePath, data);
-    // Populate LatexCache.
-    wrs_populateLatexCache(latex, mathML);
-    return mathML.split("\r").join('').split("\n").join(' ');
+    var jsonResponse = JSON.parse(wrs_getContent(_wrs_conf_servicePath, data));
+
+    var output;
+    if (jsonResponse.status == "ok") {
+        var output = jsonResponse.result.text;
+        output = output.split("\r").join('').split("\n").join(' ');
+        // Populate LatexCache.
+        wrs_populateLatexCache(latex, output);
+    } else {
+        output = "$$" + latex  + "$$";
+    }
+
+    return output;
 }
 
 /**
@@ -1828,7 +1845,11 @@ function wrs_mathmlToAccessible(mathml, language, data) {
     }
     else {
         data['service'] = 'mathml2accessible';
-        var accessibleText = wrs_getContent(_wrs_conf_servicePath, data);
+        var accesibleJsonResponse = JSON.parse(wrs_getContent(_wrs_conf_servicePath, data));
+    }
+
+    if (accesibleJsonResponse.status == 'ok') {
+        accessibleText = accesibleJsonResponse.result.text;
     }
 
     return accessibleText;
