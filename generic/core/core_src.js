@@ -1036,7 +1036,7 @@ function wrs_getMathMLFromLatex(latex, includeLatexOnSemantics) {
         // Populate LatexCache.
         wrs_populateLatexCache(latex, output);
     } else {
-        output = "$$" + latex  + "$$";
+        output = "$$" + latex + "$$";
     }
 
     return output;
@@ -2685,18 +2685,18 @@ function wrs_loadConfiguration() {
 
 function wrs_getCorePath() {
     var scriptName = "core/core.js";
-        var col = document.getElementsByTagName("script");
-        for (i = 0; i < col.length; i++) {
-            var d;
-            var src;
-            d = col[i];
-            src = d.src;
-            var j = src.lastIndexOf(scriptName);
-            if (j >= 0) {
-                // That's my script!
-                return src.substr(0, j - 1);
-            }
+    var col = document.getElementsByTagName("script");
+    for (i = 0; i < col.length; i++) {
+        var d;
+        var src;
+        d = col[i];
+        src = d.src;
+        var j = src.lastIndexOf(scriptName);
+        if (j >= 0) {
+            // That's my script!
+            return src.substr(0, j - 1);
         }
+    }
 }
 
 function wrs_loadLangFile() {
