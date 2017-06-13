@@ -22,7 +22,7 @@ namespace plugin_web
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            Response.ContentType = "text/plain; charset=utf-8";
+            Response.ContentType = "application/json";
             Response.Write(r);
         }
 

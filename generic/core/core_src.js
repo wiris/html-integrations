@@ -1846,10 +1846,9 @@ function wrs_mathmlToAccessible(mathml, language, data) {
     else {
         data['service'] = 'mathml2accessible';
         var accesibleJsonResponse = JSON.parse(wrs_getContent(_wrs_conf_servicePath, data));
-    }
-
-    if (accesibleJsonResponse.status == 'ok') {
-        accessibleText = accesibleJsonResponse.result.text;
+        if (accesibleJsonResponse.status != 'error') {
+            accessibleText = accesibleJsonResponse.result.text;
+        }
     }
 
     return accessibleText;
