@@ -50,7 +50,7 @@ var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemist
 
 if (typeof _wrs_int_langCode == 'undefined') {
     if (navigator.userLanguage) {
-        _wrs_int_langCode = navigator.userLanguage;
+        _wrs_int_langCode = navigator.userLanguage.substring(0, 2);
     }
     else if (navigator.language) {
         _wrs_int_langCode = navigator.language.substring(0, 2);
@@ -191,6 +191,7 @@ function wrs_int_openNewCAS(iframe, language) {
  */
 function wrs_int_doubleClickHandler(iframe, element) {
     if (element.nodeName.toLowerCase() == 'img') {
+        wrs_int_disableCustomEditors();
         if (customEditor = element.getAttribute('data-custom-editor')) {
             wrs_int_enableCustomEditor(customEditor);
         }
