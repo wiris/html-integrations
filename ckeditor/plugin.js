@@ -184,16 +184,22 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                         checkElement(editor, null, function(el){element = el;});
                     })
 
-                    editor.setData(lastDataSet);
-
-                    var range = editor.createRange();
-                    range.moveToElementEditablePosition(editor.editable(), true);
-                    editor.getSelection().selectRanges([range]);
+                    editor.setData(lastDataSet, {
+                        callback: function() {
+                            var range = editor.createRange();
+                            range.moveToElementEditablePosition(editor.editable(), true);
+                            editor.getSelection().selectRanges([range]);
+                            setInterval(checkElement(editor, element, function(el){element = el;}, 500));
+                            editor.resetDirty();
+                        }
+                    });
                 }
-                // CKEditor replaces several times the element element during its execution, so we must assign the events again.
-                // We need to set a callback function to set "element" variable inside CKEDITOR.plugins.add scope.
-                setInterval(checkElement(editor, element, function(el){element = el;}, 500));
-                editor.resetDirty();
+                else {
+                    // CKEditor replaces several times the element element during its execution, so we must assign the events again.
+                    // We need to set a callback function to set "element" variable inside CKEDITOR.plugins.add scope.
+                    setInterval(checkElement(editor, element, function(el){element = el;}, 500));
+                    editor.resetDirty();
+                }
             }
             else {
                 setTimeout(whenDocReady, 50);
