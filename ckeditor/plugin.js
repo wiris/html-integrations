@@ -565,9 +565,6 @@ function wrs_int_insertElementOnSelection() {
     if (editor) {
         var focusManager = new CKEDITOR.focusManager(editor);
         focusManager.focus();
-        // In order to avoid the normal behaviour to get the range saved in the beginning.
-        // _wrs_range = editor.getSelection().getRanges()[0];
-        _wrs_range = new Range;
         var currentrange = editor.getSelection().getRanges()[0]
         var startcontainer = currentrange.startContainer.$;
         var startcontaineroffset = currentrange.startOffset;
