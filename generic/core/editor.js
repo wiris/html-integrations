@@ -238,6 +238,10 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 else {
                     editor = new com.wiris.jsEditor.JsEditor('editor', null);
                 }
+
+                // Set ModalWindow editor attribute.
+                getMethod(null, 'wrs_setModalWindowEditor', [editor], function(){
+                });
                 _wrs_modalWindowProperties.editor = editor;
 
                 var ua = navigator.userAgent.toLowerCase();

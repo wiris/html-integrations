@@ -151,7 +151,7 @@ ModalWindow.prototype.open = function() {
 
     if (this.properties.open == true || this.properties.created) {
 
-        var editor = this.iframe.contentWindow._wrs_modalWindowProperties.editor;
+        var editor = this.editor;
         var updateToolbar = function() {
             if (customEditor = wrs_int_getCustomEditorEnabled()) {
                 var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
@@ -235,7 +235,7 @@ ModalWindow.prototype.open = function() {
  */
 ModalWindow.prototype.close = function() {
     // Is mandatory make this BEFORE hide modalwindow.
-    document.getElementsByClassName('wrs_modal_iframe')[0].contentWindow._wrs_modalWindowProperties.editor.setMathML('<math/>');
+    this.editor.setMathML('<math/>');
     this.overlayDiv.style.visibility = 'hidden';
     this.containerDiv.style.visibility = 'hidden';
     this.containerDiv.style.display = 'none';
@@ -558,4 +558,11 @@ ModalWindow.prototype.hideKeyboard = function() {
     var keepScroll = window.pageYOffset;
     field.focus();
     window.scrollTo(0, keepScroll);
+}
+
+/**
+ * Set WIRIS Editor as variable
+ */
+ModalWindow.prototype.setEditor = function(editor) {
+    this.editor = editor;
 }

@@ -116,7 +116,7 @@ if (!(window._wrs_conf_CASClassName)) {
 if (typeof MutationObserver != 'undefined') {
     var wrs_observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
-            if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' && mutation.target.className.indexOf(_wrs_conf_imageClassName) == -1 ) {
+            if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' && mutation.targetpassName.indexOf(_wrs_conf_imageClassName) == -1 ) {
                 mutation.target.className = _wrs_conf_imageClassName;
             }
         });
@@ -3408,6 +3408,17 @@ if (!Object.keys) {
  */
 function wrs_addPluginListener(listener) {
     wrs_pluginListeners.push(listener);
+}
+
+/**
+ * For now its not possible comunicate directly between editor.js and ModalWindow object.
+ * We need to use this method to call ModalWindow prototype from editor.js
+ * @param  {object} editor WIRIS Editor
+ */
+function wrs_setModalWindowEditor(editor) {
+    if (_wrs_conf_modalWindow) {
+        _wrs_modalWindow.setEditor(editor);
+    }
 }
 
 // Production steps of ECMA-262, Edition 5, 15.4.4.18
