@@ -1,6 +1,8 @@
 var _wrs_isNewElement; // Unfortunately we need this variabels as global variable for old I.E compatibility.
 
 (function(){
+
+    var editor;
     // Set wrs_int_opener variable and close method.
     // For popup window opener is window.opener. For modal window window.parent.
     var wrs_int_opener = window.opener ? window.opener : window.parent;
@@ -211,7 +213,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 
                 var queryParams = wrs_getQueryParams(window);
                 var customEditor;
-                var editor;
 
                 wrs_attributes = _wrs_conf_editorParameters;
                 wrs_attributes.language = queryParams['lang'];
@@ -240,9 +241,9 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 }
 
                 // Set ModalWindow editor attribute.
-                getMethod(null, 'wrs_setModalWindowEditor', [editor], function(){
-                });
-                _wrs_modalWindowProperties.editor = editor;
+                // getMethod(null, 'wrs_setModalWindowEditor', [editor], function(){
+                // });
+                // _wrs_modalWindowProperties.editor = editor;
 
                 var ua = navigator.userAgent.toLowerCase();
                 var isAndroid = ua.indexOf("android") > -1;
@@ -400,6 +401,29 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     controls.id = 'controls_rtl';
                 }
 
+                // At this point we listen to execute editor methods or fire editor events.
+                wrs_addEvent(window, 'message', function (e) {
+                    if (e.data.objectName != 'undefined' && e.data.objectName == 'editor') {
+                        editor[e.data.methodName].apply(editor, e.data.arguments);
+                    }
+
+                    if (e.data.objectName != 'undefined' && e.data.objectName == 'event') {
+                        wrs_fireEvent(window.document, e.data.eventName);
+                    }
+                });
+
+                wrs_addEvent(window, 'mouseup', function(e) {
+                    if (_wrs_conf_modalWindow) {
+                        getMethod('_wrs_modalWindow', 'stopDrag', [], null);
+                    }
+                });
+
+                wrs_addEvent(window, 'mousedown', function(e) {
+                    if (_wrs_conf_modalWindow) {
+                        getMethod('_wrs_modalWindow', 'setOverlayDiv', [], null);
+                    }
+                });
+
                 // Auto resizing.
                 setInterval(function () {
                     editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 10) + 'px';
@@ -411,6 +435,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             } else {
                 setTimeout(wrs_waitForEditor, 100);
             }
+
         }
         wrs_waitForEditor();
     });
