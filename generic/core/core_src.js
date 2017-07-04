@@ -3422,6 +3422,37 @@ function wrs_setModalWindowEditor(editor) {
     }
 }
 
+/**
+ *
+ */
+function wrs_getServerPath() {
+    url = wrs_getCorePath()
+    var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
+    return url.substr(0, hostNameIndex);
+}
+
+/**
+ * @return {[type]} [description]
+ */
+function wrs_updateContextPath() {
+    if (typeof _wrs_conf_plugin_loaded == 'undefined') {
+            setTimeout(wrs_updateContextPath, 100);
+    } else {
+        if (_wrs_conf_showimagePath.indexOf("/") == 0) {
+            serverPath = wrs_getServerPath()
+            _wrs_conf_showimagePath = serverPath + _wrs_conf_showimagePath;
+            _wrs_conf_editorPath = serverPath + _wrs_conf_editorPath;
+            _wrs_conf_CASPath = serverPath + _wrs_conf_CASPath;
+            _wrs_conf_createimagePath = serverPath + _wrs_conf_createimagePath;
+            _wrs_conf_createcasimagePath = serverPath + _wrs_conf_createcasimagePath;
+            _wrs_conf_getmathmlPath = serverPath + _wrs_conf_getmathmlPath;
+            _wrs_conf_servicePath = serverPath + _wrs_conf_servicePath;
+        }
+     }
+}
+
+wrs_updateContextPath();
+
 // Production steps of ECMA-262, Edition 5, 15.4.4.18
 // Reference: http://es5.github.io/#x15.4.4.18.
 if (!Array.prototype.forEach) {
