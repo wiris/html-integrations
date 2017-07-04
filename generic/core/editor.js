@@ -407,7 +407,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         editor[e.data.methodName].apply(editor, e.data.arguments);
                     }
 
-                    if (e.data.objectName != 'undefined' && e.data.objectName == 'event') {
+                    if (e.data.objectName != 'undefined' && e.data.objectName == 'editorEvent') {
                         wrs_fireEvent(window.document, e.data.eventName);
                     }
                 });
