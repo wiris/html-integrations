@@ -3452,7 +3452,7 @@ function wrs_updateContextPath() {
             _wrs_conf_getmathmlPath = serverPath + _wrs_conf_getmathmlPath;
             _wrs_conf_servicePath = serverPath + _wrs_conf_servicePath;
         }
-     }
+    }
 }
 
 wrs_updateContextPath();

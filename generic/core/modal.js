@@ -244,7 +244,6 @@ ModalWindow.prototype.close = function() {
     this.setMathML('<math/>');
     this.overlayDiv.style.visibility = 'hidden';
     this.containerDiv.style.visibility = 'hidden';
-    // this.containerDiv.style.display = 'none';
     this.overlayDiv.style.display = 'none';
     this.properties.open = false;
     wrs_int_disableCustomEditors();
@@ -418,8 +417,6 @@ ModalWindow.prototype.addListeners = function() {
     wrs_addEvent(document.body, 'mousedown', this.startDrag.bind(this));
     wrs_addEvent(window, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(document, 'mouseup', this.stopDrag.bind(this));
-    // wrs_addEvent(this.iframe.contentWindow, 'mouseup', this.stopDrag.bind(this));
-    // wrs_addEvent(this.iframe.contentWindow, 'mousedown', this.setOverlayDiv.bind(this));
     wrs_addEvent(document.body, 'mousemove', this.drag.bind(this));
 }
 
