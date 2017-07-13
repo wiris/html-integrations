@@ -27,6 +27,7 @@ document.getElementsByTagName('head')[0].appendChild(script);
 $('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
+var _wrs_int_currentEditor;
 
 var _wrs_int_temporalImageResizing;
 var _wrs_int_langCode = 'en';
@@ -44,9 +45,9 @@ var _wrs_int_window_opened = false;
   // The editor parameter is the current instance.
   $.FroalaEditor.PLUGINS.wiris = function (editor) {
 
-    function focus() {
-      editor.$el.focus();
-    }
+    editor.events.on('focus', function() {
+      _wrs_int_currentEditor = this;
+    })
 
     // Entry point:
     // Register events, and global functions.
@@ -171,9 +172,9 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_insertElementOnSelection() {
-      editor.selection.restore();
-      editor.$el.focus();
-      _wrs_range = editor.selection.get().getRangeAt(0);
+      _wrs_int_currentEditor.selection.restore();
+      _wrs_int_currentEditor.$el.focus();
+      _wrs_range = _wrs_int_currentEditor.selection.get().getRangeAt(0);
     }
 
     /**
@@ -214,9 +215,9 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_getSelectedItem(target, isIframe) {
-      if (typeof editor.image.get() != 'undefined' && editor.image.get() !== null && editor.image.get().hasOwnProperty('0')) {
+      if (typeof _wrs_int_currentEditor.image.get() != 'undefined' && _wrs_int_currentEditor.image.get() !== null && _wrs_int_currentEditor.image.get().hasOwnProperty('0')) {
         var selectedItem = new Object();
-        selectedItem.node = editor.image.get()[0];
+        selectedItem.node = _wrs_int_currentEditor.image.get()[0];
         return selectedItem;
       } else {
         return wrs_getSelectedItem(target, isIframe);
