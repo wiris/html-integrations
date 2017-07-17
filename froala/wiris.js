@@ -277,4 +277,24 @@ var _wrs_int_window_opened = false;
       }
     });
 
+   $.FroalaEditor.COMMANDS.wirisEditor.refresh = function ($btn) {
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (_wrs_temporalFocusElement && 
+          _wrs_temporalFocusElement.hasAttribute('class') && _wrs_temporalFocusElement.getAttribute('class').indexOf("Wirisformula") != -1)) {
+        $btn.removeClass('fr-hidden');
+      }
+      else {
+        $btn.addClass('fr-hidden');
+      }
+  }
+
+   $.FroalaEditor.COMMANDS.wirisChemistry.refresh = function ($btn) {
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (_wrs_temporalFocusElement && 
+          _wrs_temporalFocusElement.hasAttribute('class') && _wrs_temporalFocusElement.getAttribute('class').indexOf("Wirisformula") != -1)) {
+        $btn.removeClass('fr-hidden');
+      }
+      else {
+        $btn.addClass('fr-hidden');
+      }
+  }
+
 })(jQuery);
