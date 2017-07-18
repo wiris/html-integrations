@@ -2667,21 +2667,54 @@ function wrs_initSetSize() {
     _wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml' || (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default');
 }
 
+/**
+ * Loads a set of global variables containing server configuration.
+ * This method calls to configurationjs service, converting the response
+ * JSON into javascript variables
+ * @ignore
+ */
 function wrs_loadConfiguration() {
     if (typeof _wrs_conf_path == 'undefined') {
         _wrs_conf_path = wrs_getCorePath();
     }
 
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    // Sometimes _wrs_conf_path contains a final "/" because is obtained using some editor's API.
-    // With this variable we avoid URL's with doubles //.
-    var newConfPath = _wrs_conf_path.lastIndexOf("/") == _wrs_conf_path.length - 1 ? _wrs_conf_path + _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
-    var configUrl = _wrs_int_conf_file.indexOf("/") == 0 || _wrs_int_conf_file.indexOf("http") == 0 ? _wrs_int_conf_file : newConfPath;
-    configUrl = configUrl.replace(/([^:]\/)\/+/g, "$1");
-    script.src = configUrl;
-    document.getElementsByTagName('head')[0].appendChild(script); // Asynchronous load of configuration.
+    var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    var configUrl = _wrs_int_conf_file.indexOf("/") == 0 || _wrs_int_conf_file.indexOf("http") == 0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+    httpRequest.open('GET', configUrl, false);
+    httpRequest.send(null);
+
+    var jsonConfiguration = JSON.parse(httpRequest.responseText);
+
+    // JSON structure: {{jsVariableName, jsVariableValue}}.
+
+    variables = Object.keys(jsonConfiguration);
+
+    for (variable in variables) {
+        window[variables[variable]] = jsonConfiguration[variables[variable]];
+    }
+
+    // Services path (tech dependant).
+    wrs_loadServicePaths(configUrl);
+
+    // End configuration.
+    _wrs_conf_configuration_loaded = true;
+    if (typeof _wrs_conf_core_loaded != 'undefined') {
+        _wrs_conf_plugin_loaded = true;
+    }
 }
+
+function wrs_loadServicePaths(url) {
+    // Services path (tech dependant).
+    _wrs_conf_createimagePath = url.replace('configurationjs', 'createimage');
+    _wrs_conf_showimagePath = url.replace('configurationjs', 'showimage');
+    _wrs_conf_editorPath = url.replace('configurationjs', 'editor');
+    _wrs_conf_CASPath = url.replace('configurationjs', 'cas');
+    _wrs_conf_createcasimagePath = url.replace('configurationjs', 'createcasimage');
+    _wrs_conf_getmathmlPath = url.replace('configurationjs', 'getmathml');
+    _wrs_conf_servicePath = url.replace('configurationjs', 'service');
+}
+
+_wrs_conf_plugin_loaded = true;
 
 function wrs_getCorePath() {
     var scriptName = "core/core.js";
@@ -2712,9 +2745,13 @@ function wrs_concatenateUrl(path1, path2) {
 
 var _wrs_conf_core_loaded = true;
 
+// Loading javascript configuration.
 if (typeof _wrs_conf_configuration_loaded == 'undefined') {
     wrs_loadConfiguration();
 } else {
+    var configUrl = _wrs_int_conf_file.indexOf("/") == 0 || _wrs_int_conf_file.indexOf("http") == 0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
+    // If javascript configuration is loaded we need to load service paths manually.
+    wrs_loadServicePaths(configUrl);
     _wrs_conf_plugin_loaded = true;
 }
 

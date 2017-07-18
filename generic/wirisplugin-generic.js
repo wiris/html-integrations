@@ -21,6 +21,7 @@ if (_wrs_int_conf_file.indexOf("@") == 0 && typeof _wrs_int_conf_file_override !
     _wrs_int_conf_file = _wrs_int_conf_file_override;
 }
 
+var strings = [];
 
 var _wrs_int_path = _wrs_int_conf_file.split("/");
 _wrs_int_path.pop();
@@ -37,7 +38,6 @@ if (!_wrs_int_conf_async) {
 }
 
 var _wrs_int_editorIcon = '/icons/formula.png';
-var _wrs_int_CASIcon = '/icons/cas.png';
 var _wrs_int_temporalIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
@@ -117,19 +117,6 @@ function wrs_int_init_handler(target,toolbar) {
             toolbar.appendChild(formulaButton);
         }
 
-        if (_wrs_conf_CASEnabled) {
-            var CASButton = document.createElement('img');
-            CASButton.src = _wrs_conf_path + _wrs_int_CASIcon;
-            CASButton.id = "casIcon";
-            CASButton.style.cursor = 'pointer';
-
-            wrs_addEvent(CASButton, 'click', function () {
-                wrs_int_openNewCAS(target, _wrs_int_langCode);
-            });
-
-            toolbar.appendChild(CASButton);
-        }
-
         // Dynamic customEditors buttons.
         for (var key in _wrs_int_customEditors) {
             if (_wrs_int_customEditors.hasOwnProperty(key)) {
@@ -169,22 +156,6 @@ function wrs_int_openNewFormulaEditor(iframe, language) {
 }
 
 /**
- * Opens CAS.
- * @param object iframe Target
- */
-function wrs_int_openNewCAS(iframe, language) {
-    if (_wrs_int_window_opened) {
-        _wrs_int_window.focus();
-    }
-    else {
-        _wrs_int_window_opened = true;
-        _wrs_isNewElement = true;
-        _wrs_int_temporalIframe = iframe;
-        _wrs_int_window = wrs_openCASWindow(iframe, true, language);
-    }
-}
-
-/**
  * Handles a double click on the iframe.
  * @param object iframe Target
  * @param object element Element double clicked
@@ -199,15 +170,6 @@ function wrs_int_doubleClickHandler(iframe, element) {
             if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
                 _wrs_temporalImage = element;
                 wrs_int_openExistingFormulaEditor(iframe, _wrs_int_langCode);
-            }
-            else {
-                _wrs_int_window.focus();
-            }
-        }
-        else if (wrs_containsClass(element, 'Wiriscas')) {
-            if (!_wrs_int_window_opened) {
-                _wrs_temporalImage = element;
-                wrs_int_openExistingCAS(iframe, _wrs_int_langCode);
             }
             else {
                 _wrs_int_window.focus();
@@ -228,24 +190,13 @@ function wrs_int_openExistingFormulaEditor(iframe, language) {
 }
 
 /**
- * Opens CAS to edit an existing formula.
- * @param object iframe Target
- */
-function wrs_int_openExistingCAS(iframe, language) {
-    _wrs_int_window_opened = true;
-    _wrs_isNewElement = false;
-    _wrs_int_temporalIframe = iframe;
-    _wrs_int_window = wrs_openCASWindow(iframe, true, language);
-}
-
-/**
  * Handles a mouse down event on the iframe.
  * @param object iframe Target
  * @param object element Element mouse downed
  */
 function wrs_int_mousedownHandler(iframe, element) {
     if (element.nodeName.toLowerCase() == 'img') {
-        if (wrs_containsClass(element, 'Wirisformula') || wrs_containsClass(element, 'Wiriscas')) {
+        if (wrs_containsClass(element, 'Wirisformula')) {
             _wrs_int_temporalImageResizing = element;
         }
     }
@@ -268,17 +219,6 @@ function wrs_int_mouseupHandler() {
  */
 function wrs_int_updateFormula(mathml, editMode) {
     wrs_updateFormula(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, mathml, null, editMode);
-}
-
-/**
- * Calls wrs_updateCAS with well params.
- * @param string appletCode
- * @param string image
- * @param int width
- * @param int height
- */
-function wrs_int_updateCAS(appletCode, image, width, height) {
-    wrs_updateCAS(_wrs_int_temporalIframe.contentWindow, _wrs_int_temporalIframe.contentWindow, appletCode, image, width, height);
 }
 
 /**

@@ -24,10 +24,21 @@ var _wrs_int_path = wrs_intPath(_wrs_int_conf_file, _wrs_conf_path);
 // Load configuration synchronously.
 if (!_wrs_int_conf_async) {
     var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-    var configUrl = (_wrs_int_conf_file.indexOf('/') == 0 || _wrs_int_conf_file.indexOf('http') == 0) ? _wrs_int_conf_file : _wrs_conf_path + '/' + _wrs_int_conf_file;
+    var configUrl = _wrs_int_conf_file.indexOf("/") == 0 || _wrs_int_conf_file.indexOf("http") == 0 ? _wrs_int_conf_file : _wrs_conf_path + "/" + _wrs_int_conf_file;
     httpRequest.open('GET', configUrl, false);
     httpRequest.send(null);
-    eval(httpRequest.responseText);
+
+    var jsonConfiguration = JSON.parse(httpRequest.responseText);
+
+    // JSON structure: {{jsVariableName, jsVariableValue}}.
+
+    variables = Object.keys(jsonConfiguration);
+
+    for (variable in variables) {
+        window[variables[variable]] = jsonConfiguration[variables[variable]];
+    }
+
+    _wrs_conf_configuration_loaded = true;
 }
 
 var _wrs_conf_pluginBasePath = _wrs_conf_path;

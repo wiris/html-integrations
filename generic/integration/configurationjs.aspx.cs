@@ -10,14 +10,6 @@ namespace plugin_web
 {
     public partial class configurationjs : System.Web.UI.Page
     {
-        private void outVar(System.Web.HttpResponse output, string key, string script) {
-            output.Write("var _wrs_conf_");
-            output.Write(key);
-            output.Write(" = _wrs_int_path +'/");
-            output.Write(script);
-            output.Write(".aspx';\r\n");
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
@@ -28,17 +20,9 @@ namespace plugin_web
             String origin = this.Request.Headers.Get("origin");
             pb.addCorsHeaders(res, origin);
 
-            Response.ContentType = "application/x-javascript";
+            Response.ContentType = "application/json";
 
-            string r = pb.getConfiguration().getJavaScriptConfiguration();
-            outVar(Response,"createimagePath","createimage");
-            outVar(Response, "showimagePath", "showimage");
-            outVar(Response,"editorPath","editor");
-            outVar(Response,"CASPath","cas");
-            outVar(Response,"createimagePath","createimage");
-            outVar(Response,"createcasimagePath","createcasimage");
-            outVar(Response,"getmathmlPath","getmathml");
-            outVar(Response,"servicePath", "service");
+            string r = pb.getConfiguration().getJavaScriptConfigurationJson();
             this.Response.Write(r);
         }
 

@@ -49,11 +49,19 @@ if (!_wrs_int_conf_async) {
     var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path +  _wrs_int_conf_file;
     httpRequest.open('GET', configUrl, false);
     httpRequest.send(null);
-    
-    if (httpRequest.status == 200) {
-        eval(httpRequest.responseText);
-        _wrs_int_conf_file_loaded = true;
+
+    var jsonConfiguration = JSON.parse(httpRequest.responseText);
+
+    // JSON structure: {{jsVariableName, jsVariableValue}}
+
+    variables = Object.keys(jsonConfiguration);
+
+    for (variable in variables) {
+        window[variables[variable]]= jsonConfiguration[variables[variable]];
     }
+
+    _wrs_int_conf_file_loaded = true;
+    _wrs_conf_configuration_loaded = true;
 }
 
 // Including core.js
