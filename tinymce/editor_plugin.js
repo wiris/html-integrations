@@ -52,6 +52,7 @@ var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
+var _wrs_int_imagesDataimgFilterBackup = [];
 // Custom Editors.
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 
@@ -68,6 +69,20 @@ var _wrs_int_langCode = 'en';
 (function () {
     tinymce.create('tinymce.plugins.tiny_mce_wiris', {
         init: function (editor, url) {
+            _wrs_int_imagesDataimgFilterBackup[editor.id] = editor.settings.images_dataimg_filter;
+            editor.settings.images_dataimg_filter = function(img) {
+                if (img.hasAttribute('class') && img.getAttribute('class').indexOf('Wirisformula') != -1) {
+                    return img.hasAttribute('internal-blob');
+                }
+                else {
+                    // If the client put an image data filter, run. Otherwise default behaviour (put blob)
+                    if (typeof _wrs_int_imagesDataimgFilterBackup[editor.id] != 'undefined') {
+                        return _wrs_int_imagesDataimgFilterBackup[editor.id](img);
+                    }
+                    return true;
+                }
+            }
+
             // Including core.js
             // First of all: recalculating _wrs_conf_path if WIRIS plugin has been loaded as an external plugin.
             // Cant access editor params since now.
