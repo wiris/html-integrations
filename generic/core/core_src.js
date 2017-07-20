@@ -2733,18 +2733,25 @@ function wrs_getCorePath() {
 }
 
 function wrs_loadLangFile() {
-    var http = new XMLHttpRequest();
-    http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js", false);
-    http.send();
-    if (http.status == 404) {
-        http = new XMLHttpRequest();
-        http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode.substring(0, 2) + "/strings.js", false);
+    // When a language is not defined, put english (en) as default.
+    if (typeof _wrs_int_langCode == 'undefined' || _wrs_int_langCode == null) {
+        _wrs_int_langCode = 'en';
+    }
+    else {
+        var http = new XMLHttpRequest();
+        http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js", false);
         http.send();
         if (http.status == 404) {
-            _wrs_int_langCode = 'en';
-        }
-        else {
-            _wrs_int_langCode = _wrs_int_langCode.substring(0, 2);
+            http = new XMLHttpRequest();
+            http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode.substring(0, 2) + "/strings.js", false);
+            http.send();
+            if (http.status == 404) {
+                // When a "father" language is not found, put english (en) as default.
+                _wrs_int_langCode = 'en';
+            }
+            else {
+                _wrs_int_langCode = _wrs_int_langCode.substring(0, 2);
+            }
         }
     }
     var script = document.createElement('script');
