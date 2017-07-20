@@ -574,6 +574,12 @@ function wrs_createObject(objectCode, creator) {
  * @ignore
  */
 function wrs_createObjectCode(object) {
+
+    // In case that the image was not created, the object can be null or undefined.
+    if (typeof object == 'undefined' || object == null) {
+        return;
+    }
+
     if (object.nodeType == 1) { // ELEMENT_NODE.
         var output = '<' + object.tagName;
 
@@ -1996,7 +2002,13 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
         if (result["status"] == 'warning') {
             // POST call.
-             result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
+            // if the mathml is malformed, this function will throw an exception
+            try {
+                result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
+            }
+            catch (e) {
+                return;
+            }
         }
         result = result.result;
         if (result['format'] == 'png') {
