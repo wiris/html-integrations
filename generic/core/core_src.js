@@ -2737,7 +2737,15 @@ function wrs_loadLangFile() {
     http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js", false);
     http.send();
     if (http.status == 404) {
-         _wrs_int_langCode = 'en';
+        http = new XMLHttpRequest();
+        http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode.substring(0, 2) + "/strings.js", false);
+        http.send();
+        if (http.status == 404) {
+            _wrs_int_langCode = 'en';
+        }
+        else {
+            _wrs_int_langCode = _wrs_int_langCode.substring(0, 2);
+        }
     }
     var script = document.createElement('script');
     script.type = 'text/javascript';
