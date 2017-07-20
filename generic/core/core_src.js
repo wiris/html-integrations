@@ -2733,6 +2733,12 @@ function wrs_getCorePath() {
 }
 
 function wrs_loadLangFile() {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js", false);
+    http.send();
+    if (http.status == 404) {
+         _wrs_int_langCode = 'en';
+    }
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js";
