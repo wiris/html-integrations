@@ -15,7 +15,7 @@ namespace plugin_web
             PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
             ParamsProvider provider = pb.getCustomParamsProvider();
             String digest = provider.getParameter("formula", null);
-            String mml = provider.getParameter("mml", null);            
+            String mml = provider.getParameter("mml", null);
 
             if (digest==null && mml==null) {
                 throw new Exception("Missing parameters 'formula' or 'mml'.");
@@ -27,10 +27,10 @@ namespace plugin_web
                 digest = digest.Substring(0, digest.LastIndexOf("."));
             }
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
-            // Adding - if necessary - CORS headers            
+            // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);
             String origin = this.Request.Headers.Get("origin");
-            pb.addCorsHeaders(res, origin);            
+            pb.addCorsHeaders(res, origin);
             if (pb.getConfiguration().getProperty("wirispluginperformance","xml").IndexOf("true") != -1) {
 
                 String useragent = provider.getParameter("useragent", "");
@@ -42,14 +42,17 @@ namespace plugin_web
                 }
 
                 Response.ContentType = "application/json";
-                Response.AddHeader("Cache-Control", "max-age=3600");
-                int secondsToCache = 3600;
+                Response.AddHeader("Cache-Control", "public, max-age=3600");
                 if (digest == null) {
                     pb.newRender().showImage(digest,mml,provider);
                     digest = pb.newRender().computeDigest(mml, provider.getParameters());
                 }
                 string r = pb.newRender().showImageJson(digest, "en");
-                Response.Write(r);            
+                if (r.IndexOf("warning") != -1)
+                {
+                    Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                }
+                Response.Write(r);
             } else {
                 byte [] bs = pb.newRender().showImage(digest,mml,provider);
                 Response.ContentType = pb.getImageFormatController().getContentType();

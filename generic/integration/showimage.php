@@ -25,17 +25,21 @@ $pluginBuilder->addCorsHeaders($res, $origin);
 
 if ($pluginBuilder->getConfiguration()->getProperty("wirispluginperformance", "false") == "true") {
 
+    // Cache headers
     header("Content-type: application/json");
-    $secondsToCache = 3600;
-    $ts = gmdate("D, d M Y H:i:s", time() + $secondsToCache) . " GMT";
-    header("Expires: $ts");
-    header("Cache-Control: max-age=$secondsToCache");
+    header("Pragma:"); // HTTP 1.0
+    header("Cache-Control: public, max-age=3600"); // HTTP 1.1
     // If digest == null formula is not in cache.
     if (is_null($digest)) {
         $render->showImage(null, $mml, $provider);
         $digest = $render->computeDigest($mml, $provider->getRenderParameters($pluginBuilder->getConfiguration()));
     }
     $r = $render->showImageJson($digest, $lang);
+    // If a formula is not in server cache, this request shouldn't be cached.
+    if (strpos($r, "warning" )) {
+        header("Pragma: no-cache"); // HTTP 1.0
+        header("Cache-Control: no-cache, no-store, must-revalidate"); //HTTP 1.1
+    }
 } else {
     $contentType = $pluginBuilder->getImageFormatController()->getContentType();
     header('Content-Type: ' . $contentType);
