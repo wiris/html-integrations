@@ -180,12 +180,10 @@ ModalWindow.prototype.open = function() {
 
         // It controls cases where is needed to set an empty mathml or copy the current mathml value.
         var updateMathMLContent = function () {
-            if (!self.lastImageWasNew) {
-                if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
-                    this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-                } else {
-                    this.setMathML('<math/>');
-                }
+            if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
+                self.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+            } else {
+                self.setMathML('<math/>');
             }
         };
 
@@ -203,7 +201,7 @@ ModalWindow.prototype.open = function() {
         else {
             this.containerDiv.style.visibility = '';
             this.overlayDiv.style.visibility = '';
-            this.containerDiv.style.display = '';
+            this.containerDiv.style.opacity = '';
             this.overlayDiv.style.display = '';
 
             this.properties.open = true;
@@ -244,7 +242,7 @@ ModalWindow.prototype.close = function() {
     this.setMathML('<math/>');
     this.overlayDiv.style.visibility = 'hidden';
     this.containerDiv.style.visibility = 'hidden';
-    this.containerDiv.style.display = 'none';
+    this.containerDiv.style.opacity = '0';
     this.overlayDiv.style.display = 'none';
     this.properties.open = false;
     wrs_int_disableCustomEditors();
