@@ -152,7 +152,8 @@ ModalWindow.prototype.create = function() {
 
 ModalWindow.prototype.open = function() {
 
-    this.hideKeyboard();
+    // Due to editor configurations we need to wait a few time.
+    setTimeout(function() {_wrs_modalWindow.hideKeyboard(), 300});
 
     if (this.properties.open == true || this.properties.created) {
 
