@@ -215,7 +215,6 @@ ModalWindow.prototype.open = function() {
                 this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
                 this.lastImageWasNew = false;
             }
-            console.log("focusing");
             this.focus();
 
             if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIOS) {
