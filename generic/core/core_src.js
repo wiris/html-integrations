@@ -2765,7 +2765,7 @@ function wrs_loadLangFile() {
 
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = wrs_getCorePath() + "/lang/" + _wrs_int_langCode + "/strings.js";
+    script.src = wrs_getCorePath() + "/@language_folder@/" + _wrs_int_langCode + "/strings.js";
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
