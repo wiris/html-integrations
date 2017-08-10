@@ -2702,9 +2702,9 @@ function wrs_loadConfiguration() {
 
     // JSON structure: {{jsVariableName, jsVariableValue}}.
 
-    variables = Object.keys(jsonConfiguration);
+    var variables = Object.keys(jsonConfiguration);
 
-    for (variable in variables) {
+    for (var variable in variables) {
         window[variables[variable]] = jsonConfiguration[variables[variable]];
     }
 
