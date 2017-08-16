@@ -3,7 +3,8 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 
 // Get _wrs_conf_path (plugin URL).
 var col = document.getElementsByTagName("script");
-var scriptName = "wiris.js";
+// In order to run when wiris.js is inside /assets folder and running as a precompiled asset, we need to search by 'wiris.'
+var scriptName = "wiris.";
 for (i = 0; i < col.length; i++) {
     j = col[i].src.lastIndexOf(scriptName);
     if (j >= 0) {
@@ -215,7 +216,8 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_getSelectedItem(target, isIframe) {
-      if (typeof _wrs_int_currentEditor.image.get() != 'undefined' && _wrs_int_currentEditor.image.get() !== null && _wrs_int_currentEditor.image.get().hasOwnProperty('0')) {
+      if (typeof _wrs_int_currentEditor.image != 'undefined' && typeof _wrs_int_currentEditor.image.get() != 'undefined' &&
+          _wrs_int_currentEditor.image.get() !== null && _wrs_int_currentEditor.image.get().hasOwnProperty('0')) {
         var selectedItem = new Object();
         selectedItem.node = _wrs_int_currentEditor.image.get()[0];
         return selectedItem;
