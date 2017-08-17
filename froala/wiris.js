@@ -174,8 +174,10 @@ var _wrs_int_window_opened = false;
 
     function wrs_int_insertElementOnSelection() {
       _wrs_int_currentEditor.selection.restore();
-      _wrs_int_currentEditor.$el.focus();
-      _wrs_range = _wrs_int_currentEditor.selection.get().getRangeAt(0);
+      if (_wrs_int_currentEditor.selection.get().anchorNode != null) {  // In case of not modify...
+        _wrs_int_currentEditor.selection.element().focus();
+        _wrs_range = _wrs_int_currentEditor.selection.get().getRangeAt(0);
+      }
     }
 
     /**
@@ -186,33 +188,33 @@ var _wrs_int_window_opened = false;
      * @param bool isIframe target is an iframe or not
      */
     function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
-        // This loop allows the double clicking on the formulas represented with span's.
 
-        while (!wrs_containsClass(element, 'Wirisformula')) {
-            if (element == null) return;
-            element = element.parentNode;
-        }
+      // This loop allows the double clicking on the formulas represented with span's.
+      while (!wrs_containsClass(element, 'Wirisformula')) {
+        if (element == null) return;
+        element = element.parentNode;
+      }
 
-        wrs_int_disableCustomEditors();
+      wrs_int_disableCustomEditors();
 
-        var elementName = element.nodeName.toLowerCase();
-        if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
-            if (wrs_containsClass(element, 'Wirisformula')) {
-                if (customEditor = element.getAttribute('data-custom-editor')) {
-                    if (window[_wrs_int_customEditors[customEditor].confVariable]) {
-                        wrs_int_enableCustomEditor(customEditor);
-                    }
-                }
+      var elementName = element.nodeName.toLowerCase();
+      if (elementName == 'img' || elementName == 'iframe' || elementName == 'span') {
+          if (wrs_containsClass(element, 'Wirisformula')) {
+              if (customEditor = element.getAttribute('data-custom-editor')) {
+                  if (window[_wrs_int_customEditors[customEditor].confVariable]) {
+                      wrs_int_enableCustomEditor(customEditor);
+                  }
+              }
 
-                if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
-                    _wrs_temporalImage = element;
-                    wrs_int_openExistingFormulaEditor(target, isIframe, 'en');
-                }
-                else {
-                    _wrs_int_window.focus();
-                }
-            }
-        }
+              if (!_wrs_int_window_opened || _wrs_conf_modalWindow) {
+                  _wrs_temporalImage = element;
+                  wrs_int_openExistingFormulaEditor(target, isIframe, 'en');
+              }
+              else {
+                  _wrs_int_window.focus();
+              }
+          }
+      }
     }
 
     function wrs_int_getSelectedItem(target, isIframe) {
