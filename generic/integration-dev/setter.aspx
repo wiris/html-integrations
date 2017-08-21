@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="setter.aspx.cs" Inherits="plugin_web.setter" %>
