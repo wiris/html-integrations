@@ -5,8 +5,8 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 var col = document.getElementsByTagName("script");
 // In order to run when wiris.js is inside /assets folder and running as a precompiled asset, we need to search by 'wiris.'
 var scriptName = "wiris.";
-for (i = 0; i < col.length; i++) {
-    j = col[i].src.lastIndexOf(scriptName);
+for (var i = 0; i < col.length; i++) {
+    var j = col[i].src.lastIndexOf(scriptName);
     if (j >= 0) {
         baseURL = col[i].src.substr(0, j - 1);
     }

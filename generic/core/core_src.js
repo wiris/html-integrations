@@ -2734,7 +2734,7 @@ _wrs_conf_plugin_loaded = true;
 function wrs_getCorePath() {
     var scriptName = "core/core.js";
     var col = document.getElementsByTagName("script");
-    for (i = 0; i < col.length; i++) {
+    for (var i = 0; i < col.length; i++) {
         var d;
         var src;
         d = col[i];
