@@ -162,7 +162,7 @@ wiriscorsenabled = false
 
 ## Specifies if the response should be a JSON instead of a binary which allows requests be cached. true by default.
 
-wirispluginperformance = false
+#wirispluginperformance = true
 
 ##############################################################################################################################
 # Clean cache  service parameters. For further information go to http://www.wiris.com/en/plugins/docs/resources/clean-backup #
