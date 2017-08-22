@@ -175,7 +175,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             }
 
             // Editor stats.
-
             statEditor = _wrs_conf_editor;
             statSaveMode = _wrs_conf_saveMode;
             statVersion = _wrs_conf_version;
@@ -183,10 +182,23 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             script.src = editorUrl + "?lang=" + _wrs_int_langCode + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
             document.getElementsByTagName('head')[0].appendChild(script);
 
-            // Insert strings.
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = "../lang/" + _wrs_int_langCode + "/strings.js";
+            script.src = "../";
+            // Get lang path
+            var webScripts = document.getElementsByTagName("script");
+            var scriptName = "strings.js";
+            var found = false;
+            var i = 0;
+            while (!found && i < webScripts.length) {
+                if (webScripts[i].src.indexOf(scriptName) != -1) {
+                    var pathArray = webScripts[i].src.split("/");
+                    // We need to get the lang folder name of "../[lang_folder]/[lang_code]/strings.js"
+                    script.src += pathArray[pathArray.length - 3 ] + "/strings.js";
+                    found = true;
+                }
+                i++
+            }
             document.getElementsByTagName('head')[0].appendChild(script);
         } else {
             setTimeout(wrs_waitForCore, 200);
