@@ -194,7 +194,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 if (webScripts[i].src.indexOf(scriptName) != -1) {
                     var pathArray = webScripts[i].src.split("/");
                     // We need to get the lang folder name of "../[lang_folder]/[lang_code]/strings.js"
-                    script.src += pathArray[pathArray.length - 3 ] + _wrs_int_langCode + "/strings.js";
+                    script.src += pathArray[pathArray.length - 3 ] + "/" + _wrs_int_langCode + "/strings.js";
                     found = true;
                 }
                 i++
