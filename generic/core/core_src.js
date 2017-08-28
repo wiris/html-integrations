@@ -120,7 +120,7 @@ if (!(window._wrs_conf_CASClassName)) {
 if (typeof MutationObserver != 'undefined') {
     var wrs_observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
-            if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' && mutation.targetpassName.indexOf(_wrs_conf_imageClassName) == -1 ) {
+            if (mutation.oldValue == _wrs_conf_imageClassName && mutation.attributeName == 'class' && mutation.target.className.indexOf(_wrs_conf_imageClassName) == -1 ) {
                 mutation.target.className = _wrs_conf_imageClassName;
             }
         });
