@@ -1855,6 +1855,7 @@ function wrs_mathmlToAccessible(mathml, language, data) {
     }
     else {
         data['service'] = 'mathml2accessible';
+        data['lang'] = _wrs_int_langCode;
         var accesibleJsonResponse = JSON.parse(wrs_getContent(_wrs_conf_servicePath, data));
         if (accesibleJsonResponse.status != 'error') {
             accessibleText = accesibleJsonResponse.result.text;
