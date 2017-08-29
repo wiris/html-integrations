@@ -195,7 +195,7 @@ ModalWindow.prototype.open = function() {
                 self.lastImageWasNew = true;
             }
             else {
-                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
             }
         }
@@ -213,7 +213,7 @@ ModalWindow.prototype.open = function() {
                 updateMathMLContent();
                 self.lastImageWasNew = true;
             } else {
-                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute('data-mathml')));
+                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
             }
             this.focus();
