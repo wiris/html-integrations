@@ -86,7 +86,7 @@ var _wrs_int_langCode = 'en';
             // Including core.js
             // First of all: recalculating _wrs_conf_path if WIRIS plugin has been loaded as an external plugin.
             // Cant access editor params since now.
-            if (typeof editor.getParam('external_plugins') != 'undefined' && typeof editor.getParam('external_plugins')['tiny_mce_wiris'] != 'undefined') {
+            if (typeof editor.getParam('external_plugins') != 'undefined' && editor.getParam('external_plugins') != null && typeof editor.getParam('external_plugins')['tiny_mce_wiris'] != 'undefined') {
                 var external_url = editor.getParam('external_plugins')['tiny_mce_wiris'];
                 _wrs_conf_path = external_url.substring(0,external_url.lastIndexOf("/") + 1)
                 // New int path.
