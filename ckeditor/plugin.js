@@ -524,7 +524,6 @@ function checkElement(editor, element, callback) {
                     break;
                 }
             }
-            debugger;
             if (dataContainer) {
                 newElement = document.getElementById(classElement + '_contents');
                 divIframe = true;
