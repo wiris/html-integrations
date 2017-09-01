@@ -507,23 +507,28 @@ function checkElement(editor, element, callback) {
     try {
         var newElement;
         divIframe = false;
-
+        var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
         if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
             newElement = editor.element.$;
         }
         else {
-            var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
             newElement = elem.getElementsByTagName('iframe')[0];
         }
 
         if (newElement == null) { // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
-            var index = 1;
-            for (var key in CKEDITOR.instances) {
-                if (key == editor.name) break;
-                else index++;
+            var dataContainer;
+            for (var classElementIndex in elem.classList) {
+                var classElement = elem.classList[classElementIndex];
+                if (classElement.search('cke_\\d') != -1) {
+                    dataContainer = classElement;
+                    break;
+                }
             }
-            newElement = document.getElementById('cke_' + index + '_contents');
-            divIframe = true;
+            debugger;
+            if (dataContainer) {
+                newElement = document.getElementById(classElement + '_contents');
+                divIframe = true;
+            }
         }
 
         if ((!newElement.wirisActive && element == null) || newElement != element) {
