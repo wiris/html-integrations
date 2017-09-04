@@ -583,3 +583,11 @@ function wrs_int_insertElementOnSelection() {
         _wrs_range.setStart(startcontainer, startcontaineroffset);
     }
 }
+
+/**
+ * This function is called from wrs_int_selectRange on core.js
+ * Uses CKEDITOR focus method to move caret to a specific range.
+ */
+function wrs_int_selectRange(range) {
+    _wrs_currentEditor.getSelection().selectRanges(range);
+}
