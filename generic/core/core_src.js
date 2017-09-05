@@ -1606,14 +1606,6 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                     range.selectNode(element);
                     position = range.endOffset;
                     selection.collapse(node, position);
-                    // Integration function
-                    // If wrs_int_setCaretPosition function exists on
-                    // integration script can call caret method from the editor instance.
-                    // With this method we can call proper specific editor methods which in some scenarios
-                    // help's WIRIS plugin to set caret position properly on the current editor window.
-                    if (typeof wrs_int_selectRange != 'undefined') {
-                        wrs_int_selectRange();
-                    }
                 }
             }
         }
