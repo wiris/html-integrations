@@ -1615,7 +1615,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                     // With this method we can call proper specific editor methods which in some scenarios
                     // help's WIRIS plugin to set caret position properly on the current editor window.
                     if (typeof wrs_int_selectRange != 'undefined') {
-                        wrs_int_selectRange();
+                        wrs_int_selectRange(range);
                     }
                 }
             }

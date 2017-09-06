@@ -579,7 +579,7 @@ function wrs_int_insertElementOnSelection() {
         focusManager.focus();
 
         // Assert that we are working into a ckeditor field.
-        var currentEditorContainer = document.getElementById(editor.id + "_contents");
+        var currentEditorContainer = _wrs_int_temporalElementIsIframe ? _wrs_int_temporalElement.contentDocument.body : _wrs_int_temporalElement;
         var targetElement = editor.getSelection().getStartElement().$;
         var currentrange = editor.getSelection().getRanges()[0]
         if (typeof currentrange == 'undefined' || !currentEditorContainer.contains(targetElement)) {
