@@ -194,9 +194,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
                     editor.setData(lastDataSet, {
                         callback: function() {
-                            var range = editor.createRange();
-                            range.moveToElementEditablePosition(editor.editable(), true);
-                            editor.getSelection().selectRanges([range]);
                             setInterval(checkElement(editor, element, function(el){element = el;}, 500));
                             editor.resetDirty();
                         }
