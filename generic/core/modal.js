@@ -157,10 +157,6 @@ ModalWindow.prototype.open = function() {
     setTimeout(function() {_wrs_modalWindow.hideKeyboard(), 300});
 
     if (this.properties.open == true || this.properties.created) {
-
-        var editor = this.editor;
-
-        // TODO: Rewrite this method.
         var updateToolbar = function(object) {
             if (customEditor = wrs_int_getCustomEditorEnabled()) {
                 var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
@@ -250,6 +246,7 @@ ModalWindow.prototype.close = function() {
     // Properties to initial state.
     this.properties.state = '';
     this.properties.previousState = '';
+    setTimeout(function() {_wrs_currentEditor.focus()}, 100);
 }
 
 ModalWindow.prototype.addClass = function(cls) {
@@ -553,7 +550,10 @@ ModalWindow.prototype.hideKeyboard = function() {
                 field.setAttribute('style', 'display:none;');
                 setTimeout(function() {
                     document.body.removeChild(field);
-                    document.body.focus();
+                    // Focus workspace
+                    if (typeof _wrs_modalWindow.containerDiv.getElementsByTagName('iframe')[0].contentDocument.body.getElementsByClassName('wrs_focusElement')[0] != 'undefined') {
+                        _wrs_modalWindow.containerDiv.getElementsByTagName('iframe')[0].contentDocument.body.getElementsByClassName('wrs_focusElement')[0].focus();
+                    }
                 }, 14);
 
           }, 200);
