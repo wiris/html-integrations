@@ -577,9 +577,28 @@ function wrs_int_insertElementOnSelection() {
     if (editor) {
         var focusManager = new CKEDITOR.focusManager(editor);
         focusManager.focus();
+
+        // Assert that we are working into a ckeditor field.
+        var currentEditorContainer = document.getElementById(editor.id + "_contents");
+        var targetElement = editor.getSelection().getStartElement().$;
         var currentrange = editor.getSelection().getRanges()[0]
-        var startcontainer = currentrange.startContainer.$;
-        var startcontaineroffset = currentrange.startOffset;
-        _wrs_range.setStart(startcontainer, startcontaineroffset);
+        if (typeof currentrange == 'undefined' || !currentEditorContainer.contains(targetElement)) {
+            _wrs_range = null;
+        }
+        else {
+            var startcontainer = currentrange.startContainer.$;
+            var startcontaineroffset = currentrange.startOffset;
+            _wrs_range.setStart(startcontainer, startcontaineroffset);
+        }
     }
+}
+
+/**
+ * This function is called from wrs_int_selectRange on core.js
+ * Uses CKEDITOR focus method to move caret to a specific range.
+ */
+function wrs_int_selectRange(range) {
+    range.startContainer = range.endContainer;
+    range.startOffset = range.endOffset;
+    _wrs_currentEditor.getSelection().selectRanges(range);
 }
