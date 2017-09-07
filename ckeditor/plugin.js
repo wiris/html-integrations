@@ -83,6 +83,8 @@ var _wrs_int_temporalImageResizing;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
+// To know if a new editor is created after onLoad.
+var _wrs_int_firstInstanceLoaded = false;
 // Custom Editors: 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 // Lang
@@ -194,6 +196,18 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
                     editor.setData(lastDataSet, {
                         callback: function() {
+                            if (!_wrs_int_firstInstanceLoaded) {
+                                var editorInstances = Object.keys(CKEDITOR.instances);
+                                if (typeof editorInstances[0] != 'undefined') {
+                                    CKEDITOR.instances[editorInstances[0]].focus();
+                                }
+                                setTimeout(function() {_wrs_int_firstInstanceLoaded = true}, 500);
+                            }
+                            else {                                
+                                var range = editor.createRange();
+                                range.moveToElementEditablePosition(editor.editable(), true);
+                                editor.getSelection().selectRanges([range]);
+                            }
                             setInterval(checkElement(editor, element, function(el){element = el;}, 500));
                             editor.resetDirty();
                         }
