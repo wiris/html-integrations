@@ -18,7 +18,7 @@ if (CKEDITOR.plugins.externals.hasOwnProperty('ckeditor_wiris')) {
 _wrs_cont_contextPath = (function() {
 
     for (var id in CKEDITOR.instances) {
-        if (typeof(CKEDITOR.instances[id].config.wiriscontextpath) != "undefined") {
+        if (typeof(CKEDITOR.instances[id].config.wiriscontextpath) != 'undefined') {
             _wrs_cont_contextPath = CKEDITOR.instances[id].config.wiriscontextpath;
         }
     }
@@ -36,17 +36,17 @@ var _wrs_int_conf_async = false;
 var _wrs_conf_path = CKEDITOR.plugins.getPath('ckeditor_wiris');
 
 // Stats editor (needed by core/editor.js)
-var _wrs_conf_editor = "CKEditor4";
+var _wrs_conf_editor = 'CKEditor4';
 
-var _wrs_int_path = _wrs_int_conf_file.split("/");
+var _wrs_int_path = _wrs_int_conf_file.split('/');
 _wrs_int_path.pop();
-_wrs_int_path = _wrs_int_path.join("/");
-_wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : _wrs_conf_path + _wrs_int_path;
+_wrs_int_path = _wrs_int_path.join('/');
+_wrs_int_path = _wrs_int_path.indexOf('/')==0 || _wrs_int_path.indexOf('http')==0 ? _wrs_int_path : _wrs_conf_path + _wrs_int_path;
 
 // Load configuration synchronously
 if (!_wrs_int_conf_async) {
     var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest():new ActiveXObject('Microsoft.XMLHTTP');
-    var configUrl = _wrs_int_conf_file.indexOf("/")==0 || _wrs_int_conf_file.indexOf("http")==0 ? _wrs_int_conf_file : _wrs_conf_path +  _wrs_int_conf_file;
+    var configUrl = _wrs_int_conf_file.indexOf('/')==0 || _wrs_int_conf_file.indexOf('http')==0 ? _wrs_int_conf_file : _wrs_conf_path + _wrs_int_conf_file;
     httpRequest.open('GET', configUrl, false);
     httpRequest.send(null);
 
@@ -69,9 +69,6 @@ var script = document.createElement('script');
 script.type = 'text/javascript';
 script.src = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/core.js';
 document.getElementsByTagName('head')[0].appendChild(script);
-
-// Define variables needed at initialization time
-// var _wrs_conf_editorEnabled = true;      // Specifies if formula editor is enabled.
 
 // Vars
 var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/formula.png';
@@ -178,7 +175,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
                     editor.on('afterSetData', function(e){
                         if (typeof wrs_observer != 'undefined') {
-                            Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), function(wirisImages){
+                            Array.prototype.forEach.call(document.getElementsByClassName('Wirisformula'), function(wirisImages){
                                 wrs_observer.observe(wirisImages, wrs_observer_config);
                             });
                         }
@@ -188,7 +185,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                         e.data.dataValue = wrs_endParse(e.data.dataValue || "");
                     });
 
-                    // When CKEditors changes from WYSIWYG to source element, recalculate "element" variable is mandatory.
+                    // When CKEditors changes from WYSIWYG to source element, recalculate 'element' variable is mandatory.
                     editor.on('mode', function(e) {
                         checkElement(editor, null, function(el){element = el;});
                     });
@@ -200,7 +197,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                 }
                 else {
                     // CKEditor replaces several times the element element during its execution, so we must assign the events again.
-                    // We need to set a callback function to set "element" variable inside CKEDITOR.plugins.add scope.
+                    // We need to set a callback function to set 'element' variable inside CKEDITOR.plugins.add scope.
                     setInterval(checkElement(editor, element, function(el){element = el;}, 500));
                     editor.resetDirty();
                 }
@@ -529,7 +526,7 @@ function checkElement(editor, element, callback) {
         if ((!newElement.wirisActive && element == null) || newElement != element) {
             if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
                 if (newElement.tagName == 'TEXTAREA') { // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
-                    var eventElements = document.getElementsByClassName("cke_textarea_inline");
+                    var eventElements = document.getElementsByClassName('cke_textarea_inline');
                     Array.prototype.forEach.call(eventElements, function(entry) {
                         wrs_addElementEvents(entry, function (div, element, event) {
                         wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
