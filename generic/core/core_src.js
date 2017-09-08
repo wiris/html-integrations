@@ -2666,6 +2666,8 @@ function wrs_setImgSize(img, url, json) {
     img.width = width;
     img.height = height;
     img.style.verticalAlign = "-" + (height - baseline) + "px";
+    // In order to avoid resize with max-width css property
+    img.style.maxWidth = "none";
 }
 
 function wrs_fixAfterResize(img) {
