@@ -80,6 +80,7 @@ var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
 var _wrs_int_window_opened = false;
 var _wrs_int_temporalImageResizing;
+var _wrs_int_divIframe = false;
 var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
@@ -139,7 +140,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
         
         _wrs_int_directionality = editor.config.contentsLangDirection;
         
-        var lastDataSet = null;
+        var lastDataSet = '';
     
         // If wirislistenerdisabled=true all listeners should be disabled.
         // If this happens user should use wrs_initParse() and wrs_endParse() method
@@ -167,8 +168,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             } );
         }
         function whenDocReady() {
-            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined' && lastDataSet != null) { // WIRIS plugin core.js and configuration loaded properly
-                
+            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined') { // WIRIS plugin core.js and configuration loaded properly
                 // If wirislistenerdisabled=true all listeners should be disabled.
                 // If this happens user should use wrs_initParse() and wrs_endParse() methods.
                 if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
@@ -184,7 +184,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                         }
                     });
 
-
                     editor.on('getData', function (e) {
                         e.data.dataValue = wrs_endParse(e.data.dataValue || "");
                     });
@@ -192,26 +191,12 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                     // When CKEditors changes from WYSIWYG to source element, recalculate "element" variable is mandatory.
                     editor.on('mode', function(e) {
                         checkElement(editor, null, function(el){element = el;});
-                    })
-
-                    editor.setData(lastDataSet, {
-                        callback: function() {
-                            if (!_wrs_int_firstInstanceLoaded) {
-                                var editorInstances = Object.keys(CKEDITOR.instances);
-                                if (typeof editorInstances[0] != 'undefined') {
-                                    CKEDITOR.instances[editorInstances[0]].focus();
-                                }
-                                setTimeout(function() {_wrs_int_firstInstanceLoaded = true}, 500);
-                            }
-                            else {                                
-                                var range = editor.createRange();
-                                range.moveToElementEditablePosition(editor.editable(), true);
-                                editor.getSelection().selectRanges([range]);
-                            }
-                            setInterval(checkElement(editor, element, function(el){element = el;}, 500));
-                            editor.resetDirty();
-                        }
                     });
+
+                    if (lastDataSet != '') 
+                        editor.setData(lastDataSet);
+
+                    setInterval(checkElement(editor, element, function(el){element = el;}, 500));
                 }
                 else {
                     // CKEditor replaces several times the element element during its execution, so we must assign the events again.
@@ -242,7 +227,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                 
                 'exec': function (editor) {
                     wrs_int_disableCustomEditors();
-                    wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
+                    wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !_wrs_int_divIframe );
                 }
             });
             
@@ -309,7 +294,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                         'requiredContent': allowedContent,
                         'exec': function (editor) {
                             wrs_int_enableCustomEditor(key);
-                            wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !divIframe );
+                            wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !_wrs_int_divIframe );
                         }
                     });
 
@@ -517,7 +502,7 @@ function wrs_int_notifyWindowClosed() {
 function checkElement(editor, element, callback) {
     try {
         var newElement;
-        divIframe = false;
+        _wrs_int_divIframe = false;
         var elem = document.getElementById('cke_contents_' + editor.name) ? document.getElementById('cke_contents_' + editor.name) : document.getElementById('cke_' + editor.name);
         if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
             newElement = editor.element.$;
@@ -537,7 +522,7 @@ function checkElement(editor, element, callback) {
             }
             if (dataContainer) {
                 newElement = document.getElementById(classElement + '_contents');
-                divIframe = true;
+                _wrs_int_divIframe = true;
             }
         }
 
@@ -565,7 +550,7 @@ function checkElement(editor, element, callback) {
                 newElement.wirisActive = true;
                 element = newElement;
             }
-            else if (divIframe) {
+            else if (_wrs_int_divIframe) {
                 wrs_addElementEvents(newElement, function (div, element, event) {
                     wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
                 }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
