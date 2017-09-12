@@ -1,7 +1,7 @@
 var _wrs_popupWindow;
 
 wrs_addEvent(window, 'message', function (e) {
-    if (e.source = _wrs_popupWindow && typeof e.wrs_processed == 'undefined') {
+    if (e.source = _wrs_popupWindow && typeof e.wrs_processed == 'undefined' && typeof e.data.isWirisMessage != 'undefined') {
         e.wrs_processed = true;
         var postVariable = {};
         postVariable.id = e.data.id;
@@ -1974,7 +1974,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
     var baseline;
     var imgObject = creator.createElement('img');
     imgObject.align = 'middle';
-
+    imgObject.style.maxWidth = 'none';
     var data = (wirisProperties) ? wirisProperties : {};
 
     if (window._wrs_conf_useDigestInsteadOfMathml && _wrs_conf_useDigestInsteadOfMathml) {
@@ -2666,14 +2666,14 @@ function wrs_setImgSize(img, url, json) {
     img.width = width;
     img.height = height;
     img.style.verticalAlign = "-" + (height - baseline) + "px";
-    // In order to avoid resize with max-width css property
-    img.style.maxWidth = "none";
 }
 
 function wrs_fixAfterResize(img) {
     img.removeAttribute('style');
     img.removeAttribute('width');
     img.removeAttribute('height');
+    // In order to avoid resize with max-width css property
+    img.style.maxWidth = 'none';
     if (_wrs_conf_setSize) {
         if (img.src.indexOf("data:image") != -1) {
             if (_wrs_conf_imageFormat == 'svg') {
