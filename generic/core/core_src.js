@@ -2642,12 +2642,26 @@ function wrs_setImgSize(img, url, json) {
     if (json) {
         // Cleaning data:image/png;base64.
         if (_wrs_conf_imageFormat == 'svg') {
-            var ar = getMetricsFromSvgString(url);
+            // SVG format.
+            // If SVG is encoded in base64 we need to convert the base64 bytes into a SVG string.
+            if (_wrs_conf_saveMode != 'base64') {
+                var ar = getMetricsFromSvgString(url);
+            } else {
+                var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
+                var svgString = '';
+                var bytes = wrs_b64ToByteArray(base64String, base64String.length);
+                for (var i = 0; i < bytes.length; i++) {
+                    svgString += String.fromCharCode(bytes[i]);
+                }
+                var ar = getMetricsFromSvgString(svgString);
+            }
+        // PNG format: we store all metrics information in the first 88 bytes.
         } else {
             var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
-            bytes = wrs_b64ToByteArray(base64String, 88);
+            var bytes = wrs_b64ToByteArray(base64String, 88);
             var ar = wrs_getMetricsFromBytes(bytes);
         }
+    // Backwards compatibility: we store the metrics into createimage response.
     } else {
         var ar = wrs_urlToAssArray(url);
     }
