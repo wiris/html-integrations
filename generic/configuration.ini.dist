@@ -72,6 +72,12 @@
 #wirisconfigurationclass =
 
 
+## Enables accessProvider to access control. false by default.
+#wirisaccessproviderenabled = false
+
+## Name of the class that manages the Access provider
+#wirisaccessproviderclass =
+
 ####################
 # Editor behaviour #
 ####################
