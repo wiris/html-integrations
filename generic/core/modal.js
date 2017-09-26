@@ -246,7 +246,7 @@ ModalWindow.prototype.close = function() {
     // Properties to initial state.
     this.properties.state = '';
     this.properties.previousState = '';
-    setTimeout(function() {_wrs_currentEditor.focus()}, 100);
+    setTimeout(() => {if (typeof _wrs_currentEditor != 'undefined' && _wrs_currentEditor) _wrs_currentEditor.focus()}, 100);
 }
 
 ModalWindow.prototype.addClass = function(cls) {
