@@ -124,16 +124,10 @@ var _wrs_int_langCode = 'en';
                 }
             }
 
-            // On inline mode, we can't recover unfiltered text
-            // mathml tags must be added to editor valid_elements.
-            if (editor.inline) {
-                editor.settings.extended_valid_elements += ",math[*],menclose[*],merror[*],mfenced[*],mfrac[*],mglyph[*],mi[*],mlabeledtr[*],mmultiscripts[*],mn[*],mo[*],mover[*],mpadded[*],mphantom[*],mroot[*],mrow[*],ms[*],mspace[*],msqrt[*],mstyle[*],msub[*],msubsup[*],msup[*],mtable[*],mtd[*],mtext[*],mtr[*],munder[*],munderover[*],semantics[*],maction[*]";
-                editor.settings.extended_valid_elements += ",annotation[*]"; // LaTeX parse.
-            }
+            editor.settings.extended_valid_elements += ",math[*],menclose[*],merror[*],mfenced[*],mfrac[*],mglyph[*],mi[*],mlabeledtr[*],mmultiscripts[*],mn[*],mo[*],mover[*],mpadded[*],mphantom[*],mroot[*],mrow[*],ms[*],mspace[*],msqrt[*],mstyle[*],msub[*],msubsup[*],msup[*],mtable[*],mtd[*],mtext[*],mtr[*],munder[*],munderover[*],semantics[*],maction[*]";
+            editor.settings.extended_valid_elements += ",annotation[*]"; // LaTeX parse.
 
             var onInit = function (editor) {
-                var editorElement = editor.getElement();
-                var content = ('value' in editorElement) ? editorElement.value : editorElement.innerHTML;
 
                 function whenDocReady() {
                     if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
@@ -164,9 +158,11 @@ var _wrs_int_langCode = 'en';
                             language = editor.settings['wirisformulaeditorlang'];
                         }
 
+                        var content = editor.getContent();
+                        
                         // Bug fix: In Moodle2.x when TinyMCE is set to full screen
                         // the content doesn't need to be filtered.
-                        if (!editor.getParam('fullscreen_is_enabled') && editor.getContent() !== ""){
+                        if (!editor.getParam('fullscreen_is_enabled') && content !== ""){
 
                             editor.setContent(wrs_initParse(content, language), {format: "raw"});
                             // Init parsing OK. If a setContent method is called
