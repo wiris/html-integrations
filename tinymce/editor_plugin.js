@@ -75,7 +75,7 @@ var _wrs_int_langCode = 'en';
                     return img.hasAttribute('internal-blob');
                 }
                 else {
-                    // If the client put an image data filter, run. Otherwise default behaviour (put blob)
+                    // If the client put an image data filter, run. Otherwise default behaviour (put blob).
                     if (typeof _wrs_int_imagesDataimgFilterBackup[editor.id] != 'undefined') {
                         return _wrs_int_imagesDataimgFilterBackup[editor.id](img);
                     }

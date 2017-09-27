@@ -2017,7 +2017,7 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
         var result = JSON.parse(wrs_createShowImageSrc(mathml, data, language));
         if (result["status"] == 'warning') {
             // POST call.
-            // if the mathml is malformed, this function will throw an exception
+            // if the mathml is malformed, this function will throw an exception.
             try {
                 result = JSON.parse(wrs_getContent(_wrs_conf_showimagePath, data));
             }
@@ -2655,13 +2655,13 @@ function wrs_setImgSize(img, url, json) {
                 }
                 var ar = getMetricsFromSvgString(svgString);
             }
-        // PNG format: we store all metrics information in the first 88 bytes.
+            // PNG format: we store all metrics information in the first 88 bytes.
         } else {
             var base64String = img.src.substr( img.src.indexOf('base64,') + 7, img.src.length);
             var bytes = wrs_b64ToByteArray(base64String, 88);
             var ar = wrs_getMetricsFromBytes(bytes);
         }
-    // Backwards compatibility: we store the metrics into createimage response.
+        // Backwards compatibility: we store the metrics into createimage response.
     } else {
         var ar = wrs_urlToAssArray(url);
     }
@@ -2686,7 +2686,7 @@ function wrs_fixAfterResize(img) {
     img.removeAttribute('style');
     img.removeAttribute('width');
     img.removeAttribute('height');
-    // In order to avoid resize with max-width css property
+    // In order to avoid resize with max-width css property.
     img.style.maxWidth = 'none';
     if (_wrs_conf_setSize) {
         if (img.src.indexOf("data:image") != -1) {

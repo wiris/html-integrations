@@ -187,7 +187,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = "../";
-            // Get lang path
+            // Get lang path.
             var webScripts = document.getElementsByTagName("script");
             var scriptName = "strings.js";
             var found = false;
@@ -195,7 +195,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             while (!found && i < webScripts.length) {
                 if (webScripts[i].src.indexOf(scriptName) != -1) {
                     var pathArray = webScripts[i].src.split("/");
-                    // We need to get the lang folder name of "../[lang_folder]/[lang_code]/strings.js"
+                    // We need to get the lang folder name of "../[lang_folder]/[lang_code]/strings.js".
                     script.src += pathArray[pathArray.length - 3 ] + "/" + _wrs_int_langCode + "/strings.js";
                     found = true;
                 }

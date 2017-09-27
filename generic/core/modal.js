@@ -246,7 +246,12 @@ ModalWindow.prototype.close = function() {
     // Properties to initial state.
     this.properties.state = '';
     this.properties.previousState = '';
-    setTimeout(() => {if (typeof _wrs_currentEditor != 'undefined' && _wrs_currentEditor) _wrs_currentEditor.focus()}, 100);
+    setTimeout(
+        function() {
+            if (typeof _wrs_currentEditor != 'undefined' && _wrs_currentEditor) {
+                _wrs_currentEditor.focus();
+            }
+        }, 100);
 }
 
 ModalWindow.prototype.addClass = function(cls) {
@@ -550,7 +555,7 @@ ModalWindow.prototype.hideKeyboard = function() {
                 field.setAttribute('style', 'display:none;');
                 setTimeout(function() {
                     document.body.removeChild(field);
-                    // Focus workspace
+                    // Focus workspace.
                     if (typeof _wrs_modalWindow.containerDiv.getElementsByTagName('iframe')[0].contentDocument.body.getElementsByClassName('wrs_focusElement')[0] != 'undefined') {
                         _wrs_modalWindow.containerDiv.getElementsByTagName('iframe')[0].contentDocument.body.getElementsByClassName('wrs_focusElement')[0].focus();
                     }
