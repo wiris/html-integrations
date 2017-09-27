@@ -13,7 +13,12 @@ namespace plugin_web
         protected void Page_Load(object sender, EventArgs e)
         {
             Dictionary<string, string> param = PluginBuilderFactory.getProperties(Request);
-            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request, Response);
+            AccessProvider accessProvider = pb.getAccessProvider();
+            if (accessProvider != null && !accessProvider.requireAccess())
+            {
+                return;
+            }
 
             // Adding - if necessary - CORS headers
             com.wiris.system.service.HttpResponse res = new com.wiris.system.service.HttpResponse(this.Response);

@@ -12,7 +12,7 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request, Response);
             ParamsProvider provider = pb.getCustomParamsProvider();
             String mml = provider.getRequiredParameter("mml");
             if (mml==null) {

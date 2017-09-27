@@ -11,7 +11,7 @@ namespace plugin_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request);
+            PluginBuilder pb = PluginBuilderFactory.newPluginBuilder(Request, Response);
 
             // Adding - if necessary - CORS headers
             HttpResponse res = new HttpResponse(this.Response);

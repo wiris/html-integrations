@@ -62,7 +62,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="integration-dev\setter.aspx" />
     <Content Include="integration\cleancache.aspx" />
     <Content Include="integration\configurationjson.aspx" />
     <Content Include="integration\createimage.aspx" />
@@ -89,10 +88,6 @@
     <Content Include="integration\test.aspx" />
     <Content Include="integration\configurationjs.aspx" />
     <Content Include="integration\testfilter.aspx" />
-    <Compile Include="integration-dev\setter.aspx.cs">
-      <DependentUpon>setter.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="integration\cas.aspx.cs">
       <DependentUpon>cas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
