@@ -1540,7 +1540,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
         if (typeof wrs_int_insertElementOnSelection != 'undefined') {
             wrs_int_insertElementOnSelection();
             if (!_wrs_range) {
-                return;
+                focusElement.focus();
             }
         }
         else {
