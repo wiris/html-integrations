@@ -159,7 +159,7 @@ var _wrs_int_langCode = 'en';
                         }
 
                         var content = editor.getContent();
-                        
+
                         // Bug fix: In Moodle2.x when TinyMCE is set to full screen
                         // the content doesn't need to be filtered.
                         if (!editor.getParam('fullscreen_is_enabled') && content !== ""){
