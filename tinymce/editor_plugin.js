@@ -133,9 +133,10 @@ var _wrs_int_langCode = 'en';
 
                 function whenDocReady() {
                     if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
-                        if(this.wrs_service_is_available() == false){
-                            this.wrs_notify('error_connection');
-                            return;
+                        if(this.wrs_service_is_available() == true){
+                            window._wrs_service_available = true;
+                        }else{
+                            window._wrs_service_available = false;
                         }
                         var language = editor.getParam('language');
                         // The file editor.js gets this variable _wrs_int_langCode variable to set
@@ -412,15 +413,19 @@ function wrs_intPath(intFile, confPath) {
  * @param bool isIframe
  */
 function wrs_int_openNewFormulaEditor(element, language, isIframe) {
-    if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
-        _wrs_int_window.focus();
-    }
-    else {
-        _wrs_int_window_opened = true;
-        _wrs_isNewElement = true;
-        _wrs_int_temporalIframe = element;
-        _wrs_int_temporalElementIsIframe = isIframe;
-        _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
+    if(window._wrs_service_available == true){
+        if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
+            _wrs_int_window.focus();
+        }
+        else {
+            _wrs_int_window_opened = true;
+            _wrs_isNewElement = true;
+            _wrs_int_temporalIframe = element;
+            _wrs_int_temporalElementIsIframe = isIframe;
+            _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
+        }
+    }else{
+        this.wrs_notify('error_connection');
     }
 }
 
@@ -487,11 +492,15 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
  * @param bool isIframe
  */
 function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
-    _wrs_int_window_opened = true;
-    _wrs_isNewElement = false;
-    _wrs_int_temporalIframe = element;
-    _wrs_int_temporalElementIsIframe = isIframe;
-    _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
+    if(window._wrs_service_available == true){
+        _wrs_int_window_opened = true;
+        _wrs_isNewElement = false;
+        _wrs_int_temporalIframe = element;
+        _wrs_int_temporalElementIsIframe = isIframe;
+        _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
+    }else{
+        this.wrs_notify('error_connection');
+    }
 }
 
 /**
