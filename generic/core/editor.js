@@ -170,10 +170,21 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             script.type = 'text/javascript';
             var editorUrl = _wrs_conf_editorUrl;
             // Change to https if necessary.
+            // We create an object url for parse url string and work more efficiently.
+            var urlObject = document.createElement('a');
+            urlObject.href = editorUrl;
+
             if (window.location.href.indexOf("https://") == 0) {
-                if (editorUrl.indexOf("http://") == 0) {
-                    editorUrl = "https" + editorUrl.substring(4);
+                // It check if browser is https and configuration is http. If this is so, we will replace protocol.
+                if (urlObject.protocol == 'http:') {
+                    urlObject.protocol = 'https:';
                 }
+            }
+            // Check protocol and remove port if it's standard.
+            if(urlObject.port == '80' || urlObject.port == '443'){
+                editorUrl = urlObject.protocol + '//' + urlObject.hostname + urlObject.pathname;
+            }else{
+                editorUrl = urlObject.protocol + '//' + urlObject.hostname + urlObject.port + urlObject.pathname;
             }
 
             // Editor stats.

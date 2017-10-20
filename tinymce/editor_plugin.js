@@ -367,6 +367,20 @@ var _wrs_int_langCode = 'en';
 
 function wrs_service_is_available() {
     var urlChecker = _wrs_conf_editorUrl;
+    if (window.location.href.indexOf("https://") == 0) {
+        var a = document.createElement('a');
+        a.href = urlChecker;
+        // It check if browser is https and configuration is http. If this is so, we will replace protocol.
+        if (a.protocol == 'http:') {
+            a.protocol = 'https:';
+        }
+        // check protocol and remove port if it's standar
+        if(a.port == '80' || a.port == '443'){
+            urlChecker = a.protocol + '//' + a.hostname + a.pathname;
+        }else{
+            urlChecker = a.protocol + '//' + a.hostname + a.port + a.pathname;
+        }
+    }
     // Replace url from editor to check online status with admin variables
     urlChecker = urlChecker.replace('/editor/editor','/editor/status');
     var xhttp = new XMLHttpRequest();
