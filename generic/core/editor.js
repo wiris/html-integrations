@@ -445,6 +445,18 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         getMethod('_wrs_modalWindow', 'setOverlayDiv', [], null);
                     }
                 });
+		
+		// Event for close window and trap focus
+                wrs_addEvent(window, 'keydown', function(e) {
+                    if (_wrs_conf_modalWindow) {
+                        if (e.keyCode !== undefined && e.keyCode === 27 && e.repeat === false) {
+                            _wrs_closeFunction();
+                        }
+                        if (e.keyCode !== undefined && (e.keyCode === 9 ||  (e.shiftKey && e.keyCode === 9))) {
+                            e.preventDefault();
+                        }
+                    }
+                });
 
                 // Auto resizing.
                 setInterval(function () {

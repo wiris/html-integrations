@@ -231,6 +231,10 @@ ModalWindow.prototype.open = function() {
 
 }
 
+ModalWindow.prototype.isOpen = function() {
+    return this.properties.open;
+}
+
 /**
  * Closes modal window and restores viewport header.
  * @ignore

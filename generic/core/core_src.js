@@ -2845,10 +2845,13 @@ function wrs_createModalWindow() {
  * Closes modal window
  */
 function wrs_closeModalWindow() {
-    wrs_int_disableCustomEditors();
-    wrs_int_notifyWindowClosed();
-    _wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
-    _wrs_modalWindow.close();
+	// We avoid to close window when it's closed
+    if(_wrs_modalWindow.isOpen()) {
+        wrs_int_disableCustomEditors();
+        wrs_int_notifyWindowClosed();
+        _wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
+        _wrs_modalWindow.close();
+    }
 }
 
 /**
