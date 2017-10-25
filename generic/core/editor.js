@@ -184,7 +184,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
             if(urlObject.port == '80' || urlObject.port == '443'){
                 editorUrl = urlObject.protocol + '//' + urlObject.hostname + urlObject.pathname;
             }else{
-                editorUrl = urlObject.protocol + '//' + urlObject.hostname + urlObject.port + urlObject.pathname;
+                editorUrl = urlObject.protocol + '//' + urlObject.hostname + ':' + urlObject.port + urlObject.pathname;
             }
 
             // Editor stats.
