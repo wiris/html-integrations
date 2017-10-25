@@ -133,11 +133,6 @@ var _wrs_int_langCode = 'en';
 
                 function whenDocReady() {
                     if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
-                        if(this.wrs_service_is_available() == true){
-                            window._wrs_service_available = true;
-                        }else{
-                            window._wrs_service_available = false;
-                        }
                         var language = editor.getParam('language');
                         // The file editor.js gets this variable _wrs_int_langCode variable to set
                         // WIRIS Editor lang.
@@ -170,6 +165,7 @@ var _wrs_int_langCode = 'en';
                         // Bug fix: In Moodle2.x when TinyMCE is set to full screen
                         // the content doesn't need to be filtered.
                         if (!editor.getParam('fullscreen_is_enabled') && content !== ""){
+
                             editor.setContent(wrs_initParse(content, language), {format: "raw"});
                             // Init parsing OK. If a setContent method is called
                             // wrs_initParse is called again.
@@ -365,53 +361,6 @@ var _wrs_int_langCode = 'en';
     tinymce.PluginManager.add('tiny_mce_wiris', tinymce.plugins.tiny_mce_wiris);
 })();
 
-function wrs_service_is_available() {
-    var urlChecker = _wrs_conf_editorUrl;
-    if (window.location.href.indexOf("https://") == 0) {
-        var a = document.createElement('a');
-        a.href = urlChecker;
-        // It check if browser is https and configuration is http. If this is so, we will replace protocol.
-        if (a.protocol == 'http:') {
-            a.protocol = 'https:';
-        }
-        // check protocol and remove port if it's standar
-        if(a.port == '80' || a.port == '443'){
-            urlChecker = a.protocol + '//' + a.hostname + a.pathname;
-        }else{
-            urlChecker = a.protocol + '//' + a.hostname + a.port + a.pathname;
-        }
-    }
-    // Replace url from editor to check online status with admin variables
-    urlChecker = urlChecker.replace('/editor/editor','/editor/status');
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", urlChecker, false);
-    try{
-        xhttp.send();
-    }catch(e){
-        xhttp.abort();
-        return false;
-    }
-    if (xhttp.status == 200) {
-        xhttp.abort();
-        return true;
-    }
-    xhttp.abort();
-    return false;
-}
-
-function wrs_notify(message){
-    if(_wrs_isMoodle24){
-        if(_wrs_conf_versionPlatform > 2016052300){
-            require(['core/notification'], function(notification) {
-                notification.addNotification({
-                    message:M.util.get_string(message, 'tinymce_tiny_mce_wiris'),
-                    type: "danger"
-                });
-            });
-        }
-    }
-}
-
 function wrs_intPath(intFile, confPath) {
     var intPath = intFile.split("/");
     intPath.pop();
@@ -427,19 +376,15 @@ function wrs_intPath(intFile, confPath) {
  * @param bool isIframe
  */
 function wrs_int_openNewFormulaEditor(element, language, isIframe) {
-    if(window._wrs_service_available == true){
-        if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
-            _wrs_int_window.focus();
-        }
-        else {
-            _wrs_int_window_opened = true;
-            _wrs_isNewElement = true;
-            _wrs_int_temporalIframe = element;
-            _wrs_int_temporalElementIsIframe = isIframe;
-            _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
-        }
-    }else{
-        this.wrs_notify('error_connection');
+    if (_wrs_int_window_opened && !_wrs_conf_modalWindow) {
+        _wrs_int_window.focus();
+    }
+    else {
+        _wrs_int_window_opened = true;
+        _wrs_isNewElement = true;
+        _wrs_int_temporalIframe = element;
+        _wrs_int_temporalElementIsIframe = isIframe;
+        _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
     }
 }
 
@@ -506,15 +451,11 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
  * @param bool isIframe
  */
 function wrs_int_openExistingFormulaEditor(element, isIframe, language) {
-    if(window._wrs_service_available == true){
-        _wrs_int_window_opened = true;
-        _wrs_isNewElement = false;
-        _wrs_int_temporalIframe = element;
-        _wrs_int_temporalElementIsIframe = isIframe;
-        _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
-    }else{
-        this.wrs_notify('error_connection');
-    }
+    _wrs_int_window_opened = true;
+    _wrs_isNewElement = false;
+    _wrs_int_temporalIframe = element;
+    _wrs_int_temporalElementIsIframe = isIframe;
+    _wrs_int_window = wrs_openEditorWindow(language, element, isIframe);
 }
 
 /**
