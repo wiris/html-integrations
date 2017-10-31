@@ -2845,7 +2845,7 @@ function wrs_createModalWindow() {
  * Closes modal window
  */
 function wrs_closeModalWindow() {
-	// We avoid to close window when it's closed
+    // We avoid to close window when it's closed
     if(_wrs_modalWindow.isOpen()) {
         wrs_int_disableCustomEditors();
         wrs_int_notifyWindowClosed();
