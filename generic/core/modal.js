@@ -64,19 +64,22 @@ function ModalWindow(path, editorAttributes) {
     attributes = {};
     attributes['class'] = 'wrs_modal_close_button';
     attributes['title'] = strings['close'];
-    var closeModalDiv = wrs_createElement('div', attributes);
+    var closeModalDiv = wrs_createElement('a', attributes);
+    closeModalDiv.setAttribute('role','button');
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
     attributes['title'] = strings['fullscreen'];
-    var stackModalDiv = wrs_createElement('div', attributes);
+    var stackModalDiv = wrs_createElement('a', attributes);
+    stackModalDiv.setAttribute('role','button');
     this.stackDiv = stackModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
     attributes['title'] = strings['minimise'];
-    var minimizeModalDiv = wrs_createElement('div', attributes);
+    var minimizeModalDiv = wrs_createElement('a', attributes);
+    minimizeModalDiv.setAttribute('role','button');
     this.minimizeDiv = minimizeModalDiv;
 
     attributes = {};
