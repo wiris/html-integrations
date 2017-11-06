@@ -451,9 +451,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         if (e.keyCode !== undefined && e.keyCode === 27 && e.repeat === false) {
                             _wrs_closeFunction();
                         }
-                        if (e.keyCode !== undefined && (e.keyCode === 9 ||  (e.shiftKey && e.keyCode === 9))) {
-                            e.preventDefault();
-                        }
                     }
                 });
 
