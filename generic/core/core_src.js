@@ -1871,6 +1871,9 @@ function wrs_mathmlToAccessible(mathml, language, data) {
         if (accesibleJsonResponse.status != 'error') {
             accessibleText = accesibleJsonResponse.result.text;
         }
+        else {
+            accessibleText = 'Error converting from MathML to accessible text.';
+        }
     }
 
     return accessibleText;
