@@ -5,22 +5,10 @@
     right: 0;
     left: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 99998;
-    opacity:0.65;
+    opacity: 0.65;
     pointer-events: auto;
-}
-
-.wrs_modal_overlay.wrs_maximized{
-}
-
-.wrs_modal_overlay.wrs_minimized {
-}
-
-.wrs_modal_overlay.wrs_stack {
-}
-
-.wrs_modal_overlay.wrs_modal_ios {
 }
 
 .wrs_modal_overlay.wrs_modal_ios.moodle {
@@ -28,35 +16,35 @@
 }
 
 .wrs_modal_title {
-    color : #FFFFFF;
-    padding : 5px 0px 5px 10px;
+    color: #fff;
+    padding: 5px 0 5px 10px;
 }
 
 .wrs_modal_close_button {
-    float : right;
-    cursor : pointer;
-    color : #FFFFFF;
-    padding : 5px 10px 5px 0px;
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 10px 5px 0;
     background: url('icons/general/close_icon.png');
     background-size: 10px;
     margin: 10px 7px 0 0;
 }
 
 .wrs_modal_close_button:hover {
-    float : right;
-    cursor : pointer;
-    color : #FFFFFF;
-    padding : 5px 10px 5px 0px;
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 10px 5px 0;
     background: url('icons/hover/close_icon_h.png');
     background-size: 10px;
     margin: 10px 7px 0 0;
 }
 
 .wrs_modal_minimize_button {
-    float : right;
-    cursor : pointer;
-    color : #FFFFFF;
-    padding : 5px 10px 5px 0px;
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 10px 5px 0;
     top: inherit;
     margin: 10px 7px 0 0;
 }
@@ -97,12 +85,11 @@
 }
 
 .wrs_modal_stack_button {
-    color: black;
-    float : right;
-    cursor : pointer;
-    color : #FFFFFF;
+    float: right;
+    cursor: pointer;
+    color: #fff;
     margin: 10px 7px 0 0;
-    padding : 5px 10px 5px 0px;
+    padding: 5px 10px 5px 0;
     top: inherit;
 }
 
@@ -141,11 +128,11 @@
 }
 
 .wrs_modal_iframe {
-    display : block;
+    display: block;
 }
 
 .wrs_modal_title_bar {
-    display : block;
+    display: block;
     background-color: #778e9a;
 }
 
@@ -170,14 +157,11 @@
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized {
     bottom: 0;
     right: 0;
-    position:fixed;
+    position: fixed;
     top: inherit;
-    margin: 0px;
+    margin: 0;
     width: 250px;
     margin-right: 10px;
-}
-
-.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_stack {
@@ -185,15 +169,15 @@
     bottom: 0;
     right: 0;
     margin-right: 10px;
-    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px
+    box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
 }
 
 .wrs_modal_dialogContainer.wrs_drag {
-    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_drag {
-    box-shadow: rgba(0,0,0,0.5) 0px 2px 8px
+    box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_android {
@@ -218,11 +202,8 @@
     left: 50%;
 }
 
-.wrs_modal_iframeContainer.wrs_maximized {
-}
-
 .wrs_modal_iframeContainer.wrs_minimized {
-    display : none;
+    display: none;
 }
 
 .wrs_modal_iframeContainer.wrs_modal_android {
@@ -231,67 +212,67 @@
 }
 
 .wrs_modal_iframe.wrs_modal_android {
-    margin : auto;
+    margin: auto;
 }
 
 .wrs_modal_iframeContainer.wrs_modal_ios {
-    width: 100%    !important;
-    height: 100%   !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .wrs_modal_iframe.wrs_modal_ios {
-    width: 100vw    !important;
-    height: 100vh   !important;
+    width: 100vw !important;
+    height: 100vh !important;
 }
 
 .wrs_modal_iframe.wrs_modal_android {
     height: 100%;
     width: 100%;
-    margin : auto;
+    margin: auto;
 }
 
-@media all and (orientation : portrait) {
+@media all and (orientation: portrait) {
 
     .wrs_modal_dialogContainer.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
-        border-width: 0px;
+        border-width: 0;
     }
 
     .wrs_modal_iframe.wrs_modal_mobile {
-        width : 100vmin;
-        height : 100vmin;
-        margin : auto;
+        width: 100vmin;
+        height: 100vmin;
+        margin: auto;
     }
 }
 
-@media all and (orientation : landscape) {
+@media all and (orientation: landscape) {
 
     .wrs_modal_dialogContainer.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
-        border-width: 0px;
+        border-width: 0;
     }
 
     .wrs_modal_iframe.wrs_modal_mobile {
-        width : 100vmin;
-        height : 100vmin;
-        margin : auto;
+        width: 100vmin;
+        height: 100vmin;
+        margin: auto;
     }
 }
 
 .wrs_modal_dialogContainer.wrs_modal_badStock {
     width: 100%;
     height: 280px;
-    margin: 0px auto;
-    border-width: 0px;
+    margin: 0 auto;
+    border-width: 0;
 }
 
 .wrs_modal_iframe.wrs_modal_badStock {
-    width : 100%;
-    height : 280px;
-    margin: 0px auto;
-    border-width: 0px;
+    width: 100%;
+    height: 280px;
+    margin: 0 auto;
+    border-width: 0;
 }
