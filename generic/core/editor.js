@@ -368,6 +368,8 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         });
                     });
 
+                    // Control buttons need to cause a editor blur in order to reset the state for the next time that it is opened.
+                    editor.blur();
                 });
 
                 var buttonContainer = document.getElementById('buttonContainer');
@@ -386,6 +388,8 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 
                 wrs_addEvent(cancelButton, 'click', function () {
                     _wrs_closeFunction();
+                    // Control buttons need to cause a editor blur in order to reset the state for the next time that it is opened.
+                    editor.blur();
                 });
 
                 buttonContainer.appendChild(cancelButton);
@@ -398,16 +402,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         buttonContainer.className = buttonContainer.className + ' wrs_modalDesktop';
                     }
                 }
-
-                /*var manualLink = document.getElementById('a_manual');
-                if (typeof manualLink != 'undefined' && strings['manual'] != null){
-                    manualLink.innerHTML = strings['manual'];
-                }
-
-                var latexLink = document.getElementById('a_latex');
-                if (typeof latexLink != 'undefined' && strings['latex'] != null){
-                    latexLink.innerHTML = strings['latex'];
-                }*/
 
                 var queryLang = '';
                 if ('lang' in queryParams){
@@ -445,6 +439,25 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         getMethod('_wrs_modalWindow', 'setOverlayDiv', [], null);
                     }
                 });
+
+                // Dynamic resize when it is a phone with float keyboard
+                if (_wrs_conf_modalWindow && (isIOS || _wrs_modalWindowProperties.device == 'android')) {
+                    var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
+                    wrs_addEvent(formulaDisplayDiv, 'focus', function (e) {
+                        if (_wrs_conf_modalWindow) {
+                            getMethod('_wrs_modalWindow', 'addClassVirtualKeyboard', [], null);
+                            editorElement.style.height = '100%';
+                        }
+                    });
+
+                    wrs_addEvent(formulaDisplayDiv, 'blur', function (e) {
+                        if (_wrs_conf_modalWindow) {
+                            getMethod('_wrs_modalWindow', 'removeClassVirtualKeyboard', [], null);
+                            editorElement.style.height = '10%';
+                        }
+                    });
+                }
+
                 // Event for close window and trap focus
                 wrs_addEvent(window, 'keydown', function(e) {
                     if (_wrs_conf_modalWindow) {
