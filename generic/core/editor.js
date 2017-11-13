@@ -441,7 +441,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 });
 
                 // Dynamic resize when it is a phone with float keyboard
-                if (_wrs_conf_modalWindow && (isIOS || _wrs_modalWindowProperties.device == 'android')) {
+                if (_wrs_conf_modalWindow && isIOS) {
                     var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
                     wrs_addEvent(formulaDisplayDiv, 'focus', function (e) {
                         if (_wrs_conf_modalWindow) {

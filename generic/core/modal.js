@@ -614,19 +614,31 @@ ModalWindow.prototype.fireEditorEvent = function(eventName) {
 }
 
 /**
- * Fires editor event
+ * Add classes to show well the layout when there is a soft keyboard.
  * @ignore
  */
 ModalWindow.prototype.addClassVirtualKeyboard = function () {
+    this.containerDiv.classList.remove('wrs_modal_ios');
+    // this.iframeContainer.classList.remove('wrs_modal_ios');
+    // this.overlayDiv.classList.remove('wrs_modal_ios');
+
     this.containerDiv.classList.add('wrs_virtual_keyboard_opened');
+    // this.iframeContainer.classList.add('wrs_virtual_keyboard_opened');
+    // this.overlayDiv.classList.add('wrs_virtual_keyboard_opened');
 }
 
 /**
- * Fires editor event
+ * Remove classes to show well the layout when there is a soft keyboard.
  * @ignore
  */
 ModalWindow.prototype.removeClassVirtualKeyboard = function () {
     this.containerDiv.classList.remove('wrs_virtual_keyboard_opened');
+    // this.iframeContainer.classList.remove('wrs_virtual_keyboard_opened');
+    // this.overlayDiv.classList.remove('wrs_virtual_keyboard_opened');
+
+    this.containerDiv.classList.add('wrs_modal_ios');
+    // this.iframeContainer.classList.add('wrs_modal_ios');
+    // this.overlayDiv.classList.add('wrs_modal_ios');
 }
 
 

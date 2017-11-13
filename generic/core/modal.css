@@ -164,7 +164,9 @@
     margin-right: 10px;
 }
 
-.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {}
+
+/* Class that exists but hasn't got css properties defined
+.wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {} */
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_stack {
     position: fixed;
@@ -204,7 +206,9 @@
     left: 50%;
 }
 
-.wrs_modal_iframeContainer.wrs_maximized {}
+
+/* Class that exists but hasn't got css properties defined
+.wrs_modal_iframeContainer.wrs_maximized {} */
 
 .wrs_modal_iframeContainer.wrs_minimized {
     display: none;
@@ -236,42 +240,40 @@
 }
 
 @media all and (orientation: portrait) {
-
     .wrs_modal_dialogContainer.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
         border-width: 0;
     }
-
     .wrs_modal_iframe.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
     }
     .wrs_virtual_keyboard_opened {
-        height: 70% !important;
-        top: 35% !important;
+        width: 100%;
+        height: 70%;
+        top: 0;
     }
 }
 
 @media all and (orientation: landscape) {
-
     .wrs_modal_dialogContainer.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
         border-width: 0;
     }
-
     .wrs_modal_iframe.wrs_modal_mobile {
         width: 100vmin;
         height: 100vmin;
         margin: auto;
     }
     .wrs_virtual_keyboard_opened {
-        height: 45% !important;
-        top: 22% !important;
+        width: 100%;
+        height: 44%;
+        top: 0;
     }
 }
 

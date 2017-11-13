@@ -3,14 +3,12 @@
     margin-bottom: 0;
     font-family: arial, sans-serif;
     padding: 6px;
-
 }
 
 .wrs_links > a {
     text-decoration: none;
     color: #778e9a;
 }
-
 
 .wrs_button_cancel {
     min-width: 80px;
@@ -47,6 +45,7 @@
     width: 20px;
     cursor: pointer;
 }
+
 .wrs_buttonContainer {
     display: inline;
 }
@@ -66,69 +65,37 @@
 }
 
 
-/*iPad and iPad Mini*/
-@media only screen
-    and (min-device-width: 768px)
-    and (max-device-width: 1024px)
-    and (orientation: portrait) {
+/* ----- */
 
+
+/*iPad and iPad Mini specific css*/
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
     .wrs_container.wrs_modalIos {
-        width: 100vw !important;
-        height: 100vh !important;
+        height: 100vh;
     }
-
     .wrs_editorContainer.wrs_modalIos {
-        width: 100vw !important;
-        height: 89vh !important;
+        height: 89vh;
     }
-
     .wrs_controls.wrs_modalIos {
-        width: 100vw !important;
-        height: 11vh !important;
-    }
-
-}
-
-@media only screen
-    and (min-device-width: 768px)
-    and (max-device-width: 1024px)
-    and (orientation: landscape) {
-    .wrs_container.wrs_modalIos {
-        width: 100vw !important;
-        height: 100vh !important;
-    }
-
-    .wrs_editorContainer.wrs_modalIos {
-        width: 100vw !important;
-        height: 87vh !important;
-    }
-
-    .wrs_controls.wrs_modalIos {
-        width: 100vw !important;
-        height: 13vh !important;
+        height: 11vh;
     }
 }
 
-/*iPhone5*/
-@media only screen
-    and (min-device-width: 320px)
-    and (max-device-width: 568px)
-    and (orientation: portrait) {
-
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
     .wrs_container.wrs_modalIos {
-        display: inline;
-        width: 320px !important;
-        height: 100vh !important;
+        width: 100vw;
+        height: 100vh;
     }
-
     .wrs_editorContainer.wrs_modalIos {
-        width: 320px !important;
-        height: 79vh !important;
+        width: 100vw;
+        height: 87vh;
     }
-
     .wrs_controls.wrs_modalIos {
-        width: 320px !important;
-        height: 21vh !important;
-        vertical-align: middle;
+        width: 100vw;
+        height: 13vh;
     }
 }
+
+
+/* ----- */
