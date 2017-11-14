@@ -3621,3 +3621,61 @@ if (!Array.prototype.forEach) {
         // 8. return undefined.
     };
 }
+/**
+ * EditorListener constructor
+ * @ignore
+ */
+function EditorListener(){
+    this.isContentChanged = false;
+    this.waitingForChanges = false;
+
+/**
+ * EditorListener method set if content is changed
+ * @ignore
+ */}
+EditorListener.prototype.setIsContentChanged = function(value){
+    this.isContentChanged = value;
+}
+/**
+ * EditorListener method to get if content is changed
+ * @ignore
+ */
+EditorListener.prototype.getIsContentChanged = function(value){
+    return this.isContentChanged;
+}
+/**
+ * EditorListener method to wait changes
+ * @ignore
+ */
+EditorListener.prototype.setWaitingForChanges = function(value){
+    this.waitingForChanges = value;
+}
+/**
+ * EditorListener method to overwrite
+ * @ignore
+ */
+EditorListener.prototype.caretPositionChanged = function(editor){};
+/**
+ * EditorListener method to overwrite
+ * @ignore
+ */
+EditorListener.prototype.clipboardChanged = function(editor){};
+/**
+ * EditorListener method to set if content is changed
+ * @ignore
+ */
+EditorListener.prototype.contentChanged = function(editor){
+    if(this.waitingForChanges === true && this.isContentChanged === false){
+        this.isContentChanged = true;
+    }
+}
+/**
+ * EditorListener method to overwrite
+ * @ignore
+ */
+EditorListener.prototype.styleChanged = function(editor){}
+/**
+ * EditorListener method to overwrite
+ * @ignore
+ */
+EditorListener.prototype.transformationReceived = function(editor){}
