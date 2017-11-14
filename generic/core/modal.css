@@ -6,7 +6,7 @@
     left: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.8);
-    z-index: 99998;
+    z-index: 999998;
     opacity: 0.65;
     pointer-events: auto;
 }
@@ -140,7 +140,7 @@
     overflow: hidden;
     border: none;
     background: #fafafa;
-    z-index: 99999;
+    z-index: 999999;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop {
