@@ -1,7 +1,65 @@
 var _wrs_isNewElement; // Unfortunately we need this variabels as global variable for old I.E compatibility.
 
 (function(){
+    // PopUpMessageClass definition
+    // This class generate a modal message to show information to user
+    // We should send a language strings to show messages
+    function PopUpMessage(strings)
+    {
+        this.strings = strings;
+        this.overlayEnvolture = document.body.appendChild(document.createElement("DIV"));
+        this.overlayEnvolture.setAttribute("style", "display: none;");
 
+        this.message = this.overlayEnvolture.appendChild(document.createElement("DIV"));
+        this.message.setAttribute("style", "margin: auto;position: absolute;top: 0;left: 0;bottom: 0;right: 0;background: white;width: 65%;height: 69px;border-radius: 2px;padding: 20px;font-family: sans-serif;font-size: 15px;text-align: left;color: #2e2e2e;z-index: 5;");
+
+        var overlay = this.overlayEnvolture.appendChild(document.createElement("DIV"));
+        overlay.setAttribute("style", "position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 4; cursor: pointer;");
+        self = this;
+        // We create a overlay that close popup message on click in there
+        overlay.addEventListener("click", function(){self.close();});
+
+        this.buttonArea = this.message.appendChild(document.createElement('p'));
+        // By default, popupwindow give close modal message with close and cancel buttons
+        // You can set other message with other buttons
+        this.setOptions('close_modal_warning','close,cancel');
+    }
+    PopUpMessage.prototype.setOptions = function(messageKey,values){
+        this.message.removeChild(this.buttonArea);
+        if(typeof this.strings[messageKey] != 'undefined'){
+            this.message.innerHTML = this.strings[messageKey];
+        }
+        this.buttonArea = this.message.appendChild(document.createElement('p'));
+        var types = values.split(',');
+        self = this;
+        // This is definition of buttons. You can create others.
+        types.forEach(function(type){
+            if(type == "close"){
+                var buttonClose = self.buttonArea.appendChild(document.createElement("BUTTON"));
+                buttonClose.setAttribute("style","margin: 0px;border: 0px;background: #567e93;border-radius: 4px;padding: 7px 11px;color: white;");
+                buttonClose.addEventListener('click',function(){self.close();_wrs_closeFunction();})
+                if(typeof this.strings['close'] != 'undefined'){
+                    buttonClose.innerHTML = this.strings['close'];
+                }
+            }
+            if(type == 'cancel'){
+                var buttonCancel = self.buttonArea.appendChild(document.createElement("BUTTON"));
+                buttonCancel.setAttribute("style","margin: 0px;border: 0px;border-radius: 4px;padding: 7px 11px;color: white;color: black;border: 1px solid silver;margin: 0px 5px;");
+                buttonCancel.addEventListener("click", function(){self.close();});
+                if(typeof this.strings['cancel'] != 'undefined'){
+                    buttonCancel.innerHTML = this.strings['cancel'];
+                }
+            }
+        });
+    }
+    // This method show popup message.
+    PopUpMessage.prototype.show = function(){
+        this.overlayEnvolture.setAttribute('style','display: block;')
+    }
+    // This method hide popup message
+    PopUpMessage.prototype.close = function(){
+        this.overlayEnvolture.setAttribute('style','display: none;')
+    }
     var editor;
     // Set wrs_int_opener variable and close method.
     // For popup window opener is window.opener. For modal window window.parent.
@@ -301,6 +359,8 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     strings = new Object();
                 }
 
+                var popup = new PopUpMessage(strings);
+
                 if (isIOS) {
                     // Editor and controls container.
                     var editorAndControlsContainer = document.getElementById('container');
@@ -417,14 +477,21 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     controls.id = 'controls_rtl';
                 }
 
+                window.editorListener = new EditorListener();
+                editor.getEditorModel().addEditorListener(window.editorListener);
+                window.editorListener.setWaitingForChanges(true);
+
                 // At this point we listen to execute editor methods or fire editor events.
                 wrs_addEvent(window, 'message', function (e) {
                     if (e.data.objectName != 'undefined' && e.data.objectName == 'editor') {
                         editor[e.data.methodName].apply(editor, e.data.arguments);
-                    }
-
-                    if (e.data.objectName != 'undefined' && e.data.objectName == 'editorEvent') {
+                    }else if (e.data.objectName != 'undefined' && e.data.objectName == 'editorCallback') {
+                        editor.setMathMLWithCallback(e.data.arguments[0], function(){window.editorListener.setIsContentChanged(false);window.editorListener.setWaitingForChanges(true);});
+                    }else if (e.data.objectName != 'undefined' && e.data.objectName == 'editorEvent') {
                         wrs_fireEvent(window.document, e.data.eventName);
+                    }else if (e.data.objectName != 'undefined' && e.data.objectName == 'editorClose') {
+                        window.editorListener.setWaitingForChanges(false);
+                        window.editorListener.setIsContentChanged(false);
                     }
                 });
 
@@ -462,7 +529,11 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 wrs_addEvent(window, 'keydown', function(e) {
                     if (_wrs_conf_modalWindow) {
                         if (e.keyCode !== undefined && e.keyCode === 27 && e.repeat === false) {
-                            _wrs_closeFunction();
+                            if (editor.isFormulaEmpty() || window.editorListener.getIsContentChanged() === false) {
+                                _wrs_closeFunction();
+                            }else{
+                                popup.show();
+                            }
                         }
                     }
                 });

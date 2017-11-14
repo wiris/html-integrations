@@ -181,9 +181,9 @@ ModalWindow.prototype.open = function() {
         // It controls cases where is needed to set an empty mathml or copy the current mathml value.
         var updateMathMLContent = function () {
             if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
-                self.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+                self.setMathMLWithCallback('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
             } else {
-                self.setMathML('<math/>');
+                self.setMathMLWithCallback('<math/>');
             }
         };
 
@@ -194,7 +194,7 @@ ModalWindow.prototype.open = function() {
                 self.lastImageWasNew = true;
             }
             else {
-                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
+                this.setMathMLWithCallback(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
             }
         }
@@ -213,7 +213,7 @@ ModalWindow.prototype.open = function() {
                 updateMathMLContent();
                 self.lastImageWasNew = true;
             } else {
-                this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
+                this.setMathMLWithCallback(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
             }
             this.focus();
@@ -265,6 +265,7 @@ ModalWindow.prototype.close = function() {
                 _wrs_currentEditor.focus();
             }
         }, 100);
+    _wrs_popupWindow.postMessage({'objectName' : 'editorClose'}, this.iframeOrigin);
 }
 
 ModalWindow.prototype.addClass = function(cls) {
@@ -579,6 +580,15 @@ ModalWindow.prototype.getOriginFromUrl = function(url) {
  */
 ModalWindow.prototype.setMathML = function(mathml) {
     _wrs_popupWindow.postMessage({'objectName' : 'editor', 'methodName' : 'setMathML', 'arguments': [mathml]}, this.iframeOrigin);
+    this.focus();
+}
+/**
+ * Set a MathML into editor and call function in back.
+ * @param {string} mathml MathML string.
+ * @ignore
+ */
+ModalWindow.prototype.setMathMLWithCallback = function(mathml) {
+    _wrs_popupWindow.postMessage({'objectName' : 'editorCallback', 'arguments': [mathml]}, this.iframeOrigin);
     this.focus();
 }
 
