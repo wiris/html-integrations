@@ -472,9 +472,10 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 10) + 'px';
                 }, 100);
 
-                setTimeout(function () {
+                // Due to IOS use soft keyboard, we don't want to move the cursor to WIRIS editor.
+                if (!isIOS) {
                     editor.focus();
-                }, 100);
+                }
             } else {
                 setTimeout(wrs_waitForEditor, 100);
             }

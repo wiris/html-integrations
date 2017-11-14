@@ -149,14 +149,18 @@ ModalWindow.prototype.create = function() {
     _wrs_popupWindow = this.iframe.contentWindow;
     this.properties.open = true;
     this.properties.created = true;
-
+    
     if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
         this.maximizeModalWindow();
     }
-
 }
 
 ModalWindow.prototype.open = function() {
+
+    if (this.deviceProperties['isIOS'] || this.deviceProperties['isAndroid'] || this.deviceProperties['isMobile']) {
+        // Due to editor wait we need to wait until editor focus.
+        setTimeout(function() { _wrs_modalWindow.hideKeyboard() }, 300);
+    }
 
     if (this.properties.open == true || this.properties.created) {
         var updateToolbar = function(object) {
@@ -216,7 +220,6 @@ ModalWindow.prototype.open = function() {
                 this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
             }
-            this.focus();
 
             if (!this.properties.deviceProperties.isAndroid && !this.properties.deviceProperties.isIOS) {
                 this.stackModalWindow();
@@ -226,15 +229,10 @@ ModalWindow.prototype.open = function() {
         if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
             this.maximizeModalWindow();
         }
-        // Due to editor wait we need to wait until editor focus.
-        
-        setTimeout(function () { _wrs_modalWindow.hideKeyboard(); }, 300);
     } else {
         var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
         _wrs_modalWindow.setTitle(title);
         this.create();
-        // Due to editor wait we need to wait until editor focus. The modalwindow creation takes more time.
-        setTimeout(function () { _wrs_modalWindow.hideKeyboard(); }, 1500);
     }
 
 }
@@ -545,7 +543,7 @@ ModalWindow.prototype.stopDrag = function(ev) {
 }
 
 /**
- * Hide soft keyboards.
+ * Hide soft keyboards on IOS systems.
  * @ignore
  */
 ModalWindow.prototype.hideKeyboard = function() {
