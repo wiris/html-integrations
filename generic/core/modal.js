@@ -149,7 +149,7 @@ ModalWindow.prototype.create = function() {
     _wrs_popupWindow = this.iframe.contentWindow;
     this.properties.open = true;
     this.properties.created = true;
-    
+
     if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
         this.maximizeModalWindow();
     }
@@ -208,11 +208,11 @@ ModalWindow.prototype.open = function() {
             this.containerDiv.style.display = '';
             this.overlayDiv.style.visibility = '';
             this.overlayDiv.style.display = '';
-            
+
             this.properties.open = true;
-            
+
             updateToolbar(self);
-            
+
             if (_wrs_isNewElement) {
                 updateMathMLContent();
                 self.lastImageWasNew = true;
