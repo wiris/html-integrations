@@ -264,10 +264,13 @@ var _wrs_int_langCode = 'en';
             function onMutations(mutations) {
                 mutations.forEach(function(mutation) {
                     mutation.addedNodes.forEach(function(node){
-                        Array.prototype.forEach.call(node.getElementsByClassName(_wrs_conf_imageClassName),function(image){
-                            image.removeAttribute('data-mce-src');
-                            image.removeAttribute('data-mce-style');
-                        });
+                        // We search only in element nodes
+                        if(node.nodeType == 1){
+                            Array.prototype.forEach.call(node.getElementsByClassName(_wrs_conf_imageClassName),function(image){
+                                image.removeAttribute('data-mce-src');
+                                image.removeAttribute('data-mce-style');
+                            });
+                        }
                     });
                 });
             }
