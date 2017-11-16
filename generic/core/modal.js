@@ -560,8 +560,9 @@ ModalWindow.prototype.hideKeyboard = function() {
  * @ignore
  */
 ModalWindow.prototype.getOriginFromUrl = function(url) {
-    var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
-    return url.substr(0, hostNameIndex);
+    var parser = document.createElement('a');
+	parser.href = url;
+	return parser.protocol + parser.host;
 }
 
 /**
