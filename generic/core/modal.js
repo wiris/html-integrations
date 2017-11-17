@@ -561,8 +561,8 @@ ModalWindow.prototype.hideKeyboard = function() {
  */
 ModalWindow.prototype.getOriginFromUrl = function(url) {
     var parser = document.createElement('a');
-	parser.href = url;
-	return parser.protocol + parser.host;
+    parser.href = url;
+    return parser.protocol + parser.host;
 }
 
 /**
