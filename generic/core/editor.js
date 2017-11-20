@@ -239,10 +239,10 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 }
             }
             // Check protocol and remove port if it's standard.
-            if(urlObject.port == '80' || urlObject.port == '443'){
-                editorUrl = urlObject.protocol + '//' + urlObject.hostname + urlObject.pathname;
-            }else{
-                editorUrl = urlObject.protocol + '//' + urlObject.hostname + ':' + urlObject.port + urlObject.pathname;
+            if (urlObject.port == '80' || urlObject.port == '443') {
+                editorUrl = urlObject.protocol + '//' + urlObject.hostname + '/' + urlObject.pathname;
+            } else {
+                editorUrl = urlObject.protocol + '//' + urlObject.hostname + ':' + urlObject.port + '/' + urlObject.pathname;
             }
 
             // Editor stats.
