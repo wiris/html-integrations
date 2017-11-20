@@ -3628,11 +3628,11 @@ if (!Array.prototype.forEach) {
 function EditorListener(){
     this.isContentChanged = false;
     this.waitingForChanges = false;
-
+}
 /**
  * EditorListener method set if content is changed
  * @ignore
- */}
+ */
 EditorListener.prototype.setIsContentChanged = function(value){
     this.isContentChanged = value;
 }

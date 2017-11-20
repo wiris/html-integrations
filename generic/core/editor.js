@@ -349,7 +349,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     if (wrs_int_getCustomEditorEnabled() == null && mathml.indexOf('class="wrs_') != -1) {
                         var classIndexStart = mathml.indexOf('class="wrs_');
                         classIndexEnd = mathml.indexOf(" ", classIndexStart);
-                        mathml = mathml.substring(0, classIndexStart) + mathml.substring(classIndexEnd, mathml.lenght);
+                        mathml = mathml.substring(0, classIndexStart) + mathml.substring(classIndexEnd, mathml.length);
                     }
 
                     editor.setMathML(mathml);
