@@ -91,7 +91,7 @@ function ModalWindow(path, editorAttributes) {
     this.containerDiv = containerDiv;
 
     attributes = {};
-    attributes['id'] = 'wrs_frame_id'; 
+    attributes['id'] = 'wrs_modal_iframe_id';
     attributes['class'] = 'wrs_modal_iframe';
     attributes['title'] = 'WIRIS Editor Modal Window';
     attributes['src'] = iframeAttributes['src'];
