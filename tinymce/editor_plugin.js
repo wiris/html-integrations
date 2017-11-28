@@ -263,7 +263,7 @@ var _wrs_int_langCode = 'en';
             const observerConfig = { attributes: true, childList: true, characterData: true, subtree: true };
             function onMutations(mutations) {
                 Array.prototype.forEach.call(mutations,function(mutation) {
-                    mutation.addedNodes.forEach(function(node){
+                    Array.prototype.forEach.call(mutation.addedNodes,function(node){
                         // We search only in element nodes
                         if(node.nodeType == 1){
                             Array.prototype.forEach.call(node.getElementsByClassName(_wrs_conf_imageClassName),function(image){
