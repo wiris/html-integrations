@@ -539,6 +539,8 @@ ModalWindow.prototype.stopDrag = function(ev) {
         // the absolute coords to relative removing the scroll.
         this.containerDiv.style.left = parseInt(this.containerDiv.style.left) - window.pageXOffset + "px";
         this.containerDiv.style.top = parseInt(this.containerDiv.style.top) - window.pageYOffset + "px";
+        // We make focus on editor after drag modal windows to prevent lose focus.
+        this.focus();
     }
     this.containerDiv.style.bottom = null;
     this.dragDataObject = null;
