@@ -611,7 +611,9 @@ ModalWindow.prototype.setToolbar = function(toolbar) {
 ModalWindow.prototype.focus = function() {
     // Focus on iframe explicit
     // We add this focus in iframe beacuse tiny3 have a problem with focus in chrome and it can't focus iframe automaticly
-    this.iframe.focus();
+    if (navigator.userAgent.search("Chrome/") >= 0 && navigator.userAgent.search('Edge') == -1) {
+        this.iframe.focus();
+    }
     _wrs_popupWindow.postMessage({'objectName' : 'editor', 'methodName' : 'focus', 'arguments': null}, this.iframeOrigin);
 }
 
