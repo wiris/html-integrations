@@ -164,39 +164,12 @@ ModalWindow.prototype.open = function() {
     }
 
     if (this.properties.open == true || this.properties.created) {
-        var updateToolbar = function(object) {
-            if (customEditor = wrs_int_getCustomEditorEnabled()) {
-                var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
-                _wrs_modalWindow.setTitle(customEditor.title);
-                if (object.toolbar == null || object.toolbar != toolbar) {
-                    object.setToolbar(toolbar);
-                }
-            } else {
-                var toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
-                _wrs_modalWindow.setTitle('WIRIS EDITOR math');
-                if (object.toolbar == null || object.toolbar != toolbar) {
-                    object.setToolbar(toolbar);
-                    wrs_int_disableCustomEditors();
-                }
-            }
-        };
-
-        var self = this;
-
-        // It controls cases where is needed to set an empty mathml or copy the current mathml value.
-        var updateMathMLContent = function () {
-            if (self.properties.deviceProperties.isAndroid || self.properties.deviceProperties.isIOS) {
-                self.setMathMLWithCallback('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
-            } else {
-                self.setMathMLWithCallback('<math/>');
-            }
-        };
 
         if (this.properties.open == true) {
-            updateToolbar(self);
+            this.updateToolbar();
             if (_wrs_isNewElement) {
-                updateMathMLContent();
-                self.lastImageWasNew = true;
+                this.updateMathMLContent();
+                this.lastImageWasNew = true;
             }
             else {
                 this.setMathMLWithCallback(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
@@ -212,11 +185,11 @@ ModalWindow.prototype.open = function() {
 
             this.properties.open = true;
 
-            updateToolbar(self);
+            this.updateToolbar();
 
             if (_wrs_isNewElement) {
-                updateMathMLContent();
-                self.lastImageWasNew = true;
+                this.updateMathMLContent();
+                this.lastImageWasNew = true;
             } else {
                 this.setMathMLWithCallback(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
                 this.lastImageWasNew = false;
@@ -236,6 +209,51 @@ ModalWindow.prototype.open = function() {
         this.create();
     }
 
+}
+
+/**
+ * It put correct toolbar depending if exist other custom toolbars at the same time (e.g: Chemistry)
+ * @ignore
+ */
+ModalWindow.prototype.updateToolbar = function() {
+    if (customEditor = wrs_int_getCustomEditorEnabled()) {
+        var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
+        _wrs_modalWindow.setTitle(customEditor.title);
+        if (this.toolbar == null || this.toolbar != toolbar) {
+            this.setToolbar(toolbar);
+        }
+    } else {
+        var toolbar = this.checkToolbar();
+        _wrs_modalWindow.setTitle('WIRIS EDITOR math');
+        if (this.toolbar == null || this.toolbar != toolbar) {
+            this.setToolbar(toolbar);
+            wrs_int_disableCustomEditors();
+        }
+    }
+}
+
+/**
+ * It returns correct toolbar depending on the configuration local or serverside.
+ * @ignore
+ */
+ModalWindow.prototype.checkToolbar = function() {
+    var toolbar = (typeof _wrs_conf_editorParameters == 'undefined' || typeof _wrs_conf_editorParameters['toolbar'] == 'undefined') ? 'general' : _wrs_conf_editorParameters['toolbar'];
+    if(toolbar == 'general'){
+        toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
+    }
+    return toolbar;
+}
+
+/**
+ * It controls cases where is needed to set an empty mathml or copy the current mathml value.
+ * @ignore
+ */
+ModalWindow.prototype.updateMathMLContent = function() {
+    if (this.properties.deviceProperties.isAndroid || this.properties.deviceProperties.isIOS) {
+        this.setMathMLWithCallback('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"');
+    } else {
+        this.setMathMLWithCallback('<math/>');
+    }
 }
 
 ModalWindow.prototype.isOpen = function() {
