@@ -2710,7 +2710,8 @@ function wrs_fixAfterResize(img) {
 
 function wrs_initSetSize() {
     // Override _wrs_conf_setSize to align formulas when xml or safeXml mode are enabled.
-    _wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml' || (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default');
+    _wrs_conf_setSize = _wrs_conf_setSize || _wrs_conf_saveMode == 'xml' || _wrs_conf_saveMode == 'safeXml' || (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'default')
+     || (_wrs_conf_saveMode == 'image' && _wrs_conf_imageFormat == 'svg');
 }
 
 /**
