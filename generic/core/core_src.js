@@ -807,16 +807,15 @@ function wrs_endParseSaveMode(code) {
         if (_wrs_conf_saveMode == 'safeXml') {
             convertToXml = true;
             convertToSafeXml = true;
+            code = wrs_codeImgTransform(code, 'img2mathml');
         }
         else if (_wrs_conf_saveMode == 'xml') {
             convertToXml = true;
+            code = wrs_codeImgTransform(code, 'img2mathml');
         }
-    }
-
-    if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'image') {
-        code = wrs_codeImgTransform(code, 'img264');
-    } else if (convertToXml || convertToSafeXml) {
-        code = wrs_codeImgTransform(code, 'img2mathml');
+        else if (_wrs_conf_saveMode == 'base64' && _wrs_conf_editMode == 'image') {
+            code = wrs_codeImgTransform(code, 'img264');
+        }
     }
 
     return code;
@@ -1767,11 +1766,16 @@ function wrs_mathmlEntities(mathml) {
     var toReturn = '';
 
     for (var i = 0; i < mathml.length; ++i) {
+
         var character = mathml.charAt(i);
 
         // Parsing > 128 characters.
-        if (mathml.charCodeAt(i) > 128) {
-            toReturn += '&#' + mathml.charCodeAt(i) + ';';
+        if (mathml.codePointAt(i) > 128) {
+            toReturn += '&#' + mathml.codePointAt(i) + ';'
+            // For UTF-32 characters we need to move the index one position.
+            if (mathml.codePointAt(i) > 0xffff) {
+                i++;
+            }
         }
         else if (character == '&') {
             var end = mathml.indexOf(';', i + 1);
@@ -3504,6 +3508,52 @@ if (!Object.keys) {
             }
             return result;
         };
+    }());
+}
+
+/*! http://mths.be/codepointat v0.1.0 by @mathias */
+if (!String.prototype.codePointAt) {
+    (function() {
+        'use strict'; // needed to support `apply`/`call` with `undefined`/`null`
+        var codePointAt = function(position) {
+            if (this == null) {
+                throw TypeError();
+            }
+            var string = String(this);
+            var size = string.length;
+            // `ToInteger`
+            var index = position ? Number(position) : 0;
+            if (index != index) { // better `isNaN`
+                index = 0;
+            }
+            // Account for out-of-bounds indices:
+            if (index < 0 || index >= size) {
+                return undefined;
+            }
+            // Get the first code unit
+            var first = string.charCodeAt(index);
+            var second;
+            if ( // check if it’s the start of a surrogate pair
+                first >= 0xD800 && first <= 0xDBFF && // high surrogate
+                size > index + 1 // there is a next code unit
+            ) {
+                second = string.charCodeAt(index + 1);
+                if (second >= 0xDC00 && second <= 0xDFFF) { // low surrogate
+                    // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+                    return (first - 0xD800) * 0x400 + second - 0xDC00 + 0x10000;
+                }
+            }
+            return first;
+        };
+        if (Object.defineProperty) {
+            Object.defineProperty(String.prototype, 'codePointAt', {
+                'value': codePointAt,
+                'configurable': true,
+                'writable': true
+            });
+        } else {
+            String.prototype.codePointAt = codePointAt;
+        }
     }());
 }
 

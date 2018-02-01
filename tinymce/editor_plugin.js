@@ -69,6 +69,7 @@ var _wrs_int_langCode = 'en';
 (function () {
     tinymce.create('tinymce.plugins.tiny_mce_wiris', {
         init: function (editor, url) {
+             _wrs_currentEditor = editor;
             // Var to access to selected element from all the WIRIS tiny mce functions.
             var element;
 
@@ -215,6 +216,17 @@ var _wrs_int_langCode = 'en';
             else {
                 editor.on('init', function () {
                     onInit(editor);
+                });
+            }
+
+            if ('onActivate' in editor) {
+                editor.onActivate.add( function (editor) {
+                    _wrs_currentEditor = editor;
+                });
+            }
+            else {
+                editor.on('focus', function (event) {
+                    _wrs_currentEditor = tinymce.activeEditor;
                 });
             }
 

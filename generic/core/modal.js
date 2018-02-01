@@ -11,6 +11,9 @@ function ModalWindow(path, editorAttributes) {
     var ua = navigator.userAgent.toLowerCase();
     var isAndroid = ua.indexOf("android") > -1;
     var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
+    this.iosSoftkeyboardOpened = false;
+    this.iosMeasureUnit = ua.indexOf("crios") == -1 ? "%" : "vh";
+    this.iosDivHeight = "100" + this.iosMeasureUnit;
 
     var deviceWidth = window.outerWidth;
     var deviceHeight = window.outerHeight;
@@ -154,6 +157,8 @@ ModalWindow.prototype.create = function() {
     if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
         this.maximizeModalWindow();
     }
+    // This method obtain a width of scrollBar
+    this.scrollbarWidth = this.getScrollBarWidth();
 }
 
 ModalWindow.prototype.open = function() {
@@ -202,6 +207,11 @@ ModalWindow.prototype.open = function() {
 
         if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
             this.maximizeModalWindow();
+        }
+
+        if (this.deviceProperties['isIOS']) {
+            this.iosSoftkeyboardOpened = false;
+            this.setIframeContainerHeight("100" + this.iosMeasureUnit);
         }
     } else {
         var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
@@ -336,6 +346,11 @@ ModalWindow.prototype.createModalWindowDesktop = function() {
 
 ModalWindow.prototype.createModalWindowAndroid = function() {
     this.addClass('wrs_modal_android');
+    window.addEventListener('resize', function (e) {
+        if (_wrs_conf_modalWindow) {
+            _wrs_modalWindow.orientationChangeAndroidSoftkeyboard();
+        }
+    });
 }
 
 /**
@@ -344,8 +359,13 @@ ModalWindow.prototype.createModalWindowAndroid = function() {
  */
 
 ModalWindow.prototype.createModalWindowIos = function() {
-
     this.addClass('wrs_modal_ios');
+    // Refresh the size when the orientation is changed
+    window.addEventListener('resize', function (e) {
+        if (_wrs_conf_modalWindow) {
+            _wrs_modalWindow.orientationChangeIosSoftkeyboard();
+        }
+    });
 }
 
 ModalWindow.prototype.stackModalWindow = function () {
@@ -354,11 +374,11 @@ ModalWindow.prototype.stackModalWindow = function () {
     } else {
         this.properties.previousState = this.properties.state;
         this.properties.state = 'stack';
-
         this.containerDiv.style.top = null;
-        this.containerDiv.style.rifgh = null;
         this.containerDiv.style.left = null;
         this.containerDiv.style.position = null;
+        this.containerDiv.style.bottom = '0px';
+        this.containerDiv.style.right = '10px';
 
         this.overlayDiv.style.background = "rgba(0,0,0,0)";
 
@@ -375,6 +395,10 @@ ModalWindow.prototype.stackModalWindow = function () {
         this.minimizeDiv.title = "Minimise";
         this.removeClass('wrs_minimized');
         this.addClass('wrs_stack');
+        if (typeof _wrs_popupWindow != 'undefined' && _wrs_popupWindow) {
+            _wrs_popupWindow.postMessage({'objectName' : 'editorResize', 'arguments': [_wrs_modalWindow.iframeContainer.offsetHeight - 10]}, this.iframeOrigin);
+        }
+
     }
 }
 
@@ -393,6 +417,8 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.containerDiv.style.left = null;
         this.containerDiv.style.top = null;
         this.containerDiv.style.position = null;
+        this.containerDiv.style.right = "10px";
+        this.containerDiv.style.bottom = "0px";
         this.overlayDiv.style.background = "rgba(0,0,0,0)";
         this.minimizeDiv.title = "Maximise";
 
@@ -434,6 +460,12 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     this.overlayDiv.style.background = "rgba(0,0,0,0.8)";
     this.overlayDiv.style.display = '';
     this.addClass('wrs_maximized');
+
+    this.containerDiv.style.bottom = window.innerHeight / 2 - this.containerDiv.offsetHeight / 2 + "px";
+    this.containerDiv.style.right = window.innerWidth / 2 - this.containerDiv.offsetWidth / 2 + "px";
+    this.containerDiv.style.position = "fixed";
+    _wrs_popupWindow.postMessage({'objectName' : 'editorResize', 'arguments': [_wrs_modalWindow.iframeContainer.offsetHeight - 10]}, this.iframeOrigin);
+
 }
 
 /**
@@ -448,7 +480,7 @@ ModalWindow.prototype.addListeners = function() {
     wrs_addEvent(document.body, 'mousedown', this.startDrag.bind(this));
     wrs_addEvent(window, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(document, 'mouseup', this.stopDrag.bind(this));
-    wrs_addEvent(document.body, 'mousemove', this.drag.bind(this));
+    wrs_addEvent(document, 'mousemove', this.drag.bind(this));
 }
 
 /**
@@ -464,7 +496,7 @@ ModalWindow.prototype.removeListeners = function() {
     wrs_removeEvent(window, 'mouseup', this.stopDrag);
     wrs_removeEvent(document, 'mouseup', this.stopDrag);
     wrs_removeEvent(document.getElementsByClassName("wrs_modal_iframe")[0], 'mouseup', this.stopDrag);
-    wrs_removeEvent(document.body, 'mousemove', this.drag);
+    wrs_removeEvent(document, 'mousemove', this.drag);
 }
 
 
@@ -513,13 +545,36 @@ ModalWindow.prototype.startDrag = function(ev) {
         return;
     }
     if (ev.target.className == 'wrs_modal_title') {
-        if(!this.dragDataobject) {
+        if(typeof this.dragDataObject === 'undefined' || this.dragDataObject === null) {
             ev = ev || event;
+            // Save first click mouse point on screen
             this.dragDataObject = {
-                x: this.eventClient(ev).X - (isNaN(parseInt(window.getComputedStyle(this.containerDiv)).left && parseInt(window.getComputedStyle(this.containerDiv).left > 0 )) ? this.containerDiv.offsetLeft : parseInt(window.getComputedStyle(this.containerDiv).left)),
-                y: this.eventClient(ev).Y - (isNaN(parseInt(window.getComputedStyle(this.containerDiv).top)) ? this.containerDiv.offsetTop : parseInt(window.getComputedStyle(this.containerDiv).top))
+                x: this.eventClient(ev).X,
+                y: this.eventClient(ev).Y
             };
-        };
+            // Reset last drag position when start drag
+            this.lastDrag = {
+                x: "0px",
+                y: "0px"
+            };
+            // Init right and bottom values for window modal if it isn't exist.
+            if(this.containerDiv.style.right == ''){
+                this.containerDiv.style.right = "0px";
+            }
+            if(this.containerDiv.style.bottom == ''){
+                this.containerDiv.style.bottom = "0px";
+            }
+            // Disable mouse events on editor when we start to drag modal.
+            this.iframe.style['pointer-events'] = 'none';
+            // Needed for IE11 for apply disabled mouse events on editor because iexplorer need a dinamic object to apply this property.
+            if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
+                this.iframe.style['position'] = 'relative';
+            }
+            // Apply class for disable involuntary select text when drag.
+            wrs_addClass(document.body, 'wrs_noselect');
+            // Obtain screen limits for prevent overflow.
+            this.limitWindow = this.getLimitWindow();
+        }
     }
 
 }
@@ -534,12 +589,82 @@ ModalWindow.prototype.drag = function(ev) {
     if(this.dragDataObject) {
         ev.preventDefault();
         ev = ev || event;
-        this.containerDiv.style.left = this.eventClient(ev).X - this.dragDataObject.x + window.pageXOffset + "px";
-        this.containerDiv.style.top = this.eventClient(ev).Y - this.dragDataObject.y + window.pageYOffset + "px";
+        // Calculate max and min between actual mouse position and limit of screeen. It restric the movement of modal into window.
+        var limitY = Math.min(this.eventClient(ev).Y + window.pageYOffset,this.limitWindow.minPointer.y + window.pageYOffset);
+        limitY = Math.max(this.limitWindow.maxPointer.y + window.pageYOffset,limitY);
+        var limitX = Math.min(this.eventClient(ev).X + window.pageXOffset,this.limitWindow.minPointer.x + window.pageXOffset);
+        limitX = Math.max(this.limitWindow.maxPointer.x + window.pageXOffset,limitX);
+        // Substract limit with first position to obtain relative pixels increment to the anchor point.
+        var dragX = limitX - this.dragDataObject.x + "px";
+        var dragY = limitY - this.dragDataObject.y + "px";
+        // Save last valid position of modal before window overflow.
+        this.lastDrag = {
+            x: dragX,
+            y:dragY
+        };
+        // This move modal with hadware acceleration.
+        this.containerDiv.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
         this.containerDiv.style.position = 'absolute';
-        this.containerDiv.style.bottom = null;
-        wrs_removeClass(this.containerDiv, 'wrs_stack');
     }
+}
+/**
+ * Get limits of actual window to limit modal movement
+ * @param {mouseX,mouseY} mouseX and mouseY are coordinates of actual mouse on screen.
+ * @ignore
+ */
+ModalWindow.prototype.getLimitWindow = function() {
+    // Obtain dimentions of window page.
+    var maxWidth = window.innerWidth;
+    var maxHeight = window.innerHeight;
+
+    // Calculate relative position of mouse point into window.
+    var offSetToolbarY = (this.containerDiv.offsetHeight + parseInt(this.containerDiv.style.bottom)) - (maxHeight - (this.dragDataObject.y - window.pageXOffset));
+    var offSetToolbarX = maxWidth - this.scrollbarWidth - (this.dragDataObject.x - window.pageXOffset) - parseInt(this.containerDiv.style.right);
+
+    // Calculate limits with sizes of window, modal and mouse position.
+    var minPointerY = maxHeight - this.containerDiv.offsetHeight + offSetToolbarY;
+    var maxPointerY = this.titleDiv.offsetHeight - (this.titleDiv.offsetHeight - offSetToolbarY);
+    var minPointerX = maxWidth - offSetToolbarX - this.scrollbarWidth;
+    var maxPointerX = (this.containerDiv.offsetWidth - offSetToolbarX);
+    var minPointer = {x: minPointerX,y: minPointerY};
+    var maxPointer = {x: maxPointerX,y: maxPointerY};
+    return {minPointer : minPointer, maxPointer:maxPointer};
+}
+/**
+ * Get Scrollbar width size of browser
+ * @ignore
+ */
+ModalWindow.prototype.getScrollBarWidth = function() {
+    // Create a paragraph with full width of page.
+    var inner = document.createElement('p');
+    inner.style.width = "100%";
+    inner.style.height = "200px";
+
+    // Create a hidden div to compare sizes.
+    var outer = document.createElement('div');
+    outer.style.position = "absolute";
+    outer.style.top = "0px";
+    outer.style.left = "0px";
+    outer.style.visibility = "hidden";
+    outer.style.width = "200px";
+    outer.style.height = "150px";
+    outer.style.overflow = "hidden";
+    outer.appendChild(inner);
+
+    document.body.appendChild(outer);
+    var widthOuter = inner.offsetWidth;
+
+    // Change type overflow of paragraph for measure scrollbar.
+    outer.style.overflow = 'scroll';
+    var widthInner = inner.offsetWidth;
+
+    // If measure is the same, we compare with internal div.
+    if (widthOuter == widthInner) {
+        widthInner = outer.clientWidth;
+    }
+    document.body.removeChild(outer);
+
+    return (widthOuter - widthInner);
 }
 
 /**
@@ -549,18 +674,29 @@ ModalWindow.prototype.drag = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.stopDrag = function(ev) {
-    this.containerDiv.style.position = 'fixed';
     // Due to we have multiple events that call this function, we need only to execute the next modifiers one time,
     // when the user stops to drag and dragDataObject is not null (the object to drag is attached).
     if (this.dragDataObject) {
-        // Fixed position makes the coords relative to the main window. So that, we need to transform
-        // the absolute coords to relative removing the scroll.
-        this.containerDiv.style.left = parseInt(this.containerDiv.style.left) - window.pageXOffset + "px";
-        this.containerDiv.style.top = parseInt(this.containerDiv.style.top) - window.pageYOffset + "px";
+        // If modal doesn't change, it's not necessary to set position with interpolation
+        if(this.containerDiv.style.position != 'fixed'){
+            this.containerDiv.style.position = 'fixed';
+            // Fixed position makes the coords relative to the main window. So that, we need to transform
+            // the absolute coords to relative.
+            this.containerDiv.style.transform = '';
+            this.containerDiv.style.right = parseInt(this.containerDiv.style.right) - parseInt(this.lastDrag.x) + pageXOffset + "px";
+            this.containerDiv.style.bottom = parseInt(this.containerDiv.style.bottom) - parseInt(this.lastDrag.y) + pageYOffset + "px";
+        }
         // We make focus on editor after drag modal windows to prevent lose focus.
         this.focus();
+        // Restore mouse events on iframe
+        this.iframe.style['pointer-events'] = 'auto';
+        // Restore static state of iframe if we use iexplorer
+        if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
+            this.iframe.style['position'] = null;
+        }
+        // Active text select event
+        wrs_removeClass(document.body, 'wrs_noselect');
     }
-    this.containerDiv.style.bottom = null;
     this.dragDataObject = null;
 }
 
@@ -646,32 +782,70 @@ ModalWindow.prototype.fireEditorEvent = function(eventName) {
 }
 
 /**
- * Add classes to show well the layout when there is a soft keyboard.
+ * Returns true when the device is on portrait mode.
  * @ignore
  */
-ModalWindow.prototype.addClassVirtualKeyboard = function () {
-    this.containerDiv.classList.remove('wrs_modal_ios');
-    // this.iframeContainer.classList.remove('wrs_modal_ios');
-    // this.overlayDiv.classList.remove('wrs_modal_ios');
-
-    this.containerDiv.classList.add('wrs_virtual_keyboard_opened');
-    // this.iframeContainer.classList.add('wrs_virtual_keyboard_opened');
-    // this.overlayDiv.classList.add('wrs_virtual_keyboard_opened');
+ModalWindow.prototype.portraitMode = function () {
+    return window.innerHeight > window.innerWidth;
 }
 
 /**
- * Remove classes to show well the layout when there is a soft keyboard.
+ * Change container sizes when the keyboard is opened on iOS.
  * @ignore
  */
-ModalWindow.prototype.removeClassVirtualKeyboard = function () {
-    this.containerDiv.classList.remove('wrs_virtual_keyboard_opened');
-    // this.iframeContainer.classList.remove('wrs_virtual_keyboard_opened');
-    // this.overlayDiv.classList.remove('wrs_virtual_keyboard_opened');
-
-    this.containerDiv.classList.add('wrs_modal_ios');
-    // this.iframeContainer.classList.add('wrs_modal_ios');
-    // this.overlayDiv.classList.add('wrs_modal_ios');
+ModalWindow.prototype.openedIosSoftkeyboard = function () {
+    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null &&this.iosDivHeight == "100" + this.iosMeasureUnit) {
+        if (this.portraitMode()) {
+            this.setIframeContainerHeight("63" + this.iosMeasureUnit);
+        }
+        else {
+            this.setIframeContainerHeight("40" + this.iosMeasureUnit);
+        }
+    }
+    this.iosSoftkeyboardOpened = true;
 }
 
+/**
+ * Change container sizes when the keyboard is closed on iOS.
+ * @ignore
+ */
+ModalWindow.prototype.closedIosSoftkeyboard = function () {
+    this.iosSoftkeyboardOpened = false;
+    this.setIframeContainerHeight("100" + this.iosMeasureUnit);
+}
 
-var _wrs_conf_core_loaded = true;
+/**
+ * Change container sizes when orientation is changed on iOS.
+ * @ignore
+ */
+ModalWindow.prototype.orientationChangeIosSoftkeyboard = function () {
+    if (this.iosSoftkeyboardOpened) {
+        if (this.portraitMode()) {
+            this.setIframeContainerHeight("63" + this.iosMeasureUnit);
+        }
+        else {
+            this.setIframeContainerHeight("40" + this.iosMeasureUnit);
+        }
+    }
+    else {
+        this.setIframeContainerHeight("100" + this.iosMeasureUnit);
+    }
+}
+
+/**
+ * Change container sizes when orientation is changed on Android.
+ * @ignore
+ */
+ModalWindow.prototype.orientationChangeAndroidSoftkeyboard = function () {
+    this.setIframeContainerHeight("100%");
+}
+
+/**
+ * Set iframe container height.
+ * @ignore
+ */
+ModalWindow.prototype.setIframeContainerHeight = function (height) {
+    this.iosDivHeight = height;
+    _wrs_modalWindow.iframeContainer.style.height = height;
+    _wrs_popupWindow.postMessage({'objectName' : 'editorResize', 'arguments': [_wrs_modalWindow.iframeContainer.offsetHeight - 10]}, this.iframeOrigin);
+}

@@ -48,49 +48,63 @@ var _wrs_int_window_opened = false;
 
     editor.events.on('focus', function() {
       _wrs_int_currentEditor = this;
-    })
+    });
 
     // Entry point:
     // Register events, and global functions.
     function _init () {
         function waitForCore() {
-            if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
-              if ('wiriseditorparameters' in editor.opts) {
-                  _wrs_int_wirisProperties = editor.opts.wiriseditorparameters;
-              }
-              _wrs_int_langCode = editor.opts.language != null ? editor.opts.language : 'en';
-              if (editor.opts.iframe) {
-                  wrs_addIframeEvents(editor.$iframe[0], function (iframe, element) {
-                     wrs_int_doubleClickHandler(editor, iframe, true, element);
-                  }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-                } else {
-                  wrs_addElementEvents(editor.$el[0], function (div, element, event) {
-                    wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
-                  }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+          if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
+            // This event solve malformed uris without percent-encoding
+            // when we set wirisimages on editor.
+            if (_wrs_conf_imageFormat == "svg") {
+              editor.events.on('html.set', function () {
+                var images = this.el.getElementsByClassName('Wirisformula');
+                for (var i = 0; i < images.length; i++) {
+                  if (images[i].src.substr(0, 10) == "data:image") {
+                    var firstPart = images[i].src.substr(0, 33);
+                    var secondPart = images[i].src.substr(33, images[i].src.length);
+                    images[i].src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
+                  }
                 }
-
-                var parsedContent = wrs_initParse(editor.html.get(), editor.opts.language);
-                editor.html.set(parsedContent);
-
-                editor.events.on('html.get', function(e, editor, html) {
-                    return wrs_endParse(e);
-                });
-
-            } else {
-                setTimeout(waitForCore, 50);
+              });
             }
+            if ('wiriseditorparameters' in editor.opts) {
+              _wrs_int_wirisProperties = editor.opts.wiriseditorparameters;
+            }
+            _wrs_int_langCode = editor.opts.language != null ? editor.opts.language : 'en';
+            if (editor.opts.iframe) {
+              wrs_addIframeEvents(editor.$iframe[0], function (iframe, element) {
+                wrs_int_doubleClickHandler(editor, iframe, true, element);
+              }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+            } else {
+              wrs_addElementEvents(editor.$el[0], function (div, element, event) {
+                wrs_int_doubleClickHandlerForDiv(editor, div, element, event);
+              }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
+            }
+
+            var parsedContent = wrs_initParse(editor.html.get(), editor.opts.language);
+            editor.html.set(parsedContent);
+
+            editor.events.on('html.get', function(e, editor, html) {
+              return wrs_endParse(e);
+            });
+
+          } else {
+            setTimeout(waitForCore, 50);
+          }
         }
 
-        window.wrs_int_updateFormula = wrs_int_updateFormula;
-        window.wrs_int_insertElementOnSelection = wrs_int_insertElementOnSelection;
-        window.wrs_int_doubleClickHandler = wrs_int_doubleClickHandler;
-        window.wrs_int_openExistingFormulaEditor = wrs_int_openExistingFormulaEditor;
-        window.wrs_int_openNewFormulaEditor = wrs_int_openNewFormulaEditor;
-        window.wrs_int_getSelectedItem = wrs_int_getSelectedItem;
-        window.wrs_int_notifyWindowClosed = wrs_int_notifyWindowClosed;
-        window.wrs_int_hideFroalaPopups = wrs_int_hideFroalaPopups;
+      window.wrs_int_updateFormula = wrs_int_updateFormula;
+      window.wrs_int_insertElementOnSelection = wrs_int_insertElementOnSelection;
+      window.wrs_int_doubleClickHandler = wrs_int_doubleClickHandler;
+      window.wrs_int_openExistingFormulaEditor = wrs_int_openExistingFormulaEditor;
+      window.wrs_int_openNewFormulaEditor = wrs_int_openNewFormulaEditor;
+      window.wrs_int_getSelectedItem = wrs_int_getSelectedItem;
+      window.wrs_int_notifyWindowClosed = wrs_int_notifyWindowClosed;
+      window.wrs_int_hideFroalaPopups = wrs_int_hideFroalaPopups;
 
-        waitForCore();
+      waitForCore();
 
     }
 
@@ -259,6 +273,8 @@ var _wrs_int_window_opened = false;
       undo: true,
       refreshAfterCallback: true,
       callback: function () {
+        // Setting explicit current Editor beacuse last froala doesn't set focus on click button
+        _wrs_int_currentEditor = this;
         this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_disableCustomEditors();
@@ -274,6 +290,8 @@ var _wrs_int_window_opened = false;
       undo: true,
       refreshAfterCallback: true,
       callback: function () {
+        // Setting explicit current Editor beacuse last froala doesn't set focus on click button
+        _wrs_int_currentEditor = this;
         this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_enableCustomEditor('chemistry');

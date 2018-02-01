@@ -63,39 +63,3 @@
         width: 140%;
     }
 }
-
-
-/* ----- */
-
-
-/*iPad and iPad Mini specific css*/
-
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
-    .wrs_container.wrs_modalIos {
-        height: 100vh;
-    }
-    .wrs_editorContainer.wrs_modalIos {
-        height: 89vh;
-    }
-    .wrs_controls.wrs_modalIos {
-        height: 11vh;
-    }
-}
-
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
-    .wrs_container.wrs_modalIos {
-        width: 100vw;
-        height: 100vh;
-    }
-    .wrs_editorContainer.wrs_modalIos {
-        width: 100vw;
-        height: 87vh;
-    }
-    .wrs_controls.wrs_modalIos {
-        width: 100vw;
-        height: 13vh;
-    }
-}
-
-
-/* ----- */
