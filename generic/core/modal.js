@@ -609,7 +609,7 @@ ModalWindow.prototype.drag = function(ev) {
 }
 /**
  * Get limits of actual window to limit modal movement
- * @param {mouseX,mouseY} mouseX and mouseY are coordinates of actual mouse on screen.
+ * @return {Object} Object containing mouseX and mouseY are coordinates of actual mouse on screen.
  * @ignore
  */
 ModalWindow.prototype.getLimitWindow = function() {

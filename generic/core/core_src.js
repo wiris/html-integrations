@@ -1319,11 +1319,11 @@ function wrs_httpBuildQuery(properties) {
  * @param {string} language Language for the formula.
  * @return {string} HTML code with the WIRIS data converted into LaTeX and images.
  */
+function wrs_initParse(code, language) {
  /* Note: The code inside this function has been inverted.
     If you invert again the code then you cannot use correctly LaTeX
     in Moodle.
  */
-function wrs_initParse(code, language) {
     wrs_initSetSize();
     if (window._wrs_conf_saveMode) {
         _wrs_parseXml = _wrs_conf_saveMode == 'safeXml'|| _wrs_conf_saveMode == 'xml';
@@ -2851,6 +2851,7 @@ function wrs_createModalWindow() {
 
 /**
  * Closes modal window
+ * @ignore
  */
 function wrs_closeModalWindow() {
     // We avoid to close window when it's closed
@@ -3560,7 +3561,7 @@ if (!String.prototype.codePointAt) {
 /**
  * Add a new callback to a WIRIS plugins listener.
  * @param {object} listener an Object containing listener name and a callback.
- * @ignore
+ * @tutorial tutorial
  */
 function wrs_addPluginListener(listener) {
     wrs_pluginListeners.push(listener);
@@ -3580,6 +3581,7 @@ function wrs_setModalWindowEditor(editor) {
 
 /**
  * Get the base URL (i.e the URL on core.js lives).
+ * @ignore
  */
 function wrs_getServerPath() {
     url = wrs_getCorePath();
