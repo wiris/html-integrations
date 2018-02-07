@@ -574,6 +574,11 @@ ModalWindow.prototype.startDrag = function(ev) {
             wrs_addClass(document.body, 'wrs_noselect');
             // Obtain screen limits for prevent overflow.
             this.limitWindow = this.getLimitWindow();
+            // Prevent lost mouse events into other iframes
+            // Activate overlay div to prevent mouse events behind modal
+            if (_wrs_modalWindow.properties.state != "maximized") {
+                this.overlayDiv.style.display = "";
+            }
         }
     }
 
@@ -696,6 +701,10 @@ ModalWindow.prototype.stopDrag = function(ev) {
         }
         // Active text select event
         wrs_removeClass(document.body, 'wrs_noselect');
+        // Disable overlay for click behind modal
+        if (_wrs_modalWindow.properties.state != "maximized") {
+            this.overlayDiv.style.display = "none";
+        }
     }
     this.dragDataObject = null;
 }
