@@ -139,6 +139,9 @@ var _wrs_modalWindowProperties = typeof _wrs_modalWindowProperties != 'undefined
 var _wrs_editor = typeof _wrs_editor != 'undefined' ? _wrs_editor : null;
 var _wrs_modalWindow = typeof _wrs_modalWindow != 'undefined' ? _wrs_modalWindow : null;
 
+// If true all MathML should be parse despite of save mode.
+var _wrs_parseXml = true;
+
 /**
  * Adds element events.
  * @param {object} target Target
@@ -1325,12 +1328,6 @@ function wrs_initParse(code, language) {
     in Moodle.
  */
     wrs_initSetSize();
-    if (window._wrs_conf_saveMode) {
-        _wrs_parseXml = _wrs_conf_saveMode == 'safeXml'|| _wrs_conf_saveMode == 'xml';
-        if (window._wrs_conf_parseModes !== undefined) {
-            _wrs_parseXml = _wrs_parseXml || wrs_arrayContains(_wrs_conf_parseModes, 'xml') != -1;
-        }
-    }
     code = wrs_initParseSaveMode(code, language);
     return wrs_initParseEditMode(code);
 }
