@@ -481,6 +481,7 @@ ModalWindow.prototype.addListeners = function() {
     wrs_addEvent(window, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(document, 'mouseup', this.stopDrag.bind(this));
     wrs_addEvent(document, 'mousemove', this.drag.bind(this));
+    wrs_addEvent(window, 'resize', this.recalculatePosition.bind(this));
 }
 
 /**
@@ -497,6 +498,7 @@ ModalWindow.prototype.removeListeners = function() {
     wrs_removeEvent(document, 'mouseup', this.stopDrag);
     wrs_removeEvent(document.getElementsByClassName("wrs_modal_iframe")[0], 'mouseup', this.stopDrag);
     wrs_removeEvent(document, 'mousemove', this.drag);
+    wrs_removeEvent(window, 'resize', this.recalculatePosition);
 }
 
 
@@ -707,6 +709,22 @@ ModalWindow.prototype.stopDrag = function(ev) {
         }
     }
     this.dragDataObject = null;
+}
+
+/**
+ * Recalculated position for modal when resize browser window
+ *
+ * @ignore
+ */
+ModalWindow.prototype.recalculatePosition = function() {
+    this.containerDiv.style.right = Math.min(parseInt(this.containerDiv.style.right),window.innerWidth - this.scrollbarWidth - this.containerDiv.offsetWidth) + "px";
+    if(parseInt(this.containerDiv.style.right) < 0) {
+        this.containerDiv.style.right = "0px";
+    }
+    this.containerDiv.style.bottom = Math.min(parseInt(this.containerDiv.style.bottom),window.innerHeight - this.containerDiv.offsetHeight) + "px";
+    if(parseInt(this.containerDiv.style.bottom) < 0) {
+        this.containerDiv.style.bottom = "0px";
+    }
 }
 
 /**
