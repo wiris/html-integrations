@@ -1,5 +1,6 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_plugin_version = "@plugin.version@";
 baseURL = window.location.protocol + "//" + window.location.host + "/assets/froala_wiris";
 // Get _wrs_conf_path (plugin URL).
 var col = document.getElementsByTagName("script");
@@ -22,7 +23,7 @@ var _wrs_conf_setSize = true;
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = _wrs_conf_path + '/core/core.js';
+script.src = _wrs_conf_path + '/core/core.js?v=' + _wrs_plugin_version;
 document.getElementsByTagName('head')[0].appendChild(script);
 
 $('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
@@ -301,7 +302,7 @@ var _wrs_int_window_opened = false;
 
    $.FroalaEditor.COMMANDS.wirisEditor.refresh = function ($btn) {
     var selectedImage = _wrs_int_currentEditor.image.get();
-      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] && 
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
           ($(selectedImage[0]).hasClass(_wrs_conf_imageClassName) || $(selectedImage[0]).contents().hasClass(_wrs_conf_imageClassName)))) {
         $btn.removeClass('fr-hidden');
       }
@@ -312,7 +313,7 @@ var _wrs_int_window_opened = false;
 
    $.FroalaEditor.COMMANDS.wirisChemistry.refresh = function ($btn) {
       var selectedImage = _wrs_int_currentEditor.image.get();
-      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] && 
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
           ($(selectedImage[0]).hasClass(_wrs_conf_imageClassName) || $(selectedImage[0]).contents().hasClass(_wrs_conf_imageClassName)))) {
         $btn.removeClass('fr-hidden');
       }

@@ -125,9 +125,19 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
      *
      */
     function wrs_loadCore() {
+        // Get WIRIS Plugin version for caching.
+        var queryParams = window.location.search.substring(1).split("&");
+        var version = "";
+        for (var i = 0; i < queryParams.length; i++) {
+            var pos = queryParams[i].indexOf("v=");
+            if (pos >= 0) {
+                version = queryParams[i].substring(2);
+            }
+        }
+        // Append core.js.
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = "core.js";
+        script.src = "core.js?v=" + version;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 

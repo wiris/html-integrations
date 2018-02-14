@@ -1,6 +1,6 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
-
+var _wrs_plugin_version = "@plugin.version@";
 // Searching wiriscontextpath on CKEditor config.
 // If WIRIS plugin is an external plugin contextPath is external plugin domain:
 
@@ -67,7 +67,7 @@ if (!_wrs_int_conf_async) {
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/core.js';
+script.src = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/core.js?v=' + _wrs_plugin_version;
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Vars
@@ -83,7 +83,7 @@ var _wrs_int_directionality;
 var _wrs_int_disableDoubleClick = false;
 // To know if a new editor is created after onLoad.
 var _wrs_int_firstInstanceLoaded = false;
-// Custom Editors: 
+// Custom Editors:
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
 // Lang
 var _wrs_int_langCode = 'en';
@@ -91,13 +91,13 @@ var _wrs_int_langCode = 'en';
 // Plugin integration
 CKEDITOR.plugins.add('ckeditor_wiris', {
     'init': function (editor) {
-        // Synchronous request failed, avoid 
+        // Synchronous request failed, avoid
         // CKEDITOR loading fails.
         if (! _wrs_int_conf_file_loaded) {
             return;
         }
 
-            
+
         for(var id in CKEDITOR.instances) {
             CKEDITOR.instances[id].on('focus', function(e) {
                 // Fill some ugly global var here
@@ -107,20 +107,20 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                 }
             });
         }
-        
+
 
         var iframe;
-        
+
         if (parseFloat(CKEDITOR.version) < 4.0){
             /*
              * Fix for a bug in CKEditor 3.x when there is more than one editor in the same page
              * It removes wiris element from config array when more than one is found
              */
             var _wrs_toolbarName = 'toolbar_' + editor.config.toolbar;
-            
+
             if (CKEDITOR.config[_wrs_toolbarName]) {
                 var wirisButtonIncluded = false;
-                
+
                 for (var i = 0; i < CKEDITOR.config[_wrs_toolbarName].length; ++i) {
                     if (CKEDITOR.config[_wrs_toolbarName][i].name == 'wiris') {
                         if (!wirisButtonIncluded) {
@@ -134,11 +134,11 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                 }
             }
         }
-        
+
         _wrs_int_directionality = editor.config.contentsLangDirection;
-        
+
         var lastDataSet = '';
-    
+
         // If wirislistenerdisabled=true all listeners should be disabled.
         // If this happens user should use wrs_initParse() and wrs_endParse() method
         if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
@@ -149,13 +149,13 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
         } else {
             lastDataSet = editor.getData();
         }
-        
+
         editor.on('doubleclick', function (event) {
             if (event.data.element.$.nodeName.toLowerCase() == 'img' && wrs_containsClass(event.data.element.$, _wrs_conf_imageClassName) || wrs_containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
                 event.data.dialog = null;
             }
         });
-        
+
         var element = null;
         // Avoid WIRIS images to be upcasted.
         if (typeof editor.widgets != 'undefined') {
@@ -190,7 +190,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                         checkElement(editor, null, function(el){element = el;});
                     });
 
-                    if (lastDataSet != '') 
+                    if (lastDataSet != '')
                         editor.setData(lastDataSet);
 
                     setInterval(checkElement(editor, element, function(el){element = el;}, 500));
@@ -209,25 +209,25 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
         // CKEditor bug #10501.
         // whenDocReady() first calls could cause a crash if ckeditor event's (like setData) are not loaded so we put a 500 ms timeout.
         setTimeout(whenDocReady, 500);
-        
+
         // editor command
-        
+
         if (_wrs_conf_editorEnabled) {
             var allowedContent = 'img[align,' + _wrs_conf_imageMathmlAttribute + ',src,alt](!Wirisformula)';
-            
+
             editor.addCommand('ckeditor_wiris_openFormulaEditor', {
                 'async': false,
                 'canUndo': true,
                 'editorFocus': true,
                 'allowedContent': allowedContent,
                 'requiredContent': allowedContent,
-                
+
                 'exec': function (editor) {
                     wrs_int_disableCustomEditors();
                     wrs_int_openNewFormulaEditor(element, editor.langCode, editor.elementMode != CKEDITOR.ELEMENT_MODE_INLINE && !_wrs_int_divIframe );
                 }
             });
-            
+
             editor.ui.addButton('ckeditor_wiris_formulaEditor', {
                 'label': 'WIRIS EDITOR math',
                 'command': 'ckeditor_wiris_openFormulaEditor',
@@ -471,7 +471,7 @@ function wrs_int_updateFormula(mathml, editMode, language) {
     }
 
     // Fire onchange event.
-    // Try to use first CKEDITOR default method currenInstance first (only works if editor has been focused).   
+    // Try to use first CKEDITOR default method currenInstance first (only works if editor has been focused).
     if (CKEDITOR.currentInstance != null && CKEDITOR.currentInstance && CKEDITOR.currentInstance.fire('change'))
          {
             CKEDITOR.currentInstance.fire('change')
@@ -490,7 +490,7 @@ function wrs_int_notifyWindowClosed() {
 }
 
 /**
- * CKEditor replaces several times the element element during its execution, 
+ * CKEditor replaces several times the element element during its execution,
  * so we must assign the events again to editor element.
  * @param  {object}   editor   current CKEDITOR instance.
  * @param  {object}   element  last html editor element.

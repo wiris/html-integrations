@@ -1,5 +1,6 @@
 // Configuration.
 var _wrs_int_conf_file = "@param.js.configuration.path@";
+var _wrs_plugin_version = "@plugin.version@";
 var _wrs_int_conf_async = true;
 
 // Stats editor (needed by core/editor.js).
@@ -63,7 +64,7 @@ if (typeof _wrs_int_langCode == 'undefined') {
 // Including core.js.
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = _wrs_conf_path + '/core/core.js';
+script.src = _wrs_conf_path + '/core/core.js?v=' + _wrs_plugin_version;
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Load configuration synchronously.

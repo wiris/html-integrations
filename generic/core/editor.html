@@ -3,8 +3,29 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <!-- script type="text/javascript" src="http://www.wiris.net/demo/editor/editor?lang=en"></script -->
-        <script type="text/javascript" src="editor.js"></script>
-        <link rel="stylesheet" type="text/css" href="editor.css">
+        <script type="text/javascript">
+            var queryParams = window.location.search.substring(1).split("&");
+            var version = "";
+            for (var i = 0; i < queryParams.length; i++) {
+                console.log(queryParams[i]);
+                var pos = queryParams[i].indexOf("v=");
+                if (pos >= 0) {
+                    version = queryParams[i].substring(2);
+                }
+            }
+
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = "editor.js?v=" + version;
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+            var linkcss = document.createElement("link");
+            linkcss.rel = "stylesheet";
+            linkcss.type = "text/css";
+            linkcss.href = "editor.css?v=" + version;
+            document.getElementsByTagName('head')[0].appendChild(linkcss);
+        </script>
+        <!-- <link rel="stylesheet" type="text/css" href="editor.css"> -->
         <!-- script type="text/javascript" src="../lang/en/strings.js"></script -->
         <title>WIRIS editor</title>
         <style type="text/css">/*<!--*/

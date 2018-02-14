@@ -2164,6 +2164,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
     // Avoid double slashes.
     var path = _wrs_conf_path.lastIndexOf('/') == _wrs_conf_path.length - 1 ? _wrs_conf_path + "core/editor.html" : _wrs_conf_path + "/core/editor.html";
 
+    // Params for editor.html
     if (language) {
         path = wrs_addArgument(path, "lang", language);
     }
@@ -2171,6 +2172,8 @@ function wrs_openEditorWindow(language, target, isIframe) {
     if (location.protocol == 'https:') {
         path = wrs_addArgument(path, "secure", "true");
     }
+
+    path = wrs_addArgument(path, "v", _wrs_plugin_version);
 
     var availableDirs = new Array('rtl', 'ltr');
     if (typeof _wrs_int_directionality != 'undefined' && wrs_arrayContains(availableDirs, _wrs_int_directionality) != -1){
