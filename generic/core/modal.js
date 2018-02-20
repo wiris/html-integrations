@@ -96,7 +96,7 @@ function ModalWindow(path, editorAttributes) {
     attributes = {};
     attributes['id'] = 'wrs_modal_iframe_id';
     attributes['class'] = 'wrs_modal_iframe';
-    attributes['title'] = 'WIRIS Editor Modal Window';
+    attributes['title'] = 'MathType modal window';
     attributes['src'] = iframeAttributes['src'];
     attributes['frameBorder'] = "0";
     var iframeModal = wrs_createElement('iframe', attributes);
@@ -214,7 +214,7 @@ ModalWindow.prototype.open = function() {
             this.setIframeContainerHeight("100" + this.iosMeasureUnit);
         }
     } else {
-        var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'WIRIS EDITOR math';
+        var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'MathType';
         _wrs_modalWindow.setTitle(title);
         this.create();
     }
@@ -234,7 +234,7 @@ ModalWindow.prototype.updateToolbar = function() {
         }
     } else {
         var toolbar = this.checkToolbar();
-        _wrs_modalWindow.setTitle('WIRIS EDITOR math');
+        _wrs_modalWindow.setTitle('MathType');
         if (this.toolbar == null || this.toolbar != toolbar) {
             this.setToolbar(toolbar);
             wrs_int_disableCustomEditors();
@@ -750,8 +750,8 @@ ModalWindow.prototype.getOriginFromUrl = function(url) {
 }
 
 /**
- * Enable safe cross-origin comunication betweenWIRIS Plugin and WIRIS Editor. We can't call directly
- * WIRIS Editor methods because the content iframe could be in a different domain.
+ * Enable safe cross-origin comunication between plugin and MathType services. We can't call directly
+ * MathType editor methods because the content iframe could be in a different domain.
  * We use postMessage method to create a wrapper between modal window and editor.
  *
  */

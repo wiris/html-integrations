@@ -82,7 +82,7 @@
 # Editor behaviour #
 ####################
 
-## Specifies if WIRIS Editor is enabled.
+## Specifies if math editor is enabled.
 
 #wiriseditorenabled = true
 
@@ -98,7 +98,7 @@
 
 #wiriseditoreditmode = default
 
-## Specifies if LaTeX content generated with WIRIS Editor should be shown as an image outside editing areas.
+## Specifies if LaTeX content generated with MathType should be shown as an image outside editing areas.
 
 #wiriseditorparselatex = true
 
@@ -106,7 +106,7 @@
 
 #wiriseditorparsexml = false
 
-## Specifies WIRIS Editor size attributes.
+## Specifies editor size attributes.
 
 #wiriseditorwindowattributes = width=570, height=450, scroll=no, resizable=yes
 
@@ -114,7 +114,7 @@
 
 #wiriseditorsetsize = false
 
-## Specifies if WIRIS Editor should be opened on a modal window or in a pop-up window. true by default.
+## Specifies if editor should be opened on a modal window or in a pop-up window. true by default.
 
 #wiriseditormodalwindow = true
 
@@ -132,7 +132,7 @@
 
 ###############################################################################################
 # Editor inherit parameters                                                                   #
-# The format is a JSON containing WIRIS Editor parameters defined on the following page:      #
+# The format is a JSON containing MathType Web parameters defined on the following page:     #
 # http://www.wiris.com/editor/docs/reference/parameters                                       #
 # Editor parameter key should be the JSON key and the corresponnding value is the JSON value. #
 ###############################################################################################

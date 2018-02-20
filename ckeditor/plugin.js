@@ -2,7 +2,7 @@
 var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_plugin_version = "@plugin.version@";
 // Searching wiriscontextpath on CKEditor config.
-// If WIRIS plugin is an external plugin contextPath is external plugin domain:
+// If MathType is an external plugin contextPath is external plugin domain:
 
 var _wrs_cont_contextPath;
 if (CKEDITOR.plugins.externals.hasOwnProperty('ckeditor_wiris')) {
@@ -84,7 +84,7 @@ var _wrs_int_disableDoubleClick = false;
 // To know if a new editor is created after onLoad.
 var _wrs_int_firstInstanceLoaded = false;
 // Custom Editors:
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', tooltip: 'Insert a chemistry formula - ChemType', title : 'ChemType'}}
 // Lang
 var _wrs_int_langCode = 'en';
 
@@ -165,7 +165,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             } );
         }
         function whenDocReady() {
-            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined') { // WIRIS plugin core.js and configuration loaded properly
+            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined') { // core.js and configuration loaded properly
                 // If wirislistenerdisabled=true all listeners should be disabled.
                 // If this happens user should use wrs_initParse() and wrs_endParse() methods.
                 if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
@@ -229,7 +229,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             });
 
             editor.ui.addButton('ckeditor_wiris_formulaEditor', {
-                'label': 'WIRIS EDITOR math',
+                'label': 'Insert a math equation - MathType',
                 'command': 'ckeditor_wiris_openFormulaEditor',
                 'icon': _wrs_int_editorIcon
             });
@@ -297,7 +297,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
 
                     var buttonName = 'ckeditor_wiris_formulaEditor' + _wrs_int_customEditors[key].name;
                     editor.ui.addButton(buttonName, {
-                        'label': _wrs_int_customEditors[key].title,
+                        'label': _wrs_int_customEditors[key].tooltip,
                         'command': command,
                         'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +'/icons/' + _wrs_int_customEditors[key].icon
                     });
@@ -395,7 +395,7 @@ function wrs_int_doubleClickHandlerForIframe(editor, iframe, element, event) {
 function wrs_int_doubleClickHandler(editor, target, isIframe, element, event) {
     if (element.nodeName.toLowerCase() == 'img') {
         if (wrs_containsClass(element, _wrs_conf_imageClassName)) {
-            // Some plugins (image2, image) open a dialog on double click. On Wiris formulas
+            // Some plugins (image2, image) open a dialog on double click. On formulas
             // doubleclick event ends here.
             if (typeof event.stopPropagation != 'undefined') { // old I.E compatibility.
                 event.stopPropagation();

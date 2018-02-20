@@ -28,7 +28,7 @@ document.getElementsByTagName('head')[0].appendChild(script);
 
 $('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', tooltip: 'Insert a chemistry formula - ChemType', title : 'ChemType'}}
 var _wrs_int_currentEditor;
 
 var _wrs_int_temporalImageResizing;
@@ -269,7 +269,7 @@ var _wrs_int_window_opened = false;
   // Add an option for your plugin.
   $.FroalaEditor.DefineIcon('wirisEditor', {NAME: 'editor', template: 'wirisplugin'});
   $.FroalaEditor.RegisterCommand('wirisEditor', {
-      title: 'WIRIS EDITOR math',
+      title: 'Insert a math equation - MathType',
       focus: true,
       undo: true,
       refreshAfterCallback: true,
@@ -286,7 +286,7 @@ var _wrs_int_window_opened = false;
 
   $.FroalaEditor.DefineIcon('wirisChemistry', {NAME: 'chemistry', template: 'wirisplugin'});
   $.FroalaEditor.RegisterCommand('wirisChemistry', {
-      title: 'WIRIS EDITOR chemistry',
+      title: 'Insert a chemistry formula - ChemType',
       focus: true,
       undo: true,
       refreshAfterCallback: true,

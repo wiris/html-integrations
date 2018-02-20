@@ -55,7 +55,7 @@ var _wrs_int_wirisProperties;
 var _wrs_int_directionality;
 var _wrs_int_imagesDataimgFilterBackup = [];
 // Custom Editors.
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', title: 'WIRIS EDITOR chemistry'}}
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', tooltip: 'Insert a chemistry formula - ChemType', title : 'ChemType'}}
 
 // Variable to control first wrs_initParse call.
 var _wrs_int_initParsed = false;
@@ -89,7 +89,7 @@ var _wrs_int_langCode = 'en';
             }
 
             // Including core.js
-            // First of all: recalculating _wrs_conf_path if WIRIS plugin has been loaded as an external plugin.
+            // First of all: recalculating _wrs_conf_path if MathType for TinyMCE has been loaded as an external plugin.
             // Cant access editor params since now.
             if (typeof editor.getParam('external_plugins') != 'undefined' && editor.getParam('external_plugins') != null && typeof editor.getParam('external_plugins')['tiny_mce_wiris'] != 'undefined') {
                 var external_url = editor.getParam('external_plugins')['tiny_mce_wiris'];
@@ -137,7 +137,7 @@ var _wrs_int_langCode = 'en';
                     if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
                         var language = editor.getParam('language');
                         // The file editor.js gets this variable _wrs_int_langCode variable to set
-                        // WIRIS Editor lang.
+                        // MathType for TinyMCE lang.
                         _wrs_int_langCode = language;
                         _wrs_int_directionality = editor.getParam('directionality');
 
@@ -329,7 +329,7 @@ var _wrs_int_langCode = 'en';
                 });
 
                 editor.addButton('tiny_mce_wiris_formulaEditor', {
-                    title: 'WIRIS EDITOR math',
+                    title: 'Insert a math equation - MathType',
                     cmd: 'tiny_mce_wiris_openFormulaEditor',
                     image: _wrs_int_editorIcon
                 });
@@ -377,7 +377,7 @@ var _wrs_int_langCode = 'en';
                         }
 
                         editor.addButton('tiny_mce_wiris_formulaEditor' + _wrs_int_customEditors[key].name, {
-                            title:  _wrs_int_customEditors[key].title,
+                            title:  _wrs_int_customEditors[key].tooltip,
                             cmd: cmd,
                             image: imagePath
                         });

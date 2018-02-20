@@ -56,7 +56,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
     // Asyn methods
     // waitForIntVariables loads core.js. Don't start until _wrs_int_vars has been loaded from _wrs_int_opener.
     wrs_waitForIntVariables();
-    // Method waitForCore() loads WIRIS editor. Don't start until core.js has been loaded.
+    // Method waitForCore() loads MathType. Don't start until core.js has been loaded.
     wrs_waitForCore();
 
     /**
@@ -125,7 +125,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
      *
      */
     function wrs_loadCore() {
-        // Get WIRIS Plugin version for caching.
+        // Get MathType version for caching.
         var queryParams = window.location.search.substring(1).split("&");
         var version = "";
         for (var i = 0; i < queryParams.length; i++) {
@@ -229,7 +229,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 
     // Adding events:
     // 1.- onMessage event: for enable cross-origin communication between editor window and _wrs_int_opener.
-    // 2.- onLoad event: inserts WIRIS editor into editor.html DOM.
+    // 2.- onLoad event: inserts MathType into editor.html DOM.
     // 3.- onUnload: communicates _wrs_int_opener that editor has been closed.
 
     wrs_addEvent(window, 'message', function (e) { // Safely enable cross-origin communication.
@@ -483,7 +483,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 });
 
                 if (!isIOS) {
-                    // Due to IOS use soft keyboard, we don't want to move the cursor to WIRIS editor.
+                    // Due to IOS use soft keyboard, we don't want to move the cursor to MathType.
                     editor.focus();
                     // Set initial editor height.
                     editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 20) + 'px';

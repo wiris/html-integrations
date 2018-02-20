@@ -2,19 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee">
-    <description>WIRIS plugin engine Web Application</description>
-	<!--
-    <context-param>
-        <description>WIRIS plugin cache</description>
-        <param-name>com.wiris.plugin.wiriscachedirectory</param-name>
-        <param-value>C:\soft\Tomcat_5.5\wiris\cache</param-value>
-    </context-param>
-    <context-param>
-        <description>WIRIS plugin formulas</description>
-        <param-name>com.wiris.plugin.wirisformuladirectory</param-name>
-        <param-value>C:\soft\Tomcat_5.5\wiris\formulas</param-value>
-    </context-param>
-	-->
+    <description>MathType intregration engine Web Application</description>
     <servlet>
         <servlet-name>MainServlet</servlet-name>
         <servlet-class>com.wiris.plugin.dispatchers.MainServlet</servlet-class>
@@ -22,14 +10,6 @@
     <servlet-mapping>
         <servlet-name>MainServlet</servlet-name>
         <url-pattern>/app/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>MainServletDev</servlet-name>
-        <servlet-class>com.wiris.plugin.dispatchers.dev.MainServletDev</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MainServletDev</servlet-name>
-        <url-pattern>/app-dev/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>35</session-timeout>

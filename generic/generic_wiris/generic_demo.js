@@ -1,4 +1,4 @@
-// This file belongs to a standard javascript demo for testing porpuses 
+// This file belongs to a standard javascript demo for testing porpuses
 // so coding standars are ignored on this file.
 //@codingStandardsIgnoreFile
 // Configuration
@@ -61,7 +61,7 @@ if (!_wrs_int_conf_async) {
 // Plugin integration
 
 /**
- * Inits the WIRIS plugin for this demo.
+ * Inits the MathType integration for this demo.
  * @param string target Textarea target ID.
  */
 function wrs_int_init(target) {
@@ -79,45 +79,45 @@ function wrs_int_init_handler(target) {
 	/* Assigning events to the WYSIWYG editor */
 	var iframe = document.getElementById(target + '_iframe');
 	wrs_addIframeEvents(iframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
-	
+
 	/* Parsing input text */
 	var textarea = document.getElementById(target);
 	iframe.contentWindow.document.body.innerHTML = wrs_initParse(textarea.value);
-	
+
 	/* Creating an event for parse the output text */
 	var form = textarea.form;
-	
+
 	wrs_addEvent(form, 'submit', function (e) {
 		// In our case the plugin is who sets the textarea content. And it takes the opportunity to apply the final parser.
 		textarea.value = wrs_endParse(iframe.contentWindow.document.body.innerHTML);
 	});
-	
+
 	/* Creating toolbar buttons */
 	var toolbar = document.getElementById(target + '_toolbar');
-	
+
 	if (_wrs_conf_editorEnabled) {
 		var formulaButton = document.createElement('img');
 		formulaButton.id = "editorIcon";
 		formulaButton.src = _wrs_conf_path + _wrs_int_editorIcon;
 		formulaButton.style.cursor = 'pointer';
-		
+
 		wrs_addEvent(formulaButton, 'click', function () {
 			wrs_int_openNewFormulaEditor(iframe, _wrs_int_language);
 		});
-		
+
 		toolbar.appendChild(formulaButton);
 	}
-	
+
 	if (_wrs_conf_CASEnabled) {
 		var CASButton = document.createElement('img');
 		CASButton.src = _wrs_conf_path + _wrs_int_CASIcon;
 		CASButton.id = "casIcon";
 		CASButton.style.cursor = 'pointer';
-		
+
 		wrs_addEvent(CASButton, 'click', function () {
 			wrs_int_openNewCAS(iframe, _wrs_int_language);
 		});
-		
+
 		toolbar.appendChild(CASButton);
 	}
 }
