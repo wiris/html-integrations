@@ -51,6 +51,17 @@ var _wrs_int_window_opened = false;
       _wrs_int_currentEditor = this;
     });
 
+    // Adding parse mathml to images after command event to prevent
+    // lost image formulas.
+     editor.events.on('commands.after', function (cmd) {
+      if(cmd == "html"){
+        if(!editor.codeView.isActive()){
+          var parsedContent = wrs_initParse(editor.html.get(), editor.opts.language);
+            editor.html.set(parsedContent);
+        }
+      }
+     });
+
     // Entry point:
     // Register events, and global functions.
     function _init () {
