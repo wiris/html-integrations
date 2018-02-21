@@ -1540,7 +1540,11 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
             }
         }
         else {
-            focusElement.focus();
+            if(typeof focusElement.frameElement != 'undefined'){
+                focusElement.frameElement.focus();
+            }else{
+                focusElement.focus();
+            }
         }
 
         if (_wrs_isNewElement) {
@@ -1633,6 +1637,17 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 _wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
             }
             _wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
+            function placeCaretAfterNode(node) {
+                if (typeof window.getSelection != "undefined") {
+                    var range = windowTarget.document.createRange();
+                    range.setStartAfter(node);
+                    range.collapse(true);
+                    var selection = windowTarget.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+            }
+            placeCaretAfterNode(element);
         }
     }
     catch (e) {
