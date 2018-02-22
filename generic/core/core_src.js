@@ -1323,10 +1323,10 @@ function wrs_httpBuildQuery(properties) {
  * @return {string} HTML code with the WIRIS data converted into LaTeX and images.
  */
 function wrs_initParse(code, language) {
- /* Note: The code inside this function has been inverted.
+    /* Note: The code inside this function has been inverted.
     If you invert again the code then you cannot use correctly LaTeX
     in Moodle.
- */
+    */
     wrs_initSetSize();
     code = wrs_initParseSaveMode(code, language);
     return wrs_initParseEditMode(code);
