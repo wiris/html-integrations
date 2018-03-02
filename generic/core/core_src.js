@@ -1541,7 +1541,12 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
         }
         else {
             if(typeof focusElement.frameElement != 'undefined'){
-                focusElement.frameElement.focus();
+                // Iexplorer can't focus into iframe
+                if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
+                    focusElement.focus();
+                }else{
+                    focusElement.frameElement.focus();
+                }
             }else{
                 focusElement.focus();
             }
