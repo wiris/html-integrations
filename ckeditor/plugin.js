@@ -1,15 +1,19 @@
 // Define variables needed by core/core.js
 var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_plugin_version = "@plugin.version@";
+
 // Searching wiriscontextpath on CKEditor config.
 // If MathType is an external plugin contextPath is external plugin domain:
-
 var _wrs_cont_contextPath;
+
+// Mounting route depending if plugin is a core or it's a drupal module
+var wrs_int_ckeditorPluginPath = @param.js.ckeditor.path@;
+
 if (CKEDITOR.plugins.externals.hasOwnProperty('ckeditor_wiris')) {
     if (_wrs_int_conf_file.indexOf('/') == 0) {
-        _wrs_cont_contextPath = CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[0]+ '//' + CKEDITOR.plugins.getPath('ckeditor_wiris').split('/')[2];
+        _wrs_cont_contextPath = wrs_int_ckeditorPluginPath.split('/')[0]+ '//' + wrs_int_ckeditorPluginPath.split('/')[2];
      } else {
-         _wrs_cont_contextPath = CKEDITOR.plugins.getPath('ckeditor_wiris');
+         _wrs_cont_contextPath = wrs_int_ckeditorPluginPath;
      }
 } else {
     _wrs_cont_contextPath = CKEDITOR.config.wiriscontextpath;
@@ -33,7 +37,7 @@ var _wrs_int_conf_file_loaded = false;
 
 var _wrs_int_conf_async = false;
 
-var _wrs_conf_path = CKEDITOR.plugins.getPath('ckeditor_wiris');
+var _wrs_conf_path = wrs_int_ckeditorPluginPath;
 
 // Stats editor (needed by core/editor.js)
 var _wrs_conf_editor = 'CKEditor4';
@@ -67,11 +71,11 @@ if (!_wrs_int_conf_async) {
 // Including core.js
 var script = document.createElement('script');
 script.type = 'text/javascript';
-script.src = CKEDITOR.plugins.getPath('ckeditor_wiris') + './core/core.js?v=' + _wrs_plugin_version;
+script.src = wrs_int_ckeditorPluginPath + './core/core.js?v=' + _wrs_plugin_version;
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Vars
-var _wrs_int_editorIcon = CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/formula.png';
+var _wrs_int_editorIcon = wrs_int_ckeditorPluginPath + './icons/formula.png';
 var _wrs_int_temporalElement;
 var _wrs_int_temporalElementIsIframe;
 var _wrs_int_window;
@@ -299,7 +303,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
                     editor.ui.addButton(buttonName, {
                         'label': _wrs_int_customEditors[key].tooltip,
                         'command': command,
-                        'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') +'/icons/' + _wrs_int_customEditors[key].icon
+                        'icon': wrs_int_ckeditorPluginPath +'/icons/' + _wrs_int_customEditors[key].icon
                     });
                 }
             }
