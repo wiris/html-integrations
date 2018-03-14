@@ -399,7 +399,9 @@ ModalWindow.prototype.stackModalWindow = function () {
         if (typeof _wrs_popupWindow != 'undefined' && _wrs_popupWindow) {
             _wrs_popupWindow.postMessage({'objectName' : 'editorResize', 'arguments': [_wrs_modalWindow.iframeContainer.offsetHeight - 10]}, this.iframeOrigin);
         }
-
+        if (typeof _wrs_popupWindow != 'undefined' && _wrs_popupWindow) {
+            this.focus();
+        }
     }
 }
 
@@ -466,6 +468,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     this.containerDiv.style.right = window.innerWidth / 2 - this.containerDiv.offsetWidth / 2 + "px";
     this.containerDiv.style.position = "fixed";
     _wrs_popupWindow.postMessage({'objectName' : 'editorResize', 'arguments': [_wrs_modalWindow.iframeContainer.offsetHeight - 10]}, this.iframeOrigin);
+    this.focus();
 
 }
 
