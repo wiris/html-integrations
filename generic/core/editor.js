@@ -486,7 +486,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     // Due to IOS use soft keyboard, we don't want to move the cursor to MathType.
                     editor.focus();
                     // Set initial editor height.
-                    editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 20) + 'px';
+                    editorElement.style.height = (document.getElementById('container').offsetHeight - controls.offsetHeight - 10) + 'px';
                 }
             } else {
                 setTimeout(wrs_waitForEditor, 100);
