@@ -20,11 +20,6 @@ _wrs_int_path = _wrs_int_path.join("/");
 _wrs_int_path = _wrs_int_path.indexOf("/") == 0 || _wrs_int_path.indexOf("http") == 0 ? _wrs_int_path : _wrs_conf_path + "/" + _wrs_int_path;
 
 var _wrs_conf_setSize = true;
-// Including core.js
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = _wrs_conf_path + '/core/core.js?v=' + _wrs_plugin_version;
-document.getElementsByTagName('head')[0].appendChild(script);
 
 $('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
 
@@ -47,6 +42,17 @@ var _wrs_int_window_opened = false;
   // The editor parameter is the current instance.
   $.FroalaEditor.PLUGINS.wiris = function (editor) {
 
+    // Updating integration paths if context path is overwrited by editor javascript configuration.
+    if ('wiriscontextpath' in editor.opts) {
+      _wrs_int_path = editor.opts.wiriscontextpath ;
+      _wrs_int_conf_file = editor.opts.wiriscontextpath + _wrs_int_conf_file;
+    }
+
+    // Including core.js
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = _wrs_conf_path + '/core/core.js?v=' + _wrs_plugin_version;
+    document.getElementsByTagName('head')[0].appendChild(script);
     editor.events.on('focus', function() {
       _wrs_int_currentEditor = this;
     });

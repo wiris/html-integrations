@@ -88,6 +88,12 @@ var _wrs_int_langCode = 'en';
                 }
             }
 
+            // Updating integration paths if context path is overwrited by editor javascript configuration.
+            if (typeof tinyMCE.activeEditor.getParam('wiriscontextpath') != 'undefined') {
+                _wrs_int_conf_file = tinyMCE.activeEditor.getParam('wiriscontextpath') + _wrs_int_conf_file;
+                _wrs_int_path = wrs_intPath(_wrs_int_conf_file, tinyMCE.activeEditor.getParam('wiriscontextpath'));
+            }
+
             // Including core.js
             // First of all: recalculating _wrs_conf_path if MathType for TinyMCE has been loaded as an external plugin.
             // Cant access editor params since now.
