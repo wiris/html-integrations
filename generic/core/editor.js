@@ -469,14 +469,22 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     getMethod('_wrs_modalWindow', 'closedIosSoftkeyboard', [], null);
                 }
 
-                // Event for close window and trap focus
+                // Event manager code
                 wrs_addEvent(window, 'keydown', function(e) {
                     if (_wrs_conf_modalWindow) {
-                        if (e.keyCode !== undefined && e.keyCode === 27 && e.repeat === false) {
-                            if (editor.isFormulaEmpty() || window.editorListener.getIsContentChanged() === false) {
-                                _wrs_closeFunction();
-                            }else{
-                                popup.show();
+                        if (e.key !== undefined && e.repeat === false) {
+                            // Code for detect Esc event
+                            if (e.key === "Escape") {
+                                if (editor.isFormulaEmpty() || window.editorListener.getIsContentChanged() === false) {
+                                    _wrs_closeFunction();
+                                }else{
+                                    popup.show();
+                                }
+                            }
+                            // Code for detect Tab event
+                            if (e.key === "Tab") {
+                                 submitButton.focus();
+                                 e.preventDefault();
                             }
                         }
                     }
