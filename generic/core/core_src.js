@@ -2986,6 +2986,17 @@ function wrs_closeModalWindow() {
 }
 
 /**
+ * Check content of editor before close action
+ * @ignore
+ */
+function wrs_showPopUpMessage() {
+    if (_wrs_modalWindow.properties.state == 'minimized') {
+        _wrs_modalWindow.stackModalWindow();
+    }
+    _wrs_modalWindow.popup.show();
+}
+
+/**
  * Create modal dialog for non mobile android devices.
  * @param  {modalDiv} modal overlay div.
  * @param  {containerDiv} modal window div.

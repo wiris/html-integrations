@@ -136,7 +136,9 @@ ModalWindow.prototype.create = function() {
     document.body.appendChild(this.containerDiv);
     document.body.appendChild(this.overlayDiv);
 
-    wrs_addEvent(this.closeDiv, 'click', this.close.bind(this));
+    wrs_addEvent(this.closeDiv, 'click', function(){
+        _wrs_popupWindow.postMessage({'objectName' : 'checkCloseCondition'}, this.iframeOrigin);
+    }.bind(this));
 
     if (!this.deviceProperties['isMobile'] && !this.deviceProperties['isIOS'] && !this.deviceProperties['isAndroid']) { // Desktop.
         this.stackDiv.addEventListener('click', this.stackModalWindow.bind(this), true);
@@ -159,6 +161,8 @@ ModalWindow.prototype.create = function() {
     }
     // This method obtain a width of scrollBar
     this.scrollbarWidth = this.getScrollBarWidth();
+
+    this.popup = new PopUpMessage(strings);
 }
 
 ModalWindow.prototype.open = function() {
