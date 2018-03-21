@@ -1601,21 +1601,31 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
         // help's MathType to focus properly on the current editor window.
         if (typeof wrs_int_insertElementOnSelection != 'undefined') {
             wrs_int_insertElementOnSelection();
-            if (!_wrs_range) {
-                focusElement.focus();
-            }
         }
-        else {
-            if(typeof focusElement.frameElement != 'undefined'){
-                // Iexplorer can't focus into iframe
-                if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
-                    focusElement.focus();
-                }else{
-                    focusElement.frameElement.focus();
+        if(typeof focusElement.frameElement != 'undefined'){
+            function get_browser(){
+                var ua = navigator.userAgent;
+                if(ua.search("Edge/") >= 0){
+                    return "EDGE";
+                }else if(ua.search("Chrome/") >= 0){
+                    return "CHROME";
+                }else if(ua.search("Trident/") >= 0){
+                    return "IE";
+                }else if(ua.search("Firefox/") >= 0){
+                    return "FIREFOX";
+                }else if(ua.search("Safari/") >= 0){
+                    return "SAFARI";
                 }
-            }else{
-                focusElement.focus();
             }
+            var browserName = get_browser();
+            // Iexplorer, Edge and Safari can't focus into iframe
+            if (browserName == 'SAFARI' || browserName == 'IE' || browserName == 'EDGE') {
+                focusElement.focus();
+            }else{
+                focusElement.frameElement.focus();
+            }
+        }else{
+            focusElement.focus();
         }
 
         if (_wrs_isNewElement) {
@@ -1645,10 +1655,8 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 }
             }
             else {
-                var ua = navigator.userAgent.toLowerCase();
-                var isAndroid = ua.indexOf("android") > -1;
-                var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
                 var selection = windowTarget.getSelection();
+                // We have use wrs_range beacuse IExplorer delete selection when select another part of text.
                 if (_wrs_range) {
                     var range = _wrs_range;
                     _wrs_range = null;
@@ -1677,20 +1685,17 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 else if (node.nodeType == 1) { // ELEMENT_NODE.
                     node.insertBefore(element, node.childNodes[position]);
                 }
-
-                if (!isAndroid && !isIOS){
-                    // Fix to set the caret after the inserted image.
-                    range.selectNode(element);
-                    position = range.endOffset;
-                    selection.collapse(node, position);
-                    // Integration function
-                    // If wrs_int_setCaretPosition function exists on
-                    // integration script can call caret method from the editor instance.
-                    // With this method we can call proper specific editor methods which in some scenarios
-                    // help's MathType to set caret position properly on the current editor window.
-                    if (typeof wrs_int_selectRange != 'undefined') {
-                        wrs_int_selectRange(range);
-                    }
+                // Fix to set the caret after the inserted image.
+                range.selectNode(element);
+                position = range.endOffset;
+                selection.collapse(node, position);
+                // Integration function
+                // If wrs_int_setCaretPosition function exists on
+                // integration script can call caret method from the editor instance.
+                // With this method we can call proper specific editor methods which in some scenarios
+                // help's MathType to set caret position properly on the current editor window.
+                if (typeof wrs_int_selectRange != 'undefined') {
+                    wrs_int_selectRange(range);
                 }
             }
         }
