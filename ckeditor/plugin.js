@@ -209,6 +209,16 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             else {
                 setTimeout(whenDocReady, 50);
             }
+            // We create this method to return select items in ckeditor because standar getSelection issues.
+            // If you want track view PLUGIN-947 issue.
+            window.wrs_int_getSelectedItem = function(target) {
+                if(editor.getSelection().getSelectedElement() != undefined){
+                    return {
+                        node: editor.getSelection().getSelectedElement().$
+                    };
+                }
+            }
+
         }
         // CKEditor bug #10501.
         // whenDocReady() first calls could cause a crash if ckeditor event's (like setData) are not loaded so we put a 500 ms timeout.
