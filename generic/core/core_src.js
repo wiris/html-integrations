@@ -58,6 +58,11 @@ var _wrs_range;
 var _wrs_latex_formula_name = "Latex Formula";
 var _wrs_latex_formula_number = 1;
 
+// Tags used for LaTeX formulas.
+var _wrs_latexTags = {
+    'open': '$$',
+    'close': '$$'
+};
 // LaTex client cache.
 var _wrs_int_LatexCache = {};
 // Cache for all the mathmls withouts translation to LaTex.
@@ -925,10 +930,15 @@ function wrs_getLatexFromMathML(mathml) {
  * Extracts the latex of a determined position in a text.
  * @param {string} textNode test to extract LaTeX
  * @param {int} caretPosition starting position to find LaTeX.
+ * @param {object} latexTags optional parameter representing tags between latex is inserted. It has the 'open' attribute for the open tag and the 'close' attribute for the close tag.
  * @return {object} An object with 3 keys: 'latex', 'start' and 'end'. Null if latex is not found.
  * @ignore
  */
-function wrs_getLatexFromTextNode(textNode, caretPosition) {
+function wrs_getLatexFromTextNode(textNode, caretPosition, latexTags) {
+    // latexTags is an optional parameter. If is not set, use default latexTags.
+    if (typeof latexTags == 'undefined' || latexTags == null) {
+        latexTags = _wrs_latexTags;
+    }
     // Looking for the first textNode.
     var startNode = textNode;
 
@@ -938,8 +948,23 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
 
     // Finding latex.
 
-    function getNextLatexPosition(currentNode, currentPosition) {
-        var position = currentNode.nodeValue.indexOf('$$', currentPosition);
+    /**
+     * It gets the next latex position and node from a specific node and position.
+     * @param {Object} currentNode node where searching latex.
+     * @param {number} currentPosition current position inside the currentNode.
+     * @param {Object} latexTagsToUse tags used at latex beggining and latex final.
+     * @param {boolean} searchEndTag If true, the first tag to search is an end tag. Otherwise, it searches the open tag first.
+     */
+    function getNextLatexPosition(currentNode, currentPosition, latexTagsToUse, searchEndTag) {
+        var latexTags = latexTagsToUse;
+        if (searchEndTag) {
+            latexTags = {
+                'open': latexTagsToUse.close,
+                'close': latexTagsToUse.open
+            };
+        }
+
+        var position = currentNode.nodeValue.indexOf(latexTags.open, currentPosition);
 
         while (position == -1) {
             currentNode = currentNode.nextSibling;
@@ -948,7 +973,7 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
                 return null; // Not found.
             }
 
-            position = currentNode.nodeValue.indexOf('$$');
+            position = currentNode.nodeValue.indexOf(latexTags.close);
         }
 
         return {
@@ -970,43 +995,46 @@ function wrs_getLatexFromTextNode(textNode, caretPosition) {
     }
 
     var start;
-
     var end = {
         'node': startNode,
         'position': 0
     };
-
+    var searchEndTag = false;
+    // Is supposed that open and close tags has the same length.
+    var tagLength = latexTags.open.length;
     do {
-        var start = getNextLatexPosition(end.node, end.position);
+        var start = getNextLatexPosition(end.node, end.position, latexTags, searchEndTag);
 
         if (start == null || isPrevious(textNode, caretPosition, start.node, start.position)) {
             return null;
         }
 
-        var end = getNextLatexPosition(start.node, start.position + 2);
+        var end = getNextLatexPosition(start.node, start.position + tagLength, latexTags, !searchEndTag);
 
         if (end == null) {
             return null;
         }
 
-        end.position += 2;
+        end.position += tagLength;
+        // For the next iteration, the start position to search corresponds to the opposite tag.
+        searchEndTag = !searchEndTag;
     } while (isPrevious(end.node, end.position, textNode, caretPosition));
 
     // Isolating latex.
     var latex;
 
     if (start.node == end.node) {
-        latex = start.node.nodeValue.substring(start.position + 2, end.position - 2);
+        latex = start.node.nodeValue.substring(start.position + tagLength, end.position - tagLength);
     }
     else {
-        latex = start.node.nodeValue.substring(start.position + 2, start.node.nodeValue.length);
+        latex = start.node.nodeValue.substring(start.position + tagLength, start.node.nodeValue.length);
         var currentNode = start.node;
 
         do {
             currentNode = currentNode.nextSibling;
 
             if (currentNode == end.node) {
-                latex += end.node.nodeValue.substring(0, end.position - 2);
+                latex += end.node.nodeValue.substring(0, end.position - tagLength);
             }
             else {
                 latex += currentNode.nodeValue;
@@ -1230,59 +1258,28 @@ function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
  * @ignore
  */
 function wrs_getSelectedItemOnTextarea(textarea) {
-    var midPosition = textarea.selectionStart;
+    var textNode = document.createTextNode(textarea.value);
+    var textNodeWithLatex = wrs_getLatexFromTextNode(textNode, textarea.selectionStart);
+    if (textNodeWithLatex == null) {
+        return null
+    };
 
-    var beginningLatex = textarea.value.substring(0, midPosition).lastIndexOf("$$");
-    var beginningNonLatex = textarea.value.substring(0, midPosition).lastIndexOf("[[");
-
-    if (beginningLatex != -1 || beginningNonLatex != -1) {
-        var isNonLatex = beginningLatex < beginningNonLatex;
-        var firstPosition, secondPosition;
-
-        if (isNonLatex) {
-            firstPosition = beginningNonLatex;
-            secondPosition = textarea.value.substring(midPosition).indexOf("]]");
-            var malformed = textarea.value.substring(midPosition).indexOf("[[");
-            // If exists another opened parentesis. Return nothing because if malformed.
-            if (malformed != -1 && malformed < secondPosition) {
-                return null;
-            }
-        }
-        else {
-            firstPosition = beginningLatex;
-            secondPosition = textarea.value.substring(midPosition).indexOf("$$");
-        }
-        if (secondPosition != -1) {
-
-            var latex = textarea.value.substring(firstPosition + 2, midPosition + secondPosition);
-            // If it is nonLatex, the cache is inside the variable _wrs_int_nonLatexCache
-            var mathml = isNonLatex ? _wrs_int_nonLatexCache[latex] : _wrs_int_LatexCache[latex];
-
-            // If the formula was written and not generated by the editor, caches won't have the data.
-            if (typeof mathml == 'undefined') {
-                if (isNonLatex) {
-                    return null;
-                }
-                else {
-                    mathml = wrs_getMathMLFromLatex(latex);
-                }
-            }
-
-            var img = wrs_parseMathmlToImg(mathml, _wrs_safeXmlCharacters, _wrs_int_langCode);
-            img = wrs_parseMathmlToImg(img, _wrs_xmlCharacters, _wrs_int_langCode);
-
-            var divElement = document.createElement('div');
-            divElement.innerHTML = img;
-
-            return {
-                "node" : divElement.firstChild,
-                "startPosition" : firstPosition,
-                "endPosition" : secondPosition + midPosition + 2 // +3 because there is 2 characters at the final (dollars or brackets)
-            };
-        }
+    // Try to get latex mathml from cache
+    var latex = textNodeWithLatex.latex;
+    var mathml = _wrs_int_LatexCache[latex];
+    // If the formula was written and not generated by the editor, caches won't have the data.
+    if (typeof mathml == 'undefined') {
+        mathml = wrs_getMathMLFromLatex(latex);
     }
+    var img = wrs_parseMathmlToImg(mathml, _wrs_xmlCharacters, _wrs_int_langCode);
+    var div = document.createElement('div');
+    div.innerHTML = img;
 
-    return null;
+    return {
+        'node': div.firstChild,
+        'startPosition': textNodeWithLatex.startPosition,
+        'endPosition': textNodeWithLatex.endPosition
+    };
 }
 
 /**
@@ -1712,7 +1709,14 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
             }
         }
         else if (focusElement.type == "textarea") {
-            var item = wrs_getSelectedItemOnTextarea(focusElement);
+            var item;
+            // Wrapper for some integrations that can have special behaviours to show latex.
+            if (typeof wrs_int_getSelectedItem != 'undefined') {
+                item = wrs_int_getSelectedItem(focusElement, false);
+            }
+            else {
+                item = wrs_getSelectedItemOnTextarea(focusElement);
+            }
             wrs_updateExistingFormulaOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
         }
         else {
