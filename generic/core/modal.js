@@ -132,6 +132,8 @@ ModalWindow.prototype.create = function() {
         this.containerDiv.appendChild(this.titleBardDiv);
     }
     this.containerDiv.appendChild(this.iframeContainer);
+    // Check if browser has scrollBar before modal has modified.
+    this.recalculateScrollBar();
 
     document.body.appendChild(this.containerDiv);
     document.body.appendChild(this.overlayDiv);
@@ -159,10 +161,6 @@ ModalWindow.prototype.create = function() {
     if (typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
         this.maximizeModalWindow();
     }
-    // This method obtain a width of scrollBar
-    this.scrollbarWidth = this.getScrollBarWidth();
-
-    this.popup = new PopUpMessage(strings);
 }
 
 ModalWindow.prototype.open = function() {
@@ -725,6 +723,7 @@ ModalWindow.prototype.stopDrag = function(ev) {
  * @ignore
  */
 ModalWindow.prototype.recalculatePosition = function() {
+    this.recalculateScrollBar();
     this.containerDiv.style.right = Math.min(parseInt(this.containerDiv.style.right),window.innerWidth - this.scrollbarWidth - this.containerDiv.offsetWidth) + "px";
     if(parseInt(this.containerDiv.style.right) < 0) {
         this.containerDiv.style.right = "0px";
@@ -732,6 +731,20 @@ ModalWindow.prototype.recalculatePosition = function() {
     this.containerDiv.style.bottom = Math.min(parseInt(this.containerDiv.style.bottom),window.innerHeight - this.containerDiv.offsetHeight) + "px";
     if(parseInt(this.containerDiv.style.bottom) < 0) {
         this.containerDiv.style.bottom = "0px";
+    }
+}
+
+/**
+ * Recalculated width of scrollBar browser
+ *
+ * @ignore
+ */
+ModalWindow.prototype.recalculateScrollBar = function() {
+    this.hasScrollBar = window.innerWidth > document.documentElement.clientWidth;
+    if(this.hasScrollBar){
+        this.scrollbarWidth = this.getScrollBarWidth();
+    }else{
+        this.scrollbarWidth = 0;
     }
 }
 
