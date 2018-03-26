@@ -163,6 +163,7 @@ ModalWindow.prototype.create = function() {
     if (this.deviceProperties['isDesktop'] && typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
             this.maximizeModalWindow();
     }
+    this.popup = new PopUpMessage(strings);
 }
 
 ModalWindow.prototype.open = function() {
