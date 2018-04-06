@@ -1,4 +1,3 @@
-
 /**
  * Modal window constructor
  * @param {string} path             Iframe src
