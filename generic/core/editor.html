@@ -7,7 +7,6 @@
             var queryParams = window.location.search.substring(1).split("&");
             var version = "";
             for (var i = 0; i < queryParams.length; i++) {
-                console.log(queryParams[i]);
                 var pos = queryParams[i].indexOf("v=");
                 if (pos >= 0) {
                     version = queryParams[i].substring(2);
