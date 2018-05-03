@@ -1267,7 +1267,9 @@ function wrs_getSelectedItemOnTextarea(textarea) {
     if (typeof mathml == 'undefined') {
         mathml = wrs_getMathMLFromLatex(latex);
     }
-    var img = wrs_parseMathmlToImg(mathml, _wrs_xmlCharacters, _wrs_int_langCode);
+
+    var mathmlWithoutSemantics = wrs_removeSemanticsMathml(mathml);
+    var img = wrs_parseMathmlToImg(mathmlWithoutSemantics, _wrs_xmlCharacters, _wrs_int_langCode);
     var div = document.createElement('div');
     div.innerHTML = img;
 
@@ -2420,7 +2422,7 @@ function wrs_parseMathmlToLatex(content, characters){
 
 /**
  * Converts all occurrences of mathml code to the corresponding image.
- * @param {string} content An string with valid MathML code.
+ * @param {string} content An string with valid MathML code. The matml code doesn't contain semantics.
  * @param {object} characters An object containing xmlCharacters or safeXmlCharacters relation.
  * @param {string} language String containging a valid language code in order to generate formula accesibilty.
  * @return {string} The input string with all the MathML ocurrences replaced by the corresponding image.
@@ -3224,6 +3226,27 @@ function wrs_insertSemanticsMathml(mathml, latex) {
         return mathml;
     }
 
+}
+
+/**
+ * Removes annotation tag to mathml.
+ * @param {*} mathml Valid MathML.
+ */
+function wrs_removeSemanticsMathml(mathml) {
+    var mathTagEnd = '<' + '/math' + '>';
+    var openSemantics = '<' + 'semantics' + '>';
+    var openAnnotation = '<annotation encoding="LaTeX">';
+
+    var mathmlWithoutSemantics = mathml;
+    var startSemantics = mathml.indexOf(openSemantics);
+    if (startSemantics != -1) {
+        var startAnnotation = mathml.indexOf(openAnnotation, startSemantics + openSemantics.length);
+        if (startAnnotation != -1) {
+            mathmlWithoutSemantics = mathml.substring(0, startSemantics) + mathml.substring(startSemantics + openSemantics.length, startAnnotation) + mathTagEnd;
+        }
+    }
+
+    return mathmlWithoutSemantics;
 }
 
 /**
