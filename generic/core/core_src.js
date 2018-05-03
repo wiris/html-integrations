@@ -664,24 +664,20 @@ function wrs_endParseEditMode(code, wirisProperties, language) {
         var output = '';
         var endPosition = 0;
         var startPosition = code.indexOf('$$');
-
         while (startPosition != -1) {
             output += code.substring(endPosition, startPosition);
             endPosition = code.indexOf('$$', startPosition + 2);
 
             if (endPosition != -1) {
+                /**
+                 * Before, it was a condition here to execute the next codelines 'latex.indexOf('<') == -1'.
+                 * We don't know why it was used, but seems to have a conflict with latex formulas that contains '<'.
+                 */
                 var latex = code.substring(startPosition + 2, endPosition);
-
-                if (latex.indexOf('<') == -1) {
-                    latex = wrs_htmlentitiesDecode(latex);
-                    var mathml = wrs_getMathMLFromLatex(latex, true);
-                    output += mathml;
-                    endPosition += 2;
-                }
-                else {
-                    output += '$$';
-                    endPosition = startPosition + 2;
-                }
+                latex = wrs_htmlentitiesDecode(latex);
+                var mathml = wrs_getMathMLFromLatex(latex, true);
+                output += mathml;
+                endPosition += 2;
             }
             else {
                 output += '$$';
@@ -3197,6 +3193,11 @@ function wrs_populateAccessibleCache(mathml, accessibleText) {
  * @ignore
  */
 function wrs_insertSemanticsMathml(mathml, latex) {
+
+    // If latex is empty, insert semantics doesn't provide information. We can avoid semantics insertion and return the mathml.
+    if (latex == "") {
+        return mathml;
+    }
 
     var firstEndTag = '>';
     var mathTagEnd = '<' + '/math' + '>';
