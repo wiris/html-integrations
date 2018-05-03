@@ -134,8 +134,53 @@ var _wrs_int_langCode = 'en';
                 }
             }
 
-            editor.settings.extended_valid_elements += ",math[*],menclose[*],merror[*],mfenced[*],mfrac[*],mglyph[*],mi[*],mlabeledtr[*],mmultiscripts[*],mn[*],mo[*],mover[*],mpadded[*],mphantom[*],mroot[*],mrow[*],ms[*],mspace[*],msqrt[*],mstyle[*],msub[*],msubsup[*],msup[*],mtable[*],mtd[*],mtext[*],mtr[*],munder[*],munderover[*],semantics[*],maction[*]";
-            editor.settings.extended_valid_elements += ",annotation[*]"; // LaTeX parse.
+            // Array with MathML valid alements.
+            var validMathML = [
+                            'math[*]',
+                            'maction[*]]',
+                            'malignmark[*]',
+                            'maligngroup[*]',
+                            'menclose[*]',
+                            'merror[*]',
+                            'mfenced[*]',
+                            'mfrac[*]',
+                            'mglyph[*]',
+                            'mi[*]',
+                            'mlabeledtr[*]',
+                            'mlongdiv[*]',
+                            'mmultiscripts[*]',
+                            'mn[*]',
+                            'mo[*]',
+                            'mover[*]',
+                            'mpadded[*]',
+                            'mphantom[*]',
+                            'mprescripts[*]',
+                            'mroot[*]',
+                            'mrow[*]',
+                            'ms[*]',
+                            'mscarries[*]',
+                            'mscarry[*]',
+                            'msgroup[*]',
+                            'msline[*]',
+                            'mspace[*]',
+                            'msqrt[*]',
+                            'msrow[*]',
+                            'mstack[*]',
+                            'mstyle[*]',
+                            'msub[*]',
+                            'msubsup[*]',
+                            'msup[*]',
+                            'mtable[*]',
+                            'mtd[*]',
+                            'mtext[*]',
+                            'mtr[*]',
+                            'munder[*]',
+                            'munderover[*]',
+                            'semantics[*]',
+                            'annotation[*]',
+                           ];
+
+            editor.settings.extended_valid_elements += ',' + validMathML.join();
 
             var onInit = function (editor) {
 
