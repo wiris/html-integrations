@@ -8,7 +8,7 @@ function PopUpMessage(strings)
     this.overlayEnvolture.setAttribute("style", "display: none;width: 100%;");
 
     this.message = this.overlayEnvolture.appendChild(document.createElement("DIV"));
-    this.message.setAttribute("style", "margin: auto;position: absolute;top: 0;left: 0;bottom: 0;right: 0;background: white;width: 75%;height: 130px;border-radius: 2px;padding: 20px;font-family: sans-serif;font-size: 15px;text-align: left;color: #2e2e2e;z-index: 5;");
+    this.message.setAttribute("style", "top:50%; left: 50%; transform: translate(-50%,-50%); position: absolute; background: white; max-width: 500px; width: 75%; border-radius: 2px;padding: 20px;font-family: sans-serif;font-size: 15px;text-align: left;color: #2e2e2e;z-index: 5; max-height: 75%; overflow: auto;");
 
     var overlay = this.overlayEnvolture.appendChild(document.createElement("DIV"));
     overlay.setAttribute("style", "position: absolute; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 4; cursor: pointer;");
@@ -34,6 +34,7 @@ PopUpMessage.prototype.setOptions = function(messageKey,values){
         this.message.innerHTML = this.strings[messageKey];
     }
     this.buttonArea = this.message.appendChild(document.createElement('p'));
+    this.buttonArea.style.margin = '10px 0 0 0';
     var types = values.split(',');
     self = this;
     // This is definition of buttons. You can create others.
@@ -65,7 +66,8 @@ PopUpMessage.prototype.show = function(){
         // For works with Safari
         window.focus();
         this.overlayEnvolture.style.display = 'block';
-    }else{
+    }
+    else {
         this.overlayEnvolture.style.display = 'none';
         _wrs_modalWindow.focus();
     }

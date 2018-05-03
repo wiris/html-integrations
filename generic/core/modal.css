@@ -18,6 +18,10 @@
 .wrs_modal_title {
     color: #fff;
     padding: 5px 0 5px 10px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .wrs_modal_close_button {
@@ -47,41 +51,20 @@
     padding: 5px 10px 5px 0;
     top: inherit;
     margin: 10px 7px 0 0;
-}
-
-.wrs_modal_minimize_button.wrs_maximized {
-    background: url('icons/general/min_icon.png');
     background-size: 10px;
-}
-
-.wrs_modal_minimize_button.wrs_maximized_hover {
-    background: url('icons/hover/min_icon_h.png');
-    background-size: 10px;
-}
-
-.wrs_modal_minimize_button.wrs_stack {
-    background: url('icons/general/min_icon.png');
-    background-size: 10px;
-}
-
-.wrs_modal_minimize_button.wrs_stack:hover {
-    background: url('icons/hover/min_icon_h.png');
-    background-size: 10px;
-}
-
-.wrs_modal_minimize_button.wrs_minimized {
-    background: url('icons/general/max_icon.png');
-    background-size: 10px;
-}
-
-.wrs_modal_minimize_button.wrs_minimized:hover {
-    background: url('icons/hover/max_icon_h.png');
-    background-size: 10px;
+    background-image: url('icons/general/min_icon.png');
 }
 
 .wrs_modal_minimize_button:hover {
-    background: url('icons/hover/min_icon_h.png');
-    background-size: 10px;
+    background-image: url('icons/hover/min_icon_h.png');
+}
+
+.wrs_modal_minimize_button.wrs_minimized {
+    background-image: url('icons/general/max_icon.png');
+}
+
+.wrs_modal_minimize_button.wrs_minimized:hover {
+    background-image: url('icons/hover/max_icon_h.png');
 }
 
 .wrs_modal_stack_button {
@@ -91,44 +74,50 @@
     margin: 10px 7px 0 0;
     padding: 5px 10px 5px 0;
     top: inherit;
+    background-image: url('icons/general/mins_icon.png');
+    background-size: 10px;
 }
 
 .wrs_modal_stack_button.wrs_stack {
-    background: url('icons/general/fulls_icon.png');
-    background-size: 10px;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .wrs_modal_stack_button.wrs_minimized {
-    background: url('icons/general/fulls_icon.png');
-    background-size: 10px;
-}
-
-.wrs_modal_stack_button.wrs_maximized {
-    background: url('icons/general/mins_icon.png');
-    background-size: 10px;
-}
-
-.wrs_modal_stack_button.wrs_stack:hover {
-    background: url('icons/hover/fulls_icon_h.png');
-    background-size: 10px;
-}
-
-.wrs_modal_stack_button.wrs_minimized:hover {
-    background: url('icons/hover/fulls_icon_h.png');
-    background-size: 10px;
-}
-
-.wrs_modal_stack_button.wrs_maximized:hover {
-    background: url('icons/hover/mins_icon_h.png');
-    background-size: 10px;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .wrs_modal_stack_button:hover {
-    background: url('icons/hover/fulls_icon_h.png');
+    background-image: url('icons/hover/mins_icon_h.png');
+}
+
+.wrs_modal_maximize_button {
+    float: right;
+    cursor: pointer;
+    color: #fff;
+    margin: 10px 7px 0 0;
+    padding: 5px 10px 5px 0;
+    top: inherit;
+    background-image: url('icons/general/fulls_icon.png');
+    background-size: 10px;
+}
+
+.wrs_modal_maximize_button.wrs_maximized {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.wrs_modal_maximize_button:hover {
+    background-image: url('icons/hover/fulls_icon_h.png');
 }
 
 .wrs_modal_iframe {
     display: block;
+    margin: 6px;
 }
 
 .wrs_modal_title_bar {
@@ -141,6 +130,7 @@
     border: none;
     background: #fafafa;
     z-index: 999999;
+    overflow: visible;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop {
@@ -152,12 +142,13 @@
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized {
-    bottom: 0;
-    right: 0;
+    height: 30px !important;
+    bottom: 0 !important;
+    right: 10px !important;
     position: fixed;
     top: inherit;
     margin: 0;
-    width: 250px;
+    width: 250px !important;
     margin-right: 10px;
 }
 
@@ -290,4 +281,26 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+.wrs_bottom_right_resizer {
+    width: 10px;
+    height: 10px;
+    color: #778e9a;
+    position: absolute;
+    right: 4px;
+    bottom: 8px;
+    cursor: se-resize;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.wrs_bottom_left_resizer {
+    width: 15px;
+    height: 15px;
+    color: #778e9a;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: se-resize;
 }
