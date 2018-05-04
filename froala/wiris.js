@@ -24,7 +24,7 @@ var _wrs_conf_setSize = true;
 $('head').append('<link rel="stylesheet" href="' + _wrs_conf_path + '/icons/font/css/wirisplugin.css">');
 
 var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled', tooltip: 'Insert a chemistry formula - ChemType', title : 'ChemType'}}
-var _wrs_int_currentEditor;
+var _wrs_currentEditor;
 
 var _wrs_int_temporalImageResizing;
 var _wrs_int_langCode = 'en';
@@ -33,6 +33,21 @@ var _wrs_int_langCode = 'en';
 var _wrs_int_window_opened = false;
 
 (function ($) {
+
+
+  /**
+   * Returns Froala editor object with mandatory attributes like 'focus' for core.js file.
+   * @param {Object} editor froala editor instance.
+   */
+  function wrs_createEditorObject(editor) {
+    editor.focus = function () {
+      // Hide popups in order to set the caret and allow the user writting without hide the image popup that Froala has.
+      wrs_int_hideFroalaPopups();
+      return this.$oel.froalaEditor('events.focus', true);
+    };
+    return editor;
+  }
+
   // Add an option for your plugin.
   $.FroalaEditor.DEFAULTS = $.extend($.FroalaEditor.DEFAULTS, {
     myOption: false
@@ -54,7 +69,7 @@ var _wrs_int_window_opened = false;
     script.src = _wrs_conf_path + '/core/core.js?v=' + _wrs_plugin_version;
     document.getElementsByTagName('head')[0].appendChild(script);
     editor.events.on('focus', function() {
-      _wrs_int_currentEditor = this;
+      _wrs_currentEditor = wrs_createEditorObject(this);
     });
 
     // Adding parse mathml to images after command event to prevent
@@ -205,10 +220,10 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_insertElementOnSelection() {
-      _wrs_int_currentEditor.selection.restore();
-      if (_wrs_int_currentEditor.selection.get().anchorNode != null) {  // In case of not modify...
-        _wrs_int_currentEditor.selection.element().focus();
-        _wrs_range = _wrs_int_currentEditor.selection.get().getRangeAt(0);
+      _wrs_currentEditor.selection.restore();
+      if (_wrs_currentEditor.selection.get().anchorNode != null) {  // In case of not modify...
+        _wrs_currentEditor.selection.element().focus();
+        _wrs_range = _wrs_currentEditor.selection.get().getRangeAt(0);
       }
     }
 
@@ -250,10 +265,10 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_getSelectedItem(target, isIframe) {
-      if (typeof _wrs_int_currentEditor.image != 'undefined' && typeof _wrs_int_currentEditor.image.get() != 'undefined' &&
-          _wrs_int_currentEditor.image.get() !== null && _wrs_int_currentEditor.image.get().hasOwnProperty('0')) {
+      if (typeof _wrs_currentEditor.image != 'undefined' && typeof _wrs_currentEditor.image.get() != 'undefined' &&
+          _wrs_currentEditor.image.get() !== null && _wrs_currentEditor.image.get().hasOwnProperty('0')) {
         var selectedItem = new Object();
-        selectedItem.node = _wrs_int_currentEditor.image.get()[0];
+        selectedItem.node = _wrs_currentEditor.image.get()[0];
         return selectedItem;
       } else {
         return wrs_getSelectedItem(target, isIframe);
@@ -292,7 +307,7 @@ var _wrs_int_window_opened = false;
       refreshAfterCallback: true,
       callback: function () {
         // Setting explicit current Editor beacuse last froala doesn't set focus on click button
-        _wrs_int_currentEditor = this;
+        _wrs_currentEditor = wrs_createEditorObject(this);
         this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_disableCustomEditors();
@@ -309,7 +324,7 @@ var _wrs_int_window_opened = false;
       refreshAfterCallback: true,
       callback: function () {
         // Setting explicit current Editor beacuse last froala doesn't set focus on click button
-        _wrs_int_currentEditor = this;
+        _wrs_currentEditor = wrs_createEditorObject(this);
         this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_enableCustomEditor('chemistry');
@@ -318,7 +333,7 @@ var _wrs_int_window_opened = false;
     });
 
    $.FroalaEditor.COMMANDS.wirisEditor.refresh = function ($btn) {
-    var selectedImage = _wrs_int_currentEditor.image.get();
+    var selectedImage = _wrs_currentEditor.image.get();
       if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
           ($(selectedImage[0]).hasClass(_wrs_conf_imageClassName) || $(selectedImage[0]).contents().hasClass(_wrs_conf_imageClassName)))) {
         $btn.removeClass('fr-hidden');
@@ -329,7 +344,7 @@ var _wrs_int_window_opened = false;
   }
 
    $.FroalaEditor.COMMANDS.wirisChemistry.refresh = function ($btn) {
-      var selectedImage = _wrs_int_currentEditor.image.get();
+      var selectedImage = _wrs_currentEditor.image.get();
       if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
           ($(selectedImage[0]).hasClass(_wrs_conf_imageClassName) || $(selectedImage[0]).contents().hasClass(_wrs_conf_imageClassName)))) {
         $btn.removeClass('fr-hidden');
