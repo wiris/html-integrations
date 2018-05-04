@@ -77,7 +77,7 @@ function ModalWindow(path, editorAttributes) {
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
-    attributes['title'] = strings['fullscreen'];
+    attributes['title'] = "Exit full-screen";
     var stackModalDiv = wrs_createElement('a', attributes);
     stackModalDiv.setAttribute('role','button');
     this.stackDiv = stackModalDiv;
@@ -157,6 +157,9 @@ ModalWindow.prototype.create = function() {
         this.minimizeDiv.addEventListener('click', this.minimizeModalWindow.bind(this), true);
         this.createModalWindowDesktop();
         this.createResizeButtons();
+        if (_wrs_conf_modalWindow) {
+            this.addListeners();
+        }
     }
     else if (this.deviceProperties['isAndroid']) {
         this.createModalWindowAndroid();
@@ -164,7 +167,6 @@ ModalWindow.prototype.create = function() {
     else if (this.deviceProperties['isIOS'] && !this.deviceProperties['isMobile']) {
         this.createModalWindowIos();
     }
-    this.addListeners();
     _wrs_popupWindow = this.iframe.contentWindow;
     this.properties.open = true;
     this.properties.created = true;
@@ -489,9 +491,6 @@ ModalWindow.prototype.restoreStateModalWindow = function() {
 ModalWindow.prototype.stackModalWindow = function () {
     this.properties.previousState = this.properties.state;
     this.properties.state = 'stack';
-    // Change cursor to dragable
-    this.titleDiv.style.cursor = '';
-    this.stackDiv.title = "Full-screen";
     this.overlayDiv.style.background = "rgba(0,0,0,0)";
     this.removeClass('wrs_maximized');
     this.minimizeDiv.title = "Minimise";
@@ -524,9 +523,6 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.maximizeModalWindow();
     }
     else {
-        // Change cursor to non-dragable
-        this.titleDiv.style.cursor = 'auto';
-
         this.removeListeners();
         this.properties.previousState = this.properties.state;
         this.properties.state = "minimized";
@@ -551,9 +547,6 @@ ModalWindow.prototype.minimizeModalWindow = function() {
 ModalWindow.prototype.maximizeModalWindow = function() {
     // Saving width, height, top and bottom parameters to restore when open
     this.saveModalProperties();
-
-    // Change cursor to dragable
-    this.titleDiv.style.cursor = '';
     if (this.properties.state != 'maximized') {
         this.properties.previousState = this.properties.state;
         this.properties.state = 'maximized';
@@ -570,7 +563,6 @@ ModalWindow.prototype.maximizeModalWindow = function() {
         this.containerDiv.style.top = null;
         this.removeClass('wrs_stack');
     }
-    this.stackDiv.title = "Exit full-screen";
     this.overlayDiv.style.background = "rgba(0,0,0,0.8)";
     this.overlayDiv.style.display = '';
     this.addClass('wrs_maximized');
