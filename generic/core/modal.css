@@ -130,7 +130,6 @@
     border: none;
     background: #fafafa;
     z-index: 999999;
-    overflow: visible;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop {
@@ -142,13 +141,9 @@
 }
 
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized {
-    height: 30px !important;
-    bottom: 0 !important;
-    right: 10px !important;
     position: fixed;
     top: inherit;
     margin: 0;
-    width: 250px !important;
     margin-right: 10px;
 }
 

@@ -523,6 +523,12 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.maximizeModalWindow();
     }
     else {
+        // Setting css to prevent important tag into css style
+        this.containerDiv.style.height = "30px";
+        this.containerDiv.style.width = "250px";
+        this.containerDiv.style.bottom = "0px";
+        this.containerDiv.style.right = "10px";
+
         this.removeListeners();
         this.properties.previousState = this.properties.state;
         this.properties.state = "minimized";
