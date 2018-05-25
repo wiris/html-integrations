@@ -142,12 +142,15 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
         _wrs_int_directionality = editor.config.contentsLangDirection;
 
         var lastDataSet = '';
+        // Control variable to setData on ckeditor ready.
+        ckeditorInstanceReady = false;
 
         // If wirislistenerdisabled=true all listeners should be disabled.
         // If this happens user should use wrs_initParse() and wrs_endParse() method
         if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
 
             editor.on('instanceReady', function (e) {
+                ckeditorInstanceReady = true;
                 lastDataSet = editor.getData();
             });
         } else {
@@ -169,7 +172,7 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             } );
         }
         function whenDocReady() {
-            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined') { // core.js and configuration loaded properly
+            if (window.wrs_initParse && typeof _wrs_conf_configuration_loaded != 'undefined' && ckeditorInstanceReady) { // core.js and configuration loaded properly
                 // If wirislistenerdisabled=true all listeners should be disabled.
                 // If this happens user should use wrs_initParse() and wrs_endParse() methods.
                 if (typeof editor.config.wirislistenersdisabled == 'undefined' || !editor.config.wirislistenersdisabled) {
