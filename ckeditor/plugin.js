@@ -152,16 +152,36 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             editor.on('instanceReady', function (e) {
                 ckeditorInstanceReady = true;
                 lastDataSet = editor.getData();
+                editor.on( 'contentDom', function( evt ) {
+                    setEditorEvents(editor);
+                });
             });
         } else {
             lastDataSet = editor.getData();
         }
 
-        editor.on('doubleclick', function (event) {
-            if (event.data.element.$.nodeName.toLowerCase() == 'img' && wrs_containsClass(event.data.element.$, _wrs_conf_imageClassName) || wrs_containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
-                event.data.dialog = null;
-            }
-        });
+        function setEditorEvents(editor) {
+            editor.on('doubleclick', function (event) {
+                if (event.data.element.$.nodeName.toLowerCase() == 'img' && wrs_containsClass(event.data.element.$, _wrs_conf_imageClassName) || wrs_containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
+                    event.data.dialog = null;
+                }
+            });
+
+            editor.editable().attachListener(editor.editable(), 'click', function( e ) {
+                if(_wrs_currentEditor != editor) {
+                    _wrs_currentEditor = editor;
+                    // We create this method to return select items in ckeditor because standar getSelection issues.
+                    // If you want track view PLUGIN-947 issue.
+                    window.wrs_int_getSelectedItem = function(target) {
+                        if(editor.getSelection().getSelectedElement() != undefined) {
+                            return {
+                                node: editor.getSelection().getSelectedElement().$
+                            };
+                        }
+                    }
+                }
+            });
+        }
 
         var element = null;
         // Avoid WIRIS images to be upcasted.
@@ -212,16 +232,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             else {
                 setTimeout(whenDocReady, 50);
             }
-            // We create this method to return select items in ckeditor because standar getSelection issues.
-            // If you want track view PLUGIN-947 issue.
-            window.wrs_int_getSelectedItem = function(target) {
-                if(editor.getSelection().getSelectedElement() != undefined){
-                    return {
-                        node: editor.getSelection().getSelectedElement().$
-                    };
-                }
-            }
-
         }
         // CKEditor bug #10501.
         // whenDocReady() first calls could cause a crash if ckeditor event's (like setData) are not loaded so we put a 500 ms timeout.
