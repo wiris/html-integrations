@@ -70,28 +70,28 @@ function ModalWindow(path, editorAttributes) {
 
     attributes = {};
     attributes['class'] = 'wrs_modal_close_button';
-    attributes['title'] = strings['close'];
+    attributes['title'] = _wrs_stringManager.getString('close');
     var closeModalDiv = wrs_createElement('a', attributes);
     closeModalDiv.setAttribute('role','button');
     this.closeDiv = closeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_stack_button';
-    attributes['title'] = "Exit full-screen";
+    attributes['title'] = _wrs_stringManager.getString('exit_fullscreen');
     var stackModalDiv = wrs_createElement('a', attributes);
     stackModalDiv.setAttribute('role','button');
     this.stackDiv = stackModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_maximize_button';
-    attributes['title'] = strings['fullscreen'];
+    attributes['title'] = _wrs_stringManager.getString('fullscreen');
     var maximizeModalDiv = wrs_createElement('a', attributes);
     maximizeModalDiv.setAttribute('role','button');
     this.maximizeDiv = maximizeModalDiv;
 
     attributes = {};
     attributes['class'] = 'wrs_modal_minimize_button';
-    attributes['title'] = strings['minimise'];
+    attributes['title'] = _wrs_stringManager.getString('minimize');
     var minimizeModalDiv = wrs_createElement('a', attributes);
     minimizeModalDiv.setAttribute('role','button');
     this.minimizeDiv = minimizeModalDiv;
@@ -104,7 +104,7 @@ function ModalWindow(path, editorAttributes) {
     attributes = {};
     attributes['id'] = 'wrs_modal_iframe_id';
     attributes['class'] = 'wrs_modal_iframe';
-    attributes['title'] = 'MathType modal window';
+    attributes['title'] = _wrs_stringManager.getString('mathtype');
     attributes['src'] = iframeAttributes['src'];
     attributes['frameBorder'] = "0";
     var iframeModal = wrs_createElement('iframe', attributes);
@@ -175,7 +175,9 @@ ModalWindow.prototype.create = function() {
     if (this.deviceProperties['isDesktop'] && typeof _wrs_conf_modalWindow != "undefined" && _wrs_conf_modalWindow && _wrs_conf_modalWindowFullScreen) {
             this.maximizeModalWindow();
     }
-    this.popup = new PopUpMessage(strings);
+
+    var popUpAtributes = {'cancelString' : _wrs_stringManager.getString('cancel'), 'submitString' : _wrs_stringManager.getString('close'), 'message' : _wrs_stringManager.getString('close_modal_warning')};
+    this.popup = new PopUpMessage(popUpAtributes);
 }
 
 /**
@@ -310,7 +312,7 @@ ModalWindow.prototype.open = function() {
             this.setIframeContainerHeight("100" + this.iosMeasureUnit);
         }
     } else {
-        var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'MathType';
+        var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : _wrs_stringManager.getString('mathtype');
         _wrs_modalWindow.setTitle(title);
         this.create();
     }
@@ -330,7 +332,7 @@ ModalWindow.prototype.updateToolbar = function() {
         }
     } else {
         var toolbar = this.checkToolbar();
-        _wrs_modalWindow.setTitle('MathType');
+        _wrs_modalWindow.setTitle(_wrs_stringManager.getString('mathtype'));
         if (this.toolbar == null || this.toolbar != toolbar) {
             this.setToolbar(toolbar);
             wrs_int_disableCustomEditors();
@@ -493,7 +495,7 @@ ModalWindow.prototype.stackModalWindow = function () {
     this.properties.state = 'stack';
     this.overlayDiv.style.background = "rgba(0,0,0,0)";
     this.removeClass('wrs_maximized');
-    this.minimizeDiv.title = "Minimise";
+    this.minimizeDiv.title = _wrs_stringManager.getString('minimize');
     this.removeClass('wrs_minimized');
     this.addClass('wrs_stack');
 
@@ -534,7 +536,7 @@ ModalWindow.prototype.minimizeModalWindow = function() {
         this.properties.state = "minimized";
         this.setResizeButtonsVisibility();
         this.overlayDiv.style.background = "rgba(0,0,0,0)";
-        this.minimizeDiv.title = "Maximise";
+        this.minimizeDiv.title = _wrs_stringManager.getString('maximize');
 
         if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {
             this.removeClass('wrs_stack');
@@ -561,7 +563,7 @@ ModalWindow.prototype.maximizeModalWindow = function() {
     this.setResizeButtonsVisibility();
 
     if (wrs_containsClass(this.overlayDiv, 'wrs_minimized')) {
-        this.minimizeDiv.title = "Minimise";
+        this.minimizeDiv.title = _wrs_stringManager.getString('minimize');
         this.removeClass('wrs_minimized');
     }
     else if (wrs_containsClass(this.overlayDiv, 'wrs_stack')) {

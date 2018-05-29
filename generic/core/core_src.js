@@ -1,5 +1,45 @@
 var _wrs_popupWindow;
 
+/**
+ * StringManager class to use strings in code correctly with control.
+ * @ignore
+ */
+function StringManager() {
+    // Strings are empty when it creates, it set when calls load method.
+    this.strings = null;
+    this.stringsLoaded = false;
+}
+
+/**
+ * This method return a string passing a key.
+ * @param  {string} key of array strings that you want.
+ * @return string A text that you want or key if it doesn't exist.
+ * @ignore
+ */
+StringManager.prototype.getString = function(key) {
+    // Wait 200ms and recall this method if strings aren't load.
+    if (!this.stringsLoaded) {
+        setTimeout(this.getString.bind(this, key), 100);
+        return;
+    }
+    if (key in this.strings) {
+        return this.strings[key];
+    }
+    return key;
+}
+/**
+ * This method load all strings to the manager and unset it for prevent bad usage.
+ * @param  {array} String array of language
+ * @ignore
+ */
+StringManager.prototype.loadStrings = function(langStrings) {
+    if (!this.stringsLoaded) {
+        this.strings = langStrings;
+        // Activate variable to unlock getStrings
+        this.stringsLoaded = true;
+    }
+}
+
 wrs_addEvent(window, 'message', function (e) {
     if (e.source = _wrs_popupWindow && typeof e.wrs_processed == 'undefined' && typeof e.data.isWirisMessage != 'undefined') {
         e.wrs_processed = true;
@@ -48,14 +88,21 @@ wrs_addEvent(window, 'mouseup', function (e) {
     }
 });
 
+// Translated languages.
+var _wrs_languages = '@languages@';
+
+// Load lang file at first to replace some variables
+wrs_loadLangFile()
+
 // Vars.
+var _wrs_stringManager = new StringManager();
 var _wrs_currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
 var _wrs_editMode = typeof _wrs_editMode != 'undefined' ? _wrs_editMode : undefined;
 var _wrs_isNewElement = typeof _wrs_isNewElement != 'undefined' ? _wrs_isNewElement : true;
 var _wrs_temporalImage;
 var _wrs_temporalFocusElement;
 var _wrs_range;
-var _wrs_latex_formula_name = "Latex Formula";
+var _wrs_latex_formula_name = _wrs_stringManager.getString('latex_name_label');
 var _wrs_latex_formula_number = 1;
 
 // Tags used for LaTeX formulas.
@@ -111,9 +158,6 @@ var _wrs_staticNodeLengths = {
     'IMG': 1,
     'BR': 1
 }
-
-// Translated languages.
-var _wrs_languages = '@languages@';
 
 // Backwards compatibily.
 
@@ -419,7 +463,7 @@ function wrs_createElement(elementName, attributes, creator) {
  */
 function wrs_createHttpRequest() {
     if (_wrs_currentPath.substr(0, 7) == 'file://') {
-        throw 'Cross site scripting is only allowed for HTTP.';
+        throw _wrs_stringManager.getString('exception_cross_site');
     }
 
     if (typeof XMLHttpRequest != 'undefined') {
@@ -873,7 +917,7 @@ function wrs_getContent(url, postVariables) {
             return httpRequest.responseText;
         }
 
-        alert('Your browser is not compatible with AJAX technology. Please, use the latest version of Mozilla Firefox.');
+        alert(_wrs_stringManager.getString('browser_no_compatible'));
     }
     catch (e) {
     }
@@ -1937,7 +1981,7 @@ function wrs_fixedCharCodeAt(str, idx) {
         hi = code;
         low = str.charCodeAt(idx + 1);
         if (isNaN(low)) {
-            throw 'High surrogate not followed by low surrogate in fixedCharCodeAt()';
+            throw _wrs_stringManager.getString('exception_high_surrogate');
         }
         return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
     }
@@ -1971,7 +2015,7 @@ function wrs_mathmlToAccessible(mathml, language, data) {
             accessibleText = accesibleJsonResponse.result.text;
         }
         else {
-            accessibleText = 'Error converting from MathML to accessible text.';
+            accessibleText = _wrs_stringManager.getString('error_convert_accessibility');
         }
     }
 
@@ -2167,19 +2211,6 @@ function wrs_mathmlToImgObject(creator, mathml, wirisProperties, language) {
             wrs_populateAccessibleCache(mathml, imgObject.alt);
         }
     }
-    /* if (_wrs_conf_setSize) {
-        var ar = wrs_urlToAssArray(result);
-        width = ar['cw'];
-        height = ar['ch'];
-        baseline = ar['cb'];
-        dpi = ar['dpi'];
-        if (dpi) {
-            width = width * 96/dpi;
-            height = height * 96/dpi;
-            baseline = baseline * 96/dpi;
-        }
-        // result = wrs_assArrayToUrl(ar);
-    }*/
 
     if (typeof wrs_observer != 'undefined') {
         wrs_observer.observe(imgObject, wrs_observer_config);
@@ -2343,7 +2374,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
         }
     }
 
-    var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : 'MathType';
+    var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : _wrs_stringManager.getString('mathtype');
     if (typeof _wrs_conf_modalWindow != 'undefined' && _wrs_conf_modalWindow === false) {
         _wrs_popupWindow = window.open(path, title, _wrs_conf_editorAttributes);
         return _wrs_popupWindow;
@@ -2924,6 +2955,12 @@ function wrs_loadLangFile() {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = wrs_getCorePath() + "/@language_folder@/" + _wrs_int_langCode + "/strings.js";
+    // When strings are loaded, it loads into stringManager
+    script.onload = function() {
+        _wrs_stringManager.loadStrings(wrs_strings);
+        // Unseting global language strings array to prevent access.
+        wrs_strings = null;
+    };
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
@@ -2944,8 +2981,6 @@ if (typeof _wrs_conf_configuration_loaded == 'undefined') {
     wrs_loadServicePaths(configUrl);
     _wrs_conf_plugin_loaded = true;
 }
-
-wrs_loadLangFile()
 
 /**
  * Create modal window with embebbed iframe
@@ -3385,7 +3420,7 @@ function wrs_b64ToByteArray(b64String, len) {
     var tmp;
 
     if (b64String.length % 4 > 0) {
-        throw new Error('Invalid string. Length must be a multiple of 4'); // Tipped base64. Length is fixed.
+        throw new Error(_wrs_stringManager.getString('exception_string_length')); // Tipped base64. Length is fixed.
     }
 
     var arr = new Array()
@@ -3663,7 +3698,7 @@ if (!Object.keys) {
 
         return function (obj) {
             if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-                throw new TypeError('Object.keys called on non-object');
+                throw new TypeError(_wrs_stringManager.getString('exception_key_nonobject'));
             }
 
             var result = [], prop, i;
@@ -3796,7 +3831,7 @@ if (!Array.prototype.forEach) {
         var T, k;
 
         if (this == null) {
-            throw new TypeError(' this is null or not defined');
+            throw new TypeError(_wrs_stringManager.getString('exception_null_or_undefined'));
         }
 
         // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
@@ -3812,7 +3847,7 @@ if (!Array.prototype.forEach) {
         // 4. If IsCallable(callback) is false, throw a TypeError exception.
         // See: http://es5.github.com/#x9.11 .
         if (typeof callback !== "function") {
-            throw new TypeError(callback + ' is not a function');
+            throw new TypeError(callback + _wrs_stringManager.getString('exception_not_function'));
         }
 
         // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.

@@ -21,7 +21,8 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                          '_wrs_int_wirisProperties',
                          '_wrs_int_customEditors',
                          '_wrs_modalWindowProperties',
-                         '_wrs_int_langCode'
+                         '_wrs_int_langCode',
+                         '_wrs_stringManager'
                         ];
 
     // Sometimes (yes, sometimes) internet explorer security policies hides popups
@@ -204,25 +205,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
 
             script.src = editorUrl + "?lang=" + _wrs_int_langCode + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
             document.getElementsByTagName('head')[0].appendChild(script);
-
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = "../";
-            // Get lang path.
-            var webScripts = document.getElementsByTagName("script");
-            var scriptName = "strings.js";
-            var found = false;
-            var i = 0;
-            while (!found && i < webScripts.length) {
-                if (webScripts[i].src.indexOf(scriptName) != -1) {
-                    var pathArray = webScripts[i].src.split("/");
-                    // We need to get the lang folder name of "../[lang_folder]/[lang_code]/strings.js".
-                    script.src += pathArray[pathArray.length - 3 ] + "/" + _wrs_int_langCode + "/strings.js";
-                    found = true;
-                }
-                i++
-            }
-            document.getElementsByTagName('head')[0].appendChild(script);
         } else {
             setTimeout(wrs_waitForCore, 200);
         }
@@ -304,10 +286,6 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     editor.setMathMLWithCallback(mathml, function(){window.editorListener.setWaitingForChanges(true);});
                 }
 
-                if (typeof strings == 'undefined') {
-                    strings = new Object();
-                }
-
                 // Submit button.
                 var controls = document.getElementById('controls');
                 var submitButton = document.createElement('input');
@@ -316,11 +294,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 submitButton.background = '#778e9a';
                 submitButton.color = '#ffffff'
 
-                if (strings['accept'] != null){
-                    submitButton.value = strings['accept'];
-                }else{
-                    submitButton.value = 'Accept';
-                }
+                submitButton.value = _wrs_stringManager.getString('accept');
 
                 wrs_addEvent(window, 'beforeunload', function() {
                     getMethod(null, 'wrs_int_disableCustomEditors', [], function(){
@@ -377,12 +351,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 var cancelButton = document.createElement('input');
                 cancelButton.type = 'button';
                 cancelButton.className = 'wrs_button_cancel';
-
-                if (strings['cancel'] != null) {
-                    cancelButton.value = strings['cancel'];
-                } else {
-                    cancelButton.value = 'Cancel';
-                }
+                cancelButton.value = _wrs_stringManager.getString('cancel');
 
                 wrs_addEvent(cancelButton, 'click', function () {
                     if (editor.isFormulaEmpty() || window.editorListener.getIsContentChanged() === false) {
@@ -395,6 +364,12 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                 });
 
                 buttonContainer.appendChild(cancelButton);
+
+                var latexButton = document.getElementById('a_latex');
+                latexButton.innerHTML = _wrs_stringManager.getString('latex');
+
+                var manualButton = document.getElementById('a_manual');
+                manualButton.innerHTML = _wrs_stringManager.getString('manual')
 
                 // Class for modal dialog.
                 if (_wrs_conf_modalWindow) {

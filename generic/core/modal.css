@@ -299,3 +299,69 @@
     top: 0;
     cursor: se-resize;
 }
+
+.wrs_button_cancel {
+    min-width: 80px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid #778e9a;
+    padding: 6px 8px;
+    margin: 10px auto;
+    margin-left: 5px;
+    margin-bottom: 0;
+    cursor: pointer;
+    font-family: arial, sans-serif;
+}
+
+.wrs_button_accept {
+    min-width: 80px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid #778e9a;
+    padding: 6px 8px;
+    margin: 10px auto;
+    margin-right: 5px;
+    margin-bottom: 0;
+    color: #fff;
+    background: #778e9a;
+    cursor: pointer;
+    font-family: arial, sans-serif;
+}
+.wrs_popupmessage_overlay_envolture {
+    display: none;
+    width: 100%;
+}
+.wrs_popupmessage_overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 4;
+    cursor: pointer;
+}
+.wrs_popupmessage_panel {
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    background: white;
+    max-width: 500px;
+    width: 75%;
+    border-radius: 2px;
+    padding: 20px;
+    font-family: sans-serif;
+    font-size: 15px;
+    text-align: left;
+    color: #2e2e2e;
+    z-index: 5;
+    max-height: 75%;
+    overflow: auto;
+}
+
+.wrs_popupmessage_button_area {
+    margin: 10px 0 0 0;
+}
