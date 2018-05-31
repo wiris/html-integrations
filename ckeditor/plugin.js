@@ -170,15 +170,6 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             editor.editable().attachListener(editor.editable(), 'click', function( e ) {
                 if(_wrs_currentEditor != editor) {
                     _wrs_currentEditor = editor;
-                    // We create this method to return select items in ckeditor because standar getSelection issues.
-                    // If you want track view PLUGIN-947 issue.
-                    window.wrs_int_getSelectedItem = function(target) {
-                        if(editor.getSelection().getSelectedElement() != undefined) {
-                            return {
-                                node: editor.getSelection().getSelectedElement().$
-                            };
-                        }
-                    }
                 }
             });
         }
@@ -231,6 +222,17 @@ CKEDITOR.plugins.add('ckeditor_wiris', {
             }
             else {
                 setTimeout(whenDocReady, 50);
+            }
+            // We create this method to return select items in ckeditor because standar getSelection issues.
+            // If you want track view PLUGIN-947 issue.
+            if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
+                window.wrs_int_getSelectedItem = function(target) {
+                    if(_wrs_currentEditor.getSelection().getSelectedElement() != undefined) {
+                        return {
+                            node: _wrs_currentEditor.getSelection().getSelectedElement().$
+                        };
+                    }
+                }
             }
         }
         // CKEditor bug #10501.
