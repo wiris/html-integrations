@@ -21,7 +21,7 @@ function displayFunction() {
     }
 }
 
-if (window.addEventListener && navigator.userAgent.indexOf("Trident") > 0) { // I.E 11
+if (window.addEventListener && navigator.userAgent.indexOf("Trident") > 0) { // I.E 11.
     window.addEventListener('load', displayFunction, false);
 } else if (window.attachEvent) {
     window.attachEvent('onload', displayFunction);

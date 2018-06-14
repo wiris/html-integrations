@@ -436,7 +436,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                     }
                 });
 
-                // Dynamic resize when it is a phone with float keyboard
+                // Dynamic resize when it is a phone with float keyboard.
                 if (_wrs_conf_modalWindow && isIOS) {
                     var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
                     wrs_addEvent(formulaDisplayDiv, 'focus', function (e) {
@@ -451,15 +451,15 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                         }
                     });
 
-                    // Set editor size
+                    // Set editor size.
                     getMethod('_wrs_modalWindow', 'closedIosSoftkeyboard', [], null);
                 }
 
-                // Event manager code
+                // Event manager code.
                 wrs_addEvent(window, 'keydown', function(e) {
                     if (_wrs_conf_modalWindow) {
                         if (e.key !== undefined && e.repeat === false) {
-                            // Code for detect Esc event
+                            // Code for detect Esc event.
                             if (e.key === "Escape" || e.key === 'Esc') {
                                 if (editor.isFormulaEmpty() || window.editorListener.getIsContentChanged() === false) {
                                     _wrs_closeFunction();
@@ -467,7 +467,7 @@ var _wrs_isNewElement; // Unfortunately we need this variabels as global variabl
                                     _wrs_showPopUpFunction();
                                 }
                             }
-                            // Code for detect Tab event
+                            // Code for detect Tab event.
                             if (e.key === "Tab") {
                                  submitButton.focus();
                                  e.preventDefault();

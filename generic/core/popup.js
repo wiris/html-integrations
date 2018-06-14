@@ -1,5 +1,5 @@
-// PopUpMessageClass definition
-// This class generate a modal message to show information to user
+// PopUpMessageClass definition.
+// This class generate a modal message to show information to user.
 function PopUpMessage(popupAttributes)
 {
     this.overlayEnvolture = document.getElementsByClassName('wrs_modal_iframeContainer')[0].appendChild(document.createElement("DIV"));
@@ -12,14 +12,14 @@ function PopUpMessage(popupAttributes)
 
     var overlay = this.overlayEnvolture.appendChild(document.createElement("div"));
     overlay.setAttribute("class", "wrs_popupmessage_overlay");
-    // We create a overlay that close popup message on click in there
+    // We create a overlay that close popup message on click in there.
     overlay.addEventListener("click", this.close.bind(this));
 
     this.buttonArea = this.message.appendChild(document.createElement('div'));
     this.buttonArea.setAttribute("class", "wrs_popupmessage_button_area");
     this.buttonArea.id = 'wrs_popup_button_area';
 
-    // Buttons creation
+    // Buttons creation.
     buttonSubmitArguments = {
         class: "wrs_button_accept",
         innerHTML: popupAttributes.submitString,
@@ -35,8 +35,8 @@ function PopUpMessage(popupAttributes)
     };
     this.cancelButton = this.createButton(buttonCancelArguments, this.close.bind(this));
     this.buttonArea.appendChild(this.cancelButton);
-    // By default, popupwindow give close modal message with close and cancel buttons
-    // You can set other message with other buttons
+    // By default, popupwindow give close modal message with close and cancel buttons.
+    // You can set other message with other buttons.
     document.addEventListener('keydown',function(e) {
         if (e.key !== undefined && e.repeat === false) {
             if (e.key == "Escape" || e.key === 'Esc') {
@@ -45,7 +45,7 @@ function PopUpMessage(popupAttributes)
         }
     });
 }
-// This method create a button with arguments and return button dom object
+// This method create a button with arguments and return button dom object.
 PopUpMessage.prototype.createButton = function(parameters, callback) {
     function popUpButton(parameters) {
         this.element = document.createElement("button");
@@ -64,10 +64,10 @@ PopUpMessage.prototype.createButton = function(parameters, callback) {
 // This method show popup message.
 PopUpMessage.prototype.show = function(){
     if (this.overlayEnvolture.style.display != 'block') {
-        // Clear focus with blur for prevent press anykey
+        // Clear focus with blur for prevent press anykey.
         document.activeElement.blur();
         _wrs_popupWindow.postMessage({'objectName' : 'blur'}, _wrs_modalWindow.iframeOrigin);
-        // For works with Safari
+        // For works with Safari.
         window.focus();
         this.overlayEnvolture.style.display = 'block';
     }
@@ -76,12 +76,12 @@ PopUpMessage.prototype.show = function(){
         _wrs_modalWindow.focus();
     }
 }
-// This method hide popup message
+// This method hide popup message.
 PopUpMessage.prototype.close = function(){
     this.overlayEnvolture.style.display = 'none';
     _wrs_modalWindow.focus();
 }
-// This method close modal and close popupmessage
+// This method close modal and close popupmessage.
 PopUpMessage.prototype.closeModal = function(){
     this.close();
     wrs_closeModalWindow();
