@@ -155,7 +155,6 @@
 }
 
 .wrs_modal_dialogContainer {
-    overflow: hidden;
     border: none;
     background: #fafafa;
     z-index: 999999;
@@ -364,6 +363,7 @@
 }
 
 .wrs_modal_controls {
+    height: 42px;
     margin: 3px 0;
     overflow: hidden;
 }
