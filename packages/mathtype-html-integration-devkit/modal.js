@@ -977,10 +977,6 @@ class ModalWindow {
             }
             // Active text select event
             wrs_removeClass(document.body, 'wrs_noselect');
-            // Disable overlay for click behind modal
-            if (this.properties.state != "maximized") {
-                this.overlay.style.display = "none";
-            }
         }
         this.dragDataObject = null;
         this.resizeDataObject = null;
