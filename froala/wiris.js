@@ -5,6 +5,7 @@ baseURL = window.location.protocol + "//" + window.location.host + "/assets/froa
 // Get _wrs_conf_path (plugin URL).
 var col = document.getElementsByTagName("script");
 // In order to run when wiris.js is inside /assets folder and running as a precompiled asset, we need to search by 'wiris.'
+var _wrs_conf_editor = "Froala";
 var scriptName = "wiris.js";
 for (var i = 0; i < col.length; i++) {
     var j = col[i].src.lastIndexOf(scriptName);
