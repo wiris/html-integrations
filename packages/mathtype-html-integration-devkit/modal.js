@@ -552,6 +552,10 @@ class ModalWindow {
 
         this.restoreModalProperties();
 
+        if (typeof this.resizerBR != 'undefined' && typeof this.resizerTL != 'undefined') {
+            this.setResizeButtonsVisibility();
+        }
+
         // Need recalculate position of actual modal because window can was changed in fullscreenmode
         this.recalculateScrollBar();
         this.recalculatePosition();
