@@ -552,7 +552,7 @@ class ModalWindow {
 
         this.restoreModalProperties();
 
-        if (typeof this.resizerBR != 'undefined' && typeof this.resizerTL != 'undefined') {
+        if (typeof this.resizerBR !== 'undefined' && typeof this.resizerTL !== 'undefined') {
             this.setResizeButtonsVisibility();
         }
 
