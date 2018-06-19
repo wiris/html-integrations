@@ -1,13 +1,11 @@
 {
-  "name": "my-project",
-  "version": "1.0.0",
   "babel": {
     "presets": [
       "env"
     ]
   },
   "scripts": {
-    "build": "babel tmp/core.js --out-file ../editors/generic/core/core.js"
+    "build": "babel tmp/core.js --out-file output/core.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
