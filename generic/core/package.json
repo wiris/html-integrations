@@ -1,0 +1,14 @@
+{
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "scripts": {
+    "build": "babel core.src.js --out-file core.js --watch"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
