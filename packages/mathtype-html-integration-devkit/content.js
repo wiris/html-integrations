@@ -166,7 +166,8 @@ class ModalPluginContent {
      * @ignore
      */
     submitAction() {
-        wrs_int_updateFormula(this.editor.getMathML(), null, _wrs_int_langCode);
+        var mathmlEntitiesEncoded = wrs_mathmlEntities(this.editor.getMathML());
+        wrs_int_updateFormula(mathmlEntitiesEncoded, null, _wrs_int_langCode);
         wrs_int_disableCustomEditors();
         wrs_int_notifyWindowClosed();
         _wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
