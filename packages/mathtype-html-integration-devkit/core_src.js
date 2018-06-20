@@ -3560,7 +3560,7 @@ function wrs_addPluginListener(listener) {
  * @ignore
  */
 function wrs_getServerPath() {
-    url = wrs_getCorePath();
+    var url = wrs_getCorePath();
     var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
     return url.substr(0, hostNameIndex);
 }
@@ -3575,7 +3575,7 @@ function wrs_updateContextPath() {
             setTimeout(wrs_updateContextPath, 100);
     } else {
         if (_wrs_conf_showimagePath.indexOf("/") == 0) {
-            serverPath = wrs_getServerPath()
+            var serverPath = wrs_getServerPath()
             _wrs_conf_showimagePath = serverPath + _wrs_conf_showimagePath;
             _wrs_conf_editorPath = serverPath + _wrs_conf_editorPath;
             _wrs_conf_CASPath = serverPath + _wrs_conf_CASPath;
