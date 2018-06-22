@@ -12,6 +12,24 @@ var _wrs_conf_servicePath;
 
 var _wrs_temporalRange;
 
+function wrs_getCorePath() {
+    var scriptName = "core/core.js";
+    var col = document.getElementsByTagName("script");
+    for (var i = 0; i < col.length; i++) {
+        var d;
+        var src;
+        d = col[i];
+        src = d.src;
+        var j = src.lastIndexOf(scriptName);
+        if (j >= 0) {
+            // That's my script!
+            return src.substr(0, j - 1);
+        }
+    }
+}
+
+var _wrs_corePath = wrs_getCorePath();
+
 /**
  * Fires an element event.
  * @param {object} element element where event should be fired.
@@ -2844,7 +2862,7 @@ function wrs_initSetSize() {
  */
 function wrs_loadConfiguration() {
     if (typeof _wrs_conf_path == 'undefined') {
-        _wrs_conf_path = wrs_getCorePath();
+        _wrs_conf_path = _wrs_corePath;
     }
 
     var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -2885,22 +2903,6 @@ function wrs_loadServicePaths(url) {
 
 var _wrs_conf_plugin_loaded = true;
 
-function wrs_getCorePath() {
-    var scriptName = "core/core.js";
-    var col = document.getElementsByTagName("script");
-    for (var i = 0; i < col.length; i++) {
-        var d;
-        var src;
-        d = col[i];
-        src = d.src;
-        var j = src.lastIndexOf(scriptName);
-        if (j >= 0) {
-            // That's my script!
-            return src.substr(0, j - 1);
-        }
-    }
-}
-
 function wrs_loadLangFile() {
     if (_wrs_conf_core_loaded) {
         _wrs_stringManager = new StringManager();
@@ -2921,7 +2923,7 @@ function wrs_loadLangFile() {
 
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = wrs_getCorePath() + "/@language_folder@/" + _wrs_int_langCode + "/strings.js";
+        script.src = _wrs_corePath + "/@language_folder@/" + _wrs_int_langCode + "/strings.js";
         // When strings are loaded, it loads into stringManager
         script.onload = function() {
 
@@ -3560,7 +3562,7 @@ function wrs_addPluginListener(listener) {
  * @ignore
  */
 function wrs_getServerPath() {
-    var url = wrs_getCorePath();
+    var url = _wrs_corePath;
     var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
     return url.substr(0, hostNameIndex);
 }
