@@ -45,12 +45,10 @@ class EditorListener {
      * @ignore
      */
     contentChanged (editor) {
-        setTimeout(function () {
-            if (this.waitingForChanges === true && this.isContentChanged === false) {
-                this.isContentChanged = true;
-            }
-        }.bind(this), 1000);
-    };
+        if (this.waitingForChanges === true && this.isContentChanged === false) {
+            this.isContentChanged = true;
+        }
+    }
     /**
      * EditorListener method to overwrite
      * @ignore

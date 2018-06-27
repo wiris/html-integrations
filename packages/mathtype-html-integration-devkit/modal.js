@@ -137,16 +137,16 @@ class ModalWindow {
 
         this.lastImageWasNew = true;
 
-        this.contentElement = null;
+        this.contentManager = null;
     }
     /**
      * This method sets the contentElement object. A contentElement object
      * manages the logic of modal object content: submit, update, close and changes.
-     * @param {object} contentElement
+     * @param {object} contentManager
      * @ignore
      */
-    setContentelement(contentElement) {
-        this.contentElement = contentElement;
+    setContentManager(contentManager) {
+        this.contentManager = contentManager;
     }
 
     /**
@@ -154,8 +154,8 @@ class ModalWindow {
      *@returns {object}
     *@ignore
     */
-    getContentElement() {
-        return this.contentElement;
+    getContentManager() {
+        return this.contentManager;
     }
 
     /**
@@ -166,8 +166,8 @@ class ModalWindow {
      * @ignore
      */
     submitAction() {
-        if (typeof this.contentElement.submitAction !== 'undefined') {
-            this.contentElement.submitAction();
+        if (typeof this.contentManager.submitAction !== 'undefined') {
+            this.contentManager.submitAction();
         }
         this.close();
     }
@@ -179,9 +179,9 @@ class ModalWindow {
      * @ignore
      */
     cancelAction() {
-        if (typeof this.contentElement.hasChanges === 'undefined') {
+        if (typeof this.contentManager.hasChanges === 'undefined') {
             this.close();
-        } else if (!this.contentElement.hasChanges()){
+        } else if (!this.contentManager.hasChanges()){
             this.close();
         } else {
             this.showPopUpMessage();
@@ -275,7 +275,6 @@ class ModalWindow {
 
             this.addListeners();
             // Maximize window only when the configuration is set and the device is not iOS or Android.
-            // TODO: Global variable
             if (_wrs_conf_modalWindowFullScreen) {
                 this.maximize();
             }
@@ -306,8 +305,8 @@ class ModalWindow {
             this.createModalWindowIos();
         }
 
-        if (this.contentElement != null) {
-            this.contentElement.insert(this);
+        if (this.contentManager != null) {
+            this.contentManager.insert(this);
         }
 
         this.properties.open = true;
@@ -427,8 +426,8 @@ class ModalWindow {
             }
 
             // Updating content element.
-            if (typeof this.contentElement != 'undefined') {
-                this.contentElement.update(this);
+            if (typeof this.contentManager != 'undefined') {
+                this.contentManager.onOpen(this);
             }
         }
     }
@@ -1086,8 +1085,8 @@ class ModalWindow {
      * @ignore
      */
     focus() {
-        if (this.contentElement != null && typeof this.contentElement.focus !== 'undefined') {
-            this.contentElement.focus();
+        if (this.contentManager != null && typeof this.contentManager.onFocus !== 'undefined') {
+            this.contentManager.onFocus();
         }
     }
 

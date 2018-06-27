@@ -9,6 +9,8 @@ var _wrs_conf_CASPath;
 var _wrs_conf_createcasimagePath;
 var _wrs_conf_getmathmlPath;
 var _wrs_conf_servicePath;
+var _wrs_conf_path;
+var _wrs_conf_editor;
 
 var _wrs_temporalRange;
 
@@ -1918,7 +1920,7 @@ function wrs_mathmlAddEditorAttribute(mathml) {
 
     var start = mathml.indexOf('<math');
     if (start == 0 ) {
-        end = mathml.indexOf('>');
+        var end = mathml.indexOf('>');
         if (mathml.indexOf("class") == -1 ) {
             // Adding custom editor type.
             toReturn = mathml.substr(start, end) + ' class="wrs_' + wrs_int_getCustomEditorEnabled().toolbar + '">';
@@ -2360,7 +2362,7 @@ function wrs_openEditorWindow(language, target, isIframe) {
     var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : _wrs_stringManager.getString('mathtype');
     if (_wrs_modalWindow == null) {
         _wrs_modalWindow = new ModalWindow(_wrs_conf_editorAttributes);
-        _wrs_modalWindow.setContentelement(new ModalPluginContent(_wrs_conf_editorAttributes));
+        _wrs_modalWindow.setContentManager(new contentManager(_wrs_conf_editorAttributes));
     }
     if (!_wrs_css_loaded) {
         var fileref = document.createElement("link");

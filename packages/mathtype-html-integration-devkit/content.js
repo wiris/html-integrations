@@ -9,7 +9,7 @@
  * for further information.
  * @ignore
  */
-class ModalPluginContent {
+class contentManager {
     // Editor listener.
     constructor(editorAttributes) {
         this.editorListener = new EditorListener();
@@ -61,10 +61,10 @@ class ModalPluginContent {
                 wrs_addEvent(formulaDisplayDiv, 'blur', modalObject.closedIosSoftkeyboard.bind(modalObject));
             }
 
-            this.update(modalObject);
+            this.onOpen(modalObject);
             this.editor.onContentChanged
         } else {
-            setTimeout(ModalPluginContent.prototype.insertEditor.bind(this, modalObject), 100);
+            setTimeout(contentManager.prototype.insertEditor.bind(this, modalObject), 100);
         }
     }
 
@@ -136,14 +136,16 @@ class ModalPluginContent {
         }
         // Using setMathML method is not a change produced by the user but for the API
         // so we set to false the contentChange property of editorListener.
-        // TODO: Not working.
         this.editor.setMathMLWithCallback(mathml, function() {
-            setTimeout(this.editorListener.setWaitingForChanges.bind(this, true), 1000);
+            this.editorListener.setWaitingForChanges(true);
         }.bind(this));
+        // We need to wait a little until the callback finish.
+        setTimeout(function(){
+            this.editorListener.setIsContentChanged(false);}.bind(this), 500);
 
         // In some scenarios - like closing modal object - editor mustn't be focused.
         if (!focusDisabled){
-            this.focus();
+            this.onFocus();
         }
     }
 
@@ -151,9 +153,10 @@ class ModalPluginContent {
      * Set focus on editor.
      * @ignore
      */
-    focus() {
+    onFocus() {
         // TODO: Check editor avaliable.
         if (typeof this.editor !== 'undefined' && this.editor != null) {
+            console.log('focus');
             this.editor.focus();
         }
     }
@@ -166,7 +169,12 @@ class ModalPluginContent {
      * @ignore
      */
     submitAction() {
-        var mathmlEntitiesEncoded = wrs_mathmlEntities(this.editor.getMathML());
+        var mathML = this.editor.getMathML();
+        // Add class for custom editors.
+        if (wrs_int_getCustomEditorEnabled() != null) {
+            mathML = wrs_mathmlAddEditorAttribute(mathML);
+        }
+        var mathmlEntitiesEncoded = wrs_mathmlEntities(mathML);
         wrs_int_updateFormula(mathmlEntitiesEncoded, null, _wrs_int_langCode);
         wrs_int_disableCustomEditors();
         wrs_int_notifyWindowClosed();
@@ -205,7 +213,7 @@ class ModalPluginContent {
      * @param {object} modalObject
      * @ignore
      */
-    update(modalObject) {
+    onOpen(modalObject) {
         if (_wrs_isNewElement) {
             this.setEmptyMathML();
             this.lastImageWasNew = true;
@@ -215,7 +223,7 @@ class ModalPluginContent {
             this.lastImageWasNew = false;
         }
         this.updateToolbar(modalObject);
-        this.focus();
+        this.onFocus();
     }
 
     /**
@@ -256,7 +264,6 @@ class ModalPluginContent {
      * Returns toolbar depending on the configuration local or serverside.
      * @ignore
      */
-    // TODO: Global variable
     getToolbar() {
         var toolbar = (typeof _wrs_conf_editorParameters == 'undefined' || typeof _wrs_conf_editorParameters['toolbar'] == 'undefined') ? 'general' : _wrs_conf_editorParameters['toolbar'];
         if(toolbar == 'general'){
