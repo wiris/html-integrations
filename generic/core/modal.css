@@ -366,6 +366,7 @@
     height: 42px;
     margin: 3px 0;
     overflow: hidden;
+    line-height: normal;
 }
 
 .wrs_modal_links {
