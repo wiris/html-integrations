@@ -366,6 +366,7 @@
     height: 42px;
     margin: 3px 0;
     overflow: hidden;
+    line-height: normal;
 }
 
 .wrs_modal_links {
@@ -430,6 +431,11 @@
 
 .wrs_modal_buttons_container.wrs_modalDesktop {
     padding-left: 0;
+}
+
+.wrs_modal_buttons_container > button {
+    line-height: normal;
+    background-image: none;
 }
 
 .wrs_modal_wrapper {
