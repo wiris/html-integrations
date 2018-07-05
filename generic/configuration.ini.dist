@@ -114,10 +114,6 @@
 
 #wiriseditorsetsize = false
 
-## Specifies if editor should be opened on a modal window or in a pop-up window. true by default.
-
-#wiriseditormodalwindow = true
-
 ## Specifies if the modal window should be opened in full-screen mode. false by default.
 
 #wiriseditormodalwindowfullscreen = false
