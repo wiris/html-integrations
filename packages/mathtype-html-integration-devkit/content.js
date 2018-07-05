@@ -156,7 +156,6 @@ class contentManager {
     onFocus() {
         // TODO: Check editor avaliable.
         if (typeof this.editor !== 'undefined' && this.editor != null) {
-            console.log('focus');
             this.editor.focus();
         }
     }
