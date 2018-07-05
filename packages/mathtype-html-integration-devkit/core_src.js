@@ -3293,21 +3293,21 @@ function wrs_readBytes(bytes, pos, len) {
  */
 function wrs_getMetricsFromBytes(bytes) {
     wrs_readBytes(bytes, 0, 8);
-    alloc = 10;
-    i = 0;
+    var alloc = 10;
+    var i = 0;
     while (bytes.length >= 4) {
-        len = wrs_readInt32(bytes);
-        typ = wrs_readInt32(bytes);
+        var len = wrs_readInt32(bytes);
+        var typ = wrs_readInt32(bytes);
         if (typ == 0x49484452) {
-            width = wrs_readInt32(bytes);
-            height = wrs_readInt32(bytes);
+            var width = wrs_readInt32(bytes);
+            var height = wrs_readInt32(bytes);
             // Read 5 bytes.
             wrs_readInt32(bytes);
             wrs_readByte(bytes);
         } else if (typ == 0x62615345) { // Baseline: 'baSE'.
-            baseline = wrs_readInt32(bytes);
+            var baseline = wrs_readInt32(bytes);
         } else if (typ == 0x70485973) { // Dpis: 'pHYs'.
-            dpi = wrs_readInt32(bytes);
+            var dpi = wrs_readInt32(bytes);
             dpi = (Math.round(dpi / 39.37));
             wrs_readInt32(bytes);
             wrs_readByte(bytes);
