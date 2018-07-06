@@ -359,6 +359,7 @@ class ModalWindow {
     initializeResizeProperties(ev, leftOption) {
         // Apply class for disable involuntary select text when drag.
         wrs_addClass(document.body, 'wrs_noselect');
+        wrs_addClass(this.overlay, 'wrs_overlay_active');
         this.resizeDataObject = {
             x: this.eventClient(ev).X,
             y: this.eventClient(ev).Y
@@ -815,6 +816,7 @@ class ModalWindow {
                 }
                 // Apply class for disable involuntary select text when drag.
                 wrs_addClass(document.body, 'wrs_noselect');
+                wrs_addClass(this.overlay, 'wrs_overlay_active');
                 // Obtain screen limits for prevent overflow.
                 this.limitWindow = this.getLimitWindow();
             }
@@ -981,6 +983,7 @@ class ModalWindow {
             }
             // Active text select event
             wrs_removeClass(document.body, 'wrs_noselect');
+            wrs_removeClass(this.overlay, 'wrs_overlay_active');
         }
         this.dragDataObject = null;
         this.resizeDataObject = null;
