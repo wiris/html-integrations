@@ -520,3 +520,13 @@
     cursor: pointer;
     font-family: arial, sans-serif;
 }
+
+.wrs_editor button{
+    box-shadow: none;
+}
+
+.wrs_editor .wrs_header button{
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
