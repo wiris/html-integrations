@@ -530,3 +530,7 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
+
+.wrs_modal_overlay.wrs_modal_desktop.wrs_stack.wrs_overlay_active {
+    display: block;
+}
