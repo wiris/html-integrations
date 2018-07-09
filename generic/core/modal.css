@@ -385,7 +385,12 @@
     font-size: 16px;
 }
 
-.wrs_modal_button_cancel {
+.wrs_modal_button_cancel,
+.wrs_modal_button_cancel:hover,
+.wrs_modal_button_cancel:visited,
+.wrs_modal_button_cancel:active,
+.wrs_modal_button_cancel:focus,
+.wrs_modal_button_cancel:focus-within {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
@@ -396,9 +401,15 @@
     margin-bottom: 0;
     cursor: pointer;
     font-family: arial, sans-serif;
+    background-color: #DDDDDD;
 }
 
-.wrs_modal_button_accept {
+.wrs_modal_button_accept,
+.wrs_modal_button_accept:hover,
+.wrs_modal_button_accept:visited,
+.wrs_modal_button_accept:active,
+.wrs_modal_button_accept:focus,
+.wrs_modal_button_accept:focus-within {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
@@ -491,6 +502,10 @@
 
 .wrs_popupmessage_button_area {
     margin: 10px 0 0 0;
+}
+
+.wrs_panelContainer * {
+    border: 0;
 }
 
 .wrs_button_cancel {
