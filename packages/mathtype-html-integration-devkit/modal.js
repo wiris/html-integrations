@@ -752,6 +752,8 @@ class ModalWindow {
         wrs_removeEvent(window, 'mouseup', this.stopDrag);
         wrs_removeEvent(window, 'mousemove', this.drag);
         wrs_removeEvent(window, 'resize', this.onWindowResize);
+        // Key events
+        wrs_removeEvent(window, 'keydown', this.onKeyDown);
     }
 
 
@@ -1011,7 +1013,9 @@ class ModalWindow {
         if (ev.key !== undefined && ev.repeat === false) {
             // Code for detect Esc event
             if (ev.key === "Escape" || ev.key === 'Esc') {
-                this.cancelAction();
+                if (this.properties.open) {
+                    this.cancelAction();
+                }
             }
             // Code for detect Tab event
             if (ev.key === "Tab") {

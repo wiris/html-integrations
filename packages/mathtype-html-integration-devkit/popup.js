@@ -55,15 +55,6 @@ class PopUpMessage {
         };
         this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
         this.buttonArea.appendChild(this.cancelButton);
-
-        // "Esc" key cancels the PopupMessage.
-        document.addEventListener('keydown',function(e) {
-            if (e.key !== undefined && e.repeat === false) {
-                if (e.key == "Escape" || e.key === 'Esc') {
-                    this.cancelAction();
-                }
-            }
-        }.bind(this));
     }
 
     /**
