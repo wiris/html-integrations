@@ -389,8 +389,7 @@
 .wrs_modal_button_cancel:hover,
 .wrs_modal_button_cancel:visited,
 .wrs_modal_button_cancel:active,
-.wrs_modal_button_cancel:focus,
-.wrs_modal_button_cancel:focus-within {
+.wrs_modal_button_cancel:focus {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
@@ -408,8 +407,7 @@
 .wrs_modal_button_accept:hover,
 .wrs_modal_button_accept:visited,
 .wrs_modal_button_accept:active,
-.wrs_modal_button_accept:focus,
-.wrs_modal_button_accept:focus-within {
+.wrs_modal_button_accept:focus {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
