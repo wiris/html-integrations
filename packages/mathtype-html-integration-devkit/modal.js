@@ -395,7 +395,7 @@ class ModalWindow {
         // Hiding keyboard for mobile devices.
         if (this.deviceProperties['isIOS'] || this.deviceProperties['isAndroid'] || this.deviceProperties['isMobile']) {
             // Due to editor wait we need to wait until editor focus.
-            setTimeout(function() { this.hideKeyboard }.bind(this), 300);
+            setTimeout(function() { this.hideKeyboard() }.bind(this), 400);
         }
 
         // New modal window. He need to create the whole object.

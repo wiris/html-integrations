@@ -55,7 +55,7 @@ class contentManager {
 
             // iOS events.
             if (modalObject.deviceProperties['isIOS']) {
-                setTimeout(function() { _wrs_modalWindow.hideKeyboard() }, 300);
+                setTimeout(function() { _wrs_modalWindow.hideKeyboard() }, 400);
                 var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
                 wrs_addEvent(formulaDisplayDiv, 'focus', modalObject.openedIosSoftkeyboard.bind(modalObject));
                 wrs_addEvent(formulaDisplayDiv, 'blur', modalObject.closedIosSoftkeyboard.bind(modalObject));
