@@ -2358,11 +2358,21 @@ function wrs_openEditorWindow(language, target, isIframe) {
             }
         }
     }
+    // Parse atributes of editor into object
+    var splitterEditorAtributes = _wrs_conf_editorAttributes.split(", ");
+    var resultEditorAtributes = {};
+    for (var i = 0, len = splitterEditorAtributes.length; i < len; i++) {
+      var tempAtribute = splitterEditorAtributes[i].split('=');
+      var key = tempAtribute[0];
+      var value = tempAtribute[1];
+      resultEditorAtributes[key] = value;
+    }
+    resultEditorAtributes.language = _wrs_int_langCode;
 
     var title = wrs_int_getCustomEditorEnabled() != null ? wrs_int_getCustomEditorEnabled().title : _wrs_stringManager.getString('mathtype');
     if (_wrs_modalWindow == null) {
         _wrs_modalWindow = new ModalWindow(_wrs_conf_editorAttributes);
-        _wrs_modalWindow.setContentManager(new contentManager(_wrs_conf_editorAttributes));
+        _wrs_modalWindow.setContentManager(new contentManager(resultEditorAtributes));
     }
     if (!_wrs_css_loaded) {
         var fileref = document.createElement("link");
