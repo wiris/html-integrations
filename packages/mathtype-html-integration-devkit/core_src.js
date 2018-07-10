@@ -1695,9 +1695,7 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 }
                 // Fix to set the caret after the inserted image.
                 range.selectNode(element);
-                position = range.endOffset;
-                selection.collapse(node, position);
-                // Integration function
+                // Integration function.
                 // If wrs_int_setCaretPosition function exists on
                 // integration script can call caret method from the editor instance.
                 // With this method we can call proper specific editor methods which in some scenarios
@@ -1705,6 +1703,10 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
                 if (typeof wrs_int_selectRange != 'undefined') {
                     wrs_int_selectRange(range);
                 }
+                // Selection collapse must have to do it after the function 'wrs_int_selectRange' because
+                // can be that the range was changed and the selection needs to be updated.
+                position = range.endOffset;
+                selection.collapse(node, position);
             }
         }
         else if (_wrs_temporalRange) {
