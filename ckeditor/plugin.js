@@ -620,7 +620,13 @@ function wrs_int_insertElementOnSelection() {
  * Uses CKEDITOR focus method to move caret to a specific range.
  */
 function wrs_int_selectRange(range) {
-    range.startContainer = range.endContainer;
-    range.startOffset = range.endOffset;
+    // Select end position to set the caret after the image.
+    range.setStart(range.endContainer, range.endOffset);
+    range.collapse();
+    // Due to ckeditor has its own DOM Elements and also we use the document selection
+    // is needed update ckeditor instance's selection and document's selection.
     _wrs_currentEditor.getSelection().selectRanges(range);
+    var currentSelection = document.getSelection();
+    currentSelection.removeAllRanges();
+    currentSelection.addRange(range);
 }
