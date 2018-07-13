@@ -591,31 +591,6 @@ function checkElement(editor, element, callback) {
 }
 
 /**
- * This function is called from wrs_insertElementOnSelection on core.js
- * Uses CKEDITOR focus method to focus on current editor area.
- */
-function wrs_int_insertElementOnSelection() {
-    var editor = _wrs_currentEditor;
-    if (editor) {
-        var focusManager = new CKEDITOR.focusManager(editor);
-        focusManager.focus();
-
-        // Assert that we are working into a ckeditor field.
-        var currentEditorContainer = _wrs_int_temporalElementIsIframe ? _wrs_int_temporalElement.contentDocument.body : _wrs_int_temporalElement;
-        var targetElement = editor.getSelection().getStartElement().$;
-        var currentrange = editor.getSelection().getRanges()[0]
-        if (typeof currentrange == 'undefined' || !currentEditorContainer.contains(targetElement)) {
-            _wrs_range = null;
-        }
-        else {
-            var startcontainer = currentrange.startContainer.$;
-            var startcontaineroffset = currentrange.startOffset;
-            _wrs_range.setStart(startcontainer, startcontaineroffset);
-        }
-    }
-}
-
-/**
  * This function is called from wrs_int_selectRange on core.js
  * Uses CKEDITOR focus method to move caret to a specific range.
  */
