@@ -502,6 +502,8 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
                 if (window[_wrs_int_customEditors[customEditor].confVariable]) {
                     wrs_int_enableCustomEditor(customEditor);
                 }
+            }else{
+                wrs_int_disableCustomEditors();
             }
             if ('wiriseditorparameters' in editor.settings) {
                 _wrs_int_wirisProperties = editor.settings['wiriseditorparameters'];
