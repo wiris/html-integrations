@@ -1600,157 +1600,144 @@ function wrs_getElementsByNameFromString(code, name, autoClosed) {
  * @ignore
  */
 function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
-    try {
-        // Integration function
-        // If wrs_int_insertElementOnSelection function exists on
-        // integration script can call focus method from the editor instance.
-        // For example, on CKEditor calls CKEditorInstance.focus() method.
-        // With this method we can call proper focus methods which in some scenarios
-        // help's MathType to focus properly on the current editor window.
-        if (typeof wrs_int_insertElementOnSelection !== 'undefined') {
-            wrs_int_insertElementOnSelection();
+    if(typeof focusElement.frameElement !== 'undefined'){
+        function get_browser(){
+            var ua = navigator.userAgent;
+            if(ua.search("Edge/") >= 0){
+                return "EDGE";
+            }else if(ua.search("Chrome/") >= 0){
+                return "CHROME";
+            }else if(ua.search("Trident/") >= 0){
+                return "IE";
+            }else if(ua.search("Firefox/") >= 0){
+                return "FIREFOX";
+            }else if(ua.search("Safari/") >= 0){
+                return "SAFARI";
+            }
         }
-        if(typeof focusElement.frameElement !== 'undefined'){
-            function get_browser(){
-                var ua = navigator.userAgent;
-                if(ua.search("Edge/") >= 0){
-                    return "EDGE";
-                }else if(ua.search("Chrome/") >= 0){
-                    return "CHROME";
-                }else if(ua.search("Trident/") >= 0){
-                    return "IE";
-                }else if(ua.search("Firefox/") >= 0){
-                    return "FIREFOX";
-                }else if(ua.search("Safari/") >= 0){
-                    return "SAFARI";
-                }
-            }
-            var browserName = get_browser();
-            // Iexplorer, Edge and Safari can't focus into iframe
-            if (browserName == 'SAFARI' || browserName == 'IE' || browserName == 'EDGE') {
-                focusElement.focus();
-            }else{
-                focusElement.frameElement.focus();
-            }
-        }else{
+        var browserName = get_browser();
+        // Iexplorer, Edge and Safari can't focus into iframe
+        if (browserName == 'SAFARI' || browserName == 'IE' || browserName == 'EDGE') {
             focusElement.focus();
+        }else{
+            focusElement.frameElement.focus();
         }
+    }else{
+        focusElement.focus();
+    }
 
-        if (_wrs_isNewElement) {
-            if (focusElement.type == "textarea") {
-                wrs_updateTextarea(focusElement, element.textContent);
-            }
-            else if (document.selection && document.getSelection == 0) {
-                var range = windowTarget.document.selection.createRange();
+    if (_wrs_isNewElement) {
+        if (focusElement.type == "textarea") {
+            wrs_updateTextarea(focusElement, element.textContent);
+        }
+        else if (document.selection && document.getSelection == 0) {
+            var range = windowTarget.document.selection.createRange();
+            windowTarget.document.execCommand('InsertImage', false, element.src);
+
+            if (!('parentElement' in range)) {
+                windowTarget.document.execCommand('delete', false);
+                range = windowTarget.document.selection.createRange();
                 windowTarget.document.execCommand('InsertImage', false, element.src);
-
-                if (!('parentElement' in range)) {
-                    windowTarget.document.execCommand('delete', false);
-                    range = windowTarget.document.selection.createRange();
-                    windowTarget.document.execCommand('InsertImage', false, element.src);
-                }
-
-                if ('parentElement' in range) {
-                    var temporalObject = range.parentElement();
-
-                    if (temporalObject.nodeName.toUpperCase() == 'IMG') {
-                        temporalObject.parentNode.replaceChild(element, temporalObject);
-                    }
-                    else {
-                        // IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
-                        range.pasteHTML(wrs_createObjectCode(element));
-                    }
-                }
             }
-            else {
-                var selection = windowTarget.getSelection();
-                // We have use wrs_range beacuse IExplorer delete selection when select another part of text.
-                if (_wrs_range) {
-                    var range = _wrs_range;
-                    _wrs_range = null;
+
+            if ('parentElement' in range) {
+                var temporalObject = range.parentElement();
+
+                if (temporalObject.nodeName.toUpperCase() == 'IMG') {
+                    temporalObject.parentNode.replaceChild(element, temporalObject);
                 }
                 else {
-
-                    try {
-                        var range = selection.getRangeAt(0);
-                    }
-                    catch (e) {
-                        var range = windowTarget.document.createRange();
-                    }
+                    // IE9 fix: parentNode() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+                    range.pasteHTML(wrs_createObjectCode(element));
                 }
-                selection.removeAllRanges();
-
-                range.deleteContents();
-
-                var node = range.startContainer;
-                var position = range.startOffset;
-
-                if (node.nodeType == 3) { // TEXT_NODE.
-                    node = node.splitText(position);
-                    node.parentNode.insertBefore(element, node);
-                    node = node.parentNode;
-                }
-                else if (node.nodeType == 1) { // ELEMENT_NODE.
-                    node.insertBefore(element, node.childNodes[position]);
-                }
-                // Fix to set the caret after the inserted image.
-                range.selectNode(element);
-                // Integration function.
-                // If wrs_int_setCaretPosition function exists on
-                // integration script can call caret method from the editor instance.
-                // With this method we can call proper specific editor methods which in some scenarios
-                // help's MathType to set caret position properly on the current editor window.
-                if (typeof wrs_int_selectRange != 'undefined') {
-                    wrs_int_selectRange(range);
-                }
-                // Selection collapse must have to do it after the function 'wrs_int_selectRange' because
-                // can be that the range was changed and the selection needs to be updated.
-                position = range.endOffset;
-                selection.collapse(node, position);
             }
-        }
-        else if (_wrs_temporalRange) {
-            if (document.selection && document.getSelection == 0) {
-                _wrs_isNewElement = true;
-                _wrs_temporalRange.select();
-                wrs_insertElementOnSelection(element, focusElement, windowTarget);
-            }
-            else {
-                var parentNode = _wrs_temporalRange.startContainer;
-                _wrs_temporalRange.deleteContents();
-                _wrs_temporalRange.insertNode(element);
-            }
-        }
-        else if (focusElement.type == "textarea") {
-            var item;
-            // Wrapper for some integrations that can have special behaviours to show latex.
-            if (typeof wrs_int_getSelectedItem != 'undefined') {
-                item = wrs_int_getSelectedItem(focusElement, false);
-            }
-            else {
-                item = wrs_getSelectedItemOnTextarea(focusElement);
-            }
-            wrs_updateExistingFormulaOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
         }
         else {
-            if (!element) { // Editor empty, formula has been erased on edit.
-                _wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
+            var selection = windowTarget.getSelection();
+            // We have use wrs_range beacuse IExplorer delete selection when select another part of text.
+            if (_wrs_range) {
+                var range = _wrs_range;
+                _wrs_range = null;
             }
-            _wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
-            function placeCaretAfterNode(node) {
-                if (typeof window.getSelection != "undefined") {
+            else {
+
+                try {
+                    var range = selection.getRangeAt(0);
+                }
+                catch (e) {
                     var range = windowTarget.document.createRange();
-                    range.setStartAfter(node);
-                    range.collapse(true);
-                    var selection = windowTarget.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
                 }
             }
-            placeCaretAfterNode(element);
+            selection.removeAllRanges();
+
+            range.deleteContents();
+
+            var node = range.startContainer;
+            var position = range.startOffset;
+
+            if (node.nodeType == 3) { // TEXT_NODE.
+                node = node.splitText(position);
+                node.parentNode.insertBefore(element, node);
+                node = node.parentNode;
+            }
+            else if (node.nodeType == 1) { // ELEMENT_NODE.
+                node.insertBefore(element, node.childNodes[position]);
+            }
+            // Fix to set the caret after the inserted image.
+            range.selectNode(element);
+            // Integration function.
+            // If wrs_int_setCaretPosition function exists on
+            // integration script can call caret method from the editor instance.
+            // With this method we can call proper specific editor methods which in some scenarios
+            // help's MathType to set caret position properly on the current editor window.
+            if (typeof wrs_int_selectRange != 'undefined') {
+                wrs_int_selectRange(range);
+            }
+            // Selection collapse must have to do it after the function 'wrs_int_selectRange' because
+            // can be that the range was changed and the selection needs to be updated.
+            position = range.endOffset;
+            selection.collapse(node, position);
         }
     }
-    catch (e) {
+    else if (_wrs_temporalRange) {
+        if (document.selection && document.getSelection == 0) {
+            _wrs_isNewElement = true;
+            _wrs_temporalRange.select();
+            wrs_insertElementOnSelection(element, focusElement, windowTarget);
+        }
+        else {
+            var parentNode = _wrs_temporalRange.startContainer;
+            _wrs_temporalRange.deleteContents();
+            _wrs_temporalRange.insertNode(element);
+        }
+    }
+    else if (focusElement.type == "textarea") {
+        var item;
+        // Wrapper for some integrations that can have special behaviours to show latex.
+        if (typeof wrs_int_getSelectedItem != 'undefined') {
+            item = wrs_int_getSelectedItem(focusElement, false);
+        }
+        else {
+            item = wrs_getSelectedItemOnTextarea(focusElement);
+        }
+        wrs_updateExistingFormulaOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
+    }
+    else {
+        if (!element) { // Editor empty, formula has been erased on edit.
+            _wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
+        }
+        _wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
+        function placeCaretAfterNode(node) {
+            if (typeof window.getSelection != "undefined") {
+                var range = windowTarget.document.createRange();
+                range.setStartAfter(node);
+                range.collapse(true);
+                var selection = windowTarget.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+        placeCaretAfterNode(element);
     }
 }
 

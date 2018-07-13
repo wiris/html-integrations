@@ -394,6 +394,9 @@ class ModalWindow {
         this.removeClass('wrs_closed');
         // Hiding keyboard for mobile devices.
         if (this.deviceProperties['isIOS'] || this.deviceProperties['isAndroid'] || this.deviceProperties['isMobile']) {
+            // Restore scale to 1
+            this.restoreWebsiteScale();
+            this.blockWebsiteScroll();
             // Due to editor wait we need to wait until editor focus.
             setTimeout(function() { this.hideKeyboard() }.bind(this), 400);
         }
@@ -444,7 +447,95 @@ class ModalWindow {
         this.removeClass('wrs_stack');
         this.addClass('wrs_closed');
         this.saveModalProperties();
+        this.unblockWebsiteScroll();
         this.properties.open = false;
+    }
+
+    /**
+     * It sets the website scale to one.
+     * @ignore
+     */
+    restoreWebsiteScale() {
+        let viewportmeta = document.querySelector('meta[name=viewport]');
+        // Let the equal symbols in order to search and make meta's final content.
+        let contentAttrsToUpdate = ['initial-scale=', 'minimum-scale=', 'maximum-scale='];
+        let contentAttrsValuesToUpdate = ['1.0', '1.0', '1.0'];
+        let setMetaAttrFunc = (viewportelement, contentAttrsToUpdate) => {
+            let contentAttr = viewportelement.getAttribute('content');
+            // If it exists, we need to maintain old values and put our values.
+            if (contentAttr) {
+                let attrArray = contentAttr.split(',');
+                let finalContentMeta = "";
+                let oldAttrs = [];
+                for (let i = 0; i < attrArray.length; i++) {
+                    let isAttrToUpdate = false;
+                    let j = 0;
+                    while (!isAttrToUpdate && j < contentAttrsToUpdate.length) {
+                        if (attrArray[i].indexOf(contentAttrsToUpdate[j])) {
+                            isAttrToUpdate = true;
+                        }
+
+                        j++;
+                    }
+
+                    if (!isAttrToUpdate) {
+                        oldAttrs.push(attrArray[i]);
+                    }
+                }
+
+                for (let i = 0; i < contentAttrsToUpdate.length; i++) {
+                    let attr = contentAttrsToUpdate[i] + contentAttrsValuesToUpdate[i];
+                    finalContentMeta += i == 0 ? attr : ',' + attr;
+                }
+
+                for (let i = 0; i < oldAttrs.length; i++) {
+                    finalContentMeta += ',' + oldAttrs[i];
+                }
+
+                viewportelement.setAttribute('content', finalContentMeta);
+                viewportelement.setAttribute('content', contentAttr);
+            }
+            else {
+                viewportelement.setAttribute('content', 'initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
+                viewportelement.removeAttribute('content');
+            }
+        };
+
+        if (!viewportmeta) {
+            viewportmeta = document.createElement('meta');
+            document.getElementsByTagName('head')[0].appendChild(viewportmeta);
+            setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
+            viewportmeta.remove();
+        }
+        else {
+            setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
+        }
+
+    }
+
+    /**
+     * Adds an event to avoid touchscrolling.
+     * @ignore
+     */
+    blockWebsiteScroll() {
+        document.body.addEventListener('touchmove', this.disableTouchMove, {passive: false});
+    }
+
+    /**
+     * Removes the event to avoid touchscrolling.
+     * @ignore
+     */
+    unblockWebsiteScroll() {
+        document.body.removeEventListener('touchmove', this.disableTouchMove, {passive: false});
+    }
+
+    /**
+     * Prevents the default event behaviour.
+     * @param {Object} ev javascript event.
+     * @ignore.
+     */
+    disableTouchMove(ev) {
+        ev.preventDefault();
     }
 
     /**
