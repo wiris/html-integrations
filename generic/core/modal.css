@@ -58,19 +58,14 @@
     cursor: pointer;
     color: #fff;
     padding: 5px 10px 5px 0;
-    background: url('icons/general/close_icon.png');
+    background-image: url('icons/general/close_icon.png');
     background-size: 10px;
     margin: 10px 7px 0 0;
+    background-repeat: no-repeat;
 }
 
 .wrs_modal_close_button:hover {
-    float: right;
-    cursor: pointer;
-    color: #fff;
-    padding: 5px 10px 5px 0;
-    background: url('icons/hover/close_icon_h.png');
-    background-size: 10px;
-    margin: 10px 7px 0 0;
+    background-image: url('icons/hover/close_icon_h.png');
 }
 
 .wrs_modal_minimize_button {
@@ -82,6 +77,7 @@
     margin: 10px 7px 0 0;
     background-size: 10px;
     background-image: url('icons/general/min_icon.png');
+    background-repeat: no-repeat;
 }
 
 .wrs_modal_minimize_button:hover {
@@ -132,6 +128,7 @@
     top: inherit;
     background-image: url('icons/general/fulls_icon.png');
     background-size: 10px;
+    background-repeat: no-repeat;
 }
 
 .wrs_modal_maximize_button.wrs_maximized {
