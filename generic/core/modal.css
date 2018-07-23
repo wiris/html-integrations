@@ -503,7 +503,11 @@
     border: 0;
 }
 
-.wrs_button_cancel {
+.wrs_button_cancel,
+.wrs_button_cancel:hover,
+.wrs_button_cancel:visited,
+.wrs_button_cancel:active,
+.wrs_button_cancel:focus {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
@@ -514,9 +518,15 @@
     margin-bottom: 0;
     cursor: pointer;
     font-family: arial, sans-serif;
+    background-color: #DDDDDD;
+    background-image: none;
 }
 
-.wrs_button_accept {
+.wrs_button_accept,
+.wrs_button_accept:hover,
+.wrs_button_accept:visited,
+.wrs_button_accept:active,
+.wrs_button_accept:focus {
     min-width: 80px;
     font-size: 14px;
     border-radius: 3px;
