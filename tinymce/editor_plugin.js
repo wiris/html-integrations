@@ -11,7 +11,7 @@ var _wrs_conf_editor = "TinyMCE";
 if (typeof _wrs_isMoodle24 == 'undefined') {
     _wrs_baseURL = tinymce.baseURL;
     _wrs_conf_path = _wrs_baseURL + '/plugins/tiny_mce_wiris/'; // TODO use the same variable name always.
-}else{
+} else {
     var base = tinymce.baseURL;
     var search = 'lib/editor/tinymce';
     var pos = base.indexOf(search);
@@ -331,7 +331,7 @@ var _wrs_int_langCode = 'en';
                 Array.prototype.forEach.call(mutations,function(mutation) {
                     Array.prototype.forEach.call(mutation.addedNodes,function(node) {
                         // We search only in element nodes.
-                        if(node.nodeType == 1){
+                        if (node.nodeType == 1){
                             Array.prototype.forEach.call(node.getElementsByClassName(_wrs_conf_imageClassName),function(image) {
                                 image.removeAttribute('data-mce-src');
                                 image.removeAttribute('data-mce-style');
@@ -343,9 +343,9 @@ var _wrs_int_langCode = 'en';
             var mutationInstance = new MutationObserver(onMutations);
             // We wait for iframe definition for observe this.
             function waitForIframeBody() {
-                if(typeof editor.contentDocument != 'undefined') {
+                if (typeof editor.contentDocument != 'undefined') {
                     mutationInstance.observe(editor.getBody(), observerConfig);
-                }else{
+                } else {
                     setTimeout(waitForIframeBody, 50);
                 }
             }
@@ -502,7 +502,7 @@ function wrs_int_doubleClickHandler(editor, target, isIframe, element) {
                 if (window[_wrs_int_customEditors[customEditor].confVariable]) {
                     wrs_int_enableCustomEditor(customEditor);
                 }
-            }else{
+            } else {
                 wrs_int_disableCustomEditors();
             }
             if ('wiriseditorparameters' in editor.settings) {
