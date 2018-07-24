@@ -114,7 +114,7 @@ var _wrs_int_langCode = 'en';
             }
 
             // Fix a Moodle 2.4 bug. data-mathml was lost without this.
-            if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24){
+            if (typeof _wrs_isMoodle24 !== 'undefined' && _wrs_isMoodle24) {
                 editor.settings.extended_valid_elements += ',img[*]';
 
                 // Conflict between tinyMCE Moodle scriptLoader. Create a new one.
@@ -217,7 +217,7 @@ var _wrs_int_langCode = 'en';
 
                         // Bug fix: In Moodle2.x when TinyMCE is set to full screen
                         // the content doesn't need to be filtered.
-                        if (!editor.getParam('fullscreen_is_enabled') && content !== ""){
+                        if (!editor.getParam('fullscreen_is_enabled') && content !== "") {
 
                             // We set content in html because other tiny plugins need data-mce
                             // and this is not posibil with raw format.
@@ -238,7 +238,7 @@ var _wrs_int_langCode = 'en';
                             }, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
                             // Attaching obsevers to wiris images.
                             if (typeof wrs_observer != 'undefined') {
-                                Array.prototype.forEach.call(element.contentDocument.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages){
+                                Array.prototype.forEach.call(element.contentDocument.getElementsByClassName(_wrs_conf_imageClassName), function(wirisImages) {
                                     wrs_observer.observe(wirisImages, wrs_observer_config);
                                 });
                             }
@@ -319,7 +319,7 @@ var _wrs_int_langCode = 'en';
                     }
                 });
             } else {
-                editor.on('beforeSetContent', function(params){
+                editor.on('beforeSetContent', function(params) {
                     if (_wrs_int_initParsed) {
                         params.content = wrs_initParse(params.content, editor.getParam('language'));
                     }
@@ -331,7 +331,7 @@ var _wrs_int_langCode = 'en';
                 Array.prototype.forEach.call(mutations,function(mutation) {
                     Array.prototype.forEach.call(mutation.addedNodes,function(node) {
                         // We search only in element nodes.
-                        if (node.nodeType == 1){
+                        if (node.nodeType == 1) {
                             Array.prototype.forEach.call(node.getElementsByClassName(_wrs_conf_imageClassName),function(image) {
                                 image.removeAttribute('data-mce-src');
                                 image.removeAttribute('data-mce-style');
