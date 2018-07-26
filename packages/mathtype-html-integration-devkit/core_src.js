@@ -1232,10 +1232,6 @@ function wrs_getSelectedItem(target, isIframe, forceGetSelection) {
         var node = range.startContainer;
 
         if (node.nodeType == 3) { // TEXT_NODE.
-            if (range.startOffset != range.endOffset) {
-                return null;
-            }
-
             return {
                 'node': node,
                 'caretPosition': range.startOffset
