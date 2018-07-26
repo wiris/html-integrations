@@ -51,6 +51,7 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    text-align: left;
 }
 
 .wrs_modal_close_button {
@@ -429,6 +430,7 @@
 
 .wrs_modal_buttons_container {
     display: inline;
+    float: left;
 }
 
 .wrs_modal_buttons_container.wrs_modalAndroid {
