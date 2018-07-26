@@ -312,6 +312,11 @@ class ModalWindow {
 
         this.properties.open = true;
         this.properties.created = true;
+
+        // If actual language is arabic modal starts at left of window browser
+        if (this.isRTL(_wrs_int_langCode)) {
+            this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
+        }
     }
 
     /**
@@ -550,6 +555,17 @@ class ModalWindow {
         return false;
     }
 
+    /**
+     * @param {string} actual language to check if it's rtl
+     * @return {boolean} return true if current language is type RTL
+     * @ignore
+     */
+     isRTL(language) {
+        if (_wrs_int_langCode == 'ar' || _wrs_int_langCode == 'he') {
+            return true;
+        }
+        return false;
+     }
     /**
      * Adds a class to all modal DOM elements.
      * @param {string} cls
@@ -942,7 +958,6 @@ class ModalWindow {
             };
             // This move modal with hadware acceleration.
             this.container.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
-            this.container.style.position = 'absolute';
         }
         if (this.resizeDataObject) {
             var limitX = Math.min(this.eventClient(ev).X,window.innerWidth - this.scrollbarWidth - 7);
@@ -1055,15 +1070,10 @@ class ModalWindow {
         // when the user stops to drag and dragDataObject is not null (the object to drag is attached).
         if (this.dragDataObject || this.resizeDataObject) {
             // If modal doesn't change, it's not necessary to set position with interpolation
-            if(this.container.style.position != 'fixed'){
-                this.container.style.position = 'fixed';
-                // Fixed position makes the coords relative to the main window. So that, we need to transform
-                // the absolute coords to relative.
-                this.container.style.transform = '';
-                if (this.dragDataObject) {
-                    this.container.style.right = parseInt(this.container.style.right) - parseInt(this.lastDrag.x) + pageXOffset + "px";
-                    this.container.style.bottom = parseInt(this.container.style.bottom) - parseInt(this.lastDrag.y) + pageYOffset + "px";
-                }
+            this.container.style.transform = '';
+            if (this.dragDataObject) {
+                this.container.style.right = parseInt(this.container.style.right) - parseInt(this.lastDrag.x) + pageXOffset + "px";
+                this.container.style.bottom = parseInt(this.container.style.bottom) - parseInt(this.lastDrag.y) + pageYOffset + "px";
             }
             // We make focus on editor after drag modal windows to prevent lose focus.
             this.focus();

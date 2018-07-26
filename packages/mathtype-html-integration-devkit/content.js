@@ -48,7 +48,11 @@ class contentManager {
         if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
             this.editor = com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
             this.editor.insertInto(modalObject.contentContainer);
-            this.editor.focus()
+            this.editor.focus();
+            // Setting div in rtl in case of it's activated.
+            if (this.editor.getEditorModel().isRTL()) {
+                this.editor.element.style.direction = 'rtl';
+            }
 
             // Editor listener: this object manages the changes logic of editor.
             this.editor.getEditorModel().addEditorListener(this.editorListener);
@@ -62,7 +66,6 @@ class contentManager {
             }
 
             this.onOpen(modalObject);
-            this.editor.onContentChanged
         } else {
             setTimeout(contentManager.prototype.insertEditor.bind(this, modalObject), 100);
         }
@@ -199,9 +202,18 @@ class contentManager {
         // As second argument we pass
         if (this.deviceProperties.isAndroid || this.deviceProperties.isIOS) {
             // We need to set a empty annotation in order to maintain editor in Hand mode.
-            this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
+            // Adding dir rtl in case of it's activated.
+            if (this.editor.getEditorModel().isRTL()) {
+                this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
+            }else{
+                this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
+            }
         } else {
-            this.setMathML('<math/>', true);
+            if (this.editor.getEditorModel().isRTL()) {
+                this.setMathML('<math dir="rtl"/>', true);
+            }else{
+                this.setMathML('<math/>', true);
+            }
         }
     }
 
