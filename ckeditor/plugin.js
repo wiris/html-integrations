@@ -597,7 +597,7 @@ function checkElement(editor, element, callback) {
 function wrs_int_selectRange(range) {
     // Select end position to set the caret after the image.
     range.setStart(range.endContainer, range.endOffset);
-    range.collapse();
+    range.collapse(true);
     // Due to ckeditor has its own DOM Elements and also we use the document selection
     // is needed update ckeditor instance's selection and document's selection.
     _wrs_currentEditor.getSelection().selectRanges(range);
