@@ -221,7 +221,6 @@ var _wrs_int_window_opened = false;
     }
 
     function wrs_int_insertElementOnSelection() {
-      _wrs_currentEditor.selection.restore();
       if (_wrs_currentEditor.selection.get().anchorNode != null) {  // In case of not modify...
         _wrs_currentEditor.selection.element().focus();
         _wrs_range = _wrs_currentEditor.selection.get().getRangeAt(0);
@@ -271,8 +270,12 @@ var _wrs_int_window_opened = false;
         var selectedItem = new Object();
         selectedItem.node = _wrs_currentEditor.image.get()[0];
         return selectedItem;
-      } else {
-        return wrs_getSelectedItem(target, isIframe);
+      }
+      else {
+        // Latex case
+        // If the node is not a text node, it means that there isn't any item
+        var selection = _wrs_currentEditor.selection.get();
+        return selection.anchorNode.nodeType === 3 ? { node: selection.anchorNode, caretPosition: selection.anchorOffset } : null;
       }
     }
 
@@ -309,7 +312,6 @@ var _wrs_int_window_opened = false;
       callback: function () {
         // Setting explicit current Editor beacuse last froala doesn't set focus on click button
         _wrs_currentEditor = wrs_createEditorObject(this);
-        this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_disableCustomEditors();
         wrs_int_openNewFormulaEditor(this.$iframe != null ? this.$iframe[0] : this.$box[0], this.opts.language, this.$iframe != null ? true : false);
@@ -326,7 +328,6 @@ var _wrs_int_window_opened = false;
       callback: function () {
         // Setting explicit current Editor beacuse last froala doesn't set focus on click button
         _wrs_currentEditor = wrs_createEditorObject(this);
-        this.selection.save();
         wrs_int_hideFroalaPopups();
         wrs_int_enableCustomEditor('chemistry');
         wrs_int_openNewFormulaEditor(this.$iframe != null ? this.$iframe[0] : this.$box[0], this.opts.language, this.$iframe != null ? true : false);
