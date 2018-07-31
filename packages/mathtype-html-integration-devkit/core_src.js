@@ -978,11 +978,11 @@ function wrs_getLatexFromTextNode(textNode, caretPosition, latexTags) {
         while (position == -1) {
             currentNode = currentNode.nextSibling;
 
-            if (!currentNode || currentNode.nodeType != 3) { // TEXT_NODE.
+            if (!currentNode) { // TEXT_NODE.
                 return null; // Not found.
             }
 
-            position = currentNode.nodeValue.indexOf(latexTags.close);
+            position = currentNode.nodeValue ? currentNode.nodeValue.indexOf(latexTags.close) : -1;
         }
 
         return {
@@ -1046,7 +1046,7 @@ function wrs_getLatexFromTextNode(textNode, caretPosition, latexTags) {
                 latex += end.node.nodeValue.substring(0, end.position - tagLength);
             }
             else {
-                latex += currentNode.nodeValue;
+                latex += currentNode.nodeValue ? currentNode.nodeValue : '';
             }
         } while (currentNode != end.node);
     }
@@ -1723,18 +1723,18 @@ function wrs_insertElementOnSelection(element, focusElement, windowTarget) {
             _wrs_temporalImage.parentNode.removeChild(_wrs_temporalImage);
         }
         _wrs_temporalImage.parentNode.replaceChild(element, _wrs_temporalImage);
-        function placeCaretAfterNode(node) {
-            if (typeof window.getSelection != "undefined") {
-                var range = windowTarget.document.createRange();
-                range.setStartAfter(node);
-                range.collapse(true);
-                var selection = windowTarget.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-        placeCaretAfterNode(element);
     }
+    function placeCaretAfterNode(node) {
+        if (typeof window.getSelection != "undefined") {
+            var range = windowTarget.document.createRange();
+            range.setStartAfter(node);
+            range.collapse(true);
+            var selection = windowTarget.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
+    placeCaretAfterNode(element);
 }
 
 /**
