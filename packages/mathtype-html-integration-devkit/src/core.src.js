@@ -223,7 +223,7 @@ export default class Core {
      * @ignore
      */
     getServerPath() {
-        var url = _wrs_corePath;
+        var url = this.getCorePath();
         var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
         return url.substr(0, hostNameIndex);
     }
