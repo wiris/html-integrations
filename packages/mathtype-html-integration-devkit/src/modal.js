@@ -1,15 +1,25 @@
-/**
- * Modal window constructor
- * @param {Object} editorAttributes Editor attributes (width, height)...
- * @ignore
- */
-class ModalWindow {
+import StringManager from './stringmanager.js';
+import contentManager from './contentmanager.js';
+import PopUpMessage from './popupmessage.js';
+import Core from './core.src.js';
+import Util from './util.js';
+import Configuration from './configuration.js';
 
-    constructor(editorAttributes) {
-        // EditorAtributes
-        // TODO: Remove the argument: we need to find a way to detect mobile devices
-        // without known anything about editor.
-        this.editorAttributes = editorAttributes
+
+
+/**
+ * This class represents a modal dialog. The modal dialog admits a ContentManager instance in order
+ * to manage the content of the dialog.
+ */
+export default class ModalDialog {
+
+    /**
+     * Modal dialog constructor
+     * @param {Object} modalDialogAttributes  - An object containing the modal dialog attributes.
+     * @ignore
+     */
+    constructor(modalDialogAttributes) {
+        this.attributes = modalDialogAttributes
 
         // Metrics
         var ua = navigator.userAgent.toLowerCase();
@@ -25,11 +35,8 @@ class ModalWindow {
         var landscape = deviceWidth > deviceHeight;
         var portrait = deviceWidth < deviceHeight;
 
-        var editorWidth = editorAttributes.split(' ').join('').split(',')[0].split("=")[1];
-        var editorHeight = editorAttributes.split(' ').join('').split(',')[1].split("=")[1];
-
         // TODO: Detect isMobile without using editor metrics.
-        var isMobile = (landscape && editorHeight > deviceHeight) || (portrait && editorWidth > deviceWidth) ? true : false;
+        var isMobile = (landscape && this.attributes.height > deviceHeight) || (portrait && this.attributes.width > deviceWidth) ? true : false;
 
         // Device object properties.
 
@@ -52,77 +59,77 @@ class ModalWindow {
         var attributes = {};
         attributes.class = 'wrs_modal_overlay';
         attributes.id = attributes.class + '_id';
-        this.overlay = wrs_createElement('div', attributes);
+        this.overlay = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_title_bar';
         attributes.id = attributes.class + '_id';
-        this.titleBar = wrs_createElement('div', attributes);
+        this.titleBar = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_title';
         attributes.id = attributes.class + '_id';
-        this.title = wrs_createElement('div', attributes);
+        this.title = Util.createElement('div', attributes);
         this.title.innerHTML = '';
 
         attributes = {};
         attributes.class = 'wrs_modal_close_button';
         attributes.id = attributes.class + '_id';
-        attributes.title = _wrs_stringManager.getString('close');
-        this.closeDiv = wrs_createElement('a', attributes);;
+        attributes.title = Core.getStringManager().getString('close');
+        this.closeDiv = Util.createElement('a', attributes);;
         this.closeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_stack_button';
         attributes.id = attributes.class + '_id';
         attributes.title = "Exit full-screen";
-        this.stackDiv = wrs_createElement('a', attributes);
+        this.stackDiv = Util.createElement('a', attributes);
         this.stackDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_maximize_button';
         attributes.id = attributes.class + '_id';
-        attributes.title = _wrs_stringManager.getString('fullscreen');
-        this.maximizeDiv = wrs_createElement('a', attributes);
+        attributes.title = Core.getStringManager().getString('fullscreen');
+        this.maximizeDiv = Util.createElement('a', attributes);
         this.maximizeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_minimize_button';
         attributes.id = attributes.class + '_id';
-        attributes.title = _wrs_stringManager.getString('minimise');
-        this.minimizeDiv = wrs_createElement('a', attributes);
+        attributes.title = Core.getStringManager().getString('minimise');
+        this.minimizeDiv = Util.createElement('a', attributes);
         this.minimizeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_dialogContainer';
         attributes.id = attributes.class + '_id';
-        this.container = wrs_createElement('div', attributes);
+        this.container = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_wrapper';
         attributes.id = attributes.class + '_id';
-        this.wrapper = wrs_createElement('div', attributes);
+        this.wrapper = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_content_container';
         attributes.id = attributes.class + '_id';
-        this.contentContainer = wrs_createElement('div', attributes);
+        this.contentContainer = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_controls';
         attributes.id = attributes.class + '_id';
-        this.controls = wrs_createElement('div', attributes);
+        this.controls = Util.createElement('div', attributes);
 
         attributes = {};
         attributes.class = 'wrs_modal_buttons_container';
         attributes.id = attributes.class + '_id';
-        this.buttonContainer = wrs_createElement('div', attributes);
+        this.buttonContainer = Util.createElement('div', attributes);
 
         // Buttons: all button must be created using createSubmitButton method.
         this.submitButton = this.createSubmitButton(
             {
                 class: 'wrs_modal_button_accept',
-                innerHTML: _wrs_stringManager.getString('accept')
+                innerHTML: Core.getStringManager().getString('accept')
             },
             this.submitAction.bind(this)
         );
@@ -130,20 +137,18 @@ class ModalWindow {
         this.cancelButton = this.createSubmitButton(
             {
                 class: 'wrs_modal_button_cancel',
-                innerHTML: _wrs_stringManager.getString('cancel')
+                innerHTML: Core.getStringManager().getString('cancel')
             },
             this.cancelAction.bind(this)
         );
-
-        this.lastImageWasNew = true;
 
         this.contentManager = null;
 
         // Overlay popup.
         var popupStrings = {
-            'cancelString' : _wrs_stringManager.getString('cancel'),
-            'submitString' : _wrs_stringManager.getString('close'),
-            'message' : _wrs_stringManager.getString('close_modal_warning')
+            'cancelString' : Core.getStringManager().getString('cancel'),
+            'submitString' : Core.getStringManager().getString('close'),
+            'message' : Core.getStringManager().getString('close_modal_warning')
         };
 
         var callbacks = {
@@ -224,7 +229,7 @@ class ModalWindow {
             this.element.id = properties.class + '_id';
             this.element.className = properties.class;
             this.element.innerHTML = properties.innerHTML;
-            wrs_addEvent(this.element, 'click', callback);
+            Util.addEvent(this.element, 'click', callback);
         }
 
         SubmitButton.prototype.getElement = function() {
@@ -295,7 +300,7 @@ class ModalWindow {
 
             this.addListeners();
             // Maximize window only when the configuration is set and the device is not iOS or Android.
-            if (_wrs_conf_modalWindowFullScreen) {
+            if (Configuration.get('modalWindowFullScreen')) {
                 this.maximize();
             }
         }
@@ -314,7 +319,7 @@ class ModalWindow {
         this.properties.created = true;
 
         // If actual language is arabic modal starts at left of window browser
-        if (this.isRTL(_wrs_int_langCode)) {
+        if (this.isRTL(this.attributes.language)) {
             this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
         }
     }
@@ -335,8 +340,8 @@ class ModalWindow {
         this.container.appendChild(this.resizerBR);
         this.titleBar.appendChild(this.resizerTL);
         // Add events to resize on click and drag
-        wrs_addEvent(this.resizerBR, 'mousedown', this.activateResizeStateBR.bind(this));
-        wrs_addEvent(this.resizerTL, 'mousedown', this.activateResizeStateTL.bind(this));
+        Util.addEvent(this.resizerBR, 'mousedown', this.activateResizeStateBR.bind(this));
+        Util.addEvent(this.resizerTL, 'mousedown', this.activateResizeStateTL.bind(this));
     }
     /**
      * Method to initialize variables for Bottom-Right resize button
@@ -363,8 +368,8 @@ class ModalWindow {
      */
     initializeResizeProperties(ev, leftOption) {
         // Apply class for disable involuntary select text when drag.
-        wrs_addClass(document.body, 'wrs_noselect');
-        wrs_addClass(this.overlay, 'wrs_overlay_active');
+        Util.addClass(document.body, 'wrs_noselect');
+        Util.addClass(this.overlay, 'wrs_overlay_active');
         this.resizeDataObject = {
             x: this.eventClient(ev).X,
             y: this.eventClient(ev).Y
@@ -424,7 +429,7 @@ class ModalWindow {
             }
 
             // Maximize window only when the configuration is set and the device is not iOs or Android.
-            if (this.deviceProperties['isDesktop'] && _wrs_conf_modalWindowFullScreen) {
+            if (this.deviceProperties['isDesktop'] && Configuration.get('modalWindowFullScreen')) {
                 this.maximize();
             }
 
@@ -561,43 +566,44 @@ class ModalWindow {
      * @ignore
      */
      isRTL(language) {
-        if (_wrs_int_langCode == 'ar' || _wrs_int_langCode == 'he') {
+        if (language == 'ar' || language == 'he') {
             return true;
         }
         return false;
      }
+
     /**
      * Adds a class to all modal DOM elements.
      * @param {string} cls
      * @ignore
      */
     addClass(cls) {
-        wrs_addClass(this.overlay, cls);
-        wrs_addClass(this.titleBar, cls);
-        wrs_addClass(this.overlay, cls);
-        wrs_addClass(this.container, cls);
-        wrs_addClass(this.contentContainer, cls);
-        wrs_addClass(this.stackDiv, cls);
-        wrs_addClass(this.minimizeDiv, cls);
-        wrs_addClass(this.maximizeDiv, cls);
-        wrs_addClass(this.wrapper, cls);
+        Util.addClass(this.overlay, cls);
+        Util.addClass(this.titleBar, cls);
+        Util.addClass(this.overlay, cls);
+        Util.addClass(this.container, cls);
+        Util.addClass(this.contentContainer, cls);
+        Util.addClass(this.stackDiv, cls);
+        Util.addClass(this.minimizeDiv, cls);
+        Util.addClass(this.maximizeDiv, cls);
+        Util.addClass(this.wrapper, cls);
     }
 
     /**
-     * Remove a calss from all modal DOM elements.
+     * Remove a clas  from all modal DOM elements.
      * @param {string} cls
      * @ignore
      */
     removeClass(cls) {
-        wrs_removeClass(this.overlay, cls);
-        wrs_removeClass(this.titleBar, cls);
-        wrs_removeClass(this.overlay, cls);
-        wrs_removeClass(this.container, cls);
-        wrs_removeClass(this.contentContainer, cls);
-        wrs_removeClass(this.stackDiv, cls);
-        wrs_removeClass(this.minimizeDiv, cls);
-        wrs_removeClass(this.maximizeDiv, cls);
-        wrs_removeClass(this.wrapper, cls);
+        Util.removeClass(this.overlay, cls);
+        Util.removeClass(this.titleBar, cls);
+        Util.removeClass(this.overlay, cls);
+        Util.removeClass(this.container, cls);
+        Util.removeClass(this.contentContainer, cls);
+        Util.removeClass(this.stackDiv, cls);
+        Util.removeClass(this.minimizeDiv, cls);
+        Util.removeClass(this.maximizeDiv, cls);
+        Util.removeClass(this.wrapper, cls);
     }
 
     /**
@@ -697,7 +703,7 @@ class ModalWindow {
             this.setResizeButtonsVisibility();
             this.minimizeDiv.title = "Maximise";
 
-            if (wrs_containsClass(this.overlay, 'wrs_stack')) {
+            if (Util.containsClass(this.overlay, 'wrs_stack')) {
                 this.removeClass('wrs_stack');
             }
             else {
@@ -721,11 +727,11 @@ class ModalWindow {
         // Don't permit resize on maximize mode.
         this.setResizeButtonsVisibility();
 
-        if (wrs_containsClass(this.overlay, 'wrs_minimized')) {
+        if (Util.containsClass(this.overlay, 'wrs_minimized')) {
             this.minimizeDiv.title = "Minimise";
             this.removeClass('wrs_minimized');
         }
-        else if (wrs_containsClass(this.overlay, 'wrs_stack')) {
+        else if (Util.containsClass(this.overlay, 'wrs_stack')) {
             this.container.style.left = null;
             this.container.style.top = null;
             this.removeClass('wrs_stack');
@@ -841,12 +847,12 @@ class ModalWindow {
         this.closeDiv.addEventListener('click', this.cancelAction.bind(this));
 
         // Mouse events.
-        wrs_addEvent(window, 'mousedown', this.startDrag.bind(this));
-        wrs_addEvent(window, 'mouseup', this.stopDrag.bind(this));
-        wrs_addEvent(window, 'mousemove', this.drag.bind(this));
-        wrs_addEvent(window, 'resize', this.onWindowResize.bind(this));
+        Util.addEvent(window, 'mousedown', this.startDrag.bind(this));
+        Util.addEvent(window, 'mouseup', this.stopDrag.bind(this));
+        Util.addEvent(window, 'mousemove', this.drag.bind(this));
+        Util.addEvent(window, 'resize', this.onWindowResize.bind(this));
         // Key events.
-        wrs_addEvent(window, 'keydown', this.onKeyDown.bind(this));
+        Util.addEvent(window, 'keydown', this.onKeyDown.bind(this));
     }
 
     /**
@@ -855,12 +861,12 @@ class ModalWindow {
      */
     removeListeners() {
         // Mouse events.
-        wrs_removeEvent(window, 'mousedown', this.startDrag);
-        wrs_removeEvent(window, 'mouseup', this.stopDrag);
-        wrs_removeEvent(window, 'mousemove', this.drag);
-        wrs_removeEvent(window, 'resize', this.onWindowResize);
+        Util.removeEvent(window, 'mousedown', this.startDrag);
+        Util.removeEvent(window, 'mouseup', this.stopDrag);
+        Util.removeEvent(window, 'mousemove', this.drag);
+        Util.removeEvent(window, 'resize', this.onWindowResize);
         // Key events
-        wrs_removeEvent(window, 'keydown', this.onKeyDown);
+        Util.removeEvent(window, 'keydown', this.onKeyDown);
     }
 
 
@@ -924,8 +930,8 @@ class ModalWindow {
                     // this.iframe.style['position'] = 'relative';
                 }
                 // Apply class for disable involuntary select text when drag.
-                wrs_addClass(document.body, 'wrs_noselect');
-                wrs_addClass(this.overlay, 'wrs_overlay_active');
+                Util.addClass(document.body, 'wrs_noselect');
+                Util.addClass(this.overlay, 'wrs_overlay_active');
                 // Obtain screen limits for prevent overflow.
                 this.limitWindow = this.getLimitWindow();
             }
@@ -958,6 +964,7 @@ class ModalWindow {
             };
             // This move modal with hadware acceleration.
             this.container.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
+            this.container.style.position = 'absolute';
         }
         if (this.resizeDataObject) {
             var limitX = Math.min(this.eventClient(ev).X,window.innerWidth - this.scrollbarWidth - 7);
@@ -1085,8 +1092,8 @@ class ModalWindow {
                 // this.iframe.style['position'] = null;
             }
             // Active text select event
-            wrs_removeClass(document.body, 'wrs_noselect');
-            wrs_removeClass(this.overlay, 'wrs_overlay_active');
+            Util.removeClass(document.body, 'wrs_noselect');
+            Util.removeClass(this.overlay, 'wrs_overlay_active');
         }
         this.dragDataObject = null;
         this.resizeDataObject = null;

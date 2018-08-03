@@ -1,9 +1,8 @@
-// TODO: Methods to static?
 /**
  * StringManager class to use strings in code correctly with control.
- * @ignore
+ *
  */
-class StringManager {
+export default class StringManager {
     constructor() {
         // Strings are empty when it creates, it set when calls load method.
         this.strings = null;

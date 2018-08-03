@@ -3,7 +3,7 @@
  * and contains the logic to determine if editor has been changed or not.
  * @ignore
  */
-class EditorListener {
+export default class EditorListener {
     constructor() {
         this.isContentChanged = false;
         this.waitingForChanges = false;

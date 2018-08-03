@@ -1,14 +1,21 @@
 {
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
+  "name": "es6-tutorial-data",
+  "version": "1.0.0",
+  "description": "Starting point for the ECMAScript 6 Data Tutorial",
+  "main": "core.src.js",
   "scripts": {
-    "build": "babel tmp/core.js --out-file output/core.js"
+    "webpack": "webpack"
   },
+  "author": "Christophe Coenraets <ccoenraets@gmail.com> (http://coenraets.org/)",
+  "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^6.4.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-ie": "^6.7.0",
+    "css-loader": "^1.0.0",
+    "http-server": "^0.9.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^1.15.0"
   }
 }

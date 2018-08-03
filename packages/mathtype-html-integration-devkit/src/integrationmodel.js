@@ -1,0 +1,230 @@
+import Core from './core.src.js';
+import Util from './util.js';
+import Image from './image.js';
+
+
+/**
+ * This class represents an integration model. This class allows the integration script to
+ * communicate with Core class. Each integration must extend this class.
+ */
+IntegrationModel = function(target) {
+    /**
+     * Language. Needed for accessibility and locales.
+     * @type {string} language - 'en' by default.
+    */
+    this.language = 'en';
+    /**
+     * Configuration service. Core needs this service as entry point to load all
+     * service paths.
+     * @type {string} configurationService - configuration service path.
+     */
+    this.configurationService = '';
+    /**
+     * Plugin version.
+     * @type {string} version - plugin version.
+     */
+    this.version = '';
+    /**
+     * Core instance. The Core class instance associated to the integration model.
+     * @type {Core} core - core instance.
+     */
+    this.core = null;
+    /**
+     * DOM target in which the plugin should work to associate
+     * events, insert formulas etc.
+     * @type {Object} target - plugin DOM target.
+     */
+    this.target = target;
+    /**
+     * Indicates if the DOM target is - or not - and iframe.
+     * @type {boolean} isIframe
+     */
+    this.isIframe = (this.target.tagName.toUpperCase() == 'IFRAME');
+    /**
+     * Indicates if an image is selected. Needed to resize the image to the original size in case
+     * the image is resized.
+     * @type {object} temporalImageResizing - selected image.
+     */
+    this.temporalImageResizing = null;
+    /**
+     * Integration script name. Needed to know the plugin path.
+     * @type {string} script - integration script name.
+     */
+    this.script = '';
+    /**
+     * This listener is atteched to Core class in order to launch it's callback function once
+     * the 'onLoad' Core event is fired. Should be added from the integration side
+     * (i.e in the IntegrationModel integration instance) and usually contains a callback function which parse
+     * the document, assign command to buttons, etc. To call this methods is mandatory have the Core loaded.
+     * @type {Listener} listener -
+     */
+    this.listener = null;
+    /**
+     * Contains information about the integration environment: like the name of the editor, the version, etc.
+     * @type {object}
+     * @property {string} editor - Name of the HTML editor.
+     */
+    this.environment = {};
+}
+
+/**
+ * Init function. Usually this method is called from the integration side once the core.js file is loaded.
+ * Is strongly recommended to listen onLoad script event (when core.js is being loaded) to call this method.
+ * @param {object} target - DOM target
+ * @param {string} lang - integration language.
+ */
+IntegrationModel.prototype.init = function(target, lang) {
+    Core.addListener(this.listener);
+    this.setCore(new Core());
+    this.core.language = lang;
+    this.target = target;
+    this.core.init(this.configurationService);
+    this.core.setEnvironment(this.environment)
+
+}
+
+/**
+ * Get absolute path of the integration script.
+ * @return {string} - Absolute path for the integration script.
+ */
+IntegrationModel.prototype.getPath = function() {
+    var col = document.getElementsByTagName("script");
+    var path = '';
+    for (i = 0; i < col.length; i++) {
+        j = col[i].src.lastIndexOf(this.script);
+        if (j >= 0) {
+            path = col[i].src.substr(0, j - 1);
+        }
+    }
+    return path;
+}
+
+/**
+ * Sets language property.
+ * @param {string} language
+ */
+IntegrationModel.prototype.setLang = function(language) {
+     this.language = language;
+ }
+
+ /**
+  * Sets Core instance.
+  * @param {Core} core - instance of Core class.
+  */
+IntegrationModel.prototype.setCore = function(core) {
+     this.core = core;
+     core.setIntegrationModel(this);
+}
+
+/**
+ * Gets Core instance.
+ * @returns {Core} core - instance of Core class.
+ */
+IntegrationModel.prototype.getCore = function() {
+     return this.core;
+}
+
+/**
+ * Sets the object target.
+ * @param {object} target  - target object.
+ */
+IntegrationModel.prototype.setTarget = function(target) {
+     this.target = target;
+}
+
+/**
+ * Opens formula editor to editing a new formula. Can be overwritten in order to make some
+ * actions from integration part before the formula is edited.
+ */
+IntegrationModel.prototype.openNewFormulaEditor = function() {
+    this.core.editionProperties.isNewElement = true;
+    this.core.openModalDialog(this.language, this.target);
+}
+
+/**
+ * Opens formula editor to editing an existing formula. Can be overwritten in order to make some
+ * actions from integration part before the formula is edited.
+ */
+IntegrationModel.prototype.openExistingFormulaEditor = function() {
+    this.core.editionProperties.isNewElement = false;
+    this.core.openModalDialog(this.language, this.target, true);
+}
+
+/**
+ * Inserts a new formula or updates an existing one inserting it in the DOM target. Can be overwritten in order
+ * from the integration side.
+ * @param {string} mathml - Formula MathML.
+ * @param {string} editMode - Edit Mode (LaTeX or images).
+ */
+IntegrationModel.prototype.updateFormula = function(mathml, editMode) {
+    if (this.isIframe) {
+        this.core.updateFormula(this.target.contentWindow, this.target.contentWindow, mathml, null, editMode);
+    } else {
+        this.core.updateFormula(this.target, window, mathml, null, editMode);
+    }
+}
+
+
+/**
+ * Add events to formulas in the DOM target.
+ */
+IntegrationModel.prototype.addEvents = function() {
+    if (this.isIframe) {
+        this.core.addIframeEvents(this.target,
+                                  this.doubleClickHandler.bind(this),
+                                  this.mousedownHandler.bind(this),
+                                  this.mouseupHandler.bind(this));
+    }
+
+    // TODO: Add elementevents (non iframe):
+
+}
+
+/**
+ * Handles a double click on the target element..
+ * @param object iframe Target
+ * @param object element Element double clicked
+ */
+IntegrationModel.prototype.doubleClickHandler = function(element) {
+    if (element.nodeName.toLowerCase() == 'img') {
+        this.core.getCustomEditors().disable();
+        if (element.hasAttribute('data-custom-editor')) {
+            var customEditor = element.getAttribute('data-custom-editor');
+            this.core.getCustomEditors().enable(customEditor);
+        }
+        if (Util.containsClass(element, 'Wirisformula')) {
+                this.core.editionProperties.temporalImage = element;
+                this.openExistingFormulaEditor(this.target);
+        }
+    }
+}
+
+/**
+ * Handles a mouse down event on the iframe.
+ * @param object iframe Target
+ * @param object element Element mouse downed
+ */
+IntegrationModel.prototype.mousedownHandler = function(element) {
+    if (element.nodeName.toLowerCase() == 'img') {
+        if (Util.containsClass(element, 'Wirisformula')) {
+            this.temporalImageResizing = element;
+        }
+    }
+}
+
+/**
+ * Handles a mouse up event on the iframe.
+ */
+IntegrationModel.prototype.mouseupHandler = function() {
+    if (this.temporalImageResizing) {
+        setTimeout(function () {
+            Image.fixAfterResize(this.temporalImageResizing);
+        }.bind(this), 10);
+    }
+}
+
+IntegrationModel.prototype.notifyWindowClosed = function() {
+}
+
+var IntegrationModel = IntegrationModel;
+export default IntegrationModel;

@@ -1,6 +1,6 @@
 /**
  * This class shows a dialog message overlaying a dom element in order to
- * accept / cancel discart changes. The dialog can be closed i.e the overlay dissapears
+ * accept / cancel discard changes. The dialog can be closed i.e the overlay disapepars
  * o canceled. In this last case a callback function should be called.
  *
  * The constructor accepts the following attributes object:
@@ -17,7 +17,7 @@
  * }
  * @param {object} popupProperties
  */
-class PopUpMessage {
+export default class PopUpMessage {
 
     constructor(popupProperties) {
         this.overlay = popupProperties.overlayElement;

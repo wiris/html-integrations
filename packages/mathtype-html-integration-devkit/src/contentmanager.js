@@ -1,3 +1,9 @@
+import Configuration from './configuration.js';
+import EditorListener from './editorlistener.js';
+import Listeners from './listeners.js';
+import MathML from './mathml.js';
+import Util from './util.js';
+
 /**
  * This class implements ModalContent interface. Manage the following:
  * - insertion in modal object (insert(modalObject) method)
@@ -5,25 +11,120 @@
  * - updates itself when modalObject is updated with a re-open action for example (update(modalObject) method)
  * - comunicates to modalObject if some changes have be done (hasChanges() method)
  *
- * @param {object} editorAttributes editor attributes. See http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters
- * for further information.
  * @ignore
  */
-class contentManager {
-    // Editor listener.
-    constructor(editorAttributes) {
+export default class ContentManager {
+    /**
+     * Class constructor
+     * @param {object} contentManagerAttributes
+     */
+    constructor(contentManagerAttributes) {
+        /**
+         * Editor listener. Needed to get control about editor changes.
+         * @type {EditorListener}
+         */
         this.editorListener = new EditorListener();
+        /**
+         * MathType editor instance.
+         * @type {JsEditor}
+         */
         this.editor = null;
-        this.editorAttributes = editorAttributes;
-        this.lastImageWasNew = false;
-        // Device properties
-        var ua = navigator.userAgent.toLowerCase();
+        /**
+         * An object containing MathType editor parameters. See
+         * http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters for further information.
+         * @type {object}
+         */
+        this.editorAttributes = contentManagerAttributes.editorAttributes;
+
+        /**
+         * User agent.
+         * @type {string}
+         */
+        this.ua = navigator.userAgent.toLowerCase();
+        /**
+         * Mobile device properties object
+         * @type {Object}
+         * @property {boolean} isAndroid - True if the device is android. False otherwise.
+         * @property {boolean} isIOS - True if the device is iOs. False otherwise.
+         */
         this.deviceProperties = {};
-        this.deviceProperties.isAndroid = ua.indexOf("android") > -1;
-        this.deviceProperties.isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
-        // Toolbar
+        this.deviceProperties.isAndroid = this.ua.indexOf("android") > -1;
+        this.deviceProperties.isIOS = ((this.ua.indexOf("ipad") > -1) || (this.ua.indexOf("iphone") > -1));
+        /**
+         * Custom editor toolbar.
+         * @type {string} toolbar
+         */
         this.toolbar = null;
-        this.loadEditor();
+        /**
+         * Custom editors class instance.
+         * @type {CustomEditors}
+         */
+        this.customEditors = contentManagerAttributes.customEditors;
+        /**
+		* Environment properties. This object contains data about the integration platform.
+		* @type {Object}
+		* @property {string} editor - Editor name. Usually the HTML editor.
+		* @property {string} mode - Save mode. Xml by default
+		* @property {string} version - Plugin version.
+	    */
+        this.environment = contentManagerAttributes.environment;
+        /**
+         * Integration language.
+         * @type {string}
+         */
+        this.language = contentManagerAttributes.language;
+        /**
+         * Instance of the ModalDialog class associated to the ContentManager instance.
+         * @type {ModalDialog}
+         */
+        this.modalDialogInstance = null;
+
+        /**
+         * ContentManager listeners. Fired on 'onLoad' event.
+         * @type {Listeners}
+         */
+        this.listeners = new Listeners();
+        /**
+         * ContentManager MathML. null for new formulas.
+         * @type {string}
+         */
+        this.mathML = null;
+        /**
+         * Indicates if the edited element is a new element or not.
+         * @type {boolean}
+         */
+        this.isNewElement = true;
+        /**
+         * IntegrationModel instance. The integration model instance is needed
+         * to call wrapper methods.
+         * @type {IntegrationModel}
+         */
+        this.integrationModel = null;
+    }
+
+    /**
+     * Add a new listener to ContentManager class.
+     * @param {object} listener
+     */
+    addListener(listener) {
+        this.listeners.add(listener);
+
+    }
+
+    /**
+     * Set an instance of an IntegrationModel
+     * @param {IntegrationModel} integrationModel
+     */
+    setIntegrationModel(integrationModel) {
+        this.integrationModel = integrationModel;
+    }
+
+    /**
+     * Sets a modal dialog instance.
+     * @property {ModalDialog} modal dialog - a ModalDialog instance
+     */
+    setModalDialogInstance(modalDialogInstance) {
+        this.modalDialogInstance = modalDialogInstance;
     }
 
     /**
@@ -39,7 +140,7 @@ class contentManager {
 
     /**
      * Method to insert MathType into modal object. This method
-     * watis until editor JavaScript is loaded to insert the editor into
+     * waits until editor JavaScript is loaded to insert the editor into
      * contentContainer modal object element.
      * @ignore
      */
@@ -59,25 +160,24 @@ class contentManager {
 
             // iOS events.
             if (modalObject.deviceProperties['isIOS']) {
-                setTimeout(function() { _wrs_modalWindow.hideKeyboard() }, 400);
+                setTimeout(function() { this.modalDialogInstance.hideKeyboard() }, 400);
                 var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
-                wrs_addEvent(formulaDisplayDiv, 'focus', modalObject.openedIosSoftkeyboard.bind(modalObject));
-                wrs_addEvent(formulaDisplayDiv, 'blur', modalObject.closedIosSoftkeyboard.bind(modalObject));
+                Util.addEvent(formulaDisplayDiv, 'focus', modalObject.openedIosSoftkeyboard.bind(modalObject));
+                Util.addEvent(formulaDisplayDiv, 'blur', modalObject.closedIosSoftkeyboard.bind(modalObject));
             }
 
             this.onOpen(modalObject);
         } else {
-            setTimeout(contentManager.prototype.insertEditor.bind(this, modalObject), 100);
+            setTimeout(ContentManager.prototype.insertEditor.bind(this, modalObject), 100);
         }
     }
 
     /**
-     * Loads MathType ediitor JavaScript.
+     * Loads MathType script.
      * @ignore
      */
-    loadEditor() {
+    init() {
         var queryParams = window.location.search.substring(1).split("&");
-        var version = "";
         for (var i = 0; i < queryParams.length; i++) {
             var pos = queryParams[i].indexOf("v=");
             if (pos >= 0) {
@@ -87,7 +187,7 @@ class contentManager {
 
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        var editorUrl = _wrs_conf_editorUrl;
+        var editorUrl = Configuration.get('editorUrl');
         // Change to https if necessary.
         // We create an object url for parse url string and work more efficiently.
         var urlObject = document.createElement('a');
@@ -107,22 +207,45 @@ class contentManager {
             editorUrl = urlObject.protocol + '//' + urlObject.hostname + ':' + urlObject.port + '/' + urlObject.pathname;
         }
 
-        // Editor stats.
-        var statEditor = _wrs_conf_editor;
-        var statSaveMode = _wrs_conf_saveMode;
-        var statVersion = _wrs_conf_version;
+        // Editor stats. Use environment property to set it.
+        var stats = {};
+        if ('editor' in this.environment) {
+            stats.editor = this.environment.editor;
+        } else {
+            stats.editor = 'unknown';
+        }
 
-        script.src = editorUrl + "?lang=" + _wrs_int_langCode + '&stats-editor=' + statEditor + '&stats-mode=' + statSaveMode + '&stats-version=' + statVersion;
+        if ('mode' in this.environment) {
+            stats.mode = this.environment.mode;
+        } else {
+            stats.mode = Configuration.get('saveMode');
+        }
+
+        if ('version' in this.environment) {
+            stats.version = this.environment.version;
+        } else {
+            stats.version = Configuration.get('version');
+        }
+
+        // Load editor URL. We add stats as GET params.
+        script.src = editorUrl +
+                    "?lang=" + this.language +
+                     '&stats-editor=' + stats.editor +
+                     '&stats-mode=' + stats.mode +
+                     '&stats-version=' + stats.version;
+
         document.getElementsByTagName('head')[0].appendChild(script);
+        script.onload = function() {
+           this.listeners.fire('onLoad', {});
+        }.bind(this);
     }
 
     /**
     * Set the editor initial content: an existing formula or a blank MathML
     */
     setInitialContent() {
-        if (!_wrs_isNewElement) {
-            var mathml = wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute));
-            this.setMathML(mathml);
+        if (!this.isNewElement) {
+            this.setMathML(this.mathML);
         }
     }
 
@@ -157,7 +280,6 @@ class contentManager {
      * @ignore
      */
     onFocus() {
-        // TODO: Check editor avaliable.
         if (typeof this.editor !== 'undefined' && this.editor != null) {
             this.editor.focus();
         }
@@ -173,19 +295,18 @@ class contentManager {
     submitAction() {
         var mathML = this.editor.getMathML();
         // Add class for custom editors.
-        if (wrs_int_getCustomEditorEnabled() != null) {
-            mathML = wrs_mathmlAddEditorAttribute(mathML);
+        if (this.customEditors.getActiveEditor() != null) {
+            mathML = MathML.addEditorAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
         }
-        var mathmlEntitiesEncoded = wrs_mathmlEntities(mathML);
-        wrs_int_updateFormula(mathmlEntitiesEncoded, null, _wrs_int_langCode);
-        wrs_int_disableCustomEditors();
-        wrs_int_notifyWindowClosed();
-        _wrs_editMode = (window._wrs_conf_defaultEditMode) ? _wrs_conf_defaultEditMode : 'images';
+        var mathmlEntitiesEncoded = MathML.mathMLEntities(mathML);
+        this.integrationModel.updateFormula(mathmlEntitiesEncoded, null);
+        this.customEditors.disable();
+        this.integrationModel.notifyWindowClosed();
 
         // Set disabled focus to prevent lost focus.
         this.setEmptyMathML();
-        wrs_int_disableCustomEditors();
-        // Reconvering editing area focus.
+        this.customEditors.disable();
+        // Recovering editing area focus.
         setTimeout(
             function() {
                 if (typeof _wrs_currentEditor !== 'undefined' && _wrs_currentEditor) {
@@ -225,13 +346,11 @@ class contentManager {
      * @ignore
      */
     onOpen(modalObject) {
-        if (_wrs_isNewElement) {
+        if (this.isNewElement) {
             this.setEmptyMathML();
-            this.lastImageWasNew = true;
         }
         else {
-            this.setMathML(wrs_mathmlDecode(_wrs_temporalImage.getAttribute(_wrs_conf_imageMathmlAttribute)));
-            this.lastImageWasNew = false;
+            this.setMathML(this.mathML);
         }
         this.updateToolbar(modalObject);
         this.onFocus();
@@ -244,7 +363,7 @@ class contentManager {
     updateToolbar(modalObject) {
         this.updateTitle(modalObject);
         var customEditor;
-        if (customEditor = wrs_int_getCustomEditorEnabled()) {
+        if (customEditor = this.customEditors.getActiveEditor()) {
             var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
             if (this.toolbar == null || this.toolbar != toolbar) {
                 this.setToolbar(toolbar);
@@ -253,7 +372,7 @@ class contentManager {
             var toolbar = this.getToolbar();
             if (this.toolbar == null || this.toolbar != toolbar) {
                 this.setToolbar(toolbar);
-                wrs_int_disableCustomEditors();
+                this.customEditors.disable();
             }
         }
     }
@@ -265,7 +384,7 @@ class contentManager {
      */
     updateTitle(modalObject) {
         var customEditor;
-        if (customEditor = wrs_int_getCustomEditorEnabled()) {
+        if (customEditor = this.customEditors.getActiveEditor()) {
             modalObject.setTitle(customEditor.title);
         } else {
             modalObject.setTitle('MathType');
@@ -276,10 +395,17 @@ class contentManager {
      * @ignore
      */
     getToolbar() {
-        var toolbar = (typeof _wrs_conf_editorParameters == 'undefined' || typeof _wrs_conf_editorParameters['toolbar'] == 'undefined') ? 'general' : _wrs_conf_editorParameters['toolbar'];
+        var toolbar;
+        if ('toolbar' in this.editorAttributes) {
+            toolbar = this.editorAttributes.toolbar;
+        } else {
+            toolbar = "general";
+        }
+        // TODO: Change global integration variable for integration custom toolbar
         if(toolbar == 'general'){
             toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
         }
+
         return toolbar;
     }
 
