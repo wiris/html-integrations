@@ -3,7 +3,6 @@ import Image from './image.js';
 import Listeners from './listeners.js';
 import Util from './util.js';
 
-
 /**
  * This class represents an integration model. This class allows the integration script to
  * communicate with Core class. Each integration must extend this class.
@@ -282,7 +281,8 @@ IntegrationModel.prototype.mouseupHandler = function() {
     }
 }
 
-IntegrationModel.prototype.callBackFunction = function() {
+IntegrationModel.prototype.callbackFunction = function() {
+    this.addEvents(this.target);
 }
 
 IntegrationModel.prototype.notifyWindowClosed = function() {
