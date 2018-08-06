@@ -52,11 +52,11 @@ IntegrationModel = function(integrationModelProperties) {
     }
     /**
      * Object containing the arguments needed by the callback function.
-     * @type {object} callBackMethodArguments
+     * @type {object} callbackMethodArguments
      */
-    this.callBackMethodArguments = {};
-    if ('callBackMethodArguments' in integrationModelProperties) {
-        this.callBackMethodArguments = integrationModelProperties.callBackMethodArguments;
+    this.callbackMethodArguments = {};
+    if ('callbackMethodArguments' in integrationModelProperties) {
+        this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments;
     }
     /**
      * Indicates if the DOM target is - or not - and iframe.
@@ -100,7 +100,7 @@ IntegrationModel.prototype.init = function() {
     // We need to wait until Core class is loaded ('onLoad' event) before
     // call the callback method.
     this.listener = Listeners.newListener('onLoad', function() {
-        this.callbackFunction(this.callBackMethodArguments);
+        this.callbackFunction(this.callbackMethodArguments);
     }.bind(this));
 
     Core.addListener(this.listener);
