@@ -91,8 +91,7 @@
          * the integration.
          */
         GenericIntegration.prototype.callbackFunction = function() {
-            /* Assigning events to the WYSIWYG editor */
-            this.addEvents(this.callbackMethodArguments.target);
+            WirisPlugin.IntegrationModel.prototype.callbackFunction.call(this);
             /* Parsing input text */
             target.contentWindow.document.body.innerHTML = WirisPlugin.Parser.initParse(target.contentWindow.document.body.innerHTML);
 
@@ -134,5 +133,6 @@
         // GenericIntegration instance.
         var genericIntegrationInstance = new GenericIntegration(integrationModelProperties);
         genericIntegrationInstance.init();
+        WirisPlugin.integrationModelInstance = genericIntegrationInstance;
     }
 }());
