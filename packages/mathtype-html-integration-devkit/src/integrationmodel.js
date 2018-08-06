@@ -13,7 +13,7 @@ IntegrationModel = function(integrationModelProperties) {
      * Language. Needed for accessibility and locales.
      * @type {string} language - 'en' by default.
     */
-    this.language = ('language' in integrationModelProperties) ? integrationModelProperties.language : 'en';
+    this.language = this.getLanguage();
     /**
      * Configuration service. Core needs this service as entry point to load all
      * service paths. Mandatory property.
@@ -120,8 +120,8 @@ IntegrationModel.prototype.init = function() {
 IntegrationModel.prototype.getPath = function() {
     var col = document.getElementsByTagName("script");
     var path = '';
-    for (i = 0; i < col.length; i++) {
-        j = col[i].src.lastIndexOf(this.scriptName);
+    for (var i = 0; i < col.length; i++) {
+        var j = col[i].src.lastIndexOf(this.scriptName);
         if (j >= 0) {
             path = col[i].src.substr(0, j - 1);
         }
@@ -240,6 +240,35 @@ IntegrationModel.prototype.mousedownHandler = function(element) {
             this.temporalImageResizing = element;
         }
     }
+}
+
+/**
+ * Returns the integration language. By default the browser agent. This method
+ * should be overwritten to obtain the integration language, for example using the
+ * plugin API of an HTML editor.
+ * @returns {string} integration language.
+ */
+IntegrationModel.prototype.getLanguage = function() {
+    return this.getBrowserLanguage();
+}
+
+/**
+ * Returns the browser language.
+ * @returns {string} the browser language.
+ */
+IntegrationModel.prototype.getBrowserLanguage = function() {
+    var language = 'en';
+    if (navigator.userLanguage) {
+        language = navigator.userLanguage.substring(0, 2);
+    }
+    else if (navigator.language) {
+        language = navigator.language.substring(0, 2);
+    }
+    else {
+        language = 'en';
+    }
+
+    return language;
 }
 
 /**
