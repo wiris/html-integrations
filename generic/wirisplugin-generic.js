@@ -37,9 +37,9 @@
      * @param {object} toolbar - DOM object for the toolbar.
      */
     function createIntegrationModel(target, toolbar) {
-        var callBackMethodArguments = {};
-        callBackMethodArguments.target = target
-        callBackMethodArguments.toolbar = toolbar;
+        var callbackMethodArguments = {};
+        callbackMethodArguments.target = target
+        callbackMethodArguments.toolbar = toolbar;
 
         /**
          * Integration model properties
@@ -58,7 +58,7 @@
         integrationModelProperties.scriptName = "wirisplugin-generic.js";
         integrationModelProperties.environment = {};
         integrationModelProperties.environment.editor = "GenericHTML";
-        integrationModelProperties.callBackMethodArguments = callBackMethodArguments;
+        integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
 
         /**
          * IntegrationModel constructor. This method sets the dependant
@@ -69,7 +69,7 @@
             WirisPlugin.IntegrationModel.call(this, integrationModelProperties);
         }
 
-        // Inherit GenericIntegration prototype.
+        // Inherit IntegrationModel prototype.
         GenericIntegration.prototype = Object.create(WirisPlugin.IntegrationModel.prototype);
 
         /**
@@ -92,7 +92,7 @@
          */
         GenericIntegration.prototype.callbackFunction = function() {
             /* Assigning events to the WYSIWYG editor */
-            this.addEvents(this.callBackMethodArguments.target);
+            this.addEvents(this.callbackMethodArguments.target);
             /* Parsing input text */
             target.contentWindow.document.body.innerHTML = WirisPlugin.Parser.initParse(target.contentWindow.document.body.innerHTML);
 
@@ -108,7 +108,7 @@
                 this.openNewFormulaEditor();
             }.bind(this));
 
-            this.callBackMethodArguments.toolbar.appendChild(formulaButton);
+            this.callbackMethodArguments.toolbar.appendChild(formulaButton);
 
 
             // Dynamic customEditors buttons.
@@ -126,7 +126,7 @@
                         integrationModel.openNewFormulaEditor();
                     });
 
-                    this.callBackMethodArguments.toolbar.appendChild(customEditorButton);
+                    this.callbackMethodArguments.toolbar.appendChild(customEditorButton);
                 }
             }
         }
