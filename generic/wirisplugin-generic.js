@@ -1,14 +1,14 @@
-
+"use strict";
 (function() {
     /**
      * Auxiliary method. Returns the path of the script. Needed to load core.js relatively.
      * @returns {string} - Absolute path of generic integration JavaScript file.
      */
     function getPath() {
-        var col = document.getElementsByTagName("script");
+        var col = document.getElementsByTagName('script');
         var path = '';
-        for (i = 0; i < col.length; i++) {
-            j = col[i].src.lastIndexOf('wirisplugin-generic.js');
+        for (var i = 0; i < col.length; i++) {
+            var j = col[i].src.lastIndexOf('wirisplugin-generic.js');
             if (j >= 0) {
                 path = col[i].src.substr(0, j - 1);
             }
@@ -18,8 +18,8 @@
 
     /**
      * Inits the MathType for this demo. Due to the demo structure this method should be global.
-     * @param iframe editable iframe
-     * @param toolbar HTML element where icons will be inserted
+     * @param {object} target - DOM target, in this integration the editable iframe.
+     * @param {object} toolbar - DOM element where icons will be inserted.
      */
     window.wrs_int_init = function(target,toolbar) {
         var script = document.createElement('script');
@@ -37,24 +37,6 @@
      * @param {object} toolbar - DOM object for the toolbar.
      */
     function createIntegrationModel(target, toolbar) {
-
-        var language;
-        if (typeof _wrs_int_langCode !== 'undefined') {
-            language = _wrs_int_langCode;
-        }
-        else {
-            if (navigator.userLanguage) {
-                language = navigator.userLanguage.substring(0, 2);
-            }
-            else if (navigator.language) {
-                language = navigator.language.substring(0, 2);
-            }
-            else {
-                language = 'en';
-            }
-        }
-
-
         var callBackMethodArguments = {};
         callBackMethodArguments.target = target
         callBackMethodArguments.toolbar = toolbar;
@@ -77,22 +59,37 @@
         integrationModelProperties.environment = {};
         integrationModelProperties.environment.editor = "GenericHTML";
         integrationModelProperties.callBackMethodArguments = callBackMethodArguments;
-        integrationModelProperties.language = language;
-
-
 
         /**
          * IntegrationModel constructor. This method sets the dependant
          * integration properties needed by the IntegrationModel class to init the plugin.
-         * @
          * @param {integrationModelProperties} integrationModelProperties.
          */
         var GenericIntegration = function(integrationModelProperties) {
             WirisPlugin.IntegrationModel.call(this, integrationModelProperties);
         }
 
+        // Inherit GenericIntegration prototype.
         GenericIntegration.prototype = Object.create(WirisPlugin.IntegrationModel.prototype);
 
+        /**
+         * Returns the demo language, stored in _wrs_int_langCode variable. If the language
+         * is no set set, calls parent getLanguage() method.
+         * @returns {string} demo language.
+         */
+        GenericIntegration.prototype.getLanguage = function() {
+            if (typeof _wrs_int_langCode !== 'undefined') {
+                return  _wrs_int_langCode;
+            } else {
+                return WirisPlugin.IntegrationModel.call(this);
+            }
+        }
+
+        /**
+         * Callback function. This function will be called once the Core is loaded. IntegraritonModel class
+         * will fire this method once the 'onLoad' Core event is fired. This function should content all the logic to init
+         * the integration.
+         */
         GenericIntegration.prototype.callbackFunction = function() {
             /* Assigning events to the WYSIWYG editor */
             this.addEvents(this.callBackMethodArguments.target);
@@ -134,8 +131,8 @@
             }
         }
 
-        var integrationModel = new GenericIntegration(integrationModelProperties);
-        integrationModel.init(target, toolbar);
-        WirisPlugin.integrationModel = integrationModel;
+        // GenericIntegration instance.
+        var genericIntegrationInstance = new GenericIntegration(integrationModelProperties);
+        genericIntegrationInstance.init();
     }
 }());
