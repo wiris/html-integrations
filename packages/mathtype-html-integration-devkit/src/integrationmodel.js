@@ -1,45 +1,68 @@
 import Core from './core.src.js';
-import Util from './util.js';
 import Image from './image.js';
+import Listeners from './listeners.js';
+import Util from './util.js';
 
 
 /**
  * This class represents an integration model. This class allows the integration script to
  * communicate with Core class. Each integration must extend this class.
  */
-IntegrationModel = function(target) {
+IntegrationModel = function(integrationModelProperties) {
     /**
      * Language. Needed for accessibility and locales.
      * @type {string} language - 'en' by default.
     */
-    this.language = 'en';
+    this.language = ('language' in integrationModelProperties) ? integrationModelProperties.language : 'en';
     /**
      * Configuration service. Core needs this service as entry point to load all
-     * service paths.
+     * service paths. Mandatory property.
      * @type {string} configurationService - configuration service path.
      */
     this.configurationService = '';
+    if ('configurationService' in integrationModelProperties) {
+        this.configurationService = integrationModelProperties.configurationService;
+    } else {
+        throw new Error('IntegrationModel constructor error: configurationService property missed.')
+    }
     /**
-     * Plugin version.
+     * Plugin version. Needed to stats and lazy caching.
      * @type {string} version - plugin version.
      */
-    this.version = '';
-    /**
-     * Core instance. The Core class instance associated to the integration model.
-     * @type {Core} core - core instance.
-     */
-    this.core = null;
+    this.version = ('version' in integrationModelProperties ? integrationModelProperties.version : '');
     /**
      * DOM target in which the plugin should work to associate
-     * events, insert formulas etc.
+     * events, insert formulas etc. Mandatory property.
      * @type {Object} target - plugin DOM target.
      */
-    this.target = target;
+
+    if ('target' in integrationModelProperties) {
+        this.target = integrationModelProperties.target;
+    } else {
+        throw new Error('IntegrationModel constructor error: target property missed.')
+    }
+    /**
+    * Integration script name. Needed to know the plugin path.
+    * @type {string} script
+    */
+    if ('scriptName' in integrationModelProperties) {
+        this.scriptName = integrationModelProperties.scriptName;
+    } else {
+        throw new Error('IntegrationModel constructor error: scriptName property missed.')
+    }
+    /**
+     * Object containing the arguments needed by the callback function.
+     * @type {object} callBackMethodArguments
+     */
+    this.callBackMethodArguments = {};
+    if ('callBackMethodArguments' in integrationModelProperties) {
+        this.callBackMethodArguments = integrationModelProperties.callBackMethodArguments;
+    }
     /**
      * Indicates if the DOM target is - or not - and iframe.
      * @type {boolean} isIframe
      */
-    this.isIframe = (this.target.tagName.toUpperCase() == 'IFRAME');
+    this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
      * the image is resized.
@@ -47,10 +70,10 @@ IntegrationModel = function(target) {
      */
     this.temporalImageResizing = null;
     /**
-     * Integration script name. Needed to know the plugin path.
-     * @type {string} script - integration script name.
+     * Core instance. The Core class instance associated to the integration model.
+     * @type {Core} core - core instance.
      */
-    this.script = '';
+    this.core = null;
     /**
      * This listener is atteched to Core class in order to launch it's callback function once
      * the 'onLoad' Core event is fired. Should be added from the integration side
@@ -69,17 +92,24 @@ IntegrationModel = function(target) {
 
 /**
  * Init function. Usually this method is called from the integration side once the core.js file is loaded.
- * Is strongly recommended to listen onLoad script event (when core.js is being loaded) to call this method.
+ * Is strongly recommended call this method by listening onload event when core.js is loaded.
  * @param {object} target - DOM target
  * @param {string} lang - integration language.
  */
-IntegrationModel.prototype.init = function(target, lang) {
+IntegrationModel.prototype.init = function() {
+    // We need to wait until Core class is loaded ('onLoad' event) before
+    // call the callback method.
+    this.listener = Listeners.newListener('onLoad', function() {
+        this.callbackFunction(this.callBackMethodArguments);
+    }.bind(this));
+
     Core.addListener(this.listener);
     this.setCore(new Core());
-    this.core.language = lang;
-    this.target = target;
+    this.core.language = this.language;
+
+    // Initializing Core class.
     this.core.init(this.configurationService);
-    this.core.setEnvironment(this.environment)
+    this.core.setEnvironment(this.environment);
 
 }
 
@@ -91,7 +121,7 @@ IntegrationModel.prototype.getPath = function() {
     var col = document.getElementsByTagName("script");
     var path = '';
     for (i = 0; i < col.length; i++) {
-        j = col[i].src.lastIndexOf(this.script);
+        j = col[i].src.lastIndexOf(this.scriptName);
         if (j >= 0) {
             path = col[i].src.substr(0, j - 1);
         }
@@ -103,7 +133,7 @@ IntegrationModel.prototype.getPath = function() {
  * Sets language property.
  * @param {string} language
  */
-IntegrationModel.prototype.setLang = function(language) {
+IntegrationModel.prototype.setLanguage = function(language) {
      this.language = language;
  }
 
@@ -221,6 +251,9 @@ IntegrationModel.prototype.mouseupHandler = function() {
             Image.fixAfterResize(this.temporalImageResizing);
         }.bind(this), 10);
     }
+}
+
+IntegrationModel.prototype.callBackFunction = function() {
 }
 
 IntegrationModel.prototype.notifyWindowClosed = function() {
