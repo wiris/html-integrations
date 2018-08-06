@@ -81,7 +81,7 @@
             if (typeof _wrs_int_langCode !== 'undefined') {
                 return  _wrs_int_langCode;
             } else {
-                return WirisPlugin.IntegrationModel.call(this);
+                return this.getBrowserLanguage();
             }
         }
 
