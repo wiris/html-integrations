@@ -299,7 +299,7 @@ export default class ContentManager {
             mathML = MathML.addEditorAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
         }
         var mathmlEntitiesEncoded = MathML.mathMLEntities(mathML);
-        this.integrationModel.updateFormula(mathmlEntitiesEncoded, null);
+        this.integrationModel.updateFormula(mathmlEntitiesEncoded);
         this.customEditors.disable();
         this.integrationModel.notifyWindowClosed();
 

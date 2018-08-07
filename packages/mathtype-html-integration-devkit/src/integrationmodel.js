@@ -58,6 +58,15 @@ IntegrationModel = function(integrationModelProperties) {
         this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments;
     }
     /**
+     * Contains information about the integration environment: like the name of the editor, the version, etc.
+     * @type {object}
+     * @property {string} editor - Name of the HTML editor.
+     */
+    this.environment = {};
+    if ('environment' in integrationModelProperties) {
+        this.environment = integrationModelProperties.environment;
+    }
+    /**
      * Indicates if the DOM target is - or not - and iframe.
      * @type {boolean} isIframe
      */
@@ -81,12 +90,6 @@ IntegrationModel = function(integrationModelProperties) {
      * @type {Listener} listener -
      */
     this.listener = null;
-    /**
-     * Contains information about the integration environment: like the name of the editor, the version, etc.
-     * @type {object}
-     * @property {string} editor - Name of the HTML editor.
-     */
-    this.environment = {};
 }
 
 /**
@@ -185,11 +188,11 @@ IntegrationModel.prototype.openExistingFormulaEditor = function() {
  * @param {string} mathml - Formula MathML.
  * @param {string} editMode - Edit Mode (LaTeX or images).
  */
-IntegrationModel.prototype.updateFormula = function(mathml, editMode) {
+IntegrationModel.prototype.updateFormula = function(mathml) {
     if (this.isIframe) {
-        this.core.updateFormula(this.target.contentWindow, this.target.contentWindow, mathml, null, editMode);
+        this.core.updateFormula(this.target.contentWindow, this.target.contentWindow, mathml, null);
     } else {
-        this.core.updateFormula(this.target, window, mathml, null, editMode);
+        this.core.updateFormula(this.target, window, mathml, null);
     }
 }
 

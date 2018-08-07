@@ -284,7 +284,7 @@ export default class Core {
      * @param {string} editMode Current edit mode.
      * @ignore
      */
-    updateFormula(focusElement, windowTarget, mathml, wirisProperties, editMode) {
+    updateFormula(focusElement, windowTarget, mathml, wirisProperties) {
         // Before update listener.
         // Params on beforeUpdate listener
         // - mathml
@@ -305,7 +305,7 @@ export default class Core {
 
         // Read only.
         e.language = this.language;
-        e.editMode = editMode;
+        e.editMode = this.editMode;
 
         if (Core.listeners.fire('onBeforeFormulaInsertion', e)) {
             return;
@@ -316,14 +316,14 @@ export default class Core {
 
         // Setting empty params for after.
         e = new Event();
-        e.editMode = editMode;
+        e.editMode = this.editMode;
         e.windowTarget = windowTarget;
         e.focusElement = focusElement;
 
         if (mathml.length == 0) {
             this.insertElementOnSelection(null, focusElement, windowTarget);
         }
-        else if (editMode == 'latex') {
+        else if (this.editMode == 'latex') {
             e.latex = Latex.getLatexFromMathML(mathml);
             // wrs_int_getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
             // Not all the integrations have special behaviours for nonLatex.
@@ -336,7 +336,7 @@ export default class Core {
             }
             this.insertElementOnSelection(e.node, focusElement, windowTarget);
         }
-        else if (editMode == 'iframes') {
+        else if (this.editMode == 'iframes') {
             var iframe = wrs_mathmlToIframeObject(windowTarget, mathml);
             this.insertElementOnSelection(iframe, focusElement, windowTarget);
         }
@@ -575,6 +575,12 @@ export default class Core {
                 }
             }
         }
+        // Setting an object with the editor parameters.
+        // Editor parameters can be customized in several ways:
+        // 1 - editorAttributes: Contains the default editor attributes, usually the metrics in a comma separated string. Always exists.
+        // 2 - editorParameters: Object containing custom editor parameters. These parameters are defined in the backend. So they affects
+        //     all integration instance.
+
         // The backend send the default editor attributes in a coma separated with the following structure:
         // key1=value1,key2=value2...
         var defaultEditorAttributesArray = Configuration.get('editorAttributes').split(", ");
@@ -585,7 +591,7 @@ export default class Core {
             var value = tempAtribute[1];
             defaultEditorAttributes[key] = value;
         }
-        // Here we need to concatenate the editorAtributes with the editorParameters
+        // Custom editor parameters.
         var editorAttributes = {};
         Object.assign(editorAttributes, defaultEditorAttributes, Configuration.get('editorParameters'));
         editorAttributes.language = this.language;

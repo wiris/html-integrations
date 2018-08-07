@@ -19,7 +19,7 @@ export default class Configuration {
     static get(key) {
         //TODO: '_wrs_conf' should be removed from the backend service.
         if (!Configuration.properties.hasOwnProperty('_wrs_conf_' + key)) {
-            throw new Error('Configuration key ' + key + ' not found.');
+            return false;
         }
         return Configuration.properties['_wrs_conf_' + key];
     }
@@ -32,8 +32,21 @@ export default class Configuration {
     static set(key, value) {
         Configuration.properties[key] = value;
     }
-}
 
+    /**
+     * Updates a property with new values. Used to object properties with new values
+     * @param {string} key - Key of the property to be updated.
+     * @param {Object} propertyValue - Values to update the property.
+     */
+    static update(key, propertyValue) {
+        if (!Configuration.get(key)) {
+            Configuration.set(key, propertyValue);
+        } else {
+            var updateProperty = Object.assign(Configuration.get(key), propertyValue);
+            Configuration.set(key, updateProperty);
+        }
+    }
+}
 
 /**
  * Static properties object. Stores all configuration properties.
