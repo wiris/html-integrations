@@ -30,25 +30,25 @@ export default class Core {
          * @type {string} language - 'en' by default.
          */
         this.language = 'en';
-		/**
-		 * Class to manage plugin locales.
-		 * @type {StringManager}
-		 */
-		this.stringManager = new StringManager();
+        /**
+         * Class to manage plugin locales.
+         * @type {StringManager}
+         */
+        this.stringManager = new StringManager();
        /**
         * Edit mode. Admit 'images' and 'latex' values.
         * @type {string}
         */
        this.editMode = 'images';
-	   /**
-		* Modal dialog.
-		* @type {ModalDialog}
-	    */
-	   this.modalDialog = null;
-	   /**
-		* Core custom editors. By default only chemistry editor.
+       /**
+        * Modal dialog.
+        * @type {ModalDialog}
+        */
+       this.modalDialog = null;
+       /**
+        * Core custom editors. By default only chemistry editor.
         * @type {CustomEditors}
-	    */
+        */
        this.customEditors = new CustomEditors();
        var chemEditorParams = {
            name : 'Chemistry',
@@ -58,31 +58,31 @@ export default class Core {
            title: 'ChemType',
            tooltip: 'Insert a chemistry formula - ChemType' // TODO: Localize tooltip.
        }
-	   this.customEditors.addEditor('chemistry', chemEditorParams);
+       this.customEditors.addEditor('chemistry', chemEditorParams);
 
-	   /**
-		* Environment properties. This object contains data about the integration platform.
-		* @type {Object}
-		* @property {string} editor - Editor name. Usually the HTML editor.
-		* @property {string} mode - Save mode. Xml by default
-		* @property {string} version - Plugin version.
-	    */
-	   this.environment = {};
+       /**
+        * Environment properties. This object contains data about the integration platform.
+        * @type {Object}
+        * @property {string} editor - Editor name. Usually the HTML editor.
+        * @property {string} mode - Save mode. Xml by default
+        * @property {string} version - Plugin version.
+        */
+       this.environment = {};
 
-	   /**
-		* Edit properties. This object
-		* @type {Object}
-		* @property {boolean} isNewElement - Indicates if the edit formula is a new one or not.
-		* @property {Img} temporalImage - Image of the formula edited. Null if the formula is a new one.
-		* @property {Range} latexRange - LaTeX formula range.
-		* @property {Range} range - Image range.
-		* @property {string} editMode - Edition mode. Images by default.
-	    */
-	   this.editionProperties = {
-			isNewElement : true,
-			temporalImage : null,
-			latexRange : null,
-			range : null
+       /**
+        * Edit properties. This object
+        * @type {Object}
+        * @property {boolean} isNewElement - Indicates if the edit formula is a new one or not.
+        * @property {Img} temporalImage - Image of the formula edited. Null if the formula is a new one.
+        * @property {Range} latexRange - LaTeX formula range.
+        * @property {Range} range - Image range.
+        * @property {string} editMode - Edition mode. Images by default.
+        */
+       this.editionProperties = {
+            isNewElement : true,
+            temporalImage : null,
+            latexRange : null,
+            range : null
        }
        /**
         * Integration model.
@@ -108,25 +108,25 @@ export default class Core {
         this.integrationModel = integrationModel;
     }
 
-	/**
-	 * This method set an object containing environment properties. The structure for the an
-	 * environment object is the following:
-	 * - editor - Integration editor (normally the HTML editor).
-	 * - mode - Save mode.
-	 * - version - Plugin version.
-	 * @param {object} environmentObject - And object containing environment properties.
-	 */
-	setEnvironment(environmentObject) {
-		if ('editor' in environmentObject) {
-			this.environment.editor = environmentObject.editor;
-		}
-		if ('mode' in environmentObject) {
-			this.environment.mode = environmentObject.mode;
-		}
-		if ('version' in environmentObject) {
-			this.environment.version = environmentObject.version;
-		}
-	}
+    /**
+     * This method set an object containing environment properties. The structure for the an
+     * environment object is the following:
+     * - editor - Integration editor (normally the HTML editor).
+     * - mode - Save mode.
+     * - version - Plugin version.
+     * @param {object} environmentObject - And object containing environment properties.
+     */
+    setEnvironment(environmentObject) {
+        if ('editor' in environmentObject) {
+            this.environment.editor = environmentObject.editor;
+        }
+        if ('mode' in environmentObject) {
+            this.environment.mode = environmentObject.mode;
+        }
+        if ('version' in environmentObject) {
+            this.environment.version = environmentObject.version;
+        }
+    }
 
     /**
      * Get modal dialog
@@ -138,7 +138,7 @@ export default class Core {
 
     /**
      * Returns core.js path. Needed to load resources like CSS.
-	 * @returns {string} - core.js absolute path.
+     * @returns {string} - core.js absolute path.
      */
     getCorePath() {
         var scriptName = "core/core.js";
@@ -173,15 +173,15 @@ export default class Core {
                 // Loading configuration variables.
                 var jsonConfiguration = JSON.parse(httpRequest.responseText);
                 var variables = Object.keys(jsonConfiguration);
-				Configuration.addConfiguration(jsonConfiguration);
-				// Adding JavaScript (not backend) configuration variables.
-				Configuration.addConfiguration(jsProperties);
+                Configuration.addConfiguration(jsonConfiguration);
+                // Adding JavaScript (not backend) configuration variables.
+                Configuration.addConfiguration(jsProperties);
                 // Load service paths.
                 this.loadServicePaths();
                 // Load lang file.
                 this.loadLangFile();
-				this.loadCSS();
-				// this.loadCustomConfiguration();
+                this.loadCSS();
+                // this.loadCustomConfiguration();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
                 Core.listeners.fire('onLoad', {});
             }
@@ -216,7 +216,7 @@ export default class Core {
         ServiceProvider.setServicePath('createimage', createImagePath);
         ServiceProvider.setServicePath('service', servicePath);
         ServiceProvider.setServicePath('getmathml', getMathMLPath);
-	}
+    }
 
     /**
      * Get the base URL (i.e the URL on core.js lives).
@@ -272,7 +272,7 @@ export default class Core {
      * @param {object} listener
      */
     static addListener(listener) {
-		Core.listeners.add(listener);
+        Core.listeners.add(listener);
     }
 
     /**
@@ -482,7 +482,7 @@ export default class Core {
         }
         else {
             if (!element) { // Editor empty, formula has been erased on edit.
-				this.editionProperties.temporalImage.parentNode.removeChild(this.editionProperties.temporalImage);
+                this.editionProperties.temporalImage.parentNode.removeChild(this.editionProperties.temporalImage);
             }
             this.editionProperties.temporalImage.parentNode.replaceChild(element, this.editionProperties.temporalImage);
         }
@@ -549,7 +549,7 @@ export default class Core {
                     var mathml = Latex.getMathMLFromLatex(latexResult.latex);
                     this.editionProperties.isNewElement = false;
 
-					this.editionProperties.temporalImage = document.createElement('img');
+                    this.editionProperties.temporalImage = document.createElement('img');
 
                     this.editionProperties.temporalImage.setAttribute(Configuration.get('imageMathmlAttribute'), MathML.safeXmlEncode(mathml));
                     var windowTarget = isIframe ? target.contentWindow : window;
@@ -601,7 +601,7 @@ export default class Core {
             this.contentManager = new ContentManager(contentManagerAttributes);
             // When an instance of ContentManager is created we need to wait until the ContentManager is ready
             // by listening 'onLoad' event
-			var listener = Listeners.newListener(
+            var listener = Listeners.newListener(
                 'onLoad',
                 function() {
                     this.contentManager.isNewElement = this.editionProperties.isNewElement;
@@ -611,19 +611,19 @@ export default class Core {
                     }
                 }.bind(this)
             );
-			this.contentManager.addListener(listener);
+            this.contentManager.addListener(listener);
             this.contentManager.init();
             this.modalDialog.setContentManager(this.contentManager);
             this.contentManager.setModalDialogInstance(this.modalDialog);
         } else {
-			this.contentManager.isNewElement = this.editionProperties.isNewElement;
-			if (this.editionProperties.temporalImage != null) {
-				var mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));
-				this.contentManager.mathML = mathML;
-			}
+            this.contentManager.isNewElement = this.editionProperties.isNewElement;
+            if (this.editionProperties.temporalImage != null) {
+                var mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));
+                this.contentManager.mathML = mathML;
+            }
         }
         this.contentManager.setIntegrationModel(this.integrationModel);
-		this.modalDialog.open();
+        this.modalDialog.open();
     }
 
     /**
@@ -640,27 +640,6 @@ export default class Core {
      */
     static getStringManager() {
         return Core.stringManager;
-    }
-
-    /**
-     * Adds iframe events.
-     * @param {object} iframe Target
-     * @param {function} doubleClickHandler Function to run when user double clicks the iframe
-     * @param {function} mousedownHandler Function to run when user mousedowns the iframe
-     * @param {function} mouseupHandler Function to run when user mouseups the iframe
-     */
-    addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
-        Util.addElementEvents(iframe.contentWindow.document,
-            function (element, event) {
-                doubleClickHandler(element, event);
-            },
-            function (element, event) {
-                mousedownHandler(element, event);
-            },
-            function (element, event) {
-                mouseupHandler(element, event);
-            }
-        );
     }
 
     /**

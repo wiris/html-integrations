@@ -167,7 +167,7 @@ IntegrationModel.prototype.setTarget = function(target) {
  */
 IntegrationModel.prototype.openNewFormulaEditor = function() {
     this.core.editionProperties.isNewElement = true;
-    this.core.openModalDialog(this.language, this.target);
+    this.core.openModalDialog(this.language, this.target, this.isIframe);
 }
 
 /**
@@ -176,7 +176,7 @@ IntegrationModel.prototype.openNewFormulaEditor = function() {
  */
 IntegrationModel.prototype.openExistingFormulaEditor = function() {
     this.core.editionProperties.isNewElement = false;
-    this.core.openModalDialog(this.language, this.target, true);
+    this.core.openModalDialog(this.language, this.target, this.isIframe);
 }
 
 /**
@@ -198,15 +198,19 @@ IntegrationModel.prototype.updateFormula = function(mathml, editMode) {
  * Add events to formulas in the DOM target.
  */
 IntegrationModel.prototype.addEvents = function() {
-    if (this.isIframe) {
-        this.core.addIframeEvents(this.target,
-                                  this.doubleClickHandler.bind(this),
-                                  this.mousedownHandler.bind(this),
-                                  this.mouseupHandler.bind(this));
-    }
-
-    // TODO: Add elementevents (non iframe):
-
+    var eventTarget = this.isIframe ? this.target.contentWindow.document : target;
+    Util.addElementEvents(
+        eventTarget,
+        function (element, event) {
+            this.doubleClickHandler(element, event);
+        }.bind(this),
+        function (element, event) {
+            this.mousedownHandler(element, event);
+        }.bind(this),
+        function (element, event) {
+            this.mouseupHandler(element, event);
+        }.bind(this)
+    );
 }
 
 /**
