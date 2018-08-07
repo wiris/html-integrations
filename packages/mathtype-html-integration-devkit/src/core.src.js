@@ -34,7 +34,7 @@ export default class Core {
          * Class to manage plugin locales.
          * @type {StringManager}
          */
-        this.stringManager = new StringManager();
+        Core.stringManager = new StringManager();
        /**
         * Edit mode. Admit 'images' and 'latex' values.
         * @type {string}
@@ -183,7 +183,12 @@ export default class Core {
                 this.loadCSS();
                 // this.loadCustomConfiguration();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
-                Core.listeners.fire('onLoad', {});
+                // We need to wait until stringManager has been loaded.
+                var stringManagerListener = Listeners.newListener('onLoad', function() {
+                    Core.listeners.fire('onLoad', {});
+                })
+                Core.stringManager.addListener(stringManagerListener);
+
             }
         }.bind(this);
         httpRequest.send(null);
@@ -235,7 +240,6 @@ export default class Core {
     loadLangFile() {
         // Translated languages.
         var languages = 'ar,ca,cs,da,de,en,es,et,eu,fi,fr,gl,he,hr,hu,it,ja,ko,nl,no,pl,pt,pt_br,ru,sv,tr,zh,el';
-        Core.stringManager = new StringManager();
 
         var langArray = languages.split(',');
         var lang = this.language;

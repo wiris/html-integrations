@@ -1,3 +1,4 @@
+import Listeners from './listeners';
 /**
  * StringManager class to use strings in code correctly with control.
  *
@@ -7,6 +8,19 @@ export default class StringManager {
         // Strings are empty when it creates, it set when calls load method.
         this.strings = null;
         this.stringsLoaded = false;
+        /**
+         * StringManager listeners. Fired on 'onLoad' event.
+         * @type {Listeners}
+         */
+        this.listeners = new Listeners();
+    }
+
+    /**
+     * Add a plugin listener.
+     * @param {Object} listener
+     */
+    addListener(listener) {
+        this.listeners.add(listener);
     }
 
     /**
@@ -36,6 +50,7 @@ export default class StringManager {
             this.strings = langStrings;
             // Activate variable to unlock getStrings
             this.stringsLoaded = true;
+            this.listeners.fire('onLoad', {});
         }
     }
 }
