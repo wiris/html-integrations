@@ -254,7 +254,7 @@ export default class Core {
 
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = this.getCorePath() + "/lang/" + lang + "/strings.js";
+        script.src = this.getCorePath() + '/' + this.integrationModel.langFolderName + '/' + lang + '/strings.js';
         // When strings are loaded, it loads into stringManager
         script.onload = function () {
             Core.getStringManager().loadStrings(wrs_strings);

@@ -68,6 +68,14 @@ export default class IntegrationModel {
             this.environment = integrationModelProperties.environment;
         }
         /**
+         * Language folder path. 'lang' by default.
+         * @type {string}
+         */
+        this.langFolderName = 'lang';
+        if ('langFolderName' in integrationModelProperties) {
+            this.langFolderName = integrationModelProperties.langFolderName;
+        }
+        /**
          * Indicates if the DOM target is - or not - and iframe.
          * @type {boolean} isIframe
          */
@@ -201,7 +209,7 @@ export default class IntegrationModel {
      * Add events to formulas in the DOM target.
      */
     addEvents() {
-        var eventTarget = this.isIframe ? this.target.contentWindow.document : target;
+        var eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
         Util.addElementEvents(
             eventTarget,
             function (element, event) {
