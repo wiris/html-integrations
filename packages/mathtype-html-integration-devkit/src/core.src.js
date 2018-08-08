@@ -137,11 +137,11 @@ export default class Core {
     }
 
     /**
-     * Returns core.js path. Needed to load resources like CSS.
+     * Returns core folder path. Needed to load resources like CSS.
      * @returns {string} - core.js absolute path.
      */
     getCorePath() {
-        var scriptName = "core/core.js";
+        var scriptName = this.integrationModel.scriptName;
         var col = document.getElementsByTagName("script");
         for (var i = 0; i < col.length; i++) {
             var d;

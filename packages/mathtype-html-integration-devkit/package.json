@@ -1,13 +1,11 @@
 {
-  "name": "es6-tutorial-data",
-  "version": "1.0.0",
-  "description": "Starting point for the ECMAScript 6 Data Tutorial",
+  "name": "mathtype-js-lib",
+  "description": "MathType Web Integration API",
   "main": "core.src.js",
   "scripts": {
     "webpack": "webpack"
   },
-  "author": "Christophe Coenraets <ccoenraets@gmail.com> (http://coenraets.org/)",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^6.4.1",

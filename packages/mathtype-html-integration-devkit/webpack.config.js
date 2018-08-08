@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, ''),
         // Change the path for dev purposes.
-        // path: path.resolve('/htdocs/plugin/3.50/generic_wiris/generic_wiris/core', ''),
+        // path: path.resolve('/htdocs/plugin/3.50/generic_wiris/generic_wiris', ''),
         filename: 'core.js',
         libraryTarget: 'var',
         library: 'WirisPlugin'
