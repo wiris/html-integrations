@@ -89,6 +89,37 @@ export default class Util {
     }
 
     /**
+     * Adds iframe events.
+     * @param {object} iframe Target
+     * @param {function} doubleClickHandler Function to run when user double clicks the iframe
+     * @param {function} mousedownHandler Function to run when user mousedowns the iframe
+     * @param {function} mouseupHandler Function to run when user mouseups the iframe
+     * @ignore
+     */
+    static addIframeEvents(iframe, doubleClickHandler, mousedownHandler, mouseupHandler) {
+        const confSetsizeValue = Configuration.get('setSize');
+        const saveModeValue = Configuration.get('saveMode');
+        const editModeValue = Configuration.get('editMode');
+        const imageFormatValue = Configuration.get('imageFormat');
+        const initSetSize = confSetsizeValue || saveModeValue == 'xml' ||
+                            saveModeValue == 'safeXml' ||
+                            saveModeValue == 'base64' &&
+                            editModeValue == 'default' ||
+                            saveModeValue == 'image' &&
+                            imageFormatValue == 'svg';
+
+        Configuration.set('setSize', initSetSize);
+
+        Util.addElementEvents(iframe.contentWindow.document, function (element, event) {
+            doubleClickHandler(element, event);
+        }, function (element, event) {
+            mousedownHandler(element, event);
+        }, function (element, event) {
+            mouseupHandler(element, event);
+        });
+    }
+
+    /**
      * Checks if a determined array contains a determined element.
      * @param {array} stack
      * @param {object} element
