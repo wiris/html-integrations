@@ -40,7 +40,6 @@ window.wrs_int_init = function(target,toolbar) {
 /**
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
- * @param {integrationModelProperties} integrationModelProperties.
  */
 export default class GenericIntegration extends IntegrationModel {
     /**
@@ -55,7 +54,6 @@ export default class GenericIntegration extends IntegrationModel {
             return this.getBrowserLanguage();
         }
     }
-
 
     callbackFunction() {
         // Call parent callbackFunction in order to addEvents to integration target.
@@ -76,7 +74,6 @@ export default class GenericIntegration extends IntegrationModel {
         }.bind(this));
 
         this.callbackMethodArguments.toolbar.appendChild(formulaButton);
-
 
         // Dynamic customEditors buttons.
         var customEditors = this.getCore().getCustomEditors();
