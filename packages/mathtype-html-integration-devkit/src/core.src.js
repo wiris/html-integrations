@@ -30,72 +30,103 @@ export default class Core {
          * @type {string} language - 'en' by default.
          */
         this.language = 'en';
+
         /**
          * Class to manage plugin locales.
          * @type {StringManager}
          */
         Core.stringManager = new StringManager();
-       /**
-        * Edit mode. Admit 'images' and 'latex' values.
-        * @type {string}
-        */
-       this.editMode = 'images';
-       /**
-        * Modal dialog.
-        * @type {ModalDialog}
-        */
-       this.modalDialog = null;
-       /**
-        * Core custom editors. By default only chemistry editor.
-        * @type {CustomEditors}
-        */
-       this.customEditors = new CustomEditors();
-       var chemEditorParams = {
-           name : 'Chemistry',
-           toolbar : 'chemistry',
-           icon : 'chem.png',
-           confVariable : 'chemEnabled',
-           title: 'ChemType',
-           tooltip: 'Insert a chemistry formula - ChemType' // TODO: Localize tooltip.
-       }
-       this.customEditors.addEditor('chemistry', chemEditorParams);
 
-       /**
-        * Environment properties. This object contains data about the integration platform.
-        * @type {Object}
-        * @property {string} editor - Editor name. Usually the HTML editor.
-        * @property {string} mode - Save mode. Xml by default
-        * @property {string} version - Plugin version.
-        */
-       this.environment = {};
+        /**
+         * Edit mode. Admit 'images' and 'latex' values.
+         * @type {string}
+         */
+        this.editMode = 'images';
 
-       /**
-        * Edit properties. This object
-        * @type {Object}
-        * @property {boolean} isNewElement - Indicates if the edit formula is a new one or not.
-        * @property {Img} temporalImage - Image of the formula edited. Null if the formula is a new one.
-        * @property {Range} latexRange - LaTeX formula range.
-        * @property {Range} range - Image range.
-        * @property {string} editMode - Edition mode. Images by default.
-        */
-       this.editionProperties = {
-            isNewElement : true,
-            temporalImage : null,
-            latexRange : null,
-            range : null
-       }
-       /**
-        * Integration model.
-        * @type {IntegrationModel}
-        */
-       this.integrationModel = null;
-       /**
-        * ContentManager instance.
-        * @type {ContentManager}
-        */
-       this.contentManager = null;
+        /**
+         * Modal dialog.
+         * @type {ModalDialog}
+         */
+        this.modalDialog = null;
+
+        /**
+         * Core custom editors. By default only chemistry editor.
+         * @type {CustomEditors}
+         */
+        this.customEditors = new CustomEditors();
+        var chemEditorParams = {
+            name: 'Chemistry',
+            toolbar: 'chemistry',
+            icon: 'chem.png',
+            confVariable: 'chemEnabled',
+            title: 'ChemType',
+            tooltip: 'Insert a chemistry formula - ChemType' // TODO: Localize tooltip.
+        }
+        this.customEditors.addEditor('chemistry', chemEditorParams);
+
+        /**
+         * Environment properties. This object contains data about the integration platform.
+         * @type {Object}
+         * @property {string} editor - Editor name. Usually the HTML editor.
+         * @property {string} mode - Save mode. Xml by default
+         * @property {string} version - Plugin version.
+         */
+        this.environment = {};
+
+        /**
+         * Edit properties. This object.
+         * @type {Object}
+         * @property {boolean} isNewElement - Indicates if the edit formula is a new one or not.
+         * @property {Img} temporalImage - Image of the formula edited. Null if the formula is a new one.
+         * @property {Range} latexRange - LaTeX formula range.
+         * @property {Range} range - Image range.
+         * @property {string} editMode - Edition mode. Images by default.
+         */
+        this.editionProperties = {
+            isNewElement: true,
+            temporalImage: null,
+            latexRange: null,
+            range: null
+        }
+
+        /**
+         * Integration model.
+         * @type {IntegrationModel}
+         */
+        this.integrationModel = null;
+
+        /**
+         * ContentManager instance.
+         * @type {ContentManager}
+         */
+        this.contentManager = null;
+
+        /**
+         * Information about the current browser.
+         * @type {string}
+         */
+        this.browser = (
+            function get_browser() {
+                var ua = navigator.userAgent;
+                if (ua.search("Edge/") >= 0) {
+                    return "EDGE";
+                } else if (ua.search("Chrome/") >= 0) {
+                    return "CHROME";
+                } else if (ua.search("Trident/") >= 0) {
+                    return "IE";
+                } else if (ua.search("Firefox/") >= 0) {
+                    return "FIREFOX";
+                } else if (ua.search("Safari/") >= 0) {
+                    return "SAFARI";
+                }
+            }
+        )();
     }
 
+    /**
+     * Initializes the core.
+     * @param {string} integrationPath path to the integration root folder.
+     */
     init(integrationPath) {
         this.load(integrationPath);
     }
@@ -141,6 +172,11 @@ export default class Core {
      * @returns {string} - core.js absolute path.
      */
     getCorePath() {
+        // There are editor with repeated names for integration scripts.
+        // Due to this, the next functions is a wrapper to avoid take other scripts instead.
+        if (typeof this.integrationModel.getCorePath !== 'undefined') {
+            return this.integrationModel.getCorePath();
+        }
         var scriptName = this.integrationModel.scriptName;
         var col = document.getElementsByTagName("script");
         for (var i = 0; i < col.length; i++) {
@@ -263,6 +299,10 @@ export default class Core {
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
+    /**
+     * It appends css files to the html header.
+     * @ignore
+     */
     loadCSS() {
         var fileRef = document.createElement("link");
         fileRef.setAttribute("rel", "stylesheet");
@@ -355,6 +395,24 @@ export default class Core {
     }
 
     /**
+     * Sets the caret after 'node' and focus node owner document.
+     * @param {Object} node node that it will be behind the caret after the execution.
+     * @ignore
+     */
+    placeCaretAfterNode(node) {
+        const nodeDocument = node.ownerDocument;
+        if (typeof nodeDocument.getSelection !== 'undefined') {
+            const range = nodeDocument.createRange();
+            range.setStartAfter(node);
+            range.collapse(true);
+            var selection = nodeDocument.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            nodeDocument.body.focus();
+        }
+    }
+
+    /**
      * Replaces a selection with an element.
      * @param {object} element Element
      * @param {object} focusElement Element to be focused
@@ -362,32 +420,6 @@ export default class Core {
      * @ignore
      */
     insertElementOnSelection(element, focusElement, windowTarget) {
-        if(typeof focusElement.frameElement !== 'undefined'){
-            function get_browser(){
-                var ua = navigator.userAgent;
-                if(ua.search("Edge/") >= 0){
-                    return "EDGE";
-                }else if(ua.search("Chrome/") >= 0){
-                    return "CHROME";
-                }else if(ua.search("Trident/") >= 0){
-                    return "IE";
-                }else if(ua.search("Firefox/") >= 0){
-                    return "FIREFOX";
-                }else if(ua.search("Safari/") >= 0){
-                    return "SAFARI";
-                }
-            }
-            var browserName = get_browser();
-            // Iexplorer, Edge and Safari can't focus into iframe
-            if (browserName == 'SAFARI' || browserName == 'IE' || browserName == 'EDGE') {
-                focusElement.focus();
-            }else{
-                focusElement.frameElement.focus();
-            }
-        }else{
-            focusElement.focus();
-        }
-
         if (this.editionProperties.isNewElement) {
             if (focusElement.type == "textarea") {
                 Util.updateTextArea(focusElement, element.textContent);
@@ -415,50 +447,21 @@ export default class Core {
                 }
             }
             else {
-                var selection = windowTarget.getSelection();
-                // We have use wrs_range beacuse IExplorer delete selection when select another part of text.
-                if (this.editionProperties.range) {
-                    var range = this.editionProperties.range;
-                    this.editionProperties.range = null;
-                }
-                else {
+                const editorSelection = this.integrationModel.getSelection();
+                const range = editorSelection.getRangeAt(0);
 
-                    try {
-                        var range = selection.getRangeAt(0);
-                    }
-                    catch (e) {
-                        var range = windowTarget.document.createRange();
-                    }
-                }
-                selection.removeAllRanges();
-
-                range.deleteContents();
-
-                var node = range.startContainer;
-                var position = range.startOffset;
+                let node = range.startContainer;
+                const position = range.startOffset;
 
                 if (node.nodeType == 3) { // TEXT_NODE.
                     node = node.splitText(position);
                     node.parentNode.insertBefore(element, node);
-                    node = node.parentNode;
                 }
                 else if (node.nodeType == 1) { // ELEMENT_NODE.
                     node.insertBefore(element, node.childNodes[position]);
                 }
-                // Fix to set the caret after the inserted image.
-                range.selectNode(element);
-                // Integration function.
-                // If wrs_int_setCaretPosition function exists on
-                // integration script can call caret method from the editor instance.
-                // With this method we can call proper specific editor methods which in some scenarios
-                // help's MathType to set caret position properly on the current editor window.
-                if (typeof wrs_int_selectRange != 'undefined') {
-                    wrs_int_selectRange(range);
-                }
-                // Selection collapse must have to do it after the function 'wrs_int_selectRange' because
-                // can be that the range was changed and the selection needs to be updated.
-                position = range.endOffset;
-                selection.collapse(node, position);
+
+                this.placeCaretAfterNode(element);
             }
         }
         else if (this.editionProperties.latexRange) {
@@ -471,6 +474,7 @@ export default class Core {
                 var parentNode = this.editionProperties.latexRange.startContainer;
                 this.editionProperties.latexRange.deleteContents();
                 this.editionProperties.latexRange.insertNode(element);
+                this.placeCaretAfterNode(element);
             }
         }
         else if (focusElement.type == "textarea") {
@@ -489,19 +493,10 @@ export default class Core {
                 this.editionProperties.temporalImage.parentNode.removeChild(this.editionProperties.temporalImage);
             }
             this.editionProperties.temporalImage.parentNode.replaceChild(element, this.editionProperties.temporalImage);
+            this.placeCaretAfterNode(element);
         }
-        function placeCaretAfterNode(node) {
-            if (typeof window.getSelection != "undefined") {
-                var range = windowTarget.document.createRange();
-                range.setStartAfter(node);
-                range.collapse(true);
-                var selection = windowTarget.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-        placeCaretAfterNode(element);
     }
+
 
     /**
      * Opens a new modal dialog.
