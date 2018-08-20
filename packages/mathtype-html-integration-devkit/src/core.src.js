@@ -168,31 +168,6 @@ export default class Core {
     }
 
     /**
-     * Returns core folder path. Needed to load resources like CSS.
-     * @returns {string} - core.js absolute path.
-     */
-    getCorePath() {
-        // There are editor with repeated names for integration scripts.
-        // Due to this, the next functions is a wrapper to avoid take other scripts instead.
-        if (typeof this.integrationModel.getCorePath !== 'undefined') {
-            return this.integrationModel.getCorePath();
-        }
-        var scriptName = this.integrationModel.scriptName;
-        var col = document.getElementsByTagName("script");
-        for (var i = 0; i < col.length; i++) {
-            var d;
-            var src;
-            d = col[i];
-            src = d.src;
-            var j = src.lastIndexOf(scriptName);
-            if (j >= 0) {
-                // That's my script!
-                return src.substr(0, j - 1);
-            }
-        }
-    }
-
-    /**
      * This method inits the Core class doing the following:
      *
      * Calls (async) to configurationjs service, converting the response JSON into javascript variables
@@ -201,7 +176,7 @@ export default class Core {
      */
     load(integrationPath) {
         var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        this.integrationPath = integrationPath.indexOf("/") == 0 || integrationPath.indexOf("http") == 0 ? integrationPath : Util.concatenateUrl(this.getCorePath(), integrationPath);
+        this.integrationPath = integrationPath.indexOf("/") == 0 || integrationPath.indexOf("http") == 0 ? integrationPath : Util.concatenateUrl(this.integrationModel.getPath(), integrationPath);
         httpRequest.open('GET', this.integrationPath, false);
         // Async request.
         httpRequest.onload = function (e) {
@@ -264,7 +239,7 @@ export default class Core {
      * @ignore
      */
     getServerPath() {
-        var url = this.getCorePath();
+        var url = this.integrationModel.getPath();
         var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
         return url.substr(0, hostNameIndex);
     }
@@ -290,7 +265,7 @@ export default class Core {
 
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = this.getCorePath() + '/' + this.integrationModel.langFolderName + '/' + lang + '/strings.js';
+        script.src = this.integrationModel.getPath() + '/' + this.integrationModel.langFolderName + '/' + lang + '/strings.js';
         // When strings are loaded, it loads into stringManager
         script.onload = function () {
             Core.getStringManager().loadStrings(wrs_strings);
@@ -307,7 +282,7 @@ export default class Core {
         var fileRef = document.createElement("link");
         fileRef.setAttribute("rel", "stylesheet");
         fileRef.setAttribute("type", "text/css");
-        fileRef.setAttribute("href", Util.concatenateUrl(this.getCorePath(), '/core/modal.css'));
+        fileRef.setAttribute("href", Util.concatenateUrl(this.integrationModel.getPath(), '/core/modal.css'));
         document.getElementsByTagName("head")[0].appendChild(fileRef);
     }
 
