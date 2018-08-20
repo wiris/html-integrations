@@ -313,7 +313,4 @@ export default class IntegrationModel {
     callbackFunction() {
         this.addEvents(this.target);
     }
-
-    notifyWindowClosed() {
-    }
 }
