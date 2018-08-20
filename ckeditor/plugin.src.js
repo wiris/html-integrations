@@ -2,64 +2,25 @@ import IntegrationModel from './core/src/integrationmodel.js';
 import Parser from './core/src/parser.js';
 import Util from './core/src/util.js';
 
-// TODO: Add comments
-//       Change var to let
-//       Arrow functions
-
 /**
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
  */
 export default class CKEditorIntegration extends IntegrationModel {
-
   constructor(integrationModelProperties) {
     super(integrationModelProperties);
-    this.lastDataSet = '';
-    this.element = null;
-    this.ckeditorInstanceReady = false;
+
+    /**
+     * Folder name used for the integration inside ckeditor plugins folder.
+     * @type {string}
+     */
     this.integrationFolderName = 'ckeditor_wiris';
   }
 
   /**
-   * Init function. Usually this method is called from the CKEditor
-   * initialization function.
-   * @override
-   */
-  init() {
-    // Is mandatory separate the parent initialization and the icons creation
-    // due to init waits to execute the callbackfunction until 'onLoad' event.
-    // this.createButtonIcons(this.callbackMethodArguments.editor)
-    super.init();
-  }
-
-  /**
-   * It creates MathType and ChemType toolbar icons.
-   * IMPORTANT: This funcions needs to be executed at the same time than
-   * CKEditor initialization function or the icons won't be added.
+   * It creates MathType and ChemType commands.
    * @param {object} editor CKEditor editor instance.
    */
-  // createButtonIcons(editor) {
-  //   editor.ui.addButton('ckeditor_wiris_formulaEditor', {
-
-  //     'label': 'Insert a math equation - MathType',
-  //     'command': 'ckeditor_wiris_openFormulaEditor',
-  //     'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/' + 'formula.png'
-
-  //   });
-
-  //   editor.ui.addButton('ckeditor_wiris_formulaEditorChemistry', {
-
-  //     'label': 'Insert a chemistry formula - ChemType',
-  //     'command': 'ckeditor_wiris_openFormulaEditorChemistry',
-  //     'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/' + 'chem.png'
-
-  //   });
-  // }
-
-  // /**
-  //  * It creates MathType and ChemType commands.
-  //  * @param {object} editor CKEditor editor instance.
-  //  */
   createButtonCommands(editor) {
     // Is needed specify that our images are allowed.
     let allowedContent = 'img[align,';
@@ -108,105 +69,74 @@ export default class CKEditorIntegration extends IntegrationModel {
         Util.containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
 
         event.data.dialog = null;
-
       }
 
     });
-
-    // FIXME: Try to avoid this.
-    // editor.editable().attachListener(editor.editable(), 'click', function (e) {
-
-    //   if (_wrs_currentEditor != editor) {
-    //     _wrs_currentEditor = editor;
-    //   }
-
-    // });
   }
 
   addEditorListeners(editor) {
     if (typeof editor.config.wirislistenersdisabled == 'undefined' ||
       !editor.config.wirislistenersdisabled) {
 
-      // editor.on('instanceReady', function () {
+      // First editor parsing.
+      editor.setData(Parser.initParse(editor.getData()));
 
-        this.lastDataSet = Parser.initParse(editor.getData());
-        // First editor parsing.
-        editor.setData(this.lastDataSet);
+      editor.on('contentDom', function () {
 
-        editor.on('contentDom', function () {
+        editor.on('doubleclick', function (event) {
 
-          editor.on('doubleclick', function (event) {
+          if (event.data.element.$.nodeName.toLowerCase() == 'img' &&
+            Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('imageClassName')) ||
+            Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('CASClassName'))) {
 
-            if (event.data.element.$.nodeName.toLowerCase() == 'img' &&
-              Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('imageClassName')) ||
-              Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('CASClassName'))) {
-
-              event.data.dialog = null;
-            }
-
-          }.bind(this));
-
-        }.bind(this));
-
-
-        editor.on('setData', function (e) {
-
-          e.data.dataValue = Parser.initParse(e.data.dataValue || "");
-
-        }.bind(this));
-
-        editor.on('afterSetData', function (e) {
-
-          if (typeof wrs_observer != 'undefined') {
-            Array.prototype.forEach.call(document.getElementsByClassName('Wirisformula'), function (wirisImages) {
-
-              Parser.observer.observe(wirisImages, wrs_observer_config);
-
-            });
+            event.data.dialog = null;
           }
 
         }.bind(this));
 
-        editor.on('getData', function (e) {
+      }.bind(this));
 
-          e.data.dataValue = Parser.endParse(e.data.dataValue || "");
 
-        }.bind(this));
+      editor.on('setData', function (e) {
 
-        // When CKEditors changes from WYSIWYG to source element, recalculate 'element' variable is mandatory.
-        editor.on('mode', function (e) {
+        e.data.dataValue = Parser.initParse(e.data.dataValue || "");
 
-          this.checkElement(editor, null, (el) => {
+      }.bind(this));
 
-            // this.element = el;
+      editor.on('afterSetData', function (e) {
+
+        if (typeof wrs_observer != 'undefined') {
+          Array.prototype.forEach.call(document.getElementsByClassName('Wirisformula'), function (wirisImages) {
+
+            Parser.observer.observe(wirisImages, wrs_observer_config);
 
           });
-
-        }.bind(this));
-
-        if (this.lastDataSet != '') {
-          editor.setData(this.lastDataSet);
         }
 
+      }.bind(this));
 
-        this.checkElement(editor, this.element, (el) => {
+      editor.on('getData', function (e) {
 
-          // this.element = el;
+        e.data.dataValue = Parser.endParse(e.data.dataValue || "");
 
-        });
-      // }.bind(this));
+      }.bind(this));
 
+      // When CKEditors changes from WYSIWYG to source element, recalculate 'element' variable is mandatory.
+      editor.on('mode', function (e) {
+
+        this.checkElement();
+
+      }.bind(this));
+
+      this.checkElement();
     }
     else {
-      this.lastDataSet = editor.getData();
       // CKEditor replaces several times the element element during its execution, so we must assign the events again.
       // We need to set a callback function to set 'element' variable inside CKEDITOR.plugins.add scope.
       editor.on('instanceReady', function (params) {
-        this.checkElement(editor, this.element, (el) => {
 
-          // this.element = el;
+        this.checkElement();
 
-        });
       }.bind(this));
 
       editor.resetDirty();
@@ -216,89 +146,90 @@ export default class CKEditorIntegration extends IntegrationModel {
   /**
    * CKEditor replaces several times the element element during its execution,
    * so we must assign the events again to editor element.
-   * @param  {object}   editor   current CKEDITOR instance.
-   * @param  {object}   element  last html editor element.
-   * @param  {Function} callback optional callback. Necessary to replace the last calculated element on a setInterval method.
    */
-  checkElement(editor, element, callback) {
-    // FIXME: 
-    if (true) {
-      let newElement;
-      const elem = document.getElementById('cke_contents_' + editor.name) ?
-        document.getElementById('cke_contents_' + editor.name) :
-        document.getElementById('cke_' + editor.name);
+  checkElement() {
+    const editor = this.callbackMethodArguments.editor;
+    const elem = document.getElementById('cke_contents_' + editor.name) ?
+      document.getElementById('cke_contents_' + editor.name) :
+      document.getElementById('cke_' + editor.name);
 
-      if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-        newElement = editor.container.$;
-      } else {
-        newElement = elem.getElementsByTagName('iframe')[0];
-      }
-
-      let _wrs_int_divIframe = false;
-      if (newElement == null) {
-        // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
-        var dataContainer;
-        for (var classElementIndex in elem.classList) {
-          var classElement = elem.classList[classElementIndex];
-          if (classElement.search('cke_\\d') != -1) {
-            dataContainer = classElement;
-            break;
-          }
-        }
-        if (dataContainer) {
-          newElement = document.getElementById(classElement + '_contents');
-          _wrs_int_divIframe = true;
-        }
-      }
-
-      if ((!newElement.wirisActive && element == null) || newElement != element) {
-        if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-          if (newElement.tagName == 'TEXTAREA') {
-            // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
-            var eventElements = document.getElementsByClassName('cke_textarea_inline');
-            Array.prototype.forEach.call(eventElements, function (
-              entry
-            ) {
-              Util.addElementEvents(
-                entry,
-                function (element, event) {
-                  this.doubleClickHandlerForDiv(
-                    editor,
-                    element,
-                    event
-                  );
-                }.bind(this),
-                this.mousedownHandler,
-                this.mouseupHandler
-              );
-            });
-          } else {
-            Util.addElementEvents(newElement, function (element, event) {
-              this.doubleClickHandlerForDiv(element, event);
-            }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
-          }
-          newElement.wirisActive = true;
-          element = newElement;
-        } else if (newElement.contentWindow != null) {
-          Util.addIframeEvents(newElement, function (element, event) {
-            this.doubleClickHandlerForIframe(element, event);
-          }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
-          newElement.wirisActive = true;
-          element = newElement;
-        } else if (_wrs_int_divIframe) {
-          Util.addElementEvents(newElement, function (element, event) {
-            this.doubleClickHandlerForDiv(element, event);
-          }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
-          newElement.wirisActive = true;
-          element = newElement;
-        }
-      }
-      callback(element);
+    let newElement;
+    if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+      newElement = editor.container.$;
+    } else {
+      newElement = elem.getElementsByTagName('iframe')[0];
     }
-    else {
-      setTimeout(function () {
-        this.checkElement(editor, element, callback);
-      }.bind(this), 50);
+
+    let _wrs_int_divIframe = false;
+    if (!newElement) {
+      // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
+      let dataContainer;
+      for (let classElementIndex in elem.classList) {
+        const classElement = elem.classList[classElementIndex];
+        if (classElement.search('cke_\\d') != -1) {
+          dataContainer = classElement;
+          break;
+        }
+      }
+      if (dataContainer) {
+        newElement = document.getElementById(dataContainer + '_contents');
+        _wrs_int_divIframe = true;
+      }
+    }
+
+    // If the element wasn't treated, add the events.
+    if (!newElement.wirisActive) {
+      if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
+        if (newElement.tagName == 'TEXTAREA') {
+          // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
+          const eventElements = document.getElementsByClassName('cke_textarea_inline');
+          Array.prototype.forEach.call(eventElements, function (entry) {
+
+            Util.addElementEvents(
+              entry,
+              function (element, event) {
+
+                this.doubleClickHandlerForDiv(
+                  editor,
+                  element,
+                  event
+                );
+
+              }.bind(this),
+              this.mousedownHandler,
+              this.mouseupHandler
+            );
+
+          });
+        }
+        else {
+          Util.addElementEvents(newElement, function (element, event) {
+
+            this.doubleClickHandlerForDiv(element, event);
+
+          }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
+        }
+        // Set the element as treated
+        newElement.wirisActive = true;
+      }
+      else if (newElement.contentWindow != null) {
+        Util.addIframeEvents(newElement, function (element, event) {
+
+          this.doubleClickHandlerForIframe(element, event);
+
+        }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
+        // Set the element as treated
+        newElement.wirisActive = true;
+      }
+      else if (_wrs_int_divIframe) {
+        Util.addElementEvents(newElement, function (element, event) {
+
+          this.doubleClickHandlerForDiv(element, event);
+
+        }.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
+        // Set the element as treated
+        newElement.wirisActive = true;
+      }
     }
   }
 
@@ -346,10 +277,16 @@ export default class CKEditorIntegration extends IntegrationModel {
     }
   }
 
+  /**
+   * Wrapper from Core.js to get integration folder path.
+   */
   getCorePath() {
     return CKEDITOR.plugins.getPath(this.integrationFolderName);
   }
 
+  /**
+   * Gets the target selection.
+   */
   getSelection() {
     this.callbackMethodArguments.editor.editable().$.focus();
     return this.callbackMethodArguments.editor.getSelection().getNative();
@@ -367,7 +304,7 @@ export default class CKEditorIntegration extends IntegrationModel {
     // Due to ckeditor has its own DOM Elements and also we use the document selection
     // is needed update ckeditor instance's selection and document's selection.
     this.callbackMethodArguments.editor.getSelection().selectRanges(range);
-    var currentSelection = document.getSelection();
+    const currentSelection = document.getSelection();
     currentSelection.removeAllRanges();
     currentSelection.addRange(range);
   }
@@ -377,7 +314,6 @@ export default class CKEditorIntegration extends IntegrationModel {
     this.createButtonCommands(this.callbackMethodArguments.editor);
     this.addEditorListeners(this.callbackMethodArguments.editor);
   }
-
 }
 
 (function () {
