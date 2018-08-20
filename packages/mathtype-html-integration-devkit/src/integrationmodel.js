@@ -104,8 +104,6 @@ export default class IntegrationModel {
     /**
      * Init function. Usually this method is called from the integration side once the core.js file is loaded.
      * Is strongly recommended call this method by listening onload event when core.js is loaded.
-     * @param {object} target - DOM target
-     * @param {string} lang - integration language.
      */
     init() {
         // We need to wait until Core class is loaded ('onLoad' event) before
@@ -204,6 +202,17 @@ export default class IntegrationModel {
         }
     }
 
+    /**
+     * Gets the target selection.
+     */
+    getSelection() {
+        if (this.isIframe) {
+            return this.target.contentDocument.getSelection();
+        }
+        else {
+            return this.target.getSelection();
+        }
+    }
 
     /**
      * Add events to formulas in the DOM target.
@@ -238,7 +247,7 @@ export default class IntegrationModel {
             }
             if (Util.containsClass(element, 'Wirisformula')) {
                     this.core.editionProperties.temporalImage = element;
-                    this.openExistingFormulaEditor(this.target);
+                    this.openExistingFormulaEditor();
             }
         }
     }
