@@ -207,9 +207,11 @@ export default class IntegrationModel {
      */
     getSelection() {
         if (this.isIframe) {
-            return this.target.contentDocument.getSelection();
+            this.target.contentWindow.focus();
+            return this.target.contentWindow.getSelection();
         }
         else {
+            this.target.focus();
             return this.target.getSelection();
         }
     }
