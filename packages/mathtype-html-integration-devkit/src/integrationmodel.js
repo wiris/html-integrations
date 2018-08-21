@@ -12,7 +12,7 @@ export default class IntegrationModel {
         /**
          * Language. Needed for accessibility and locales.
          * @type {string} language - 'en' by default.
-        */
+         */
         this.language = this.getLanguage();
         /**
          * Configuration service. Core needs this service as entry point to load all
@@ -42,9 +42,9 @@ export default class IntegrationModel {
             throw new Error('IntegrationModel constructor error: target property missed.')
         }
         /**
-        * Integration script name. Needed to know the plugin path.
-        * @type {string} script
-        */
+         * Integration script name. Needed to know the plugin path.
+         * @type {string} script
+         */
         if ('scriptName' in integrationModelProperties) {
             this.scriptName = integrationModelProperties.scriptName;
         } else {
@@ -99,6 +99,14 @@ export default class IntegrationModel {
          * @type {Listener} listener -
          */
         this.listener = null;
+        /**
+         * Instance of the integration editor object.
+         * @type {object}
+         */
+        this.editorObject = null;
+        if ('editorObject' in integrationModelProperties) {
+            this.editorObject = integrationModelProperties.editorObject;
+        }
     }
 
     /**
