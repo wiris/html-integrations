@@ -105,10 +105,10 @@ export default class CKEditorIntegration extends IntegrationModel {
 
       editor.on('afterSetData', function (e) {
 
-        if (typeof wrs_observer != 'undefined') {
+        if (typeof Parser.observer !== 'undefined') {
           Array.prototype.forEach.call(document.getElementsByClassName('Wirisformula'), function (wirisImages) {
 
-            Parser.observer.observe(wirisImages, wrs_observer_config);
+            Parser.observer.observe(wirisImages);
 
           });
         }
