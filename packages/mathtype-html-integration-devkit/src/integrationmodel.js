@@ -313,4 +313,11 @@ export default class IntegrationModel {
     callbackFunction() {
         this.addEvents(this.target);
     }
+
+    /**
+     * Function called when the content submits an action.
+     */
+    notifyWindowClosed() {
+        // Nothing.
+    }
 }
