@@ -18,6 +18,15 @@ export default class CKEditorIntegration extends IntegrationModel {
   }
 
   /**
+   * Returns the integration language.
+   * @returns {string} integration language.
+   * @override
+   */
+  getLanguage() {
+    return this.editorObject.langCode;
+  }
+
+  /**
    * It creates MathType and ChemType commands.
    */
   createButtonCommands() {
@@ -62,19 +71,9 @@ export default class CKEditorIntegration extends IntegrationModel {
 
   }
 
-  addImageListeners() {
-    this.editorObject.on('doubleclick', function (event) {
-
-      if (event.data.element.$.nodeName.toLowerCase() == 'img' &&
-        Util.containsClass(event.data.element.$, _wrs_conf_imageClassName) ||
-        Util.containsClass(event.data.element.$, _wrs_conf_CASClassName)) {
-
-        event.data.dialog = null;
-      }
-
-    });
-  }
-
+  /**
+   * Adds all the needed editor listeners.
+   */
   addEditorListeners() {
     const editor = this.editorObject;
 
@@ -147,6 +146,7 @@ export default class CKEditorIntegration extends IntegrationModel {
   }
 
   /**
+   * Checks the current container and assign events in case that it doesn't have them.
    * CKEditor replaces several times the element element during its execution,
    * so we must assign the events again to editor element.
    */
