@@ -10,13 +10,10 @@ import Util from './util.js';
 export default class IntegrationModel {
     constructor(integrationModelProperties) {
         /**
-         * Language. Needed for accessibility and locales.
+         * Language. Needed for accessibility and locales. English by default.
          * @type {string} language - 'en' by default.
          */
-        this.language = this.getLanguage();
-        if ('language' in integrationModelProperties) {
-            this.language = integrationModelProperties.language;
-        }
+        this.language = 'en';
         /**
          * Configuration service. Core needs this service as entry point to load all
          * service paths. Mandatory property.
@@ -120,6 +117,7 @@ export default class IntegrationModel {
      * Is strongly recommended call this method by listening onload event when core.js is loaded.
      */
     init() {
+        this.language = this.getLanguage();
         // We need to wait until Core class is loaded ('onLoad' event) before
         // call the callback method.
         this.listener = Listeners.newListener('onLoad', function() {

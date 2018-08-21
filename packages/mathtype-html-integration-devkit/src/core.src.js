@@ -30,7 +30,6 @@ export default class Core {
          * @type {string} language - 'en' by default.
          */
         this.language = 'en';
-
         /**
          * Class to manage plugin locales.
          * @type {StringManager}
