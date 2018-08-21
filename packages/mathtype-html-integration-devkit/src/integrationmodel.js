@@ -14,6 +14,9 @@ export default class IntegrationModel {
          * @type {string} language - 'en' by default.
          */
         this.language = this.getLanguage();
+        if ('language' in integrationModelProperties) {
+            this.language = integrationModelProperties.language;
+        }
         /**
          * Configuration service. Core needs this service as entry point to load all
          * service paths. Mandatory property.
@@ -22,7 +25,8 @@ export default class IntegrationModel {
         this.configurationService = '';
         if ('configurationService' in integrationModelProperties) {
             this.configurationService = integrationModelProperties.configurationService;
-        } else {
+        }
+        else {
             throw new Error('IntegrationModel constructor error: configurationService property missed.')
         }
         /**
@@ -38,7 +42,8 @@ export default class IntegrationModel {
 
         if ('target' in integrationModelProperties) {
             this.target = integrationModelProperties.target;
-        } else {
+        }
+        else {
             throw new Error('IntegrationModel constructor error: target property missed.')
         }
         /**
@@ -47,7 +52,8 @@ export default class IntegrationModel {
          */
         if ('scriptName' in integrationModelProperties) {
             this.scriptName = integrationModelProperties.scriptName;
-        } else {
+        }
+        else {
             throw new Error('IntegrationModel constructor error: scriptName property missed.')
         }
         /**
