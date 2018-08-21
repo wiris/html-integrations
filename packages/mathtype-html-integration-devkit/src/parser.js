@@ -98,7 +98,7 @@ export default class Parser {
         }
 
         if (typeof Parser.observer != 'undefined') {
-            Parser.observer.observe(imgObject, Parser.observer.Config);
+            Parser.observer.observe(imgObject);
         }
 
         // Role math https://www.w3.org/TR/wai-aria/roles#math.
@@ -547,16 +547,27 @@ export default class Parser {
     }
 }
 
-
 // Mutation observers to avoid wiris image formulas class be removed.
-if (typeof MutationObserver != 'undefined') {
-    Parser.observer = new MutationObserver(function(mutations) {
+if (typeof MutationObserver !== 'undefined') {
+    const mutationObserver = new MutationObserver(function(mutations) {
+
         mutations.forEach(function(mutation) {
-            if (mutation.oldValue == Configuration.get('imageClassName') && mutation.attributeName == 'class' && mutation.target.className.indexOf(Configuration.get('imageClassName')) == -1 ) {
+
+            if (mutation.oldValue === Configuration.get('imageClassName') &&
+                mutation.attributeName === 'class' &&
+                mutation.target.className.indexOf(Configuration.get('imageClassName')) == -1 ) {
+
                 mutation.target.className = Configuration.get('imageClassName');
             }
+
         });
+
     });
 
-    Parser.observer.Config = { attributes: true, attributeOldValue:true };
+    Parser.observer = Object.create(mutationObserver);
+    Parser.observer.Config = { attributes: true, attributeOldValue: true };
+    // We use own default config.
+    Parser.observer.observe = function name(target) {
+        this.__proto__.observe(target, this.Config);
+    };
 }
