@@ -423,7 +423,15 @@ export default class Core {
             }
             else {
                 const editorSelection = this.integrationModel.getSelection();
-                const range = editorSelection.getRangeAt(0);
+                let range;
+                // In IE is needed keep the range due to after focus the modal window it can't be retrieved the last selection.
+                if (this.editionProperties.range) {
+                    range = this.editionProperties.range;
+                    this.editionProperties.range = null;
+                }
+                else {
+                    range = editorSelection.getRangeAt(0);
+                }
 
                 let node = range.startContainer;
                 const position = range.startOffset;
@@ -485,15 +493,22 @@ export default class Core {
     openModalDialog(language, target, isIframe) {
         this.editMode = 'images';
 
+        // In IE is needed keep the range due to after focus the modal window it can't be retrieved the last selection.
         try {
             if (isIframe) {
+                // Is needed focus the target first.
+                target.contentWindow.focus()
                 var selection = target.contentWindow.getSelection();
                 this.editionProperties.range = selection.getRangeAt(0);
-            } else {
+            }
+            else {
+                // Is needed focus the target first.
+                target.focus()
                 var selection = getSelection();
                 this.editionProperties.range = selection.getRangeAt(0);
             }
-        } catch (e) {
+        }
+        catch (e) {
             this.editionProperties.range = null;
         }
 
