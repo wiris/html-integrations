@@ -310,7 +310,9 @@ export default class CKEditorIntegration extends IntegrationModel {
        */
       let integrationModelProperties = {};
       integrationModelProperties.editorObject = editor;
-      integrationModelProperties.target = editor.container.$;
+      // In CKEditor always there is an iframe or a div container. To access, we use the property that
+      // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
+      integrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
       integrationModelProperties.configurationService = '@param.js.configuration.path@';
       integrationModelProperties.version = '@plugin.version@';
       integrationModelProperties.scriptName = "plugin.js";
