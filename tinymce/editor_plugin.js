@@ -224,11 +224,12 @@ var _wrs_int_langCode = 'en';
                             editor.setContent(wrs_initParse(content, language), {format: "html"});
                             // This clean undoQueue for prevent onChange and Dirty state.
                             editor.undoManager.clear();
-                            // Init parsing OK. If a setContent method is called
-                            // wrs_initParse is called again.
-                            // Now if source code is edited the returned code is parsed.
-                            _wrs_int_initParsed = true;
                         }
+                        // Init parsing OK. If a setContent method is called
+                        // wrs_initParse is called again.
+                        // Now if source code is edited the returned code is parsed.
+                        // PLUGINS-1070: We set this variable out of condition to parse content after.
+                        _wrs_int_initParsed = true;
 
                         if (!editor.inline) {
                             element = editor.getContentAreaContainer().firstChild;
