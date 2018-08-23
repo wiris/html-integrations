@@ -124,8 +124,8 @@ export default class IntegrationModel {
             this.callbackFunction(this.callbackMethodArguments);
         }.bind(this));
 
-        Core.addListener(this.listener);
         this.setCore(new Core());
+        this.core.addListener(this.listener);
         this.core.language = this.language;
 
         // Initializing Core class.

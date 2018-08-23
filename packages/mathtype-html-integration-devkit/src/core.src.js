@@ -30,6 +30,7 @@ export default class Core {
          * @type {string} language - 'en' by default.
          */
         this.language = 'en';
+
         /**
          * Class to manage plugin locales.
          * @type {StringManager}
@@ -120,6 +121,13 @@ export default class Core {
                 }
             }
         )();
+
+        /**
+         * Plugin listeners
+         * @type {Array}
+         * @description Array containing pluginListeners
+         */
+        this.listeners = new Listeners();
     }
 
     /**
@@ -191,11 +199,10 @@ export default class Core {
                 // Load lang file.
                 this.loadLangFile();
                 this.loadCSS();
-                // this.loadCustomConfiguration();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
                 // We need to wait until stringManager has been loaded.
-                var stringManagerListener = Listeners.newListener('onLoad', function() {
-                    Core.listeners.fire('onLoad', {});
+                var stringManagerListener = Listeners.newListener('onLoad', () => {
+                    this.listeners.fire('onLoad', {});
                 })
                 Core.stringManager.addListener(stringManagerListener);
 
@@ -289,8 +296,8 @@ export default class Core {
      * Add a plugin listener.
      * @param {object} listener
      */
-    static addListener(listener) {
-        Core.listeners.add(listener);
+    addListener(listener) {
+        this.listeners.add(listener);
     }
 
     /**
@@ -325,7 +332,7 @@ export default class Core {
         e.language = this.language;
         e.editMode = this.editMode;
 
-        if (Core.listeners.fire('onBeforeFormulaInsertion', e)) {
+        if (this.listeners.fire('onBeforeFormulaInsertion', e)) {
             return;
         }
 
@@ -363,7 +370,7 @@ export default class Core {
             this.insertElementOnSelection(e.node, focusElement, windowTarget);
         }
 
-        if (Core.listeners.fire('onAfterFormulaInsertion', e)) {
+        if (this.listeners.fire('onAfterFormulaInsertion', e)) {
             return;
         }
     }
@@ -657,9 +664,3 @@ export default class Core {
         return this.customEditors;
     }
 }
- /**
-* Plugin listeners
-* @type {Array}
-* @description Array containing pluginListeners
-*/
-Core.listeners = new Listeners();
