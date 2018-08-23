@@ -165,7 +165,7 @@ export default class CKEditorIntegration extends IntegrationModel {
 
     let _wrs_int_divIframe = false;
     if (!newElement) {
-      // On this case, ckeditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
+      // On this case, CKEditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
       let dataContainer;
       for (let classElementIndex in elem.classList) {
         const classElement = elem.classList[classElementIndex];
@@ -252,23 +252,6 @@ export default class CKEditorIntegration extends IntegrationModel {
     return this.editorObject.getSelection().getNative();
   }
 
-  /**
-   * This function is called from wrs_int_selectRange on core.js
-   * Uses CKEDITOR focus method to move caret to a specific range.
-   */
-  selectRange(range) {
-    // Select end position to set the caret after the image.
-    range.setStart(range.endContainer, range.endOffset);
-    // We set selection at start of range because we set start at end of selection.
-    range.collapse(true);
-    // Due to ckeditor has its own DOM Elements and also we use the document selection
-    // is needed update ckeditor instance's selection and document's selection.
-    this.editorObject.getSelection().selectRanges(range);
-    const currentSelection = document.getSelection();
-    currentSelection.removeAllRanges();
-    currentSelection.addRange(range);
-  }
-
   callbackFunction() {
     super.callbackFunction();
     this.createButtonCommands();
@@ -320,7 +303,7 @@ export default class CKEditorIntegration extends IntegrationModel {
       integrationModelProperties.environment = {};
       integrationModelProperties.environment.editor = "CKEditor4";
 
-      // There are platforms like Drupal that initialize ckeditor but they hide or remove the container element.
+      // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
       // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
       if (integrationModelProperties.target) {
         const ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
