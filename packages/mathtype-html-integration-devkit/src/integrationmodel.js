@@ -224,7 +224,7 @@ export default class IntegrationModel {
         }
         else {
             this.target.focus();
-            return this.target.getSelection();
+            return window.getSelection();
         }
     }
 
