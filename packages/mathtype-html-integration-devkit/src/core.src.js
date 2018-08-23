@@ -195,10 +195,15 @@ export default class Core {
                 this.loadCSS();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
                 // We need to wait until stringManager has been loaded.
-                var stringManagerListener = Listeners.newListener('onLoad', () => {
+                if (Core.stringManager === null) {
+                    var stringManagerListener = Listeners.newListener('onLoad', () => {
+                        this.listeners.fire('onLoad', {});
+                    })
+                    Core.stringManager.addListener(stringManagerListener);
+                }
+                else {
                     this.listeners.fire('onLoad', {});
-                })
-                Core.stringManager.addListener(stringManagerListener);
+                }
 
             }
         }.bind(this);
@@ -269,7 +274,6 @@ export default class Core {
         // When strings are loaded, it loads into stringManager
         script.onload = function () {
             Core.getStringManager().loadStrings(wrs_strings);
-            // Unseting global language strings array to prevent access.
         };
         document.getElementsByTagName('head')[0].appendChild(script);
     }
