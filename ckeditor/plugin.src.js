@@ -297,7 +297,7 @@ export default class CKEditorIntegration extends IntegrationModel {
 
     });
 
-    editor.on('instanceReady', function () {
+    editor.on('instanceReady', () => {
       /**
        * Integration model properties
        * @type {object}
@@ -320,8 +320,12 @@ export default class CKEditorIntegration extends IntegrationModel {
       integrationModelProperties.environment = {};
       integrationModelProperties.environment.editor = "CKEditor4";
 
-      let ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
-      ckeditorIntegrationInstance.init();
+      // There are platforms like Drupal that initialize ckeditor but they hide or remove the container element.
+      // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
+      if (integrationModelProperties.target) {
+        const ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
+        ckeditorIntegrationInstance.init();
+      }
 
     });
     }
