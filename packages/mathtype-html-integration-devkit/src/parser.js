@@ -6,8 +6,8 @@ import Image from './image';
 import Accessibility from "./accessibility";
 import ServiceProvider from './serviceprovider';
 import Configuration from './configuration';
-import Constants from './constants.js';
-import md5 from './md5.js';
+import Constants from './constants';
+import md5 from './md5';
 
 /**
  * This class represent a MahML parser. Converts MathML into formulas depending on the
@@ -366,7 +366,7 @@ export default class Parser {
         }
         dataObject.formula = com.wiris.js.JsPluginTools.md5encode(Util.propertiesToString(dataMd5));
         dataObject.lang = (typeof language == 'undefined') ? 'en' : language;
-        dataObject.version = WirisPlugin.Configuration.get('version');
+        dataObject.version = Configuration.get('version');
 
         var result = ServiceProvider.getService('showimage', Util.httpBuildQuery(dataObject), true);
         return result;

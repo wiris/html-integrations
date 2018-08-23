@@ -12,13 +12,13 @@ export default backwardsLib;
  */
 function wrs_addPluginListener(jsonListener) {
     // TODO: Add documentation URL + doc example.
-    console.log('Deprecated method');
+    console.warn('Deprecated method');
     var eventName;
     eventName = Object.keys(jsonListener)[0];
     var callback;
     callback = jsonListener[eventName];
     var pluginListener = Listeners.newListener(eventName, callback);
-    Core.addListener(pluginListener);
+    Core.addGlobalListener(pluginListener);
 }
 
 window.wrs_addPluginListener = wrs_addPluginListener;

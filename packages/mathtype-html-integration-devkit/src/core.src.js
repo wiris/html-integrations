@@ -32,12 +32,6 @@ export default class Core {
         this.language = 'en';
 
         /**
-         * Class to manage plugin locales.
-         * @type {StringManager}
-         */
-        Core.stringManager = new StringManager();
-
-        /**
          * Edit mode. Admit 'images' and 'latex' values.
          * @type {string}
          */
@@ -123,9 +117,9 @@ export default class Core {
         )();
 
         /**
-         * Plugin listeners
+         * Plugin listeners.
          * @type {Array}
-         * @description Array containing pluginListeners
+         * @description Array containing pluginListeners.
          */
         this.listeners = new Listeners();
     }
@@ -301,6 +295,14 @@ export default class Core {
     }
 
     /**
+     * Add a global plugin listener.
+     * @param {object} listener
+     */
+    static addGlobalListener(listener) {
+        Core.globalListeners.add(listener);
+    }
+
+    /**
      * Inserts or modifies formulas in a specified target.
      * @param {object} focusElement Element to be focused
      * @param {object} windowTarget Window where the editable content is
@@ -333,6 +335,10 @@ export default class Core {
         e.editMode = this.editMode;
 
         if (this.listeners.fire('onBeforeFormulaInsertion', e)) {
+            return;
+        }
+
+        if (Core.globalListeners.fire('onBeforeFormulaInsertion', e)) {
             return;
         }
 
@@ -371,6 +377,10 @@ export default class Core {
         }
 
         if (this.listeners.fire('onAfterFormulaInsertion', e)) {
+            return;
+        }
+
+        if (Core.globalListeners.fire('onAfterFormulaInsertion', e)) {
             return;
         }
     }
@@ -667,3 +677,16 @@ export default class Core {
         return this.customEditors;
     }
 }
+
+/**
+ * Plugin static listeners.
+ * @type {Array}
+ * @description Array containing pluginListeners.
+ */
+Core.globalListeners = new Listeners();
+
+/**
+ * Class to manage plugin locales.
+ * @type {StringManager}
+ */
+Core.stringManager = new StringManager();
