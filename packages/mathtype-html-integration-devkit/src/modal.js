@@ -964,7 +964,6 @@ export default class ModalDialog {
             };
             // This move modal with hadware acceleration.
             this.container.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
-            this.container.style.position = 'absolute';
         }
         if (this.resizeDataObject) {
             var limitX = Math.min(this.eventClient(ev).X,window.innerWidth - this.scrollbarWidth - 7);

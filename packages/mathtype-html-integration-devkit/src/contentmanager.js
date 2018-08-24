@@ -152,6 +152,7 @@ export default class ContentManager {
             this.editor.focus();
             // Setting div in rtl in case of it's activated.
             if (this.editor.getEditorModel().isRTL()) {
+                modalObject.container.className += ' wrs_modal_rtl';
                 this.editor.element.style.direction = 'rtl';
             }
 
