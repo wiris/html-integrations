@@ -204,10 +204,10 @@
     width: 99%;
     height: 99%;
     overflow: hidden;
-    transform: translate(-50%, -50%);
+    transform: translate(50%, -50%);
     top: 50%;
-    left: 50%;
-    position: absolute;
+    right: 50% !important;
+    position: fixed;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_ios {
@@ -216,10 +216,10 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    transform: translate(-50%, -50%);
+    transform: translate(50%, -50%);
     top: 50%;
-    left: 50%;
-    position: absolute;
+    right: 50% !important;
+    position: fixed;
 }
 
 
@@ -401,6 +401,7 @@
     cursor: pointer;
     font-family: arial, sans-serif;
     background-color: #DDDDDD;
+    height: 32px;
 }
 
 .wrs_modal_button_accept,
@@ -420,6 +421,7 @@
     background: #778e9a;
     cursor: pointer;
     font-family: arial, sans-serif;
+    height: 32px;
 }
 
 .wrs_editor_vertical_bar {
@@ -524,6 +526,7 @@
     font-family: arial, sans-serif;
     background-color: #DDDDDD;
     background-image: none;
+    height: 32px;
 }
 
 .wrs_button_accept,
@@ -543,6 +546,7 @@
     background: #778e9a;
     cursor: pointer;
     font-family: arial, sans-serif;
+    height: 32px;
 }
 
 .wrs_editor button{
@@ -557,4 +561,20 @@
 
 .wrs_modal_overlay.wrs_modal_desktop.wrs_stack.wrs_overlay_active {
     display: block;
+}
+.wrs_modal_rtl .wrs_modal_button_cancel {
+    margin-right: 5px;
+    margin-left: 0;
+}
+.wrs_modal_rtl .wrs_modal_button_accept {
+    margin-right: 0;
+    margin-left: 5px;
+}
+.wrs_modal_rtl .wrs_button_cancel {
+    margin-right: 5px;
+    margin-left: 0;
+}
+.wrs_modal_rtl .wrs_button_accept {
+    margin-right: 0;
+    margin-left: 5px;
 }
