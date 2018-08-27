@@ -161,6 +161,7 @@ export default class FroalaIntegration extends IntegrationModel {
         }
         var froalaIntegrationInstance = new FroalaIntegration(integrationModelProperties);
         froalaIntegrationInstance.init();
+        froalaIntegrationInstance.listeners.fire('onTargetReady', {});
         WirisPlugin.instances[froalaIntegrationInstance.editorObject.id] = froalaIntegrationInstance;
         // The last instance as current instance.
         WirisPlugin.currentInstance = froalaIntegrationInstance;

@@ -35,6 +35,7 @@ window.wrs_int_init = function(target,toolbar) {
     // GenericIntegration instance.
     var genericIntegrationInstance = new GenericIntegration(integrationModelProperties);
     genericIntegrationInstance.init();
+    genericIntegrationInstance.listeners.fire('onTargetReady', {});
 }
 
 /**
