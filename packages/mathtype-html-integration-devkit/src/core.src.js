@@ -395,6 +395,7 @@ export default class Core {
      * @ignore
      */
     placeCaretAfterNode(node) {
+        this.integrationModel.getSelection();
         const nodeDocument = node.ownerDocument;
         if (typeof nodeDocument.getSelection !== 'undefined') {
             const range = nodeDocument.createRange();

@@ -82,7 +82,10 @@ export default class IntegrationModel {
          * Indicates if the DOM target is - or not - and iframe.
          * @type {boolean} isIframe
          */
-        this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
+        this.isIframe = false;
+        if (this.target != null) {
+            this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
+        }
         /**
          * Indicates if an image is selected. Needed to resize the image to the original size in case
          * the image is resized.
@@ -95,14 +98,6 @@ export default class IntegrationModel {
          */
         this.core = null;
         /**
-         * This listener is attached to Core class in order to launch it's callback function once
-         * the 'onLoad' Core event is fired. Should be added from the integration side
-         * (i.e in the IntegrationModel integration instance) and usually contains a callback function which parse
-         * the document, assign command to buttons, etc. To call this methods is mandatory have the Core loaded.
-         * @type {Listener} listener -
-         */
-        this.listener = null;
-        /**
          * Instance of the integration editor object.
          * @type {object}
          */
@@ -110,6 +105,11 @@ export default class IntegrationModel {
         if ('editorObject' in integrationModelProperties) {
             this.editorObject = integrationModelProperties.editorObject;
         }
+        /**
+         * Integration model listeners.
+         * @type {Listeners}
+         */
+        this.listeners = new Listeners();
     }
 
     /**
@@ -120,12 +120,12 @@ export default class IntegrationModel {
         this.language = this.getLanguage();
         // We need to wait until Core class is loaded ('onLoad' event) before
         // call the callback method.
-        this.listener = Listeners.newListener('onLoad', function() {
+        var listener = Listeners.newListener('onLoad', function() {
             this.callbackFunction(this.callbackMethodArguments);
         }.bind(this));
 
         this.setCore(new Core());
-        this.core.addListener(this.listener);
+        this.core.addListener(listener);
         this.core.language = this.language;
 
         // Initializing Core class.
@@ -175,11 +175,20 @@ export default class IntegrationModel {
     }
 
     /**
-     * Sets the object target.
+     * Sets the object target. Updates, if necessary,  isIframe property.
      * @param {object} target  - target object.
      */
-    setTarget() {
+    setTarget(target) {
         this.target = target;
+        this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
+    }
+
+    /**
+     * Sets the editor object.
+     * @param {object} editorObject - The editor object.
+     */
+    setEditorObject(editorObject) {
+        this.editorObject = editorObject;
     }
 
     /**
@@ -325,7 +334,10 @@ export default class IntegrationModel {
      * the integration.
      */
     callbackFunction() {
-        this.addEvents(this.target);
+        var listener = Listeners.newListener('onTargetReady', function() {
+            this.addEvents(this.target);
+        }.bind(this));
+        this.listeners.add(listener);
     }
 
     /**

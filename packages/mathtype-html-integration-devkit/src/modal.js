@@ -4,6 +4,7 @@ import PopUpMessage from './popupmessage.js';
 import Core from './core.src.js';
 import Util from './util.js';
 import Configuration from './configuration.js';
+import Listeners from './listeners';
 
 
 
@@ -440,8 +441,13 @@ export default class ModalDialog {
                 this.setContainerHeight("100" + this.iosMeasureUnit);
             }
 
-            // Updating content element.
-            if (typeof this.contentManager != 'undefined') {
+
+            if (this.contentManager.isEditorLoaded === false) {
+                var listener = Listeners.newListener('onLoad', function() {
+                    this.contentManager.onOpen(this);
+                }.bind(this));
+                this.contentManager.addListener(listener)
+            } else {
                 this.contentManager.onOpen(this);
             }
         }

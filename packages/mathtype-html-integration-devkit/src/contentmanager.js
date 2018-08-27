@@ -100,6 +100,11 @@ export default class ContentManager {
          * @type {IntegrationModel}
          */
         this.integrationModel = null;
+        /**
+         * Indicates if the editor is loaded.
+         * @type {bool}
+         */
+        this.editorLoaded = false;
     }
 
     /**
@@ -237,7 +242,16 @@ export default class ContentManager {
 
         document.getElementsByTagName('head')[0].appendChild(script);
         script.onload = function() {
-           this.listeners.fire('onLoad', {});
+            // Fire onLoad event when the script is loaded and also the editor.
+            function waitForEditor(contentManager) {
+                if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
+                    contentManager.listeners.fire('onLoad', {});
+                    contentManager.editorLoaded = true;
+                } else {
+                    setTimeOut(waitForEditor.bind(this, contentManager), 100);
+                }
+            }
+            waitForEditor(this);
         }.bind(this);
     }
 
