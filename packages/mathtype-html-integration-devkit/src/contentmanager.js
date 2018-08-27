@@ -104,7 +104,7 @@ export default class ContentManager {
          * Indicates if the editor is loaded.
          * @type {bool}
          */
-        this.editorLoaded = false;
+        this.isEditorLoaded = false;
     }
 
     /**
@@ -134,13 +134,12 @@ export default class ContentManager {
 
     /**
      * Mandatory method: inserts editor into modal object content container.
-     * @param {object} modalObject
      * @ignore
      */
-    insert(modalObject) {
+    insert() {
         // Before insert the editor we update the modal object title to avoid weird render display.
-        this.updateTitle(modalObject);
-        this.insertEditor(modalObject);
+        this.updateTitle(this.modalDialogInstance);
+        this.insertEditor(this.modalDialogInstance);
     }
 
     /**
@@ -149,15 +148,17 @@ export default class ContentManager {
      * contentContainer modal object element.
      * @ignore
      */
-    insertEditor(modalObject) {
+    insertEditor() {
         // To know if editor JavaScript is loaded we need to wait until com.wiris.jsEditor namespace is ready.
         if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
             this.editor = com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
-            this.editor.insertInto(modalObject.contentContainer);
+            this.editor.insertInto(this.modalDialogInstance.contentContainer);
             this.editor.focus();
+            if (this.modalDialogInstance.rtl) {
+                this.editor.action('rtl');
+            }
             // Setting div in rtl in case of it's activated.
             if (this.editor.getEditorModel().isRTL()) {
-                modalObject.container.className += ' wrs_modal_rtl';
                 this.editor.element.style.direction = 'rtl';
             }
 
@@ -165,16 +166,16 @@ export default class ContentManager {
             this.editor.getEditorModel().addEditorListener(this.editorListener);
 
             // iOS events.
-            if (modalObject.deviceProperties['isIOS']) {
+            if (this.modalDialogInstance.deviceProperties['isIOS']) {
                 setTimeout(function() { this.modalDialogInstance.hideKeyboard() }, 400);
                 var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
-                Util.addEvent(formulaDisplayDiv, 'focus', modalObject.openedIosSoftkeyboard.bind(modalObject));
-                Util.addEvent(formulaDisplayDiv, 'blur', modalObject.closedIosSoftkeyboard.bind(modalObject));
+                Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.openedIosSoftkeyboard.bind());
+                Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.closedIosSoftkeyboard.bind());
             }
 
-            this.onOpen(modalObject);
+            this.onOpen();
         } else {
-            setTimeout(ContentManager.prototype.insertEditor.bind(this, modalObject), 100);
+            setTimeout(ContentManager.prototype.insertEditor.bind(this, this.modalDialogInstance), 100);
         }
     }
 
@@ -357,17 +358,16 @@ export default class ContentManager {
      * Mandatory method: modal object calls this method when is updated, for example re-editing a formula when the
      * editor is open with another formula. This method updates the editor content (with an empty MathML or an exising formula),
      * updates - if needed - the editor toolbar (math --> chem or chem --> math) and recover the focus.
-     * @param {object} modalObject
      * @ignore
      */
-    onOpen(modalObject) {
+    onOpen() {
         if (this.isNewElement) {
             this.setEmptyMathML();
         }
         else {
             this.setMathML(this.mathML);
         }
-        this.updateToolbar(modalObject);
+        this.updateToolbar();
         this.onFocus();
     }
 
@@ -375,8 +375,8 @@ export default class ContentManager {
      * Sets the correct toolbar depending if exist other custom toolbars at the same time (e.g: Chemistry)
      * @ignore
      */
-    updateToolbar(modalObject) {
-        this.updateTitle(modalObject);
+    updateToolbar() {
+        this.updateTitle(this.modalDialogInstance);
         var customEditor;
         if (customEditor = this.customEditors.getActiveEditor()) {
             var toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties['toolbar'];
@@ -394,15 +394,14 @@ export default class ContentManager {
     /**
      * Updates the modalObject title: if a custom editor (with a custom toolbar) is enabled
      * picks the custom editor title. Otherwise default title.
-     * @param {object} modalObject
      * @ignore
      */
-    updateTitle(modalObject) {
+    updateTitle() {
         var customEditor;
         if (customEditor = this.customEditors.getActiveEditor()) {
-            modalObject.setTitle(customEditor.title);
+            this.modalDialogInstance.setTitle(customEditor.title);
         } else {
-            modalObject.setTitle('MathType');
+            this.modalDialogInstance.setTitle('MathType');
         }
     }
     /**
