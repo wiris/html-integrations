@@ -562,6 +562,14 @@
 .wrs_modal_overlay.wrs_modal_desktop.wrs_stack.wrs_overlay_active {
     display: block;
 }
+/* Fix selection in drupal style */
+.wrs_toolbar tr:focus{
+    background: none;
+}
+.wrs_toolbar tr:hover{
+    background: none;
+}
+/* End of fix drupal */
 .wrs_modal_rtl .wrs_modal_button_cancel {
     margin-right: 5px;
     margin-left: 0;
