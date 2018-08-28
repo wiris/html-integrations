@@ -188,23 +188,21 @@ export default class CKEditorIntegration extends IntegrationModel {
                     const eventElements = document.getElementsByClassName('cke_textarea_inline');
                     Array.prototype.forEach.call(eventElements, function (entry) {
 
-                        Util.addElementEvents(entry, this.doubleClickHandler.bind(this), this.mousedownHandler, this.mouseupHandler);
+                        this.setTarget(entry);
+                        this.addEvents();
 
                     });
                 }
                 else {
-                    Util.addElementEvents(newElement, this.doubleClickHandler.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
+                    this.setTarget(newElement);
+                    this.addEvents();
                 }
                 // Set the element as treated
                 newElement.wirisActive = true;
             }
-            else if (!!newElement.contentWindow) {
-                Util.addElementEvents(newElement.contentWindow.document, this.doubleClickHandler.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
-                // Set the element as treated
-                newElement.wirisActive = true;
-            }
-            else if (_wrs_int_divIframe) {
-                Util.addElementEvents(newElement, this.doubleClickHandler.bind(this), this.mousedownHandler.bind(this), this.mouseupHandler.bind(this));
+            else if (!!newElement.contentWindow || _wrs_int_divIframe) {
+                this.setTarget(newElement);
+                this.addEvents();
                 // Set the element as treated
                 newElement.wirisActive = true;
             }
@@ -308,6 +306,7 @@ export default class CKEditorIntegration extends IntegrationModel {
                 if (integrationModelProperties.target) {
                     const ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
                     ckeditorIntegrationInstance.init();
+                    ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
                 }
 
             });
