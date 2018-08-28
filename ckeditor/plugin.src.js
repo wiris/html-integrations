@@ -3,6 +3,18 @@ import Parser from './core/src/parser.js';
 import Util from './core/src/util.js';
 
 /**
+ * This property contains all Froala Integration instances.
+ * @type {Object}
+ */
+export var instances = {};
+/**
+ * This property contains the current Froala integration instance,
+ * which is the instance of the active editor.
+ * @type {IntegrationModel}
+ */
+export var currentInstance = null;
+
+/**
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
  */
@@ -82,6 +94,11 @@ export default class CKEditorIntegration extends IntegrationModel {
 
             // First editor parsing.
             editor.setData(Parser.initParse(editor.getData()));
+
+            // Maintain currentInstance updated.
+            editor.on('focus', function (event) {
+                WirisPlugin.currentInstance = WirisPlugin.instances[event.editor.name];
+            });
 
             editor.on('contentDom', function () {
 
@@ -261,7 +278,6 @@ export default class CKEditorIntegration extends IntegrationModel {
 
     CKEDITOR.plugins.add('ckeditor_wiris', {
         'init': function (editor) {
-
             editor.ui.addButton('ckeditor_wiris_formulaEditor', {
 
                 'label': 'Insert a math equation - MathType',
@@ -278,7 +294,7 @@ export default class CKEditorIntegration extends IntegrationModel {
 
             });
 
-            editor.on('instanceReady', () => {
+            editor.on('instanceReady', function () {
                 /**
                  * Integration model properties
                  * @type {object}
@@ -307,6 +323,8 @@ export default class CKEditorIntegration extends IntegrationModel {
                     const ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
                     ckeditorIntegrationInstance.init();
                     ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
+                    WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;
+                    WirisPlugin.currentInstance = ckeditorIntegrationInstance;
                 }
 
             });

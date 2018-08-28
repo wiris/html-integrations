@@ -7,7 +7,7 @@ import Listeners from './core/src/listeners';
 import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
-import CKEditorIntegration from './plugin.src.js';
+import { CKEditorIntegration, instances, currentInstance } from './plugin.src.js';
 
 module.exports = {
     Core: Core,
@@ -16,5 +16,7 @@ module.exports = {
     Util: Util,
     Configuration: Configuration,
     Listeners: Listeners,
-    IntegrationModel: IntegrationModel
+    IntegrationModel: IntegrationModel,
+    currentInstance: currentInstance,
+    instances: instances,
 }
