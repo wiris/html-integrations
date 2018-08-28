@@ -138,8 +138,8 @@ export default class ContentManager {
      */
     insert() {
         // Before insert the editor we update the modal object title to avoid weird render display.
-        this.updateTitle();
-        this.insertEditor();
+        this.updateTitle(this.modalDialogInstance);
+        this.insertEditor(this.modalDialogInstance);
     }
 
     /**
@@ -151,7 +151,7 @@ export default class ContentManager {
     insertEditor() {
         // To know if editor JavaScript is loaded we need to wait until com.wiris.jsEditor namespace is ready.
         if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
-            this.editor = com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);-
+            this.editor = com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
             this.editor.insertInto(this.modalDialogInstance.contentContainer);
             this.editor.focus();
             if (this.modalDialogInstance.rtl) {
@@ -244,6 +244,18 @@ export default class ContentManager {
                      '&stats-version=' + stats.version;
 
         document.getElementsByTagName('head')[0].appendChild(script);
+        script.onload = function() {
+            // Fire onLoad event when the script is loaded and also the editor.
+            function waitForEditor(contentManager) {
+                if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
+                    contentManager.listeners.fire('onLoad', {});
+                    contentManager.editorLoaded = true;
+                } else {
+                    setTimeOut(waitForEditor.bind(this, contentManager), 100);
+                }
+            }
+            waitForEditor(this);
+        }.bind(this);
     }
 
     /**
