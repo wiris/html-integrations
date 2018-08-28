@@ -956,10 +956,10 @@ export default class ModalDialog {
             ev.preventDefault();
             ev = ev || event;
             // Calculate max and min between actual mouse position and limit of screeen. It restric the movement of modal into window.
-            var limitY = Math.min(this.eventClient(ev).Y + window.pageYOffset,this.limitWindow.minPointer.y + window.pageYOffset);
-            limitY = Math.max(this.limitWindow.maxPointer.y + window.pageYOffset,limitY);
-            var limitX = Math.min(this.eventClient(ev).X + window.pageXOffset,this.limitWindow.minPointer.x + window.pageXOffset);
-            limitX = Math.max(this.limitWindow.maxPointer.x + window.pageXOffset,limitX);
+            var limitY = Math.min(this.eventClient(ev).Y,this.limitWindow.minPointer.y);
+            limitY = Math.max(this.limitWindow.maxPointer.y,limitY);
+            var limitX = Math.min(this.eventClient(ev).X,this.limitWindow.minPointer.x);
+            limitX = Math.max(this.limitWindow.maxPointer.x,limitX);
             // Substract limit with first position to obtain relative pixels increment to the anchor point.
             var dragX = limitX - this.dragDataObject.x + "px";
             var dragY = limitY - this.dragDataObject.y + "px";
@@ -1084,8 +1084,8 @@ export default class ModalDialog {
             // If modal doesn't change, it's not necessary to set position with interpolation
             this.container.style.transform = '';
             if (this.dragDataObject) {
-                this.container.style.right = parseInt(this.container.style.right) - parseInt(this.lastDrag.x) + pageXOffset + "px";
-                this.container.style.bottom = parseInt(this.container.style.bottom) - parseInt(this.lastDrag.y) + pageYOffset + "px";
+                this.container.style.right = parseInt(this.container.style.right) - parseInt(this.lastDrag.x) + "px";
+                this.container.style.bottom = parseInt(this.container.style.bottom) - parseInt(this.lastDrag.y) + "px";
             }
             // We make focus on editor after drag modal windows to prevent lose focus.
             this.focus();
