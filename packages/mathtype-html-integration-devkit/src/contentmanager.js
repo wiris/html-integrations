@@ -172,8 +172,10 @@ export default class ContentManager {
                 Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.openedIosSoftkeyboard.bind());
                 Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.closedIosSoftkeyboard.bind());
             }
-
-            this.onOpen();
+            // Fire onLoad event. Necessary to set the MathML into the editor
+            // after is loaded.
+            this.listeners.fire('onLoad', {});
+            this.isEditorLoaded = true;
         } else {
             setTimeout(ContentManager.prototype.insertEditor.bind(this, this.modalDialogInstance), 100);
         }
@@ -242,18 +244,6 @@ export default class ContentManager {
                      '&stats-version=' + stats.version;
 
         document.getElementsByTagName('head')[0].appendChild(script);
-        script.onload = function() {
-            // Fire onLoad event when the script is loaded and also the editor.
-            function waitForEditor(contentManager) {
-                if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
-                    contentManager.listeners.fire('onLoad', {});
-                    contentManager.editorLoaded = true;
-                } else {
-                    setTimeOut(waitForEditor.bind(this, contentManager), 100);
-                }
-            }
-            waitForEditor(this);
-        }.bind(this);
     }
 
     /**

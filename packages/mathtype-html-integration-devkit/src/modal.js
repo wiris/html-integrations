@@ -164,6 +164,15 @@ export default class ModalDialog {
         }
 
         this.popup = new PopUpMessage(popupupProperties);
+
+         /**
+         * Indicates if directionality of the modal dialog is RTL. false by default.
+         * @type {bool}
+         */
+        this.rtl = false;
+        if ('rtl' in this.attributes) {
+            this.rtl = this.attributes.rtl;
+        }
     }
     /**
      * This method sets the contentElement object. A contentElement object
@@ -319,9 +328,10 @@ export default class ModalDialog {
         this.properties.open = true;
         this.properties.created = true;
 
-        // If actual language is arabic modal starts at left of window browser
-        if (this.isRTL(this.attributes.language)) {
+        // Checks language directionality.
+        if (this.isRTL()) {
             this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
+            this.container.className += ' wrs_modal_rtl';
         }
     }
 
@@ -412,6 +422,15 @@ export default class ModalDialog {
             setTimeout(function() { this.hideKeyboard() }.bind(this), 400);
         }
 
+        if (this.contentManager.isEditorLoaded === false) {
+            var listener = Listeners.newListener('onLoad', function() {
+                this.contentManager.onOpen(this);
+            }.bind(this));
+            this.contentManager.addListener(listener)
+        } else {
+            this.contentManager.onOpen(this);
+        }
+
         // New modal window. He need to create the whole object.
         if (!this.properties.created) {
             this.create();
@@ -439,16 +458,6 @@ export default class ModalDialog {
             if (this.deviceProperties['isIOS']) {
                 this.iosSoftkeyboardOpened = false;
                 this.setContainerHeight("100" + this.iosMeasureUnit);
-            }
-
-
-            if (this.contentManager.isEditorLoaded === false) {
-                var listener = Listeners.newListener('onLoad', function() {
-                    this.contentManager.onOpen(this);
-                }.bind(this));
-                this.contentManager.addListener(listener)
-            } else {
-                this.contentManager.onOpen(this);
             }
         }
     }
@@ -571,11 +580,12 @@ export default class ModalDialog {
      * @return {boolean} return true if current language is type RTL
      * @ignore
      */
-     isRTL(language) {
-        if (language == 'ar' || language == 'he') {
+     isRTL() {
+        if (this.attributes.language == 'ar' || this.attributes.language == 'he') {
             return true;
-        }
-        return false;
+        } else {
+            return this.rtl
+        };
      }
 
     /**

@@ -119,7 +119,6 @@ export default class Core {
         /**
          * Plugin listeners.
          * @type {Array}
-         * @description Array containing pluginListeners.
          */
         this.listeners = new Listeners();
     }
@@ -608,6 +607,7 @@ export default class Core {
         var editorAttributes = {};
         Object.assign(editorAttributes, defaultEditorAttributes, Configuration.get('editorParameters'));
         editorAttributes.language = this.language;
+        editorAttributes.rtl = this.integrationModel.rtl;
 
         var contentManagerAttributes = {}
         contentManagerAttributes.editorAttributes = editorAttributes;

@@ -87,6 +87,22 @@ export default class IntegrationModel {
             this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
         }
         /**
+         * Instance of the integration editor object.
+         * @type {object}
+         */
+        this.editorObject = null;
+        if ('editorObject' in integrationModelProperties) {
+            this.editorObject = integrationModelProperties.editorObject;
+        }
+        /**
+         * Specifies if the direction of the text is RTL. false by default.
+         * @type {bool}
+         */
+        this.rtl = false;
+        if ('rtl' in integrationModelProperties) {
+            this.rtl = integrationModelProperties.rtl;
+        }
+        /**
          * Indicates if an image is selected. Needed to resize the image to the original size in case
          * the image is resized.
          * @type {object} temporalImageResizing - selected image.
@@ -97,14 +113,7 @@ export default class IntegrationModel {
          * @type {Core} core - core instance.
          */
         this.core = null;
-        /**
-         * Instance of the integration editor object.
-         * @type {object}
-         */
-        this.editorObject = null;
-        if ('editorObject' in integrationModelProperties) {
-            this.editorObject = integrationModelProperties.editorObject;
-        }
+
         /**
          * Integration model listeners.
          * @type {Listeners}
@@ -270,6 +279,7 @@ export default class IntegrationModel {
             }
             if (Util.containsClass(element, 'Wirisformula')) {
                     this.core.editionProperties.temporalImage = element;
+                    this.core.editionProperties.isNewElement = true;
                     this.openExistingFormulaEditor();
             }
         }
