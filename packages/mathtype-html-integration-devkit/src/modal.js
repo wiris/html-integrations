@@ -422,15 +422,6 @@ export default class ModalDialog {
             setTimeout(function() { this.hideKeyboard() }.bind(this), 400);
         }
 
-        if (this.contentManager.isEditorLoaded === false) {
-            var listener = Listeners.newListener('onLoad', function() {
-                this.contentManager.onOpen(this);
-            }.bind(this));
-            this.contentManager.addListener(listener)
-        } else {
-            this.contentManager.onOpen(this);
-        }
-
         // New modal window. He need to create the whole object.
         if (!this.properties.created) {
             this.create();
@@ -460,6 +451,16 @@ export default class ModalDialog {
                 this.setContainerHeight("100" + this.iosMeasureUnit);
             }
         }
+
+        if (this.contentManager.isEditorLoaded === false) {
+            var listener = Listeners.newListener('onLoad', function() {
+                this.contentManager.onOpen(this);
+            }.bind(this));
+            this.contentManager.addListener(listener)
+        } else {
+            this.contentManager.onOpen(this);
+        }
+
     }
 
     /**
