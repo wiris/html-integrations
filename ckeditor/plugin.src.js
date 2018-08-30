@@ -49,12 +49,36 @@ export default class CKEditorIntegration extends IntegrationModel {
     }
 
     /**
+     * Opens formula editor for a new formula if MathType formula is not selected.
+     * Otherwise, opens formula editor to modify the selected formula.
+     */
+    openFormulaEditor() {
+        // Take CKEditor selected element.
+        let nativeSelectedElement;
+        const ckeditorSelection = this.editorObject.getSelection();
+        if (ckeditorSelection) {
+            const ckeditorSelectedElement = ckeditorSelection.getSelectedElement();
+            if (ckeditorSelectedElement) {
+                nativeSelectedElement = ckeditorSelectedElement.$;
+            }
+        }
+        // Look if it is a MathType formula and act as a new formula or as a reissue.
+        if (nativeSelectedElement && Util.containsClass(nativeSelectedElement, Configuration.get('imageClassName'))) {
+            this.core.editionProperties.temporalImage = nativeSelectedElement;
+            this.openExistingFormulaEditor();
+        }
+        else {
+            this.openNewFormulaEditor();
+        }
+    }
+
+    /**
      * It creates MathType and ChemType commands.
      */
     createButtonCommands() {
         // Is needed specify that our images are allowed.
         let allowedContent = 'img[align,';
-        allowedContent += WirisPlugin.Configuration.get('imageMathmlAttribute');
+        allowedContent += Configuration.get('imageMathmlAttribute');
         allowedContent += ',src,alt](!Wirisformula)';
 
         const editor = this.editorObject;
@@ -69,8 +93,10 @@ export default class CKEditorIntegration extends IntegrationModel {
             'requiredContent': allowedContent,
 
             'exec': function (editor) {
+                // Can be that previously custom editor was used. So is needed disable
+                // all the editors to avoid wrong behaviours.
                 this.core.getCustomEditors().disable();
-                this.openNewFormulaEditor();
+                this.openFormulaEditor();
             }.bind(this)
 
         });
@@ -86,7 +112,7 @@ export default class CKEditorIntegration extends IntegrationModel {
 
             'exec': function (editor) {
                 this.core.getCustomEditors().enable('chemistry');
-                this.openNewFormulaEditor();
+                this.openFormulaEditor();
             }.bind(this)
 
         });
@@ -115,8 +141,8 @@ export default class CKEditorIntegration extends IntegrationModel {
                 editor.on('doubleclick', function (event) {
 
                     if (event.data.element.$.nodeName.toLowerCase() == 'img' &&
-                        Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('imageClassName')) ||
-                        Util.containsClass(event.data.element.$, WirisPlugin.Configuration.get('CASClassName'))) {
+                        Util.containsClass(event.data.element.$, Configuration.get('imageClassName')) ||
+                        Util.containsClass(event.data.element.$, Configuration.get('CASClassName'))) {
 
                         event.data.dialog = null;
                     }
@@ -243,7 +269,7 @@ export default class CKEditorIntegration extends IntegrationModel {
      */
     doubleClickHandler(element, event) {
         if (element.nodeName.toLowerCase() == 'img') {
-            if (Util.containsClass(element, WirisPlugin.Configuration.get('imageClassName'))) {
+            if (Util.containsClass(element, Configuration.get('imageClassName'))) {
                 // Some plugins (image2, image) open a dialog on double click. On formulas
                 // doubleclick event ends here.
                 if (typeof event.stopPropagation != 'undefined') { // old I.E compatibility.
