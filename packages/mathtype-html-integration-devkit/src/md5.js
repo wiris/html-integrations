@@ -1095,4 +1095,5 @@ if(typeof window != "undefined") {
 }
 com.wiris.js.JsPluginTools.main();
  }());
+ delete Array.prototype.__class__;
 // @codingStandardsIgnoreEnd
