@@ -1,6 +1,7 @@
-import IntegrationModel from './core/src/integrationmodel.js';
-import Parser from './core/src/parser.js';
-import Util from './core/src/util.js';
+import IntegrationModel from './core/src/integrationmodel';
+import Parser from './core/src/parser';
+import Util from './core/src/util';
+import Configuration from './core/src/configuration';
 
 /**
  * This property contains all Froala Integration instances.
@@ -27,6 +28,15 @@ export default class CKEditorIntegration extends IntegrationModel {
          * @type {string}
          */
         this.integrationFolderName = 'ckeditor_wiris';
+    }
+
+    init() {
+        super.init();
+
+        const editor = this.editorObject;
+        if ('wiriseditorparameters' in editor.config) {
+            Configuration.update('_wrs_conf_editorParameters', editor.config.wiriseditorparameters);
+        }
     }
 
     /**
@@ -316,6 +326,10 @@ export default class CKEditorIntegration extends IntegrationModel {
                 integrationModelProperties.langFolderName = 'languages';
                 integrationModelProperties.environment = {};
                 integrationModelProperties.environment.editor = "CKEditor4";
+                // Updating integration paths if context path is overwrited by editor javascript configuration.
+                if ('wiriscontextpath' in editor.config) {
+                    integrationModelProperties.configurationService  = editor.config.wiriscontextpath + integrationModelProperties.configurationService;
+                }
 
                 // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
                 // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
