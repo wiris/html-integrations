@@ -267,10 +267,10 @@ export default class IntegrationModel {
 
     /**
      * Handles a double click on the target element..
-     * @param object iframe Target
-     * @param object element Element double clicked
+     * @param {object} element - DOM object target.
+     * @param {event} event - double click event.
      */
-    doubleClickHandler(element) {
+    doubleClickHandler(element, event) {
         if (element.nodeName.toLowerCase() == 'img') {
             this.core.getCustomEditors().disable();
             if (element.hasAttribute('data-custom-editor')) {
