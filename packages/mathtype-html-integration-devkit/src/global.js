@@ -7,11 +7,13 @@ import Listeners from './listeners';
 import backwardsLib from './backwardslib.js';
 import polyfills from './polyfills.js';
 import IntegrationModel from './integrationmodel.js';
+import MathML from './mathml.js';
 
 module.exports = {
     Core: Core,
     Parser: Parser,
     Image: Image,
+    MathML: MathML,
     Util: Util,
     Configuration: Configuration,
     Listeners: Listeners,
