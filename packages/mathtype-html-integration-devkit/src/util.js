@@ -1,6 +1,8 @@
 import Parser from './parser';
 import MathML from './mathml';
 import Configuration from './configuration';
+import Latex from './latex';
+import Constants from './constants';
 
 /**
  * This class represents an utility class.
@@ -812,6 +814,27 @@ export default class Util {
         }
 
         return null;
+    }
+
+    /**
+     * Returns null if there isn't any item or if it is malformed.
+     * Otherwise returns a div DOM node containing the mathml image and the cursor position inside the textarea.
+     * @param {object} textarea DOM Element.
+     * @ignore
+     */
+    static getSelectedItemOnTextarea(textarea) {
+        const textNode = document.createTextNode(textarea.value);
+        const textNodeValues = Latex.getLatexFromTextNode(textNode, textarea.selectionStart);
+        if (textNodeValues === null) {
+            return null;
+        };
+
+        return {
+            'node': textNode,
+            'caretPosition': textarea.selectionStart,
+            'startPosition': textNodeValues.startPosition,
+            'endPosition': textNodeValues.endPosition
+        };
     }
 
     /**

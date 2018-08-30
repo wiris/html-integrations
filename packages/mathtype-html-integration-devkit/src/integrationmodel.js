@@ -356,4 +356,44 @@ export default class IntegrationModel {
     notifyWindowClosed() {
         // Nothing.
     }
+
+    /**
+     * Core.js wrapper.
+     * Extracts mathml of a determined text node. This function is used as a wrapper inside core.js
+     * in order to get mathml from a text node that can contain normal LaTeX or other chosen text.
+     * @param {string} textNode test to extract LaTeX
+     * @param {int} caretPosition starting position to find LaTeX.
+     * @return {string} mathml that it's inside the text node.
+     * @ignore
+     */
+    getMathmlFromTextNode() {
+        // Nothing.
+    }
+
+    /**
+     * Core.js wrapper.
+     * It fills wrs event object of nonLatex with the desired data.
+     * @param {object} event event object.
+     * @param {object} window dom window object.
+     * @param {string} mathml valid mathml.
+     */
+    fillNonLatexNode(event, window, mathml) {
+        // Nothing,
+    }
+
+    /**
+     * Core.js wrapper.
+     * Returns selected item from the target.
+     * @param {DOM Element} target
+     * @param {boolean} iframe
+     */
+    getSelectedItem(target, isIframe) {
+        // Nothing.
+    }
 }
+
+// To know if the integration that extends this class implements
+// wrapper methods, they are set as undefined.
+IntegrationModel.prototype.getMathmlFromTextNode = undefined;
+IntegrationModel.prototype.fillNonLatexNode = undefined;
+IntegrationModel.prototype.getSelectedItem = undefined;

@@ -63,7 +63,6 @@ export default class Latex {
         } else {
             output = "$$" + latex + "$$";
         }
-        console.log(Latex.cache);
         return output;
     }
 
@@ -152,18 +151,11 @@ export default class Latex {
          * @param {Object} currentNode node where searching latex.
          * @param {number} currentPosition current position inside the currentNode.
          * @param {Object} latexTagsToUse tags used at latex beggining and latex final.
-         * @param {boolean} searchEndTag If true, the first tag to search is an end tag. Otherwise, it searches the open tag first.
+         * @param {boolean} tag tag which search.
          */
-        function getNextLatexPosition(currentNode, currentPosition, latexTagsToUse, searchEndTag) {
-            var latexTags = latexTagsToUse;
-            if (searchEndTag) {
-                latexTags = {
-                    'open': latexTagsToUse.close,
-                    'close': latexTagsToUse.open
-                };
-            }
+        function getNextLatexPosition(currentNode, currentPosition, tag) {
 
-            var position = currentNode.nodeValue.indexOf(latexTags.open, currentPosition);
+            var position = currentNode.nodeValue.indexOf(tag, currentPosition);
 
             while (position == -1) {
                 currentNode = currentNode.nextSibling;
@@ -198,25 +190,22 @@ export default class Latex {
             'node': startNode,
             'position': 0
         };
-        var searchEndTag = false;
         // Is supposed that open and close tags has the same length.
         var tagLength = latexTags.open.length;
         do {
-            var start = getNextLatexPosition(end.node, end.position, latexTags, searchEndTag);
+            var start = getNextLatexPosition(end.node, end.position, latexTags.open);
 
             if (start == null || isPrevious(textNode, caretPosition, start.node, start.position)) {
                 return null;
             }
 
-            var end = getNextLatexPosition(start.node, start.position + tagLength, latexTags, !searchEndTag);
+            var end = getNextLatexPosition(start.node, start.position + tagLength, latexTags.close);
 
             if (end == null) {
                 return null;
             }
 
             end.position += tagLength;
-            // For the next iteration, the start position to search corresponds to the opposite tag.
-            searchEndTag = !searchEndTag;
         } while (isPrevious(end.node, end.position, textNode, caretPosition));
 
         // Isolating latex.

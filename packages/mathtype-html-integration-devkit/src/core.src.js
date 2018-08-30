@@ -311,7 +311,6 @@ export default class Core {
      * @param {object} windowTarget Window where the editable content is
      * @param {string} mathml Mathml code
      * @param {object} wirisProperties Extra attributes for the formula (like background color or font size).
-     * @param {string} editMode Current edit mode.
      * @ignore
      */
     updateFormula(focusElement, windowTarget, mathml, wirisProperties) {
@@ -359,10 +358,10 @@ export default class Core {
         }
         else if (this.editMode == 'latex') {
             e.latex = Latex.getLatexFromMathML(mathml);
-            // wrs_int_getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
+            // this.integrationModel.getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
             // Not all the integrations have special behaviours for nonLatex.
-            if (typeof wrs_int_getNonLatexNode != 'undefined' && (typeof e.latex == 'undefined' || e.latex == null)) {
-                wrs_int_getNonLatexNode(e, windowTarget, mathml);
+            if (!!this.integrationModel.fillNonLatexNode && !e.latex) {
+                this.integrationModel.fillNonLatexNode(e, windowTarget, mathml);
             }
             else {
                 e.node = windowTarget.document.createTextNode('$$' + e.latex + '$$');
@@ -484,13 +483,13 @@ export default class Core {
             }
         }
         else if (focusElement.type == "textarea") {
-            var item;
+            let item;
             // Wrapper for some integrations that can have special behaviours to show latex.
-            if (typeof wrs_int_getSelectedItem != 'undefined') {
-                item = wrs_int_getSelectedItem(focusElement, false);
+            if (typeof this.integrationModel.getSelectedItem !== 'undefined') {
+                item = this.integrationModel.getSelectedItem(focusElement, false);
             }
             else {
-                item = wrs_getSelectedItemOnTextarea(focusElement);
+                item = Util.getSelectedItemOnTextarea(focusElement);
             }
             Util.updateExistingTextOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
         }
@@ -514,6 +513,7 @@ export default class Core {
      * @ignore
      */
     openModalDialog(language, target, isIframe) {
+        // Textarea elements don't have normal document ranges. It only accepts latex edit.
         this.editMode = 'images';
 
         // In IE is needed keep the range due to after focus the modal window it can't be retrieved the last selection.
@@ -543,50 +543,92 @@ export default class Core {
 
         if (target) {
             var selectedItem;
-            // TODO: Selection wrapper / Integration wrapper
-            if (typeof wrs_int_getSelectedItem != 'undefined') {
-                selectedItem = wrs_int_getSelectedItem(target, isIframe);
+            if (typeof this.integrationModel.getSelectedItem !== 'undefined') {
+                selectedItem = this.integrationModel.getSelectedItem(target, isIframe);
             } else {
                 selectedItem = Util.getSelectedItem(target, isIframe);
             }
 
             // Check LaTeX if and only if the node is a text node (nodeType==3).
-            if (selectedItem != null && selectedItem.node.nodeType == 3) {
-                // We try to figure out if we are editing a LaTeX node.
-                var latexResult = Latex.getLatexFromTextNode(selectedItem.node, selectedItem.caretPosition);
-
-                if (latexResult != null) {
-                    this.editMode = 'latex';
-
-                    var mathml = Latex.getMathMLFromLatex(latexResult.latex);
-                    this.editionProperties.isNewElement = false;
-
-                    this.editionProperties.temporalImage = document.createElement('img');
-
-                    this.editionProperties.temporalImage.setAttribute(Configuration.get('imageMathmlAttribute'), MathML.safeXmlEncode(mathml));
-                    var windowTarget = isIframe ? target.contentWindow : window;
-
-                    if (document.selection) {
-                        var leftOffset = 0;
-                        var previousNode = latexResult.startNode.previousSibling;
-
-                        while (previousNode) {
-                            leftOffset += Util.getNodeLength(previousNode);
-                            previousNode = previousNode.previousSibling;
-                        }
-
-                        this.editionProperties.latexRange = windowTarget.document.selection.createRange();
-                        this.editionProperties.latexRange.moveToElementText(latexResult.startNode.parentNode);
-                        this.editionProperties.latexRange.move('character', leftOffset + latexResult.startPosition);
-                        this.editionProperties.latexRange.moveEnd('character', latexResult.latex.length + 4); // Plus 4 for the '$$' characters.
-                    } else {
-                        this.editionProperties.latexRange = windowTarget.document.createRange();
-                        this.editionProperties.latexRange.setStart(latexResult.startNode, latexResult.startPosition);
-                        this.editionProperties.latexRange.setEnd(latexResult.endNode, latexResult.endPosition);
+            if (selectedItem !== null && selectedItem.node.nodeType === 3) {
+                if (!!this.integrationModel.getMathmlFromTextNode) {
+                    // If integration has this function it isn't set range due to we don't
+                    // know if it will be put into a textarea as a text or image.
+                    const mathml = this.integrationModel.getMathmlFromTextNode(
+                        selectedItem.node,
+                        selectedItem.caretPosition
+                    );
+                    if (mathml) {
+                        this.editMode = 'latex';
+                        this.editionProperties.isNewElement = false;
+                        this.editionProperties.temporalImage = document.createElement('img');
+                        this.editionProperties.temporalImage.setAttribute(
+                            Configuration.get('imageMathmlAttribute'),
+                            MathML.safeXmlEncode(mathml)
+                        );
                     }
                 }
+                else {
+                    const latexResult = Latex.getLatexFromTextNode(
+                        selectedItem.node,
+                        selectedItem.caretPosition
+                    );
+                    if (latexResult) {
+                        const mathml = Latex.getMathMLFromLatex(latexResult.latex);
+                        this.editMode = 'latex';
+                        this.editionProperties.isNewElement = false;
+                        this.editionProperties.temporalImage = document.createElement('img');
+                        this.editionProperties.temporalImage.setAttribute(
+                            Configuration.get('imageMathmlAttribute'),
+                            MathML.safeXmlEncode(mathml)
+                        );
+                        const windowTarget = isIframe ? target.contentWindow : window;
+
+                        if (target.tagName.toLowerCase() !== 'textarea') {
+                            if (document.selection) {
+                                let leftOffset = 0;
+                                let previousNode = latexResult.startNode.previousSibling;
+
+                                while (previousNode) {
+                                    leftOffset += Util.getNodeLength(previousNode);
+                                    previousNode = previousNode.previousSibling;
+                                }
+
+                                this.editionProperties.latexRange = windowTarget.document.selection.createRange();
+                                this.editionProperties.latexRange.moveToElementText(
+                                    latexResult.startNode.parentNode
+                                );
+                                this.editionProperties.latexRange.move(
+                                    'character',
+                                    leftOffset + latexResult.startPosition
+                                );
+                                this.editionProperties.latexRange.moveEnd(
+                                    'character',
+                                    latexResult.latex.length + 4
+                                ); // Plus 4 for the '$$' characters.
+                            } else {
+                                this.editionProperties.latexRange = windowTarget.document.createRange();
+                                this.editionProperties.latexRange.setStart(
+                                    latexResult.startNode,
+                                    latexResult.startPosition
+                                );
+                                this.editionProperties.latexRange.setEnd(
+                                    latexResult.endNode,
+                                    latexResult.endPosition
+                                );
+                            }
+                        }
+                    }
+                }
+
             }
+            else if (target.tagName.toLowerCase() === 'textarea') {
+                // By default editMode is 'images', but when target is a textarea it needs to be 'latex'.
+                this.editMode = 'latex';
+            }
+
         }
+
         // Setting an object with the editor parameters.
         // Editor parameters can be customized in several ways:
         // 1 - editorAttributes: Contains the default editor attributes, usually the metrics in a comma separated string. Always exists.
