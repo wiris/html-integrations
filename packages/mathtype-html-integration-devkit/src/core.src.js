@@ -521,13 +521,13 @@ export default class Core {
             if (isIframe) {
                 // Is needed focus the target first.
                 target.contentWindow.focus()
-                var selection = target.contentWindow.getSelection();
+                let selection = target.contentWindow.getSelection();
                 this.editionProperties.range = selection.getRangeAt(0);
             }
             else {
                 // Is needed focus the target first.
                 target.focus()
-                var selection = getSelection();
+                let selection = getSelection();
                 this.editionProperties.range = selection.getRangeAt(0);
             }
         }
@@ -542,80 +542,90 @@ export default class Core {
         this.editionProperties.latexRange = null;
 
         if (target) {
-            var selectedItem;
+            let selectedItem;
             if (typeof this.integrationModel.getSelectedItem !== 'undefined') {
                 selectedItem = this.integrationModel.getSelectedItem(target, isIframe);
-            } else {
+            }
+            else {
                 selectedItem = Util.getSelectedItem(target, isIframe);
             }
 
             // Check LaTeX if and only if the node is a text node (nodeType==3).
-            if (selectedItem !== null && selectedItem.node.nodeType === 3) {
-                if (!!this.integrationModel.getMathmlFromTextNode) {
-                    // If integration has this function it isn't set range due to we don't
-                    // know if it will be put into a textarea as a text or image.
-                    const mathml = this.integrationModel.getMathmlFromTextNode(
-                        selectedItem.node,
-                        selectedItem.caretPosition
-                    );
-                    if (mathml) {
-                        this.editMode = 'latex';
-                        this.editionProperties.isNewElement = false;
-                        this.editionProperties.temporalImage = document.createElement('img');
-                        this.editionProperties.temporalImage.setAttribute(
-                            Configuration.get('imageMathmlAttribute'),
-                            MathML.safeXmlEncode(mathml)
-                        );
-                    }
+            if (selectedItem) {
+                // Case when image was selected and button pressed.
+                if (!selectedItem.caretPosition && Util.containsClass(selectedItem.node,  Configuration.get('imageClassName'))) {
+                    this.editionProperties.temporalImage = selectedItem.node;
+                    this.editionProperties.isNewElement = false;
                 }
-                else {
-                    const latexResult = Latex.getLatexFromTextNode(
-                        selectedItem.node,
-                        selectedItem.caretPosition
-                    );
-                    if (latexResult) {
-                        const mathml = Latex.getMathMLFromLatex(latexResult.latex);
-                        this.editMode = 'latex';
-                        this.editionProperties.isNewElement = false;
-                        this.editionProperties.temporalImage = document.createElement('img');
-                        this.editionProperties.temporalImage.setAttribute(
-                            Configuration.get('imageMathmlAttribute'),
-                            MathML.safeXmlEncode(mathml)
+                else if (selectedItem.node.nodeType === 3) {
+                    // If it's a text node means that editor is working with LaTeX.
+                    if (!!this.integrationModel.getMathmlFromTextNode) {
+                        // If integration has this function it isn't set range due to we don't
+                        // know if it will be put into a textarea as a text or image.
+                        const mathml = this.integrationModel.getMathmlFromTextNode(
+                            selectedItem.node,
+                            selectedItem.caretPosition
                         );
-                        const windowTarget = isIframe ? target.contentWindow : window;
-
-                        if (target.tagName.toLowerCase() !== 'textarea') {
-                            if (document.selection) {
-                                let leftOffset = 0;
-                                let previousNode = latexResult.startNode.previousSibling;
-
-                                while (previousNode) {
-                                    leftOffset += Util.getNodeLength(previousNode);
-                                    previousNode = previousNode.previousSibling;
+                        if (mathml) {
+                            this.editMode = 'latex';
+                            this.editionProperties.isNewElement = false;
+                            this.editionProperties.temporalImage = document.createElement('img');
+                            this.editionProperties.temporalImage.setAttribute(
+                                Configuration.get('imageMathmlAttribute'),
+                                MathML.safeXmlEncode(mathml)
+                            );
+                        }
+                    }
+                    else {
+                        const latexResult = Latex.getLatexFromTextNode(
+                            selectedItem.node,
+                            selectedItem.caretPosition
+                        );
+                        if (latexResult) {
+                            const mathml = Latex.getMathMLFromLatex(latexResult.latex);
+                            this.editMode = 'latex';
+                            this.editionProperties.isNewElement = false;
+                            this.editionProperties.temporalImage = document.createElement('img');
+                            this.editionProperties.temporalImage.setAttribute(
+                                Configuration.get('imageMathmlAttribute'),
+                                MathML.safeXmlEncode(mathml)
+                            );
+                            const windowTarget = isIframe ? target.contentWindow : window;
+    
+                            if (target.tagName.toLowerCase() !== 'textarea') {
+                                if (document.selection) {
+                                    let leftOffset = 0;
+                                    let previousNode = latexResult.startNode.previousSibling;
+    
+                                    while (previousNode) {
+                                        leftOffset += Util.getNodeLength(previousNode);
+                                        previousNode = previousNode.previousSibling;
+                                    }
+    
+                                    this.editionProperties.latexRange = windowTarget.document.selection.createRange();
+                                    this.editionProperties.latexRange.moveToElementText(
+                                        latexResult.startNode.parentNode
+                                    );
+                                    this.editionProperties.latexRange.move(
+                                        'character',
+                                        leftOffset + latexResult.startPosition
+                                    );
+                                    this.editionProperties.latexRange.moveEnd(
+                                        'character',
+                                        latexResult.latex.length + 4
+                                    ); // Plus 4 for the '$$' characters.
                                 }
-
-                                this.editionProperties.latexRange = windowTarget.document.selection.createRange();
-                                this.editionProperties.latexRange.moveToElementText(
-                                    latexResult.startNode.parentNode
-                                );
-                                this.editionProperties.latexRange.move(
-                                    'character',
-                                    leftOffset + latexResult.startPosition
-                                );
-                                this.editionProperties.latexRange.moveEnd(
-                                    'character',
-                                    latexResult.latex.length + 4
-                                ); // Plus 4 for the '$$' characters.
-                            } else {
-                                this.editionProperties.latexRange = windowTarget.document.createRange();
-                                this.editionProperties.latexRange.setStart(
-                                    latexResult.startNode,
-                                    latexResult.startPosition
-                                );
-                                this.editionProperties.latexRange.setEnd(
-                                    latexResult.endNode,
-                                    latexResult.endPosition
-                                );
+                                else {
+                                    this.editionProperties.latexRange = windowTarget.document.createRange();
+                                    this.editionProperties.latexRange.setStart(
+                                        latexResult.startNode,
+                                        latexResult.startPosition
+                                    );
+                                    this.editionProperties.latexRange.setEnd(
+                                        latexResult.endNode,
+                                        latexResult.endPosition
+                                    );
+                                }
                             }
                         }
                     }
