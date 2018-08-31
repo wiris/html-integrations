@@ -49,30 +49,6 @@ export default class CKEditorIntegration extends IntegrationModel {
     }
 
     /**
-     * Opens formula editor for a new formula if MathType formula is not selected.
-     * Otherwise, opens formula editor to modify the selected formula.
-     */
-    openFormulaEditor() {
-        // Take CKEditor selected element.
-        let nativeSelectedElement;
-        const ckeditorSelection = this.editorObject.getSelection();
-        if (ckeditorSelection) {
-            const ckeditorSelectedElement = ckeditorSelection.getSelectedElement();
-            if (ckeditorSelectedElement) {
-                nativeSelectedElement = ckeditorSelectedElement.$;
-            }
-        }
-        // Look if it is a MathType formula and act as a new formula or as a reissue.
-        if (nativeSelectedElement && Util.containsClass(nativeSelectedElement, Configuration.get('imageClassName'))) {
-            this.core.editionProperties.temporalImage = nativeSelectedElement;
-            this.openExistingFormulaEditor();
-        }
-        else {
-            this.openNewFormulaEditor();
-        }
-    }
-
-    /**
      * It creates MathType and ChemType commands.
      */
     createButtonCommands() {
@@ -96,7 +72,7 @@ export default class CKEditorIntegration extends IntegrationModel {
                 // Can be that previously custom editor was used. So is needed disable
                 // all the editors to avoid wrong behaviours.
                 this.core.getCustomEditors().disable();
-                this.openFormulaEditor();
+                this.openNewFormulaEditor();
             }.bind(this)
 
         });
@@ -112,7 +88,7 @@ export default class CKEditorIntegration extends IntegrationModel {
 
             'exec': function (editor) {
                 this.core.getCustomEditors().enable('chemistry');
-                this.openFormulaEditor();
+                this.openNewFormulaEditor();
             }.bind(this)
 
         });
