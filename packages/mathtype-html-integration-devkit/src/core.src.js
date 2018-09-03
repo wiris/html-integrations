@@ -357,10 +357,12 @@ export default class Core {
             this.insertElementOnSelection(null, focusElement, windowTarget);
         }
         else if (this.editMode == 'latex') {
+            // This method return undefined if mathml hasn't got translate to LaTeX or '' (empty string)
+            // if it's an empty mathml.
             e.latex = Latex.getLatexFromMathML(mathml);
             // this.integrationModel.getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
             // Not all the integrations have special behaviours for nonLatex.
-            if (!!this.integrationModel.fillNonLatexNode && !e.latex) {
+            if (!!this.integrationModel.fillNonLatexNode && typeof e.latex === 'undefined') {
                 this.integrationModel.fillNonLatexNode(e, windowTarget, mathml);
             }
             else {
