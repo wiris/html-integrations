@@ -1,7 +1,7 @@
 {
   "name": "mathtype-js-lib",
-  "description": "MathType Web Integration API for Froala editor",
-  "main": "wiris.src.js",
+  "description": "MathType Web Integration API for CKEditor 4.x",
+  "main": "wirisplugin-generic.src.js",
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production"

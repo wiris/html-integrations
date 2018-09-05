@@ -8,13 +8,16 @@ import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
 import WirisPluginGeneric from './wirisplugin-generic.src.js';
+import './core/styles.src.css';
 
-module.exports = {
+// Expose WirisPlugin variable to the window.
+window.WirisPlugin = {
     Core: Core,
     Parser: Parser,
     Image: Image,
     Util: Util,
     Configuration: Configuration,
     Listeners: Listeners,
-    IntegrationModel: IntegrationModel
+    IntegrationModel: IntegrationModel,
+    WirisPluginGeneric: WirisPluginGeneric
 }

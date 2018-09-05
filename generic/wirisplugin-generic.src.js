@@ -42,7 +42,7 @@ window.wrs_int_init = function(target,toolbar) {
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
  */
-export default class GenericIntegration extends IntegrationModel {
+export class GenericIntegration extends IntegrationModel {
     /**
      * Returns the demo language, stored in _wrs_int_langCode variable. If the language
      * is no set set, calls parent getLanguage() method.

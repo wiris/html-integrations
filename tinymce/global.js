@@ -7,9 +7,11 @@ import Listeners from './core/src/listeners';
 import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
-import {TinyMceIntegration, currentInstance, instances} from './editor_plugin.src.js';
+import { TinyMceIntegration, currentInstance, instances } from './editor_plugin.src.js';
+import './core/styles.src.css';
 
-module.exports = {
+// Expose WirisPlugin variable to the window.
+window.WirisPlugin = {
     Core: Core,
     Parser: Parser,
     Image: Image,

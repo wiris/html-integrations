@@ -8,8 +8,10 @@ import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
 import { CKEditorIntegration, instances, currentInstance } from './plugin.src.js';
+import './core/styles.src.css';
 
-module.exports = {
+// Expose WirisPlugin variable to the window.
+window.WirisPlugin = {
     Core: Core,
     Parser: Parser,
     Image: Image,
@@ -19,4 +21,5 @@ module.exports = {
     IntegrationModel: IntegrationModel,
     currentInstance: currentInstance,
     instances: instances,
+    CKEditorIntegration: CKEditorIntegration
 }

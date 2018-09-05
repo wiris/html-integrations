@@ -7,7 +7,7 @@ import Listeners from './core/src/listeners';
 /**
  * TinyMCE integration class. This class extends IntegrationModel class.
  */
-export default class TinyMceIntegration extends IntegrationModel {
+export class TinyMceIntegration extends IntegrationModel {
 
     constructor(integrationModelProperties) {
         super(integrationModelProperties);

@@ -17,7 +17,7 @@ export var currentInstances = null;
 /**
  * Froala integration class.
  */
-export default class FroalaIntegration extends IntegrationModel {
+export class FroalaIntegration extends IntegrationModel {
     /**
      * Returns the language of the current Froala editor instance.
      */

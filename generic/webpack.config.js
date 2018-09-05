@@ -1,29 +1,66 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
         app: './global.js'
     },
-    // Set watch to true for dev purposes.
-    watch: false,
     output: {
         path: path.resolve(__dirname, ''),
-        filename: 'wirisplugin-generic.js',
-        libraryTarget: 'var',
-        library: 'WirisPlugin'
+        filename: 'wirisplugin-generic.js'
+    },
+    // Set watch to true for dev purposes.
+    watch: false,
+    optimization: {
+        minimizer: [
+            // Javascript optimizer mainly to minimize js files.
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true // Set to true if you want JS source maps.
+            }),
+            // CSS optimizer mainly to minimize css files.
+            new OptimizeCSSAssetsPlugin({})
+        ]
     },
     module: {
-        loaders: [
+        rules: [
             {
+                // Rule to translate ES5 javascript files to ES6.
                 test: /\.js$/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015-ie']
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/env']
+                    }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.(png|jpg|gif)$/i,
+                use: [
+                  {
+                    loader: 'url-loader',
+                    options: {
+                      limit: 8192
+                    }
+                  }
+                ]
             }
-        ],
+        ]
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Output path for css.
+            filename: './core/styles.css',
+        }),
+    ],
     stats: {
         colors: true
     }

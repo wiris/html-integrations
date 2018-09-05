@@ -19,7 +19,7 @@ export var currentInstance = null;
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
  */
-export default class CKEditorIntegration extends IntegrationModel {
+export class CKEditorIntegration extends IntegrationModel {
     constructor(integrationModelProperties) {
         super(integrationModelProperties);
 
