@@ -3,7 +3,7 @@
   "description": "MathType Web Integration API for generic editor",
   "main": "wirisplugin-generic.src.js",
   "scripts": {
-    "dev": "webpack --mode development",
+    "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
   "license": "GPL-3.0",
