@@ -2,7 +2,7 @@
 class PhpParamsProvider implements com_wiris_plugin_api_ParamsProvider {
 
     private $parameters = array();
-    private $serviceParamsList = array('mml', 'lang', 'service', 'latex');
+    private $serviceParamsList = array('mml', 'lang', 'service', 'latex', 'mode');
 
     public function __construct() {
         $this->parameters = array_merge($_GET, $_POST);
