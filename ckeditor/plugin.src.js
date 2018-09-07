@@ -1,4 +1,4 @@
-import IntegrationModel from './core/src/integrationmodel';
+import IntegrationModel, { integrationModelAttributes } from './core/src/integrationmodel';
 import Parser from './core/src/parser';
 import Util from './core/src/util';
 import Configuration from './core/src/configuration';
@@ -11,25 +11,35 @@ export var instances = {};
 /**
  * This property contains the current Froala integration instance,
  * which is the instance of the active editor.
+ * @class
  * @type {IntegrationModel}
  */
 export var currentInstance = null;
 
 /**
- * IntegrationModel constructor. This method sets the dependant
- * integration properties needed by the IntegrationModel class to init the plugin.
+ * This class represents the MathType integration from CKEditor4.
+ * @extends {IntegrationModel}
  */
-export class CKEditorIntegration extends IntegrationModel {
-    constructor(integrationModelProperties) {
-        super(integrationModelProperties);
 
+export class CKEditor4Integration extends IntegrationModel {
+    /**
+     *
+     * @param {integrationModelAttributes} ckeditorIntegrationModelAttributes
+     */
+    constructor(ckeditorIntegrationModelAttributes) {
         /**
-         * Folder name used for the integration inside ckeditor plugins folder.
-         * @type {string}
+         * CKEditor4 Integration.
+         *
+         * @param {integrationModelAttributes} integrationModelAttributes
+         */
+        super(ckeditorIntegrationModelAttributes);
+        /**
+         * Folder name used for the integration inside CKEditor plugins folder.
          */
         this.integrationFolderName = 'ckeditor_wiris';
     }
 
+    /**@inheritdoc */
     init() {
         super.init();
 
@@ -40,16 +50,17 @@ export class CKEditorIntegration extends IntegrationModel {
     }
 
     /**
-     * Returns the integration language.
-     * @returns {string} integration language.
+     * @inheritdoc
+     * @returns {string} - The CKEditor instance language.
      * @override
      */
     getLanguage() {
+        // Returns the CKEDitor instance language.
         return this.editorObject.langCode;
     }
 
     /**
-     * It creates MathType and ChemType commands.
+     * Creates the buttons to open MathType and ChemType editors.
      */
     createButtonCommands() {
         // Is needed specify that our images are allowed.
@@ -59,7 +70,7 @@ export class CKEditorIntegration extends IntegrationModel {
 
         const editor = this.editorObject;
 
-        // MathType Editor
+        // MathType Editor.
         editor.addCommand('ckeditor_wiris_openFormulaEditor', {
 
             'async': false,
@@ -77,7 +88,7 @@ export class CKEditorIntegration extends IntegrationModel {
 
         });
 
-        // ChemType
+        // ChemType.
         editor.addCommand('ckeditor_wiris_openFormulaEditorChemistry', {
 
             'async': false,
@@ -92,11 +103,17 @@ export class CKEditorIntegration extends IntegrationModel {
             }.bind(this)
 
         });
-
     }
 
     /**
-     * Adds all the needed editor listeners.
+     * Adds callbacks to the following CKEditor listeners:
+     * - 'focus' - updates the current instance.
+     * - 'contentDom' - adds 'doubleclick' callback.
+     * - 'doubleclick' - sets to null data.dialog property to avoid modifications for MathType formulas.
+     * - 'setData' - parses the data converting MathML into images.
+     * - 'afterSetData' - adds an observer to MathType formulas to avoid modifications.
+     * - 'getData' - parses the data converting images into selected save mode (MathML by default).
+     * - 'mode' - recalculates the active element.
      */
     addEditorListeners() {
         const editor = this.editorObject;
@@ -239,9 +256,9 @@ export class CKEditorIntegration extends IntegrationModel {
     }
 
     /**
-     * Handles a double click.
-     * @param object target Target
-     * @param object element Element double clicked
+     * @inheritdoc
+     * @param {HTMLElement} element - HTMLElement target.
+     * @param {MouseEvent} event - event which trigger the handler.
      */
     doubleClickHandler(element, event) {
         if (element.nodeName.toLowerCase() == 'img') {
@@ -264,21 +281,19 @@ export class CKEditorIntegration extends IntegrationModel {
         }
     }
 
-    /**
-     * Wrapper from Core.js to get integration folder path.
-     */
+
+    /** @inheritdoc */
     getCorePath() {
         return CKEDITOR.plugins.getPath(this.integrationFolderName);
     }
 
-    /**
-     * Gets the target selection.
-     */
+    /** @inheritdoc */
     getSelection() {
         this.editorObject.editable().$.focus();
         return this.editorObject.getSelection().getNative();
     }
 
+    /** @inheritdoc */
     callbackFunction() {
         super.callbackFunction();
         this.createButtonCommands();
@@ -307,36 +322,31 @@ export class CKEditorIntegration extends IntegrationModel {
             });
 
             editor.on('instanceReady', function () {
+
                 /**
-                 * Integration model properties
-                 * @type {object}
-                 * @property {object} target - Integration DOM target.
-                 * @property {string} configurationService - Configuration integration service.
-                 * @property {string} version - Plugin version.
-                 * @property {string} scriptName - Integration script name.
-                 * @property {object} environment - Integration environment properties.
-                 * @property {string} editor - Editor name.
+                 * Integration model constructor attributes.
+                 * @type {integrationModelAttributes}
                  */
-                let integrationModelProperties = {};
-                integrationModelProperties.editorObject = editor;
+                let ckeditorIntegrationModelAttributes = {};
+                ckeditorIntegrationModelAttributes.editorObject = editor;
                 // In CKEditor always there is an iframe or a div container. To access, we use the property that
                 // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
-                integrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
-                integrationModelProperties.configurationService = '@param.js.configuration.path@';
-                integrationModelProperties.version = '@plugin.version@';
-                integrationModelProperties.scriptName = "plugin.js";
-                integrationModelProperties.langFolderName = 'languages';
-                integrationModelProperties.environment = {};
-                integrationModelProperties.environment.editor = "CKEditor4";
+                ckeditorIntegrationModelAttributes.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
+                ckeditorIntegrationModelAttributes.configurationService = 'integration/configurationjs.php';
+                ckeditorIntegrationModelAttributes.version = '7.5.0.1486';
+                ckeditorIntegrationModelAttributes.scriptName = "plugin.js";
+                ckeditorIntegrationModelAttributes.langFolderName = 'languages';
+                ckeditorIntegrationModelAttributes.environment = {};
+                ckeditorIntegrationModelAttributes.environment.editor = "CKEditor4";
                 // Updating integration paths if context path is overwrited by editor javascript configuration.
                 if ('wiriscontextpath' in editor.config) {
-                    integrationModelProperties.configurationService  = editor.config.wiriscontextpath + integrationModelProperties.configurationService;
+                    ckeditorIntegrationModelAttributes.configurationService  = editor.config.wiriscontextpath + ckeditorIntegrationModelAttributes.configurationService;
                 }
 
                 // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
                 // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
-                if (integrationModelProperties.target) {
-                    const ckeditorIntegrationInstance = new CKEditorIntegration(integrationModelProperties);
+                if (ckeditorIntegrationModelAttributes.target) {
+                    const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelAttributes);
                     ckeditorIntegrationInstance.init();
                     ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
                     WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;
