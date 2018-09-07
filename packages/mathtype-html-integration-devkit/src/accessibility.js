@@ -1,6 +1,7 @@
 import TextCache from './cache';
 import Core from './core.src';
 import ServiceProvider from './serviceprovider';
+import MathML from './mathml.js';
 
 /**
  * Class representing MathType accessible class. This class converts MathML into accessible text.
@@ -15,6 +16,12 @@ export default class Accessibility {
      * @return {string} Accessibility from mathml string on language string.
      */
     static mathMLToAccessible(mathML, language, data) {
+        // Check MathML class. If the class is chemistry,
+        // we add chemistry to data to force accessibility service
+        // to load chemistry grammar.
+        if (MathML.containClass(mathML, 'wrs_chemistry')) {
+            data['mode'] = 'chemistry';
+        }
         var accessibleText;
 
         if (Accessibility.cache.get(mathML)) {

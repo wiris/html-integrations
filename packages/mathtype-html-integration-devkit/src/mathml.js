@@ -234,4 +234,27 @@ export default class MathML {
         return mathmlWithoutSemantics;
     }
 
+    /**
+     * Returns true if a MathML contains a certain class.
+     * @param {string} mathML - input MathML.
+     * @param {string} className - className.
+     * @returns {boolean} true if the input MathML contains the input class.
+     * false otherwise.
+     * @static
+     */
+    static containClass(mathML, className) {
+        var classIndex = mathML.indexOf('class');
+        if (classIndex == -1) {
+            return false;
+        } else {
+            var classTagEndIndex = mathML.indexOf('>', classIndex);
+            var classTag = mathML.substring(classIndex, classTagEndIndex);
+            if (classTag.indexOf(className) != -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
 }

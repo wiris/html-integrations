@@ -5,14 +5,31 @@ import Util from './util.js';
 import Configuration from './configuration';
 
 /**
+ * @typedef {Object} integrationModelProperties
+ * @property {string} configurationService - configuration service path.
+ * @property {string} integrationModelProperties.version - integration version number.
+ * @property {HTMLElement} integrationModelProperties.target - HTML target.
+ * @property {string} integrationModelProperties.scriptName integrationModelProperties.scriptName - integration script name.
+ * @property {Object} integrationModelProperties.callbackMethodArguments - object containing callback method arguments.
+ * @property {Object} integrationModelProperties.environment - integration environment properties.
+ * @property {string} integrationModelProperties.langFolderName - integration lang folder name. 'lang' by default.
+ * @property {Object} integrationModelProperties.editorObject - object containing the integration editor instance.
+ * @property {boolean} integrationModelProperties.rtl - true if the editor is in RTL mode. false otherwise.
+ */
+
+/**
  * This class represents an integration model, allowing the integration script to
  * communicate with Core class. Each integration must extend this class.
  */
 export default class IntegrationModel {
-    constructor(integrationModelProperties) {
+    /**
+     * IntegrationModel constructor.
+     *
+     * @param {integrationModelProperties} integrationModelProperties
+     */
+     constructor(integrationModelProperties) {
         /**
          * Language. Needed for accessibility and locales. English by default.
-         * @type {string}
          */
         this.language = 'en';
 
@@ -20,7 +37,6 @@ export default class IntegrationModel {
          * Configuration service path. The integration service is needed by Core class to
          * load all the backend configuration into the frontend and also to create the paths
          * of all services (all services lives in the same route). Mandatory property.
-         * @type {string}
          */
         this.configurationService = '';
         if ('configurationService' in integrationModelProperties) {
@@ -39,7 +55,6 @@ export default class IntegrationModel {
         /**
          * DOM target in which the plugin works. Needed to associate events, insert formulas, etc.
          * Mandatory property.
-         * @type {HTMLElement}
          */
         this.target = null;
         if ('target' in integrationModelProperties) {
@@ -51,7 +66,6 @@ export default class IntegrationModel {
 
         /**
          * Integration script name. Needed to know the plugin path.
-         * @type {string}
          */
         if ('scriptName' in integrationModelProperties) {
             this.scriptName = integrationModelProperties.scriptName;
@@ -62,7 +76,6 @@ export default class IntegrationModel {
 
         /**
          * Object containing the arguments needed by the callback function.
-         * @type {Object}
          */
         this.callbackMethodArguments = {};
         if ('callbackMethodArguments' in integrationModelProperties) {
@@ -71,7 +84,6 @@ export default class IntegrationModel {
 
         /**
          * Contains information about the integration environment: like the name of the editor, the version, etc.
-         * @type {Object}
          */
         this.environment = {};
         if ('environment' in integrationModelProperties) {
@@ -80,7 +92,6 @@ export default class IntegrationModel {
 
         /**
          * Language folder path. 'lang' by default. the lang folder path could change for some HTML editors.
-         * @type {string}
          */
         this.langFolderName = 'lang';
         if ('langFolderName' in integrationModelProperties) {
@@ -89,7 +100,6 @@ export default class IntegrationModel {
 
         /**
          * Indicates if the DOM target is - or not - and iframe.
-         * @type {boolean}
          */
         this.isIframe = false;
         if (this.target != null) {
@@ -99,7 +109,6 @@ export default class IntegrationModel {
         /**
          * Instance of the integration editor object. Usually the entry point to access the API
          * of a HTML editor.
-         * @type {Object}
          */
         this.editorObject = null;
         if ('editorObject' in integrationModelProperties) {
@@ -108,7 +117,6 @@ export default class IntegrationModel {
 
         /**
          * Specifies if the direction of the text is RTL. false by default.
-         * @type {boolean}
          */
         this.rtl = false;
         if ('rtl' in integrationModelProperties) {
