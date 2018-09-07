@@ -1,4 +1,4 @@
-import IntegrationModel, { integrationModelAttributes } from './core/src/integrationmodel';
+import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
 import Parser from './core/src/parser';
 import Util from './core/src/util';
 import Configuration from './core/src/configuration';
@@ -24,15 +24,15 @@ export var currentInstance = null;
 export class CKEditor4Integration extends IntegrationModel {
     /**
      *
-     * @param {integrationModelAttributes} ckeditorIntegrationModelAttributes
+     * @param {integrationModelProperties}
      */
-    constructor(ckeditorIntegrationModelAttributes) {
+    constructor(ckeditorIntegrationModelProperties) {
         /**
          * CKEditor4 Integration.
          *
-         * @param {integrationModelAttributes} integrationModelAttributes
+         * @param {integrationModelProperties} integrationModelAttributes
          */
-        super(ckeditorIntegrationModelAttributes);
+        super(ckeditorIntegrationModelProperties);
         /**
          * Folder name used for the integration inside CKEditor plugins folder.
          */
@@ -325,28 +325,28 @@ export class CKEditor4Integration extends IntegrationModel {
 
                 /**
                  * Integration model constructor attributes.
-                 * @type {integrationModelAttributes}
+                 * @type {integrationModelProperties}
                  */
-                let ckeditorIntegrationModelAttributes = {};
-                ckeditorIntegrationModelAttributes.editorObject = editor;
+                let ckeditorIntegrationModelProperties = {};
+                ckeditorIntegrationModelProperties.editorObject = editor;
                 // In CKEditor always there is an iframe or a div container. To access, we use the property that
                 // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
-                ckeditorIntegrationModelAttributes.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
-                integrationModelProperties.configurationService = '@param.js.configuration.path@';
-                integrationModelProperties.version = '@plugin.version@';
-                ckeditorIntegrationModelAttributes.scriptName = "plugin.js";
-                ckeditorIntegrationModelAttributes.langFolderName = 'languages';
-                ckeditorIntegrationModelAttributes.environment = {};
-                ckeditorIntegrationModelAttributes.environment.editor = "CKEditor4";
+                ckeditorIntegrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
+                ckeditorIntegrationModelProperties.configurationService = 'integration/configurationjs.php';
+                ckeditorIntegrationModelProperties.version = '7.5.0.1499';
+                ckeditorIntegrationModelProperties.scriptName = "plugin.js";
+                ckeditorIntegrationModelProperties.langFolderName = 'languages';
+                ckeditorIntegrationModelProperties.environment = {};
+                ckeditorIntegrationModelProperties.environment.editor = "CKEditor4";
                 // Updating integration paths if context path is overwrited by editor javascript configuration.
                 if ('wiriscontextpath' in editor.config) {
-                    ckeditorIntegrationModelAttributes.configurationService  = editor.config.wiriscontextpath + ckeditorIntegrationModelAttributes.configurationService;
+                    ckeditorIntegrationModelProperties.configurationService  = editor.config.wiriscontextpath + ckeditorIntegrationModelProperties.configurationService;
                 }
 
                 // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
                 // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
-                if (ckeditorIntegrationModelAttributes.target) {
-                    const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelAttributes);
+                if (ckeditorIntegrationModelProperties.target) {
+                    const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelProperties);
                     ckeditorIntegrationInstance.init();
                     ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
                     WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;

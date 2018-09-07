@@ -1,4 +1,4 @@
-import IntegrationModel, { integrationModelAttributes } from './core/src/integrationmodel';
+import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
 import Parser from './core/src/parser';
 import Util from './core/src/util';
 
@@ -14,19 +14,19 @@ window.wrs_int_init = function(target,toolbar) {
     callbackMethodArguments.toolbar = toolbar;
 
     /**
-     * @type {integrationModelAttributes}
+     * @type {integrationModelProperties}
      */
-    var integrationModelProperties = {};
-    integrationModelProperties.target = target;
-    integrationModelProperties.configurationService = '@param.js.configuration.path@';
-    integrationModelProperties.version = '@plugin.version@';
-    integrationModelProperties.scriptName = "wirisplugin-generic.js";
-    integrationModelProperties.environment = {};
-    integrationModelProperties.environment.editor = "GenericHTML";
-    integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
+    var genericIntegrationProperties = {};
+    genericIntegrationProperties.target = target;
+    genericIntegrationProperties.configurationService = 'integration/configurationjs.php';
+    genericIntegrationProperties.version = '7.5.0.1498';
+    genericIntegrationProperties.scriptName = "wirisplugin-generic.js";
+    genericIntegrationProperties.environment = {};
+    genericIntegrationProperties.environment.editor = "GenericHTML";
+    genericIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
 
     // GenericIntegration instance.
-    var genericIntegrationInstance = new GenericIntegration(integrationModelProperties);
+    var genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
     genericIntegrationInstance.init();
     genericIntegrationInstance.listeners.fire('onTargetReady', {});
 }

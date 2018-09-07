@@ -1,4 +1,4 @@
-import IntegrationModel, { integrationModelAttributes } from './core/src/integrationmodel.js';
+import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel.js';
 import Configuration from './core/src/configuration.js';
 import Parser from './core/src/parser.js';
 
@@ -136,22 +136,22 @@ export class FroalaIntegration extends IntegrationModel {
         var callbackMethodArguments = {};
         callbackMethodArguments.editor = editor;
 
-        /**@type {integrationModelAttributes} */
-        var froalaIntegrationAttributes = {};
-        froalaIntegrationAttributes.target = target;
-        froalaIntegrationAttributes.configurationService = '@param.js.configuration.path@';
-        froalaIntegrationAttributes.version = '@plugin.version@';
-        froalaIntegrationAttributes.scriptName = "wiris.js";
-        froalaIntegrationAttributes.environment = {};
-        froalaIntegrationAttributes.environment.editor = "Froala";
-        froalaIntegrationAttributes.callbackMethodArguments = callbackMethodArguments;
-        froalaIntegrationAttributes.editorObject = editor;
+        /**@type {integrationModelProperties} */
+        var froalaIntegrationProperties = {};
+        froalaIntegrationProperties.target = target;
+        froalaIntegrationProperties.configurationService = 'integration/configurationjs.php';
+        froalaIntegrationProperties.version = '7.5.0.1497';
+        froalaIntegrationProperties.scriptName = "wiris.js";
+        froalaIntegrationProperties.environment = {};
+        froalaIntegrationProperties.environment.editor = "Froala";
+        froalaIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
+        froalaIntegrationProperties.editorObject = editor;
 
         // Updating integration paths if context path is overwrited by editor javascript configuration.
         if ('wiriscontextpath' in editor.opts) {
-            froalaIntegrationAttributes.configurationService  = editor.opts.wiriscontextpath + froalaIntegrationAttributes.configurationService;
+            froalaIntegrationProperties.configurationService  = editor.opts.wiriscontextpath + froalaIntegrationProperties.configurationService;
         }
-        var froalaIntegrationInstance = new FroalaIntegration(froalaIntegrationAttributes);
+        var froalaIntegrationInstance = new FroalaIntegration(froalaIntegrationProperties);
         froalaIntegrationInstance.init();
         froalaIntegrationInstance.listeners.fire('onTargetReady', {});
         WirisPlugin.instances[froalaIntegrationInstance.editorObject.id] = froalaIntegrationInstance;
