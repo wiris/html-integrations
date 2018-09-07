@@ -7,14 +7,14 @@ import Configuration from './configuration';
 /**
  * @typedef {Object} integrationModelProperties
  * @property {string} configurationService - configuration service path.
- * @property {string} integrationModelProperties.version - integration version number.
  * @property {HTMLElement} integrationModelProperties.target - HTML target.
  * @property {string} integrationModelProperties.scriptName integrationModelProperties.scriptName - integration script name.
- * @property {Object} integrationModelProperties.callbackMethodArguments - object containing callback method arguments.
  * @property {Object} integrationModelProperties.environment - integration environment properties.
- * @property {string} integrationModelProperties.langFolderName - integration lang folder name. 'lang' by default.
- * @property {Object} integrationModelProperties.editorObject - object containing the integration editor instance.
- * @property {boolean} integrationModelProperties.rtl - true if the editor is in RTL mode. false otherwise.
+ * @property {Object} [integrationModelProperties.callbackMethodArguments] - object containing callback method arguments.
+ * @property {string} [integrationModelProperties.version] - integration version number.
+ * @property {string} [integrationModelProperties.langFolderName] - integration lang folder name. 'lang' by default.
+ * @property {Object} [integrationModelProperties.editorObject] - object containing the integration editor instance.
+ * @property {boolean} [integrationModelProperties.rtl] - true if the editor is in RTL mode. false otherwise.
  */
 
 /**
@@ -24,7 +24,6 @@ import Configuration from './configuration';
 export default class IntegrationModel {
     /**
      * IntegrationModel constructor.
-     *
      * @param {integrationModelProperties} integrationModelProperties
      */
      constructor(integrationModelProperties) {
