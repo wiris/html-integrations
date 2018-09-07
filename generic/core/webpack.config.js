@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './src/global.js'
+        app: './global.js'
     },
     output: {
         path: path.resolve(__dirname, ''),
@@ -58,7 +58,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             // Output path for css.
-            filename: './core/styles.css',
+            filename: './styles.css',
         }),
     ],
     stats: {
