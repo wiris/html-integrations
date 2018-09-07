@@ -2,22 +2,25 @@ import Core from './core.src.js';
 import Image from './image.js';
 import Listeners from './listeners.js';
 import Util from './util.js';
+import Configuration from './configuration';
 
 /**
- * This class represents an integration model. This class allows the integration script to
+ * This class represents an integration model, allowing the integration script to
  * communicate with Core class. Each integration must extend this class.
  */
 export default class IntegrationModel {
     constructor(integrationModelProperties) {
         /**
          * Language. Needed for accessibility and locales. English by default.
-         * @type {string} language - 'en' by default.
+         * @type {string}
          */
         this.language = 'en';
+
         /**
-         * Configuration service. Core needs this service as entry point to load all
-         * service paths. Mandatory property.
-         * @type {string} configurationService - configuration service path.
+         * Configuration service path. The integration service is needed by Core class to
+         * load all the backend configuration into the frontend and also to create the paths
+         * of all services (all services lives in the same route). Mandatory property.
+         * @type {string}
          */
         this.configurationService = '';
         if ('configurationService' in integrationModelProperties) {
@@ -26,26 +29,29 @@ export default class IntegrationModel {
         else {
             throw new Error('IntegrationModel constructor error: configurationService property missed.')
         }
+
         /**
-         * Plugin version. Needed to stats and lazy caching.
-         * @type {string} version - plugin version.
+         * Plugin version. Needed to stats and caching.
+         * @type {string}
          */
         this.version = ('version' in integrationModelProperties ? integrationModelProperties.version : '');
-        /**
-         * DOM target in which the plugin should work to associate
-         * events, insert formulas etc. Mandatory property.
-         * @type {Object} target - plugin DOM target.
-         */
 
+        /**
+         * DOM target in which the plugin works. Needed to associate events, insert formulas, etc.
+         * Mandatory property.
+         * @type {HTMLElement}
+         */
+        this.target = null;
         if ('target' in integrationModelProperties) {
             this.target = integrationModelProperties.target;
         }
         else {
             throw new Error('IntegrationModel constructor error: target property missed.')
         }
+
         /**
          * Integration script name. Needed to know the plugin path.
-         * @type {string} script
+         * @type {string}
          */
         if ('scriptName' in integrationModelProperties) {
             this.scriptName = integrationModelProperties.scriptName;
@@ -53,64 +59,72 @@ export default class IntegrationModel {
         else {
             throw new Error('IntegrationModel constructor error: scriptName property missed.')
         }
+
         /**
          * Object containing the arguments needed by the callback function.
-         * @type {object} callbackMethodArguments
+         * @type {Object}
          */
         this.callbackMethodArguments = {};
         if ('callbackMethodArguments' in integrationModelProperties) {
             this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments;
         }
+
         /**
          * Contains information about the integration environment: like the name of the editor, the version, etc.
-         * @type {object}
-         * @property {string} editor - Name of the HTML editor.
+         * @type {Object}
          */
         this.environment = {};
         if ('environment' in integrationModelProperties) {
             this.environment = integrationModelProperties.environment;
         }
+
         /**
-         * Language folder path. 'lang' by default.
+         * Language folder path. 'lang' by default. the lang folder path could change for some HTML editors.
          * @type {string}
          */
         this.langFolderName = 'lang';
         if ('langFolderName' in integrationModelProperties) {
             this.langFolderName = integrationModelProperties.langFolderName;
         }
+
         /**
          * Indicates if the DOM target is - or not - and iframe.
-         * @type {boolean} isIframe
+         * @type {boolean}
          */
         this.isIframe = false;
         if (this.target != null) {
             this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
         }
+
         /**
-         * Instance of the integration editor object.
-         * @type {object}
+         * Instance of the integration editor object. Usually the entry point to access the API
+         * of a HTML editor.
+         * @type {Object}
          */
         this.editorObject = null;
         if ('editorObject' in integrationModelProperties) {
             this.editorObject = integrationModelProperties.editorObject;
         }
+
         /**
          * Specifies if the direction of the text is RTL. false by default.
-         * @type {bool}
+         * @type {boolean}
          */
         this.rtl = false;
         if ('rtl' in integrationModelProperties) {
             this.rtl = integrationModelProperties.rtl;
         }
+
         /**
          * Indicates if an image is selected. Needed to resize the image to the original size in case
          * the image is resized.
-         * @type {object} temporalImageResizing - selected image.
+         * @type {boolean}
          */
-        this.temporalImageResizing = null;
+        this.temporalImageResizing = false;
+
         /**
-         * Core instance. The Core class instance associated to the integration model.
-         * @type {Core} core - core instance.
+         * The Core class instance associated to the integration model.
+         * @type {Core}
          */
         this.core = null;
 
@@ -122,8 +136,7 @@ export default class IntegrationModel {
     }
 
     /**
-     * Init function. Usually this method is called from the integration side once the core.js file is loaded.
-     * Is strongly recommended call this method by listening onload event when core.js is loaded.
+     * Init function. Usually called from the integration side once the core.js file is loaded.
      */
     init() {
         this.language = this.getLanguage();
@@ -143,7 +156,7 @@ export default class IntegrationModel {
     }
 
     /**
-     * Get absolute path of the integration script.
+     * Returns the absolute path of the integration script.
      * @return {string} - Absolute path for the integration script.
      */
     getPath() {
@@ -159,15 +172,15 @@ export default class IntegrationModel {
     }
 
     /**
-     * Sets language property.
-     * @param {string} language
+     * Sets the language property.
+     * @param {string} language - language code.
      */
     setLanguage(language) {
         this.language = language;
     }
 
     /**
-     * Sets Core instance.
+     * Sets a Core instance.
      * @param {Core} core - instance of Core class.
      */
     setCore(core) {
@@ -176,16 +189,16 @@ export default class IntegrationModel {
     }
 
     /**
-     * Gets Core instance.
-     * @returns {Core} core - instance of Core class.
+     * Returns the Core instance.
+     * @returns {Core} instance of Core class.
      */
     getCore() {
         return this.core;
     }
 
     /**
-     * Sets the object target. Updates, if necessary,  isIframe property.
-     * @param {object} target  - target object.
+     * Sets the object target and updates the iframe property.
+     * @param {HTMLElement} target - target object.
      */
     setTarget(target) {
         this.target = target;
@@ -194,7 +207,7 @@ export default class IntegrationModel {
 
     /**
      * Sets the editor object.
-     * @param {object} editorObject - The editor object.
+     * @param {Object} editorObject - The editor object.
      */
     setEditorObject(editorObject) {
         this.editorObject = editorObject;
@@ -206,7 +219,7 @@ export default class IntegrationModel {
      */
     openNewFormulaEditor() {
         this.core.editionProperties.isNewElement = true;
-        this.core.openModalDialog(this.language, this.target, this.isIframe);
+        this.core.openModalDialog(this.target, this.isIframe);
     }
 
     /**
@@ -215,13 +228,14 @@ export default class IntegrationModel {
      */
     openExistingFormulaEditor() {
         this.core.editionProperties.isNewElement = false;
-        this.core.openModalDialog(this.language, this.target, this.isIframe);
+        this.core.openModalDialog(this.target, this.isIframe);
     }
 
     /**
-     * Inserts a new formula or updates an existing one inserting it in the DOM target. Can be overwritten in order
-     * from the integration side.
-     * @param {string} mathml - Formula MathML.
+     * Wrapper to Core.updateFormula method.
+     * Transform a MathML into a image formula. Then the image formula is inserted in the specified target, creating
+     * a new image (new formula) or updating an existing one.
+     * @param {string} mathml - MathML to generate the formula.
      * @param {string} editMode - Edit Mode (LaTeX or images).
      */
     updateFormula(mathml) {
@@ -233,7 +247,8 @@ export default class IntegrationModel {
     }
 
     /**
-     * Gets the target selection.
+     * Returns the target selection.
+     * @returns {Selection} target selection.
      */
     getSelection() {
         if (this.isIframe) {
@@ -247,7 +262,13 @@ export default class IntegrationModel {
     }
 
     /**
-     * Add events to formulas in the DOM target.
+     * Add events to formulas in the DOM target. The events added are the following:
+     * - doubleClickHandler: handles double click event on formulas by opening an editor
+     * to edit them.
+     * - mouseDownHandler: handles mouse down event on formulas by saving the size of the formula
+     * in case the the formula is resized.
+     * - mouseUpHandler: handles mouse up event on formulas by restoring the saved formula size
+     * in case the formula is resized.
      */
     addEvents() {
         var eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
@@ -266,18 +287,18 @@ export default class IntegrationModel {
     }
 
     /**
-     * Handles a double click on the target element..
-     * @param {object} element - DOM object target.
-     * @param {event} event - double click event.
+     * Handles a double click on the target element. Opens an editor
+     * to re-edit the double-clicked formula.
+     * @param {HTMLElement} element - DOM object target.
      */
-    doubleClickHandler(element, event) {
+    doubleClickHandler(element) {
         if (element.nodeName.toLowerCase() == 'img') {
             this.core.getCustomEditors().disable();
             if (element.hasAttribute('data-custom-editor')) {
                 var customEditor = element.getAttribute('data-custom-editor');
                 this.core.getCustomEditors().enable(customEditor);
             }
-            if (Util.containsClass(element, 'Wirisformula')) {
+            if (Util.containsClass(element, Configuration.get('imageClassName'))) {
                     this.core.editionProperties.temporalImage = element;
                     this.core.editionProperties.isNewElement = true;
                     this.openExistingFormulaEditor();
@@ -286,13 +307,25 @@ export default class IntegrationModel {
     }
 
     /**
-     * Handles a mouse down event on the iframe.
-     * @param object iframe Target
-     * @param object element Element mouse downed
+     * Handles a mouse up event on the target element. Restores the image size to avoid
+     * resizing formulas.
+     */
+    mouseupHandler() {
+        if (this.temporalImageResizing) {
+            setTimeout(function () {
+                Image.fixAfterResize(this.temporalImageResizing);
+            }.bind(this), 10);
+        }
+    }
+
+    /**
+     * Handles a mouse down event on the target element. Saves the formula size to avoid
+     * resizing formulas.
+     * @param {HTMLElement} element - target element.
      */
     mousedownHandler(element) {
         if (element.nodeName.toLowerCase() == 'img') {
-            if (Util.containsClass(element, 'Wirisformula')) {
+            if (Util.containsClass(element, Configuration.get('imageClassName'))) {
                 this.temporalImageResizing = element;
             }
         }
@@ -328,22 +361,13 @@ export default class IntegrationModel {
     }
 
     /**
-     * Handles a mouse up event on the iframe.
-     */
-   mouseupHandler() {
-        if (this.temporalImageResizing) {
-            setTimeout(function () {
-                Image.fixAfterResize(this.temporalImageResizing);
-            }.bind(this), 10);
-        }
-    }
-
-    /**
      * Callback function. This function will be called once the Core is loaded. IntegrationModel class
      * will fire this method once the 'onLoad' Core event is fired. This function should content all the logic to init
      * the integration.
      */
     callbackFunction() {
+        // It's needed to wait until the integration target is ready. The event is fired
+        // from the integration side.
         var listener = Listeners.newListener('onTargetReady', function() {
             this.addEvents(this.target);
         }.bind(this));
@@ -358,23 +382,22 @@ export default class IntegrationModel {
     }
 
     /**
-     * Core.js wrapper.
+     * Wrapper.
      * Extracts mathml of a determined text node. This function is used as a wrapper inside core.js
      * in order to get mathml from a text node that can contain normal LaTeX or other chosen text.
-     * @param {string} textNode test to extract LaTeX
-     * @param {int} caretPosition starting position to find LaTeX.
-     * @return {string} mathml that it's inside the text node.
-     * @ignore
+     * @param {string} textNode - text node to extract the MathML.
+     * @param {int} caretPosition - caret position inside the text node.
+     * @returns {string} MathML inside the text node.
      */
-    getMathmlFromTextNode() {
+    getMathmlFromTextNode(textNode, caretPosition) {
         // Nothing.
     }
 
     /**
-     * Core.js wrapper.
+     * Wrapper
      * It fills wrs event object of nonLatex with the desired data.
-     * @param {object} event event object.
-     * @param {object} window dom window object.
+     * @param {Object} event - event object.
+     * @param {Object} window dom window object.
      * @param {string} mathml valid mathml.
      */
     fillNonLatexNode(event, window, mathml) {
@@ -382,9 +405,9 @@ export default class IntegrationModel {
     }
 
     /**
-     * Core.js wrapper.
+      Wrapper.
      * Returns selected item from the target.
-     * @param {DOM Element} target
+     * @param {HTMLElement} target - target element
      * @param {boolean} iframe
      */
     getSelectedItem(target, isIframe) {

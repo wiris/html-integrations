@@ -1,10 +1,14 @@
 /**
- * Class representing a client cache class. This class contains
- * pairs of string (key/value) which can be retrieved in any moment. Usually used
- * to store Ajax calls for text services.
+ * Class representing a client cache class. This class contains pairs of
+ * strings (key/value) which can be retrieved in any moment. Usually used
+ * to store AJAX responses for text services like mathml2latex.
  */
 export default class TextCache {
     constructor() {
+        /**
+         * Cache array object. Contains all cache entries.
+         * @type {Object[]}
+         */
         this.cache = [];
     }
 

@@ -1,5 +1,5 @@
 /**
- * This class manages MathType custom editors. A custom editor is an editor which is a MathType editor with a different
+ * This class represents MathType custom editors. A custom editor is athType editor with a different
  * toolbar. This class is necessary to associate a custom editor to:
  * - It's own formulas
  * - A custom toolbar
@@ -10,21 +10,29 @@
 export default class CustomEditors {
 
     constructor() {
-        this.editors = {};
+        /**
+         * Array containing all custom editors.
+         * @type {Object[]}
+         */
+
+        this.editors = [];
+        /**
+         * Default editor name.
+         * @type {string}
+         */
         this.activeEditor = 'default';
     }
 
     /**
-     * Add a custom editor to editors property.
-     * A custom editor is an object with the following parameters:
-     * - name
-     * - toolbar
-     * - icon
-     * - confVariable
-     * - title
-     * - tooltip
-     * @param {string} editorName - editorName
-     * @param {object} editorParams  - custom editor params
+     * Adds a custom editor to editors property.
+     * @param {string} editorName - editorName.
+     * @param {Object} editorParams - custom editor params.
+     * @param {string} editorParams.name - custom editor name.
+     * @param {string} editorParams.toolbar - custom editor toolbar.
+     * @param {string} editorParams.icon - custom editor icon.
+     * @param {string} editorParams.confVariable - configuration key to retrieve if the custom editor is enabled.
+     * @param {string} editorParams.title - custom editor title.
+     * @param {string} editorParams.tooltip - custom editor tooltip associated with it's own icon.
      */
     addEditor(editorName, editorParams) {
         var customEditor= {};
@@ -38,8 +46,8 @@ export default class CustomEditors {
     }
 
     /**
-     * Adds to Core instance a new custom editor.
-     * @param {string} key - editor key (usually toolbar name)
+     * Adds a customEditor to editors property.
+     * @param {string} key - editor key.
      * @param {CustomEditor} customEditor - a custom editor class.
      */
     add(key, customEditor) {
@@ -47,7 +55,7 @@ export default class CustomEditors {
     }
 
     /**
-     * Set active a customEditor.
+     * Set as active a customEditor.
      * @param {string} customEditor - customEditor key.
      */
     enable(customEditor) {
@@ -55,7 +63,7 @@ export default class CustomEditors {
     }
 
     /**
-     * Disable a custom editor.
+     * Disables a custom editor.
      */
     disable() {
         this.activeEditor = 'default';

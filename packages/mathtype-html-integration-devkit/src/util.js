@@ -1,72 +1,74 @@
-import Parser from './parser';
 import MathML from './mathml';
 import Configuration from './configuration';
 import Latex from './latex';
-import Constants from './constants';
 
 /**
  * This class represents an utility class.
  */
 export default class Util {
     /**
-     * Fires an element event.
-     * @param {object} element element where event should be fired.
-     * @param {string} event event to fire.
-     * @ignore
+     * Fires an event in a target.
+     * @param {EventTarget} eventTarget - target where event should be fired.
+     * @param {string} eventName event to fire.
+     * @static
      */
-    static fireEvent(element, event) {
+    static fireEvent(eventTarget, eventName) {
         if (document.createEvent){
             var eventObject = document.createEvent('HTMLEvents');
-            eventObject.initEvent(event, true, true);
-            return !element.dispatchEvent(eventObject);
+            eventObject.initEvent(eventName, true, true);
+            return !eventTarget.dispatchEvent(eventObject);
         }
 
         var eventObject = document.createEventObject();
-        return element.fireEvent('on' + event, eventObject)
+        return eventTarget.fireEvent('on' + eventName, eventObject)
     }
 
     /**
      * Cross-browser addEventListener/attachEvent function.
-     * @param {object} element Element target
-     * @param {event} event Event
-     * @param {function} func Function to run
-     * @ignore
+     * @param {EventTarget} eventTarget - target to add the event.
+     * @param {string} eventName - specifies the type of event.
+     * @param {Function} callBackFunction - callback function.
+     * @static
      */
-    static addEvent(element, event, func) {
-        if (element.addEventListener) {
-            element.addEventListener(event, func, true);
-        } else if (element.attachEvent) {
-            element.attachEvent('on' + event, func);
+    static addEvent(eventTarget, eventName, callBackFunction) {
+        if (eventTarget.addEventListener) {
+            eventTarget.addEventListener(eventName, callBackFunction, true);
+        } else if (eventTarget.attachEvent) {
+            // Backwards compatibility.
+            eventTarget.attachEvent('on' + eventName, callBackFunction);
         }
     }
 
     /**
      * Cross-browser removeEventListener/detachEvent function.
-     * @param {object} element Element target
-     * @param {event} event Event
-     * @param {function} func Function to run
-     * @ignore
+     * @param {EventTarget} eventTarget - target to add the event.
+     * @param {string} eventName - specifies the type of event.
+     * @param {Function} callBackFunction - function to remove from the event target.
+     * @static
      */
-    static removeEvent(element, event, func) {
-        if (element.removeEventListener) {
-            element.removeEventListener(event, func, true);
+    static removeEvent(eventTarget, eventName, callBackFunction) {
+        if (eventTarget.removeEventListener) {
+            eventTarget.removeEventListener(eventName, callBackFunction, true);
         }
-        else if (element.detachEvent) {
-            element.detachEvent('on' + event, func);
+        else if (eventTarget.detachEvent) {
+            eventTarget.detachEvent('on' + eventName, callBackFunction);
         }
     }
 
     /**
-     * Adds element events.
-     * @param {object} target Target
-     * @param {function} doubleClickHandler Function to run when user double clicks the element
-     * @param {function} mousedownHandler Function to run when user mousedowns the element
-     * @param {function} mouseupHandler Function to run when user mouseups the element
-     * @ignore
+     * Adds the a callback function, for a certain event target, to the following event types:
+     * - dblclick
+     * - mousedown
+     * - mouseup
+     * @param {EventTarget} eventTarget - event target.
+     * @param {Function} doubleClickHandler - function to run when on dblclick event.
+     * @param {Function} mousedownHandler - function to run when on mousedown event.
+     * @param {Function} mouseupHandler - function to run when on mouseup event.
+     * @static
      */
-    static addElementEvents(target, doubleClickHandler, mousedownHandler, mouseupHandler) {
+    static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
         if (doubleClickHandler) {
-            Util.addEvent(target, 'dblclick', function (event) {
+            Util.addEvent(eventTarget, 'dblclick', function (event) {
                 var realEvent = (event) ? event : window.event;
                 var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
                 doubleClickHandler(element, realEvent);
@@ -74,7 +76,7 @@ export default class Util {
         }
 
         if (mousedownHandler) {
-            Util.addEvent(target, 'mousedown', function (event) {
+            Util.addEvent(eventTarget, 'mousedown', function (event) {
                 var realEvent = (event) ? event : window.event;
                 var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
                 mousedownHandler(element, realEvent);
@@ -82,7 +84,7 @@ export default class Util {
         }
 
         if (mouseupHandler) {
-            Util.addEvent(target, 'mouseup', function (event) {
+            Util.addEvent(eventTarget, 'mouseup', function (event) {
                 var realEvent = (event) ? event : window.event;
                 var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
                 mouseupHandler(element, realEvent);
@@ -91,27 +93,10 @@ export default class Util {
     }
 
     /**
-     * Checks if a determined array contains a determined element.
-     * @param {array} stack
-     * @param {object} element
-     * @return bool
-     * @ignore
-     */
-    static arrayContains(stack, element) {
-        for (var i = stack.length - 1; i >= 0; --i) {
-            if (stack[i] === element) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * Adds a specific className to given element
-     * @param  {object} element
-     * @param  {string} className
-     * @ignore
+     * Adds a class name to a HTMLElement.
+     * @param {HTMLElement} element - the HTML element.
+     * @param {string} className - the class name.
+     * @static
      */
     static addClass(element, className) {
         if (!Util.containsClass(element, className)) {
@@ -120,11 +105,11 @@ export default class Util {
     }
 
     /**
-     * Checks if an element contains a class.
-     * @param {object} element
-     * @param {string} className
-     * @return bool
-     * @ignore
+     * Checks if a HTMLElement contains a certain class.
+     * @param {HTMLElement} element - the HTML element.
+     * @param {string} className - the className.
+     * @returns {boolean} true if the HTMLElement contains the class name. false otherwise.
+     * @static
      */
     static containsClass(element, className) {
         if (element == null || !('className' in element)) {
@@ -143,10 +128,10 @@ export default class Util {
     }
 
     /**
-     * Remove a specific class
-     * @param {object} element
-     * @param {string} className
-     * @ignore
+     * Remove a certain class for a HTMLElement.
+     * @param {HTMLElement} element - the HTML element.
+     * @param {string} className - the class name.
+     * @static
      */
     static removeClass(element, className) {
         var newClassName = '';
@@ -161,10 +146,11 @@ export default class Util {
     }
 
     /**
-     * Converts old xmlinitialtext attribute (with «») to the correct one(with §lt;§gt;)
-     * @param {string} text String containtg safeXml characters
-     * @return {string} String with the safeXml charaters parsed.
-     * @ignore
+     * Converts old xml initial text attribute (with «») to the correct one(with §lt;§gt;). It's
+     * used to parse old applets.
+     * @param {string} text - string containing safeXml characters
+     * @returns {string} a string with safeXml characters parsed.
+     * @static
      */
     static convertOldXmlinitialtextAttribute(text){
         // Used to fix a bug with Cas imported from Moodle 1.9 to Moodle 2.x.
@@ -190,16 +176,14 @@ export default class Util {
 
     /**
      * Cross-browser solution for creating new elements.
-     *
-     * It fixes some browser bugs.
-     *
-     * @param {string} elementName The tag name of the wished element.
-     * @param {object} attributes An object where each key is a wished attribute name and each value is its value.
-     * @param {object} creator Optional param. If supplied, this function will use the "createElement" method from this param. Else, "document" will be used.
-     * @return {object} The DOM element with the specified attributes assignated.
-     * @ignore
+     * @param {string} tagName - tag name of the wished element.
+     * @param {Object} attributes - an object where each key is a wished attribute name and each value is its value.
+     * @param {Object} [creator] - if supplied, this function will use the "createElement" method from this param. Otherwise
+     * document will be used as creator.
+     * @returns {Element} The DOM element with the specified attributes assigned.
+     * @static
      */
-    static createElement(elementName, attributes, creator) {
+    static createElement(tagName, attributes, creator) {
         if (attributes === undefined) {
             attributes = {};
         }
@@ -216,9 +200,8 @@ export default class Util {
         * For example, you can't set the "src" attribute on an "applet" object.
         * Other browsers will throw an exception and will run the standard code.
         */
-
         try {
-            var html = '<' + elementName;
+            var html = '<' + tagName;
 
             for (var attributeName in attributes) {
                 html += ' ' + attributeName + '="' + Util.htmlEntities(attributes[attributeName]) + '"';
@@ -228,7 +211,7 @@ export default class Util {
             element = creator.createElement(html);
         }
         catch (e) {
-            element = creator.createElement(elementName);
+            element = creator.createElement(tagName);
 
             for (var attributeName in attributes) {
                 element.setAttribute(attributeName, attributes[attributeName]);
@@ -239,10 +222,10 @@ export default class Util {
     }
 
     /**
-     * Creates new object using its html code.
-     * @param {string} objectCode html code
-     * @return {object} html object.
-     * @ignore
+     * Creates new HTML from it's HTML code as string.
+     * @param {string} objectCode - html code
+     * @returns {Element} the HTML element.
+     * @static
      */
     static createObject(objectCode, creator) {
         if (creator === undefined) {
@@ -315,38 +298,38 @@ export default class Util {
     }
 
     /**
-     * Converts an object to its HTML code.
-     * @param {object} object DOM object..
-     * @return {string} HTML code.
-     * @ignore
+     * Converts an Element to its HTML code.
+     * @param {Element} element - entry element.
+     * @return {string} the HTML code of the input element.
+     * @static
      */
-    static createObjectCode(object) {
+    static createObjectCode(element) {
 
         // In case that the image was not created, the object can be null or undefined.
-        if (typeof object == 'undefined' || object == null) {
+        if (typeof element == 'undefined' || element == null) {
             return;
         }
 
-        if (object.nodeType == 1) { // ELEMENT_NODE.
-            var output = '<' + object.tagName;
+        if (element.nodeType == 1) { // ELEMENT_NODE.
+            var output = '<' + element.tagName;
 
-            for (var i = 0; i < object.attributes.length; ++i) {
-                if (object.attributes[i].specified) {
-                    output += ' ' + object.attributes[i].name + '="' + Util.htmlEntities(object.attributes[i].value) + '"';
+            for (var i = 0; i < element.attributes.length; ++i) {
+                if (element.attributes[i].specified) {
+                    output += ' ' + element.attributes[i].name + '="' + Util.htmlEntities(element.attributes[i].value) + '"';
                 }
             }
 
-            if (object.childNodes.length > 0) {
+            if (element.childNodes.length > 0) {
                 output += '>';
 
-                for (var i = 0; i < object.childNodes.length; ++i) {
-                    output += Util.createObject(object.childNodes[i]);
+                for (var i = 0; i < element.childNodes.length; ++i) {
+                    output += Util.createObject(element.childNodes[i]);
                 }
 
-                output += '</' + object.tagName + '>';
+                output += '</' + element.tagName + '>';
             }
-            else if (object.nodeName == 'DIV' || object.nodeName == 'SCRIPT') {
-                output += '></' + object.tagName + '>';
+            else if (element.nodeName == 'DIV' || element.nodeName == 'SCRIPT') {
+                output += '></' + element.tagName + '>';
             }
             else {
                 output += '/>';
@@ -355,15 +338,15 @@ export default class Util {
             return output;
         }
 
-        if (object.nodeType == 3) { // TEXT_NODE.
-            return Util.htmlEntities(object.nodeValue);
+        if (element.nodeType == 3) { // TEXT_NODE.
+            return Util.htmlEntities(element.nodeValue);
         }
 
         return '';
     }
 
     /**
-     * Concatenates to URL paths.
+     * Concatenates two URL paths.
      * @param {string} path1 - first URL path
      * @param {string} path2 - second URL path
      * @returns {string} new URL.
@@ -377,10 +360,10 @@ export default class Util {
     }
 
     /**
-     * Parses a text and replaces all HTML special characters by their entities.
-     * @param {string} input Text to be paresed.
-     * @return {string} the input text with all their special characters replaced by their entities.
-     * @ignore
+     * Parses a text and replaces all HTML special characters by their correspondent entities.
+     * @param {string} input - text to be parsed.
+     * @returns {string} the input text with all their special characters replaced by their entities.
+     * @static
      */
     static htmlEntities(input) {
         return input.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
@@ -388,18 +371,18 @@ export default class Util {
 
     /**
      * Parses a text and replaces all the HTML entities by their characters.
-     * @param {string} input Text to be parsed
-     * @return {string} The input text with all their entities replaced by characters.
-     * @ignore
+     * @param {string} input - text to be parsed
+     * @returns {string} the input text with all their entities replaced by characters.
+     * @static
      */
     static htmlEntitiesDecode(input) {
         return input.split('&quot;').join('"').split('&gt;').join('>').split('&lt;').join('<').split('&amp;').join('&');
     }
 
     /**
-     * Cross-browser httpRequest creation.
+     * Returns a cross-browser http request.
      * @return {object} httpRequest request object.
-     * @ignore
+     * @returns {XMLHttpRequest|ActiveXObject} the proper request object.
      */
     static createHttpRequest() {
         var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
@@ -426,49 +409,10 @@ export default class Util {
     }
 
     /**
-     * Gets the content from an URL.
-     * @param {string} url target URL.
-     * @param {object} postVariables post variables. Null if a GET query should be done.
-     * @return {string} content of the target URL.
-     * @ignore
-     */
-    static getContent(url, postVariables) {
-        var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
-        var httpRequest = Util.createHttpRequest();
-
-            if (httpRequest) {
-                if (typeof postVariables === undefined || typeof postVariables == 'undefined') {
-                    httpRequest.open('GET', url, false);
-                }
-                else if (url.substr(0, 1) == '/' || url.substr(0, 7) == 'http://' || url.substr(0, 8) == 'https://') {
-                    httpRequest.open('POST', url, false);
-                }
-                else {
-                    httpRequest.open('POST', currentPath + url, false);
-                }
-
-                if (postVariables !== undefined) {
-                    httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-                    httpRequest.send(Util.httpBuildQuery(postVariables));
-                }
-                else {
-                    httpRequest.send(null);
-                }
-
-                return httpRequest.responseText;
-            }
-
-            alert(Core.getStringManager().getString('browser_no_compatible'));
-
-
-        return '';
-    }
-
-    /**
      * Converts a hash to a HTTP query.
-     * @param {hash} properties A key-value Hash
-     * @return {string} A HTTP query containing all the key value pairs with all the shpecial characters replaced by their entities.
-     * @ignore
+     * @param {Object[]} properties - a key/value object.
+     * @returns {string} a HTTP query containing all the key value pairs with all the special characters replaced by their entities.
+     * @static
      */
     static httpBuildQuery(properties) {
         var result = '';
@@ -488,16 +432,16 @@ export default class Util {
     }
 
     /**
-     * Convert a hash to string  sorting keys to get a deterministic output
-     * @param {hash} h a key-value hash
-     * @return{string} A string with the form key1=value1...keyn=valuen
-     * @ignore
+     * Convert a hash to string sorting keys to get a deterministic output
+     * @param {Object[]} hash - a key/value object.
+     * @returns {string} a string with the form key1=value1...keyn=valuen
+     * @static
      */
-    static propertiesToString(h) {
+    static propertiesToString(hash) {
         // 1. Sort keys. We sort the keys because we want a deterministic output.
         var keys = []
-        for (var key in h) {
-            if (h.hasOwnProperty(key)) {
+        for (var key in hash) {
+            if (hash.hasOwnProperty(key)) {
                 keys.push(key);
             }
         }
@@ -521,7 +465,7 @@ export default class Util {
             var key = keys[i];
             output += key;
             output += "=";
-            var value = h[key];
+            var value = hash[key];
             value = value.replace("\\", "\\\\");
             value = value.replace("\n", "\\n");
             value = value.replace("\r", "\\r");
@@ -535,10 +479,10 @@ export default class Util {
 
     /**
      * Compare two strings using charCodeAt method
-     * @param {string} a first string to compare.
-     * @param {string} b second string to compare
-     * @return {int} the int difference between a and b
-     * @ignore
+     * @param {string} a - first string to compare.
+     * @param {string} b - second string to compare.
+     * @returns {number} the difference between a and b
+     * @static
      */
     static compareStrings(a, b) {
         var i;
@@ -555,16 +499,15 @@ export default class Util {
     }
 
     /**
-     * Fix charCodeAt() javascript function to handle non-Basic-Multilingual-Plane characters.
-     * @param {string} str String
-     * @param {int} idx An integer greater than or equal to 0 and less than the length of the string
-     * @return {int} An integer representing the UTF-16 code of the string at the given index.
-     * @ignore
+     * Fix charCodeAt() JavaScript function to handle non-Basic-Multilingual-Plane characters.
+     * @param {string} string - input string
+     * @param {number} idx - an integer greater than or equal to 0 and less than the length of the string
+     * @returns {number} an integer representing the UTF-16 code of the string at the given index.
+     * @static
      */
-
-    static fixedCharCodeAt(str, idx) {
+    static fixedCharCodeAt(string, idx) {
         idx = idx || 0;
-        var code = str.charCodeAt(idx);
+        var code = string.charCodeAt(idx);
         var hi, low;
 
         /* High surrogate (could change last hex to 0xDB7F to treat high
@@ -572,7 +515,7 @@ export default class Util {
 
         if (0xD800 <= code && code <= 0xDBFF) {
             hi = code;
-            low = str.charCodeAt(idx + 1);
+            low = string.charCodeAt(idx + 1);
             if (isNaN(low)) {
                 throw Core.getStringManager().getString('exception_high_surrogate');
             }
@@ -587,6 +530,12 @@ export default class Util {
         return code;
     }
 
+    /**
+     * Returns an URL with it's query params converted into array.
+     * @param {string} url - input URL.
+     * @returns {Object[]} an array containing all URL query params.
+     * @static
+     */
     static urlToAssArray(url) {
         var i;
         i = url.indexOf("?");
@@ -608,10 +557,13 @@ export default class Util {
     }
 
     /**
-     * URL encode function.
-     * @param {string} clearString Input string to be encoded
-     * @return {string} encoded string.
-     * @ignore
+     * Returns an encoded URL by replacing each instance of certain characters by
+     * one, two, three or four escape sequences using encodeURIComponent method.
+     * !'()* . will not be encoded.
+     *
+     * @param {string} clearString - URL string to be encoded
+     * @returns {string} URL with it's special characters replaced.
+     * @static
      */
     static urlEncode(clearString) {
         var output = '';
@@ -623,13 +575,13 @@ export default class Util {
     // TODO: To parser?
     /**
      * Converts the HTML of a image into the output code that WIRIS must return.
-     * By default returns the mathml stored on data-mahml attribute (if imgCode is a formula)
+     * By default returns the MathML stored on data-mahml attribute (if imgCode is a formula)
      * or the Wiriscas attribute of a WIRIS applet.
-     * @param {string} imgCode the html code from a formula or a CAS image.
-     * @param {bool} convertToXml True if the image should be converted to xml.
-     * @param {bool} convertToSafeXml True if the image should be conerte to safeXmll
-     * @return {string} the Xml or safeXml of a WIRIS image.
-     * @ignore
+     * @param {string} imgCode - the html code from a formula or a CAS image.
+     * @param {boolean} convertToXml - true if the image should be converted to XML.
+     * @param {boolean} convertToSafeXml - true if the image should be converted to safeXML.
+     * @returns {string} the XML or safeXML of a WIRIS image.
+     * @static
      */
     static getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
         var imgObject = Util.createObject(imgCode);
@@ -673,9 +625,9 @@ export default class Util {
 
     /**
      * Gets the node length in characters.
-     * @param {object} node HTML node.
-     * @return {int} node length
-     * @ignore
+     * @param {Node} node - HTML node.
+     * @returns {number} node length.
+     * @static
      */
     static getNodeLength(node) {
         var staticNodeLengths = {
@@ -704,13 +656,13 @@ export default class Util {
     }
 
     /**
-     * Gets the selected node or text.
+     * Gets a selected node or text from an editable HTMLElement.
      * If the caret is on a text node, concatenates it with all the previous and next text nodes.
-     * @param {object} target The editable element
-     * @param {boolean} isIframe Specifies if the target is an iframe or not
-     * @param {forceGetSelection} If true, ignores IE system to get the current selection and uses window.getSelection()
-     * @return {object} An object with the 'node' key setted if the item is an element or the keys 'node' and 'caretPosition' if the element is text
-     * @ignore
+     * @param {HTMLElement} target - the editable HTMLElement.
+     * @param {boolean} isIframe  - specifies if the target is an iframe or not
+     * @param {boolean} forceGetSelection - if true, ignores IE system to get the current selection and uses window.getSelection()
+     * @returns {object} an object with the 'node' key set if the item is an element or the keys 'node' and 'caretPosition' if the element is text.
+     * @static
      */
     static getSelectedItem(target, isIframe, forceGetSelection) {
         var windowTarget;
@@ -818,9 +770,13 @@ export default class Util {
 
     /**
      * Returns null if there isn't any item or if it is malformed.
-     * Otherwise returns a div DOM node containing the mathml image and the cursor position inside the textarea.
-     * @param {object} textarea DOM Element.
-     * @ignore
+     * Otherwise returns an object containing the node with the MathML image
+     * and the cursor position inside the textarea.
+     * @param {HTMLTextAreaElement} textarea - textarea element.
+     * @returns {Object} An object containing the node, the index of the
+     * beginning  of the selected text, caret position and the start and end position of the
+     * text node.
+     * @static
      */
     static getSelectedItemOnTextarea(textarea) {
         const textNode = document.createTextNode(textarea.value);
@@ -840,12 +796,11 @@ export default class Util {
     /**
      * Looks for elements that match the given name in a HTML code string.
      * Important: this function is very concrete for WIRIS code. It takes as preconditions lots of behaviors that are not the general case.
-     *
-     * @param {string} code HTML code
-     * @param {string} name Element names
-     * @param {boolean} autoClosed True if the elements are autoClosed.
-     * @return {array} An array containing all HTML elements of code matching the name argument.
-     * @ignore
+     * @param {string} code -  HTML code.
+     * @param {string} name - element name.
+     * @param {boolean} autoClosed - true if the elements are autoClosed.
+     * @return {Object[]} an object containing all HTML elements of code matching the name argument.
+     * @static
      */
     static getElementsByNameFromString(code, name, autoClosed) {
         var elements = [];
@@ -884,13 +839,12 @@ export default class Util {
     }
 
     /**
-     * Decode a base64 to its numeric value
-     *
-     * @param  {String} el base64 character.
-     * @return {int} base64 char numeric value.
-     * @ignore
+     * Returns the numeric value of a base64 character.
+     * @param  {string} character - base64 character.
+     * @returns {number} base64 character numeric value.
+     * @static
      */
-    static decode64(el) {
+    static decode64(character) {
 
         var PLUS = '+'.charCodeAt(0);
         var SLASH = '/'.charCodeAt(0);
@@ -899,7 +853,7 @@ export default class Util {
         var UPPER = 'A'.charCodeAt(0);
         var PLUS_URL_SAFE = '-'.charCodeAt(0);
         var SLASH_URL_SAFE = '_'.charCodeAt(0);
-        var code = el.charCodeAt(0);
+        var code = character.charCodeAt(0);
 
         if (code === PLUS || code === PLUS_URL_SAFE) {
             return 62; // Char '+'.
@@ -923,12 +877,12 @@ export default class Util {
 
     /**
      * Converts a base64 string to a array of bytes.
-     * @param  {String} b64String base64 string.
-     * @param  {int} len dimension of byte array (by default whole string).
-     * @return {Array} Byte array.
-     * @ignore
+     * @param {string} b64String - base64 string.
+     * @param {number} length - dimension of byte array (by default whole string).
+     * @return {Object[]} the resultant byte array.
+     * @static
      */
-    static b64ToByteArray(b64String, len) {
+    static b64ToByteArray(b64String, length) {
 
         var tmp;
 
@@ -938,11 +892,11 @@ export default class Util {
 
         var arr = new Array()
 
-        if (!len) { // All b64String string.
+        if (!length) { // All b64String string.
             var placeHolders = b64String.charAt(b64String.length - 2) === '=' ? 2 : b64String.charAt(b64String.length - 1) === '=' ? 1 : 0
             var l = placeHolders > 0 ? b64String.length - 4 : b64String.length;
         } else {
-            var l = len;
+            var l = length;
         }
 
         for (var i = 0; i < l; i += 4) {
@@ -976,9 +930,9 @@ export default class Util {
 
     /**
      * Returns the first 32-bit signed integer from a byte array.
-     * @param  {Array} bytes array of bytes.
-     * @return {int} 32-bit signed integer.
-     * @ignore
+     * @param {Object[]} bytes - array of bytes.
+     * @returns {number} the 32-bit signed integer.
+     * @static
      */
     static readInt32(bytes) {
         if (bytes.length < 4) {
@@ -992,24 +946,23 @@ export default class Util {
 
     /**
      * Read the first byte from a byte array.
-     * @param  {array} bytes byte array.
-     * @return {int} first byte of the byte array.
-     * @ignore
+     * @param {Object} bytes - input byte array.
+     * @returns {number} first byte of the byte array.
+     * @static
      */
     static readByte(bytes) {
         // @codingStandardsIgnoreStart
         return bytes.shift() << 0;
         // @codingStandardsIgnoreEnd
-
     }
 
     /**
      * Read an arbitrary number of bytes, from a fixed position on a byte array.
-     * @param  {array} bytes byte array.
-     * @param  {int} post start position.
-     * @param  {int} len number of bytes to read.
-     * @return {array} byte array.
-     * @ignore
+     * @param  {Object[]} bytes - byte array.
+     * @param  {number} pos - start position.
+     * @param  {number} len - number of bytes to read.
+     * @returns {Object[]} the byte array.
+     * @static
      */
     static readBytes(bytes, pos, len) {
         return bytes.splice(pos, len);
@@ -1017,9 +970,10 @@ export default class Util {
 
     /**
      * Inserts or modifies formulas or CAS on a textarea.
-     * @param {object} textarea Target
-     * @param {string} text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as (textarea, Parser.createImageSrc(mathml));
-     * @ignore
+     * @param {HTMLTextAreaElement} textarea - textarea target.
+     * @param {string} text - text to add in the textarea. For example, to add the link to the image,
+     * call this function as (textarea, Parser.createImageSrc(mathml));
+     * @static
      */
     static updateTextArea(textarea, text) {
         if (textarea && text) {
@@ -1039,11 +993,11 @@ export default class Util {
 
     /**
      * Modifies existing formula on a textarea.
-     * @param {object} textarea Target
-     * @param {string} text Text to add in the textarea. For example, if you want to add the link to the image, you can call this function as Util.updateTextarea(textarea, Parser.createImageSrc(mathml));
-     * @param {number} start Beginning index from textarea where it needs to be replaced by text.
-     * @param {number} end Ending index from textarea where it needs to be replaced by text
-     * @ignore
+     * @param {HTMLTextAreaElement} textarea - text area target.
+     * @param {string} text - text to add in the textarea. For example, if you want to add the link to the image, you can call this function as Util.updateTextarea(textarea, Parser.createImageSrc(mathml));
+     * @param {number} start - beginning index from textarea where it needs to be replaced by text.
+     * @param {number} end - ending index from textarea where it needs to be replaced by text
+     * @static
      */
     static updateExistingTextOnTextarea(textarea, text, start, end) {
         textarea.focus();
@@ -1052,10 +1006,11 @@ export default class Util {
     }
 
     /**
-     * Add a parameter to a URL (GET).
+     * Add a parameter with it's correspondent value to an URL (GET).
      * @param {string} path - URL path
      * @param {string} parameter - parameter
      * @param {string} value - value
+     * @static
      */
     static addArgument(path, parameter, value) {
         var sep;

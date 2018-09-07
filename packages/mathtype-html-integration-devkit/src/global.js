@@ -9,7 +9,8 @@ import polyfills from './polyfills.js';
 import IntegrationModel from './integrationmodel.js';
 import MathML from './mathml.js';
 
-module.exports = {
+// Expose WirisPlugin variable to the window.
+window.WirisPlugin = {
     Core: Core,
     Parser: Parser,
     Image: Image,

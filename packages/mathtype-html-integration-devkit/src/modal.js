@@ -1,10 +1,9 @@
-import StringManager from './stringmanager.js';
-import contentManager from './contentmanager.js';
 import PopUpMessage from './popupmessage.js';
 import Core from './core.src.js';
 import Util from './util.js';
 import Configuration from './configuration.js';
 import Listeners from './listeners';
+import ContentManager from './contentmanager.js';
 
 
 
@@ -16,8 +15,7 @@ export default class ModalDialog {
 
     /**
      * Modal dialog constructor
-     * @param {Object} modalDialogAttributes  - An object containing the modal dialog attributes.
-     * @ignore
+     * @param {Object} modalDialogAttributes  - An object containing all modal dialog attributes.
      */
     constructor(modalDialogAttributes) {
         this.attributes = modalDialogAttributes
@@ -172,7 +170,7 @@ export default class ModalDialog {
 
          /**
          * Indicates if directionality of the modal dialog is RTL. false by default.
-         * @type {bool}
+         * @type {boolean}
          */
         this.rtl = false;
         if ('rtl' in this.attributes) {
@@ -180,10 +178,9 @@ export default class ModalDialog {
         }
     }
     /**
-     * This method sets the contentElement object. A contentElement object
-     * manages the logic of modal object content: submit, update, close and changes.
-     * @param {object} contentManager
-     * @ignore
+     * This method sets an ContentManager instance to ModalDialog. ContentManager
+     * manages the logic of ModalDialog content: submit, update, close and changes.
+     * @param {ContentManager} contentManager - ContentManager instance.
      */
     setContentManager(contentManager) {
         this.contentManager = contentManager;
@@ -191,19 +188,17 @@ export default class ModalDialog {
 
     /**
      * Returns the modal contentElement object.
-     *@returns {object}
-    *@ignore
+     * @returns {ContentManager} the instance of the ContentManager class.
     */
     getContentManager() {
         return this.contentManager;
     }
 
     /**
-     * This method is called when the modal object has been submited. Calls
+     * This method is called when the modal object has been submitted. Calls
      * contentElement submitAction method - if exists - and closes the modal
      * object. No logic about the content should be placed here,
      * contentElement.submitAction is the responsible of the content logic.
-     * @ignore
      */
     submitAction() {
         if (typeof this.contentManager.submitAction !== 'undefined') {
@@ -216,7 +211,6 @@ export default class ModalDialog {
      * This method is called when the modal object has been cancelled. If
      * contentElement has implemented hasChanges method, a confirm popup
      * will be shown if hasChanges returns true.
-     * @ignore
      */
     cancelAction() {
         if (typeof this.contentManager.hasChanges === 'undefined') {
@@ -229,14 +223,13 @@ export default class ModalDialog {
     }
 
     /**
-     * Returns a submit button. The properties argument admits the following:
-     * properties {
-     *  'class' : '', // button class.
-     *  'innerHTML : '' // button innerHTML.
-     * }
-     * @param {Object} properties input button properties.
-     * @param {Function} callback callback function associated to click event.
-     * @ignore
+     * Returns a button element.
+     * @param {Object} properties - input button properties.
+     * @param {string} properties.class - input button class.
+     * @param {string} properties.innerHTML - input button innerHTML.
+     * @param {Object} callback - callback function associated to click event.
+     * @returns {HTMLButtonElement} the button element.
+     *
      */
     createSubmitButton(properties, callback) {
         function SubmitButton(properties, callback) {
@@ -256,7 +249,6 @@ export default class ModalDialog {
 
     /**
      * Creates the modal window object inserting a contentElement object.
-     * @ignore
      */
     create() {
 
@@ -342,7 +334,6 @@ export default class ModalDialog {
 
     /**
      * Creates a button in the modal object to resize it.
-     * @ignore
      */
     createResizeButtons() {
         // This is a definition of Resize Button Bottom-Right
@@ -359,36 +350,34 @@ export default class ModalDialog {
         Util.addEvent(this.resizerBR, 'mousedown', this.activateResizeStateBR.bind(this));
         Util.addEvent(this.resizerTL, 'mousedown', this.activateResizeStateTL.bind(this));
     }
+
     /**
-     * Method to initialize variables for Bottom-Right resize button
-     * @param {event} ev mouse
-     * @ignore
+     * Initialize variables for Bottom-Right resize button
+     * @param {MouseEvent} mouseEvent - mouse event.
      */
-    activateResizeStateBR(ev) {
-        this.initializeResizeProperties(ev, false);
+    activateResizeStateBR(mouseEvent) {
+        this.initializeResizeProperties(mouseEvent, false);
     }
 
     /**
-     * Method to initialize variables for Top-Left resize button
-     * @param {event} ev mouse
-     * @ignore
+     * Initialize variables for Top-Left resize button
+     * @param {MouseEvent} mouseEvent - mouse event.
      */
-    activateResizeStateTL(ev) {
-        this.initializeResizeProperties(ev, true);
+    activateResizeStateTL(mouseEvent) {
+        this.initializeResizeProperties(mouseEvent, true);
     }
 
     /**
      * Common method to initialize variables at resize
-     * @param {event} ev mouse
-     * @ignore
+     * @param {MouseEvent} mouseEvent - mouse event.
      */
-    initializeResizeProperties(ev, leftOption) {
+    initializeResizeProperties(mouseEvent, leftOption) {
         // Apply class for disable involuntary select text when drag.
         Util.addClass(document.body, 'wrs_noselect');
         Util.addClass(this.overlay, 'wrs_overlay_active');
         this.resizeDataObject = {
-            x: this.eventClient(ev).X,
-            y: this.eventClient(ev).Y
+            x: this.eventClient(mouseEvent).X,
+            y: this.eventClient(mouseEvent).Y
         };
         // Save Initial state of modal to compare on drag and obtain the difference.
         this.initialWidth = parseInt(this.container.style.width);
@@ -411,9 +400,7 @@ export default class ModalDialog {
 
     /**
      * This method opens the modal window, restoring the previous state, position and metrics,
-     * if exists.
-     * By default the modal object opens in stack mode.
-     * @ignore
+     * if exists. By default the modal object opens in stack mode.
      */
     open() {
         //Removing close class.
@@ -433,7 +420,7 @@ export default class ModalDialog {
         }
         else {
             // Previous state closed. Open method can be called even the previous state is open,
-            // for exmample updating the content of the modal object.
+            // for example updating the content of the modal object.
             if (!this.properties.open) {
                 this.properties.open = true;
 
@@ -470,7 +457,6 @@ export default class ModalDialog {
 
     /**
      * Closes modal window and restores viewport header.
-     * @ignore
      */
     close() {
         this.removeClass('wrs_maximized');
@@ -483,8 +469,7 @@ export default class ModalDialog {
     }
 
     /**
-     * It sets the website scale to one.
-     * @ignore
+     * Sets the website scale to one.
      */
     restoreWebsiteScale() {
         let viewportmeta = document.querySelector('meta[name=viewport]');
@@ -541,38 +526,33 @@ export default class ModalDialog {
         else {
             setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
         }
-
     }
 
     /**
-     * Adds an event to avoid touchscrolling.
-     * @ignore
+     * Adds an event to avoid touch scrolling.
      */
     blockWebsiteScroll() {
         document.body.addEventListener('touchmove', this.disableTouchMove, {passive: false});
     }
 
     /**
-     * Removes the event to avoid touchscrolling.
-     * @ignore
+     * Removes the event to avoid touch scrolling.
      */
     unblockWebsiteScroll() {
         document.body.removeEventListener('touchmove', this.disableTouchMove, {passive: false});
     }
 
     /**
-     * Prevents the default event behaviour.
-     * @param {Object} ev javascript event.
-     * @ignore.
+     * Prevents the default event behavior to a MouseEvent.
+     * @param {MouseEvent} mouseEvent - mouse event.
      */
-    disableTouchMove(ev) {
-        ev.preventDefault();
+    disableTouchMove(mouseEvent) {
+        mouseEvent.preventDefault();
     }
 
     /**
-     * Util function to kwnow if browser is internet explorer 11.
-     * @return {boolean} return true if browser is iexplorer v11 or false in others.
-     * @ignore
+     * Util function to known if browser is IE11.
+     * @returns {boolean} true if the browser is IE11. false otherwise.
      */
     isIE11() {
         if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0 ) {
@@ -582,9 +562,8 @@ export default class ModalDialog {
     }
 
     /**
-     * @param {string} actual language to check if it's rtl
-     * @return {boolean} return true if current language is type RTL
-     * @ignore
+     * Returns if the current language type is RTL.
+     * @return {boolean} true if current language is RTL. false otherwise.
      */
      isRTL() {
         if (this.attributes.language == 'ar' || this.attributes.language == 'he') {
@@ -595,42 +574,39 @@ export default class ModalDialog {
      }
 
     /**
-     * Adds a class to all modal DOM elements.
-     * @param {string} cls
-     * @ignore
+     * Adds a class to all modal ModalDialog DOM elements.
+     * @param {string} className - class name.
      */
-    addClass(cls) {
-        Util.addClass(this.overlay, cls);
-        Util.addClass(this.titleBar, cls);
-        Util.addClass(this.overlay, cls);
-        Util.addClass(this.container, cls);
-        Util.addClass(this.contentContainer, cls);
-        Util.addClass(this.stackDiv, cls);
-        Util.addClass(this.minimizeDiv, cls);
-        Util.addClass(this.maximizeDiv, cls);
-        Util.addClass(this.wrapper, cls);
+    addClass(className) {
+        Util.addClass(this.overlay, className);
+        Util.addClass(this.titleBar, className);
+        Util.addClass(this.overlay, className);
+        Util.addClass(this.container, className);
+        Util.addClass(this.contentContainer, className);
+        Util.addClass(this.stackDiv, className);
+        Util.addClass(this.minimizeDiv, className);
+        Util.addClass(this.maximizeDiv, className);
+        Util.addClass(this.wrapper, className);
     }
 
     /**
-     * Remove a clas  from all modal DOM elements.
-     * @param {string} cls
-     * @ignore
+     * Remove a class from all modal DOM elements.
+     * @param {string} className - class name.
      */
-    removeClass(cls) {
-        Util.removeClass(this.overlay, cls);
-        Util.removeClass(this.titleBar, cls);
-        Util.removeClass(this.overlay, cls);
-        Util.removeClass(this.container, cls);
-        Util.removeClass(this.contentContainer, cls);
-        Util.removeClass(this.stackDiv, cls);
-        Util.removeClass(this.minimizeDiv, cls);
-        Util.removeClass(this.maximizeDiv, cls);
-        Util.removeClass(this.wrapper, cls);
+    removeClass(className) {
+        Util.removeClass(this.overlay, className);
+        Util.removeClass(this.titleBar, className);
+        Util.removeClass(this.overlay, className);
+        Util.removeClass(this.container, className);
+        Util.removeClass(this.contentContainer, className);
+        Util.removeClass(this.stackDiv, className);
+        Util.removeClass(this.minimizeDiv, className);
+        Util.removeClass(this.maximizeDiv, className);
+        Util.removeClass(this.wrapper, className);
     }
 
     /**
      * Create modal dialog for desktop.
-     * @ignore
      */
     createModalWindowDesktop() {
         this.addClass('wrs_modal_desktop');
@@ -638,8 +614,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Create modal dialog for non mobile android devices.
-     * @ignore
+     * Create modal dialog for non android devices.
      */
     createModalWindowAndroid() {
         this.addClass('wrs_modal_android');
@@ -648,7 +623,6 @@ export default class ModalDialog {
 
     /**
      * Create modal dialog for iOS devices.
-     * @ignore
      */
     createModalWindowIos() {
         this.addClass('wrs_modal_ios');
@@ -657,15 +631,14 @@ export default class ModalDialog {
     }
 
     /**
-     * Restore previous state, position and size of previous stacked modal window
-     * @ignore
+     * Restore previous state, position and size of previous stacked modal dialog.
      */
     restoreState() {
         if (this.properties.state == 'maximized') {
-            // Reseting states for prevent return to stack state.
+            // Reset states for prevent return to stack state.
             this.maximize();
         } else if (this.properties.state == 'minimized') {
-            // Reseting states for prevent return to stack state.
+            // Reset states for prevent return to stack state.
             this.properties.state = this.properties.previousState;
             this.properties.previousState = '';
             this.minimize();
@@ -676,7 +649,6 @@ export default class ModalDialog {
 
     /**
      * Stacks the modal object.
-     * @ignore
      */
     stack() {
         this.properties.previousState = this.properties.state;
@@ -701,7 +673,6 @@ export default class ModalDialog {
 
     /**
      * Minimizes the modal object
-     * @ignore
      */
     minimize() {
         // Saving width, height, top and bottom parameters to restore when open
@@ -737,7 +708,6 @@ export default class ModalDialog {
 
     /**
      * Maximizes the modal object.
-     * @ignore
      */
     maximize() {
         // Saving width, height, top and bottom parameters to restore when open
@@ -783,9 +753,8 @@ export default class ModalDialog {
 
     /**
      * Sets modal size.
-     * @param  {integer} height set a height of modal with an integer
-     * @param  {integer} width set a width of modal with an integer
-     * @ignore
+     * @param {number} height - height of the ModalDialog
+     * @param {number} width - width of the ModalDialog.
      */
     setSize(height, width) {
         this.container.style.height = height + 'px';
@@ -794,10 +763,9 @@ export default class ModalDialog {
     }
 
     /**
-     * Sets modal position.
-     * @param  {integer} bottom set a bottom of div modal with an integer
-     * @param  {integer} right set a right of div modal with an integer
-     * @ignore
+     * Sets modal position using bottom and right style attributes.
+     * @param  {number} bottom - bottom attribute.
+     * @param  {number} right - right attribute.
      */
     setPosition(bottom, right) {
         this.container.style.bottom = bottom + 'px';
@@ -805,9 +773,8 @@ export default class ModalDialog {
     }
 
     /**
-     * Saves actual parameters of open modal object (like size and position...) to restore it
-     * once the modal object is re-opened.
-     * @ignore
+     * Saves position and size parameters of and open ModalDialog. This attributes
+     * are needed to restore it on re-open.
      */
     saveModalProperties() {
         // Saving values of modal only when modal is in stack state.
@@ -820,8 +787,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Restore previous parameters values of closed modal (like size and position) and apply this parameters in actual modal.
-     * @ignore
+     * Restore ModalDialog position and size parameters.
      */
     restoreModalProperties() {
         if (this.properties.state == 'stack') {
@@ -833,8 +799,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Set modal size.
-     * @ignore
+     * Sets the modal dialog initial size.
      */
     recalculateSize() {
         this.wrapper.style.width = this.container.clientWidth - 12 + 'px';
@@ -843,8 +808,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Active and disable visibility of resize buttons in modal window depend on state.
-     * @ignore
+     * Enable or disable visibility of resize buttons in modal window depend on state.
      */
     setResizeButtonsVisibility() {
         if (this.properties.state == 'stack') {
@@ -859,7 +823,6 @@ export default class ModalDialog {
 
     /**
      * Makes an object draggable adding mouse and touch events.
-     * @ignore
      */
     addListeners() {
         // Button events (maximize, minimize, stack and close).
@@ -879,7 +842,6 @@ export default class ModalDialog {
 
     /**
      * Removes draggable events from an object.
-     * @ignore
      */
     removeListeners() {
         // Mouse events.
@@ -894,22 +856,21 @@ export default class ModalDialog {
 
     /**
      * Returns mouse or touch coordinates (on touch events ev.ClientX doesn't exists)
-     * @param {event} ev mouse or touch event
-     * @return {object} with the X and Y coordinates.
-     * @ignore
+     * @param {MouseEvent} mouseEvent - mouse event.
+     * @return {Object} with the X and Y coordinates.
      */
-    eventClient(ev) {
-        if (typeof(ev.clientX) == 'undefined' && ev.changedTouches) {
+    eventClient(mouseEvent) {
+        if (typeof(mouseEvent.clientX) == 'undefined' && mouseEvent.changedTouches) {
             var client = {
-                X : ev.changedTouches[0].clientX,
-                Y : ev.changedTouches[0].clientY
+                X : mouseEvent.changedTouches[0].clientX,
+                Y : mouseEvent.changedTouches[0].clientY
             };
             return client;
         }
         else {
             client = {
-                X : ev.clientX,
-                Y : ev.clientY
+                X : mouseEvent.clientX,
+                Y : mouseEvent.clientY
             };
             return client;
         }
@@ -918,21 +879,19 @@ export default class ModalDialog {
     /**
      * Start drag function: set the object dragDataObject with the draggable object offsets coordinates.
      * when drag starts (on touchstart or mousedown events).
-     *
-     * @param {event} ev touchstart or mousedown event.
-     * @ignore
+     * @param {MouseEvent} mouseEvent - touchstart or mousedown event.
      */
-    startDrag(ev) {
+    startDrag(mouseEvent) {
         if (this.properties.state == 'minimized') {
             return;
         }
-        if (ev.target === this.title) {
+        if (mouseEvent.target === this.title) {
             if(typeof this.dragDataObject === 'undefined' || this.dragDataObject === null) {
-                ev = ev || event;
+                mouseEvent = mouseEvent || event;
                 // Save first click mouse point on screen
                 this.dragDataObject = {
-                    x: this.eventClient(ev).X,
-                    y: this.eventClient(ev).Y
+                    x: this.eventClient(mouseEvent).X,
+                    y: this.eventClient(mouseEvent).Y
                 };
                 // Reset last drag position when start drag
                 this.lastDrag = {
@@ -962,19 +921,17 @@ export default class ModalDialog {
     }
 
     /**
-     * UpdatesdragDataObject with the draggable object coordinates when the draggable object is being moved.
-     *
-     * @param {event} ev touchmouve or mousemove events.
-     * @ignore
+     * Updates dragDataObject with the draggable object coordinates when the draggable object is being moved.
+     * @param {MouseEvent} mouseEvent - the mouse event.
      */
-    drag(ev) {
+    drag(mouseEvent) {
         if (this.dragDataObject) {
-            ev.preventDefault();
-            ev = ev || event;
+            mouseEvent.preventDefault();
+            mouseEvent = mouseEvent || event;
             // Calculate max and min between actual mouse position and limit of screeen. It restric the movement of modal into window.
-            var limitY = Math.min(this.eventClient(ev).Y,this.limitWindow.minPointer.y);
+            var limitY = Math.min(this.eventClient(mouseEvent).Y,this.limitWindow.minPointer.y);
             limitY = Math.max(this.limitWindow.maxPointer.y,limitY);
-            var limitX = Math.min(this.eventClient(ev).X,this.limitWindow.minPointer.x);
+            var limitX = Math.min(this.eventClient(mouseEvent).X,this.limitWindow.minPointer.x);
             limitX = Math.max(this.limitWindow.maxPointer.x,limitX);
             // Substract limit with first position to obtain relative pixels increment to the anchor point.
             var dragX = limitX - this.dragDataObject.x + "px";
@@ -988,8 +945,8 @@ export default class ModalDialog {
             this.container.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
         }
         if (this.resizeDataObject) {
-            var limitX = Math.min(this.eventClient(ev).X,window.innerWidth - this.scrollbarWidth - 7);
-            var limitY = Math.min(this.eventClient(ev).Y,window.innerHeight - 7);
+            var limitX = Math.min(this.eventClient(mouseEvent).X,window.innerWidth - this.scrollbarWidth - 7);
+            var limitY = Math.min(this.eventClient(mouseEvent).Y,window.innerHeight - 7);
             if (limitX < 0) {
                 limitX = 0;
             }
@@ -1028,12 +985,11 @@ export default class ModalDialog {
         }
     }
     /**
-     * Get limits of actual window to limit modal movement
-     * @return {Object} Object containing mouseX and mouseY are coordinates of actual mouse on screen.
-     * @ignore
+     * Returns the boundaries of actual window to limit modal movement.
+     * @return {Object} Object containing mouseX and mouseY coordinates of actual mouse on screen.
      */
     getLimitWindow() {
-        // Obtain dimentions of window page.
+        // Obtain dimensions of window page.
         var maxWidth = window.innerWidth;
         var maxHeight = window.innerHeight;
 
@@ -1050,9 +1006,10 @@ export default class ModalDialog {
         var maxPointer = {x: maxPointerX,y: maxPointerY};
         return {minPointer : minPointer, maxPointer:maxPointer};
     }
+
     /**
-     * Get Scrollbar width size of browser
-     * @ignore
+     * Returns the scrollbar width size of browser
+     * @returns {number} the scrollbar width.
      */
     getScrollBarWidth() {
         // Create a paragraph with full width of page.
@@ -1088,12 +1045,9 @@ export default class ModalDialog {
     }
 
     /**
-     * Set the dragDataObject to null when the drag finish (touchend or mouseup events).
-     *
-     * @param {event} ev touchend or mouseup event.
-     * @ignore
+     * Set the dragDataObject to null.
      */
-    stopDrag(ev) {
+    stopDrag() {
         // Due to we have multiple events that call this function, we need only to execute the next modifiers one time,
         // when the user stops to drag and dragDataObject is not null (the object to drag is attached).
         if (this.dragDataObject || this.resizeDataObject) {
@@ -1108,7 +1062,7 @@ export default class ModalDialog {
             // Restore mouse events on iframe
             // this.iframe.style['pointer-events'] = 'auto';
             document.body.style['user-select'] = '';
-            // Restore static state of iframe if we use iexplorer
+            // Restore static state of iframe if we use Internet Explorer.
             if (this.isIE11()) {
                 // this.iframe.style['position'] = null;
             }
@@ -1123,8 +1077,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Recalculating scale for modal when resize browser window *
-     * @ignore
+     * Recalculates scale for modal when resize browser window.
      */
     onWindowResize() {
         this.recalculateScrollBar();
@@ -1133,29 +1086,29 @@ export default class ModalDialog {
     }
 
     /**
-     * Keydown events:
-     * Esc key close modal window.
-     * Tab key tab to submit button.
-     * @param {event} ev
+     * Triggers keyboard events:
+     * - Tab key tab to go to submit button.
+     * - Esc key to close the modal dialog.
+     * @param {KeyboardEvent} keyboardEvent - the keyboard event.
      */
-    onKeyDown(ev) {
-        if (ev.key !== undefined && ev.repeat === false) {
+    onKeyDown(keyboardEvent) {
+        if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
             // Code for detect Esc event
-            if (ev.key === "Escape" || ev.key === 'Esc') {
+            if (keyboardEvent.key === "Escape" || keyboardEvent.key === 'Esc') {
                 if (this.properties.open) {
                     this.cancelAction();
                 }
             }
             // Code for detect Tab event
-            if (ev.key === "Tab") {
+            if (keyboardEvent.key === "Tab") {
                 this.submitButton.focus();
-                ev.preventDefault();
+                keyboardEvent.preventDefault();
             }
         }
     }
+
     /**
-     * Recalculating position for modal when resize browser window
-     * @ignore
+     * Recalculating position for modal dialog when the browser is resized.
      */
     recalculatePosition() {
         this.container.style.right = Math.min(parseInt(this.container.style.right), window.innerWidth - this.scrollbarWidth - this.container.offsetWidth) + "px";
@@ -1169,8 +1122,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Recalculating scale for modal when resize browser window
-     * @ignore
+     * Recalculating scale for modal when the browser is resized.
      */
     recalculateScale() {
         var sizeModificated = false;
@@ -1196,8 +1148,7 @@ export default class ModalDialog {
     }
 
     /**
-     * Recalculating width of scrollBar browser
-     * @ignore
+     * Recalculating width of browser scroll bar.
      */
     recalculateScrollBar() {
         this.hasScrollBar = window.innerWidth > document.documentElement.clientWidth;
@@ -1210,16 +1161,14 @@ export default class ModalDialog {
     }
 
     /**
-     * Hide soft keyboards on IOS systems.
-     * @ignore
+     * Hide soft keyboards on iOS devices.
      */
     hideKeyboard() {
         document.activeElement.blur();
     }
 
     /**
-     * Focus to content object
-     * @ignore
+     * Focus to contentManager object.
      */
     focus() {
         if (this.contentManager != null && typeof this.contentManager.onFocus !== 'undefined') {
@@ -1229,7 +1178,6 @@ export default class ModalDialog {
 
     /**
      * Returns true when the device is on portrait mode.
-     * @ignore
      */
     portraitMode() {
         return window.innerHeight > window.innerWidth;
@@ -1237,7 +1185,6 @@ export default class ModalDialog {
 
     /**
      * Change container sizes when the keyboard is opened on iOS.
-     * @ignore
      */
     openedIosSoftkeyboard() {
         if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight == "100" + this.iosMeasureUnit) {
@@ -1253,7 +1200,6 @@ export default class ModalDialog {
 
     /**
      * Change container sizes when the keyboard is closed on iOS.
-     * @ignore
      */
     closedIosSoftkeyboard() {
         this.iosSoftkeyboardOpened = false;
@@ -1262,7 +1208,6 @@ export default class ModalDialog {
 
     /**
      * Change container sizes when orientation is changed on iOS.
-     * @ignore
      */
     orientationChangeIosSoftkeyboard() {
         if (this.iosSoftkeyboardOpened) {
@@ -1280,7 +1225,6 @@ export default class ModalDialog {
 
     /**
      * Change container sizes when orientation is changed on Android.
-     * @ignore
      */
     orientationChangeAndroidSoftkeyboard() {
         this.setContainerHeight("100%");
@@ -1288,17 +1232,15 @@ export default class ModalDialog {
 
     /**
      * Set iframe container height.
-     * @ignore
+     * @param {number} height - new height.
      */
     setContainerHeight(height) {
         this.iosDivHeight = height;
         this.wrapper.style.height = height;
-        // this.editor.getElement().style.height = (this.container.offsetHeight -10) - this.controlsDiv.offsetHeight + 'px';
     }
 
     /**
-     * Check content of editor before close action
-     * @ignore
+     * Check content of editor before close action.
      */
     showPopUpMessage() {
         if (this.properties.state == 'minimized') {
@@ -1307,15 +1249,20 @@ export default class ModalDialog {
         this.popup.show();
     }
 
+    /**
+     * Sets the tithle of the modal dialog.
+     * @param {string} title - modal dialog title.
+     */
     setTitle(title) {
         this.title.innerHTML = title;
     }
 
     /**
-     * Get id formated name with class name as input.
-     *
-     * @param {string} Class name of html element passed.
-     * @ignore
+     * Returns the id of an element, adding the instance number to
+     * the element class name:
+     * className --> className[idNumber]
+     * @param {string} className - the element class name.
+     * @returns {string} a string appending the instance id to the className.
      */
     getElementId(className) {
         return className + "[" + this.instanceId + "]";

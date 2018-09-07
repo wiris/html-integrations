@@ -5,30 +5,31 @@ import Util from './util.js';
  */
 export default class ServiceProvider {
     /**
-     * Add a new service to the servicePath property.
-     * @param {string} service - Service name
-     * @param {string} path  - Service path.
+     * Adds a new service to the ServiceProvider.
+     * @param {string} service - service name.
+     * @param {string} path - service path.
+     * @static
      */
     static setServicePath(service, path) {
         ServiceProvider.serVicePaths[service] = path;
-
     }
 
     /**
-     * Returns the servicePaths object.
-     * @param {string} - Service name
-     * @return {string} - Service path.
+     * Returns the service path for a certain service.
+     * @param {string} serviceName - service name
+     * @returns {string} the service path.
+     * @static
      */
-    static getServicePath(service) {
-        return ServiceProvider.serVicePaths[service];
+    static getServicePath(serviceName) {
+        return ServiceProvider.serVicePaths[serviceName];
     }
 
     /**
      * Gets the content from an URL.
-     * @param {string} url target URL.
-     * @param {object} postVariables post variables. Null if a GET query should be done.
-     * @return {string} content of the target URL.
-     * @ignore
+     * @param {string} url - target URL.
+     * @param {Object} postVariables - object containing post variables. null if a GET query should be done.
+     * @returns {string} content of the target URL.
+     * @static
      */
     static getUrl(url, postVariables) {
         var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
@@ -64,11 +65,10 @@ export default class ServiceProvider {
 
     /**
      * Returns the response text of a certain service.
-     *
-     * @param {string} service - Service name.
-     * @param {string} postVariables - Post variables.
-     * @param {boolean} get - True if the request is GET instead of POST.
-     * @return {string} - The service response text.
+     * @param {string} service - service name.
+     * @param {string} postVariables - `post variables.
+     * @param {boolean} get - true if the request is GET instead of POST. false otherwise.
+     * @returns {string} service response text.
      */
     static getService(service, postVariables, get) {
         if (get === true) {
@@ -84,5 +84,6 @@ export default class ServiceProvider {
 /**
  * @property {string} service - The service name
  * @property {string} path - The service path
+ * @static
  */
 ServiceProvider.serVicePaths = {};

@@ -1,18 +1,19 @@
 /**
  * This class represents the JavaScript configuration properties.
- * Usually used to manage configuration properties generated in the backend.
+ * Usually used to retrieve configuration properties generated in the backend
+ * into the frontend.
  */
 export default class Configuration {
     /**
      * Appends a properties object to Configuration.properties.
-     * @param {Object} configurationObject -
+     * @param {Object} properties - properties to append to current properties..
      */
-    static addConfiguration(configurationObject) {
-        Object.assign(Configuration.properties, configurationObject);
+    static addConfiguration(properties) {
+        Object.assign(Configuration.properties, properties);
     }
 
     /**
-     * Returns the value of one property.
+     * Returns the value of one property key.
      * @param {string} key - property key
      * @returns {string} property value
      */
@@ -34,9 +35,9 @@ export default class Configuration {
     }
 
     /**
-     * Updates a property with new values. Used to object properties with new values
-     * @param {string} key - Key of the property to be updated.
-     * @param {Object} propertyValue - Values to update the property.
+     * Updates a property object with new values.
+     * @param {string} key - key of the property to be updated.
+     * @param {Object} propertyValue - values to update the property.
      */
     static update(key, propertyValue) {
         if (!Configuration.get(key)) {

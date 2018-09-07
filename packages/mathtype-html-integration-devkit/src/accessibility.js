@@ -1,18 +1,18 @@
-import TextCache from './cache.js';
-import Core from './core.src.js';
-import Util from './util.js';
-import ServiceProvider from './serviceprovider.js';
+import TextCache from './cache';
+import Core from './core.src';
+import ServiceProvider from './serviceprovider';
 
 /**
  * Class representing MathType accessible class. This class converts MathML into accessible text.
  */
 export default class Accessibility {
+
     /**
-     * Gets the accessible text of a given MathML calling mathml2accesible service.
-     * @param {string} mathML MathML to get the accesibility.
-     * @param {string} language Language of the accesibility.
+     * Gets the accessible text of a given MathML calling mathml2accessible service.
+     * @param {string} mathML - MathML to be converted to accessible text.
+     * @param {string} language - language of the accessible text.
+     * @param {Object[]} data - object containing parameters to send to textService service.
      * @return {string} Accessibility from mathml string on language string.
-     * @ignore
      */
     static mathMLToAccessible(mathML, language, data) {
         var accessibleText;
@@ -23,9 +23,9 @@ export default class Accessibility {
         else {
             data['service'] = 'mathml2accessible';
             data['lang'] = language;
-            var accesibleJsonResponse = JSON.parse(ServiceProvider.getService('service', data));
-            if (accesibleJsonResponse.status != 'error') {
-                accessibleText = accesibleJsonResponse.result.text;
+            var accessibleJsonResponse = JSON.parse(ServiceProvider.getService('service', data));
+            if (accessibleJsonResponse.status != 'error') {
+                accessibleText = accessibleJsonResponse.result.text;
                 Accessibility.cache.populate(mathML, accessibleText);
             }
             else {
@@ -35,13 +35,11 @@ export default class Accessibility {
 
         return accessibleText;
     }
-
 }
 
 /**
- * Static property. This property contains a instance of Cache class in order to
- * manage the JavaScript accesible cache. Each entry of the cache object contains the
- * MathML and it's correspondent accessibility text.
- * @type {Cache}
+ * Static property. This property contains an instance of TextCache class to manage the JavaScript accessible cache.
+ * Each entry of the cache object contains the MathML and it's correspondent accessibility text.
+ * @type {TextCache}
  */
 Accessibility.cache = new TextCache();

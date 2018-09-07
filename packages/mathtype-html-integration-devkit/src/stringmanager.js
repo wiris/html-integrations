@@ -1,33 +1,37 @@
 import Listeners from './listeners';
 /**
- * StringManager class to use strings in code correctly with control.
- *
+ * This class represents a string manager. It's used to load localized strings.
  */
 export default class StringManager {
+
     constructor() {
-        // Strings are empty when it creates, it set when calls load method.
-        this.strings = null;
+        /**
+         * key/value object containing the key of each string an it's translation.
+         */
+        this.strings = {};
+        /**
+         * Indicates if all strings are loaded.
+         */
         this.stringsLoaded = false;
         /**
-         * StringManager listeners. Fired on 'onLoad' event.
-         * @type {Listeners}
+         * StringManager listeners.
          */
         this.listeners = new Listeners();
     }
 
     /**
-     * Add a plugin listener.
-     * @param {Object} listener
+     * Adds a listener object.
+     * @param {Object} listener - listener object.
      */
     addListener(listener) {
         this.listeners.add(listener);
     }
 
     /**
-     * This method return a string passing a key.
-     * @param  {string} key of array strings that you want.
-     * @return string A text that you want or key if it doesn't exist.
-     * @ignore
+     * Returns the associated value of certain string key. If the associated value
+     * doesn't exits returns the original key.
+     * @param {string} key - string key
+     * @returns {string} correspondent value. If doesn't exists original key.
      */
    getString(key) {
         // Wait 200ms and recall this method if strings aren't load.
@@ -40,16 +44,17 @@ export default class StringManager {
         }
         return key;
     }
+
     /**
-     * This method load all strings to the manager and unset it for prevent bad usage.
-     * @param  {array} String array of language
-     * @ignore
+     * Loads all strings to the manager and unset it for prevent bad usage.
+     * @param {Object[]} langStrings - array of key/value pairs of strings.
      */
    loadStrings(langStrings) {
         if (!this.stringsLoaded) {
             this.strings = langStrings;
             // Activate variable to unlock getStrings
             this.stringsLoaded = true;
+            // Once the strings are loaded fire 'onLoad' event.
             this.listeners.fire('onLoad', {});
         }
     }

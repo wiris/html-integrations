@@ -15,6 +15,9 @@ export default class Constants {
         };
     }
 
+    /**
+     * Blackboard invalid safe characters.
+     */
     static get safeBadBlackboardCharacters() {
         return {
             'ltElement': '«mo»<«/mo»',
@@ -23,6 +26,9 @@ export default class Constants {
         };
     }
 
+    /**
+     * Blackboard valid safe characters.
+     */
     static get safeGoodBlackboardCharacters() {
         return {
             'ltElement': '«mo»§lt;«/mo»',
@@ -33,6 +39,7 @@ export default class Constants {
 }
 /**
  * Standard XML special characters.
+ * @static
  */
 Constants.xmlCharacters =
     {
@@ -47,6 +54,7 @@ Constants.xmlCharacters =
  * Safe XML special characters. This characters are used instead the standard
  * the standard to parse the  MathML if safeXML save mode is enable. Each XML
  * special character have a UTF-8 representation.
+ * @static
  */
 Constants.safeXmlCharacters =
     {

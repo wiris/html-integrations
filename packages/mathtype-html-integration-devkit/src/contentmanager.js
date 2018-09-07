@@ -5,61 +5,42 @@ import MathML from './mathml.js';
 import Util from './util.js';
 
 /**
- * This class implements ModalContent interface. Manage the following:
- * - insertion in modal object (insert(modalObject) method)
- * - actions to be done once the modal object has been submited (submitAction() method)
- * - updates itself when modalObject is updated with a re-open action for example (update(modalObject) method)
- * - comunicates to modalObject if some changes have be done (hasChanges() method)
- *
- * @ignore
+ * This class represents the content of a ModalDialog class managing the following:
+ * - Insertion in the ModalDialog.
+ * - Actions to be done once the modal object has been submitted (submitAction() method).
+ * - Updates itself when ModalDialog is updated, for example when ModalDialog
+ *   is re-opened (update(modalObject) method).
+ * - Communicates ModalDialog if some changes have be done (hasChanges() method).
  */
 export default class ContentManager {
     /**
      * Class constructor
-     * @param {object} contentManagerAttributes
+     * @param {Object} contentManagerAttributes - Object containing all attributes needed to
+     * create a new instance of ContentManager class.
+     * @param {Object} contentManagerAttributes.editorAttributes - Object containing MathType editor parameters.
      */
     constructor(contentManagerAttributes) {
         /**
-         * Editor listener. Needed to get control about editor changes.
-         * @type {EditorListener}
-         */
-        this.editorListener = new EditorListener();
-        /**
-         * MathType editor instance.
-         * @type {JsEditor}
-         */
-        this.editor = null;
-        /**
          * An object containing MathType editor parameters. See
          * http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters for further information.
-         * @type {object}
+         * @type {Object}
          */
-        this.editorAttributes = contentManagerAttributes.editorAttributes;
+        this.contentManagerAttributes = {};
+        if ('editorAttributes' in contentManagerAttributes) {
+            this.editorAttributes = contentManagerAttributes.editorAttributes;
+        } else {
+            throw new Error('ContentManager constructor error: editorAttributes property missed.')
+        }
 
         /**
-         * User agent.
-         * @type {string}
-         */
-        this.ua = navigator.userAgent.toLowerCase();
-        /**
-         * Mobile device properties object
-         * @type {Object}
-         * @property {boolean} isAndroid - True if the device is android. False otherwise.
-         * @property {boolean} isIOS - True if the device is iOs. False otherwise.
-         */
-        this.deviceProperties = {};
-        this.deviceProperties.isAndroid = this.ua.indexOf("android") > -1;
-        this.deviceProperties.isIOS = ((this.ua.indexOf("ipad") > -1) || (this.ua.indexOf("iphone") > -1));
-        /**
-         * Custom editor toolbar.
-         * @type {string} toolbar
-         */
-        this.toolbar = null;
-        /**
-         * Custom editors class instance.
+         * CustomEditors instance. Contains the custom editors.
          * @type {CustomEditors}
          */
-        this.customEditors = contentManagerAttributes.customEditors;
+        this.customEditors = null;
+        if ('customEditors' in contentManagerAttributes) {
+            this.customEditors = contentManagerAttributes.customEditors;
+        }
+
         /**
 		* Environment properties. This object contains data about the integration platform.
 		* @type {Object}
@@ -67,12 +48,58 @@ export default class ContentManager {
 		* @property {string} mode - Save mode. Xml by default
 		* @property {string} version - Plugin version.
 	    */
-        this.environment = contentManagerAttributes.environment;
-        /**
-         * Integration language.
+       this.environment = {};
+       if ('environment' in contentManagerAttributes) {
+            this.environment = contentManagerAttributes.environment;
+       } else {
+            throw new Error('ContentManager constructor error: environment property missed');
+       }
+
+       /**
+         * ContentManager language.
          * @type {string}
          */
-        this.language = contentManagerAttributes.language;
+        this.language = '';
+        if ('language' in contentManagerAttributes) {
+            this.language = contentManagerAttributes.language;
+        } else {
+            throw new Error('ContentManager constructor error: language property missed');
+        }
+
+         /**
+         * Editor listener. Needed to get control about editor changes.
+         * @type {EditorListener}
+         */
+        this.editorListener = new EditorListener();
+
+        /**
+         * MathType editor instance.
+         * @type {JsEditor}
+         */
+        this.editor = null;
+
+        /**
+         * Navigator user agent.
+         * @type {string}
+         */
+        this.ua = navigator.userAgent.toLowerCase();
+
+        /**
+         * Mobile device properties object
+         * @type {Object}
+         * @property {boolean} isAndroid - True if the device is android. False otherwise.
+         * @property {boolean} isIOS - True if the device is iOS. False otherwise.
+         */
+        this.deviceProperties = {};
+        this.deviceProperties.isAndroid = this.ua.indexOf("android") > -1;
+        this.deviceProperties.isIOS = ((this.ua.indexOf("ipad") > -1) || (this.ua.indexOf("iphone") > -1));
+
+        /**
+         * Custom editor toolbar.
+         * @type {string} toolbar
+         */
+        this.toolbar = null;
+
         /**
          * Instance of the ModalDialog class associated to the ContentManager instance.
          * @type {ModalDialog}
@@ -80,36 +107,39 @@ export default class ContentManager {
         this.modalDialogInstance = null;
 
         /**
-         * ContentManager listeners. Fired on 'onLoad' event.
+         * ContentManager listeners.
          * @type {Listeners}
          */
         this.listeners = new Listeners();
+
         /**
-         * ContentManager MathML. null for new formulas.
+         * MathML associated to the ContentManager instance.
          * @type {string}
          */
         this.mathML = null;
+
         /**
          * Indicates if the edited element is a new element or not.
          * @type {boolean}
          */
         this.isNewElement = true;
+
         /**
-         * IntegrationModel instance. The integration model instance is needed
-         * to call wrapper methods.
+         * IntegrationModel instance. Needed to call wrapper methods.
          * @type {IntegrationModel}
          */
         this.integrationModel = null;
+
         /**
          * Indicates if the editor is loaded.
-         * @type {bool}
+         * @type {boolean}
          */
         this.isEditorLoaded = false;
     }
 
     /**
      * Add a new listener to ContentManager class.
-     * @param {object} listener
+     * @param {Object} listener - listener to be added.
      */
     addListener(listener) {
         this.listeners.add(listener);
@@ -117,7 +147,7 @@ export default class ContentManager {
     }
 
     /**
-     * Set an instance of an IntegrationModel
+     * Sets an instance of an IntegrationModel
      * @param {IntegrationModel} integrationModel
      */
     setIntegrationModel(integrationModel) {
@@ -126,15 +156,14 @@ export default class ContentManager {
 
     /**
      * Sets a modal dialog instance.
-     * @property {ModalDialog} modal dialog - a ModalDialog instance
+     * @param {ModalDialog} - a ModalDialog instance
      */
     setModalDialogInstance(modalDialogInstance) {
         this.modalDialogInstance = modalDialogInstance;
     }
 
     /**
-     * Mandatory method: inserts editor into modal object content container.
-     * @ignore
+     * Mandatory method. Inserts editor into modal object content container.
      */
     insert() {
         // Before insert the editor we update the modal object title to avoid weird render display.
@@ -146,7 +175,6 @@ export default class ContentManager {
      * Method to insert MathType into modal object. This method
      * waits until editor JavaScript is loaded to insert the editor into
      * contentContainer modal object element.
-     * @ignore
      */
     insertEditor() {
         // To know if editor JavaScript is loaded we need to wait until com.wiris.jsEditor namespace is ready.
@@ -183,7 +211,6 @@ export default class ContentManager {
 
     /**
      * Loads MathType script.
-     * @ignore
      */
     init() {
         var queryParams = window.location.search.substring(1).split("&");
@@ -197,11 +224,11 @@ export default class ContentManager {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         var editorUrl = Configuration.get('editorUrl');
-        // Change to https if necessary.
         // We create an object url for parse url string and work more efficiently.
         var urlObject = document.createElement('a');
         urlObject.href = editorUrl;
 
+        // Change to https if necessary.
         if (window.location.href.indexOf("https://") == 0) {
             // It check if browser is https and configuration is http. If this is so, we will replace protocol.
             if (urlObject.protocol == 'http:') {
@@ -257,9 +284,8 @@ export default class ContentManager {
 
     /**
      * Set a MathML into editor.
-     * @param {string} mathml MathML string.
-     * @param {bool} focusDisabled if true editor don't get focus after the MathML is set. false by default.
-     * @ignore
+     * @param {string} mathml - MathML string.
+     * @param {bool} focusDisabled - if true editor don't get focus after the MathML is set. false by default.
      */
     setMathML(mathml, focusDisabled) {
         // By default focus is enabled
@@ -283,7 +309,6 @@ export default class ContentManager {
 
     /**
      * Set focus on editor.
-     * @ignore
      */
     onFocus() {
         if (typeof this.editor !== 'undefined' && this.editor != null) {
@@ -296,7 +321,6 @@ export default class ContentManager {
      * on submit.
      * This method updates the edition area (inserting a new formula or update an older one),
      * and focus the edition area too.
-     * @ignore
      */
     submitAction() {
         var mathML = this.editor.getMathML();
@@ -323,7 +347,6 @@ export default class ContentManager {
 
     /**
      * Set an empty MathML into the editor in order to clean the edit area.
-     * @ignore
      */
     setEmptyMathML() {
         // As second argument we pass
@@ -332,13 +355,13 @@ export default class ContentManager {
             // Adding dir rtl in case of it's activated.
             if (this.editor.getEditorModel().isRTL()) {
                 this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
-            }else{
+            } else {
                 this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
             }
         } else {
             if (this.editor.getEditorModel().isRTL()) {
                 this.setMathML('<math dir="rtl"/>', true);
-            }else{
+            } else {
                 this.setMathML('<math/>', true);
             }
         }
@@ -346,9 +369,8 @@ export default class ContentManager {
 
     /**
      * Mandatory method: modal object calls this method when is updated, for example re-editing a formula when the
-     * editor is open with another formula. This method updates the editor content (with an empty MathML or an exising formula),
+     * editor is open with another formula. This method updates the editor content (with an empty MathML or an existing formula),
      * updates - if needed - the editor toolbar (math --> chem or chem --> math) and recover the focus.
-     * @ignore
      */
     onOpen() {
         if (this.isNewElement) {
@@ -363,7 +385,6 @@ export default class ContentManager {
 
     /**
      * Sets the correct toolbar depending if exist other custom toolbars at the same time (e.g: Chemistry)
-     * @ignore
      */
     updateToolbar() {
         this.updateTitle(this.modalDialogInstance);
@@ -384,7 +405,6 @@ export default class ContentManager {
     /**
      * Updates the modalObject title: if a custom editor (with a custom toolbar) is enabled
      * picks the custom editor title. Otherwise default title.
-     * @ignore
      */
     updateTitle() {
         var customEditor;
@@ -395,11 +415,11 @@ export default class ContentManager {
         }
     }
     /**
-     * Returns toolbar depending on the configuration local or serverside.
-     * @ignore
+     * Returns toolbar depending on the configuration local or server side.
      */
     getToolbar() {
         var toolbar;
+
         if ('toolbar' in this.editorAttributes) {
             toolbar = this.editorAttributes.toolbar;
         } else {
@@ -415,8 +435,7 @@ export default class ContentManager {
 
     /**
      * Set a toolbar into editor.
-     * @param {string} toolbar toolbar name.
-     * @ignore
+     * @param {string} toolbar - toolbar name.
      */
     setToolbar(toolbar) {
         this.toolbar = toolbar;
@@ -426,7 +445,6 @@ export default class ContentManager {
     /**
      * Returns true if the content of the editor has been changed. The logic of the changes
      * is delegated to editorListener object.
-     * @ignore
      */
     hasChanges() {
         return (!this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged());
