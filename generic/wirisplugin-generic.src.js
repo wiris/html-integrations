@@ -1,12 +1,12 @@
-import IntegrationModel from './core/src/integrationmodel.js';
-import Parser from './core/src/parser.js';
-import Util from './core/src/util.js';
+import IntegrationModel, { integrationModelAttributes } from './core/src/integrationmodel';
+import Parser from './core/src/parser';
+import Util from './core/src/util';
 
 /**
  * Inits MathType creating an object with all properties that the IntegrationModel class
  * needs to initialize the plugin and create an instance of IntegrationModel child.
- * @param {object} target - DOM target, in this integration the editable iframe.
- * @param {object} toolbar - DOM element where icons will be inserted.
+ * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
+ * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
 window.wrs_int_init = function(target,toolbar) {
     var callbackMethodArguments = {};
@@ -14,14 +14,7 @@ window.wrs_int_init = function(target,toolbar) {
     callbackMethodArguments.toolbar = toolbar;
 
     /**
-     * Integration model properties
-     * @type {object}
-     * @property {object} target - Integration DOM target.
-     * @property {string} configurationService - Configuration integration service.
-     * @property {string} version - Plugin version.
-     * @property {string} scriptName - Integration script name.
-     * @property {object} environment - Integration environment properties.
-     * @property {string} editor - Editor name.
+     * @type {integrationModelAttributes}
      */
     var integrationModelProperties = {};
     integrationModelProperties.target = target;
@@ -52,10 +45,11 @@ export class GenericIntegration extends IntegrationModel {
         if (typeof _wrs_int_langCode !== 'undefined') {
             return  _wrs_int_langCode;
         } else {
-            return this.getBrowserLanguage();
+            return super.getLanguage();
         }
     }
 
+    /**@inheritdoc */
     callbackFunction() {
         // Call parent callbackFunction in order to addEvents to integration target.
         super.callbackFunction();
