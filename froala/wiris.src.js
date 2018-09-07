@@ -139,8 +139,8 @@ export class FroalaIntegration extends IntegrationModel {
         /**@type {integrationModelProperties} */
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
-        froalaIntegrationProperties.configurationService = 'integration/configurationjs.php';
-        froalaIntegrationProperties.version = '7.5.0.1497';
+        froalaIntegrationProperties.configurationService = '@param.js.configuration.path@';
+        froalaIntegrationProperties.version = '@plugin.version@';
         froalaIntegrationProperties.scriptName = "wiris.js";
         froalaIntegrationProperties.environment = {};
         froalaIntegrationProperties.environment.editor = "Froala";
