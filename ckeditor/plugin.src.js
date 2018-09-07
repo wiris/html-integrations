@@ -332,8 +332,8 @@ export class CKEditor4Integration extends IntegrationModel {
                 // In CKEditor always there is an iframe or a div container. To access, we use the property that
                 // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
                 ckeditorIntegrationModelAttributes.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
-                ckeditorIntegrationModelAttributes.configurationService = 'integration/configurationjs.php';
-                ckeditorIntegrationModelAttributes.version = '7.5.0.1486';
+                integrationModelProperties.configurationService = '@param.js.configuration.path@';
+                integrationModelProperties.version = '@plugin.version@';
                 ckeditorIntegrationModelAttributes.scriptName = "plugin.js";
                 ckeditorIntegrationModelAttributes.langFolderName = 'languages';
                 ckeditorIntegrationModelAttributes.environment = {};
