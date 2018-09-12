@@ -307,13 +307,13 @@ export var currentInstance = null;
 
             if ('onBeforeSetContent' in editor) {
                 editor.onBeforeSetContent.add(function(e,params) {
-                    if (WirisPlugin.currentInstance.initParsed) {
+                    if (WirisPlugin.instances[editor.id].initParsed) {
                         params.content = Parse.initParse(params.content, editor.getParam('language'));
                     }
                 });
             } else {
                 editor.on('beforeSetContent', function(params) {
-                    if (WirisPlugin.currentInstance.initParsed) {
+                    if (WirisPlugin.instances[editor.id].initParsed) {
                         params.content = Parser.initParse(params.content, editor.getParam('language'));
                     }
                 });
@@ -346,31 +346,31 @@ export var currentInstance = null;
 
             // MathType button.
             editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
-                WirisPlugin.currentInstance.openNewFormulaEditor();
+                WirisPlugin.instances[editor.id].openNewFormulaEditor();
             });
 
             editor.addButton('tiny_mce_wiris_formulaEditor', {
                 title: 'Insert a math equation - MathType',
                 cmd: 'tiny_mce_wiris_openFormulaEditor',
-                image: WirisPlugin.currentInstance.getIconsPath() + 'formula.png'
+                image: WirisPlugin.instances[editor.id].getIconsPath() + 'formula.png'
             });
             // }
 
             // Dynamic customEditors buttons.
-            var customEditors = WirisPlugin.currentInstance.getCore().getCustomEditors();
+            var customEditors = WirisPlugin.instances[tinyMCE.activeEditor.id].getCore().getCustomEditors();
 
             for (var customEditor in customEditors.editors) {
                 if (customEditors.editors[customEditor].confVariable) {
                     var cmd = 'tiny_mce_wiris_openFormulaEditor' + customEditors.editors[customEditor].name;
                     editor.addCommand(cmd, function () {
                         customEditors.enable(customEditor);
-                        WirisPlugin.currentInstance.openNewFormulaEditor();
+                        WirisPlugin.instances[editor.id].openNewFormulaEditor();
                     });
 
                     editor.addButton('tiny_mce_wiris_formulaEditor' + customEditors.editors[customEditor].name, {
                         title:  customEditors.editors[customEditor].tooltip,
                         cmd: cmd,
-                        image: WirisPlugin.currentInstance.getIconsPath() + customEditors.editors[customEditor].icon
+                        image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon
                     });
                 }
 
