@@ -7,6 +7,7 @@ import Parser from './core/src/parser.js';
  * @type {Object}
  */
 export var instances = {};
+
 /**
  * This property contains the current Froala integration instance,
  * which is the instance of the active editor.
@@ -29,7 +30,9 @@ export class FroalaIntegration extends IntegrationModel {
         }
     }
 
-    /**@inheritdoc */
+    /**
+     * @inheritdoc
+     */
     init() {
         // On focus in a Froala editor instance, is needed to update the
         // Current FroalaIntegration instance.
@@ -64,7 +67,9 @@ export class FroalaIntegration extends IntegrationModel {
         super.init();
     }
 
-    /**@inheritdoc */
+    /**
+     * @inheritdoc
+     */
     callbackFunction() {
         super.callbackFunction();
         // Parse content
@@ -84,19 +89,52 @@ export class FroalaIntegration extends IntegrationModel {
             });
         }
 
-        var parsedContent = Parser.initParse(this.editorObject.html.get());
-        this.editorObject.html.set(parsedContent);
+        // Froala editor can be instantiated in images.
+        if (this.target.tagName.toUpperCase() !== 'IMG') {
+            var parsedContent = Parser.initParse(this.editorObject.html.get());
+            this.editorObject.html.set(parsedContent);
+        }
     }
 
+    /**
+     * @inheritdoc
+     * @param {HTMLElement} element - DOM object target.
+     */
+    doubleClickHandler(element) {
+        this.simulateClick(document);
+        super.doubleClickHandler(element);
+    }
 
     /**
-     * Hide the active Froala popups.
+     * @inheritdoc
      */
-    hidePopups() {
-        var instances =  $.FroalaEditor.INSTANCES;
-        for (var i = 0; i < instances.length; i++) {
-            instances[i].popups.hideAll();
-        }
+    openExistingFormulaEditor() {
+        this.simulateClick(document);
+        super.openExistingFormulaEditor();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    openNewFormulaEditor() {
+        this.simulateClick(document);
+        super.openNewFormulaEditor();
+    }
+
+    /**
+     * Simulates a click in 'element'.
+     * @param {HTMLElement} element - DOM object target.
+     */
+    simulateClick(element) {
+        var dispatchMouseEvent = function(target) {
+            var e = document.createEvent("MouseEvents");
+            e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
+            target.dispatchEvent(e);
+        };
+        dispatchMouseEvent(element, 'mouseover', true, true);
+        dispatchMouseEvent(element, 'mousedown', true, true);
+        dispatchMouseEvent(element, 'click', true, true);
+        dispatchMouseEvent(element, 'mouseup', true, true);
     }
 }
 
@@ -125,12 +163,14 @@ export class FroalaIntegration extends IntegrationModel {
      * @param {Object} editor - Froala editor object.
      */
     function createIntegrationModel(editor) {
-        // Select target: choose between iframe or div editable.
+        // Select target: choose between iframe, div or image.
         var target;
         if (editor.opts.iframe) {
             target = editor.$iframe[0];
-        } else {
-            target = editor.$box[0]
+        }
+        else {
+            // For div or image HTMLElement.
+            target = editor.el;
         }
 
         var callbackMethodArguments = {};
@@ -139,6 +179,13 @@ export class FroalaIntegration extends IntegrationModel {
         /**@type {integrationModelProperties} */
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
+        // If Froala is instantiated on image, the next style is needed to allow dbclick event
+        // on formulas.
+        if (target.nodeName.toUpperCase() === 'IMG') {
+            if (!$('#wrs_style').get(0)) {
+                $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
+            }
+        }
         froalaIntegrationProperties.configurationService = '@param.js.configuration.path@';
         froalaIntegrationProperties.version = '@plugin.version@';
         froalaIntegrationProperties.scriptName = "wiris.js";
@@ -190,15 +237,15 @@ export class FroalaIntegration extends IntegrationModel {
     callback:
         function (editorObject) {
             var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
-            currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().disable();
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
                 currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
-                currentFroalaIntegrationInstance.openExistingFormulaEditor(currentFroalaIntegrationInstance.target);
+                currentFroalaIntegrationInstance.openExistingFormulaEditor();
             } else {
                 currentFroalaIntegrationInstance.openNewFormulaEditor();
             }
+            currentFroalaIntegrationInstance.simulateClick(document);
         }
     });
 
@@ -226,15 +273,15 @@ export class FroalaIntegration extends IntegrationModel {
     callback:
         function () {
             var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
-            currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().enable('chemistry');
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
                 currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
-                currentFroalaIntegrationInstance.openExistingFormulaEditor(currentFroalaIntegrationInstance.target);
+                currentFroalaIntegrationInstance.openExistingFormulaEditor();
             } else {
                 currentFroalaIntegrationInstance.openNewFormulaEditor();
             }
+            currentFroalaIntegrationInstance.simulateClick(document);
         }
     });
 
