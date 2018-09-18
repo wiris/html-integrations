@@ -126,6 +126,10 @@
 
 #wirisimageformat = svg
 
+## Specifies if images should contain semantics tag. false by default.
+
+#wirissavemathmlsemantics = false
+
 ###############################################################################################
 # Editor inherit parameters                                                                   #
 # The format is a JSON containing MathType Web parameters defined on the following page:     #
