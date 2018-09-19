@@ -30,9 +30,7 @@ export class FroalaIntegration extends IntegrationModel {
         }
     }
 
-    /**
-     * @inheritdoc
-     */
+    /**@inheritdoc */
     init() {
         // On focus in a Froala editor instance, is needed to update the
         // Current FroalaIntegration instance.
@@ -67,9 +65,7 @@ export class FroalaIntegration extends IntegrationModel {
         super.init();
     }
 
-    /**
-     * @inheritdoc
-     */
+    /**@inheritdoc */
     callbackFunction() {
         super.callbackFunction();
         // Parse content
@@ -105,17 +101,13 @@ export class FroalaIntegration extends IntegrationModel {
         super.doubleClickHandler(element);
     }
 
-    /**
-     * @inheritdoc
-     */
+    /**@inheritdoc */
     openExistingFormulaEditor() {
         this.simulateClick(document);
         super.openExistingFormulaEditor();
     }
 
-    /**
-     * @inheritdoc
-     */
+    /**@inheritdoc */
     openNewFormulaEditor() {
         this.simulateClick(document);
         super.openNewFormulaEditor();
