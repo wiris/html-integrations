@@ -90,7 +90,7 @@ export class FroalaIntegration extends IntegrationModel {
         }
 
         // Froala editor can be instantiated in images.
-        if (this.target.tagName.toUpperCase() !== 'IMG') {
+        if (this.target.tagName.toLowerCase() !== 'img') {
             var parsedContent = Parser.initParse(this.editorObject.html.get());
             this.editorObject.html.set(parsedContent);
         }
@@ -181,7 +181,7 @@ export class FroalaIntegration extends IntegrationModel {
         froalaIntegrationProperties.target = target;
         // If Froala is instantiated on image, the next style is needed to allow dbclick event
         // on formulas.
-        if (target.nodeName.toUpperCase() === 'IMG') {
+        if (target.nodeName.toLowerCase() === 'img') {
             if (!$('#wrs_style').get(0)) {
                 $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
             }
