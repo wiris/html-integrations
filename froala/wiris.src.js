@@ -20,6 +20,18 @@ export var currentInstance = null;
  */
 export class FroalaIntegration extends IntegrationModel {
     /**
+     * IntegrationModel constructor.
+     * @param {integrationModelProperties} froalaModelProperties
+     */
+    constructor(froalaModelProperties) {
+        super(froalaModelProperties);
+
+        /**
+         * Mode when Froala is instantiated on an image.
+         */
+        this.initOnImageMode = froalaModelProperties.initOnImageMode;
+    }
+    /**
      * Returns the language of the current Froala editor instance.
      */
     getLanguage() {
@@ -114,19 +126,32 @@ export class FroalaIntegration extends IntegrationModel {
     }
 
     /**
-     * Simulates a click in 'element'.
+     * Simulates a click in 'element'. Only execute additional code when
+     * initOnImageMode is enabled.
      * @param {HTMLElement} element - DOM object target.
      */
     simulateClick(element) {
-        var dispatchMouseEvent = function(target) {
-            var e = document.createEvent("MouseEvents");
-            e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
-            target.dispatchEvent(e);
-        };
-        dispatchMouseEvent(element, 'mouseover', true, true);
-        dispatchMouseEvent(element, 'mousedown', true, true);
-        dispatchMouseEvent(element, 'click', true, true);
-        dispatchMouseEvent(element, 'mouseup', true, true);
+        if (this.initOnImageMode) {
+            var dispatchMouseEvent = function(target) {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
+                target.dispatchEvent(e);
+            };
+            dispatchMouseEvent(element, 'mouseover', true, true);
+            dispatchMouseEvent(element, 'mousedown', true, true);
+            dispatchMouseEvent(element, 'click', true, true);
+            dispatchMouseEvent(element, 'mouseup', true, true);
+        }
+    }
+
+    /**
+     * Hides the active Froala popups.
+     */
+    hidePopups() {
+        var instances =  $.FroalaEditor.INSTANCES;
+        for (var i = 0; i < instances.length; i++) {
+            instances[i].popups.hideAll();
+        }
     }
 }
 
@@ -185,6 +210,7 @@ export class FroalaIntegration extends IntegrationModel {
         froalaIntegrationProperties.environment.editor = "Froala";
         froalaIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
         froalaIntegrationProperties.editorObject = editor;
+        froalaIntegrationProperties.initOnImageMode = target.nodeName.toLowerCase() === 'img';
 
         // Updating integration paths if context path is overwrited by editor javascript configuration.
         if ('wiriscontextpath' in editor.opts) {
@@ -229,6 +255,7 @@ export class FroalaIntegration extends IntegrationModel {
     callback:
         function (editorObject) {
             var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
+            currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().disable();
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
@@ -265,6 +292,7 @@ export class FroalaIntegration extends IntegrationModel {
     callback:
         function () {
             var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
+            currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().enable('chemistry');
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
