@@ -147,13 +147,12 @@ export default class MathML {
     }
 
     /**
-     * Add wrs::type attribute to mathml if the mathml has been created with a custom editor
-     * for example, chemistry.
+     * Add a custom editor name with the prefix wrs_ to a MathML class attribute.
      * @param {string} mathml - a MathML string created with a custom editor, like chemistry.
      * @param {string} customEditor - custom editor name.
      * @returns {string} MathML string with his class containing the editor toolbar string.
      */
-    static addEditorAttribute(mathml, customEditor) {
+    static addCustomEditorClassAttribute(mathml, customEditor) {
         var toReturn = '';
 
         var start = mathml.indexOf('<math');
@@ -167,7 +166,28 @@ export default class MathML {
             }
         }
         return mathml;
+    }
 
+    /**
+     * Remove a custom editor name from the MathML class attribute.
+     * @param {string} mathml - a MathML string.
+     * @param {string} customEditor - custom editor name.
+     * @returns {string} The input MathML without customEditor name in his class.
+     */
+    static removeCustomEditorClassAttribute(mathml, customEditor) {
+        // Discard MathML without the specified class.
+        if (mathml.indexOf('class') == -1 || mathml.indexOf('wrs_' + customEditor)) {
+            return mathml;
+        }
+
+        // Trivial case: class attribute value equal to editor name. Then
+        // class attribute is removed.
+        if (mathml.indexOf('class="wrs_' + customEditor + '"') !== -1) {
+            return mathml.replace('class="wrs_' + customEditor + '"', '');
+        }
+
+        // Non Trivial case: class attribute contains editor name.
+        return mathml.replace('wrs_' + customEditor, '');
     }
 
     /**

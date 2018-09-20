@@ -326,7 +326,13 @@ export default class ContentManager {
         var mathML = this.editor.getMathML();
         // Add class for custom editors.
         if (this.customEditors.getActiveEditor() != null) {
-            mathML = MathML.addEditorAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
+            mathML = MathML.addCustomEditorClassAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
+        } else {
+            // We need - if exists - the editor name from MathML
+            // class attribute.
+            for (var key in this.customEditors.editors) {
+                mathML = MathML.removeCustomEditorClassAttribute(mathML, key);
+            }
         }
         var mathmlEntitiesEncoded = MathML.mathMLEntities(mathML);
         this.integrationModel.updateFormula(mathmlEntitiesEncoded);
