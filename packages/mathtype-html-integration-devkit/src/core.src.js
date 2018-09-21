@@ -375,7 +375,6 @@ export default class Core {
             }
             else {
                 afterUpdateEvent.node = windowTarget.document.createTextNode('$$' + afterUpdateEvent.latex + '$$');
-                Latex.cache.populate(afterUpdateEvent.latex, mathml);
             }
             this.insertElementOnSelection(afterUpdateEvent.node, focusElement, windowTarget);
         }
