@@ -126,9 +126,9 @@
 
 #wirisimageformat = svg
 
-## Specifies if MathMLs should contain semantics element. false by default.
+## Specifies if MathML should contain semantics element. false by default.
 
-#wirissavemathmlsemantics = false
+#wirissavemathmlhandtracessemantics = false
 
 ###############################################################################################
 # Editor inherit parameters                                                                   #
