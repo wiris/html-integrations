@@ -127,6 +127,9 @@ export class FroalaIntegration extends IntegrationModel {
     }
 
     /**
+     * FIXME: This method is a temporal solution while Froala is working to fix
+     * the bug that cause a continous focus when is used the plugin 'Init On Image'.
+     * Froala's ticket is Ticket #5322.
      * Simulates a click in 'element'. Only execute additional code when
      * initOnImageMode is enabled.
      * @param {HTMLElement} element - DOM object target.
