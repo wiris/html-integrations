@@ -28,6 +28,7 @@ export class FroalaIntegration extends IntegrationModel {
 
         /**
          * Mode when Froala is instantiated on an image.
+         * @type {boolean}
          */
         this.initOnImageMode = froalaModelProperties.initOnImageMode;
     }
