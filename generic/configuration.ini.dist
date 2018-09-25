@@ -126,7 +126,7 @@
 
 #wirisimageformat = svg
 
-## Specifies if images should contain semantics tag. false by default.
+## Specifies if MathMLs should contain semantics element. false by default.
 
 #wirissavemathmlsemantics = false
 
