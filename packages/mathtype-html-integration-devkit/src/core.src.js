@@ -12,6 +12,7 @@ import jsProperties from './jsvariables.js';
 import Event from './event.js';
 import Listeners from './listeners.js';
 import IntegrationModel from './integrationmodel.js';
+import Image from './image.js';
 
 /**
  * Class representing MathType integration Core. This class is the integration entry point. Manages integration
@@ -403,7 +404,7 @@ export default class Core {
     placeCaretAfterNode(node) {
         this.integrationModel.getSelection();
         const nodeDocument = node.ownerDocument;
-        if (typeof nodeDocument.getSelection !== 'undefined') {
+        if (typeof nodeDocument.getSelection !== 'undefined' && !!node.parentElement) {
             const range = nodeDocument.createRange();
             range.setStartAfter(node);
             range.collapse(true);
@@ -501,11 +502,15 @@ export default class Core {
             Util.updateExistingTextOnTextarea(focusElement, element.textContent, item.startPosition, item.endPosition);
         }
         else {
-            if (!element) { // Editor empty, formula has been erased on edit.
-                this.editionProperties.temporalImage.parentNode.removeChild(this.editionProperties.temporalImage);
+            if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
+                // Clone is needed to maintain event references to temporalImage.
+                Image.clone(element, this.editionProperties.temporalImage);
             }
-            this.editionProperties.temporalImage.parentNode.replaceChild(element, this.editionProperties.temporalImage);
-            this.placeCaretAfterNode(element);
+            else {
+                this.editionProperties.temporalImage.remove();
+            }
+
+            this.placeCaretAfterNode(this.editionProperties.temporalImage);
         }
     }
 
