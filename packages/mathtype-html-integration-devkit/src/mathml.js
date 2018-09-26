@@ -176,7 +176,7 @@ export default class MathML {
      */
     static removeCustomEditorClassAttribute(mathml, customEditor) {
         // Discard MathML without the specified class.
-        if (mathml.indexOf('class') == -1 || mathml.indexOf('wrs_' + customEditor)) {
+        if (mathml.indexOf('class') === -1 || mathml.indexOf('wrs_' + customEditor) === -1) {
             return mathml;
         }
 
