@@ -128,7 +128,7 @@
 
 ## Specifies if MathML should contain semantics element. false by default.
 
-#wirissavemathmlhandtracessemantics = false
+#wirissavehandtraces = false
 
 ###############################################################################################
 # Editor inherit parameters                                                                   #
