@@ -7,6 +7,7 @@ import Parser from './core/src/parser.js';
  * @type {Object}
  */
 export var instances = {};
+
 /**
  * This property contains the current Froala integration instance,
  * which is the instance of the active editor.
@@ -18,6 +19,19 @@ export var currentInstance = null;
  * Froala integration class.
  */
 export class FroalaIntegration extends IntegrationModel {
+    /**
+     * IntegrationModel constructor.
+     * @param {integrationModelProperties} froalaModelProperties
+     */
+    constructor(froalaModelProperties) {
+        super(froalaModelProperties);
+
+        /**
+         * Mode when Froala is instantiated on an image.
+         * @type {boolean}
+         */
+        this.initOnImageMode = froalaModelProperties.initOnImageMode;
+    }
     /**
      * Returns the language of the current Froala editor instance.
      */
@@ -84,13 +98,58 @@ export class FroalaIntegration extends IntegrationModel {
             });
         }
 
-        var parsedContent = Parser.initParse(this.editorObject.html.get());
-        this.editorObject.html.set(parsedContent);
+        // Froala editor can be instantiated in images.
+        if (this.target.tagName.toLowerCase() !== 'img') {
+            var parsedContent = Parser.initParse(this.editorObject.html.get());
+            this.editorObject.html.set(parsedContent);
+        }
     }
 
+    /**
+     * @inheritdoc
+     * @param {HTMLElement} element - DOM object target.
+     */
+    doubleClickHandler(element) {
+        this.simulateClick(document);
+        super.doubleClickHandler(element);
+    }
+
+    /**@inheritdoc */
+    openExistingFormulaEditor() {
+        this.simulateClick(document);
+        super.openExistingFormulaEditor();
+    }
+
+    /**@inheritdoc */
+    openNewFormulaEditor() {
+        this.simulateClick(document);
+        super.openNewFormulaEditor();
+    }
 
     /**
-     * Hide the active Froala popups.
+     * FIXME: This method is a temporal solution while Froala is working to fix
+     * the bug that cause a continous focus when is used the plugin 'Init On Image'.
+     * Froala's ticket is Ticket #5322.
+     * Simulates a click in 'element'. Only execute additional code when
+     * initOnImageMode is enabled.
+     * @param {HTMLElement} element - DOM object target.
+     */
+    simulateClick(element) {
+        if (this.initOnImageMode) {
+            var dispatchMouseEvent = function(target) {
+                var e = document.createEvent("MouseEvents");
+                e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
+                target.dispatchEvent(e);
+            };
+            dispatchMouseEvent(element, 'mouseover', true, true);
+            dispatchMouseEvent(element, 'mousedown', true, true);
+            dispatchMouseEvent(element, 'click', true, true);
+            dispatchMouseEvent(element, 'mouseup', true, true);
+        }
+    }
+
+    /**
+     * Hides the active Froala popups.
      */
     hidePopups() {
         var instances =  $.FroalaEditor.INSTANCES;
@@ -125,12 +184,14 @@ export class FroalaIntegration extends IntegrationModel {
      * @param {Object} editor - Froala editor object.
      */
     function createIntegrationModel(editor) {
-        // Select target: choose between iframe or div editable.
+        // Select target: choose between iframe, div or image.
         var target;
         if (editor.opts.iframe) {
             target = editor.$iframe[0];
-        } else {
-            target = editor.$box[0]
+        }
+        else {
+            // For div or image HTMLElement.
+            target = editor.el;
         }
 
         var callbackMethodArguments = {};
@@ -139,6 +200,13 @@ export class FroalaIntegration extends IntegrationModel {
         /**@type {integrationModelProperties} */
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
+        // If Froala is instantiated on image, the next style is needed to allow dbclick event
+        // on formulas.
+        if (target.nodeName.toLowerCase() === 'img') {
+            if (!$('#wrs_style').get(0)) {
+                $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
+            }
+        }
         froalaIntegrationProperties.configurationService = '@param.js.configuration.path@';
         froalaIntegrationProperties.version = '@plugin.version@';
         froalaIntegrationProperties.scriptName = "wiris.js";
@@ -146,6 +214,7 @@ export class FroalaIntegration extends IntegrationModel {
         froalaIntegrationProperties.environment.editor = "Froala";
         froalaIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
         froalaIntegrationProperties.editorObject = editor;
+        froalaIntegrationProperties.initOnImageMode = target.nodeName.toLowerCase() === 'img';
 
         // Updating integration paths if context path is overwrited by editor javascript configuration.
         if ('wiriscontextpath' in editor.opts) {
@@ -195,10 +264,11 @@ export class FroalaIntegration extends IntegrationModel {
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
                 currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
-                currentFroalaIntegrationInstance.openExistingFormulaEditor(currentFroalaIntegrationInstance.target);
+                currentFroalaIntegrationInstance.openExistingFormulaEditor();
             } else {
                 currentFroalaIntegrationInstance.openNewFormulaEditor();
             }
+            currentFroalaIntegrationInstance.simulateClick(document);
         }
     });
 
@@ -231,10 +301,11 @@ export class FroalaIntegration extends IntegrationModel {
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
             if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
                 currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
-                currentFroalaIntegrationInstance.openExistingFormulaEditor(currentFroalaIntegrationInstance.target);
+                currentFroalaIntegrationInstance.openExistingFormulaEditor();
             } else {
                 currentFroalaIntegrationInstance.openNewFormulaEditor();
             }
+            currentFroalaIntegrationInstance.simulateClick(document);
         }
     });
 
