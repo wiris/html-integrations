@@ -126,6 +126,10 @@
 
 #wirisimageformat = svg
 
+## Specifies if MathML should contain semantics element. false by default.
+
+#wirissavehandtraces = false
+
 ###############################################################################################
 # Editor inherit parameters                                                                   #
 # The format is a JSON containing MathType Web parameters defined on the following page:     #
