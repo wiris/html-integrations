@@ -277,4 +277,32 @@ export default class MathML {
         }
     }
 
+    /**
+     * Returns true if mathml is blank. Otherwise, false.
+     * @param {string} matmhl - valid MathML with standard XML tags and without namespaces.
+     * @returns {boolean} - true if mathml is blank. Otherwise, false.
+     */
+    static isBlank(matmhl) {
+        // MathML can have the shape <math></math> or '<math />'.
+        const closeTag = '>';
+        const closeTagInline = '/>';
+        const firstCloseTagIndex = matmhl.indexOf(closeTag);
+        const firstCloseTagInlineIndex = matmhl.indexOf(closeTagInline);
+        let blank = false;
+        // MathML is always blank in the second shape.
+        if (firstCloseTagInlineIndex !== -1) {
+            if (firstCloseTagInlineIndex === firstCloseTagIndex - 1) {
+                blank = true;
+            }
+        }
+
+        // MathML is always blank in the first shape when there aren't elements
+        // between math tags.
+        if (!blank) {
+            const mathTagEnd = '</math>';
+            blank = firstCloseTagIndex + 1 === matmhl.indexOf(mathTagEnd);
+        }
+
+        return blank;
+    }
 }
