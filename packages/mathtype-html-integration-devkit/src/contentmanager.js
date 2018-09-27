@@ -323,7 +323,7 @@ export default class ContentManager {
      * and focus the edition area too.
      */
     submitAction() {
-        var mathML = this.editor.getMathML();
+        var mathML = this.editor.getMathMLWithSemantics();
         // Add class for custom editors.
         if (this.customEditors.getActiveEditor() != null) {
             mathML = MathML.addCustomEditorClassAttribute(mathML, this.customEditors.getActiveEditor().toolbar);

@@ -1,6 +1,7 @@
 import MathML from './mathml';
 import Configuration from './configuration';
 import Latex from './latex';
+import Constants from './constants';
 
 /**
  * This class represents an utility class.
@@ -585,7 +586,6 @@ export default class Util {
      */
     static getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
         var imgObject = Util.createObject(imgCode);
-
         if (imgObject) {
             if (imgObject.className == Configuration.get('imageClassName') || imgObject.getAttribute(Configuration.get('imageMathmlAttribute'))) {
                 if (!convertToXml) {
@@ -593,6 +593,9 @@ export default class Util {
                 }
 
                 var xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+                if (!Configuration.get('saveHandTraces')) {
+                    xmlCode = MathML.removeSemanticsOcurrences(xmlCode, Constants.safeXmlCharacters);
+                }
 
                 if (xmlCode == null) {
                     xmlCode = imgObject.getAttribute('alt');
