@@ -2,6 +2,7 @@ import TextCache from './cache.js';
 import MathML from './mathml.js';
 import ServiceProvider from './serviceprovider.js';
 import Constants from './constants.js';
+import Util from './util.js';
 
 /**
  * This class represents a LaTeX parser. Manages the services which allows to convert
