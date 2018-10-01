@@ -323,32 +323,31 @@ export default class ContentManager {
      * and focus the edition area too.
      */
     submitAction() {
-        var mathML = this.editor.getMathMLWithSemantics();
-        // Add class for custom editors.
-        if (this.customEditors.getActiveEditor() != null) {
-            mathML = MathML.addCustomEditorClassAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
-        } else {
-            // We need - if exists - the editor name from MathML
-            // class attribute.
-            for (var key in this.customEditors.editors) {
-                mathML = MathML.removeCustomEditorClassAttribute(mathML, key);
+        if (!this.editor.isFormulaEmpty()) {
+            var mathML = this.editor.getMathMLWithSemantics();
+            // Add class for custom editors.
+            if (this.customEditors.getActiveEditor() != null) {
+                mathML = MathML.addCustomEditorClassAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
+            } else {
+                // We need - if exists - the editor name from MathML
+                // class attribute.
+                for (var key in this.customEditors.editors) {
+                    mathML = MathML.removeCustomEditorClassAttribute(mathML, key);
+                }
             }
+            var mathmlEntitiesEncoded = MathML.mathMLEntities(mathML);
+            this.integrationModel.updateFormula(mathmlEntitiesEncoded);
         }
-        var mathmlEntitiesEncoded = MathML.mathMLEntities(mathML);
-        this.integrationModel.updateFormula(mathmlEntitiesEncoded);
+        else {
+            this.integrationModel.updateFormula(null);
+        }
+
         this.customEditors.disable();
         this.integrationModel.notifyWindowClosed();
 
         // Set disabled focus to prevent lost focus.
         this.setEmptyMathML();
         this.customEditors.disable();
-        // Recovering editing area focus.
-        setTimeout(
-            function() {
-                if (typeof _wrs_currentEditor !== 'undefined' && _wrs_currentEditor) {
-                    _wrs_currentEditor.focus();
-                }
-            }, 100);
     }
 
     /**

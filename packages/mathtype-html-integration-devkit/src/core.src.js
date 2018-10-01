@@ -364,7 +364,7 @@ export default class Core {
         afterUpdateEvent.windowTarget = windowTarget;
         afterUpdateEvent.focusElement = focusElement;
 
-        if (mathml.length === 0 || this.contentManager.editor.isFormulaEmpty()) {
+        if (!mathml) {
             this.insertElementOnSelection(null, focusElement, windowTarget);
         }
         else if (this.editMode == 'latex') {
