@@ -364,14 +364,14 @@ export default class Core {
         afterUpdateEvent.windowTarget = windowTarget;
         afterUpdateEvent.focusElement = focusElement;
 
-        if (mathml.length === 0 || MathML.isBlank(mathml)) {
+        if (mathml.length === 0 || this.contentManager.editor.isFormulaEmpty()) {
             this.insertElementOnSelection(null, focusElement, windowTarget);
         }
         else if (this.editMode == 'latex') {
             afterUpdateEvent.latex = Latex.getLatexFromMathML(mathml);
             // this.integrationModel.getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
             // Not all the integrations have special behaviours for nonLatex.
-            if (!!this.integrationModel.fillNonLatexNode && typeof afterUpdateEvent.latex === 'undefined') {
+            if (!!this.integrationModel.fillNonLatexNode && !afterUpdateEvent.latex) {
                 this.integrationModel.fillNonLatexNode(afterUpdateEvent, windowTarget, mathml);
             }
             else {
@@ -424,7 +424,7 @@ export default class Core {
     insertElementOnSelection(element, focusElement, windowTarget) {
         if (this.editionProperties.isNewElement) {
             if (element) {
-                if (focusElement.type == "textarea") {
+                if (focusElement.type == 'textarea') {
                     Util.updateTextArea(focusElement, element.textContent);
                 }
                 else if (document.selection && document.getSelection == 0) {
@@ -478,14 +478,15 @@ export default class Core {
                     this.placeCaretAfterNode(element);
                 }
             }
+            else if (focusElement.type == 'textarea') {
+                focusElement.focus();
+            }
             else {
                 const editorSelection = this.integrationModel.getSelection();
                 editorSelection.removeAllRanges();
 
-                let range;
-                // In IE is needed keep the range due to after focus the modal window it can't be retrieved the last selection.
                 if (this.editionProperties.range) {
-                    range = this.editionProperties.range;
+                    const range = this.editionProperties.range;
                     this.editionProperties.range = null;
                     editorSelection.addRange(range);
                 }
