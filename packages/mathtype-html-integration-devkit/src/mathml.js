@@ -337,36 +337,4 @@ export default class MathML {
             }
         }
     }
-
-    /**
-     * Returns true if mathml is empty. Otherwise, false.
-     * @param {string} mathml - valid MathML with standard XML tags.
-     * @returns {boolean} - true if mathml is empty. Otherwise, false.
-     */
-    static isEmpty(mathml) {
-        // MathML can have the shape <math></math> or '<math />'.
-        const closeTag = '>';
-        const closeTagInline = '/>';
-        const firstCloseTagIndex = mathml.indexOf(closeTag);
-        const firstCloseTagInlineIndex = mathml.indexOf(closeTagInline);
-        let empty = false;
-        // MathML is always empty in the second shape.
-        if (firstCloseTagInlineIndex !== -1) {
-            if (firstCloseTagInlineIndex === firstCloseTagIndex - 1) {
-                empty = true;
-            }
-        }
-
-        // MathML is always empty in the first shape when there aren't elements
-        // between math tags.
-        if (!empty) {
-            const mathTagEndRegex = new RegExp('</(.+:)?math>');
-            const mathTagEndArray = mathTagEndRegex.exec(mathml);
-            if (mathTagEndArray) {
-                empty = firstCloseTagIndex + 1 === mathTagEndArray.index;
-            }
-        }
-
-        return empty;
-    }
 }
