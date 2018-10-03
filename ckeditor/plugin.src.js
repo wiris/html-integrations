@@ -45,7 +45,7 @@ export class CKEditor4Integration extends IntegrationModel {
 
         const editor = this.editorObject;
         if ('wiriseditorparameters' in editor.config) {
-            Configuration.update('_wrs_conf_editorParameters', editor.config.wiriseditorparameters);
+            Configuration.update('editorParameters', editor.config.wiriseditorparameters);
         }
     }
 
