@@ -176,6 +176,10 @@ export default class ModalDialog {
         if ('rtl' in this.attributes) {
             this.rtl = this.attributes.rtl;
         }
+
+        // Event handlers need modal instance context.
+        this.handleOpenedIosSoftkeyboard = this.handleOpenedIosSoftkeyboard.bind(this);
+        this.handleClosedIosSoftkeyboard = this.handleClosedIosSoftkeyboard.bind(this);
     }
     /**
      * This method sets an ContentManager instance to ModalDialog. ContentManager
@@ -1184,9 +1188,9 @@ export default class ModalDialog {
     }
 
     /**
-     * Change container sizes when the keyboard is opened on iOS.
+     * Event handler that change container size when IOS softkeyboard is opened.
      */
-    openedIosSoftkeyboard() {
+    handleOpenedIosSoftkeyboard() {
         if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight == "100" + this.iosMeasureUnit) {
             if (this.portraitMode()) {
                 this.setContainerHeight("63" + this.iosMeasureUnit);
@@ -1199,9 +1203,9 @@ export default class ModalDialog {
     }
 
     /**
-     * Change container sizes when the keyboard is closed on iOS.
+     * Event handler that change container size when IOS softkeyboard is closed.
      */
-    closedIosSoftkeyboard() {
+    handleClosedIosSoftkeyboard() {
         this.iosSoftkeyboardOpened = false;
         this.setContainerHeight("100" + this.iosMeasureUnit);
     }

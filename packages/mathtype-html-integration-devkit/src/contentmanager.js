@@ -197,8 +197,8 @@ export default class ContentManager {
             if (this.modalDialogInstance.deviceProperties['isIOS']) {
                 setTimeout(function() { this.modalDialogInstance.hideKeyboard() }, 400);
                 var formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
-                Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.openedIosSoftkeyboard.bind());
-                Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.closedIosSoftkeyboard.bind());
+                Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.handleOpenedIosSoftkeyboard);
+                Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.handleClosedIosSoftkeyboard);
             }
             // Fire onLoad event. Necessary to set the MathML into the editor
             // after is loaded.
