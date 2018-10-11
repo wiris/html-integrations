@@ -79,6 +79,8 @@ export default class Latex {
                 mathml = MathML.insertSemanticsMathml(mathml, latex, 'LaTeX');
                 output = mathml;
 
+            } else {
+                output = mathml;
             }
             if (!latexCache.get(latex)) {
                 latexCache.populate(latex, mathml);
