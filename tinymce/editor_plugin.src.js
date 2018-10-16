@@ -308,7 +308,7 @@ export var currentInstance = null;
             if ('onBeforeSetContent' in editor) {
                 editor.onBeforeSetContent.add(function(e,params) {
                     if (WirisPlugin.instances[editor.id].initParsed) {
-                        params.content = Parse.initParse(params.content, editor.getParam('language'));
+                        params.content = Parser.initParse(params.content, editor.getParam('language'));
                     }
                 });
             } else {
