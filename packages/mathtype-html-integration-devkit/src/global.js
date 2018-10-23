@@ -8,6 +8,7 @@ import backwardsLib from './backwardslib.js';
 import polyfills from './polyfills.js';
 import IntegrationModel from './integrationmodel.js';
 import MathML from './mathml.js';
+import Latex from './latex';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
@@ -18,5 +19,6 @@ window.WirisPlugin = {
     Util: Util,
     Configuration: Configuration,
     Listeners: Listeners,
-    IntegrationModel: IntegrationModel
+    IntegrationModel: IntegrationModel,
+    Latex: Latex
 }
