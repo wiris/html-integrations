@@ -60,52 +60,6 @@ export class CKEditor4Integration extends IntegrationModel {
     }
 
     /**
-     * Creates the buttons to open MathType and ChemType editors.
-     */
-    createButtonCommands() {
-        // Is needed specify that our images are allowed.
-        let allowedContent = 'img[align,';
-        allowedContent += Configuration.get('imageMathmlAttribute');
-        allowedContent += ',src,alt](!Wirisformula)';
-
-        const editor = this.editorObject;
-
-        // MathType Editor.
-        editor.addCommand('ckeditor_wiris_openFormulaEditor', {
-
-            'async': false,
-            'canUndo': true,
-            'editorFocus': true,
-            'allowedContent': allowedContent,
-            'requiredContent': allowedContent,
-
-            'exec': function (editor) {
-                // Can be that previously custom editor was used. So is needed disable
-                // all the editors to avoid wrong behaviours.
-                this.core.getCustomEditors().disable();
-                this.openNewFormulaEditor();
-            }.bind(this)
-
-        });
-
-        // ChemType.
-        editor.addCommand('ckeditor_wiris_openFormulaEditorChemistry', {
-
-            'async': false,
-            'canUndo': true,
-            'editorFocus': true,
-            'allowedContent': allowedContent,
-            'requiredContent': allowedContent,
-
-            'exec': function (editor) {
-                this.core.getCustomEditors().enable('chemistry');
-                this.openNewFormulaEditor();
-            }.bind(this)
-
-        });
-    }
-
-    /**
      * Adds callbacks to the following CKEditor listeners:
      * - 'focus' - updates the current instance.
      * - 'contentDom' - adds 'doubleclick' callback.
@@ -296,7 +250,6 @@ export class CKEditor4Integration extends IntegrationModel {
     /** @inheritdoc */
     callbackFunction() {
         super.callbackFunction();
-        this.createButtonCommands();
         this.addEditorListeners();
     }
 }
@@ -318,6 +271,47 @@ export class CKEditor4Integration extends IntegrationModel {
                 'label': 'Insert a chemistry formula - ChemType',
                 'command': 'ckeditor_wiris_openFormulaEditorChemistry',
                 'icon': CKEDITOR.plugins.getPath('ckeditor_wiris') + './icons/' + 'chem.png'
+
+            });
+
+            // Is needed specify that our images are allowed.
+            let allowedContent = 'img[align,';
+            allowedContent += Configuration.get('imageMathmlAttribute');
+            allowedContent += ',src,alt](!Wirisformula)';
+
+            // MathType Editor.
+            editor.addCommand('ckeditor_wiris_openFormulaEditor', {
+
+                'async': false,
+                'canUndo': true,
+                'editorFocus': true,
+                'allowedContent': allowedContent,
+                'requiredContent': allowedContent,
+
+                'exec': (editor) => {
+                    const ckeditorIntegrationInstance = WirisPlugin.instances[editor.name];
+                    // Can be that previously custom editor was used. So is needed disable
+                    // all the editors to avoid wrong behaviours.
+                    ckeditorIntegrationInstance.core.getCustomEditors().disable();
+                    ckeditorIntegrationInstance.openNewFormulaEditor();
+                }
+
+            });
+
+            // ChemType.
+            editor.addCommand('ckeditor_wiris_openFormulaEditorChemistry', {
+
+                'async': false,
+                'canUndo': true,
+                'editorFocus': true,
+                'allowedContent': allowedContent,
+                'requiredContent': allowedContent,
+
+                'exec': (editor) => {
+                    const ckeditorIntegrationInstance = WirisPlugin.instances[editor.name];
+                    ckeditorIntegrationInstance.core.getCustomEditors().enable('chemistry');
+                    ckeditorIntegrationInstance.openNewFormulaEditor();
+                }
 
             });
 
