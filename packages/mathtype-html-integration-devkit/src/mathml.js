@@ -131,7 +131,7 @@ export default class MathML {
                 if (end >= 0) {
                     var container = document.createElement('span');
                     container.innerHTML = mathml.substring(i, end + 1);
-                    toReturn += '&#' + Util.fixedCharCodeAt((container.innerText || container.textContent),0) + ';';
+                    toReturn += '&#' + Util.fixedCharCodeAt((container.textContent || container.innerText),0) + ';';
                     i = end;
                 }
                 else {
