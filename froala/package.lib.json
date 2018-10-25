@@ -1,0 +1,14 @@
+{
+  "name": "@wiris/mathtype-lib-froala",
+  "version": "@version@",
+  "description": "MathType web integration for Froala editor",
+  "main": "wiris.js",
+  "files": [
+    "core/icons",
+    "core/tutorials",
+    "core/styles.css",
+    "core/styles.src.css",
+    "icons",
+    "lang"
+  ]
+}

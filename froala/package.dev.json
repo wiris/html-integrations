@@ -1,6 +1,7 @@
 {
-  "name": "mathtype-js-lib",
-  "description": "MathType Web Integration API for Froala editor",
+  "name": "@wiris/mathtype-dev-froala",
+  "version": "@version@",
+  "description": "MathType web Integration API for Froala editor",
   "main": "wiris.src.js",
   "scripts": {
     "build-dev": "webpack --mode development",
