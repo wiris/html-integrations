@@ -1,0 +1,14 @@
+{
+  "name": "@wiris/mathtype-lib-generic",
+  "version": "@version@",
+  "description": "MathType web integration for generic editor",
+  "main": "wirisplugin-generic.js",
+  "files": [
+    "core/icons",
+    "core/tutorials",
+    "core/styles.css",
+    "core/styles.src.css",
+    "icons",
+    "lang"
+  ]
+}
