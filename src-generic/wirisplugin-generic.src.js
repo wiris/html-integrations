@@ -9,21 +9,12 @@ import Util from './core/src/util';
  * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
 window.wrs_int_init = function(target,toolbar) {
-    var callbackMethodArguments = {};
-    callbackMethodArguments.target = target
-    callbackMethodArguments.toolbar = toolbar;
-
     /**
      * @type {integrationModelProperties}
      */
     var genericIntegrationProperties = {};
     genericIntegrationProperties.target = target;
-    genericIntegrationProperties.configurationService = '@param.js.configuration.path@';
-    genericIntegrationProperties.version = '@plugin.version@';
-    genericIntegrationProperties.scriptName = "wirisplugin-generic.js";
-    genericIntegrationProperties.environment = {};
-    genericIntegrationProperties.environment.editor = "GenericHTML";
-    genericIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
+    genericIntegrationProperties.toolbar = toolbar;
 
     // GenericIntegration instance.
     var genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
@@ -35,7 +26,26 @@ window.wrs_int_init = function(target,toolbar) {
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
  */
-export class GenericIntegration extends IntegrationModel {
+export default class GenericIntegration extends IntegrationModel {
+
+    constructor(integrationModelProperties) {
+        if (typeof(integrationModelProperties.configurationService) === 'undefined') {
+            integrationModelProperties.configurationService = '@param.js.configuration.path@';
+        }
+        integrationModelProperties.version = '@plugin.version@';
+        integrationModelProperties.scriptName = "wirisplugin-generic.js";
+        integrationModelProperties.environment = {};
+        integrationModelProperties.environment.editor = "GenericHTML";
+
+        super(integrationModelProperties);
+
+        this.toolbar = null;
+        this.toolbar = integrationModelProperties.toolbar;
+        if (typeof integrationModelProperties.configurationService !== 'undefined') {
+            this.configurationService = integrationModelProperties.configurationService;
+        }
+    }
+
     /**
      * Returns the demo language, stored in _wrs_int_langCode variable. If the language
      * is no set set, calls parent getLanguage() method.
@@ -54,7 +64,11 @@ export class GenericIntegration extends IntegrationModel {
         // Call parent callbackFunction in order to addEvents to integration target.
         super.callbackFunction();
         /* Parsing input text */
-        this.target.contentWindow.document.body.innerHTML = Parser.initParse(this.target.contentWindow.document.body.innerHTML);
+        if (this.isIframe) {
+            this.target.contentWindow.document.body.innerHTML = Parser.initParse(this.target.contentWindow.document.body.innerHTML);
+        } else {
+            this.target.innerHTML = Parser.initParse(this.target.innerHTML);
+        }
 
         /* Creating toolbar buttons */
         var editorIcon = '/icons/formula.png';
@@ -68,7 +82,7 @@ export class GenericIntegration extends IntegrationModel {
             this.openNewFormulaEditor();
         }.bind(this));
 
-        this.callbackMethodArguments.toolbar.appendChild(formulaButton);
+        this.toolbar.appendChild(formulaButton);
 
         // Dynamic customEditors buttons.
         var customEditors = this.getCore().getCustomEditors();
@@ -85,7 +99,7 @@ export class GenericIntegration extends IntegrationModel {
                     this.openNewFormulaEditor();
                 }.bind(this));
 
-                this.callbackMethodArguments.toolbar.appendChild(customEditorButton);
+	                this.toolbar.appendChild(customEditorButton);
             }
         }
     }
