@@ -1,0 +1,14 @@
+{
+  "name": "@wiris/mathtype-lib-ckeditor",
+  "version": "@version@",
+  "description": "MathType web integration for CKEditor4 editor",
+  "main": "plugin.js",
+  "files": [
+    "core/icons",
+    "core/tutorials",
+    "core/styles.css",
+    "core/styles.src.css",
+    "icons",
+    "languages"
+  ]
+}
