@@ -1,6 +1,7 @@
 {
-  "name": "mathtype-js-lib",
-  "description": "MathType Web Integration API for TinyMCE 4.x editor",
+  "name": "@wiris/mathtype-dev-tinymce",
+  "version": "@version@",
+  "description": "MathType web Integration API for TinyMCE4 editor",
   "main": "editor_plugin.src.js",
   "scripts": {
     "build-dev": "webpack --mode development",
