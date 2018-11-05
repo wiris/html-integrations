@@ -346,7 +346,10 @@ export var currentInstance = null;
 
             // MathType button.
             editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
-                WirisPlugin.instances[editor.id].openNewFormulaEditor();
+                const tinyMceIntegrationInstance = WirisPlugin.instances[editor.id];
+                // Disable previous custom editors.
+                tinyMceIntegrationInstance.core.getCustomEditors().disable();
+                tinyMceIntegrationInstance.openNewFormulaEditor();
             });
 
             editor.addButton('tiny_mce_wiris_formulaEditor', {
