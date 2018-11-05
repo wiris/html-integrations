@@ -1,5 +1,5 @@
 {
-  "name": "@wiris/mathtype-tinymce",
+  "name": "@wiris/mathtype-tinymce4",
   "version": "@version@",
   "description": "MathType web integration for TinyMCE4 editor",
   "main": "plugin.min.js",
