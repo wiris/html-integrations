@@ -1,0 +1,34 @@
+{
+  "name": "@wiris/mathtype-froala",
+  "version": "@version@",
+  "description": "MathType WEB for Froala editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "froala",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage" : "http://www.wiris.com/",
+  "bugs" : {
+    "email" : "support@wiris.com"
+  },
+  "author" : "WIRIS Team (http://www.wiris.com)",
+  "license" : "GPL-3.0",
+  "files": [
+    "core/icons",
+    "core/tutorials",
+    "core/styles.css",
+    "core/styles.src.css",
+    "icons",
+    "lang"
+  ],
+  "main": "wiris.js"
+}

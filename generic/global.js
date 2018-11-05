@@ -7,8 +7,8 @@ import Listeners from './core/src/listeners';
 import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
-import WirisPluginGeneric from './wirisplugin-generic.src.js';
 import Latex from './core/src/latex';
+import GenericIntegration from './wirisplugin-generic.src.js';
 import './core/styles.src.css';
 
 // Expose WirisPlugin variable to the window.
@@ -20,6 +20,6 @@ window.WirisPlugin = {
     Configuration: Configuration,
     Listeners: Listeners,
     IntegrationModel: IntegrationModel,
-    WirisPluginGeneric: WirisPluginGeneric,
-    Latex: Latex
+    Latex: Latex,
+    GenericIntegration: GenericIntegration
 }

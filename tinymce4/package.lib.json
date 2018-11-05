@@ -1,0 +1,14 @@
+{
+  "name": "@wiris/mathtype-tinymce4",
+  "version": "@version@",
+  "description": "MathType web integration for TinyMCE4 editor",
+  "main": "plugin.min.js",
+  "files": [
+    "core/icons",
+    "core/tutorials",
+    "core/styles.css",
+    "core/styles.src.css",
+    "icons",
+    "lang"
+  ]
+}
