@@ -1,13 +1,29 @@
 {
   "name": "@wiris/mathtype-dev-ckeditor",
   "version": "@version@",
-  "description": "MathType web Integration API for CKEditor4 editor",
+  "description": "MathType web Integration for CKEditor4 editor",
   "main": "plugin.src.js",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+    ],
+  "bugs" : {
+    "email" : "support@wiris.com"
+  },
+  "license" : "GPL-3.0",
   "scripts": {
     "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
-  "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
