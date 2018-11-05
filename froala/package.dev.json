@@ -1,13 +1,31 @@
 {
-  "name": "@wiris/mathtype-dev-froala",
+  "name": "@wiris/mathtype-froala-dev",
   "version": "@version@",
-  "description": "MathType web Integration API for Froala editor",
-  "main": "wiris.src.js",
+  "description": "MathType WEB API for Froala editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "froala",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage" : "http://www.wiris.com/",
+  "bugs" : {
+    "email" : "support@wiris.com"
+  },
+  "author" : "WIRIS Team (http://www.wiris.com)",
+  "license" : "GPL-3.0",
   "scripts": {
     "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
-  "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
@@ -19,5 +37,6 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "main": "wiris.src.js"
 }

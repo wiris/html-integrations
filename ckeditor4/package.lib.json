@@ -1,8 +1,10 @@
 {
-  "name": "@wiris/mathtype-lib-ckeditor4",
+  "name": "@wiris/mathtype-ckeditor4",
   "version": "@version@",
-  "description": "MathType web integration for CKEditor4 editor",
+  "description": "MathType Web for CKEditor4 editor",
   "keywords": [
+    "ckeditor",
+    "ckeditor4",
     "chem",
     "chemistry",
     "chemtype",
@@ -28,6 +30,6 @@
     "core/styles.src.css",
     "icons",
     "languages"
-  ]
-  "main": "plugin.js",
+  ],
+  "main": "plugin.js"
 }

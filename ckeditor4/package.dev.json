@@ -1,9 +1,10 @@
 {
-  "name": "@wiris/mathtype-dev-ckeditor",
+  "name": "@wiris/mathtype-ckeditor4-dev",
   "version": "@version@",
-  "description": "MathType web Integration for CKEditor4 editor",
-  "main": "plugin.src.js",
+  "description": "MathType Web SDK for CKEditor4 editor",
   "keywords": [
+    "ckeditor",
+    "ckeditor4",
     "chem",
     "chemistry",
     "chemtype",
@@ -15,15 +16,18 @@
     "mathml",
     "mathtype",
     "wiris"
-    ],
+  ],
+  "homepage" : "http://www.wiris.com/",
   "bugs" : {
     "email" : "support@wiris.com"
   },
+  "author" : "WIRIS Team (http://www.wiris.com)",
   "license" : "GPL-3.0",
   "scripts": {
     "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
+  "main": "plugin.src.js",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
