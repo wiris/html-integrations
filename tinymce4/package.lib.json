@@ -1,8 +1,28 @@
 {
   "name": "@wiris/mathtype-tinymce4",
   "version": "@version@",
-  "description": "MathType web integration for TinyMCE4 editor",
-  "main": "plugin.min.js",
+  "description": "MathType for TinyMCE4 editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "tinymce",
+    "tinymce4",
+    "wiris"
+  ],
+  "homepage" : "http://www.wiris.com/",
+  "bugs" : {
+    "email" : "support@wiris.com"
+  },
+  "author" : "WIRIS Team (http://www.wiris.com)",
+  "license" : "GPL-3.0",
   "files": [
     "core/icons",
     "core/tutorials",
@@ -10,5 +30,6 @@
     "core/styles.src.css",
     "icons",
     "lang"
-  ]
+  ],
+  "main": "plugin.min.js"
 }

@@ -1,13 +1,31 @@
 {
-    "name": "mathtype-js-lib",
-    "description": "MathType Web Integration API for generic editor",
-    "main": "wirisplugin-generic.src.js",
-    "scripts": {
+  "name": "@wiris/mathtype-generic-dev",
+  "version": "7.7.2",
+  "description": "MathType Web integration API for a generic HTML editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage": "http://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "license": "GPL-3.0",
+  "scripts": {
     "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
-    },
-    "license": "GPL-3.0",
-    "devDependencies": {
+  },
+  "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
@@ -18,5 +36,6 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
-    }
+  },
+  "main": "wirisplugin-generic.src.js"
 }

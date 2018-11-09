@@ -1,7 +1,7 @@
 {
   "name": "@wiris/mathtype-ckeditor4-dev",
   "version": "@version@",
-  "description": "MathType Web SDK for CKEditor4 editor",
+  "description": "MathType API for CKEditor4 editor",
   "keywords": [
     "ckeditor",
     "ckeditor4",

@@ -1,7 +1,7 @@
 {
   "name": "@wiris/mathtype-froala-dev",
   "version": "@version@",
-  "description": "MathType WEB API for Froala editor",
+  "description": "MathType API for Froala editor",
   "keywords": [
     "chem",
     "chemistry",

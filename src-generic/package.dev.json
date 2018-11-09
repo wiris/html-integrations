@@ -1,7 +1,7 @@
 {
   "name": "@wiris/mathtype-generic-dev",
   "version": "@version@",
-  "description": "MathType Web integration API for a generic HTML editor",
+  "description": "MathType API for a generic HTML editor",
   "keywords": [
     "chem",
     "chemistry",

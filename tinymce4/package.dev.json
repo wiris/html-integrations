@@ -1,13 +1,32 @@
 {
   "name": "@wiris/mathtype-tinymce4-dev",
   "version": "@version@",
-  "description": "MathType web Integration API for TinyMCE4 editor",
-  "main": "editor_plugin.src.js",
+  "description": "MathType API for TinyMCE4 editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "tinymce",
+    "tinymce4",
+    "wiris"
+  ],
+  "homepage" : "http://www.wiris.com/",
+  "bugs" : {
+    "email" : "support@wiris.com"
+  },
+  "author" : "WIRIS Team (http://www.wiris.com)",
+  "license" : "GPL-3.0",
   "scripts": {
     "build-dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
-  "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
@@ -19,5 +38,6 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "main": "editor_plugin.src.js"
 }
