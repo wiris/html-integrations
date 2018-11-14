@@ -194,29 +194,29 @@ export default class MathML {
      * Adds annotation tag in MathML element.
      * @param {String} mathml - valid MathML.
      * @param {String} content - value to put inside annotation tag.
-     * @param {String} encoding - annotation encoding.
+     * @param {String} annotationEncoding - annotation encoding.
      * @returns {String} - 'mathml' with an annotation that contains 'content' and encoding 'encoding'.
      */
-    static addAnnotation(mathml, content, encoding) {
+    static addAnnotation(mathml, content, annotationEncoding) {
         // If contains annotation, also contains semantics tag.
         const containsAnnotation = mathml.indexOf('<annotation');
 
         let mathmlWithAnnotation = '';
         if (containsAnnotation !== -1) {
             const closeSemanticsIndex = mathml.indexOf('</semantics>');
-            mathmlWithAnnotation = mathml.substring(0, closeSemanticsIndex) + `<annotation encoding="${encoding}">${content}</annotation>` + mathml.substring(closeSemanticsIndex);
+            mathmlWithAnnotation = mathml.substring(0, closeSemanticsIndex) + `<annotation encoding="${annotationEncoding}">${content}</annotation>` + mathml.substring(closeSemanticsIndex);
         }
         else if (MathML.isEmpty(mathml)) {
             const endIndexInline = mathml.indexOf('/>');
             const endIndexNonInline = mathml.indexOf('>');
             const endIndex = endIndexNonInline === endIndexInline ? endIndexInline : endIndexNonInline;
-            mathmlWithAnnotation = mathml.substring(0, endIndex) + `><semantics><annotation encoding="${encoding}">${content}</annotation></semantics></math>`;
+            mathmlWithAnnotation = mathml.substring(0, endIndex) + `><semantics><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
         }
         else {
             const beginMathMLContent = mathml.indexOf('>') + 1;
             const endMathmlContent = mathml.lastIndexOf('</math>');
             const mathmlContent = mathml.substring(beginMathMLContent, endMathmlContent);
-            mathmlWithAnnotation = mathml.substring(0, beginMathMLContent) + `<semantics>${mathmlContent}<annotation encoding="${encoding}">${content}</annotation></semantics></math>`;
+            mathmlWithAnnotation = mathml.substring(0, beginMathMLContent) + `<semantics>${mathmlContent}<annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
         }
 
         return mathmlWithAnnotation;
@@ -248,20 +248,17 @@ export default class MathML {
      * Transforms all xml mathml ocurrences that contain semantics to the same
      * xml mathml ocurrences without semantics.
      * @param {string} text - string that can contain xml mathml ocurrences.
-     * @param {string} [encoding] - encoding name that semantics need to have to be removed.
-     * 'application/json' by default. 'application/json' removes hand traces.
      * @param {Constants} [characters] - Constant object containing xmlCharacters or safeXmlCharacters relation.
      * xmlCharacters by default.
      * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
      */
-    static removeSemanticsOcurrences(text, characters = Constants.xmlCharacters, encoding = 'application/json') {
+    static removeSemanticsOcurrences(text, characters = Constants.xmlCharacters) {
         const mathTagStart = characters.tagOpener + 'math';
         const mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
         const mathTagEndline = '/' + characters.tagCloser;
         const tagCloser = characters.tagCloser;
         const semanticsTagStart = characters.tagOpener + 'semantics' + characters.tagCloser;
-        const annotationTagStart = characters.tagOpener + 'annotation encoding=' +
-                                   characters.doubleQuote + encoding + characters.doubleQuote + characters.tagCloser;
+        const annotationTagStart = characters.tagOpener + 'annotation encoding=';
 
         let output = '';
         let start = text.indexOf(mathTagStart);
