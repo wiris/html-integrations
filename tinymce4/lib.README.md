@@ -25,6 +25,8 @@ If you want to use MathType in TinyMCE4, please follow the steps below:
               'tiny_mce_wiris' : 'http://localhost/project/npm-tinymce4/node_modules/@wiris/mathtype-tinymce4/plugin.min.js'
         }
      });
+    ```
+    The external_plugin parameter needs an absolute URL due to a TinyMCE4 issue. See [TinyMCE4 tracker](https://github.com/tinymce/tinymce/issues/3056) for further information.
 3. Add the MathType buttons to TinyMCE4 toolbar
     ```js
     tinymce.init({
@@ -35,7 +37,7 @@ If you want to use MathType in TinyMCE4, please follow the steps below:
     ```
     project
     └───node_modules
-        └───@wiris/mathtype-lib-tinymce4
+        └───@wiris/mathtype-tinymce4
     ```
 ## Services
 

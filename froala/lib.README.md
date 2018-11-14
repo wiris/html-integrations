@@ -41,7 +41,7 @@ If you want to use MathType in Froala, please follow the steps below:
             htmlAllowedAttrs: ['.*'],
         })
         ```
-    * Set to false useClasesss option:
+    * Set to false useClasess option:
         ```js
         ${}.froalaEditor({
             useClasses: false,
@@ -51,7 +51,7 @@ If you want to use MathType in Froala, please follow the steps below:
     ```
     project
     └───node_modules
-        └───@wiris/mathtype-lib-froala
+        └───@wiris/mathtype-froala
     ```
 ## Services
 
