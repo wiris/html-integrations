@@ -324,7 +324,7 @@ export default class ContentManager {
      */
     submitAction() {
         if (!this.editor.isFormulaEmpty()) {
-            let mathML = this.editor.getMathMLWithSemantics();
+            let mathML = Configuration.get('saveHandTraces') ? this.editor.getMathMLWithSemantics() : this.editor.getMathML();
             // Add class for custom editors.
             if (this.customEditors.getActiveEditor() != null) {
                 mathML = MathML.addCustomEditorClassAttribute(mathML, this.customEditors.getActiveEditor().toolbar);
