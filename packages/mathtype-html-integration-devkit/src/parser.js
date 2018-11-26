@@ -286,9 +286,9 @@ export default class Parser {
     static endParseEditMode(code) {
         // Converting LaTeX to images.
         if (Configuration.get('parseModes').indexOf('latex') != -1) {
-            var output = '';
-            var endPosition = 0;
-            var startPosition = code.indexOf('$$');
+            let output = '';
+            let endPosition = 0;
+            let startPosition = code.indexOf('$$');
             while (startPosition != -1) {
                 output += code.substring(endPosition, startPosition);
                 endPosition = code.indexOf('$$', startPosition + 2);
@@ -296,9 +296,13 @@ export default class Parser {
                 if (endPosition != -1) {
                     // Before, it was a condition here to execute the next codelines 'latex.indexOf('<') == -1'.
                     // We don't know why it was used, but seems to have a conflict with latex formulas that contains '<'.
-                    var latex = code.substring(startPosition + 2, endPosition);
-                    latex = Util.htmlEntitiesDecode(latex);
-                    var mathml = Latex.getMathMLFromLatex(latex, true);
+                    const latex = code.substring(startPosition + 2, endPosition);
+                    const decodedLatex = Util.htmlEntitiesDecode(latex);
+                    let mathml = Latex.getMathMLFromLatex(decodedLatex, true);
+                    if (!Configuration.get('saveHandTraces')) {
+                        // Remove hand traces.
+                        mathml = MathML.removeAnnotation(mathml, 'application/json');
+                    }
                     output += mathml;
                     endPosition += 2;
                 }

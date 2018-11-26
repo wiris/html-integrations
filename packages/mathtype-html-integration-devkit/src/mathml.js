@@ -223,6 +223,39 @@ export default class MathML {
     }
 
     /**
+     * Removes specific annotation tag in MathML element. In case of remove the unique annotation, also is removed semantics tag.
+     * @param {String} mathml - valid MathML.
+     * @param {String} annotationEncoding - annotation encoding to remove.
+     * @returns {String} - 'mathml' without the annotation encoding specified.
+     */
+    static removeAnnotation(mathml, annotationEncoding) {
+        let mathmlWithoutAnnotation = mathml;
+        const openAnnotationTag = `<annotation encoding="${annotationEncoding}">`;
+        const closeAnnotationTag = '</annotation>';
+        const startAnnotationIndex = mathml.indexOf(openAnnotationTag);
+        if (startAnnotationIndex !== -1) {
+            let differentAnnotationFound = false;
+            let differentAnnotationIndex = mathml.indexOf('<annotation');
+            while(differentAnnotationIndex !== -1) {
+                if (differentAnnotationIndex !== startAnnotationIndex) {
+                    differentAnnotationFound = true;
+                }
+                differentAnnotationIndex = mathml.indexOf('<annotation', differentAnnotationIndex + 1);
+            }
+
+            if (differentAnnotationFound) {
+                const endAnnotationIndex = mathml.indexOf(closeAnnotationTag, startAnnotationIndex) + closeAnnotationTag.length;
+                mathmlWithoutAnnotation = mathml.substring(0, startAnnotationIndex) + mathml.substring(endAnnotationIndex);
+            }
+            else {
+                mathmlWithoutAnnotation = MathML.removeSemantics(mathml);
+            }
+        }
+
+        return mathmlWithoutAnnotation;
+    }
+
+    /**
      * Removes semantics tag to mathml.
      * @param {string} mathml - MathML string.
      * @returns {string} - 'mathml' without semantics tag.
