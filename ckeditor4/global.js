@@ -7,7 +7,7 @@ import Listeners from './core/src/listeners';
 import backwardsLib from './core/src/backwardslib.js';
 import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
-import { CKEditorIntegration, instances, currentInstance } from './plugin.src.js';
+import { CKEditor4Integration, instances, currentInstance } from './plugin.src.js';
 import Latex from './core/src/latex';
 import './core/styles.src.css';
 
@@ -22,6 +22,6 @@ window.WirisPlugin = {
     IntegrationModel: IntegrationModel,
     currentInstance: currentInstance,
     instances: instances,
-    CKEditorIntegration: CKEditorIntegration,
+    CKEditor4Integration: CKEditor4Integration,
     Latex: Latex
 }
