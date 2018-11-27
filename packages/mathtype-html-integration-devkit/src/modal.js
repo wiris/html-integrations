@@ -854,6 +854,9 @@ export default class ModalDialog {
         this.minimizeDiv.addEventListener('click', this.minimize.bind(this), true);
         this.closeDiv.addEventListener('click', this.cancelAction.bind(this));
 
+        // Overlay events (close).
+        this.overlay.addEventListener('click', this.cancelAction.bind(this));
+
         // Mouse events.
         Util.addEvent(window, 'mousedown', this.startDrag.bind(this));
         Util.addEvent(window, 'mouseup', this.stopDrag.bind(this));
