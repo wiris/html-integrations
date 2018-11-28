@@ -564,11 +564,13 @@ export default class ModalDialog {
      * Unlocks website scroll for mobile devices.
      */
     unlockWebsiteScroll() {
-        document.body.style.position = this.websiteBeforeLockParameters.bodyStylePosition;
-        document.body.style.overflow = this.websiteBeforeLockParameters.bodyStyleOverflow;
-        document.documentElement.style.overflow = this.websiteBeforeLockParameters.htmlStyleOverflow;
-        window.scrollTo(this.websiteBeforeLockParameters.windowScrollX, this.websiteBeforeLockParameters.windowScrollY);
-        this.websiteBeforeLockParameters = null;
+        if (this.websiteBeforeLockParameters) {
+            document.body.style.position = this.websiteBeforeLockParameters.bodyStylePosition;
+            document.body.style.overflow = this.websiteBeforeLockParameters.bodyStyleOverflow;
+            document.documentElement.style.overflow = this.websiteBeforeLockParameters.htmlStyleOverflow;
+            window.scrollTo(this.websiteBeforeLockParameters.windowScrollX, this.websiteBeforeLockParameters.windowScrollY);
+            this.websiteBeforeLockParameters = null;
+        }
     }
 
     /**
