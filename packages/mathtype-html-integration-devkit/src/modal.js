@@ -58,6 +58,17 @@ export default class ModalDialog {
             size :  {height: 338, width: 580}
         };
 
+        /**
+         * Object to keep website's style before change it on lock scroll for mobile devices.
+         * @type {Object}
+         * @property {String} bodyStylePosition - previous body style postion.
+         * @property {String} bodyStyleOverflow - previous body style overflow.
+         * @property {String} htmlStyleOverflow - previous body style overflow.
+         * @property {String} windowScrollX - previous window's scroll Y.
+         * @property {String} windowScrollY - previous window's scroll X.
+         */
+        this.websiteBeforeLockParameters = null;
+
         var attributes = {};
         attributes.class = 'wrs_modal_overlay';
         attributes.id = this.getElementId(attributes.class);
@@ -413,7 +424,7 @@ export default class ModalDialog {
         if (this.deviceProperties['isIOS'] || this.deviceProperties['isAndroid'] || this.deviceProperties['isMobile']) {
             // Restore scale to 1
             this.restoreWebsiteScale();
-            this.blockWebsiteScroll();
+            this.lockWebsiteScroll();
             // Due to editor wait we need to wait until editor focus.
             setTimeout(function() { this.hideKeyboard() }.bind(this), 400);
         }
@@ -468,7 +479,7 @@ export default class ModalDialog {
         this.removeClass('wrs_stack');
         this.addClass('wrs_closed');
         this.saveModalProperties();
-        this.unblockWebsiteScroll();
+        this.unlockWebsiteScroll();
         this.properties.open = false;
     }
 
@@ -511,8 +522,9 @@ export default class ModalDialog {
                 for (let i = 0; i < oldAttrs.length; i++) {
                     finalContentMeta += ',' + oldAttrs[i];
                 }
-
                 viewportelement.setAttribute('content', finalContentMeta);
+                // It needs to set to empty because setAttribute refresh only when attribute is different.
+                viewportelement.setAttribute('content', '');
                 viewportelement.setAttribute('content', contentAttr);
             }
             else {
@@ -533,25 +545,30 @@ export default class ModalDialog {
     }
 
     /**
-     * Adds an event to avoid touch scrolling.
+     * Locks website scroll for mobile devices.
      */
-    blockWebsiteScroll() {
-        document.body.addEventListener('touchmove', this.disableTouchMove, {passive: false});
+    lockWebsiteScroll() {
+        this.websiteBeforeLockParameters = {
+            bodyStylePosition: document.body.style.position ? document.body.style.position : '',
+            bodyStyleOverflow: document.body.style.overflow ? document.body.style.overflow : '',
+            htmlStyleOverflow: document.documentElement.style.overflow ? document.documentElement.style.overflow : '',
+            windowScrollX: window.scrollX,
+            windowScrollY: window.scrollY
+        };
+        document.body.style.position = 'fixed';
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
     }
 
     /**
-     * Removes the event to avoid touch scrolling.
+     * Unlocks website scroll for mobile devices.
      */
-    unblockWebsiteScroll() {
-        document.body.removeEventListener('touchmove', this.disableTouchMove, {passive: false});
-    }
-
-    /**
-     * Prevents the default event behavior to a MouseEvent.
-     * @param {MouseEvent} mouseEvent - mouse event.
-     */
-    disableTouchMove(mouseEvent) {
-        mouseEvent.preventDefault();
+    unlockWebsiteScroll() {
+        document.body.style.position = this.websiteBeforeLockParameters.bodyStylePosition;
+        document.body.style.overflow = this.websiteBeforeLockParameters.bodyStyleOverflow;
+        document.documentElement.style.overflow = this.websiteBeforeLockParameters.htmlStyleOverflow;
+        window.scrollTo(this.websiteBeforeLockParameters.windowScrollX, this.websiteBeforeLockParameters.windowScrollY);
+        this.websiteBeforeLockParameters = null;
     }
 
     /**

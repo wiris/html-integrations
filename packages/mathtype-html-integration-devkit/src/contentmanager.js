@@ -359,9 +359,9 @@ export default class ContentManager {
             // We need to set a empty annotation in order to maintain editor in Hand mode.
             // Adding dir rtl in case of it's activated.
             if (this.editor.getEditorModel().isRTL()) {
-                this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
+                this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
             } else {
-                this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>"', true);
+                this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
             }
         } else {
             if (this.editor.getEditorModel().isRTL()) {
