@@ -14,17 +14,17 @@ export class TinyMceIntegration extends IntegrationModel {
         /**
          * Indicates if the content of the TinyMCe editor has
          * been parsed.
-         * @type {boolean}
+         * @type {Boolean}
          */
         this.initParsed = integrationModelProperties.initParsed;
         /**
          * Indicates if the TinyMCE is integrated in Moodle.
-         * @type {boolean}
+         * @type {Boolean}
          */
         this.isMoodle = integrationModelProperties.isMoodle;
         /**
          * Indicates if the plugin is loaded as an external plugin by TinyMCE.
-         * @type {boolean}
+         * @type {Boolean}
          */
         this.isExternal = integrationModelProperties.isExternal;
     }
@@ -33,7 +33,7 @@ export class TinyMceIntegration extends IntegrationModel {
     /**
      * Returns the absolute path of the integration script. Depends on
      * TinyMCE integration (Moodle or standard).
-     * @returns {boolean} - Absolute path for the integration script.
+     * @returns {Boolean} - Absolute path for the integration script.
      */
     getPath() {
         if (this.isMoodle) {
@@ -53,7 +53,7 @@ export class TinyMceIntegration extends IntegrationModel {
     /**
      * Returns the absolute path of plugin icons. A set of different
      * icons is needed for TinyMCE and Moodle 2.5-
-     * @returns {string} - Absolute path of the icons folder.
+     * @returns {String} - Absolute path of the icons folder.
      */
     getIconsPath() {
         if (this.isMoodle && Configuration.get('versionPlatform') < 2013111800) {
@@ -66,7 +66,8 @@ export class TinyMceIntegration extends IntegrationModel {
 
     /**
      * Returns the integration language. TinyMCE language is inherited.
-     * @returns {string} - Integration language.
+     * When no language is set, TinyMCE sets the toolbar to english.
+     * @returns {String} - Integration language.
      */
     getLanguage() {
         if (this.editorObject.settings['wirisformulaeditorlang']) {
@@ -194,13 +195,13 @@ export var currentInstance = null;
 
             /**
              * Integration model properties
-             * @type {object}
-             * @property {object} target - Integration DOM target.
-             * @property {string} configurationService - Configuration integration service.
-             * @property {string} version - Plugin version.
-             * @property {string} scriptName - Integration script name.
-             * @property {object} environment - Integration environment properties.
-             * @property {string} editor - Editor name.
+             * @type {Object}
+             * @property {Object} target - Integration DOM target.
+             * @property {String} configurationService - Configuration integration service.
+             * @property {String} version - Plugin version.
+             * @property {String} scriptName - Integration script name.
+             * @property {Object} environment - Integration environment properties.
+             * @property {String} editor - Editor name.
              */
             var integrationModelProperties = {};
             integrationModelProperties.configurationService = '@param.js.configuration.path@';
@@ -210,10 +211,15 @@ export var currentInstance = null;
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
                 editor.getParam('wiriscontextpath') + '/' + integrationModelProperties.configurationService;
             }
-            integrationModelProperties.version = '7.5.0.1414';
             integrationModelProperties.scriptName = "plugin.min.js";
             integrationModelProperties.environment = {};
-            integrationModelProperties.environment.editor = "TinyMCE 4.x";
+
+            let editorVersion = '4';
+            if (tinyMCE.majorVersion === '5') {
+                editorVersion = '5';
+            }
+            integrationModelProperties.environment.editor = 'TinyMCE ' + editorVersion + '.x';
+
             integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
             integrationModelProperties.editorObject = editor;
             integrationModelProperties.initParsed = false;
@@ -285,7 +291,7 @@ export var currentInstance = null;
             }
 
             var onSave = function (editor, params) {
-                    params.content = Parser.endParse(params.content, editor.getParam('language'));
+                params.content = Parser.endParse(params.content, editor.getParam('language'));
             }
 
             if ('onSaveContent' in editor) {
@@ -344,39 +350,57 @@ export var currentInstance = null;
             }
             waitForIframeBody();
 
-            // MathType button.
-            editor.addCommand('tiny_mce_wiris_openFormulaEditor', function () {
+            function openFormulaEditorFunction() {
                 const tinyMceIntegrationInstance = WirisPlugin.instances[editor.id];
                 // Disable previous custom editors.
                 tinyMceIntegrationInstance.core.getCustomEditors().disable();
                 tinyMceIntegrationInstance.openNewFormulaEditor();
+            }
+
+            let commonEditor;
+            if (tinyMCE.majorVersion === '5') {
+                commonEditor = editor.ui.registry;
+            }
+            else {
+                commonEditor = editor;
+                commonEditor.addCommand('tiny_mce_wiris_openFormulaEditor',openFormulaEditorFunction);
+            }
+
+            const mathTypeIcon = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 300 261.7" style="enable-background:new 0 0 300 261.7;" xml:space="preserve"><g id=icon-wirisformula stroke="none" stroke-width="1" fill-rule="evenodd"><g><path class="st1" d="M90.2,257.7c-11.4,0-21.9-6.4-27-16.7l-60-119.9c-7.5-14.9-1.4-33.1,13.5-40.5c14.9-7.5,33.1-1.4,40.5,13.5l27.3,54.7L121.1,39c5.3-15.8,22.4-24.4,38.2-19.1c15.8,5.3,24.4,22.4,19.1,38.2l-59.6,179c-3.9,11.6-14.3,19.7-26.5,20.6C91.6,257.7,90.9,257.7,90.2,257.7"/></g></g><g><g><path class="st2" d="M300,32.8c0-16.4-13.4-29.7-29.9-29.7c-2.9,0-7.2,0.8-7.2,0.8c-37.9,9.1-71.3,14-112,14c-0.3,0-0.6,0-1,0c-16.5,0-29.9,13.3-29.9,29.7c0,16.4,13.4,29.7,29.9,29.7l0,0c45.3,0,83.1-5.3,125.3-15.3h0C289.3,59.5,300,47.4,300,32.8"/></g></g></svg>';
+
+            // MathType button.
+            // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
+            // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
+            commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
+                tooltip: 'Insert a math equation - MathType',
+                cmd: 'tiny_mce_wiris_openFormulaEditor',
+                image: WirisPlugin.instances[editor.id].getIconsPath() + 'formula.png',
+                onAction: openFormulaEditorFunction,
+                icon: mathTypeIcon
             });
 
-            editor.addButton('tiny_mce_wiris_formulaEditor', {
-                title: 'Insert a math equation - MathType',
-                cmd: 'tiny_mce_wiris_openFormulaEditor',
-                image: WirisPlugin.instances[editor.id].getIconsPath() + 'formula.png'
-            });
-            // }
+            const chemTypeIcon = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">  <image id="image0" width="16" height="16" x="0" y="0"href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiChwSIwERK9BGAAABfklEQVQoz12RvUtbcRiFn/uRXKNJNCJSokFFqoKDIjHEqKA4WRAc/AsUKl2Ck5ODIKKDm4v+BbqIEr8WQ+hgQSgOElGJgkPTih+3tUabeL3353A1CX3Hcx7OC+dIAIL3CwXEmJU6XBHWuyIVgIjrOcoUblCTrolE/D+gc0QsUJePEtrGh+jajzcg1GQu0W87ldl7zZQAtPP9Dh5lADNm25rx+Xb7ZdWMCAARyHXhVQD8iwAD+qLV61B++U4Hb5pKS9Tx3w05Umr+K3Mlsk6SfY7x9oX7OvDiwlEEoLPLNkdc4yRJG9WkuCoCxBV7JMhg8cgRl7h44m9xwhM3PLyVYnBni3LBX64p4MHGYLSzOV9UWDd8AO608iW+2eP5NyVN4JR/7rRU2T0MzVRmATI197FIInsmTeIErcwTxqcAxHPDFdLHE4cJmPV4AAKZ+XStyrkCMC00K8Qnj+6+kAFKjfE/sw6/zAXf7bFUqmill+5v7es+vzVqlhukOWCLr6/ZMH/PRaOKYwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0xMC0yOVQwMTozNTowMS0wNzowMOC+eEAAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMTAtMjlUMDE6MzU6MDEtMDc6MDCR48D8AAAAAElFTkSuQmCC" /></svg>';
 
             // Dynamic customEditors buttons.
-            var customEditors = WirisPlugin.instances[tinyMCE.activeEditor.id].getCore().getCustomEditors();
-
+            var customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
             for (var customEditor in customEditors.editors) {
                 if (customEditors.editors[customEditor].confVariable) {
                     var cmd = 'tiny_mce_wiris_openFormulaEditor' + customEditors.editors[customEditor].name;
-                    editor.addCommand(cmd, function () {
+                    function commandFunction() {
                         customEditors.enable(customEditor);
                         WirisPlugin.instances[editor.id].openNewFormulaEditor();
-                    });
-
-                    editor.addButton('tiny_mce_wiris_formulaEditor' + customEditors.editors[customEditor].name, {
-                        title:  customEditors.editors[customEditor].tooltip,
+                    };
+                    editor.addCommand(cmd, commandFunction);
+                    // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
+                    // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
+                    commonEditor.addButton('tiny_mce_wiris_formulaEditor' + customEditors.editors[customEditor].name, {
+                        tooltip: customEditors.editors[customEditor].tooltip,
+                        onAction: commandFunction,
                         cmd: cmd,
+                        icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE5.
                         image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon
                     });
                 }
-
             }
         },
 
