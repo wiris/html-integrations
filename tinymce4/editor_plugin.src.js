@@ -73,7 +73,8 @@ export class TinyMceIntegration extends IntegrationModel {
         if (this.editorObject.settings['wirisformulaeditorlang']) {
             return editor.settings['wirisformulaeditorlang'];
         }
-        return this.editorObject.getParam('language');
+        const langParam = this.editorObject.getParam('language');
+        return langParam ? langParam : 'en';
     }
 
     /**

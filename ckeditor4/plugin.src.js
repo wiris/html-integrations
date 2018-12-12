@@ -24,13 +24,13 @@ export var currentInstance = null;
 export class CKEditor4Integration extends IntegrationModel {
     /**
      *
-     * @param {integrationModelProperties}
+     * @param {IntegrationModelProperties}
      */
     constructor(ckeditorIntegrationModelProperties) {
         /**
          * CKEditor4 Integration.
          *
-         * @param {integrationModelProperties} integrationModelAttributes
+         * @param {IntegrationModelProperties} integrationModelAttributes
          */
         super(ckeditorIntegrationModelProperties);
         /**
@@ -50,8 +50,9 @@ export class CKEditor4Integration extends IntegrationModel {
     }
 
     /**
+	 * When no language is set, ckeditor sets the toolbar to user's browser language.
      * @inheritdoc
-     * @returns {string} - The CKEditor instance language.
+     * @returns {String} - The CKEditor instance language.
      * @override
      */
     getLanguage() {
@@ -197,13 +198,13 @@ export class CKEditor4Integration extends IntegrationModel {
                     this.setTarget(newElement);
                     this.addEvents();
                 }
-                // Set the element as treated
+                // Set the element as treated.
                 newElement.wirisActive = true;
             }
             else if (!!newElement.contentWindow || _wrs_int_divIframe) {
                 this.setTarget(newElement);
                 this.addEvents();
-                // Set the element as treated
+                // Set the element as treated.
                 newElement.wirisActive = true;
             }
         }
@@ -212,7 +213,7 @@ export class CKEditor4Integration extends IntegrationModel {
     /**
      * @inheritdoc
      * @param {HTMLElement} element - HTMLElement target.
-     * @param {MouseEvent} event - event which trigger the handler.
+     * @param {MouseEvent} event - Event which trigger the handler.
      */
     doubleClickHandler(element, event) {
         if (element.nodeName.toLowerCase() == 'img') {

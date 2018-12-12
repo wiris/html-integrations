@@ -21,25 +21,26 @@ export var currentInstance = null;
 export class FroalaIntegration extends IntegrationModel {
     /**
      * IntegrationModel constructor.
-     * @param {integrationModelProperties} froalaModelProperties
+     * @param {IntegrationModelProperties} froalaModelProperties
      */
     constructor(froalaModelProperties) {
         super(froalaModelProperties);
 
         /**
          * Mode when Froala is instantiated on an image.
-         * @type {boolean}
+         * @type {Boolean}
          */
         this.initOnImageMode = froalaModelProperties.initOnImageMode;
     }
     /**
      * Returns the language of the current Froala editor instance.
+     * When no language is set, ckeditor sets the toolbar to english.
      */
     getLanguage() {
         if (this.editorObject.opts.language != null) {
             return this.editorObject.opts.language;
         } else {
-            return this.getBrowserLanguage();
+            return 'en';
         }
     }
 
@@ -163,7 +164,7 @@ export class FroalaIntegration extends IntegrationModel {
     /**
      * Auxiliary method. Returns the path of wiris.js script. Needed to load
      * CSS styles and core.js
-     * @returns {string} - "wiris.js" file path.
+     * @returns {String} - "wiris.js" file path.
      */
     function getScriptPath() {
         var scriptUrl;
