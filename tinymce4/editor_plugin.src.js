@@ -372,7 +372,8 @@ export var currentInstance = null;
             // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
             // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
             commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
-                tooltip: 'Insert a math equation - MathType',
+                tooltip: 'Insert a math equation - MathType', //TinyMCE3
+                title: 'Insert a math equation - MathType',
                 cmd: 'tiny_mce_wiris_openFormulaEditor',
                 image: WirisPlugin.instances[editor.id].getIconsPath() + 'formula.png',
                 onAction: openFormulaEditorFunction,
@@ -394,6 +395,7 @@ export var currentInstance = null;
                     // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
                     // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
                     commonEditor.addButton('tiny_mce_wiris_formulaEditor' + customEditors.editors[customEditor].name, {
+                        title: customEditors.editors[customEditor].tooltip, // TinyMCE3
                         tooltip: customEditors.editors[customEditor].tooltip,
                         onAction: commandFunction,
                         cmd: cmd,
