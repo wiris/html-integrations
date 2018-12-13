@@ -6,9 +6,9 @@ import Configuration from './configuration';
 
 /**
  * @typedef {Object} integrationModelProperties
- * @property {string} configurationService - configuration service path.
+ * @property {string} configurationService - Configuration service path. This parameter is needed to determine all services paths.
  * @property {HTMLElement} integrationModelProperties.target - HTML target.
- * @property {string} integrationModelProperties.scriptName integrationModelProperties.scriptName - integration script name.
+ * @property {string} integrationModelProperties.scriptName - Integration script name. Usually the name of the integration script.
  * @property {Object} integrationModelProperties.environment - integration environment properties.
  * @property {Object} [integrationModelProperties.callbackMethodArguments] - object containing callback method arguments.
  * @property {string} [integrationModelProperties.version] - integration version number.
@@ -23,6 +23,7 @@ import Configuration from './configuration';
  */
 export default class IntegrationModel {
     /**
+     * @constructs
      * IntegrationModel constructor.
      * @param {integrationModelProperties} integrationModelProperties
      */
@@ -368,8 +369,8 @@ export default class IntegrationModel {
     }
 
     /**
-     * Callback function. This function will be called once the Core is loaded. IntegrationModel class
-     * will fire this method once the 'onLoad' Core event is fired. This function should content all the logic to init
+     * This function is called once the {@link Core} is loaded. IntegrationModel class
+     * will fire this method when {@link Core} 'onLoad' event is fired. This method should content all the logic to init
      * the integration.
      */
     callbackFunction() {

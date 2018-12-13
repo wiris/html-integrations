@@ -1,6 +1,18 @@
 /**
- * This class represents MathType custom editors. A custom editor is athType editor with a different
- * toolbar. This class is necessary to associate a custom editor to:
+ * A custom editor is MathType editor with a different
+ * @typedef {Object} CustomEditor
+ * @property {String} CustomEditor.name - Custom editor name.
+ * @property {String} CustomEditor.toolbar - Custom editor toolbar.
+ * @property {String} CustomEditor.icon - Custom editor icon.
+ * @property {String} CustomEditor.confVariable - Configuration property to manage the availability of the custom editor.
+ * @property {String} CustomEditor.title - Custom editor modal dialog title.
+ * @property {String} CustomEditor.tooltip - Custom editor icon tooltip.
+ */
+
+
+/**
+ * This class represents the MathType custom editors manager. A custom editor is MathType editor with a custom
+ * toolbar. This class associates a {@link CustomEditor} to:
  * - It's own formulas
  * - A custom toolbar
  * - An icon to open it from a HTML editor.
@@ -9,30 +21,27 @@
  */
 export default class CustomEditors {
 
+    /**
+     * Creates an instance of the custom editor class.
+     */
     constructor() {
         /**
-         * Array containing all custom editors.
-         * @type {Object[]}
+         * The custom editors.
+         * @type {Array.<CustomEditor>}
          */
 
         this.editors = [];
         /**
-         * Default editor name.
-         * @type {string}
+         * The active editor name.
+         * @type {String}
          */
         this.activeEditor = 'default';
     }
 
     /**
-     * Adds a custom editor to editors property.
-     * @param {string} editorName - editorName.
-     * @param {Object} editorParams - custom editor params.
-     * @param {string} editorParams.name - custom editor name.
-     * @param {string} editorParams.toolbar - custom editor toolbar.
-     * @param {string} editorParams.icon - custom editor icon.
-     * @param {string} editorParams.confVariable - configuration key to retrieve if the custom editor is enabled.
-     * @param {string} editorParams.title - custom editor title.
-     * @param {string} editorParams.tooltip - custom editor tooltip associated with it's own icon.
+     * Adds a {@link CustomEditor} to editors array.
+     * @param {String} editorName - The editor name.
+     * @param {CustomEditor} editorParams - The custom editor parameters.
      */
     addEditor(editorName, editorParams) {
         var customEditor= {};
@@ -46,32 +55,23 @@ export default class CustomEditors {
     }
 
     /**
-     * Adds a customEditor to editors property.
-     * @param {string} key - editor key.
-     * @param {CustomEditor} customEditor - a custom editor class.
+     * Enables a {@link CustomEditor}.
+     * @param {String} customEditorName - The custom editor name.
      */
-    add(key, customEditor) {
-        this.customEditors[key] = customEditor;
+    enable(customEditorName) {
+        this.activeEditor = customEditorName;
     }
 
     /**
-     * Set as active a customEditor.
-     * @param {string} customEditor - customEditor key.
-     */
-    enable(customEditor) {
-        this.activeEditor = customEditor;
-    }
-
-    /**
-     * Disables a custom editor.
+     * Disables a {@link CustomEditor}.
      */
     disable() {
         this.activeEditor = 'default';
     }
 
     /**
-     * Returns the active editor key.
-     * @return {object} - If a custom editor is enabled, returns the custom editor object. Null otherwise.
+     * Returns the active editor.
+     * @return {CustomEditor} - A {@link CustomEditor} if a custom editor is enabled. Null otherwise.
      */
     getActiveEditor() {
         if (this.activeEditor != 'default') {

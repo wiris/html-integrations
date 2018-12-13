@@ -1,30 +1,33 @@
 /**
- * Class representing a client cache class. This class contains pairs of
+ * This class represent a client-side text cache class. Contains pairs of
  * strings (key/value) which can be retrieved in any moment. Usually used
- * to store AJAX responses for text services like mathml2latex.
+ * to store AJAX responses for text services like mathml2latex (c.f {@link Latex} class) or mathml2accessible (c.f {@link Accessibility} class).
  */
 export default class TextCache {
+    /**
+     * Creates an instance of the text cache class.
+     */
     constructor() {
         /**
-         * Cache array object. Contains all cache entries.
-         * @type {Object[]}
+         * Cache array property storing the cache entries.
+         * @type {Array.<String>}
          */
         this.cache = [];
     }
 
     /**
-     * This method populates a key/value pair into the cache property.
-     * @param {string} key - The cache key, usually the service string parameter.
-     * @param {string} value - The cache value, usually the service response.
+     * This method populates a key/value pair into the {@link this.cache} property.
+     * @param {String} key - Cache key, usually the service string parameter.
+     * @param {String} value - Cache value, usually the service response.
      */
     populate(key, value) {
         this.cache[key] = value;
     }
 
     /**
-     * This method retrieves a cache value. Usually called before call a text service.
-     * @param {string} key - The cache key, usually the service string parameter.
-     * @return {string} value - The cache value, if exists. False otherwise.
+     * Returns the cache value associated to certain cache key.
+     * @param {String} key - Cache key, usually the service string parameter.
+     * @return {String} value - Cache value, if exists. False otherwise.
      */
     get(key) {
         if (this.cache.hasOwnProperty(key)) {

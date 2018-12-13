@@ -5,7 +5,14 @@ import Configuration from './configuration.js';
 import Listeners from './listeners';
 import ContentManager from './contentmanager.js';
 
-
+/**
+ * @typedef {Object} DeviceProperties
+ * @property {String}  DeviceProperties.orientation - Indicates of the orientation of the device.
+ * @property {Boolean} DeviceProperties.isAndroid - True if the device is Android. False otherwise.
+ * @property {Boolean} DeviceProperties.isIOS - True if the device is iOS. False otherwise.
+ * @property {Boolean} DeviceProperties.isMobile - True if the device is a mobile one. False otherwise.
+ * @property {Boolean} DeviceProperties.isDesktop - True if the device is a desktop one. False otherwise.
+ */
 
 /**
  * This class represents a modal dialog. The modal dialog admits a ContentManager instance in order
@@ -14,6 +21,7 @@ import ContentManager from './contentmanager.js';
 export default class ModalDialog {
 
     /**
+     * @constructs
      * Modal dialog constructor
      * @param {Object} modalDialogAttributes  - An object containing all modal dialog attributes.
      */
@@ -42,6 +50,9 @@ export default class ModalDialog {
 
         // Device object properties.
 
+        /**
+         * @type {DeviceProperties}
+         */
         this.deviceProperties = {
             orientation : landscape ? 'landscape' : 'portait',
             isAndroid : isAndroid ? true : false,

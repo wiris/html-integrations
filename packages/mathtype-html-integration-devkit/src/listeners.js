@@ -1,4 +1,11 @@
 /**
+ * This object represents a custom listener.
+ * @typedef {Object} Listener
+ * @property {String} Listener.eventName - The listener name.
+ * @property {Function} Listener.callback - The listener callback function.
+ */
+
+/**
  * This class represents a class to manage custom listeners.
  */
 export default class Listeners {
