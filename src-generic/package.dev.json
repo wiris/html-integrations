@@ -38,5 +38,59 @@
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
   },
-  "main": "wirisplugin-generic.src.js"
+  "main": "wirisplugin-generic.src.js",
+  "dependencies": {
+    "esdoc": "^1.1.0",
+    "esdoc-inject-script-plugin": "^1.0.0",
+    "esdoc-inject-style-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0",
+    "jsdoc-export-default-interop": "^0.3.1"
+  },
+
+  "esdoc" : {
+    "source": ".",
+    "destination": "./docs",
+    "includes": ["\\.js$",  "/core/src"],
+    "excludes" : ["backwardslib.js",
+                  "cas.js",
+                  "core.js",
+                  "display.js",
+                  "generic_demo.js",
+                  "global.js",
+                  "jsvariables.js",
+                  "md5.js",
+                  "polyfills.js",
+                  "node_modules",
+                  "lang",
+                  "integration/",
+                  "docs",
+                  "out",
+                  "wirisplugin-generic.js",
+                  "webpack.config.js"
+                  ],
+    "plugins": [{
+      "name": "esdoc-standard-plugin",
+        "option": {
+          "lint": {"enable": true},
+          "coverage": {"enable": true},
+          "accessor": {"access": ["public", "protected", "private"], "autoPrivate": true},
+          "undocumentIdentifier": {"enable": true},
+          "unexportedIdentifier": {"enable": false},
+          "typeInference": {"enable": true},
+          "brand": {
+            "title": "My Library",
+            "description": "this is awesome library",
+            "site": "http://my-library.org",
+            "author": "https://twitter.com/foo",
+            "image": "http://my-library.org/logo.png"
+          }
+        }
+      },{
+        "name" : "esdoc-inject-style-plugin",
+        "option" : {
+            "enable" : true, "styles" : ["./src-doc/styles.css"]
+        }
+      }
+    ]
+  }
 }

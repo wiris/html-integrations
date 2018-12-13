@@ -1,0 +1,57 @@
+{
+  "source": ".",
+  "destination": "./docs",
+  "includes": ["\\.js$",  "/core/src"],
+  "excludes" : ["backwardslib.js",
+                "cas.js",
+                "core.js",
+                "display.js",
+                "generic_demo.js",
+                "global.js",
+                "jsvariables.js",
+                "md5.js",
+                "polyfills.js",
+                "node_modules",
+                "lang",
+                "integration/",
+                "docs",
+                "out",
+                "wirisplugin-generic.js",
+                "webpack.config.js",
+                "editor_plugin.src.js",
+                ".external-ecmascript.js"
+                ],
+  "plugins": [{
+    "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {"enable": true},
+        "coverage": {"enable": true},
+        "accessor": {"access": ["public", "protected", "private"], "autoPrivate": true},
+        "undocumentIdentifier": {"enable": true},
+        "unexportedIdentifier": {"enable": false},
+        "typeInference": {"enable": true},
+        "brand": {
+          "title": "My Library",
+          "description": "this is awesome library",
+          "site": "http://my-library.org",
+          "author": "https://twitter.com/foo",
+          "image": "http://my-library.org/logo.png"
+        },
+        "manual" : {
+          "files" : [
+                    "./getting_started.md",
+                    "./data.md",
+                    "./services.md",
+                    "./documentation.md"
+                    ]
+        }
+      }
+    },{
+      "name" : "esdoc-inject-style-plugin",
+      "option" : {
+          "enable" : true, "styles" : ["./styles.css"]
+      }
+    }
+  ]
+}
+
