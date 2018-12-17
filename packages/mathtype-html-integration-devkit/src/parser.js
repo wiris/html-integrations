@@ -537,7 +537,7 @@ export default class Parser {
 
             if (!MathML.isMathmlInAttribute(content, start) && imageMathmlAtrribute == -1){
                 var mathml = content.substring(start, end);
-                mathml = (characters == Constants.safeXmlCharacters) ? MathML.safeXmlDecode(mathml) : MathML.mathMLEntities(mathml);
+                mathml = (characters.id == Constants.safeXmlCharacters.id) ? MathML.safeXmlDecode(mathml) : MathML.mathMLEntities(mathml);
                 output += Util.createObjectCode(Parser.mathmlToImgObject(document, mathml, null, language));
             }
             else {

@@ -46,6 +46,7 @@ export default class Constants {
      */
     static get xmlCharacters() {
         return {
+            'id' : 'xmlCharacters',
             'tagOpener': '<',       // Hex: \x3C.
             'tagCloser': '>',       // Hex: \x3E.
             'doubleQuote': '"',     // Hex: \x22.
@@ -62,6 +63,7 @@ export default class Constants {
     */
     static get safeXmlCharacters() {
         return {
+            'id' : 'safeXmlCharacters',
             'tagOpener': '«',       // Hex: \xAB.
             'tagCloser': '»',       // Hex: \xBB.
             'doubleQuote': '¨',     // Hex: \xA8.
