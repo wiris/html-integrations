@@ -159,56 +159,16 @@ export default class Core {
     }
 
     /**
-     * Initializes the {@link Core} class.
-     * @param {String} configurationPath - The integration configuration service path.
-     */
-    init(configurationPath) {
-        this.load(configurationPath);
-    }
-
-    /**
-     * Sets the {@link Core.integrationModel} property.
-     * @param {IntegrationModel} integrationModel - The {@link IntegrationModel} property.
-     */
-    setIntegrationModel(integrationModel) {
-        this.integrationModel = integrationModel;
-    }
-
-    /**
-     * Sets the {@link Core.environment} property.
-     * @param {IntegrationEnvironment} integrationEnvironment - The {@link IntegrationEnvironment} object.
-     */
-    setEnvironment(integrationEnvironment) {
-        if ('editor' in integrationEnvironment) {
-            this.environment.editor = integrationEnvironment.editor;
-        }
-        if ('mode' in integrationEnvironment) {
-            this.environment.mode = integrationEnvironment.mode;
-        }
-        if ('version' in integrationEnvironment) {
-            this.environment.version = integrationEnvironment.version;
-        }
-    }
-
-    /**
-     * Returns the current {@link ModalDialog} instance.
-     * @returns {ModalDialog} The current {@link ModalDialog} instance.
-     */
-    getModalDialog() {
-        return this.modalDialog;
-    }
-
-    /**
-     * Inits the Core class, doing the following:
+     * Inits the {@link Core} class, doing the following:
      * - Calls asynchronously configuration service, retrieving the backend configuration in a JSON.
      * - Updates {@link Configuration} class with the previous configuration properties.
      * - Updates the {@link ServiceProvider} class using the configuration service path as reference.
      * - Loads language strings.
      * - Loads stylesheets.
      * - Fires onLoad event.
-     * @param {String} configurationService - The backend configuration service URL.
+     * @param {String} configurationService - The integration configuration service path.
      */
-    load(configurationService) {
+    init(configurationService) {
         var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
         this.integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
         httpRequest.open('GET', this.integrationPath, false);
@@ -241,6 +201,38 @@ export default class Core {
             }
         }.bind(this);
         httpRequest.send(null);
+    }
+
+    /**
+     * Sets the {@link Core.integrationModel} property.
+     * @param {IntegrationModel} integrationModel - The {@link IntegrationModel} property.
+     */
+    setIntegrationModel(integrationModel) {
+        this.integrationModel = integrationModel;
+    }
+
+    /**
+     * Sets the {@link Core.environment} property.
+     * @param {IntegrationEnvironment} integrationEnvironment - The {@link IntegrationEnvironment} object.
+     */
+    setEnvironment(integrationEnvironment) {
+        if ('editor' in integrationEnvironment) {
+            this.environment.editor = integrationEnvironment.editor;
+        }
+        if ('mode' in integrationEnvironment) {
+            this.environment.mode = integrationEnvironment.mode;
+        }
+        if ('version' in integrationEnvironment) {
+            this.environment.version = integrationEnvironment.version;
+        }
+    }
+
+    /**
+     * Returns the current {@link ModalDialog} instance.
+     * @returns {ModalDialog} The current {@link ModalDialog} instance.
+     */
+    getModalDialog() {
+        return this.modalDialog;
     }
 
     /**
