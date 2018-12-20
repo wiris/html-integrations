@@ -302,8 +302,9 @@ export default class IntegrationModel {
     doubleClickHandler(element) {
         if (element.nodeName.toLowerCase() == 'img') {
             this.core.getCustomEditors().disable();
-            if (element.hasAttribute('data-custom-editor')) {
-                var customEditor = element.getAttribute('data-custom-editor');
+            const customEditorAttributeName = Configuration.get('imageCustomEditorName');
+            if (element.hasAttribute(customEditorAttributeName)) {
+                var customEditor = element.getAttribute(customEditorAttributeName);
                 this.core.getCustomEditors().enable(customEditor);
             }
             if (Util.containsClass(element, Configuration.get('imageClassName'))) {

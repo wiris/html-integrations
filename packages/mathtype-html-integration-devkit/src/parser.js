@@ -51,11 +51,11 @@ export default class Parser {
 
         if (mathml.indexOf('class="') != -1) {
             // We check here if the MathML has been created from a customEditor (such chemistry)
-            // to add data-custom-editor attribute to img object (if necessary).
+            // to add custom editor name attribute to img object (if necessary).
             var mathmlSubstring = mathml.substring(mathml.indexOf('class="') + 'class="'.length, mathml.length);
             mathmlSubstring = mathmlSubstring.substring(0, mathmlSubstring.indexOf('"'));
             mathmlSubstring = mathmlSubstring.substring(4, mathmlSubstring.length);
-            imgObject.setAttribute('data-custom-editor', mathmlSubstring);
+            imgObject.setAttribute(Configuration.get('imageCustomEditorName'), mathmlSubstring);
         }
 
         // Performance enabled.

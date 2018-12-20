@@ -21,7 +21,7 @@ export default class Image {
      * @param {HTMLImageElement} destImg - The destination image.
      */
     static clone(originImg, destImg) {
-        const customEditorAttributeName = 'data-custom-editor';
+        const customEditorAttributeName = Configuration.get('imageCustomEditorName');
         if (!originImg.hasAttribute(customEditorAttributeName)) {
             destImg.removeAttribute(customEditorAttributeName);
         }
