@@ -226,7 +226,7 @@ export class CKEditor4Integration extends IntegrationModel {
                     event.returnValue = false;
                 }
                 this.core.getCustomEditors().disable();
-                const customEditorAttr = element.getAttribute('data-custom-editor');
+                const customEditorAttr = element.getAttribute(Configuration.get('imageCustomEditorName'));
                 if (customEditorAttr) {
                     this.core.getCustomEditors().enable(customEditorAttr);
                 }
