@@ -46,6 +46,60 @@ export default class ServiceProvider {
     }
 
     /**
+     * Static property.
+     * Service provider integration path.
+     * @type {String}
+     */
+    static get integrationPath() {
+        return ServiceProvider._integrationPath;
+    }
+
+    /**
+     * Static property setter.
+     * Set service provider integration path.
+     * @param {String} value - The property value.
+     * @ignore
+     */
+    static set integrationPath(value) {
+        ServiceProvider._integrationPath = value;
+    }
+
+    /**
+     * Returns the client side server path, i.e where the integration script lives.
+     * @return {String} The client side server path.
+     */
+    static getServerPath() {
+        var url = this.integrationModel.getPath();
+        var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
+        return url.substr(0, hostNameIndex);
+    }
+
+    static init() {
+        // Services path (tech dependant).
+        var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
+        var showImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'showimage');
+        var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
+        var getMathMLPath = ServiceProvider.integrationPath.replace('configurationjs', 'getmathml');
+        var servicePath = ServiceProvider.integrationPath.replace('configurationjs', 'service');
+
+        // Some backend integrations (like Java o Ruby) have an absolute backend path,
+        // for example: /app/service. For them we calculate the absolute URL path, i.e
+        // protocol://domain:port/app/service
+        if (ServiceProvider.integrationPath.indexOf("/") == 0) {
+            var serverPath = ServiceProvider.getServerPath();
+            showImagePath = serverPath + showImagePath;
+            createImagePath = serverPath + createImagePath;
+            getMathMLPath = serverPath + getMathMLPath;
+            servicePath = serverPath + servicePath;
+        }
+
+        ServiceProvider.setServicePath('showimage', showImagePath);
+        ServiceProvider.setServicePath('createimage', createImagePath);
+        ServiceProvider.setServicePath('service', servicePath);
+        ServiceProvider.setServicePath('getmathml', getMathMLPath);
+    }
+
+    /**
      * Gets the content from an URL.
      * @param {String} url - Target URL.
      * @param {Object} postVariables - Object containing post variables. null if a GET query should be done.
@@ -108,4 +162,12 @@ export default class ServiceProvider {
  * @property {String} path - The service path.
  * @static
  */
-ServiceProvider._servicePaths = {};
+ServiceProvider.serVicePaths = {};
+
+/**
+ * The integration path. Contains the path of the configuration service.
+ * Used to define the path for all services.
+ * @type {String}
+ * @private
+ */
+ServiceProvider._integrationPath = "";

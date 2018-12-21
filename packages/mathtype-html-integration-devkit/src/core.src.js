@@ -122,7 +122,7 @@ export default class Core {
          * Used by {@link ServiceProvider} class to define the path for all services.
          * @type {String}
          */
-        this.integrationPath = '';
+        //this.integrationPath = '';
 
         /**
          * The {@link ContentManager} instance.
@@ -250,8 +250,8 @@ export default class Core {
      */
     init(configurationService) {
         var httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        this.integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
-        httpRequest.open('GET', this.integrationPath, false);
+        ServiceProvider.integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
+        httpRequest.open('GET', ServiceProvider.integrationPath, false);
         // Async request.
         httpRequest.onload = function (e) {
             if (httpRequest.readyState === 4) {
@@ -262,7 +262,7 @@ export default class Core {
                 // Adding JavaScript (not backend) configuration variables.
                 Configuration.addConfiguration(jsProperties);
                 // Load service paths.
-                this.initServiceProvider();
+                ServiceProvider.init();
                 // Load lang file.
                 this.loadLanguage(this.language);
                 this.loadCSS();
@@ -320,6 +320,7 @@ export default class Core {
      * base path to generate all backend services paths.
      */
     initServiceProvider() {
+        /*
         // Services path (tech dependant).
         var createImagePath = this.integrationPath.replace('configurationjs', 'createimage');
         var showImagePath = this.integrationPath.replace('configurationjs', 'showimage');
@@ -342,17 +343,22 @@ export default class Core {
         ServiceProvider.setServicePath('createimage', createImagePath);
         ServiceProvider.setServicePath('service', servicePath);
         ServiceProvider.setServicePath('getmathml', getMathMLPath);
+        */
     }
+
 
     /**
      * Returns the client side server path, i.e where the integration script lives.
      * @return {String} The client side server path.
      */
-    getServerPath() {
+/*
+     getServerPath() {
         var url = this.integrationModel.getPath();
         var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
         return url.substr(0, hostNameIndex);
     }
+*/
+
 
     /**
      * Loads the JavaScript language file and initializes {@link StringManager} class.
