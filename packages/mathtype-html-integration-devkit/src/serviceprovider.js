@@ -74,6 +74,10 @@ export default class ServiceProvider {
         return url.substr(0, hostNameIndex);
     }
 
+    /**
+     * Inits {@link this} class. Uses {@link this.integrationPath} as
+     * base path to generate all backend services paths.
+     */
     static init() {
         // Services path (tech dependant).
         var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');

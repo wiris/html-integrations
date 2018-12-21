@@ -316,51 +316,6 @@ export default class Core {
     }
 
     /**
-     * Inits {@link ServiceProvider} class. Uses {@link Core.integrationPath} as
-     * base path to generate all backend services paths.
-     */
-    initServiceProvider() {
-        /*
-        // Services path (tech dependant).
-        var createImagePath = this.integrationPath.replace('configurationjs', 'createimage');
-        var showImagePath = this.integrationPath.replace('configurationjs', 'showimage');
-        var createImagePath = this.integrationPath.replace('configurationjs', 'createimage');
-        var getMathMLPath = this.integrationPath.replace('configurationjs', 'getmathml');
-        var servicePath = this.integrationPath.replace('configurationjs', 'service');
-
-        // Some backend integrations (like Java o Ruby) have an absolute backend path,
-        // for example: /app/service. For them we calculate the absolute URL path, i.e
-        // protocol://domain:port/app/service
-        if (this.integrationPath.indexOf("/") == 0) {
-            var serverPath = this.getServerPath();
-            showImagePath = serverPath + showImagePath;
-            createImagePath = serverPath + createImagePath;
-            getMathMLPath = serverPath + getMathMLPath;
-            servicePath = serverPath + servicePath;
-        }
-
-        ServiceProvider.setServicePath('showimage', showImagePath);
-        ServiceProvider.setServicePath('createimage', createImagePath);
-        ServiceProvider.setServicePath('service', servicePath);
-        ServiceProvider.setServicePath('getmathml', getMathMLPath);
-        */
-    }
-
-
-    /**
-     * Returns the client side server path, i.e where the integration script lives.
-     * @return {String} The client side server path.
-     */
-/*
-     getServerPath() {
-        var url = this.integrationModel.getPath();
-        var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
-        return url.substr(0, hostNameIndex);
-    }
-*/
-
-
-    /**
      * Loads the JavaScript language file and initializes {@link StringManager} class.
      * Uses the integration script path as base path to find strings.js file.
      * @param {String} language - The language identifier.
