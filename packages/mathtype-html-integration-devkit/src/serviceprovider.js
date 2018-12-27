@@ -149,7 +149,7 @@ export default class ServiceProvider {
      * @returns {String} Service response text.
      */
     static getService(service, postVariables, get) {
-        let response = '';
+        let response;
         if (get === true) {
             const serviceUrl = ServiceProvider.getServicePath(service) + '?' + postVariables;
             response = ServiceProvider.getUrl(serviceUrl);
