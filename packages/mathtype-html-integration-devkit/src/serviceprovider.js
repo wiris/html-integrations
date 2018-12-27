@@ -69,8 +69,8 @@ export default class ServiceProvider {
      * @return {String} The client side server path.
      */
     static getServerPath() {
-        var url = this.integrationModel.getPath();
-        var hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
+        const url = this.integrationModel.getPath();
+        const hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
         return url.substr(0, hostNameIndex);
     }
 
@@ -82,7 +82,6 @@ export default class ServiceProvider {
         // Services path (tech dependant).
         var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
         var showImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'showimage');
-        var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
         var getMathMLPath = ServiceProvider.integrationPath.replace('configurationjs', 'getmathml');
         var servicePath = ServiceProvider.integrationPath.replace('configurationjs', 'service');
 
@@ -90,7 +89,7 @@ export default class ServiceProvider {
         // for example: /app/service. For them we calculate the absolute URL path, i.e
         // protocol://domain:port/app/service
         if (ServiceProvider.integrationPath.indexOf("/") == 0) {
-            var serverPath = ServiceProvider.getServerPath();
+            const serverPath = ServiceProvider.getServerPath();
             showImagePath = serverPath + showImagePath;
             createImagePath = serverPath + createImagePath;
             getMathMLPath = serverPath + getMathMLPath;
@@ -174,4 +173,4 @@ ServiceProvider.serVicePaths = {};
  * @type {String}
  * @private
  */
-ServiceProvider._integrationPath = "";
+ServiceProvider._integrationPath = '';

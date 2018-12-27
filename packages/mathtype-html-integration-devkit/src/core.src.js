@@ -118,13 +118,6 @@ export default class Core {
         this.integrationModel = null;
 
         /**
-         * The integration path. Contains the path of the configuration service.
-         * Used by {@link ServiceProvider} class to define the path for all services.
-         * @type {String}
-         */
-        //this.integrationPath = '';
-
-        /**
          * The {@link ContentManager} instance.
          * @type {ContentManager}
          */
