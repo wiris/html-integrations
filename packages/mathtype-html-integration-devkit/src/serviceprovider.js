@@ -80,10 +80,10 @@ export default class ServiceProvider {
      */
     static init() {
         // Services path (tech dependant).
-        var createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
-        var showImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'showimage');
-        var getMathMLPath = ServiceProvider.integrationPath.replace('configurationjs', 'getmathml');
-        var servicePath = ServiceProvider.integrationPath.replace('configurationjs', 'service');
+        let createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
+        let showImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'showimage');
+        let getMathMLPath = ServiceProvider.integrationPath.replace('configurationjs', 'getmathml');
+        let servicePath = ServiceProvider.integrationPath.replace('configurationjs', 'service');
 
         // Some backend integrations (like Java o Ruby) have an absolute backend path,
         // for example: /app/service. For them we calculate the absolute URL path, i.e
@@ -110,8 +110,8 @@ export default class ServiceProvider {
      * @static
      */
     static getUrl(url, postVariables) {
-        var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
-        var httpRequest = Util.createHttpRequest();
+        const currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
+        const httpRequest = Util.createHttpRequest();
 
             if (httpRequest) {
                 if (typeof postVariables === undefined || typeof postVariables == 'undefined') {
@@ -149,12 +149,13 @@ export default class ServiceProvider {
      * @returns {String} Service response text.
      */
     static getService(service, postVariables, get) {
+        let response = '';
         if (get === true) {
-            var serviceUrl = ServiceProvider.getServicePath(service) + '?' + postVariables;
-            var response = ServiceProvider.getUrl(serviceUrl);
+            const serviceUrl = ServiceProvider.getServicePath(service) + '?' + postVariables;
+            response = ServiceProvider.getUrl(serviceUrl);
         } else {
-            var serviceUrl = ServiceProvider.getServicePath(service);
-            var response = ServiceProvider.getUrl(serviceUrl, postVariables);
+            const serviceUrl = ServiceProvider.getServicePath(service);
+            response = ServiceProvider.getUrl(serviceUrl, postVariables);
         }
         return response;
     }
