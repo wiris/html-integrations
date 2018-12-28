@@ -1,4 +1,4 @@
-import TextCache from './cache';
+import TextCache from './textcache';
 import Core from './core.src';
 import ServiceProvider from './serviceprovider';
 import MathML from './mathml.js';
