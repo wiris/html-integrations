@@ -7,7 +7,7 @@ import ContentManager from './contentmanager.js';
 
 /**
  * @typedef {Object} DeviceProperties
- * @property {String}  DeviceProperties.orientation - Indicates of the orientation of the device.
+ * @property {String} DeviceProperties.orientation - Indicates of the orientation of the device.
  * @property {Boolean} DeviceProperties.isAndroid - True if the device is Android. False otherwise.
  * @property {Boolean} DeviceProperties.isIOS - True if the device is iOS. False otherwise.
  * @property {Boolean} DeviceProperties.isMobile - True if the device is a mobile one. False otherwise.
