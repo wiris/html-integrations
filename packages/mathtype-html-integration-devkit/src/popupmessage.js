@@ -1,3 +1,5 @@
+import Util from './util.js';
+
 /**
  * This class represents a dialog message overlaying a DOM element in order to
  * accept / cancel discard changes. The dialog can be closed i.e the overlay disappears
@@ -9,11 +11,10 @@ export default class PopUpMessage {
      *
      * @param {Object} popupMessageAttributes - Object containing popup properties.
      * @param {HTMLElement} popupMessageAttributes.overlayElement - Element to overlay.
-     * @param {Object} popupMessageAttributes.callbacks - contains callback methods for close and cancel actions.
-     * @param {Object} popupMessageAttributes.strings - contains all the strings needed.
+     * @param {Object} popupMessageAttributes.callbacks - Contains callback methods for close and cancel actions.
+     * @param {Object} popupMessageAttributes.strings - Contains all the strings needed.
      */
     constructor(popupMessageAttributes) {
-
 
         /**
          * Element to be overlaid when the popup appears.
@@ -21,7 +22,6 @@ export default class PopUpMessage {
         this.overlayElement = popupMessageAttributes.overlayElement;
 
         this.callbacks = popupMessageAttributes.callbacks;
-
 
         /**
          * HTMLElement element to wrap all HTML elements inside the popupMessage.
@@ -77,15 +77,17 @@ export default class PopUpMessage {
          */
         this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
         this.buttonArea.appendChild(this.cancelButton);
+
+        Util.addEvent(window, 'keydown', this.onKeyDown.bind(this));
     }
 
     /**
      * This method create a button with arguments and return button dom object
      * @param {Object} parameters - An object containing id, class and innerHTML button text.
-     * @param {string} parameters.id - button id.
-     * @param {string} parameters.class - button class name.
-     * @param {string} parameters.innerHTML - button innerHTML text.
-     * @param {object} callback- callback method to call on click event.
+     * @param {String} parameters.id - Button id.
+     * @param {String} parameters.class - Button class name.
+     * @param {String} parameters.innerHTML - Button innerHTML text.
+     * @param {Object} callback- Callback method to call on click event.
      * @returns {HTMLElement} HTML button.
      */
     createButton(parameters, callback) {
@@ -108,7 +110,7 @@ export default class PopUpMessage {
             // Clear focus with blur for prevent press any key.
             document.activeElement.blur();
 
-            // For works with Safari
+            // For works with Safari.
             window.focus();
             this.overlayWrapper.style.display = 'block';
         }
@@ -137,6 +139,22 @@ export default class PopUpMessage {
         this.cancelAction();
         if (typeof this.callbacks.closeCallback !== 'undefined') {
             this.callbacks.closeCallback();
+        }
+    }
+
+    onKeyDown(keyboardEvent) {
+        if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+            // Code to detect Esc event.
+            if (keyboardEvent.key === "Escape" || keyboardEvent.key === 'Esc') {
+                if (this.properties.open) {
+                    this.cancelAction();
+                }
+            }
+            // Code to detect Tab event.
+            if (keyboardEvent.key === "Tab") {
+                (document.activeElement == this.closeButton) ? this.cancelButton.focus() : this.closeButton.focus();
+                keyboardEvent.preventDefault();
+            }
         }
     }
 }

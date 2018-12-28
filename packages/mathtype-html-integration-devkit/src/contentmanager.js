@@ -44,7 +44,7 @@ export default class ContentManager {
 		* Environment properties. This object contains data about the integration platform.
 		* @type {Object}
 		* @property {String} editor - Editor name. Usually the HTML editor.
-		* @property {String} mode - Save mode. Xml by default
+		* @property {String} mode - Save mode. Xml by default.
 		* @property {String} version - Plugin version.
 	    */
        this.environment = {};
@@ -93,7 +93,7 @@ export default class ContentManager {
 
         /**
          * Custom editor toolbar.
-         * @type {String} toolbar
+         * @type {String} toolbar.
          */
         this.toolbar = null;
 
@@ -284,7 +284,7 @@ export default class ContentManager {
      * @param {Boolean} focusDisabled - If true editor don't get focus after the MathML is set. False by default.
      */
     setMathML(mathml, focusDisabled) {
-        // By default focus is enabled
+        // By default focus is enabled.
         if (typeof focusDisabled === 'undefined') {
             focusDisabled = false;
         }
@@ -348,7 +348,7 @@ export default class ContentManager {
      * Sets an empty MathML as {@link ContentManager.editor} content.
      */
     setEmptyMathML() {
-        // As second argument we pass
+        // As second argument we pass.
         if (this.deviceProperties.isAndroid || this.deviceProperties.isIOS) {
             // We need to set a empty annotation in order to maintain editor in Hand mode.
             // Adding dir rtl in case of it's activated.
@@ -384,7 +384,7 @@ export default class ContentManager {
     }
 
     /**
-     * Sets the correct toolbar depending if exist other custom toolbars at the same time (e.g: Chemistry)
+     * Sets the correct toolbar depending if exist other custom toolbars at the same time (e.g: Chemistry).
      */
     updateToolbar() {
         this.updateTitle(this.modalDialogInstance);
@@ -426,7 +426,7 @@ export default class ContentManager {
         } else {
             toolbar = "general";
         }
-        // TODO: Change global integration variable for integration custom toolbar
+        // TODO: Change global integration variable for integration custom toolbar.
         if(toolbar == 'general'){
             toolbar = (typeof _wrs_int_wirisProperties == 'undefined' || typeof _wrs_int_wirisProperties['toolbar'] == 'undefined') ? 'general' : _wrs_int_wirisProperties['toolbar'];
         }
