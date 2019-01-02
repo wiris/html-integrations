@@ -68,10 +68,11 @@ export default class ServiceProvider {
      * Returns the client side server path, i.e where the integration script lives.
      * @return {String} The client side server path.
      */
-    static getServerPath() {
-        const url = this.integrationModel.getPath();
-        const hostNameIndex = url.indexOf("/", url.indexOf("/") + 2);
-        return url.substr(0, hostNameIndex);
+    static getServerURL() {
+        const url = window.location.href;
+        const arr = url.split("/");
+        const result = arr[0] + "//" + arr[2];
+        return result;
     }
 
     /**
@@ -89,7 +90,7 @@ export default class ServiceProvider {
         // for example: /app/service. For them we calculate the absolute URL path, i.e
         // protocol://domain:port/app/service
         if (ServiceProvider.integrationPath.indexOf("/") == 0) {
-            const serverPath = ServiceProvider.getServerPath();
+            const serverPath = ServiceProvider.getServerURL();
             showImagePath = serverPath + showImagePath;
             createImagePath = serverPath + createImagePath;
             getMathMLPath = serverPath + getMathMLPath;
