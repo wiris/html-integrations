@@ -112,6 +112,14 @@ export default class IntegrationModel {
         }
 
         /**
+         * Specifies if the integration model exposes the locale strings. false by default.
+         */
+        this.managesLanguage = false;
+        if ('managesLanguage' in integrationModelProperties) {
+            this.managesLanguage = integrationModelProperties.managesLanguage;
+        }
+
+        /**
          * Indicates if an image is selected. Needed to resize the image to the original size in case
          * the image is resized.
          * @type {boolean}
