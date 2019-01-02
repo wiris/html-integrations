@@ -31,7 +31,7 @@ export default class WirisEdition extends Plugin {
         const editor = this.editor;
         
         // Downcaster that converts MathML to Wirisformula <img>
-        editor.conversion.for( 'editingDowncast' ).add( downcast );
+        editor.conversion.for( 'editingDowncast' ).add( downcast( editor ) );
 
         // Post-fix to remove the contents of <img> element
         // (which after downcast should be equal to the tree under <math>)
