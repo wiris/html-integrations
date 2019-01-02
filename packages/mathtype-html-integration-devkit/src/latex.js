@@ -1,4 +1,4 @@
-import TextCache from './cache.js';
+import TextCache from './textcache';
 import MathML from './mathml.js';
 import ServiceProvider from './serviceprovider.js';
 import Constants from './constants.js';
