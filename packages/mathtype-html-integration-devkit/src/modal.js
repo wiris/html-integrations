@@ -1139,7 +1139,7 @@ export default class ModalDialog {
             // Code to detect Tab event
             if (keyboardEvent.key === "Tab") {
                 // If popup doesn't exist, also put the focus on modal window's buttons when Tab is pressed.
-                if (!this.popup || (this.popup && this.popup.overlayWrapper.style.display !== 'block')) {
+                if (this.popup.overlayWrapper.style.display !== 'block') {
                     if (this.popup.overlayWrapper.style.display !== 'block') {
                         (document.activeElement == this.submitButton) ? this.cancelButton.focus() : this.submitButton.focus();
                     }
