@@ -10,6 +10,7 @@ import MathML from './mathml.js';
 export default class Accessibility {
 
     /**
+    * Static property.
     * Accessibility cache, each entry contains a MathML and its correspondent accessibility text.
     * @type {TextCache}
     */
@@ -18,6 +19,9 @@ export default class Accessibility {
     }
 
     /**
+     * Static property setter.
+     * Set accessibility cache.
+     * @param {TextCche} value - The property value.
      * @ignore
      */
     static set cache(value) {

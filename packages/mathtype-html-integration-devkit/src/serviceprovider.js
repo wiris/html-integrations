@@ -4,31 +4,52 @@ import Util from './util.js';
  * an arbitrary number of services with the correspondent path.
  */
 export default class ServiceProvider {
+
+    /**
+     * Static property.
+     * Return service provider paths.
+     * @private
+     * @type {String}
+     */
+    static get servicePaths() {
+        return ServiceProvider._servicePaths;
+    }
+
+    /**
+     * Static property setter.
+     * Set latex cache.
+     * @param {String} value - The property value.
+     * @ignore
+     */
+    static set servicePaths(value) {
+        ServiceProvider._servicePaths = value;
+    }
+
     /**
      * Adds a new service to the ServiceProvider.
-     * @param {string} service - service name.
-     * @param {string} path - service path.
+     * @param {String} service - Service name.
+     * @param {String} path - Service path.
      * @static
      */
     static setServicePath(service, path) {
-        ServiceProvider.serVicePaths[service] = path;
+        ServiceProvider.servicePaths[service] = path;
     }
 
     /**
      * Returns the service path for a certain service.
-     * @param {string} serviceName - service name
-     * @returns {string} the service path.
+     * @param {String} serviceName - Service name.
+     * @returns {String} The service path.
      * @static
      */
     static getServicePath(serviceName) {
-        return ServiceProvider.serVicePaths[serviceName];
+        return ServiceProvider.servicePaths[serviceName];
     }
 
     /**
      * Gets the content from an URL.
-     * @param {string} url - target URL.
-     * @param {Object} postVariables - object containing post variables. null if a GET query should be done.
-     * @returns {string} content of the target URL.
+     * @param {String} url - Target URL.
+     * @param {Object} postVariables - Object containing post variables. null if a GET query should be done.
+     * @returns {String} Content of the target URL.
      * @static
      */
     static getUrl(url, postVariables) {
@@ -65,10 +86,10 @@ export default class ServiceProvider {
 
     /**
      * Returns the response text of a certain service.
-     * @param {string} service - service name.
-     * @param {string} postVariables - `post variables.
-     * @param {boolean} get - true if the request is GET instead of POST. false otherwise.
-     * @returns {string} service response text.
+     * @param {String} service - Service name.
+     * @param {String} postVariables - Post variables.
+     * @param {Boolean} get - True if the request is GET instead of POST. false otherwise.
+     * @returns {String} Service response text.
      */
     static getService(service, postVariables, get) {
         if (get === true) {
@@ -81,9 +102,10 @@ export default class ServiceProvider {
         return response;
     }
 }
+
 /**
- * @property {string} service - The service name
- * @property {string} path - The service path
+ * @property {String} service - The service name.
+ * @property {String} path - The service path.
  * @static
  */
-ServiceProvider.serVicePaths = {};
+ServiceProvider._servicePaths = {};

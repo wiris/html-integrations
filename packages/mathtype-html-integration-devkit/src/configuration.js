@@ -12,6 +12,7 @@ export default class Configuration {
     }
 
     /**
+    * Static property.
     * The configuration properties object.
     * @private
     * @type {Object}
@@ -21,6 +22,9 @@ export default class Configuration {
     }
 
     /**
+     * Static property setter.
+     * Set configuration properties.
+     * @param {Object} value - The property value.
      * @ignore
      */
     static set properties(value) {
