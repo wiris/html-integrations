@@ -778,14 +778,6 @@ export default class Core {
     }
 
     /**
-     * Returns the current instance of the {@link ServiceProvider} class.
-     * @returns {ServiceProvider} The {@link ServiceProvider} instance.
-     */
-    static getServiceProvider() {
-        return Core.serviceProvider;
-    }
-
-    /**
      * Returns the current instance of the {@link StringManager} class.
      * @returns {StringManager} The {@link StringManager} instance
      */
