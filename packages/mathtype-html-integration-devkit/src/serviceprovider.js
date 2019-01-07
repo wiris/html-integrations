@@ -65,7 +65,7 @@ export default class ServiceProvider {
     }
 
     /**
-     * Returns the client side server path, i.e where the integration script lives.
+     * Returns the server URL in the form protocol://serverName:serverPort.
      * @return {String} The client side server path.
      */
     static getServerURL() {
