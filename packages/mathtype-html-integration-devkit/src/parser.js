@@ -124,7 +124,7 @@ export default class Parser {
 
         if (result.indexOf('@BASE@') != -1) {
             // Replacing '@BASE@' with the base URL of createimage.
-            var baseParts = ServiceProvider.getServicePath('createimage').split('/');
+            let baseParts = ServiceProvider.getServicePath('createimage').split('/');
             baseParts.pop();
             result = result.split('@BASE@').join(baseParts.join('/'));
         }
