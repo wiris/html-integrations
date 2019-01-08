@@ -21,7 +21,7 @@ export default class Accessibility {
     /**
      * Static property setter.
      * Set accessibility cache.
-     * @param {TextCche} value - The property value.
+     * @param {TextCahe} value - The property value.
      * @ignore
      */
     static set cache(value) {
