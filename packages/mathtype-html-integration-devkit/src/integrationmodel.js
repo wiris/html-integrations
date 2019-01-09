@@ -246,11 +246,49 @@ export default class IntegrationModel {
      * @param {string} editMode - Edit Mode (LaTeX or images).
      */
     updateFormula(mathml) {
+
+        let
+            focusElement,
+            windowTarget, 
+            wirisProperties = null;
+
         if (this.isIframe) {
-            this.core.updateFormula(this.target.contentWindow, this.target.contentWindow, mathml, null);
+            focusElement = this.target.contentWindow;
+            windowTarget = this.target.contentWindow;
         } else {
-            this.core.updateFormula(this.target, window, mathml, null);
+            focusElement = this.target;
+            windowTarget = window;
         }
+
+        let obj = this.core.beforeUpdateFormula(mathml, wirisProperties);
+
+        if (!obj) {
+            return;
+        }
+
+        obj = this.insertFormula(focusElement, windowTarget, obj.mathml, obj.wirisProperties);
+
+        if (!obj) {
+            return;
+        }
+
+        return this.core.afterUpdateFormula(obj.focusElement, obj.windowTarget, obj.node, obj.latex);
+
+
+        // this.core.before
+        // this.insert
+        // this.core.after
+    }
+
+    /**
+     * Wrapper to Core.insertFormula method.
+     * Inserts the formula in the specified target, creating
+     * a new image (new formula) or updating an existing one.
+     * @param {string} mathml - MathML to generate the formula.
+     * @param {string} editMode - Edit Mode (LaTeX or images).
+     */
+    insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+        return this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
     }
 
     /**
