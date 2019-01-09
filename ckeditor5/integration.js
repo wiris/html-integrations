@@ -6,6 +6,7 @@ import IntegrationModel, { integrationModelProperties } from './core/src/integra
 import Parser from './core/src/parser';
 import Util from './core/src/util';
 import Configuration from './core/src/configuration';
+import MathML from './core/src/mathml';
 
 // /**
 //  * This property contains all CKEditor5 integration instances.
@@ -199,13 +200,14 @@ export default class CKEditor5Integration extends IntegrationModel {
 
 
     /** @inheritdoc */
-    updateFormula( mathml ) {
+    insertFormula( focusElement, windowTarget, mathml, wirisProperties ) {
         // const content = Parser.initParse( mathml );
         // const viewFragment = htmlDataProcessor.toView( content ).getChild( 0 );
         // const modelFragment = this.editorObject.data.toModel( viewFragment );
         // this.editorObject.model.insertContent( modelFragment, this.editorObject.model.document.selection );
 
-        this.editorObject.model.change( writer => {
+        // This returns the value returned by the callback function (writer => {...})
+        const modelElementNew = this.editorObject.model.change( writer => {
 
             const core = this.getCore();
 
@@ -228,6 +230,9 @@ export default class CKEditor5Integration extends IntegrationModel {
 
                 }
 
+                // TODO returnObject.node should be the <img> node
+                //Parser.mathmlToImgObject(windowTarget.document, mathml, wirisProperties, this.language);
+
             } else {
 
                 const img = core.editionProperties.temporalImage;
@@ -242,7 +247,13 @@ export default class CKEditor5Integration extends IntegrationModel {
 
             }
 
+            return modelElementNew;
+
         } );
+
+        return {
+            node: this.editorObject.editing.view.domConverter.viewToDom( this.editorObject.editing.mapper.toViewElement( modelElementNew ) ),
+        };
 
     }
 
