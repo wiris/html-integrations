@@ -167,7 +167,7 @@ export default class ServiceProvider {
  * @property {String} path - The service path.
  * @static
  */
-ServiceProvider.serVicePaths = {};
+ServiceProvider._servicePaths = {};
 
 /**
  * The integration path. Contains the path of the configuration service.
