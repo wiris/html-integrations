@@ -17,7 +17,7 @@ export default class ServiceProvider {
 
     /**
      * Static property setter.
-     * Set latex cache.
+     * Set service paths.
      * @param {String} value - The property value.
      * @ignore
      */
