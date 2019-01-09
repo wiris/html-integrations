@@ -3,7 +3,7 @@ import ViewPosition from '@ckeditor/ckeditor5-engine/src/view/position';
 
 import Parser from '../core/src/parser.js';
 
-import MathmlParser from './mathmlparser'
+import MathmlDataProcessor from './mathmldataprocessor'
 
 export function downcast( editor ) {
     return ( dispatcher ) => {
@@ -17,9 +17,9 @@ export function downcast( editor ) {
             }
 
             const htmlDataProcessor = new HtmlDataProcessor();
-            const mathmlParser = new MathmlParser();
-            const mathString = mathmlParser
-                                .toString( math )
+            const mathmlDP = new MathmlDataProcessor();
+            const mathString = mathmlDP
+                                .toData( math )
                                 .replace( /<math-/g , '<' )
                                 .replace( /<\/math-/g , '</' );
 
