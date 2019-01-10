@@ -37,11 +37,10 @@ export default class Configuration {
      * @returns {String} Property value
      */
     static get(key) {
-        //TODO: '_wrs_conf' should be removed from the backend service.
-        if (!Configuration.properties.hasOwnProperty('_wrs_conf_' + key)) {
+        if (!Configuration.properties.hasOwnProperty(key)) {
             return false;
         }
-        return Configuration.properties['_wrs_conf_' + key];
+        return Configuration.properties[key];
     }
 
     /**

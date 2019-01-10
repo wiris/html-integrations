@@ -24,9 +24,6 @@ export default class Parser {
      * @static
      */
     static mathmlToImgObject(creator, mathml, wirisProperties, language) {
-        var width;
-        var height;
-        var baseline;
         var imgObject = creator.createElement('img');
         imgObject.align = 'middle';
         imgObject.style.maxWidth = 'none';
