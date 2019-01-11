@@ -15,35 +15,11 @@ export function postFixer( editor ) {
         let current;
 
         while ( current = frontier.pop() ) {
-            if ( current.is( 'img' ) && current.hasClass( 'Wirisformula' ) ) {
+            if ( current.is( 'img' ) && current.hasClass( 'Wirisformula' ) && current.childCount > 0 ) {
 
-                // The <img> we want removed.
-                // This is just an alias for "current" to make the code readable
-                const viewElementOld = current;
-
-                // Copy properties from old <img> to new <img>
-                const properties = {};
-                for ( const [ key, value ] of viewElementOld.getAttributes() ) {
-                    properties[ key ] = value;
-                }
-
-                // Make the new <img> to be inserted
-                const viewElementNew = viewWriter.createEmptyElement( 'img', properties );
-
-                // Where the old <img> is right now
-                const position = Position._createBefore( viewElementOld );
-
-                // Get the model element corresponding to the old <img>
-                const modelElement = editor.editing.mapper.toModelElement( viewElementOld );
-
-                // Remove the old <img> ...
-                viewWriter.remove( viewElementOld );
-
-                // ... and add the new one
-                viewWriter.insert( position, viewElementNew );
-
-                // Bind the new <img> to the old one's corresponding hanging model element
-                editor.editing.mapper.bindElements( modelElement, viewElementNew );
+                // Using this avoids having to insert a new img,
+                // which is good because Position can't seem to properly find the correct position
+                viewWriter.remove( viewWriter.createRangeIn( current ) );
 
             } else if ( current.getChildren ) {
                 frontier.push( ...current.getChildren() );
