@@ -65,46 +65,6 @@ export function downcast( editor ) {
             // Add the newly created view element to the view.
             conversionApi.writer.insert( viewPosition, viewElement );
 
-            // Add a custom mapper callback so any position inside the <math-math>
-            // model returns the position right before the corresponding <img>
-            conversionApi.mapper.on( 'modelToViewPosition', ( evt, data ) => {
-
-                return; // TODO debugging
-
-                if ( data.isPhantom ) {
-                    return;
-                }
-
-                const modelPosition = data.modelPosition; 
-
-                let element = modelPosition;
-                while ( element.name != 'math-math' && element.parent ) {
-                    element = element.parent;
-                }
-
-                if ( element.name != 'math-math' ) {
-                    // The position we're trying to convert is not inside any <math>
-                    return;
-                }
-
-                // This position (the one for <math-math>) has been bound above
-                const viewElement = data.mapper.toViewElement( element );
-
-                //data.viewPosition = conversionApi.writer.createPositionAt( viewElement, 0 );
-
-                // In case we are entering from the left, <math-math>^...</math-math> -> ^<img/>
-                if ( modelPosition.parent.name === 'math-math' && modelPosition.index === 0 ) {
-                    data.viewPosition = conversionApi.writer.createPositionAfter( viewElement );
-
-                // Otherwise, <math-math>...^...</math-math> -> <img/>^
-                } else {
-                    data.viewPosition = conversionApi.writer.createPositionBefore( viewElement );
-                }
-
-                evt.stop();
-
-            } );
-
             // Stop the event propagation.
             evt.stop();
 
