@@ -4,6 +4,7 @@ import { downcastElementToElement } from '@ckeditor/ckeditor5-engine/src/convers
 import { upcastElementToElement } from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
 
 import { schema as mathmlSchema, attributes as mathmlAttributes } from './mathmlschema';
+import MathmlDataProcessor from './converters/mathmldataprocessor';
 
 export default class MathML extends Plugin {
     
@@ -84,6 +85,9 @@ export default class MathML extends Plugin {
                         .filter( element => element.allowsText )
                         .map( element => element.modelName )
         } );
+
+        // Data processor to output proper MathML
+        editor.data.processor = new MathmlDataProcessor();
 
     }
 
