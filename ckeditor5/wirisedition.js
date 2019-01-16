@@ -44,7 +44,7 @@ export default class WirisEdition extends Plugin {
          */
         const integrationProperties = {};
         integrationProperties.editorObject = editor;
-        integrationProperties.configurationService = 'https://www.wiris.net/demo/plugins/app/configurationjs'; //'integration/configurationjs.php';
+        integrationProperties.configurationService = '@param.js.configuration.path@';
         integrationProperties.target = editor.sourceElement;
         integrationProperties.scriptName = 'bundle.js';
         integrationProperties.managesLanguage = true;
