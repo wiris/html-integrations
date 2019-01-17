@@ -1,6 +1,8 @@
 import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
 import Parser from './core/src/parser';
 import Util from './core/src/util';
+import formulaIcon from './icons/formula.png';
+import chemIcon from './icons/chem.png';
 
 /**
  * Inits MathType creating an object with all properties that the IntegrationModel class
@@ -71,10 +73,9 @@ export default class GenericIntegration extends IntegrationModel {
         }
 
         /* Creating toolbar buttons */
-        var editorIcon = '/icons/formula.png';
         var formulaButton = document.createElement('img');
         formulaButton.id = "editorIcon";
-        formulaButton.src = this.getPath() + editorIcon;
+        formulaButton.src = formulaIcon;
         formulaButton.style.cursor = 'pointer';
 
         Util.addEvent(formulaButton, 'click', function () {
@@ -90,7 +91,14 @@ export default class GenericIntegration extends IntegrationModel {
         for (var customEditor in customEditors.editors) {
             if (customEditors.editors[customEditor].confVariable) {
                 var customEditorButton = document.createElement('img');
-                customEditorButton.src = this.getPath() + '/icons/' + customEditors.editors[customEditor].icon;
+                // TODO make this work and add promises polyfill
+                // import('./icons/' + customEditors.editors[customEditor].icon).then(({default: customEditorIcon}) => {
+                //     customEditorButton.src = customEditorIcon;
+                // });
+                // Horrible hard-coded temporary fix
+                if (customEditor == 'chemistry') {
+                    customEditorButton.src = chemIcon;
+                }
                 customEditorButton.id = customEditor + "Icon";
                 customEditorButton.style.cursor = 'pointer';
 
