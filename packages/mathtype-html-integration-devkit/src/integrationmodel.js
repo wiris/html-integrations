@@ -70,9 +70,6 @@ export default class IntegrationModel {
         if ('scriptName' in integrationModelProperties) {
             this.scriptName = integrationModelProperties.scriptName;
         }
-        else {
-            throw new Error('IntegrationModel constructor error: scriptName property missed.')
-        }
 
         /**
          * Object containing the arguments needed by the callback function.
@@ -168,6 +165,9 @@ export default class IntegrationModel {
      * @return {string} - Absolute path for the integration script.
      */
     getPath() {
+        if (typeof this.scriptName === 'undefined') {
+            throw new Error('scriptName property needed for getPath.')
+        }
         var col = document.getElementsByTagName("script");
         var path = '';
         for (var i = 0; i < col.length; i++) {
