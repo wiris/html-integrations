@@ -1,6 +1,4 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
@@ -21,8 +19,6 @@ module.exports = {
                 parallel: true,
                 sourceMap: true // Set to true if you want JS source maps.
             }),
-            // CSS optimizer mainly to minimize css files.
-            new OptimizeCSSAssetsPlugin({})
         ]
     },
     module: {
@@ -40,7 +36,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader']
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/i,
@@ -55,12 +51,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new MiniCssExtractPlugin({
-            // Output path for css.
-            filename: './core/styles.css',
-        }),
-    ],
     stats: {
         colors: true
     }
