@@ -237,7 +237,6 @@ export default class Core {
      * - Updates {@link Configuration} class with the previous configuration properties.
      * - Updates the {@link ServiceProvider} class using the configuration service path as reference.
      * - Loads language strings.
-     * - Loads stylesheets.
      * - Fires onLoad event.
      * @param {String} configurationService - The integration configuration service path.
      */
@@ -257,7 +256,6 @@ export default class Core {
                 ServiceProvider.init();
                 // Load lang file.
                 this.loadLanguage(this.language);
-                this.loadCSS();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
                 // We need to wait until stringManager has been loaded.
                 if (Core.stringManager === null) {
@@ -334,17 +332,6 @@ export default class Core {
             Core.getStringManager().loadStrings(wrs_strings);
         };
         document.getElementsByTagName('head')[0].appendChild(script);
-    }
-
-    /**
-     * Appends the stylesheets to the head element.
-     */
-    loadCSS() {
-        let fileRef = document.createElement("link");
-        fileRef.setAttribute("rel", "stylesheet");
-        fileRef.setAttribute("type", "text/css");
-        fileRef.setAttribute("href", Util.concatenateUrl(this.integrationModel.getPath(), '/core/styles.css'));
-        document.getElementsByTagName("head")[0].appendChild(fileRef);
     }
 
     /**
