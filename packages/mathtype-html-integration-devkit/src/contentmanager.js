@@ -451,4 +451,57 @@ export default class ContentManager {
     hasChanges() {
         return (!this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged());
     }
+
+    /**
+     * Handle keyboard events detected in modal when elements of this class intervene.
+     * @param {KeyboardEvent} keyboardEvent - The keyboard event.
+     */
+    onKeyDown(keyboardEvent) {
+        if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+            // Code to detect shift Tab event.
+            if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') {
+                if (document.activeElement == this.modalDialogInstance.submitButton) {
+                    this.editor.focus();
+                    keyboardEvent.stopPropagation();
+                    keyboardEvent.preventDefault();
+                }
+                else {
+                    let list = document.getElementsByClassName('wrs_selected');
+                    let done = false;
+                    for (let i = 0; !done && i < list.length; i++) {
+                        if (list[i].getAttribute('role') == 'tab' && document.activeElement == list[i]) {
+                            this.modalDialogInstance.cancelButton.focus();
+                            done = true;
+                            keyboardEvent.stopPropagation();
+                            keyboardEvent.preventDefault();
+                        }
+                    }
+                }
+            }
+            // Code to detect Tab event.
+            else if (keyboardEvent.key === 'Tab') {
+                // There should be only one element with class name 'wrs_formulaDisplay'.
+                if (document.activeElement == this.modalDialogInstance.cancelButton) {
+                    let list = document.getElementsByClassName('wrs_selected');
+                    let done = false;
+                    for (let i = 0; !done && i < list.length; i++) {
+                        if (list[i].getAttribute('role') == 'tab') {
+                            list[i].focus();
+                            done = true;
+                            keyboardEvent.stopPropagation();
+                            keyboardEvent.preventDefault();
+                        }
+                    }
+                }
+                else {
+                    let element = document.getElementsByClassName('wrs_formulaDisplay')[0];
+                    if (element.getAttribute('class') == 'wrs_formulaDisplay wrs_focused') {
+                        this.modalDialogInstance.submitButton.focus();
+                        keyboardEvent.stopPropagation();
+                        keyboardEvent.preventDefault();
+                    }
+                }
+            }
+        }
+    }
 }

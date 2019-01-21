@@ -1132,18 +1132,35 @@ export default class ModalDialog {
     onKeyDown(keyboardEvent) {
         if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
             // Code to detect Esc event
-            if (keyboardEvent.key === "Escape" || keyboardEvent.key === 'Esc') {
+            if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
                 if (this.properties.open) {
                     this.cancelAction();
+                    keyboardEvent.stopPropagation();
+                    keyboardEvent.preventDefault();
                 }
             }
-            // Code to detect Tab event
-            if (keyboardEvent.key === "Tab") {
-                // If popup doesn't exist, also put the focus on modal window's buttons when Tab is pressed.
-                if (this.popup.overlayWrapper.style.display !== 'block') {
-                    (document.activeElement == this.submitButton) ? this.cancelButton.focus() : this.submitButton.focus();
+            // Code to detect shift Tab event.
+            else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab' && this.popup.overlayWrapper.style.display !== 'block') {
+                if (document.activeElement == this.cancelButton) {
+                    this.submitButton.focus();
+                    keyboardEvent.stopPropagation();
+                    keyboardEvent.preventDefault();
                 }
-                keyboardEvent.preventDefault();
+                else {
+                    this.contentManager.onKeyDown(keyboardEvent);
+                }
+            }
+            // Code to detect Tab event.
+            else if (keyboardEvent.key === 'Tab' && this.popup.overlayWrapper.style.display !== 'block') {
+                if (document.activeElement == this.submitButton) {
+                    this.cancelButton.focus();
+                    keyboardEvent.stopPropagation();
+                    keyboardEvent.preventDefault();
+                }
+                else {
+                    //this.contentManager.skipToContentManager(true);
+                    this.contentManager.onKeyDown(keyboardEvent);
+                }
             }
         }
     }
