@@ -12,7 +12,6 @@ import Configuration from './configuration';
  * @property {Object} integrationModelProperties.environment - integration environment properties.
  * @property {Object} [integrationModelProperties.callbackMethodArguments] - object containing callback method arguments.
  * @property {string} [integrationModelProperties.version] - integration version number.
- * @property {string} [integrationModelProperties.langFolderName] - integration lang folder name. 'lang' by default.
  * @property {Object} [integrationModelProperties.editorObject] - object containing the integration editor instance.
  * @property {boolean} [integrationModelProperties.rtl] - true if the editor is in RTL mode. false otherwise.
  */
@@ -85,14 +84,6 @@ export default class IntegrationModel {
         this.environment = {};
         if ('environment' in integrationModelProperties) {
             this.environment = integrationModelProperties.environment;
-        }
-
-        /**
-         * Language folder path. 'lang' by default. the lang folder path could change for some HTML editors.
-         */
-        this.langFolderName = 'lang';
-        if ('langFolderName' in integrationModelProperties) {
-            this.langFolderName = integrationModelProperties.langFolderName;
         }
 
         /**
