@@ -466,6 +466,7 @@ export default class ContentManager {
                     keyboardEvent.preventDefault();
                 }
                 else {
+                    // There should be more than one element with class name 'wrs_selected'.
                     let list = document.getElementsByClassName('wrs_selected');
                     let done = false;
                     for (let i = 0; !done && i < list.length; i++) {
@@ -480,7 +481,6 @@ export default class ContentManager {
             }
             // Code to detect Tab event.
             else if (keyboardEvent.key === 'Tab') {
-                // There should be only one element with class name 'wrs_formulaDisplay'.
                 if (document.activeElement == this.modalDialogInstance.cancelButton) {
                     let list = document.getElementsByClassName('wrs_selected');
                     let done = false;
@@ -494,6 +494,7 @@ export default class ContentManager {
                     }
                 }
                 else {
+                    // There should be only one element with class name 'wrs_formulaDisplay'.
                     let element = document.getElementsByClassName('wrs_formulaDisplay')[0];
                     if (element.getAttribute('class') == 'wrs_formulaDisplay wrs_focused') {
                         this.modalDialogInstance.submitButton.focus();

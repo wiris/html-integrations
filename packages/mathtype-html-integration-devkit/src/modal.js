@@ -1131,36 +1131,42 @@ export default class ModalDialog {
      */
     onKeyDown(keyboardEvent) {
         if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
-            // Code to detect Esc event
-            if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
-                if (this.properties.open) {
-                    this.cancelAction();
-                    keyboardEvent.stopPropagation();
-                    keyboardEvent.preventDefault();
+            // Popupmessage is not oppened.
+            if(this.popup.overlayWrapper.style.display !== 'block') {
+                // Code to detect Esc event
+                if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
+                    if (this.properties.open) {
+                        this.cancelAction();
+                        console.log('modal:' + this.popup.overlayWrapper.style.display);
+                    }
+                }
+                // Code to detect shift Tab event.
+                else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') {
+                    if (document.activeElement == this.cancelButton) {
+                        this.submitButton.focus();
+                        keyboardEvent.stopPropagation();
+                        keyboardEvent.preventDefault();
+                    }
+                    else {
+                        this.contentManager.onKeyDown(keyboardEvent);
+                    }
+                }
+                // Code to detect Tab event.
+                else if (keyboardEvent.key === 'Tab') {
+                    if (document.activeElement == this.submitButton) {
+                        this.cancelButton.focus();
+                        keyboardEvent.stopPropagation();
+                        keyboardEvent.preventDefault();
+                    }
+                    else {
+                        //this.contentManager.skipToContentManager(true);
+                        this.contentManager.onKeyDown(keyboardEvent);
+                    }
                 }
             }
-            // Code to detect shift Tab event.
-            else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab' && this.popup.overlayWrapper.style.display !== 'block') {
-                if (document.activeElement == this.cancelButton) {
-                    this.submitButton.focus();
-                    keyboardEvent.stopPropagation();
-                    keyboardEvent.preventDefault();
-                }
-                else {
-                    this.contentManager.onKeyDown(keyboardEvent);
-                }
-            }
-            // Code to detect Tab event.
-            else if (keyboardEvent.key === 'Tab' && this.popup.overlayWrapper.style.display !== 'block') {
-                if (document.activeElement == this.submitButton) {
-                    this.cancelButton.focus();
-                    keyboardEvent.stopPropagation();
-                    keyboardEvent.preventDefault();
-                }
-                else {
-                    //this.contentManager.skipToContentManager(true);
-                    this.contentManager.onKeyDown(keyboardEvent);
-                }
+            // Popupmessage oppened.
+            else {
+                this.popup.onKeyDown(keyboardEvent);
             }
         }
     }

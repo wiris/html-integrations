@@ -77,8 +77,6 @@ export default class PopUpMessage {
          */
         this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
         this.buttonArea.appendChild(this.cancelButton);
-
-        Util.addEvent(window, 'keydown', this.onKeyDown.bind(this));
     }
 
     /**
@@ -142,17 +140,22 @@ export default class PopUpMessage {
         }
     }
 
+    /**
+     * Handle keyboard events detected in modal when elements of this class intervene.
+     * @param {KeyboardEvent} keyboardEvent - The keyboard event.
+     */
     onKeyDown(keyboardEvent) {
         if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
             // Code to detect Esc event.
-            if (keyboardEvent.key === "Escape" || keyboardEvent.key === 'Esc') {
-                if (this.properties.open) {
-                    this.cancelAction();
-                }
+            if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
+                this.cancelAction();
+                keyboardEvent.stopPropagation();
+                keyboardEvent.preventDefault();
             }
             // Code to detect Tab event.
-            if (keyboardEvent.key === "Tab") {
+            else if (keyboardEvent.key === 'Tab') {
                 (document.activeElement == this.closeButton) ? this.cancelButton.focus() : this.closeButton.focus();
+                keyboardEvent.stopPropagation();
                 keyboardEvent.preventDefault();
             }
         }
