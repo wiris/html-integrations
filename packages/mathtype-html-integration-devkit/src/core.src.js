@@ -351,13 +351,18 @@ export default class Core {
             returnObject.latex = Latex.getLatexFromMathML(mathml);
             // this.integrationModel.getNonLatexNode is an integration wrapper to have special behaviours for nonLatex.
             // Not all the integrations have special behaviours for nonLatex.
-            if (!!this.integrationModel.fillNonLatexNode && !afterUpdateEvent.latex) {
+            if (!!this.integrationModel.fillNonLatexNode && !returnObject.latex) {
+                let afterUpdateEvent = new Event();
+                afterUpdateEvent.editMode = this.editMode;
+                afterUpdateEvent.windowTarget = windowTarget;
+                afterUpdateEvent.focusElement = focusElement;
+                afterUpdateEvent.latex = returnObject.latex;
                 this.integrationModel.fillNonLatexNode(afterUpdateEvent, windowTarget, mathml);
             }
             else {
-                returnObject.node = windowTarget.document.createTextNode('$$' + afterUpdateEvent.latex + '$$');
+                returnObject.node = windowTarget.document.createTextNode('$$' + returnObject.latex + '$$');
             }
-            this.insertElementOnSelection(afterUpdateEvent.node, focusElement, windowTarget);
+            this.insertElementOnSelection(returnObject.node, focusElement, windowTarget);
         }
         else if (this.editMode == 'iframes') {
             const iframe = wrs_mathmlToIframeObject(windowTarget, mathml);
@@ -365,7 +370,7 @@ export default class Core {
         }
         else {
             returnObject.node = Parser.mathmlToImgObject(windowTarget.document, mathml, wirisProperties, this.language);
-            this.insertElementOnSelection(afterUpdateEvent.node, focusElement, windowTarget);
+            this.insertElementOnSelection(returnObject.node, focusElement, windowTarget);
         }
 
         return returnObject;
