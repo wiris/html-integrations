@@ -1,30 +1,11 @@
-import Listeners from './listeners';
+import translations from '../../lang/strings.json';
 /**
  * This class represents a string manager. It's used to load localized strings.
  */
 export default class StringManager {
 
     constructor() {
-        /**
-         * key/value object containing the key of each string an it's translation.
-         */
-        this.strings = {};
-        /**
-         * Indicates if all strings are loaded.
-         */
-        this.stringsLoaded = false;
-        /**
-         * StringManager listeners.
-         */
-        this.listeners = new Listeners();
-    }
-
-    /**
-     * Adds a listener object.
-     * @param {Object} listener - listener object.
-     */
-    addListener(listener) {
-        this.listeners.add(listener);
+        throw new Exception('Static class StringManager can not be instantiated.');
     }
 
     /**
@@ -33,29 +14,27 @@ export default class StringManager {
      * @param {string} key - string key
      * @returns {string} correspondent value. If doesn't exists original key.
      */
-   getString(key) {
-        // Wait 200ms and recall this method if strings aren't load.
-        if (!this.stringsLoaded) {
-            setTimeout(this.getString.bind(this, key), 100);
-            return;
+    static getString(key) {
+        if (!(this.language in this.strings)) {
+            throw new Exception(`Invalid language {this.language} set in StringManager.`);
         }
-        if (key in this.strings) {
-            return this.strings[key];
+        if (key in this.strings[this.language]) {
+            return this.strings[this.language][key];
         }
         return key;
     }
 
-    /**
-     * Loads all strings to the manager and unset it for prevent bad usage.
-     * @param {Object[]} langStrings - array of key/value pairs of strings.
-     */
-   loadStrings(langStrings) {
-        if (!this.stringsLoaded) {
-            this.strings = langStrings;
-            // Activate variable to unlock getStrings
-            this.stringsLoaded = true;
-            // Once the strings are loaded fire 'onLoad' event.
-            this.listeners.fire('onLoad', {});
-        }
-    }
 }
+
+/**
+ * Dictionary of dictionaries:
+ * Key: language code
+ * Value: Key: id of the string
+ *        Value: translation of the string
+ */
+StringManager.strings = translations;
+
+/**
+ * Language of the translations; English by default
+ */
+StringManager.language = 'en';

@@ -172,26 +172,6 @@ export default class Core {
     }
 
     /**
-    * Static property.
-    * Core string manager.
-    * @private
-    * @type {StringManager}
-    */
-    static get stringManager() {
-        return Core._stringManager;
-    }
-
-    /**
-     * Static property setter.
-     * Set core string manager.
-     * @param {StringManager} value - The property value.
-     * @ignore
-     */
-    static set stringManager(value) {
-        Core._stringManager = value;
-    }
-
-    /**
      * Initializes the {@link Core} class.
      * @param {String} configurationPath - The integration configuration service path.
      */
@@ -254,19 +234,9 @@ export default class Core {
                 Configuration.addConfiguration(jsProperties);
                 // Load service paths.
                 ServiceProvider.init();
-                // Load lang file.
-                this.loadLanguage(this.language);
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
-                // We need to wait until stringManager has been loaded.
-                if (Core.stringManager === null) {
-                    const stringManagerListener = Listeners.newListener('onLoad', () => {
-                        this.listeners.fire('onLoad', {});
-                    })
-                    Core.stringManager.addListener(stringManagerListener);
-                }
-                else {
-                    this.listeners.fire('onLoad', {});
-                }
+                StringManager.language = this.language;
+                this.listeners.fire('onLoad', {});
 
             }
         }.bind(this);
@@ -303,35 +273,6 @@ export default class Core {
      */
     getModalDialog() {
         return this.modalDialog;
-    }
-
-    /**
-     * Loads the JavaScript language file and initializes {@link StringManager} class.
-     * Uses the integration script path as base path to find strings.js file.
-     * @param {String} language - The language identifier.
-     */
-    loadLanguage(language) {
-        // Translated languages.
-        const languages = 'ar,ca,cs,da,de,en,es,et,eu,fi,fr,gl,he,hr,hu,it,ja,ko,nl,no,pl,pt,pt_br,ru,sv,tr,zh,el';
-
-        const langArray = languages.split(',');
-
-        if (langArray.indexOf(language) == -1) {
-            language = language.substr(0, 2);
-        }
-
-        if (langArray.indexOf(language) == -1) {
-            language = 'en';
-        }
-
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = this.integrationModel.getPath() + '/' + this.integrationModel.langFolderName + '/' + language + '/strings.js';
-        // When strings are loaded, it loads into stringManager
-        script.onload = function () {
-            Core.getStringManager().loadStrings(wrs_strings);
-        };
-        document.getElementsByTagName('head')[0].appendChild(script);
     }
 
     /**
@@ -765,14 +706,6 @@ export default class Core {
     }
 
     /**
-     * Returns the current instance of the {@link StringManager} class.
-     * @returns {StringManager} The {@link StringManager} instance
-     */
-    static getStringManager() {
-        return Core.stringManager;
-    }
-
-    /**
      * Returns the {@link CustomEditors} instance.
      * @return {CustomEditors} The current {@link CustomEditors} instance.
      */
@@ -797,22 +730,6 @@ export default class Core {
         Core._globalListeners = listener;
     }
 
-    /**
-     * The {@link StringManager} instance. {@link Core} class uses it to load the locale strings.
-     * @type {StringManager}
-     */
-    static get stringManager() {
-        return Core._stringManager;
-    }
-
-    /**
-     * Sets the {@link Core.stringManager} property.
-     * @param {StringManager} - A {@link StringManager} instance.
-     * @ignore
-     */
-    static set stringManager(stringManager) {
-        Core._stringManager = stringManager;
-    }
 }
 
 /**
@@ -821,10 +738,3 @@ export default class Core {
  * @private
  */
 Core._globalListeners = new Listeners();
-
-/**
- * Core string manager.
- * @type {StringManager}
- * @private
- */
-Core._stringManager = new StringManager();

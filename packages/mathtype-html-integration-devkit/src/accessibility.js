@@ -2,6 +2,7 @@ import TextCache from './textcache';
 import Core from './core.src';
 import ServiceProvider from './serviceprovider';
 import MathML from './mathml.js';
+import StringManager from './stringmanager';
 
 /**
  * This class represents MathType accessible class. Converts MathML to accessible text and manages
@@ -59,7 +60,7 @@ export default class Accessibility {
                 Accessibility.cache.populate(mathML, accessibleText);
             }
             else {
-                accessibleText = Core.getStringManager().getString('error_convert_accessibility');
+                accessibleText = StringManager.getString('error_convert_accessibility');
             }
         }
 

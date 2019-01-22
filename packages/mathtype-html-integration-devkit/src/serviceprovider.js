@@ -1,4 +1,5 @@
 import Util from './util.js';
+import StringManager from './stringmanager';
 /**
  * Class representing a serviceProvider. A serviceProvider is a class containing
  * an arbitrary number of services with the correspondent path.
@@ -136,7 +137,7 @@ export default class ServiceProvider {
                 return httpRequest.responseText;
             }
 
-            alert(Core.getStringManager().getString('browser_no_compatible'));
+            alert(StringManager.getString('browser_no_compatible'));
 
 
         return '';
