@@ -137,7 +137,7 @@ export default class ServiceProvider {
                 return httpRequest.responseText;
             }
 
-            alert(StringManager.getString('browser_no_compatible'));
+            alert(StringManager.get('browser_no_compatible'));
 
 
         return '';

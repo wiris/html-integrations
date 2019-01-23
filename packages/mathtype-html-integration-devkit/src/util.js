@@ -389,7 +389,7 @@ export default class Util {
     static createHttpRequest() {
         var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
         if (currentPath.substr(0, 7) == 'file://') {
-            throw StringManager.getString('exception_cross_site');
+            throw StringManager.get('exception_cross_site');
         }
 
         if (typeof XMLHttpRequest != 'undefined') {
@@ -519,7 +519,7 @@ export default class Util {
             hi = code;
             low = string.charCodeAt(idx + 1);
             if (isNaN(low)) {
-                throw StringManager.getString('exception_high_surrogate');
+                throw StringManager.get('exception_high_surrogate');
             }
             return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
         }

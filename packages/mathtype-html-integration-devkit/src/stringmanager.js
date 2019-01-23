@@ -14,14 +14,22 @@ export default class StringManager {
      * @param {string} key - string key
      * @returns {string} correspondent value. If doesn't exists original key.
      */
-    static getString(key) {
-        if (!(this.language in this.strings)) {
-            throw new Exception(`Invalid language {this.language} set in StringManager.`);
+    static get(key) {
+
+        let language = this.language;
+
+        if (!(language in this.strings)) {
+            console.warn(`Unknown language ${language} set in StringManager.`);
+            language = 'en';
         }
-        if (key in this.strings[this.language]) {
-            return this.strings[this.language][key];
+
+        if (!(key in this.strings[language])) {
+            console.warn(`Unknown key ${key} in StringManager.`);
+            return key;
         }
-        return key;
+
+        return this.strings[language][key];
+
     }
 
 }

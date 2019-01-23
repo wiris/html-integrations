@@ -100,7 +100,7 @@ export default class ModalDialog {
         attributes = {};
         attributes.class = 'wrs_modal_close_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = StringManager.getString('close'); // TODO manage to access core instance -> integration model instance -> language
+        attributes.title = StringManager.get('close'); // TODO manage to access core instance -> integration model instance -> language
         this.closeDiv = Util.createElement('a', attributes);;
         this.closeDiv.setAttribute('role','button');
 
@@ -114,14 +114,14 @@ export default class ModalDialog {
         attributes = {};
         attributes.class = 'wrs_modal_maximize_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = StringManager.getString('fullscreen');
+        attributes.title = StringManager.get('fullscreen');
         this.maximizeDiv = Util.createElement('a', attributes);
         this.maximizeDiv.setAttribute('role','button');
 
         attributes = {};
         attributes.class = 'wrs_modal_minimize_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = StringManager.getString('minimise');
+        attributes.title = StringManager.get('minimise');
         this.minimizeDiv = Util.createElement('a', attributes);
         this.minimizeDiv.setAttribute('role','button');
 
@@ -155,7 +155,7 @@ export default class ModalDialog {
             {
                 id: this.getElementId('wrs_modal_button_accept'),
                 class: 'wrs_modal_button_accept',
-                innerHTML: StringManager.getString('accept')
+                innerHTML: StringManager.get('accept')
             },
             this.submitAction.bind(this)
         );
@@ -164,7 +164,7 @@ export default class ModalDialog {
             {
                 id: this.getElementId('wrs_modal_button_cancel'),
                 class: 'wrs_modal_button_cancel',
-                innerHTML: StringManager.getString('cancel')
+                innerHTML: StringManager.get('cancel')
             },
             this.cancelAction.bind(this)
         );
@@ -173,9 +173,9 @@ export default class ModalDialog {
 
         // Overlay popup.
         var popupStrings = {
-            'cancelString' : StringManager.getString('cancel'),
-            'submitString' : StringManager.getString('close'),
-            'message' : StringManager.getString('close_modal_warning')
+            'cancelString' : StringManager.get('cancel'),
+            'submitString' : StringManager.get('close'),
+            'message' : StringManager.get('close_modal_warning')
         };
 
         var callbacks = {

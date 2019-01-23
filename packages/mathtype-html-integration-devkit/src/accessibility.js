@@ -60,7 +60,7 @@ export default class Accessibility {
                 Accessibility.cache.populate(mathML, accessibleText);
             }
             else {
-                accessibleText = StringManager.getString('error_convert_accessibility');
+                accessibleText = StringManager.get('error_convert_accessibility');
             }
         }
 
