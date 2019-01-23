@@ -129,24 +129,22 @@ export class FroalaIntegration extends IntegrationModel {
 
     /**
      * FIXME: This method is a temporal solution while Froala is working to fix
-     * the bug that cause a continous focus when is used the plugin 'Init On Image'.
+     * the bug that cause a continuous focus when is used the plugin 'Init On Image'.
      * Froala's ticket is Ticket #5322.
      * Simulates a click in 'element'. Only execute additional code when
      * initOnImageMode is enabled.
      * @param {HTMLElement} element - DOM object target.
      */
     simulateClick(element) {
-        if (this.initOnImageMode) {
-            var dispatchMouseEvent = function(target) {
-                var e = document.createEvent("MouseEvents");
-                e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
-                target.dispatchEvent(e);
-            };
-            dispatchMouseEvent(element, 'mouseover', true, true);
-            dispatchMouseEvent(element, 'mousedown', true, true);
-            dispatchMouseEvent(element, 'click', true, true);
-            dispatchMouseEvent(element, 'mouseup', true, true);
-        }
+        const dispatchMouseEvent = function(target) {
+            const e = document.createEvent("MouseEvents");
+            e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1));
+            target.dispatchEvent(e);
+        };
+        dispatchMouseEvent(element, 'mouseover', true, true);
+        dispatchMouseEvent(element, 'mousedown', true, true);
+        dispatchMouseEvent(element, 'click', true, true);
+        dispatchMouseEvent(element, 'mouseup', true, true);
     }
 
     /**
@@ -201,12 +199,10 @@ export class FroalaIntegration extends IntegrationModel {
         /**@type {integrationModelProperties} */
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
-        // If Froala is instantiated on image, the next style is needed to allow dbclick event
+        // The next style is needed to allow dbclick event
         // on formulas.
-        if (target.nodeName.toLowerCase() === 'img') {
-            if (!$('#wrs_style').get(0)) {
-                $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
-            }
+        if (!$('#wrs_style').get(0)) {
+            $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
         }
         froalaIntegrationProperties.configurationService = '@param.js.configuration.path@';
         froalaIntegrationProperties.version = '@plugin.version@';
