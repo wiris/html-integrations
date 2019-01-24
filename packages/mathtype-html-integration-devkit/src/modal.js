@@ -1136,8 +1136,7 @@ export default class ModalDialog {
                 // Code to detect Esc event
                 if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
                     if (this.properties.open) {
-                        this.cancelAction();
-                        console.log('modal:' + this.popup.overlayWrapper.style.display);
+                        this.contentManager.onKeyDown(keyboardEvent);
                     }
                 }
                 // Code to detect shift Tab event.

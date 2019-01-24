@@ -458,8 +458,18 @@ export default class ContentManager {
      */
     onKeyDown(keyboardEvent) {
         if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+            // Code to detect Esc event.
+            if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
+                // There should be only one element with class name 'wrs_pressed' at the same time.
+                const list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed');
+                if (list.length === 0) {
+                    this.modalDialogInstance.cancelAction();
+                    keyboardEvent.stopPropagation();
+                    keyboardEvent.preventDefault();
+                }
+            }
             // Code to detect shift Tab event.
-            if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') {
+            else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') {
                 if (document.activeElement == this.modalDialogInstance.submitButton) {
                     this.editor.focus();
                     keyboardEvent.stopPropagation();
@@ -482,7 +492,7 @@ export default class ContentManager {
             // Code to detect Tab event.
             else if (keyboardEvent.key === 'Tab') {
                 if (document.activeElement == this.modalDialogInstance.cancelButton) {
-                    let list = document.getElementsByClassName('wrs_selected');
+                    const list = document.getElementsByClassName('wrs_selected');
                     let done = false;
                     for (let i = 0; !done && i < list.length; i++) {
                         if (list[i].getAttribute('role') == 'tab') {
@@ -495,7 +505,7 @@ export default class ContentManager {
                 }
                 else {
                     // There should be only one element with class name 'wrs_formulaDisplay'.
-                    let element = document.getElementsByClassName('wrs_formulaDisplay')[0];
+                    const element = document.getElementsByClassName('wrs_formulaDisplay')[0];
                     if (element.getAttribute('class') == 'wrs_formulaDisplay wrs_focused') {
                         this.modalDialogInstance.submitButton.focus();
                         keyboardEvent.stopPropagation();
