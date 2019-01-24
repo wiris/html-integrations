@@ -249,7 +249,7 @@ export var currentInstance = null;
                 integrationInstance.setEditorObject(editor);
                 integrationInstance.listeners.fire('onTargetReady', {});
                 if ('wiriseditorparameters' in editor.settings) {
-                    Configuration.update('_wrs_conf_editorParameters', editor.settings.wiriseditorparameters);
+                    Configuration.update('editorParameters', editor.settings.wiriseditorparameters);
                 }
 
                 var content = editor.getContent();
