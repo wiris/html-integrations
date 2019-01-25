@@ -9,7 +9,6 @@ import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
 import { TinyMceIntegration, currentInstance, instances } from './editor_plugin.src.js';
 import Latex from './core/src/latex';
-import './core/styles.src.css';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
