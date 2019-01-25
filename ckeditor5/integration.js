@@ -206,6 +206,10 @@ export default class CKEditor5Integration extends IntegrationModel {
         // const modelFragment = this.editorObject.data.toModel( viewFragment );
         // this.editorObject.model.insertContent( modelFragment, this.editorObject.model.document.selection );
 
+        if ( !mathml ) {
+            return;
+        }
+
         // This returns the value returned by the callback function (writer => {...})
         const modelElementNew = this.editorObject.model.change( writer => {
 
@@ -255,6 +259,13 @@ export default class CKEditor5Integration extends IntegrationModel {
             node: this.editorObject.editing.view.domConverter.viewToDom( this.editorObject.editing.mapper.toViewElement( modelElementNew ) ),
         };
 
+    }
+
+    /**
+     * Function called when the content submits an action.
+     */
+    notifyWindowClosed() {
+        this.editorObject.editing.view.focus();
     }
 
 }
