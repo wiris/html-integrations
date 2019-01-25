@@ -63,7 +63,7 @@ export default class MathmlDataProcessor extends XmlDataProcessor {
 
         // HTML broken down into pieces like so:
         let htmlPieces = html.split( mathPattern ); // 'abc', 'def', 'ghi'
-        let mathmlPieces = html.match( mathPattern ); // '<math>123</math>', '<math>456</math>'
+        let mathmlPieces = html.match( mathPattern ) || []; // '<math>123</math>', '<math>456</math>'
 
         // Variables used in the loop
         let open, inner, close; // '<math>', '123', '</math>'
@@ -92,6 +92,26 @@ export default class MathmlDataProcessor extends XmlDataProcessor {
             .flat() // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi', undefined ]
             .filter( piece => typeof piece !== 'undefined' ) // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi' ]
             .reduce( ( acc, cur ) => acc + cur ); // 'abc<math>123</math>def<math>456</math>ghi'
+
+    }
+
+    toView( data ) {
+
+        // Convert HTML entities (e.g. &nbsp;) to character entities (e.g. &#160;)
+        let domParser = new DOMParser();
+        data = data.replace( /&.*?;/g, i => {
+            let out = domParser.parseFromString( i, 'text/html' ).body.childNodes[0].data;
+            return out == '<' || out == '>' ? i : out;
+        } );
+
+        // Convert UTF-8 characters to entities
+        data = data.replace( /[\u00A0-\u9999]/gim, i => '&#' + i.charCodeAt( 0 ) + ';' );
+
+        // Convert input XML data to DOM DocumentFragment.
+        const domFragment = this._toDom( data );
+
+        // Convert DOM DocumentFragment to view DocumentFragment.
+        return this._domConverter.domToView( domFragment, { keepOriginalCase: true } );
 
     }
 

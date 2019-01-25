@@ -48,8 +48,8 @@ export default class CKEditor5Integration extends IntegrationModel {
 
         const editor = this.editorObject;
 
-        if ( editor.config.hasOwnProperty( 'wiriseditorparameters' ) ) {
-            Configuration.update( 'editorParameters', editor.config.wiriseditorparameters );
+        if ( typeof editor.config != 'undefined' && typeof editor.config.get('wiriseditorparameters') != 'undefined') {
+            Configuration.update( 'editorParameters', editor.config.get('wiriseditorparameters') );
         }
 
     }
