@@ -13,6 +13,7 @@ import Event from './event.js';
 import Listeners from './listeners.js';
 import IntegrationModel from './integrationmodel.js';
 import Image from './image.js';
+import '../styles.src.css';
 
 /**
  * This class represents MathType integration Core, managing the following:
