@@ -100,7 +100,7 @@ export default class ModalDialog {
         attributes = {};
         attributes.class = 'wrs_modal_close_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = StringManager.get('close'); // TODO manage to access core instance -> integration model instance -> language
+        attributes.title = StringManager.get('close');
         this.closeDiv = Util.createElement('a', attributes);;
         this.closeDiv.setAttribute('role','button');
 
