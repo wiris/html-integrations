@@ -252,13 +252,40 @@ export var currentInstance = null;
                     Configuration.update('editorParameters', editor.settings.wiriseditorparameters);
                 }
 
-                var content = editor.getContent();
+                // Prevent TinyMCE attributes insertion.
+                // TinyMCE insert attributes only when a new node is inserted.
+                // For this reason, the mutation observer only acts on addedNodes.
+                const mutationInstance = new MutationObserver(function onMutations(editor, mutations) {
+                    Array.prototype.forEach.call(mutations,function(editor, mutation) {
+                        Array.prototype.forEach.call(mutation.addedNodes,function(editor, node) {
+                            if (node.nodeType == 1) {
+                                // Act only in our own formulas.
+                                Array.prototype.forEach.call(node.querySelectorAll(`.${WirisPlugin.Configuration.get('imageClassName')}`), function(editor, image) {
+                                    // This only is executed due to init parse.
+                                    image.removeAttribute('data-mce-src');
+                                    image.removeAttribute('data-mce-style');
+                                    // Be careful. The next line clear the changes queue
+                                    // because is only executed these lines on init.
+                                    editor.undoManager.clear();
+                                }.bind(this, editor));
+                            }
+                        }.bind(this, editor));
+                    }.bind(this, editor));
+                }.bind(this, editor));
+                mutationInstance.observe(editor.getBody(), {
+                    attributes: true,
+                    childList: true,
+                    characterData: true,
+                    subtree: true
+                });
+
+                const content = editor.getContent();
 
                 // Bug fix: In Moodle2.x when TinyMCE is set to full screen
                 // the content doesn't need to be filtered.
                 if (!editor.getParam('fullscreen_is_enabled') && content !== "") {
                     // We set content in html because other tiny plugins need data-mce
-                    // and this is not posibil with raw format.
+                    // and this is not possible with raw format.
                     editor.setContent(Parser.initParse(content, editor.getParam('language')), {format: "html"});
                     // This clean undoQueue for prevent onChange and Dirty state.
                     editor.undoManager.clear();
@@ -325,31 +352,6 @@ export var currentInstance = null;
                     }
                 });
             }
-            // We use a mutation to observe iframe of tiny and filter to remove data-mce.
-            const observerConfig = { attributes: true, childList: true, characterData: true, subtree: true };
-            function onMutations(mutations) {
-                Array.prototype.forEach.call(mutations,function(mutation) {
-                    Array.prototype.forEach.call(mutation.addedNodes,function(node) {
-                        // We search only in element nodes.
-                        if (node.nodeType == 1) {
-                            Array.prototype.forEach.call(node.getElementsByClassName(WirisPlugin.Configuration.get('imageMathmlAttribute')),function(image) {
-                                image.removeAttribute('data-mce-src');
-                                image.removeAttribute('data-mce-style');
-                            });
-                        }
-                    });
-                });
-            }
-            var mutationInstance = new MutationObserver(onMutations);
-            // We wait for iframe definition for observe this.
-            function waitForIframeBody() {
-                if (typeof editor.contentDocument != 'undefined') {
-                    mutationInstance.observe(editor.getBody(), observerConfig);
-                } else {
-                    setTimeout(waitForIframeBody, 50);
-                }
-            }
-            waitForIframeBody();
 
             function openFormulaEditorFunction() {
                 const tinyMceIntegrationInstance = WirisPlugin.instances[editor.id];
