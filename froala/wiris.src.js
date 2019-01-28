@@ -57,7 +57,7 @@ export class FroalaIntegration extends IntegrationModel {
         // have preference over the backend parameters so we need to update them.
         var editor = this.editorObject;
         if ('wiriseditorparameters' in editor.opts) {
-            Configuration.update('_wrs_conf_editorParameters', editor.opts.wiriseditorparameters);
+            Configuration.update('editorParameters', editor.opts.wiriseditorparameters);
         }
 
         // As always. When the data of Froala is retrieved we need to Parse the content.

@@ -3,7 +3,7 @@ var _wrs_int_conf_file = "@param.js.configuration.path@";
 var _wrs_int_conf_async = true;
 
 // Stats editor (needed by core/editor.js)
-var _wrs_conf_editor = "RadEditor";
+var editor = "RadEditor";
 
 // Including core.js
 
@@ -23,8 +23,8 @@ _wrs_int_path.pop();
 _wrs_int_path = _wrs_int_path.join("/");
 _wrs_int_path =  _wrs_int_path.indexOf("/")==0 || _wrs_int_path.indexOf("http")==0 ? _wrs_int_path : baseURL + "/" + _wrs_int_path;
 
-var _wrs_conf_editorEnabled = true; 			// Specifies if fomula editor is enabled.
-var _wrs_conf_CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
+var editorEnabled = true; 			// Specifies if fomula editor is enabled.
+var CASEnabled = true; 				// Specifies if WIRIS cas is enabled.
 
 var _wrs_int_wirisProperties;
 
@@ -36,8 +36,8 @@ var _wrs_int_language;
 var _wrs_int_radeditor_id;
 var _wrs_int_temporalImageResizing;
 var _wrs_int_directionality = '';
-// Custom Editors: 
-var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : '_wrs_conf_chemEnabled'}}
+// Custom Editors:
+var _wrs_int_customEditors = {chemistry : {name: 'Chemistry', toolbar : 'chemistry', icon : 'chem.png', enabled : false, confVariable : 'chemEnabled'}}
 
 if (typeof currentLanguage != 'undefined'){
 	_wrs_int_language = currentLanguage;
@@ -70,7 +70,7 @@ function OnClientLoad(editor, args){
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['backgroundColor'] = attribute;
 		}
-		
+
 		attribute = editor.get_element().getAttribute("wirisimagesymbolcolor");
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['symbolColor'] = attribute;
@@ -80,31 +80,31 @@ function OnClientLoad(editor, args){
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['numberColor'] = attribute;
 		}
-		
+
 		attribute = editor.get_element().getAttribute("wirisimageidentcolor");
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['identColor'] = attribute;
 		}
-		
+
 		attribute = editor.get_element().getAttribute("wiristransparency");
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['transparency'] = attribute;
 		}
-		
+
 		attribute = editor.get_element().getAttribute("wirisimagefontsize");
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['fontSize'] = attribute;
 		}
-		
+
 		attribute = editor.get_element().getAttribute("wirisdpi");
 		if (attribute != 'undefined') {
 			_wrs_int_wirisProperties['dpi'] = attribute;
 		}
 	}
-	
+
 	var lis = new Array();
-	
-	if (!_wrs_conf_CASEnabled) {
+
+	if (!CASEnabled) {
 		var as = document.getElementsByTagName('a');
 		for (var i = 0; i < as.length; i++){
 			if (as[i].getAttribute('title') == 'WIRIScas'){
@@ -115,7 +115,7 @@ function OnClientLoad(editor, args){
 		}
 	}
 
-	if (!_wrs_conf_editorEnabled) {
+	if (!editorEnabled) {
 		var as = document.getElementsByTagName('a');
 		for (var i = 0; i < as.length; i++){
 			if (as[i].getAttribute('title') == 'WIRISformula'){
@@ -125,17 +125,17 @@ function OnClientLoad(editor, args){
 			}
 		}
 	}
-	
+
 	if (lis.length == 2){
 		lis[0].parentNode.style.display = 'none';
 	}
-	
+
 	editor.add_submit(function (){
 		editor.set_html(wrs_endParse(editor.get_html(true), null, _wrs_int_language));
 	});
 
 	function whenDocReady() {
-		if (window.wrs_initParse && typeof _wrs_conf_plugin_loaded != 'undefined') {
+		if (window.wrs_initParse && typeof plugin_loaded != 'undefined') {
 			wrs_addIframeEvents(_wrs_int_temporalIframe, wrs_int_doubleClickHandler, wrs_int_mousedownHandler, wrs_int_mouseupHandler);
 //			editor.set_html(wrs_initParse(editor.get_html(), _wrs_int_language));
 			editor.get_contentArea().innerHTML = wrs_initParse(editor.get_html(), _wrs_int_language);
@@ -144,28 +144,28 @@ function OnClientLoad(editor, args){
 			setTimeout(whenDocReady, 50);
 		}
 	}
-	
+
 	whenDocReady();
 }
 
 Telerik.Web.UI.Editor.CommandList["WIRIScas"] = function(commandName, editor, args) {
-    if (_wrs_conf_CASEnabled) {
+    if (CASEnabled) {
         wrs_int_openNewCAS(editor._contentAreaElement, _wrs_int_language);
     }
 };
 
 Telerik.Web.UI.Editor.CommandList["WIRISformula"] = function(commandName, editor, args) {
-    if (_wrs_conf_editorEnabled) {
+    if (editorEnabled) {
         wrs_int_openNewFormulaEditor(editor._contentAreaElement, _wrs_int_language);
     }
 };
 
 // Custom Editors
-Object.keys(_wrs_int_customEditors).forEach(function(key) {		
+Object.keys(_wrs_int_customEditors).forEach(function(key) {
 		Telerik.Web.UI.Editor.CommandList["WIRISformula"+ _wrs_int_customEditors[key].name] = function(commandName, editor, args) {
 			wrs_int_enableCustomEditor(key);
-        	wrs_int_openNewFormulaEditor(editor._contentAreaElement, _wrs_int_language); 
-		};	
+        	wrs_int_openNewFormulaEditor(editor._contentAreaElement, _wrs_int_language);
+		};
 });
 
 function wrs_int_updateCAS(appletCode, image, width, height) {
