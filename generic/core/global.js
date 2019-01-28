@@ -9,7 +9,6 @@ import polyfills from './src/polyfills.js';
 import IntegrationModel from './src/integrationmodel.js';
 import MathML from './src/mathml.js';
 import Latex from './src/latex';
-import './styles.src.css';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
