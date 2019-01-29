@@ -40,9 +40,6 @@ let schema = [
         definition: {
             allowIn: [ ...modelElements.values(), modelElements.get( viewMath ) ],
             allowAttributes: attributes,
-            // isBlock: false,
-            // isLimit: true,
-            // isObject: true,
         },
         needsCasting: true,
         allowsText: true, // TODO change this so not all elements allow text inside
