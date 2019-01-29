@@ -1,5 +1,4 @@
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
-import ViewPosition from '@ckeditor/ckeditor5-engine/src/view/position';
 
 import Parser from '../core/src/parser.js';
 

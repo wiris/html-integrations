@@ -3,23 +3,8 @@ import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 import MathmlDataProcessor from './converters/mathmldataprocessor'
 
 import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
-import Parser from './core/src/parser';
 import Util from './core/src/util';
 import Configuration from './core/src/configuration';
-import MathML from './core/src/mathml';
-
-// /**
-//  * This property contains all CKEditor5 integration instances.
-//  * @type {Object}
-//  */
-// export var instances = {};
-// /**
-//  * This property contains the current CKEditor5 integration instance,
-//  * which is the instance of the active editor.
-//  * @class
-//  * @type {IntegrationModel}
-//  */
-// export var currentInstance = null;
 
 /**
  * This class represents the MathType integration for CKEditor5.
@@ -80,14 +65,6 @@ export default class CKEditor5Integration extends IntegrationModel {
         if ( typeof editor.config.wirislistenersdisabled == 'undefined' ||
             !editor.config.wirislistenersdisabled ) {
 
-            // First editor parsing.
-            //editor.setData( Parser.initParse( editor.getData() ) );
-
-            // Maintain currentInstance updated.
-            // editor.editing.view.document.on( 'change:isFocused', ( evt, name, value ) => {
-            //     WirisPlugin.currentInstance = WirisPlugin.instances[ evt.editor.name ]; // TODO Editor doesn't have a name property in CKEditor5
-            // } );
-
             this.checkElement();
 
         }
@@ -102,37 +79,6 @@ export default class CKEditor5Integration extends IntegrationModel {
 
         const editor = this.editorObject;
         const newElement = editor.sourceElement;
-
-
-
-        // const editor = this.editorObject;
-        // const elem = document.getElementById('cke_contents_' + editor.name) ?
-        //     document.getElementById('cke_contents_' + editor.name) :
-        //     document.getElementById('cke_' + editor.name);
-
-        // let newElement;
-        // if (editor.elementMode == CKEDITOR.ELEMENT_MODE_INLINE) {
-        //     newElement = editor.container.$;
-        // } else {
-        //     newElement = elem.getElementsByTagName('iframe')[0];
-        // }
-
-        // let _wrs_int_divIframe = false;
-        // if (!newElement) {
-        //     // On this case, CKEditor uses a div area instead of and iframe as the editable area. Events must be integrated on the div area.
-        //     let dataContainer;
-        //     for (let classElementIndex in elem.classList) {
-        //         const classElement = elem.classList[classElementIndex];
-        //         if (classElement.search('cke_\\d') != -1) {
-        //             dataContainer = classElement;
-        //             break;
-        //         }
-        //     }
-        //     if (dataContainer) {
-        //         newElement = document.getElementById(dataContainer + '_contents');
-        //         _wrs_int_divIframe = true;
-        //     }
-        // }
 
         // If the element wasn't treated, add the events.
         if ( !newElement.wirisActive ) {
@@ -176,23 +122,6 @@ export default class CKEditor5Integration extends IntegrationModel {
     }
 
     /** @inheritdoc */
-    // getSelection() {
-
-    //     this.target.focus();
-
-    //     const selection = editor.editing.view.document.selection;
-    //     const clipboardData = new DataTransfer();
-    //     const htmlDataProcessor = new HtmlDataProcessor();
-
-    //     clipboardData.setData( 'text/html', htmlDataProcessor.toData(
-    //         selection.getFirstRange().getCommonAncestor()
-    //     ) );
-
-    //     return clipboardData;
-
-    // }
-
-    /** @inheritdoc */
     callbackFunction() {
         super.callbackFunction();
         this.addEditorListeners();
@@ -201,10 +130,6 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     /** @inheritdoc */
     insertFormula( focusElement, windowTarget, mathml, wirisProperties ) {
-        // const content = Parser.initParse( mathml );
-        // const viewFragment = htmlDataProcessor.toView( content ).getChild( 0 );
-        // const modelFragment = this.editorObject.data.toModel( viewFragment );
-        // this.editorObject.model.insertContent( modelFragment, this.editorObject.model.document.selection );
 
         if ( !mathml ) {
             return;
@@ -234,9 +159,6 @@ export default class CKEditor5Integration extends IntegrationModel {
 
                 }
 
-                // TODO returnObject.node should be the <img> node
-                //Parser.mathmlToImgObject(windowTarget.document, mathml, wirisProperties, this.language);
-
             } else {
 
                 const img = core.editionProperties.temporalImage;
@@ -244,7 +166,6 @@ export default class CKEditor5Integration extends IntegrationModel {
                 const modelElementOld = this.editorObject.editing.mapper.toModelElement( viewElement );
 
                 // Insert the new <math-math> and remove the old one
-                //const position = this.editorObject.editing.mapper.toModelPosition( viewElement );
                 const position = Position._createBefore( modelElementOld );
                 writer.insert( modelElementNew, position );
                 writer.remove( modelElementOld );

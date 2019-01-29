@@ -66,14 +66,6 @@ export default class MathML extends Plugin {
         // MathML attributes to all MathML elements is too costly.
         for ( const attribute of mathmlAttributes ) {
             editor.conversion.attributeToAttribute( {
-                // model: {
-                //     key: attribute,
-                //     name: modelName,
-                // },
-                // view: {
-                //     key: attribute,
-                //     name: realName,
-                // }
                 model: attribute,
                 view: attribute,
             } );

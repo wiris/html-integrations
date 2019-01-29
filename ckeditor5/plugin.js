@@ -9,8 +9,6 @@ import Util from './core/src/util.js';
 import Image from './core/src/image.js';
 import Configuration from './core/src/configuration.js';
 import Listeners from './core/src/listeners';
-import backwardsLib from './core/src/backwardslib.js';
-import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
 import CoreMathML from './core/src/mathml.js';
 import Latex from './core/src/latex';

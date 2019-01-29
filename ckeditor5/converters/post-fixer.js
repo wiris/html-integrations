@@ -1,8 +1,6 @@
-import Position from '@ckeditor/ckeditor5-engine/src/view/position';
-
 export function postFixer( editor ) {
 
-    // This function walks throught the entire view tree looking for Wiris <img>
+    // This function walks through the entire view tree looking for Wiris <img>
     // elements and replaces them with brand new ones so as to remove hanging
     // math tags that result from the downcast conversion.
     return viewWriter => {
