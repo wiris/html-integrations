@@ -89,7 +89,8 @@ export default class MathmlDataProcessor extends XmlDataProcessor {
         // Return joined pieces
         return htmlPieces // [ 'abc', 'def', 'ghi' ]
             .map( ( piece, index ) => [ piece, mathmlPieces[ index ] ] ) // [ [ 'abc', '<math>123</math>' ], [ 'def', '<math>456</math>' ], [ 'ghi', undefined ] ]
-            .flat() // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi', undefined ]
+            // Use reduce + concat instead of flat because Edge doesn't support flat
+            .reduce( ( acc, cur ) => acc.concat( cur ), [] ) // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi', undefined ]
             .filter( piece => typeof piece !== 'undefined' ) // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi' ]
             .reduce( ( acc, cur ) => acc + cur ); // 'abc<math>123</math>def<math>456</math>ghi'
 
