@@ -43,6 +43,8 @@ export default class WirisEdition extends Plugin {
          * @type {integrationModelProperties}
          */
         const integrationProperties = {};
+        integrationProperties.environment = {};
+        integrationProperties.environment.editor = 'CKEditor5';
         integrationProperties.editorObject = editor;
         integrationProperties.configurationService = '@param.js.configuration.path@';
         integrationProperties.target = editor.sourceElement;
