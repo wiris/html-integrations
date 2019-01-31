@@ -39,8 +39,8 @@ export default class Configuration {
     static get(key) {
         if (!Configuration.properties.hasOwnProperty(key)) {
             // Backwards compatibility.
-            if (Configuration.properties.hasOwnProperty(key)){
-                return Configuration.properties[key];
+            if (Configuration.properties.hasOwnProperty('_wrs_conf_' + key)){
+                return Configuration.properties['_wrs_conf_' + key];
             }
             return false;
         }
