@@ -16,6 +16,8 @@ import CKEditor5Integration from './integration';
 import mathIcon from '../theme/icons/formula.svg';
 import chemIcon from '../theme/icons/chem.svg';
 
+import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor';
+
 export default class MathType extends Plugin {
 
     static get requires() {
@@ -151,6 +153,9 @@ export default class MathType extends Plugin {
 
             }
         }
+
+        // Override MathML plugin's data processor to custom data processor
+        editor.data.processor = new CustomMathmlDataProcessor();
 
     }
 

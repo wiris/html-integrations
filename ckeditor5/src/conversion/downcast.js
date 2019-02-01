@@ -2,7 +2,7 @@ import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/html
 
 import Parser from '../../core/src/parser.js';
 
-import MathmlDataProcessor from './mathmldataprocessor'
+import CustomMathmlDataProcessor from './custommathmldataprocessor'
 
 export function downcast( editor ) {
     return ( dispatcher ) => {
@@ -16,7 +16,7 @@ export function downcast( editor ) {
             }
 
             const htmlDataProcessor = new HtmlDataProcessor();
-            const mathmlDP = new MathmlDataProcessor();
+            const mathmlDP = new CustomMathmlDataProcessor();
             const mathString = mathmlDP
                                 .toData( math )
                                 .replace( /<math-/g , '<' )

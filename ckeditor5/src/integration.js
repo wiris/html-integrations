@@ -1,6 +1,6 @@
 import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
-import MathmlDataProcessor from './conversion/mathmldataprocessor'
+import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor'
 
 import IntegrationModel, { integrationModelProperties } from '../core/src/integrationmodel';
 import Util from '../core/src/util';
@@ -140,7 +140,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
             const core = this.getCore();
 
-            const mathmlDP = new MathmlDataProcessor();
+            const mathmlDP = new CustomMathmlDataProcessor();
 
             // "<math>" -> <math>
             const viewFragment = mathmlDP.toView( mathml );
