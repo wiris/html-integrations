@@ -1,10 +1,37 @@
 import Util from './util.js';
 import StringManager from './stringmanager';
+import Listeners, { Listener } from './listeners';
+
 /**
  * Class representing a serviceProvider. A serviceProvider is a class containing
  * an arbitrary number of services with the correspondent path.
  */
 export default class ServiceProvider {
+
+    /**
+     * Returns Service Provider listeners.
+     * @type {Listeners}
+     */
+    static get listeners() {
+        return ServiceProvider._listeners;
+    }
+
+    /**
+     * Adds a {@link Listener} instance to {@link ServiceProvider} class.
+     * @param {Listener} listener - Instance of {@link Listener}.
+     */
+    static addListener(listener) {
+        ServiceProvider.listeners.add(listener);
+    }
+
+    /**
+     * Fires events in Service Provider.
+     * @param {String} eventName - Event name.
+     * @param {Event} event - Event object.
+     */
+    static fireEvent(eventName, event) {
+        ServiceProvider.listeners.fire(eventName, event);
+    }
 
     /**
      * Static property.
@@ -79,18 +106,21 @@ export default class ServiceProvider {
     /**
      * Inits {@link this} class. Uses {@link this.integrationPath} as
      * base path to generate all backend services paths.
+     * @param {Object} parameters - Function parameters.
+     * @param {String} parameters.integrationPath - Service path.
      */
-    static init() {
+    static init(parameters) {
+        const integrationPath = parameters.integrationPath;
         // Services path (tech dependant).
-        let createImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'createimage');
-        let showImagePath = ServiceProvider.integrationPath.replace('configurationjs', 'showimage');
-        let getMathMLPath = ServiceProvider.integrationPath.replace('configurationjs', 'getmathml');
-        let servicePath = ServiceProvider.integrationPath.replace('configurationjs', 'service');
+        let createImagePath = integrationPath.replace('configurationjs', 'createimage');
+        let showImagePath = integrationPath.replace('configurationjs', 'showimage');
+        let getMathMLPath = integrationPath.replace('configurationjs', 'getmathml');
+        let servicePath = integrationPath.replace('configurationjs', 'service');
 
         // Some backend integrations (like Java o Ruby) have an absolute backend path,
         // for example: /app/service. For them we calculate the absolute URL path, i.e
         // protocol://domain:port/app/service
-        if (ServiceProvider.integrationPath.indexOf("/") == 0) {
+        if (integrationPath.indexOf("/") == 0) {
             const serverPath = ServiceProvider.getServerURL();
             showImagePath = serverPath + showImagePath;
             createImagePath = serverPath + createImagePath;
@@ -102,12 +132,14 @@ export default class ServiceProvider {
         ServiceProvider.setServicePath('createimage', createImagePath);
         ServiceProvider.setServicePath('service', servicePath);
         ServiceProvider.setServicePath('getmathml', getMathMLPath);
+
+        ServiceProvider.listeners.fire('onInit', {});
     }
 
     /**
      * Gets the content from an URL.
      * @param {String} url - Target URL.
-     * @param {Object} postVariables - Object containing post variables. null if a GET query should be done.
+     * @param {Object} [postVariables] - Object containing post variables. null if a GET query should be done.
      * @returns {String} Content of the target URL.
      * @static
      */
@@ -177,3 +209,10 @@ ServiceProvider._servicePaths = {};
  * @private
  */
 ServiceProvider._integrationPath = '';
+
+/**
+ * ServiceProvider static listeners.
+ * @type {Listeners}
+ * @private
+ */
+ServiceProvider._listeners = new Listeners();

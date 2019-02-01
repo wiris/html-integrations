@@ -173,11 +173,22 @@ export default class Core {
     }
 
     /**
-     * Initializes the {@link Core} class.
-     * @param {String} configurationPath - The integration configuration service path.
+     * Core state. Says if it was loaded previously.
+     * True when Core.init was called. Otherwise, false.
+     * @private
+     * @type {Boolean}
      */
-    init(configurationPath) {
-        this.load(configurationPath);
+    static get initialized() {
+        return Core._resourcesLoaded;
+    }
+
+    /**
+     * Core state. Says if it was loaded previously.
+     * @param {Boolean} value - True to say that Core.init was called. Otherwise, false.
+     * @ignore
+     */
+    static set initialized(value) {
+        Core._resourcesLoaded = value;
     }
 
     /**
@@ -222,26 +233,30 @@ export default class Core {
      * @param {String} configurationService - The integration configuration service path.
      */
     init(configurationService) {
-        let httpRequest = typeof XMLHttpRequest != 'undefined' ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        ServiceProvider.integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
-        httpRequest.open('GET', ServiceProvider.integrationPath, false);
-        // Async request.
-        httpRequest.onload = function (e) {
-            if (httpRequest.readyState === 4) {
-                // Loading configuration variables.
-                const jsonConfiguration = JSON.parse(httpRequest.responseText);
+        if (!Core.initialized) {
+            const integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
+
+            const serviceProviderListener = Listeners.newListener('onInit', function () {
+                const jsConfiguration = ServiceProvider.getUrl(integrationPath);
+                const jsonConfiguration = JSON.parse(jsConfiguration);
                 Configuration.addConfiguration(jsonConfiguration);
                 // Adding JavaScript (not backend) configuration variables.
                 Configuration.addConfiguration(jsProperties);
-                // Load service paths.
-                ServiceProvider.init();
                 // Fire 'onLoad' event. All integration must listen this event in order to know if the plugin has been properly loaded.
                 StringManager.language = this.language;
                 this.listeners.fire('onLoad', {});
+            }.bind(this));
 
-            }
-        }.bind(this);
-        httpRequest.send(null);
+            ServiceProvider.addListener(serviceProviderListener);
+            ServiceProvider.init({ integrationPath });
+
+            Core.initialized = true;
+        }
+        else {
+            // Case when there are more than two editor instances.
+            // After the first editor all the other editors don't need to load any file or service.
+            this.listeners.fire('onLoad', {});
+        }
     }
 
     /**
@@ -758,3 +773,10 @@ export default class Core {
  * @private
  */
 Core._globalListeners = new Listeners();
+
+/**
+ * Resources state. Says if they were loaded or not.
+ * @type {Boolean}
+ * @private
+ */
+Core._initialized = false;
