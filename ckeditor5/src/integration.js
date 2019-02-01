@@ -1,10 +1,10 @@
 import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
-import MathmlDataProcessor from './converters/mathmldataprocessor'
+import MathmlDataProcessor from './conversion/mathmldataprocessor'
 
-import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
-import Util from './core/src/util';
-import Configuration from './core/src/configuration';
+import IntegrationModel, { integrationModelProperties } from '../core/src/integrationmodel';
+import Util from '../core/src/util';
+import Configuration from '../core/src/configuration';
 
 /**
  * This class represents the MathType integration for CKEditor5.

@@ -3,27 +3,27 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
-import { integrationModelProperties } from './core/src/integrationmodel';
+import { integrationModelProperties } from '../core/src/integrationmodel';
 
 import MathML from './mathml';
 
-import { downcast } from './converters/downcast';
-import { postFixer } from './converters/post-fixer';
-import OpenFormulaEditorCommand from './openformulaeditorcommand';
-import OpenFormulaEditorChemistryCommand from './openformulaeditorchemistrycommand';
+import { downcast } from './conversion/downcast';
+import { postFixer } from './conversion/post-fixer';
+import MathTypeEditor from './commands/mathtypeeditor';
+import ChemTypeEditor from './commands/chemtypeeditor';
 import CKEditor5Integration from './integration';
 
-import mathIcon from './icons/formula.svg';
-import chemIcon from './icons/chem.svg';
+import mathIcon from '../theme/icons/formula.svg';
+import chemIcon from '../theme/icons/chem.svg';
 
-export default class WirisEdition extends Plugin {
+export default class MathType extends Plugin {
 
     static get requires() {
         return [ MathML ];
     }
 
     static get pluginName() {
-        return 'WirisEdition';
+        return 'MathType';
     }
 
     init() {
@@ -74,13 +74,13 @@ export default class WirisEdition extends Plugin {
         }
 
         // Add command to open the formula editor
-        editor.commands.add( 'ckeditor_wiris_openFormulaEditor', new OpenFormulaEditorCommand( editor ) );
+        editor.commands.add( 'MathTypeEditor', new MathTypeEditor( editor ) );
 
         // Add command to open the chemistry formula editor
-        editor.commands.add( 'ckeditor_wiris_openFormulaEditorChemistry', new OpenFormulaEditorChemistryCommand( editor ) );
+        editor.commands.add( 'ChemTypeEditor', new ChemTypeEditor( editor ) );
 
         // Add button for the formula editor
-        editor.ui.componentFactory.add( 'ckeditor_wiris_openFormulaEditor', locale => {
+        editor.ui.componentFactory.add( 'MathTypeEditor', locale => {
             const view = new ButtonView( locale );
 
             view.set( {
@@ -91,7 +91,7 @@ export default class WirisEdition extends Plugin {
 
             // Callback executed once the image is clicked.
             view.on( 'execute', () => {
-                editor.execute( 'ckeditor_wiris_openFormulaEditor', {
+                editor.execute( 'MathTypeEditor', {
                     'integration': integration, // Pass integration as parameter
                 } );
             } );
@@ -100,7 +100,7 @@ export default class WirisEdition extends Plugin {
         } );
 
         // Add button for the chemistry formula editor
-        editor.ui.componentFactory.add( 'ckeditor_wiris_openFormulaEditorChemistry', locale => {
+        editor.ui.componentFactory.add( 'ChemTypeEditor', locale => {
             const view = new ButtonView( locale );
 
             view.set( {
@@ -111,7 +111,7 @@ export default class WirisEdition extends Plugin {
 
             // Callback executed once the image is clicked.
             view.on( 'execute', () => {
-                editor.execute( 'ckeditor_wiris_openFormulaEditorChemistry', {
+                editor.execute( 'ChemTypeEditor', {
                     'integration': integration, // Pass integration as parameter
                 } );
             } );

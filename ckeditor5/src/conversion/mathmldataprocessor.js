@@ -2,7 +2,7 @@ import XmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/xmlda
 import { BR_FILLER } from '@ckeditor/ckeditor5-engine/src/view/filler';
 import DomConverter from '@ckeditor/ckeditor5-engine/src/view/domconverter';
 
-import MathML from '../core/src/mathml.js';
+import MathML from '../../core/src/mathml.js';
 
 export default class MathmlDataProcessor extends XmlDataProcessor {
 

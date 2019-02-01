@@ -1,8 +1,8 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
 
-import CKEditor5Integration from './integration';
+import CKEditor5Integration from '../integration';
 
-export default class OpenFormulaEditorCommand extends Command {
+export default class ChemTypeEditor extends Command {
 
     constructor( editor ) {
         super( editor );
@@ -17,7 +17,7 @@ export default class OpenFormulaEditorCommand extends Command {
         const integration = options.integration;
         // Can be that previously custom editor was used. So is needed disable
         // all the editors to avoid wrong behaviours.
-        integration.core.getCustomEditors().disable();
+        integration.core.getCustomEditors().enable( 'chemistry' );
         integration.openNewFormulaEditor();
 
     }

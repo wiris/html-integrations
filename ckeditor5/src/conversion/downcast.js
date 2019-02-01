@@ -1,6 +1,6 @@
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 
-import Parser from '../core/src/parser.js';
+import Parser from '../../core/src/parser.js';
 
 import MathmlDataProcessor from './mathmldataprocessor'
 
