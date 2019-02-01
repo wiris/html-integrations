@@ -463,9 +463,12 @@ export default class ContentManager {
                 // There should be only one element with class name 'wrs_pressed' at the same time.
                 const list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed');
                 if (list.length === 0) {
-                    this.modalDialogInstance.cancelAction();
-                    keyboardEvent.stopPropagation();
-                    keyboardEvent.preventDefault();
+                    const list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed');
+                    if (list.length === 0) {
+                        this.modalDialogInstance.cancelAction();
+                        keyboardEvent.stopPropagation();
+                        keyboardEvent.preventDefault();
+                    }
                 }
             }
             // Code to detect shift Tab event.
