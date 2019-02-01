@@ -179,7 +179,7 @@ export default class Core {
      * @type {Boolean}
      */
     static get initialized() {
-        return Core._resourcesLoaded;
+        return Core._initialized;
     }
 
     /**
@@ -188,7 +188,7 @@ export default class Core {
      * @ignore
      */
     static set initialized(value) {
-        Core._resourcesLoaded = value;
+        Core._initialized = value;
     }
 
     /**
