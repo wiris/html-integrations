@@ -4,7 +4,7 @@ import { downcastElementToElement } from '@ckeditor/ckeditor5-engine/src/convers
 import { upcastElementToElement } from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
 
 import { schema as mathmlSchema, attributes as mathmlAttributes } from './mathmlschema';
-import MathmlDataProcessor from './converters/mathmldataprocessor';
+import MathmlDataProcessor from './conversion/mathmldataprocessor';
 
 export default class MathML extends Plugin {
     
@@ -21,7 +21,7 @@ export default class MathML extends Plugin {
 		const editor = this.editor;
         const schema = editor.model.schema;
 
-        // If the WirisEdition plugin is loaded, we don't create editingDowncasts
+        // If the MathType plugin is loaded, we don't create editingDowncasts
         let editingDowncast = true;//!editor.config.get( 'plugins' ).some( plugin => plugin.name == 'Wiris' );
 
         /*** Extend model ***/
