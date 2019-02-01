@@ -186,8 +186,8 @@ export default class Parser {
                     var src = appletCode.substring(srcStart, srcEnd);
                 } else{
                     // This should happen only with old CAS imported from Moodle 1 to Moodle 2.
-                    if (typeof(pluginBasePath) != 'undefined'){
-                        var src = pluginBasePath + '/integration/showcasimage.php?formula=noimage';
+                    if (typeof(_wrs_conf_pluginBasePath) != 'undefined'){
+                        var src = _wrs_conf_pluginBasePath + '/integration/showcasimage.php?formula=noimage';
                     } else {
                         var src = '';
                     }
