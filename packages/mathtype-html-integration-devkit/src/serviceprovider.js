@@ -132,6 +132,7 @@ export default class ServiceProvider {
         ServiceProvider.setServicePath('createimage', createImagePath);
         ServiceProvider.setServicePath('service', servicePath);
         ServiceProvider.setServicePath('getmathml', getMathMLPath);
+        ServiceProvider.setServicePath('configurationjs', parameters.integrationPath);
 
         ServiceProvider.listeners.fire('onInit', {});
     }
@@ -141,6 +142,7 @@ export default class ServiceProvider {
      * @param {String} url - Target URL.
      * @param {Object} [postVariables] - Object containing post variables. null if a GET query should be done.
      * @returns {String} Content of the target URL.
+     * @private
      * @static
      */
     static getUrl(url, postVariables) {

@@ -237,7 +237,7 @@ export default class Core {
             const integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
 
             const serviceProviderListener = Listeners.newListener('onInit', function () {
-                const jsConfiguration = ServiceProvider.getUrl(integrationPath);
+                const jsConfiguration = ServiceProvider.getService('configurationjs', '', 'get');
                 const jsonConfiguration = JSON.parse(jsConfiguration);
                 Configuration.addConfiguration(jsonConfiguration);
                 // Adding JavaScript (not backend) configuration variables.
