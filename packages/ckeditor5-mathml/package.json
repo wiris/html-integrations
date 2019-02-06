@@ -1,7 +1,18 @@
 {
-  "name": "ckeditor5-mathml",
+  "name": "@wiris/ckeditor5-mathml",
   "version": "1.0.0",
   "description": "MathML for CKEditor5 editor",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "editor",
+    "equation",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
   "homepage": "http://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
