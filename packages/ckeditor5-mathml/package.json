@@ -1,6 +1,6 @@
 {
   "name": "@wiris/ckeditor5-mathml",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "MathML for CKEditor5 editor",
   "keywords": [
     "ckeditor",
