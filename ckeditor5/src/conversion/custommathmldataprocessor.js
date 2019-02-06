@@ -1,4 +1,4 @@
-import MathmlDataProcessor from './mathmldataprocessor';
+import MathmlDataProcessor from '@wiris/ckeditor5-mathml/src/conversion/mathmldataprocessor';
 
 import MathML from '../../core/src/mathml.js';
 

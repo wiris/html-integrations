@@ -5,7 +5,7 @@ import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
 import { integrationModelProperties } from '../core/src/integrationmodel';
 
-import MathML from './mathml';
+import MathML from '@wiris/ckeditor5-mathml/src/mathml';
 
 import { downcast } from './conversion/downcast';
 import { postFixer } from './conversion/post-fixer';

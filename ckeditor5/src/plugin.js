@@ -1,6 +1,6 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
-import MathML from './mathml';
+import MathML from '@wiris/ckeditor5-mathml/src/mathml';
 import MathType from './mathtype';
 
 import Core from '../core/src/core.src.js';

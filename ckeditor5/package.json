@@ -1,0 +1,30 @@
+{
+  "name": "@wiris/mathtype-ckeditor5",
+  "version": "@version@",
+  "description": "MathType Web for CKEditor5 editor",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage": "http://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "license": "GPL-3.0",
+  "main": "src/plugin.js",
+  "dependencies": {
+    "@wiris/ckeditor5-mathml": "github:wiris/ckeditor5-mathml"
+  }
+}
