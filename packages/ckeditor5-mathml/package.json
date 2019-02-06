@@ -1,5 +1,6 @@
 {
   "name": "ckeditor5-mathml",
+  "version": "1.0.0",
   "description": "MathML for CKEditor5 editor",
   "homepage": "http://www.wiris.com/",
   "bugs": {
