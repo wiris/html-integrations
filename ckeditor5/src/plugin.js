@@ -39,7 +39,7 @@ window.WirisPlugin = {
     IntegrationModel: IntegrationModel,
     Latex: Latex
 }
-export default class MathType extends Plugin {
+export default class MathTypePlugin extends Plugin {
 
     static get requires() {
         return [ MathML ];
