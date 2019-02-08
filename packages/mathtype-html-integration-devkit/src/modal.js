@@ -567,9 +567,6 @@ export default class ModalDialog {
             windowScrollX: window.scrollX,
             windowScrollY: window.scrollY
         };
-        document.body.style.position = 'fixed';
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
     }
 
     /**
