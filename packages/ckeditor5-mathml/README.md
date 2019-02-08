@@ -1,9 +1,9 @@
-CKEditor 5 MathML feature
-========================================
+MathML support for CKEditor 5
+===
 
-This package implements the MathML feature for CKEditor 5.
+This package extends the CKEditor 5 model to allow working with the MathML standard.
 
-## Installation instructions
+## Install instructions
 
 1. Install the npm module:
 
@@ -11,15 +11,13 @@ This package implements the MathML feature for CKEditor 5.
    npm install @wiris/ckeditor5-mathml
    ```
 
-2. Import the plugin:
+2. Update the CKEditor configuration by adding the plugin:
 
    ```js
    import MathML from '@wiris/ckeditor5-mathml/src/mathml';
-   ```
 
-3. Update the CKEditor configuration by adding the plugin:
+   ...
 
-   ```js
    ClassicEditor
         .create( editorElement, {
             plugins: [ ..., MathML, ... ],
