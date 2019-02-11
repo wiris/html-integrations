@@ -127,25 +127,26 @@ export default class CKEditor5Integration extends IntegrationModel {
         this.addEditorListeners();
     }
 
-
-    /** @inheritdoc */
-    insertFormula( focusElement, windowTarget, mathml, wirisProperties ) {
-
-        if ( !mathml ) {
-            return;
-        }
-
+    /**
+     * Replaces old formula with new MathML or inserts it in caret position if new
+     * @param {String} mathml MathML to update old one or insert
+     * @returns {module:engine/model/element~Element} The model element corresponding to the inserted image
+     */
+    insertMathml( mathml ) {
         // This returns the value returned by the callback function (writer => {...})
-        const modelElementNew = this.editorObject.model.change( writer => {
+        return this.editorObject.model.change( writer => {
 
             const core = this.getCore();
 
             const mathmlDP = new CustomMathmlDataProcessor();
 
             // "<math>" -> <math>
-            const viewFragment = mathmlDP.toView( mathml );
-            // <math> -> <math-math>
-            const modelElementNew = this.editorObject.data.toModel( viewFragment ).getChild( 0 );
+            let modelElementNew;
+            if ( mathml ) {
+                const viewFragment = mathmlDP.toView( mathml );
+                // <math> -> <math-math>
+                modelElementNew = this.editorObject.data.toModel( viewFragment ).getChild( 0 );
+            }
 
             // The DOM <img> object corresponding to the formula
             if ( core.editionProperties.isNewElement ) {
@@ -155,7 +156,9 @@ export default class CKEditor5Integration extends IntegrationModel {
                 if ( viewSelection.isCollapsed ) {
 
                     let modelPosition = this.editorObject.editing.mapper.toModelPosition( viewSelection.getLastPosition() );
-                    writer.insert( modelElementNew, modelPosition );
+                    if ( modelElementNew ) {
+                        writer.insert( modelElementNew, modelPosition );
+                    }
 
                 }
 
@@ -167,7 +170,9 @@ export default class CKEditor5Integration extends IntegrationModel {
 
                 // Insert the new <math-math> and remove the old one
                 const position = Position._createBefore( modelElementOld );
-                writer.insert( modelElementNew, position );
+                if ( modelElementNew ) {
+                    writer.insert( modelElementNew, position );
+                }
                 writer.remove( modelElementOld );
 
             }
@@ -175,9 +180,22 @@ export default class CKEditor5Integration extends IntegrationModel {
             return modelElementNew;
 
         } );
+    }
+
+    /** @inheritdoc */
+    insertFormula( focusElement, windowTarget, mathml, wirisProperties ) {
+
+        // To store the newly created image element
+        let modelElementNew;
+
+        if ( !mathml ) {
+            modelElementNew = this.insertMathml( '' );
+        } else {
+            modelElementNew = this.insertMathml( mathml );
+        }
 
         return {
-            node: this.editorObject.editing.view.domConverter.viewToDom( this.editorObject.editing.mapper.toViewElement( modelElementNew ) ),
+            node: modelElementNew ? this.editorObject.editing.view.domConverter.viewToDom( this.editorObject.editing.mapper.toViewElement( modelElementNew ) ) : null,
         };
 
     }
