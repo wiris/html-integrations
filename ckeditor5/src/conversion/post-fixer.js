@@ -5,23 +5,22 @@ export function postFixer( editor ) {
     // math tags that result from the downcast conversion.
     return viewWriter => {
 
-        /* Range.createIn( editor.editing.view.document.getRoot() ) raises
-        view-position-before-root error. We use manual iteration instead. */
-
         let hasChanged = false;
-        const frontier = [ editor.editing.view.document.getRoot() ];
-        let current;
 
-        while ( current = frontier.pop() ) {
+        const range = viewWriter.createRangeIn( editor.editing.view.document.getRoot() );
+
+        // Get all items from the range and cache them so removing them won’t cause problems.
+        const items = Array.from( range.getItems() );
+
+        for ( const current of items ) {
             if ( current.is( 'img' ) && current.hasClass( 'Wirisformula' ) && current.childCount > 0 ) {
 
                 // Using this avoids having to insert a new img,
                 // which is good because Position can't seem to properly find the correct position
-                viewWriter.remove( viewWriter.createRangeIn( current ) );
+                // Set hasChanged to true if viewWriter has removed nodes
+                hasChanged = !!viewWriter.remove( viewWriter.createRangeIn( current ) );
 
-            } else if ( current.getChildren ) {
-                frontier.push( ...current.getChildren() );
-            }
+             }
         }
 
         return hasChanged;
