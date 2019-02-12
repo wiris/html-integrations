@@ -50,25 +50,19 @@ export function downcast( editor ) {
                 // Remove filler offset
                 viewElement.getFillerOffset = () => null;
 
-            // If not a <math> element, create a fake empty element so that
-            // the model can be binded to it, otherwise it gets angry
-            } else {
-
-                viewElement = conversionApi.writer.createContainerElement( '' );
+                // Bind the newly created view element to model element so positions will map accordingly in future.
+                conversionApi.mapper.bindElements( data.item, viewElement );
+    
+                // Translate position in model to position in view.
+                const viewPosition = conversionApi.mapper.toViewPosition( data.range.start );
+    
+                // Add the newly created view element to the view.
+                conversionApi.writer.insert( viewPosition, viewElement );
+    
+                // Stop the event propagation.
+                evt.stop();
 
             }
-
-            // Bind the newly created view element to model element so positions will map accordingly in future.
-            conversionApi.mapper.bindElements( data.item, viewElement );
-
-            // Translate position in model to position in view.
-            const viewPosition = conversionApi.mapper.toViewPosition( data.range.start );
-
-            // Add the newly created view element to the view.
-            conversionApi.writer.insert( viewPosition, viewElement );
-
-            // Stop the event propagation.
-            evt.stop();
 
         }, { priority: 'high' } );
     };
