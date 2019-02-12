@@ -47,6 +47,9 @@ export function downcast( editor ) {
 
                 viewElement = conversionApi.writer.createContainerElement( 'img', imgAttributes );
 
+                // Remove filler offset
+                viewElement.getFillerOffset = () => null;
+
             // If not a <math> element, create a fake empty element so that
             // the model can be binded to it, otherwise it gets angry
             } else {
