@@ -465,9 +465,12 @@ export default class ContentManager {
                 if (list.length === 0) {
                     const list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed');
                     if (list.length === 0) {
-                        this.modalDialogInstance.cancelAction();
-                        keyboardEvent.stopPropagation();
-                        keyboardEvent.preventDefault();
+                        const list = document.getElementsByClassName('wrs_select wrs_pressed');
+                        if (list.length === 0) {
+                            this.modalDialogInstance.cancelAction();
+                            keyboardEvent.stopPropagation();
+                            keyboardEvent.preventDefault();
+                        }
                     }
                 }
             }
