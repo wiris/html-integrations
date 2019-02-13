@@ -24,8 +24,8 @@
     "type": "git",
     "url": "git+https://github.com/wiris/ckeditor5-mathml.git"
   },
-  "dependencies": {
-    "@ckeditor/ckeditor5-core": "^11.1.0",
-    "@ckeditor/ckeditor5-engine": "^12.0.0"
+  "peerDependencies": {
+    "@ckeditor/ckeditor5-core": ">=10.0.0",
+    "@ckeditor/ckeditor5-engine": ">=10.0.0"
   }
 }
