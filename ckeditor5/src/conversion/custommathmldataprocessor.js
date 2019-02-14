@@ -1,6 +1,7 @@
 import MathmlDataProcessor from '@wiris/ckeditor5-mathml/src/conversion/mathmldataprocessor';
 
 import MathML from '../../core/src/mathml.js';
+import Parser from '../../core/src/parser.js';
 
 export default class CustomMathmlDataProcessor extends MathmlDataProcessor {
 
@@ -37,12 +38,17 @@ export default class CustomMathmlDataProcessor extends MathmlDataProcessor {
         }
 
         // Return joined pieces
-        return htmlPieces // [ 'abc', 'def', 'ghi' ]
+        let data = htmlPieces // [ 'abc', 'def', 'ghi' ]
             .map( ( piece, index ) => [ piece, mathmlPieces[ index ] ] ) // [ [ 'abc', '<math>123</math>' ], [ 'def', '<math>456</math>' ], [ 'ghi', undefined ] ]
             // Use reduce + concat instead of flat because Edge doesn't support flat
             .reduce( ( acc, cur ) => acc.concat( cur ), [] ) // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi', undefined ]
             .filter( piece => typeof piece !== 'undefined' ) // [ 'abc', '<math>123</math>', 'def', '<math>456</math>', 'ghi' ]
             .reduce( ( acc, cur ) => acc + cur ); // 'abc<math>123</math>def<math>456</math>ghi'
+
+        // Convert LaTeX instances to MathML elements
+        data = Parser.endParseEditMode( data );
+
+        return data;
 
     }
 

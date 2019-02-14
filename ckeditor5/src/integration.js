@@ -5,6 +5,7 @@ import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor'
 import IntegrationModel, { integrationModelProperties } from '../core/src/integrationmodel';
 import Util from '../core/src/util';
 import Configuration from '../core/src/configuration';
+import Latex from '../core/src/latex';
 
 /**
  * This class represents the MathType integration for CKEditor5.
@@ -182,21 +183,78 @@ export default class CKEditor5Integration extends IntegrationModel {
         } );
     }
 
+    /**
+     * Finds the text node corresponding to given DOM text element.
+     * @param {element} viewElement Element to find corresponding text node of.
+     * @returns {module:engine/model/text~Text|undefined} Text node corresponding to the given element or undefined if it doesn't exist.
+     */
+    findText( viewElement ) {
+
+        // mapper always converts text nodes to *new* model elements so we need to convert the text's parents and then come back down
+        let pivot = viewElement;
+        let element;
+        while ( !element ) {
+            element =
+                this.editorObject.editing.mapper.toModelElement(
+                    this.editorObject.editing.view.domConverter.domToView(
+                        pivot
+                    )
+                );
+            pivot = pivot.parentElement;
+        }
+
+        // Navigate through all the subtree under `pivot` in order to find the correct text node
+        const range = this.editorObject.model.createRangeIn( element );
+        const descendants = Array.from( range.getItems() );
+        for ( const node of descendants ) {
+            if ( node.is( 'textProxy' ) && node.data == viewElement.data ) {
+                return node.textNode;
+            }
+        }
+
+    }
+
     /** @inheritdoc */
     insertFormula( focusElement, windowTarget, mathml, wirisProperties ) {
 
-        // To store the newly created image element
-        let modelElementNew;
+        let returnObject = {};
 
         if ( !mathml ) {
-            modelElementNew = this.insertMathml( '' );
+            this.insertMathml( '' );
+        } else if ( this.core.editMode == 'latex' ) {
+
+            returnObject.latex = Latex.getLatexFromMathML( mathml );
+            returnObject.node = windowTarget.document.createTextNode( '$$' + returnObject.latex + '$$' );
+
+            this.editorObject.model.change( writer => {
+
+                const latexRange = this.core.editionProperties.latexRange;
+
+                const startNode = this.findText( latexRange.startContainer );
+                const endNode = this.findText( latexRange.endContainer );
+
+                const startPosition = writer.createPositionAt( startNode.parent, startNode.startOffset + latexRange.startOffset );
+                const endPosition = writer.createPositionAt( endNode.parent, endNode.startOffset + latexRange.endOffset );
+
+                const range = writer.createRange(
+                    startPosition,
+                    endPosition,
+                );
+
+                writer.remove( range );
+                writer.insertText( '$$' + returnObject.latex + '$$', startNode.getAttributes(), startPosition );
+
+            } );
+
         } else {
-            modelElementNew = this.insertMathml( mathml );
+            returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
+                this.editorObject.editing.mapper.toViewElement(
+                    this.insertMathml( mathml )
+                )
+            );
         }
 
-        return {
-            node: modelElementNew ? this.editorObject.editing.view.domConverter.viewToDom( this.editorObject.editing.mapper.toViewElement( modelElementNew ) ) : null,
-        };
+        return returnObject;
 
     }
 
