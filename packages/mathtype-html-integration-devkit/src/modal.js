@@ -107,7 +107,7 @@ export default class ModalDialog {
         attributes = {};
         attributes.class = 'wrs_modal_stack_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = "Exit full-screen";
+        attributes.title = StringManager.get('exit_fullscreen');
         this.stackDiv = Util.createElement('a', attributes);
         this.stackDiv.setAttribute('role','button');
 
@@ -686,7 +686,7 @@ export default class ModalDialog {
         this.properties.previousState = this.properties.state;
         this.properties.state = 'stack';
         this.removeClass('wrs_maximized');
-        this.minimizeDiv.title = "Minimize";
+        this.minimizeDiv.title = StringManager.get('minimize');
         this.removeClass('wrs_minimized');
         this.addClass('wrs_stack');
 
@@ -726,7 +726,7 @@ export default class ModalDialog {
             this.properties.previousState = this.properties.state;
             this.properties.state = "minimized";
             this.setResizeButtonsVisibility();
-            this.minimizeDiv.title = "Maximize";
+            this.minimizeDiv.title = StringManager.get('maximize');
 
             if (Util.containsClass(this.overlay, 'wrs_stack')) {
                 this.removeClass('wrs_stack');
@@ -752,7 +752,7 @@ export default class ModalDialog {
         this.setResizeButtonsVisibility();
 
         if (Util.containsClass(this.overlay, 'wrs_minimized')) {
-            this.minimizeDiv.title = "Minimize";
+            this.minimizeDiv.title = StringManager.get('minimize');
             this.removeClass('wrs_minimized');
         }
         else if (Util.containsClass(this.overlay, 'wrs_stack')) {
