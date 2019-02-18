@@ -121,7 +121,7 @@ export default class ModalDialog {
         attributes = {};
         attributes.class = 'wrs_modal_minimize_button';
         attributes.id = this.getElementId(attributes.class);
-        attributes.title = StringManager.get('minimise');
+        attributes.title = StringManager.get('minimize');
         this.minimizeDiv = Util.createElement('a', attributes);
         this.minimizeDiv.setAttribute('role','button');
 
@@ -686,7 +686,7 @@ export default class ModalDialog {
         this.properties.previousState = this.properties.state;
         this.properties.state = 'stack';
         this.removeClass('wrs_maximized');
-        this.minimizeDiv.title = "Minimise";
+        this.minimizeDiv.title = "Minimize";
         this.removeClass('wrs_minimized');
         this.addClass('wrs_stack');
 
@@ -726,7 +726,7 @@ export default class ModalDialog {
             this.properties.previousState = this.properties.state;
             this.properties.state = "minimized";
             this.setResizeButtonsVisibility();
-            this.minimizeDiv.title = "Maximise";
+            this.minimizeDiv.title = "Maximize";
 
             if (Util.containsClass(this.overlay, 'wrs_stack')) {
                 this.removeClass('wrs_stack');
@@ -752,7 +752,7 @@ export default class ModalDialog {
         this.setResizeButtonsVisibility();
 
         if (Util.containsClass(this.overlay, 'wrs_minimized')) {
-            this.minimizeDiv.title = "Minimise";
+            this.minimizeDiv.title = "Minimize";
             this.removeClass('wrs_minimized');
         }
         else if (Util.containsClass(this.overlay, 'wrs_stack')) {
