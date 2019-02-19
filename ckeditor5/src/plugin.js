@@ -17,7 +17,6 @@ import Latex from '../core/src/latex';
 import MathML from '@wiris/ckeditor5-mathml/src/mathml';
 
 import { downcast } from './conversion/downcast';
-import { postFixer } from './conversion/post-fixer';
 import MathType from './commands/mathtype';
 import ChemType from './commands/chemtype';
 import CKEditor5Integration from './integration';
@@ -55,10 +54,6 @@ export default class MathTypePlugin extends Plugin {
         
         // Downcaster that converts MathML to Wirisformula <img>
         editor.conversion.for( 'editingDowncast' ).add( downcast( editor ) );
-
-        // Post-fix to remove the contents of <img> element
-        // (which after downcast should be equal to the tree under <math>)
-        editor.editing.view.document.registerPostFixer( postFixer( editor ) );
 
         // Add integration properties
         /**
