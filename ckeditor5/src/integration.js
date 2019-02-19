@@ -128,6 +128,15 @@ export default class CKEditor5Integration extends IntegrationModel {
         this.addEditorListeners();
     }
 
+    openNewFormulaEditor() {
+
+        // Store the editor selection as it will be lost upon opening the modal
+        this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
+
+        return super.openNewFormulaEditor();
+
+    }
+
     /**
      * Replaces old formula with new MathML or inserts it in caret position if new
      * @param {String} mathml MathML to update old one or insert
@@ -152,13 +161,18 @@ export default class CKEditor5Integration extends IntegrationModel {
             // The DOM <img> object corresponding to the formula
             if ( core.editionProperties.isNewElement ) {
 
-                let viewSelection = this.editorObject.editing.view.document.selection;
+                let viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
+                let modelPosition = this.editorObject.editing.mapper.toModelPosition( viewSelection.getLastPosition() );
 
-                if ( viewSelection.isCollapsed ) {
+                if ( modelElementNew ) {
+                    writer.insert( modelElementNew, modelPosition );
+                }
 
-                    let modelPosition = this.editorObject.editing.mapper.toModelPosition( viewSelection.getLastPosition() );
-                    if ( modelElementNew ) {
-                        writer.insert( modelElementNew, modelPosition );
+                // Remove selection
+                if ( !viewSelection.isCollapsed ) {
+
+                    for ( const range of viewSelection.getRanges() ) {
+                        writer.remove( this.editorObject.editing.mapper.toModelRange( range ) );
                     }
 
                 }
