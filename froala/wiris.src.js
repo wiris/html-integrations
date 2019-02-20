@@ -228,8 +228,6 @@ export class FroalaIntegration extends IntegrationModel {
     $.FroalaEditor.PLUGINS.wiris = function (editor) {
         // Init method, here we create the instance of the FroalaIntegration class.
         function _init() {
-            $('head').append('<link type="text/css" rel="stylesheet" href="' + getScriptPath() + '/icons/font/css/wirisplugin.css">');
-
             // No custom option.
             $.FroalaEditor.DEFAULTS = $.extend($.FroalaEditor.DEFAULTS, {
                 myOption: false

@@ -9,6 +9,7 @@ import polyfills from './core/src/polyfills.js';
 import IntegrationModel from './core/src/integrationmodel.js';
 import { FroalaIntegration, instances, currentInstance } from './wiris.src.js';
 import Latex from './core/src/latex';
+import './icons/css/wirisplugin.css';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
