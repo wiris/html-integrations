@@ -1,31 +1,28 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
-import { downcastElementToElement } from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
-import { upcastElementToElement } from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
-
 import { schema as mathmlSchema, attributes as mathmlAttributes } from './mathmlschema';
 import MathmlDataProcessor from './conversion/mathmldataprocessor';
 
 export default class MathML extends Plugin {
-    
+
     static get requires() {
         return [];
     }
 
-	static get pluginName() {
-		return 'MathML';
-	}
+    static get pluginName() {
+        return 'MathML';
+    }
 
-	init() {
+    init() {
 
-		const editor = this.editor;
+        const editor = this.editor;
         const schema = editor.model.schema;
 
         // If the MathType plugin is loaded, we don't create editingDowncasts
         let editingDowncast = true;//!editor.config.get( 'plugins' ).some( plugin => plugin.name == 'Wiris' );
 
         /*** Extend model ***/
-        
+
         // For every element of MathML...
         for ( const { realName, modelName, definition, needsCasting } of mathmlSchema ) {
 
@@ -44,15 +41,15 @@ export default class MathML extends Plugin {
 
                 } else {
 
-                    editor.conversion.for( 'upcast' ).add( upcastElementToElement( {
+                    editor.conversion.for( 'upcast' ).elementToElement( {
                         model: modelName,
                         view: realName
-                    } ) );
+                    } );
 
-                    editor.conversion.for( 'dataDowncast' ).add( downcastElementToElement( {
+                    editor.conversion.for( 'dataDowncast' ).elementToElement( {
                         model: modelName,
                         view: realName
-                    } ) );
+                    } );
 
                 }
 
