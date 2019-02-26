@@ -13,6 +13,7 @@ import Event from './event.js';
 import Listeners from './listeners.js';
 import IntegrationModel from './integrationmodel.js';
 import Image from './image.js';
+import {ServiceProviderProperties} from './serviceprovider'
 import '../styles.css';
 
 /**
@@ -29,12 +30,20 @@ import '../styles.css';
  *       core.init(configurationService);
  * ```
  */
+
+ /**
+  * @typedef {Object} CoreProperties
+  * @property {ServiceProviderProperties} serviceProviderProperties - The ServiceProvider class properties.
+  *
+  */
 export default class Core {
 
     /**
-     * Class constructor.
+     * @constructs
+     * Core constructor.
+     * @param {CoreProperties}
      */
-    constructor() {
+    constructor(coreProperties) {
         /**
          * Language. Needed for accessibility and locales. 'en' by default.
          * @type {String}
@@ -150,6 +159,17 @@ export default class Core {
          * @type {Array.<Object>}
          */
         this.listeners = new Listeners();
+
+        /**
+         * Service provider properties.
+         * @type {ServiceProviderProperties}
+         */
+        this.serviceProviderProperties = {};
+        if ('serviceProviderProperties' in coreProperties) {
+            this.serviceProviderProperties = coreProperties.serviceProviderProperties;
+        } else {
+            throw new exception('serviceProviderProperties property missing.');
+        }
     }
 
     /**
@@ -230,12 +250,10 @@ export default class Core {
      * - Updates the {@link ServiceProvider} class using the configuration service path as reference.
      * - Loads language strings.
      * - Fires onLoad event.
-     * @param {String} configurationService - The integration configuration service path.
+     * @param {Object} serviceParameters - Service parameters.
      */
-    init(configurationService) {
+    init() {
         if (!Core.initialized) {
-            const integrationPath = configurationService.indexOf("/") == 0 || configurationService.indexOf("http") == 0 ? configurationService : Util.concatenateUrl(this.integrationModel.getPath(), configurationService);
-
             const serviceProviderListener = Listeners.newListener('onInit', function () {
                 const jsConfiguration = ServiceProvider.getService('configurationjs', '', 'get');
                 const jsonConfiguration = JSON.parse(jsConfiguration);
@@ -248,7 +266,7 @@ export default class Core {
             }.bind(this));
 
             ServiceProvider.addListener(serviceProviderListener);
-            ServiceProvider.init({ integrationPath });
+            ServiceProvider.init(this.serviceProviderProperties);
 
             Core.initialized = true;
         }

@@ -1,11 +1,12 @@
-import Core from './core.src.js';
-import Image from './image.js';
-import Listeners from './listeners.js';
-import Util from './util.js';
+import Core from './core.src';
+import Image from './image';
+import Listeners from './listeners';
+import Util from './util';
 import Configuration from './configuration';
+import ServiceProvider, {ServiceProviderProperties} from './serviceprovider';
 
 /**
- * @typedef {Object} integrationModelProperties
+ * @typedef {Object} IntegrationModelProperties
  * @property {string} configurationService - Configuration service path. This parameter is needed to determine all services paths.
  * @property {HTMLElement} integrationModelProperties.target - HTML target.
  * @property {string} integrationModelProperties.scriptName - Integration script name. Usually the name of the integration script.
@@ -14,6 +15,8 @@ import Configuration from './configuration';
  * @property {string} [integrationModelProperties.version] - integration version number.
  * @property {Object} [integrationModelProperties.editorObject] - object containing the integration editor instance.
  * @property {boolean} [integrationModelProperties.rtl] - true if the editor is in RTL mode. false otherwise.
+ * @property {ServiceProviderProperties} [integrationModelProperties.serviceProviderProperties] - The service parameters.
+ * @property {Object} [integrationModelProperties.integrationParameters] - Overwritten integration parameters.
  */
 
 /**
@@ -24,7 +27,7 @@ export default class IntegrationModel {
     /**
      * @constructs
      * IntegrationModel constructor.
-     * @param {integrationModelProperties} integrationModelProperties
+     * @param {IntegrationModelProperties} integrationModelProperties
      */
      constructor(integrationModelProperties) {
         /**
@@ -33,16 +36,24 @@ export default class IntegrationModel {
         this.language = 'en';
 
         /**
+         * Service parameters
+         * @type {ServiceProviderProperties}
+         */
+        this.serviceProviderProperties = {};
+        if ('serviceProviderProperties' in integrationModelProperties) {
+            this.serviceProviderProperties = integrationModelProperties.serviceProviderProperties;
+        }
+
+        /**
          * Configuration service path. The integration service is needed by Core class to
          * load all the backend configuration into the frontend and also to create the paths
          * of all services (all services lives in the same route). Mandatory property.
          */
         this.configurationService = '';
         if ('configurationService' in integrationModelProperties) {
-            this.configurationService = integrationModelProperties.configurationService;
-        }
-        else {
-            throw new Error('IntegrationModel constructor error: configurationService property missed.')
+            this.serviceProviderProperties.URI = integrationModelProperties.configurationService;
+            console.warn('Deprecated property configurationService. Use serviceParameters on instead.',
+                        [integrationModelProperties.configurationService]);
         }
 
         /**
@@ -137,6 +148,16 @@ export default class IntegrationModel {
          * @type {Listeners}
          */
         this.listeners = new Listeners();
+
+        // Parameters overwrite.
+        if ('integrationParameters' in integrationModelProperties) {
+            IntegrationModel.integrationParameters.forEach((parameter) => {
+                if (parameter in integrationModelProperties.integrationParameters) {
+                    this[parameter] = integrationModelProperties.integrationParameters[parameter]
+                }
+            });
+        }
+
     }
 
     /**
@@ -150,12 +171,30 @@ export default class IntegrationModel {
             this.callbackFunction(this.callbackMethodArguments);
         }.bind(this));
 
-        this.setCore(new Core());
+        // Backwards compatibility.
+        if (this.serviceProviderProperties.URI.indexOf('configuration') != -1) {
+            const server = ServiceProvider.getServerLanguageFromService(this.serviceProviderProperties.URI);
+            this.serviceProviderProperties.server = server;
+
+            const configurationIndex = this.serviceProviderProperties.URI.indexOf('configuration');
+            this.serviceProviderProperties.URI = this.serviceProviderProperties.URI.substring(0, configurationIndex);
+        }
+
+        let serviceParametersURI = this.serviceProviderProperties.URI;
+        serviceParametersURI = serviceParametersURI.indexOf("/") == 0 || serviceParametersURI.indexOf("http") == 0 ?
+        serviceParametersURI : Util.concatenateUrl( this.getPath(), serviceParametersURI);
+
+        this.serviceProviderProperties.URI = serviceParametersURI;
+
+        let coreProperties = {};
+        coreProperties.serviceProviderProperties = this.serviceProviderProperties
+        this.setCore(new Core(coreProperties));
         this.core.addListener(listener);
         this.core.language = this.language;
 
         // Initializing Core class.
-        this.core.init(this.configurationService);
+        this.core.init();
+        //TODO: Move to Core constructor.
         this.core.setEnvironment(this.environment);
     }
 
@@ -249,7 +288,7 @@ export default class IntegrationModel {
 
         let
             focusElement,
-            windowTarget, 
+            windowTarget,
             wirisProperties = null;
 
         if (this.isIframe) {
@@ -466,3 +505,9 @@ export default class IntegrationModel {
 IntegrationModel.prototype.getMathmlFromTextNode = undefined;
 IntegrationModel.prototype.fillNonLatexNode = undefined;
 IntegrationModel.prototype.getSelectedItem = undefined;
+
+/**
+ * An object containing a list with the overwritable class constructor properties.
+ * @type {Object}
+ */
+IntegrationModel.integrationParameters = ['serviceParameters', 'editorParameters'];

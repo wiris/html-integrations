@@ -2,6 +2,12 @@ import Util from './util.js';
 import StringManager from './stringmanager';
 import Listeners, { Listener } from './listeners';
 
+ /**
+  * @typedef {Object} ServiceProviderProperties
+  * @property {String} URI - Service URI.
+  * @property {String} server - Service server language.
+  */
+
 /**
  * Class representing a serviceProvider. A serviceProvider is a class containing
  * an arbitrary number of services with the correspondent path.
@@ -31,6 +37,24 @@ export default class ServiceProvider {
      */
     static fireEvent(eventName, event) {
         ServiceProvider.listeners.fire(eventName, event);
+    }
+
+    /**
+     * Service parameters.
+     * @type {ServiceProviderProperties}
+     *
+     */
+    static get parameters() {
+        return ServiceProvider._parameters;
+    }
+
+    /**
+     * Service parameters.
+     * @private
+     * @type {ServiceProviderProperties}
+     */
+    static set parameters(parameters) {
+        ServiceProvider._parameters = parameters;
     }
 
     /**
@@ -110,29 +134,31 @@ export default class ServiceProvider {
      * @param {String} parameters.integrationPath - Service path.
      */
     static init(parameters) {
-        const integrationPath = parameters.integrationPath;
+        ServiceProvider.parameters = parameters;
         // Services path (tech dependant).
-        let createImagePath = integrationPath.replace('configurationjs', 'createimage');
-        let showImagePath = integrationPath.replace('configurationjs', 'showimage');
-        let getMathMLPath = integrationPath.replace('configurationjs', 'getmathml');
-        let servicePath = integrationPath.replace('configurationjs', 'service');
+        let configurationURI = ServiceProvider.createServiceURI('configurationjs');
+        let createImageURI = ServiceProvider.createServiceURI('createimage');
+        let showImageURI = ServiceProvider.createServiceURI('showimage');
+        let getMathMLURI = ServiceProvider.createServiceURI('getmathml');
+        let serviceURI = ServiceProvider.createServiceURI('service');
 
         // Some backend integrations (like Java o Ruby) have an absolute backend path,
         // for example: /app/service. For them we calculate the absolute URL path, i.e
         // protocol://domain:port/app/service
-        if (integrationPath.indexOf("/") == 0) {
+        if (ServiceProvider.parameters.URI.indexOf("/") == 0) {
             const serverPath = ServiceProvider.getServerURL();
-            showImagePath = serverPath + showImagePath;
-            createImagePath = serverPath + createImagePath;
-            getMathMLPath = serverPath + getMathMLPath;
-            servicePath = serverPath + servicePath;
+            showImageURI = serverPath + showImageURI;
+            createImageURI = serverPath + createImageURI;
+            getMathMLURI = serverPath + getMathMLURI;
+            serviceURI = serverPath + serviceURI;
         }
 
-        ServiceProvider.setServicePath('showimage', showImagePath);
-        ServiceProvider.setServicePath('createimage', createImagePath);
-        ServiceProvider.setServicePath('service', servicePath);
-        ServiceProvider.setServicePath('getmathml', getMathMLPath);
-        ServiceProvider.setServicePath('configurationjs', parameters.integrationPath);
+        ServiceProvider.setServicePath('configurationjs', configurationURI);
+        ServiceProvider.setServicePath('showimage', showImageURI);
+        ServiceProvider.setServicePath('createimage', createImageURI);
+        ServiceProvider.setServicePath('service', serviceURI);
+        ServiceProvider.setServicePath('getmathml', getMathMLURI);
+        ServiceProvider.setServicePath('configurationjs', configurationURI);
 
         ServiceProvider.listeners.fire('onInit', {});
     }
@@ -195,6 +221,44 @@ export default class ServiceProvider {
         }
         return response;
     }
+
+
+    /**
+     * Returns the server language of a certain service. The possible values
+     * are: php, aspx, java and ruby.
+     * This method has backward compatibility purposes.
+     * @param {String} service - The configuration service.
+     * @returns {String} - The server technology associated with the configuration service.
+     */
+    static getServerLanguageFromService(service) {
+        if (service.indexOf('.php') != -1) {
+            return 'php';
+        } else if (service.indexOf('.aspx') != -1) {
+            return 'aspx';
+        } else if(service.indexOf('wirispluginengine') != -1) {
+            return 'ruby';
+        }
+        return 'java';
+    }
+
+    /**
+     * Returns the URI associated with a certain service.
+     * @param {String} service - The service name.
+     * @return {String} The service path.
+     */
+    static createServiceURI(service) {
+        return Util.concatenateUrl(ServiceProvider.parameters.URI, service) + ServiceProvider.serverExtension();
+
+    }
+
+    static serverExtension() {
+        if (ServiceProvider.parameters.server.indexOf('php') != -1) {
+            return '.php';
+        } else if (ServiceProvider.parameters.server.indexOf('aspx') != -1) {
+            return '.aspx';
+        }
+        return '';
+    }
 }
 
 /**
@@ -218,3 +282,10 @@ ServiceProvider._integrationPath = '';
  * @private
  */
 ServiceProvider._listeners = new Listeners();
+
+
+/**
+ * Service provider parameters.
+ * @type {ServiceProviderParameters}
+ */
+ServiceProvider._parameters = {};
