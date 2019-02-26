@@ -327,14 +327,22 @@ export class CKEditor4Integration extends IntegrationModel {
                 // In CKEditor always there is an iframe or a div container. To access, we use the property that
                 // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
                 ckeditorIntegrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
-                ckeditorIntegrationModelProperties.configurationService = '@param.js.configuration.path@';
+                ckeditorIntegrationModelProperties.serviceProviderProperties = {};
+                ckeditorIntegrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
+                ckeditorIntegrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
                 ckeditorIntegrationModelProperties.version = '@plugin.version@';
                 ckeditorIntegrationModelProperties.scriptName = "plugin.js";
                 ckeditorIntegrationModelProperties.environment = {};
                 ckeditorIntegrationModelProperties.environment.editor = "CKEditor4";
-                // Updating integration paths if context path is overwrited by editor javascript configuration.
+                // Updating integration paths if context path is overwritten by editor javascript configuration.
                 if ('wiriscontextpath' in editor.config) {
                     ckeditorIntegrationModelProperties.configurationService  = editor.config.wiriscontextpath + ckeditorIntegrationModelProperties.configurationService;
+                    console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters on instead.', editor.config.wiriscontextpath);
+                }
+
+                // Overriding MathType integration parameters.
+                if ('mathTypeParameters' in editor.config) {
+                    ckeditorIntegrationModelProperties.integrationParameters = editor.config.mathTypeParameters;
                 }
 
                 // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.

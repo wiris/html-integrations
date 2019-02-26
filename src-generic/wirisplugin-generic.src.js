@@ -1,4 +1,4 @@
-import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
+import IntegrationModel, { IntegrationModelProperties } from './core/src/integrationmodel';
 import Parser from './core/src/parser';
 import Util from './core/src/util';
 import formulaIcon from './icons/formula.png';
@@ -30,9 +30,15 @@ window.wrs_int_init = function(target,toolbar) {
  */
 export default class GenericIntegration extends IntegrationModel {
 
+    /**
+     * @constructs
+     * @param {IntegrationModelProperties} integrationModelProperties
+     */
     constructor(integrationModelProperties) {
-        if (typeof(integrationModelProperties.configurationService) === 'undefined') {
-            integrationModelProperties.configurationService = '@param.js.configuration.path@';
+        if (typeof(integrationModelProperties.serviceProviderProperties) === 'undefined') {
+            integrationModelProperties.serviceProviderProperties = {};
+            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceParameters.URI@';
+            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceParameters.server@';
         }
         integrationModelProperties.version = '@plugin.version@';
         integrationModelProperties.scriptName = "wirisplugin-generic.js";

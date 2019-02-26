@@ -204,7 +204,9 @@ export class FroalaIntegration extends IntegrationModel {
         if (!$('#wrs_style').get(0)) {
             $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
         }
-        froalaIntegrationProperties.configurationService = '@param.js.configuration.path@';
+        froalaIntegrationProperties.serviceProviderProperties = {};
+        froalaIntegrationProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
+        froalaIntegrationProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
         froalaIntegrationProperties.version = '@plugin.version@';
         froalaIntegrationProperties.scriptName = "wiris.js";
         froalaIntegrationProperties.environment = {};
@@ -213,9 +215,15 @@ export class FroalaIntegration extends IntegrationModel {
         froalaIntegrationProperties.editorObject = editor;
         froalaIntegrationProperties.initOnImageMode = target.nodeName.toLowerCase() === 'img';
 
-        // Updating integration paths if context path is overwrited by editor javascript configuration.
+        // Updating integration paths if context path is overwritten by editor javascript configuration.
         if ('wiriscontextpath' in editor.opts) {
             froalaIntegrationProperties.configurationService  = editor.opts.wiriscontextpath + froalaIntegrationProperties.configurationService;
+            console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters on instead.', editor.opts.wiriscontextpath)
+        }
+
+        // Overriding MathType integration parameters.
+        if ('mathTypeParameters' in editor.opts) {
+            froalaIntegrationProperties.integrationParameters = editor.opts.mathTypeParameters;
         }
         var froalaIntegrationInstance = new FroalaIntegration(froalaIntegrationProperties);
         froalaIntegrationInstance.init();

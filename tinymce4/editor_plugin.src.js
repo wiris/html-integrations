@@ -205,13 +205,22 @@ export var currentInstance = null;
              * @property {String} editor - Editor name.
              */
             var integrationModelProperties = {};
-            integrationModelProperties.configurationService = '@param.js.configuration.path@';
+            integrationModelProperties.serviceProviderProperties= {};
+            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
+            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
             integrationModelProperties.version = '@plugin.version@';
             integrationModelProperties.isMoodle = @param.js.isMoodle@;
             if (typeof(editor.getParam('wiriscontextpath')) !== 'undefined') {
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
                 editor.getParam('wiriscontextpath') + '/' + integrationModelProperties.configurationService;
+                console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters on instead.', editor.opts.wiriscontextpath)
             }
+
+            // Overriding MathType integration parameters.
+            if (typeof(editor.getParam('mathTypeParameters')) !== 'undefined') {
+                integrationModelProperties.integrationParameters = editor.getParam('mathTypeParameters');
+            }
+
             integrationModelProperties.scriptName = "plugin.min.js";
             integrationModelProperties.environment = {};
 
