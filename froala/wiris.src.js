@@ -228,11 +228,6 @@ export class FroalaIntegration extends IntegrationModel {
     $.FroalaEditor.PLUGINS.wiris = function (editor) {
         // Init method, here we create the instance of the FroalaIntegration class.
         function _init() {
-            // No custom option.
-            $.FroalaEditor.DEFAULTS = $.extend($.FroalaEditor.DEFAULTS, {
-                myOption: false
-            });
-
             createIntegrationModel(editor);
         }
 
