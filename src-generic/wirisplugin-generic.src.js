@@ -37,8 +37,8 @@ export default class GenericIntegration extends IntegrationModel {
     constructor(integrationModelProperties) {
         if (typeof(integrationModelProperties.serviceProviderProperties) === 'undefined') {
             integrationModelProperties.serviceProviderProperties = {};
-            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceParameters.URI@';
-            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceParameters.server@';
+            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
+            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
         }
         integrationModelProperties.version = '@plugin.version@';
         integrationModelProperties.scriptName = "wirisplugin-generic.js";
