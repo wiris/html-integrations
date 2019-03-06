@@ -1,0 +1,13 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+     "parserOptions": {
+         "parser": "babel-eslint"
+     },
+    "extends": [
+        "airbnb-base"
+    ],
+    "rules": {}
+}
