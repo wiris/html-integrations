@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="configurationjson.aspx.cs" Inherits="plugin_web.configurationjson" %>

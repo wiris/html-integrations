@@ -1,8 +1,8 @@
-import IntegrationModel from './core/src/integrationmodel.js';
-import Configuration from './core/src/configuration.js';
-import Parser from './core/src/parser.js';
-import Util from './core/src/util';
-import Listeners from './core/src/listeners';
+import IntegrationModel from './integration-js/src/integrationmodel.js';
+import Configuration from './integration-js/src/configuration.js';
+import Parser from './integration-js/src/parser.js';
+import Util from './integration-js/src/util';
+import Listeners from './integration-js/src/listeners';
 
 /**
  * TinyMCE integration class. This class extends IntegrationModel class.

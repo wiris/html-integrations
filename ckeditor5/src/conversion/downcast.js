@@ -1,6 +1,6 @@
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 
-import Parser from '../../core/src/parser.js';
+import Parser from '../integration-js/src/parser.js';
 
 import CustomMathmlDataProcessor from './custommathmldataprocessor'
 
@@ -57,13 +57,13 @@ export function downcast( editor ) {
 
                 // Bind the newly created view element to model element so positions will map accordingly in future.
                 conversionApi.mapper.bindElements( data.item, viewElement );
-    
+
                 // Translate position in model to position in view.
                 const viewPosition = conversionApi.mapper.toViewPosition( data.range.start );
-    
+
                 // Add the newly created view element to the view.
                 conversionApi.writer.insert( viewPosition, viewElement );
-    
+
                 // Stop the event propagation.
                 evt.stop();
 

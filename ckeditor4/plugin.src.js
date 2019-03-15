@@ -1,7 +1,7 @@
-import IntegrationModel, { integrationModelProperties } from './core/src/integrationmodel';
-import Parser from './core/src/parser';
-import Util from './core/src/util';
-import Configuration from './core/src/configuration';
+import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel';
+import Parser from './integration-js/src/parser';
+import Util from './integration-js/src/util';
+import Configuration from './integration-js/src/configuration';
 
 /**
  * This property contains all Froala Integration instances.

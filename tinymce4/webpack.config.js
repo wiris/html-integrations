@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, ''),
-        filename: 'plugin.min.js'
+        filename: '../plugin.min.js'
     },
     // Set watch to true for dev purposes.
     watch: false,
@@ -36,6 +36,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                exclude: /node_modules/,
                 use: ['style-loader', 'css-loader']
             },
             {

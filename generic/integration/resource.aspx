@@ -1,1 +1,0 @@
-<%@ Page Language="C#" AutoEventWireup="false" CodeFile="resource.aspx.cs" Inherits="plugin_web.resource" validateRequest="false" %>

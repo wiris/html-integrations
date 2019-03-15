@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="false" CodeFile="editor.aspx.cs" Inherits="plugin_web.editor" %>

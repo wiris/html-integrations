@@ -24,10 +24,6 @@
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "GPL-3.0",
   "files": [
-    "core/icons",
-    "core/tutorials",
-    "core/styles.css",
-    "core/src",
     "/src",
     "icons",
     "theme",

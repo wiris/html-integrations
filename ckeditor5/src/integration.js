@@ -2,10 +2,10 @@ import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
 import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor'
 
-import IntegrationModel, { integrationModelProperties } from '../core/src/integrationmodel';
-import Util from '../core/src/util';
-import Configuration from '../core/src/configuration';
-import Latex from '../core/src/latex';
+import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel';
+import Util from './integration-js/src/util';
+import Configuration from './integration-js/src/configuration';
+import Latex from './integration-js/src/latex';
 
 /**
  * This class represents the MathType integration for CKEditor5.
@@ -116,7 +116,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         }
     }
 
-    
+
     /** @inheritdoc */
     getCorePath() {
         return null; // TODO

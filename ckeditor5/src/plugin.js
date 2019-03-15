@@ -3,16 +3,16 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
-import { integrationModelProperties } from '../core/src/integrationmodel';
-import Core from '../core/src/core.src.js';
-import Parser from '../core/src/parser.js';
-import Util from '../core/src/util.js';
-import Image from '../core/src/image.js';
-import Configuration from '../core/src/configuration.js';
-import Listeners from '../core/src/listeners';
-import IntegrationModel from '../core/src/integrationmodel.js';
-import CoreMathML from '../core/src/mathml.js';
-import Latex from '../core/src/latex';
+import { integrationModelProperties } from './integration-js/src/integrationmodel';
+import Core from './integration-js/src/core.src.js';
+import Parser from './integration-js/src/parser.js';
+import Util from './integration-js/src/util.js';
+import Image from './integration-js/src/image.js';
+import Configuration from './integration-js/src/configuration.js';
+import Listeners from './integration-js/src/listeners';
+import IntegrationModel from './integration-js/src/integrationmodel.js';
+import CoreMathML from './integration-js/src/mathml.js';
+import Latex from './integration-js/src/latex';
 
 import MathML from '@wiris/ckeditor5-mathml/src/mathml';
 
@@ -49,9 +49,9 @@ export default class MathTypePlugin extends Plugin {
     }
 
     init() {
-        
+
         const editor = this.editor;
-        
+
         // Downcaster that converts MathML to Wirisformula <img>
         editor.conversion.for( 'editingDowncast' ).add( downcast( editor ) );
 
@@ -140,7 +140,7 @@ export default class MathTypePlugin extends Plugin {
         editor.editing.view.addObserver( ClickObserver );
 
         editor.editing.view.document.on( 'keydown', jumpOverMath );
-        
+
         // Move cursor from the end of the inline filler to the beginning of it when, so the filler does not break navigation.
         function jumpOverMath( evt, data ) {
             if ( data.keyCode == keyCodes.arrowleft ) {

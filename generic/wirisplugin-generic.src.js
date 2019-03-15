@@ -1,8 +1,8 @@
-import IntegrationModel, { IntegrationModelProperties } from './core/src/integrationmodel';
-import Parser from './core/src/parser';
-import Util from './core/src/util';
-import formulaIcon from './icons/formula.png';
-import chemIcon from './icons/chem.png';
+import IntegrationModel, { IntegrationModelProperties } from './integration-js/src/integrationmodel';
+import Parser from './integration-js/src/parser';
+import Util from './integration-js/src/util';
+import formulaIcon from '../icons/formula.png';
+import chemIcon from '../icons/chem.png';
 
 /**
  * Inits MathType creating an object with all properties that the IntegrationModel class
