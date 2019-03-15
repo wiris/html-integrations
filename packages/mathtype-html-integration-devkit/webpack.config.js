@@ -58,7 +58,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             // Output path for css.
-            filename: './core/styles.css',
+            filename: './styles/styles.css',
         }),
     ],
     stats: {
