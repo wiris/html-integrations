@@ -14,7 +14,7 @@ import Listeners from './listeners.js';
 import IntegrationModel from './integrationmodel.js';
 import Image from './image.js';
 import {ServiceProviderProperties} from './serviceprovider'
-import '../styles.css';
+import '../styles/styles.css';
 
 /**
  * This class represents MathType integration Core, managing the following:

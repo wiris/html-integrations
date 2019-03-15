@@ -1,4 +1,4 @@
-import translations from '../../lang/strings.json';
+import translations from '../lang/strings.json';
 /**
  * This class represents a string manager. It's used to load localized strings.
  */
