@@ -1,7 +1,6 @@
 import TextCache from './textcache';
-import Core from './core.src';
 import ServiceProvider from './serviceprovider';
-import MathML from './mathml.js';
+import MathML from './mathml';
 import StringManager from './stringmanager';
 
 /**
@@ -9,7 +8,6 @@ import StringManager from './stringmanager';
  * the associated client-side cache.
  */
 export default class Accessibility {
-
   /**
   * Static property.
   * Accessibility cache, each entry contains a MathML and its correspondent accessibility text.
@@ -44,22 +42,20 @@ export default class Accessibility {
     // we add chemistry to data to force accessibility service
     // to load chemistry grammar.
     if (MathML.containClass(mathML, 'wrs_chemistry')) {
-      data['mode'] = 'chemistry';
+      data.mode = 'chemistry';
     }
-    var accessibleText;
+    let accessibleText = '';
 
     if (Accessibility.cache.get(mathML)) {
       accessibleText = Accessibility.cache.get(mathML);
-    }
-    else {
-      data['service'] = 'mathml2accessible';
-      data['lang'] = language;
-      var accessibleJsonResponse = JSON.parse(ServiceProvider.getService('service', data));
-      if (accessibleJsonResponse.status != 'error') {
+    } else {
+      data.service = 'mathml2accessible';
+      data.lang = language;
+      const accessibleJsonResponse = JSON.parse(ServiceProvider.getService('service', data));
+      if (accessibleJsonResponse.status !== 'error') {
         accessibleText = accessibleJsonResponse.result.text;
         Accessibility.cache.populate(mathML, accessibleText);
-      }
-      else {
+      } else {
         accessibleText = StringManager.get('error_convert_accessibility');
       }
     }
