@@ -9,5 +9,8 @@
     "extends": [
         "airbnb-base"
     ],
-    "rules": {}
+    "rules": {
+      "no-underscore-dangle" : "off",
+      "no-param-reassign" : "off"
+    }
 }
