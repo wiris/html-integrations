@@ -13,35 +13,35 @@
  *
  */
 export default class Event {
+  /**
+   * @constructs
+   * Class constructor.
+   */
+  constructor() {
     /**
-     * @constructs
-     * Class constructor.
+     * Indicates if the event should be cancelled.
+     * @type {Boolean}
      */
-    constructor() {
-        /**
-         * Indicates if the event should be cancelled.
-         * @type {Boolean}
-         */
 
-        this.cancelled = false;
-        /**
-         * Indicates if the event should be prevented.
-         * @type {Boolean}
-         */
-        this.defaultPrevented = false;
-    }
-
+    this.cancelled = false;
     /**
-     * Cancels the event.
+     * Indicates if the event should be prevented.
+     * @type {Boolean}
      */
-    cancel() {
-        this.cancelled = true;
-    }
+    this.defaultPrevented = false;
+  }
 
-    /**
-     * Prevents the default action.
-     */
-    preventDefault() {
-        this.defaultPrevented = true;
-    }
+  /**
+   * Cancels the event.
+   */
+  cancel() {
+    this.cancelled = true;
+  }
+
+  /**
+   * Prevents the default action.
+   */
+  preventDefault() {
+    this.defaultPrevented = true;
+  }
 }

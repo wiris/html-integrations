@@ -7,157 +7,157 @@ import Util from './util.js';
  */
 export default class PopUpMessage {
 
+  /**
+   *
+   * @param {Object} popupMessageAttributes - Object containing popup properties.
+   * @param {HTMLElement} popupMessageAttributes.overlayElement - Element to overlay.
+   * @param {Object} popupMessageAttributes.callbacks - Contains callback methods for close and cancel actions.
+   * @param {Object} popupMessageAttributes.strings - Contains all the strings needed.
+   */
+  constructor(popupMessageAttributes) {
+
     /**
-     *
-     * @param {Object} popupMessageAttributes - Object containing popup properties.
-     * @param {HTMLElement} popupMessageAttributes.overlayElement - Element to overlay.
-     * @param {Object} popupMessageAttributes.callbacks - Contains callback methods for close and cancel actions.
-     * @param {Object} popupMessageAttributes.strings - Contains all the strings needed.
+     * Element to be overlaid when the popup appears.
      */
-    constructor(popupMessageAttributes) {
+    this.overlayElement = popupMessageAttributes.overlayElement;
 
-        /**
-         * Element to be overlaid when the popup appears.
-         */
-        this.overlayElement = popupMessageAttributes.overlayElement;
+    this.callbacks = popupMessageAttributes.callbacks;
 
-        this.callbacks = popupMessageAttributes.callbacks;
+    /**
+     * HTMLElement element to wrap all HTML elements inside the popupMessage.
+     */
+    this.overlayWrapper = this.overlayElement.appendChild(document.createElement("div"));
+    this.overlayWrapper.setAttribute("class", "wrs_popupmessage_overlay_envolture");
 
-        /**
-         * HTMLElement element to wrap all HTML elements inside the popupMessage.
-         */
-        this.overlayWrapper = this.overlayElement.appendChild(document.createElement("div"));
-        this.overlayWrapper.setAttribute("class", "wrs_popupmessage_overlay_envolture");
+    /**
+     * HTMLElement to display the popup message, close button and cancel button.
+     */
+    this.message = this.overlayWrapper.appendChild(document.createElement("div"));
+    this.message.id = "wrs_popupmessage"
+    this.message.setAttribute("class", "wrs_popupmessage_panel");
+    this.message.innerHTML = popupMessageAttributes.strings.message;
 
-        /**
-         * HTMLElement to display the popup message, close button and cancel button.
-         */
-        this.message = this.overlayWrapper.appendChild(document.createElement("div"));
-        this.message.id = "wrs_popupmessage"
-        this.message.setAttribute("class", "wrs_popupmessage_panel");
-        this.message.innerHTML = popupMessageAttributes.strings.message;
+    /**
+     * HTML element overlaying the overlayElement.
+     */
+    var overlay = this.overlayWrapper.appendChild(document.createElement("div"));
+    overlay.setAttribute("class", "wrs_popupmessage_overlay");
+    // We create a overlay that close popup message on click in there
+    overlay.addEventListener("click", this.cancelAction.bind(this));
 
-        /**
-         * HTML element overlaying the overlayElement.
-         */
-        var overlay = this.overlayWrapper.appendChild(document.createElement("div"));
-        overlay.setAttribute("class", "wrs_popupmessage_overlay");
-        // We create a overlay that close popup message on click in there
-        overlay.addEventListener("click", this.cancelAction.bind(this));
+    /**
+     * HTML element containing cancel and close buttons.
+     */
+    this.buttonArea = this.message.appendChild(document.createElement('div'));
+    this.buttonArea.setAttribute("class", "wrs_popupmessage_button_area");
+    this.buttonArea.id = 'wrs_popup_button_area';
 
-        /**
-         * HTML element containing cancel and close buttons.
-         */
-        this.buttonArea = this.message.appendChild(document.createElement('div'));
-        this.buttonArea.setAttribute("class", "wrs_popupmessage_button_area");
-        this.buttonArea.id = 'wrs_popup_button_area';
+    // Close button arguments.
+    var buttonSubmitArguments = {
+      class: "wrs_button_accept",
+      innerHTML: popupMessageAttributes.strings.submitString,
+      id: 'wrs_popup_accept_button'
+    };
 
-        // Close button arguments.
-        var buttonSubmitArguments = {
-            class: "wrs_button_accept",
-            innerHTML: popupMessageAttributes.strings.submitString,
-            id: 'wrs_popup_accept_button'
-        };
+    /**
+     * Close button arguments.
+     */
+    this.closeButton = this.createButton(buttonSubmitArguments, this.closeAction.bind(this));
+    this.buttonArea.appendChild(this.closeButton);
 
-        /**
-         * Close button arguments.
-         */
-        this.closeButton = this.createButton(buttonSubmitArguments, this.closeAction.bind(this));
-        this.buttonArea.appendChild(this.closeButton);
+    // Cancel button arguments.
+    var buttonCancelArguments = {
+      class: "wrs_button_cancel",
+      innerHTML: popupMessageAttributes.strings.cancelString,
+      id: 'wrs_popup_cancel_button'
+    };
 
-        // Cancel button arguments.
-        var buttonCancelArguments = {
-            class: "wrs_button_cancel",
-            innerHTML: popupMessageAttributes.strings.cancelString,
-            id: 'wrs_popup_cancel_button'
-        };
+    /**
+     * Cancel button.
+     */
+    this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
+    this.buttonArea.appendChild(this.cancelButton);
+  }
 
-        /**
-         * Cancel button.
-         */
-        this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
-        this.buttonArea.appendChild(this.cancelButton);
+  /**
+   * This method create a button with arguments and return button dom object
+   * @param {Object} parameters - An object containing id, class and innerHTML button text.
+   * @param {String} parameters.id - Button id.
+   * @param {String} parameters.class - Button class name.
+   * @param {String} parameters.innerHTML - Button innerHTML text.
+   * @param {Object} callback- Callback method to call on click event.
+   * @returns {HTMLElement} HTML button.
+   */
+  createButton(parameters, callback) {
+    var element = {};
+    element = document.createElement("button");
+    element.setAttribute("id", parameters.id);
+    element.setAttribute("class", parameters.class);
+    element.innerHTML = parameters.innerHTML;
+    element.addEventListener("click", callback);
+
+    return element;
+  }
+
+  /**
+   * Shows the popupmessage containing a message, and two buttons
+   * to cancel the action or close the modal dialog.
+   */
+  show() {
+    if (this.overlayWrapper.style.display != 'block') {
+      // Clear focus with blur for prevent press any key.
+      document.activeElement.blur();
+
+      // For works with Safari.
+      window.focus();
+      this.overlayWrapper.style.display = 'block';
     }
-
-    /**
-     * This method create a button with arguments and return button dom object
-     * @param {Object} parameters - An object containing id, class and innerHTML button text.
-     * @param {String} parameters.id - Button id.
-     * @param {String} parameters.class - Button class name.
-     * @param {String} parameters.innerHTML - Button innerHTML text.
-     * @param {Object} callback- Callback method to call on click event.
-     * @returns {HTMLElement} HTML button.
-     */
-    createButton(parameters, callback) {
-        var element = {};
-        element = document.createElement("button");
-        element.setAttribute("id", parameters.id);
-        element.setAttribute("class", parameters.class);
-        element.innerHTML = parameters.innerHTML;
-        element.addEventListener("click", callback);
-
-        return element;
+    else {
+      this.overlayWrapper.style.display = 'none';
+      _wrs_modalWindow.focus();
     }
+  }
 
-    /**
-     * Shows the popupmessage containing a message, and two buttons
-     * to cancel the action or close the modal dialog.
-     */
-    show() {
-        if (this.overlayWrapper.style.display != 'block') {
-            // Clear focus with blur for prevent press any key.
-            document.activeElement.blur();
-
-            // For works with Safari.
-            window.focus();
-            this.overlayWrapper.style.display = 'block';
-        }
-        else {
-            this.overlayWrapper.style.display = 'none';
-            _wrs_modalWindow.focus();
-        }
+  /**
+   * This method cancels the popupMessage: the dialog disappears revealing the overlaid element.
+   * A callback method is called (if defined). For example a method to focus the overlaid element.
+   */
+  cancelAction() {
+    this.overlayWrapper.style.display = 'none';
+    if (typeof this.callbacks.cancelCallback !== 'undefined') {
+      this.callbacks.cancelCallback();
     }
+  }
 
-    /**
-     * This method cancels the popupMessage: the dialog disappears revealing the overlaid element.
-     * A callback method is called (if defined). For example a method to focus the overlaid element.
-     */
-    cancelAction() {
-        this.overlayWrapper.style.display = 'none';
-        if (typeof this.callbacks.cancelCallback !== 'undefined') {
-            this.callbacks.cancelCallback();
-        }
+  /**
+   * This method closes the popupMessage: the dialog disappears and the close callback is called.
+   * For example to close the overlaid element.
+   */
+  closeAction() {
+    this.cancelAction();
+    if (typeof this.callbacks.closeCallback !== 'undefined') {
+      this.callbacks.closeCallback();
     }
+  }
 
-    /**
-     * This method closes the popupMessage: the dialog disappears and the close callback is called.
-     * For example to close the overlaid element.
-     */
-    closeAction() {
+  /**
+   * Handle keyboard events detected in modal when elements of this class intervene.
+   * @param {KeyboardEvent} keyboardEvent - The keyboard event.
+   */
+  onKeyDown(keyboardEvent) {
+    if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+      // Code to detect Esc event.
+      if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
         this.cancelAction();
-        if (typeof this.callbacks.closeCallback !== 'undefined') {
-            this.callbacks.closeCallback();
-        }
+        keyboardEvent.stopPropagation();
+        keyboardEvent.preventDefault();
+      }
+      // Code to detect Tab event.
+      else if (keyboardEvent.key === 'Tab') {
+        (document.activeElement == this.closeButton) ? this.cancelButton.focus() : this.closeButton.focus();
+        keyboardEvent.stopPropagation();
+        keyboardEvent.preventDefault();
+      }
     }
-
-    /**
-     * Handle keyboard events detected in modal when elements of this class intervene.
-     * @param {KeyboardEvent} keyboardEvent - The keyboard event.
-     */
-    onKeyDown(keyboardEvent) {
-        if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
-            // Code to detect Esc event.
-            if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
-                this.cancelAction();
-                keyboardEvent.stopPropagation();
-                keyboardEvent.preventDefault();
-            }
-            // Code to detect Tab event.
-            else if (keyboardEvent.key === 'Tab') {
-                (document.activeElement == this.closeButton) ? this.cancelButton.focus() : this.closeButton.focus();
-                keyboardEvent.stopPropagation();
-                keyboardEvent.preventDefault();
-            }
-        }
-    }
+  }
 }

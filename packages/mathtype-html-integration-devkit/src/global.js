@@ -12,13 +12,13 @@ import Latex from './latex';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
-    Core: Core,
-    Parser: Parser,
-    Image: Image,
-    MathML: MathML,
-    Util: Util,
-    Configuration: Configuration,
-    Listeners: Listeners,
-    IntegrationModel: IntegrationModel,
-    Latex: Latex
+  Core: Core,
+  Parser: Parser,
+  Image: Image,
+  MathML: MathML,
+  Util: Util,
+  Configuration: Configuration,
+  Listeners: Listeners,
+  IntegrationModel: IntegrationModel,
+  Latex: Latex
 }

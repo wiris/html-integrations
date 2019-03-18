@@ -4,33 +4,33 @@ import translations from '../lang/strings.json';
  */
 export default class StringManager {
 
-    constructor() {
-        throw new Exception('Static class StringManager can not be instantiated.');
+  constructor() {
+    throw new Exception('Static class StringManager can not be instantiated.');
+  }
+
+  /**
+   * Returns the associated value of certain string key. If the associated value
+   * doesn't exits returns the original key.
+   * @param {string} key - string key
+   * @returns {string} correspondent value. If doesn't exists original key.
+   */
+  static get(key) {
+
+    let language = this.language;
+
+    if (!(language in this.strings)) {
+      console.warn(`Unknown language ${language} set in StringManager.`);
+      language = 'en';
     }
 
-    /**
-     * Returns the associated value of certain string key. If the associated value
-     * doesn't exits returns the original key.
-     * @param {string} key - string key
-     * @returns {string} correspondent value. If doesn't exists original key.
-     */
-    static get(key) {
-
-        let language = this.language;
-
-        if (!(language in this.strings)) {
-            console.warn(`Unknown language ${language} set in StringManager.`);
-            language = 'en';
-        }
-
-        if (!(key in this.strings[language])) {
-            console.warn(`Unknown key ${key} in StringManager.`);
-            return key;
-        }
-
-        return this.strings[language][key];
-
+    if (!(key in this.strings[language])) {
+      console.warn(`Unknown key ${key} in StringManager.`);
+      return key;
     }
+
+    return this.strings[language][key];
+
+  }
 
 }
 

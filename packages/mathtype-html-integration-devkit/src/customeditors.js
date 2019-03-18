@@ -21,64 +21,63 @@
  */
 export default class CustomEditors {
 
+  /**
+   * Creates an instance of the custom editor class.
+   */
+  constructor() {
     /**
-     * Creates an instance of the custom editor class.
+     * The custom editors.
+     * @type {Array.<CustomEditor>}
      */
-    constructor() {
-        /**
-         * The custom editors.
-         * @type {Array.<CustomEditor>}
-         */
 
-        this.editors = [];
-        /**
-         * The active editor name.
-         * @type {String}
-         */
-        this.activeEditor = 'default';
-    }
-
+    this.editors = [];
     /**
-     * Adds a {@link CustomEditor} to editors array.
-     * @param {String} editorName - The editor name.
-     * @param {CustomEditor} editorParams - The custom editor parameters.
+     * The active editor name.
+     * @type {String}
      */
-    addEditor(editorName, editorParams) {
-        var customEditor= {};
-        customEditor.name = editorParams.name;
-        customEditor.toolbar = editorParams.toolbar;
-        customEditor.icon = editorParams.icon;
-        customEditor.confVariable = editorParams.confVariable;
-        customEditor.title = editorParams.title;
-        customEditor.tooltip = editorParams.tooltip;
-        this.editors[editorName] = customEditor;
-    }
+    this.activeEditor = 'default';
+  }
 
-    /**
-     * Enables a {@link CustomEditor}.
-     * @param {String} customEditorName - The custom editor name.
-     */
-    enable(customEditorName) {
-        this.activeEditor = customEditorName;
-    }
+  /**
+   * Adds a {@link CustomEditor} to editors array.
+   * @param {String} editorName - The editor name.
+   * @param {CustomEditor} editorParams - The custom editor parameters.
+   */
+  addEditor(editorName, editorParams) {
+    var customEditor = {};
+    customEditor.name = editorParams.name;
+    customEditor.toolbar = editorParams.toolbar;
+    customEditor.icon = editorParams.icon;
+    customEditor.confVariable = editorParams.confVariable;
+    customEditor.title = editorParams.title;
+    customEditor.tooltip = editorParams.tooltip;
+    this.editors[editorName] = customEditor;
+  }
 
-    /**
-     * Disables a {@link CustomEditor}.
-     */
-    disable() {
-        this.activeEditor = 'default';
-    }
+  /**
+   * Enables a {@link CustomEditor}.
+   * @param {String} customEditorName - The custom editor name.
+   */
+  enable(customEditorName) {
+    this.activeEditor = customEditorName;
+  }
 
-    /**
-     * Returns the active editor.
-     * @return {CustomEditor} - A {@link CustomEditor} if a custom editor is enabled. Null otherwise.
-     */
-    getActiveEditor() {
-        if (this.activeEditor != 'default') {
-            return this.editors[this.activeEditor];
-        } else {
-            return null;
-        }
-    }
+  /**
+   * Disables a {@link CustomEditor}.
+   */
+  disable() {
+    this.activeEditor = 'default';
+  }
 
+  /**
+   * Returns the active editor.
+   * @return {CustomEditor} - A {@link CustomEditor} if a custom editor is enabled. Null otherwise.
+   */
+  getActiveEditor() {
+    if (this.activeEditor != 'default') {
+      return this.editors[this.activeEditor];
+    } else {
+      return null;
+    }
+  }
 }

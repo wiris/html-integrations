@@ -13,14 +13,14 @@ export default backwardsLib;
  * @deprecated Since version 7.6.0. Use Listeners.newListener instead.
  */
 function wrs_addPluginListener(jsonListener) {
-    // TODO: Add documentation URL + doc example.
-    console.warn('Deprecated method');
-    var eventName;
-    eventName = Object.keys(jsonListener)[0];
-    var callback;
-    callback = jsonListener[eventName];
-    var pluginListener = Listeners.newListener(eventName, callback);
-    Core.addGlobalListener(pluginListener);
+  // TODO: Add documentation URL + doc example.
+  console.warn('Deprecated method');
+  var eventName;
+  eventName = Object.keys(jsonListener)[0];
+  var callback;
+  callback = jsonListener[eventName];
+  var pluginListener = Listeners.newListener(eventName, callback);
+  Core.addGlobalListener(pluginListener);
 }
 
 // Expose the method globally.
@@ -38,8 +38,8 @@ window.wrs_addPluginListener = wrs_addPluginListener;
  * @deprecated Since version 7.6.0. Use Parser.initParse instead.
  */
 function wrs_initParse(code, language) {
-    console.warn('Deprecated method. Use Parser.endParse instead.');
-    return Parser.initParse(code, language);
+  console.warn('Deprecated method. Use Parser.endParse instead.');
+  return Parser.initParse(code, language);
 }
 
 // Expose the method globally.
@@ -57,8 +57,8 @@ window.wrs_initParse = wrs_initParse;
  * @deprecated Since version 7.6.0. Use Parser.initParse instead.
  */
 function wrs_endParse(code, wirisProperties, language) {
-    console.warn('Deprecated method. Use Parser.endParse instead.')
-    return Parser.endParse(code, wirisProperties, language);
+  console.warn('Deprecated method. Use Parser.endParse instead.')
+  return Parser.endParse(code, wirisProperties, language);
 }
 
 // Expose the method globally.
