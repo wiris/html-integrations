@@ -37,10 +37,10 @@ export default class Configuration {
    * @returns {String} Property value
    */
   static get(key) {
-    if (!Configuration.properties.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(Configuration, key)) {
       // Backwards compatibility.
-      if (Configuration.properties.hasOwnProperty('_wrs_conf_' + key)) {
-        return Configuration.properties['_wrs_conf_' + key];
+      if (Object.prototype.hasOwnProperty.call(Configuration, '_wrs_conf_')) {
+        return Configuration.properties[`_wrs_conf_${key}`];
       }
       return false;
     }
@@ -65,7 +65,7 @@ export default class Configuration {
     if (!Configuration.get(key)) {
       Configuration.set(key, propertyValue);
     } else {
-      var updateProperty = Object.assign(Configuration.get(key), propertyValue);
+      const updateProperty = Object.assign(Configuration.get(key), propertyValue);
       Configuration.set(key, updateProperty);
     }
   }
