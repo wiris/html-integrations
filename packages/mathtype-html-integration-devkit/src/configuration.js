@@ -37,9 +37,9 @@ export default class Configuration {
    * @returns {String} Property value
    */
   static get(key) {
-    if (!Object.prototype.hasOwnProperty.call(Configuration, key)) {
+    if (!Object.prototype.hasOwnProperty.call(Configuration.properties, key)) {
       // Backwards compatibility.
-      if (Object.prototype.hasOwnProperty.call(Configuration, '_wrs_conf_')) {
+      if (Object.prototype.hasOwnProperty.call(Configuration.properties, '_wrs_conf_')) {
         return Configuration.properties[`_wrs_conf_${key}`];
       }
       return false;
