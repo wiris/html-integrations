@@ -12,5 +12,8 @@
     "rules": {
       "no-underscore-dangle" : "off",
       "no-param-reassign" : "off"
+    },
+    "globals" : {
+      "_wrs_int_wirisProperties" : "readonly"
     }
 }
