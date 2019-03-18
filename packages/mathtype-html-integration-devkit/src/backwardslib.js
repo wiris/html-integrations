@@ -1,3 +1,7 @@
+/* eslint-disable */
+// This file has backwards compatibility purposes, eslint
+// is disabled.
+
 import Core from './core.src';
 import Parser from './parser';
 import Listeners from './listeners';

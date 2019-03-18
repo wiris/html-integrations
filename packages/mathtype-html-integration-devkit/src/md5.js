@@ -1,3 +1,4 @@
+/* eslint-disable */
 var md5;
 export default md5;
 
