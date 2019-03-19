@@ -1,24 +1,22 @@
-import Core from './core.src.js';
-import Parser from './parser.js';
-import Util from './util.js';
-import Image from './image.js';
-import Configuration from './configuration.js';
+import Core from './core.src';
+import Parser from './parser';
+import Util from './util';
+import Image from './image';
+import Configuration from './configuration';
 import Listeners from './listeners';
-import backwardsLib from './backwardslib.js';
-import polyfills from './polyfills.js';
-import IntegrationModel from './integrationmodel.js';
-import MathML from './mathml.js';
+import IntegrationModel from './integrationmodel';
+import MathML from './mathml';
 import Latex from './latex';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
-  Core: Core,
-  Parser: Parser,
-  Image: Image,
-  MathML: MathML,
-  Util: Util,
-  Configuration: Configuration,
-  Listeners: Listeners,
-  IntegrationModel: IntegrationModel,
-  Latex: Latex
-}
+  Core,
+  Parser,
+  Image,
+  MathML,
+  Util,
+  Configuration,
+  Listeners,
+  IntegrationModel,
+  Latex,
+};
