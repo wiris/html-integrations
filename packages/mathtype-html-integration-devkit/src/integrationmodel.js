@@ -3,20 +3,27 @@ import Image from './image';
 import Listeners from './listeners';
 import Util from './util';
 import Configuration from './configuration';
-import ServiceProvider, { ServiceProviderProperties } from './serviceprovider';
+import ServiceProvider from './serviceprovider';
 
 /**
  * @typedef {Object} IntegrationModelProperties
- * @property {string} configurationService - Configuration service path. This parameter is needed to determine all services paths.
+ * @property {string} configurationService - Configuration service path.
+ * This parameter is needed to determine all services paths.
  * @property {HTMLElement} integrationModelProperties.target - HTML target.
- * @property {string} integrationModelProperties.scriptName - Integration script name. Usually the name of the integration script.
+ * @property {string} integrationModelProperties.scriptName - Integration script name.
+ * Usually the name of the integration script.
  * @property {Object} integrationModelProperties.environment - integration environment properties.
- * @property {Object} [integrationModelProperties.callbackMethodArguments] - object containing callback method arguments.
+ * @property {Object} [integrationModelProperties.callbackMethodArguments] - object containing
+ * callback method arguments.
  * @property {string} [integrationModelProperties.version] - integration version number.
- * @property {Object} [integrationModelProperties.editorObject] - object containing the integration editor instance.
- * @property {boolean} [integrationModelProperties.rtl] - true if the editor is in RTL mode. false otherwise.
- * @property {ServiceProviderProperties} [integrationModelProperties.serviceProviderProperties] - The service parameters.
- * @property {Object} [integrationModelProperties.integrationParameters] - Overwritten integration parameters.
+ * @property {Object} [integrationModelProperties.editorObject] - object containing
+ * the integration editor instance.
+ * @property {boolean} [integrationModelProperties.rtl] - true if the editor is in RTL mode.
+ * false otherwise.
+ * @property {ServiceProviderProperties} [integrationModelProperties.serviceProviderProperties]
+ * - The service parameters.
+ * @property {Object} [integrationModelProperties.integrationParameters]
+ * - Overwritten integration parameters.
  */
 
 /**
@@ -69,9 +76,8 @@ export default class IntegrationModel {
     this.target = null;
     if ('target' in integrationModelProperties) {
       this.target = integrationModelProperties.target;
-    }
-    else {
-      throw new Error('IntegrationModel constructor error: target property missed.')
+    } else {
+      throw new Error('IntegrationModel constructor error: target property missed.');
     }
 
     /**
@@ -90,7 +96,8 @@ export default class IntegrationModel {
     }
 
     /**
-     * Contains information about the integration environment: like the name of the editor, the version, etc.
+     * Contains information about the integration environment:
+     * like the name of the editor, the version, etc.
      */
     this.environment = {};
     if ('environment' in integrationModelProperties) {
@@ -153,11 +160,10 @@ export default class IntegrationModel {
     if ('integrationParameters' in integrationModelProperties) {
       IntegrationModel.integrationParameters.forEach((parameter) => {
         if (parameter in integrationModelProperties.integrationParameters) {
-          this[parameter] = integrationModelProperties.integrationParameters[parameter]
+          this[parameter] = integrationModelProperties.integrationParameters[parameter];
         }
       });
     }
-
   }
 
   /**
@@ -167,34 +173,36 @@ export default class IntegrationModel {
     this.language = this.getLanguage();
     // We need to wait until Core class is loaded ('onLoad' event) before
     // call the callback method.
-    var listener = Listeners.newListener('onLoad', function () {
+    const listener = Listeners.newListener('onLoad', () => {
       this.callbackFunction(this.callbackMethodArguments);
-    }.bind(this));
+    });
 
     // Backwards compatibility.
-    if (this.serviceProviderProperties.URI.indexOf('configuration') != -1) {
-      const server = ServiceProvider.getServerLanguageFromService(this.serviceProviderProperties.URI);
+    if (this.serviceProviderProperties.URI.indexOf('configuration') !== -1) {
+      const uri = this.serviceProviderProperties.URI;
+      const server = ServiceProvider.getServerLanguageFromService(uri);
       this.serviceProviderProperties.server = server;
-
       const configurationIndex = this.serviceProviderProperties.URI.indexOf('configuration');
-      this.serviceProviderProperties.URI = this.serviceProviderProperties.URI.substring(0, configurationIndex);
+      const subsTring = this.serviceProviderProperties.URI.substring(0, configurationIndex);
+      this.serviceProviderProperties.URI = subsTring;
     }
 
     let serviceParametersURI = this.serviceProviderProperties.URI;
-    serviceParametersURI = serviceParametersURI.indexOf("/") == 0 || serviceParametersURI.indexOf("http") == 0 ?
-      serviceParametersURI : Util.concatenateUrl(this.getPath(), serviceParametersURI);
+    serviceParametersURI = serviceParametersURI.indexOf('/') === 0 || serviceParametersURI.indexOf('http') === 0
+      ? serviceParametersURI
+      : Util.concatenateUrl(this.getPath(), serviceParametersURI);
 
     this.serviceProviderProperties.URI = serviceParametersURI;
 
-    let coreProperties = {};
-    coreProperties.serviceProviderProperties = this.serviceProviderProperties
+    const coreProperties = {};
+    coreProperties.serviceProviderProperties = this.serviceProviderProperties;
     this.setCore(new Core(coreProperties));
     this.core.addListener(listener);
     this.core.language = this.language;
 
     // Initializing Core class.
     this.core.init();
-    //TODO: Move to Core constructor.
+    // TODO: Move to Core constructor.
     this.core.setEnvironment(this.environment);
   }
 
@@ -204,12 +212,12 @@ export default class IntegrationModel {
    */
   getPath() {
     if (typeof this.scriptName === 'undefined') {
-      throw new Error('scriptName property needed for getPath.')
+      throw new Error('scriptName property needed for getPath.');
     }
-    var col = document.getElementsByTagName("script");
-    var path = '';
-    for (var i = 0; i < col.length; i++) {
-      var j = col[i].src.lastIndexOf(this.scriptName);
+    const col = document.getElementsByTagName('script');
+    let path = '';
+    for (let i = 0; i < col.length; i += 1) {
+      const j = col[i].src.lastIndexOf(this.scriptName);
       if (j >= 0) {
         path = col[i].src.substr(0, j - 1);
       }
@@ -279,17 +287,16 @@ export default class IntegrationModel {
 
   /**
    * Wrapper to Core.updateFormula method.
-   * Transform a MathML into a image formula. Then the image formula is inserted in the specified target, creating
-   * a new image (new formula) or updating an existing one.
+   * Transform a MathML into a image formula.
+   * Then the image formula is inserted in the specified target, creating a new image (new formula)
+   * or updating an existing one.
    * @param {string} mathml - MathML to generate the formula.
    * @param {string} editMode - Edit Mode (LaTeX or images).
    */
   updateFormula(mathml) {
-
-    let
-      focusElement,
-      windowTarget,
-      wirisProperties = null;
+    let focusElement;
+    let windowTarget;
+    const wirisProperties = null;
 
     if (this.isIframe) {
       focusElement = this.target.contentWindow;
@@ -302,21 +309,16 @@ export default class IntegrationModel {
     let obj = this.core.beforeUpdateFormula(mathml, wirisProperties);
 
     if (!obj) {
-      return;
+      return '';
     }
 
     obj = this.insertFormula(focusElement, windowTarget, obj.mathml, obj.wirisProperties);
 
     if (!obj) {
-      return;
+      return '';
     }
 
     return this.core.afterUpdateFormula(obj.focusElement, obj.windowTarget, obj.node, obj.latex);
-
-
-    // this.core.before
-    // this.insert
-    // this.core.after
   }
 
   /**
@@ -339,10 +341,8 @@ export default class IntegrationModel {
       this.target.contentWindow.focus();
       return this.target.contentWindow.getSelection();
     }
-    else {
-      this.target.focus();
-      return window.getSelection();
-    }
+    this.target.focus();
+    return window.getSelection();
   }
 
   /**
@@ -355,18 +355,18 @@ export default class IntegrationModel {
    * in case the formula is resized.
    */
   addEvents() {
-    var eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
+    const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
     Util.addElementEvents(
       eventTarget,
-      function (element, event) {
+      (element, event) => {
         this.doubleClickHandler(element, event);
-      }.bind(this),
-      function (element, event) {
+      },
+      (element, event) => {
         this.mousedownHandler(element, event);
-      }.bind(this),
-      function (element, event) {
+      },
+      (element, event) => {
         this.mouseupHandler(element, event);
-      }.bind(this)
+      },
     );
   }
 
@@ -376,11 +376,11 @@ export default class IntegrationModel {
    * @param {HTMLElement} element - DOM object target.
    */
   doubleClickHandler(element) {
-    if (element.nodeName.toLowerCase() == 'img') {
+    if (element.nodeName.toLowerCase() === 'img') {
       this.core.getCustomEditors().disable();
       const customEditorAttributeName = Configuration.get('imageCustomEditorName');
       if (element.hasAttribute(customEditorAttributeName)) {
-        var customEditor = element.getAttribute(customEditorAttributeName);
+        const customEditor = element.getAttribute(customEditorAttributeName);
         this.core.getCustomEditors().enable(customEditor);
       }
       if (Util.containsClass(element, Configuration.get('imageClassName'))) {
@@ -397,9 +397,9 @@ export default class IntegrationModel {
    */
   mouseupHandler() {
     if (this.temporalImageResizing) {
-      setTimeout(function () {
+      setTimeout(() => {
         Image.fixAfterResize(this.temporalImageResizing);
-      }.bind(this), 10);
+      }, 10);
     }
   }
 
@@ -409,7 +409,7 @@ export default class IntegrationModel {
    * @param {HTMLElement} element - target element.
    */
   mousedownHandler(element) {
-    if (element.nodeName.toLowerCase() == 'img') {
+    if (element.nodeName.toLowerCase() === 'img') {
       if (Util.containsClass(element, Configuration.get('imageClassName'))) {
         this.temporalImageResizing = element;
       }
@@ -430,38 +430,38 @@ export default class IntegrationModel {
    * Returns the browser language.
    * @returns {string} the browser language.
    */
+  // eslint-disable-next-line class-methods-use-this
   getBrowserLanguage() {
-    var language = 'en';
+    let language = 'en';
     if (navigator.userLanguage) {
       language = navigator.userLanguage.substring(0, 2);
-    }
-    else if (navigator.language) {
+    } else if (navigator.language) {
       language = navigator.language.substring(0, 2);
-    }
-    else {
+    } else {
       language = 'en';
     }
-
     return language;
   }
 
   /**
    * This function is called once the {@link Core} is loaded. IntegrationModel class
-   * will fire this method when {@link Core} 'onLoad' event is fired. This method should content all the logic to init
+   * will fire this method when {@link Core} 'onLoad' event is fired.
+   * This method should content all the logic to init
    * the integration.
    */
   callbackFunction() {
     // It's needed to wait until the integration target is ready. The event is fired
     // from the integration side.
-    var listener = Listeners.newListener('onTargetReady', function () {
+    const listener = Listeners.newListener('onTargetReady', () => {
       this.addEvents(this.target);
-    }.bind(this));
+    });
     this.listeners.add(listener);
   }
 
   /**
    * Function called when the content submits an action.
    */
+  // eslint-disable-next-line class-methods-use-this
   notifyWindowClosed() {
     // Nothing.
   }
@@ -474,9 +474,9 @@ export default class IntegrationModel {
    * @param {int} caretPosition - caret position inside the text node.
    * @returns {string} MathML inside the text node.
    */
-  getMathmlFromTextNode(textNode, caretPosition) {
-    // Nothing.
-  }
+
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  getMathmlFromTextNode(textNode, caretPosition) {}
 
   /**
    * Wrapper
@@ -485,9 +485,8 @@ export default class IntegrationModel {
    * @param {Object} window dom window object.
    * @param {string} mathml valid mathml.
    */
-  fillNonLatexNode(event, window, mathml) {
-    // Nothing,
-  }
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  fillNonLatexNode(event, window, mathml) {}
 
   /**
     Wrapper.
@@ -495,9 +494,8 @@ export default class IntegrationModel {
    * @param {HTMLElement} target - target element
    * @param {boolean} iframe
    */
-  getSelectedItem(target, isIframe) {
-    // Nothing.
-  }
+  // eslint-disable-next-line class-methods-use-this, no-unused-vars
+  getSelectedItem(target, isIframe) {}
 }
 
 // To know if the integration that extends this class implements
