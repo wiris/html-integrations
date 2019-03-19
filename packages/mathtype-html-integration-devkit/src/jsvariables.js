@@ -7,6 +7,6 @@
 const jsProperties = {
   imageCustomEditorName: 'data-custom-editor',
   imageClassName: 'Wirisformula',
-  CASClassName: 'Wiriscas'
-}
+  CASClassName: 'Wiriscas',
+};
 export default jsProperties;
