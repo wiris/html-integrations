@@ -1,3 +1,10 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-extra-semi */
+
+// The rules above are disabled because we are implementing
+// an external interface.
+
 /**
  * This class represents an editor listener. It implements the EditorListener [interface](http://www.wiris.net/demo/editor/docs/api/com/wiris/editor/EditorListener.html).
  * Contains all the logic to determine if an editor has changes or not.
@@ -26,7 +33,7 @@ export default class EditorListener {
    */
   setIsContentChanged(value) {
     this.isContentChanged = value;
-  };
+  }
 
   /**
    * Returns true if the content of the editor has been changed, false otherwise.
@@ -42,27 +49,27 @@ export default class EditorListener {
    */
   setWaitingForChanges(value) {
     this.waitingForChanges = value;
-  };
+  }
 
   /**
    * EditorListener method to overwrite.
    * @type {JsEditor}
    * @ignore
    */
-  caretPositionChanged(editor) { };
+  caretPositionChanged(_editor) { };
 
   /**
    * EditorListener method to overwrite
    * @type {JsEditor}
    * @ignore
    */
-  clipboardChanged(editor) { };
+  clipboardChanged(_editor) { };
 
   /**
    * Determines if the content of an editor has been changed.
    * @param {JsEditor} editor - editor object.
    */
-  contentChanged(editor) {
+  contentChanged(_editor) {
     if (this.waitingForChanges === true && this.isContentChanged === false) {
       this.isContentChanged = true;
     }
@@ -72,13 +79,13 @@ export default class EditorListener {
    * EditorListener method to overwrite
    * @param {JsEditor} editor - The editor instance.
    */
-  styleChanged(editor) {
+  styleChanged(_editor) {
   }
 
   /**
    * EditorListener method to overwrite
    * @param {JsEditor} - The editor instance.
    */
-  transformationReceived(editor) {
+  transformationReceived(_editor) {
   }
 }
