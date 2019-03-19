@@ -4,15 +4,17 @@
  * @property {String} CustomEditor.name - Custom editor name.
  * @property {String} CustomEditor.toolbar - Custom editor toolbar.
  * @property {String} CustomEditor.icon - Custom editor icon.
- * @property {String} CustomEditor.confVariable - Configuration property to manage the availability of the custom editor.
+ * @property {String} CustomEditor.confVariable - Configuration property to manage
+ * the availability of the custom editor.
  * @property {String} CustomEditor.title - Custom editor modal dialog title.
  * @property {String} CustomEditor.tooltip - Custom editor icon tooltip.
  */
 
 
 /**
- * This class represents the MathType custom editors manager. A custom editor is MathType editor with a custom
- * toolbar. This class associates a {@link CustomEditor} to:
+ * This class represents the MathType custom editors manager.
+ * A custom editor is MathType editor with a custom  toolbar.
+ * This class associates a {@link CustomEditor} to:
  * - It's own formulas
  * - A custom toolbar
  * - An icon to open it from a HTML editor.
@@ -20,7 +22,6 @@
  * - A global variable to enable or disable it globally.
  */
 export default class CustomEditors {
-
   /**
    * Creates an instance of the custom editor class.
    */
@@ -44,7 +45,7 @@ export default class CustomEditors {
    * @param {CustomEditor} editorParams - The custom editor parameters.
    */
   addEditor(editorName, editorParams) {
-    var customEditor = {};
+    const customEditor = {};
     customEditor.name = editorParams.name;
     customEditor.toolbar = editorParams.toolbar;
     customEditor.icon = editorParams.icon;
@@ -74,10 +75,9 @@ export default class CustomEditors {
    * @return {CustomEditor} - A {@link CustomEditor} if a custom editor is enabled. Null otherwise.
    */
   getActiveEditor() {
-    if (this.activeEditor != 'default') {
+    if (this.activeEditor !== 'default') {
       return this.editors[this.activeEditor];
-    } else {
-      return null;
     }
+    return null;
   }
 }
