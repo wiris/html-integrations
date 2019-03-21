@@ -33,13 +33,12 @@ export default class Listeners {
    * @return {boolean} false if event has been prevented. true otherwise.
    */
   fire(eventName, event) {
-    for (var i = 0; i < this.listeners.length && !event.cancelled; ++i) {
+    for (let i = 0; i < this.listeners.length && !event.cancelled; i += 1) {
       if (this.listeners[i].eventName === eventName) {
         // Calling listener.
         this.listeners[i].callback(event);
       }
     }
-
     return event.defaultPrevented;
   }
 
@@ -50,7 +49,7 @@ export default class Listeners {
    * @returns {object} the listener object.
    */
   static newListener(eventName, callback) {
-    var listener = {};
+    const listener = {};
     listener.eventName = eventName;
     listener.callback = callback;
     return listener;
