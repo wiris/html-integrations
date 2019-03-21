@@ -15,6 +15,10 @@
       "import/no-cycle" : "off"
     },
     "globals" : {
-      "_wrs_int_wirisProperties" : "readonly"
+      "_wrs_int_wirisProperties" : "readonly",
+      "event" : "readonly",
+      "com" : "readonly",
+      "_wrs_modalWindow" : "readonly",
+      "ActiveXObject" : "readonly"
     }
 }
