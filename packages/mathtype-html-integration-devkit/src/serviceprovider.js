@@ -1,6 +1,5 @@
-import Util from './util.js';
-import StringManager from './stringmanager';
-import Listeners, { Listener } from './listeners';
+import Util from './util';
+import Listeners from './listeners';
 
 /**
  * @typedef {Object} ServiceProviderProperties
@@ -13,7 +12,6 @@ import Listeners, { Listener } from './listeners';
  * an arbitrary number of services with the correspondent path.
  */
 export default class ServiceProvider {
-
   /**
    * Returns Service Provider listeners.
    * @type {Listeners}
@@ -122,8 +120,8 @@ export default class ServiceProvider {
    */
   static getServerURL() {
     const url = window.location.href;
-    const arr = url.split("/");
-    const result = arr[0] + "//" + arr[2];
+    const arr = url.split('/');
+    const result = `${arr[0]}//${arr[2]}`;
     return result;
   }
 
@@ -145,8 +143,9 @@ export default class ServiceProvider {
     // Some backend integrations (like Java o Ruby) have an absolute backend path,
     // for example: /app/service. For them we calculate the absolute URL path, i.e
     // protocol://domain:port/app/service
-    if (ServiceProvider.parameters.URI.indexOf("/") == 0) {
+    if (ServiceProvider.parameters.URI.indexOf('/') === 0) {
       const serverPath = ServiceProvider.getServerURL();
+      configurationURI = serverPath + configurationURI;
       showImageURI = serverPath + showImageURI;
       createImageURI = serverPath + createImageURI;
       getMathMLURI = serverPath + getMathMLURI;
@@ -166,7 +165,8 @@ export default class ServiceProvider {
   /**
    * Gets the content from an URL.
    * @param {String} url - Target URL.
-   * @param {Object} [postVariables] - Object containing post variables. null if a GET query should be done.
+   * @param {Object} [postVariables] - Object containing post variables.
+   * null if a GET query should be done.
    * @returns {String} Content of the target URL.
    * @private
    * @static
@@ -176,30 +176,23 @@ export default class ServiceProvider {
     const httpRequest = Util.createHttpRequest();
 
     if (httpRequest) {
-      if (typeof postVariables === undefined || typeof postVariables == 'undefined') {
+      if (typeof postVariables === 'undefined' || typeof postVariables === 'undefined') {
         httpRequest.open('GET', url, false);
-      }
-      else if (url.substr(0, 1) == '/' || url.substr(0, 7) == 'http://' || url.substr(0, 8) == 'https://') {
+      } else if (url.substr(0, 1) === '/' || url.substr(0, 7) === 'http://' || url.substr(0, 8) === 'https://') {
         httpRequest.open('POST', url, false);
-      }
-      else {
+      } else {
         httpRequest.open('POST', currentPath + url, false);
       }
 
       if (postVariables !== undefined) {
         httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         httpRequest.send(Util.httpBuildQuery(postVariables));
-      }
-      else {
+      } else {
         httpRequest.send(null);
       }
 
       return httpRequest.responseText;
     }
-
-    alert(StringManager.get('browser_no_compatible'));
-
-
     return '';
   }
 
@@ -213,7 +206,7 @@ export default class ServiceProvider {
   static getService(service, postVariables, get) {
     let response;
     if (get === true) {
-      const serviceUrl = ServiceProvider.getServicePath(service) + '?' + postVariables;
+      const serviceUrl = `${ServiceProvider.getServicePath(service)}?${postVariables}`;
       response = ServiceProvider.getUrl(serviceUrl);
     } else {
       const serviceUrl = ServiceProvider.getServicePath(service);
@@ -231,11 +224,13 @@ export default class ServiceProvider {
    * @returns {String} - The server technology associated with the configuration service.
    */
   static getServerLanguageFromService(service) {
-    if (service.indexOf('.php') != -1) {
+    if (service.indexOf('.php') !== -1) {
       return 'php';
-    } else if (service.indexOf('.aspx') != -1) {
+    }
+    if (service.indexOf('.aspx') !== -1) {
       return 'aspx';
-    } else if (service.indexOf('wirispluginengine') != -1) {
+    }
+    if (service.indexOf('wirispluginengine') !== -1) {
       return 'ruby';
     }
     return 'java';
@@ -247,14 +242,15 @@ export default class ServiceProvider {
    * @return {String} The service path.
    */
   static createServiceURI(service) {
-    return Util.concatenateUrl(ServiceProvider.parameters.URI, service) + ServiceProvider.serverExtension();
-
+    const extension = ServiceProvider.serverExtension();
+    return Util.concatenateUrl(ServiceProvider.parameters.URI, service) + extension;
   }
 
   static serverExtension() {
-    if (ServiceProvider.parameters.server.indexOf('php') != -1) {
+    if (ServiceProvider.parameters.server.indexOf('php') !== -1) {
       return '.php';
-    } else if (ServiceProvider.parameters.server.indexOf('aspx') != -1) {
+    }
+    if (ServiceProvider.parameters.server.indexOf('aspx') !== -1) {
       return '.aspx';
     }
     return '';
