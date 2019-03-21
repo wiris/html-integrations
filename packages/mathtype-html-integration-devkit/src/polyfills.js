@@ -1,3 +1,4 @@
+/* eslint-disable */
 var polyfills;
 export default polyfills;
 
