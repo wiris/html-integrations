@@ -1,21 +1,18 @@
-import Util from './util.js';
-
 /**
  * This class represents a dialog message overlaying a DOM element in order to
  * accept / cancel discard changes. The dialog can be closed i.e the overlay disappears
  * o canceled. In this last case a callback function should be called.
  */
 export default class PopUpMessage {
-
   /**
    *
    * @param {Object} popupMessageAttributes - Object containing popup properties.
    * @param {HTMLElement} popupMessageAttributes.overlayElement - Element to overlay.
-   * @param {Object} popupMessageAttributes.callbacks - Contains callback methods for close and cancel actions.
+   * @param {Object} popupMessageAttributes.callbacks - Contains callback
+   * methods for close and cancel actions.
    * @param {Object} popupMessageAttributes.strings - Contains all the strings needed.
    */
   constructor(popupMessageAttributes) {
-
     /**
      * Element to be overlaid when the popup appears.
      */
@@ -26,37 +23,37 @@ export default class PopUpMessage {
     /**
      * HTMLElement element to wrap all HTML elements inside the popupMessage.
      */
-    this.overlayWrapper = this.overlayElement.appendChild(document.createElement("div"));
-    this.overlayWrapper.setAttribute("class", "wrs_popupmessage_overlay_envolture");
+    this.overlayWrapper = this.overlayElement.appendChild(document.createElement('div'));
+    this.overlayWrapper.setAttribute('class', 'wrs_popupmessage_overlay_envolture');
 
     /**
      * HTMLElement to display the popup message, close button and cancel button.
      */
-    this.message = this.overlayWrapper.appendChild(document.createElement("div"));
-    this.message.id = "wrs_popupmessage"
-    this.message.setAttribute("class", "wrs_popupmessage_panel");
+    this.message = this.overlayWrapper.appendChild(document.createElement('div'));
+    this.message.id = 'wrs_popupmessage';
+    this.message.setAttribute('class', 'wrs_popupmessage_panel');
     this.message.innerHTML = popupMessageAttributes.strings.message;
 
     /**
      * HTML element overlaying the overlayElement.
      */
-    var overlay = this.overlayWrapper.appendChild(document.createElement("div"));
-    overlay.setAttribute("class", "wrs_popupmessage_overlay");
+    const overlay = this.overlayWrapper.appendChild(document.createElement('div'));
+    overlay.setAttribute('class', 'wrs_popupmessage_overlay');
     // We create a overlay that close popup message on click in there
-    overlay.addEventListener("click", this.cancelAction.bind(this));
+    overlay.addEventListener('click', this.cancelAction.bind(this));
 
     /**
      * HTML element containing cancel and close buttons.
      */
     this.buttonArea = this.message.appendChild(document.createElement('div'));
-    this.buttonArea.setAttribute("class", "wrs_popupmessage_button_area");
+    this.buttonArea.setAttribute('class', 'wrs_popupmessage_button_area');
     this.buttonArea.id = 'wrs_popup_button_area';
 
     // Close button arguments.
-    var buttonSubmitArguments = {
-      class: "wrs_button_accept",
+    const buttonSubmitArguments = {
+      class: 'wrs_button_accept',
       innerHTML: popupMessageAttributes.strings.submitString,
-      id: 'wrs_popup_accept_button'
+      id: 'wrs_popup_accept_button',
     };
 
     /**
@@ -66,10 +63,10 @@ export default class PopUpMessage {
     this.buttonArea.appendChild(this.closeButton);
 
     // Cancel button arguments.
-    var buttonCancelArguments = {
-      class: "wrs_button_cancel",
+    const buttonCancelArguments = {
+      class: 'wrs_button_cancel',
       innerHTML: popupMessageAttributes.strings.cancelString,
-      id: 'wrs_popup_cancel_button'
+      id: 'wrs_popup_cancel_button',
     };
 
     /**
@@ -88,13 +85,14 @@ export default class PopUpMessage {
    * @param {Object} callback- Callback method to call on click event.
    * @returns {HTMLElement} HTML button.
    */
+  // eslint-disable-next-line class-methods-use-this
   createButton(parameters, callback) {
-    var element = {};
-    element = document.createElement("button");
-    element.setAttribute("id", parameters.id);
-    element.setAttribute("class", parameters.class);
+    let element = {};
+    element = document.createElement('button');
+    element.setAttribute('id', parameters.id);
+    element.setAttribute('class', parameters.class);
     element.innerHTML = parameters.innerHTML;
-    element.addEventListener("click", callback);
+    element.addEventListener('click', callback);
 
     return element;
   }
@@ -104,15 +102,14 @@ export default class PopUpMessage {
    * to cancel the action or close the modal dialog.
    */
   show() {
-    if (this.overlayWrapper.style.display != 'block') {
+    if (this.overlayWrapper.style.display !== 'block') {
       // Clear focus with blur for prevent press any key.
       document.activeElement.blur();
 
       // For works with Safari.
       window.focus();
       this.overlayWrapper.style.display = 'block';
-    }
-    else {
+    } else {
       this.overlayWrapper.style.display = 'none';
       _wrs_modalWindow.focus();
     }
@@ -151,10 +148,12 @@ export default class PopUpMessage {
         this.cancelAction();
         keyboardEvent.stopPropagation();
         keyboardEvent.preventDefault();
-      }
-      // Code to detect Tab event.
-      else if (keyboardEvent.key === 'Tab') {
-        (document.activeElement == this.closeButton) ? this.cancelButton.focus() : this.closeButton.focus();
+      } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
+        if (document.activeElement === this.closeButton) {
+          this.cancelButton.focus();
+        } else {
+          this.closeButton.focus();
+        }
         keyboardEvent.stopPropagation();
         keyboardEvent.preventDefault();
       }
