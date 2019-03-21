@@ -1,9 +1,7 @@
-import PopUpMessage from './popupmessage.js';
-import Core from './core.src.js';
-import Util from './util.js';
-import Configuration from './configuration.js';
+import PopUpMessage from './popupmessage';
+import Util from './util';
+import Configuration from './configuration';
 import Listeners from './listeners';
-import ContentManager from './contentmanager.js';
 import StringManager from './stringmanager';
 
 /**
@@ -11,8 +9,10 @@ import StringManager from './stringmanager';
  * @property {String} DeviceProperties.orientation - Indicates of the orientation of the device.
  * @property {Boolean} DeviceProperties.isAndroid - True if the device is Android. False otherwise.
  * @property {Boolean} DeviceProperties.isIOS - True if the device is iOS. False otherwise.
- * @property {Boolean} DeviceProperties.isMobile - True if the device is a mobile one. False otherwise.
- * @property {Boolean} DeviceProperties.isDesktop - True if the device is a desktop one. False otherwise.
+ * @property {Boolean} DeviceProperties.isMobile - True if the device is a mobile one.
+ * False otherwise.
+ * @property {Boolean} DeviceProperties.isDesktop - True if the device is a desktop one.
+ * False otherwise.
  */
 
 /**
@@ -20,34 +20,35 @@ import StringManager from './stringmanager';
  * to manage the content of the dialog.
  */
 export default class ModalDialog {
-
   /**
    * @constructs
    * Modal dialog constructor.
    * @param {Object} modalDialogAttributes  - An object containing all modal dialog attributes.
    */
   constructor(modalDialogAttributes) {
-    this.attributes = modalDialogAttributes
+    this.attributes = modalDialogAttributes;
 
     // Metrics.
-    var ua = navigator.userAgent.toLowerCase();
-    var isAndroid = ua.indexOf("android") > -1;
-    var isIOS = ((ua.indexOf("ipad") > -1) || (ua.indexOf("iphone") > -1));
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = ua.indexOf('android') > -1;
+    const isIOS = ((ua.indexOf('ipad') > -1) || (ua.indexOf('iphone') > -1));
     this.iosSoftkeyboardOpened = false;
-    this.iosMeasureUnit = ua.indexOf("crios") == -1 ? "%" : "vh";
-    this.iosDivHeight = "100" + this.iosMeasureUnit;
+    this.iosMeasureUnit = ua.indexOf('crios') === -1 ? '%' : 'vh';
+    this.iosDivHeight = `100%${this.iosMeasureUnit}`;
 
-    var deviceWidth = window.outerWidth;
-    var deviceHeight = window.outerHeight;
+    const deviceWidth = window.outerWidth;
+    const deviceHeight = window.outerHeight;
 
-    var landscape = deviceWidth > deviceHeight;
-    var portrait = deviceWidth < deviceHeight;
+    const landscape = deviceWidth > deviceHeight;
+    const portrait = deviceWidth < deviceHeight;
 
     // TODO: Detect isMobile without using editor metrics.
-    var isMobile = (landscape && this.attributes.height > deviceHeight) || (portrait && this.attributes.width > deviceWidth) ? true : false;
+    const isLandscape = (landscape && this.attributes.height > deviceHeight);
+    const isPortrait = portrait && this.attributes.width > deviceWidth;
+    const isMobile = isLandscape || isPortrait;
 
     // Obtain number of current instance.
-    this.instanceId = document.getElementsByClassName("wrs_modal_dialogContainer").length;
+    this.instanceId = document.getElementsByClassName('wrs_modal_dialogContainer').length;
 
     // Device object properties.
 
@@ -56,10 +57,10 @@ export default class ModalDialog {
      */
     this.deviceProperties = {
       orientation: landscape ? 'landscape' : 'portait',
-      isAndroid: isAndroid ? true : false,
-      isIOS: isIOS ? true : false,
-      isMobile: isMobile,
-      isDesktop: !isMobile && !isIOS && !isAndroid
+      isAndroid,
+      isIOS,
+      isMobile,
+      isDesktop: !isMobile && !isIOS && !isAndroid,
     };
 
     this.properties = {
@@ -67,7 +68,7 @@ export default class ModalDialog {
       state: '',
       previousState: '',
       position: { bottom: 0, right: 10 },
-      size: { height: 338, width: 580 }
+      size: { height: 338, width: 580 },
     };
 
     /**
@@ -81,7 +82,7 @@ export default class ModalDialog {
      */
     this.websiteBeforeLockParameters = null;
 
-    var attributes = {};
+    let attributes = {};
     attributes.class = 'wrs_modal_overlay';
     attributes.id = this.getElementId(attributes.class);
     this.overlay = Util.createElement('div', attributes);
@@ -101,7 +102,7 @@ export default class ModalDialog {
     attributes.class = 'wrs_modal_close_button';
     attributes.id = this.getElementId(attributes.class);
     attributes.title = StringManager.get('close');
-    this.closeDiv = Util.createElement('a', attributes);;
+    this.closeDiv = Util.createElement('a', attributes);
     this.closeDiv.setAttribute('role', 'button');
 
     attributes = {};
@@ -155,39 +156,39 @@ export default class ModalDialog {
       {
         id: this.getElementId('wrs_modal_button_accept'),
         class: 'wrs_modal_button_accept',
-        innerHTML: StringManager.get('accept')
+        innerHTML: StringManager.get('accept'),
       },
-      this.submitAction.bind(this)
+      this.submitAction.bind(this),
     );
 
     this.cancelButton = this.createSubmitButton(
       {
         id: this.getElementId('wrs_modal_button_cancel'),
         class: 'wrs_modal_button_cancel',
-        innerHTML: StringManager.get('cancel')
+        innerHTML: StringManager.get('cancel'),
       },
-      this.cancelAction.bind(this)
+      this.cancelAction.bind(this),
     );
 
     this.contentManager = null;
 
     // Overlay popup.
-    var popupStrings = {
-      'cancelString': StringManager.get('cancel'),
-      'submitString': StringManager.get('close'),
-      'message': StringManager.get('close_modal_warning')
+    const popupStrings = {
+      cancelString: StringManager.get('cancel'),
+      submitString: StringManager.get('close'),
+      message: StringManager.get('close_modal_warning'),
     };
 
-    var callbacks = {
-      'closeCallback': function () { this.close() }.bind(this),
-      'cancelCallback': function () { this.focus() }.bind(this)
-    }
+    const callbacks = {
+      closeCallback: () => { this.close(); },
+      cancelCallback: () => { this.focus(); },
+    };
 
-    var popupupProperties = {
-      'overlayElement': this.container,
-      'callbacks': callbacks,
-      'strings': popupStrings
-    }
+    const popupupProperties = {
+      overlayElement: this.container,
+      callbacks,
+      strings: popupStrings,
+    };
 
     this.popup = new PopUpMessage(popupupProperties);
 
@@ -204,6 +205,7 @@ export default class ModalDialog {
     this.handleOpenedIosSoftkeyboard = this.handleOpenedIosSoftkeyboard.bind(this);
     this.handleClosedIosSoftkeyboard = this.handleClosedIosSoftkeyboard.bind(this);
   }
+
   /**
    * This method sets an ContentManager instance to ModalDialog. ContentManager
    * manages the logic of ModalDialog content: submit, update, close and changes.
@@ -258,19 +260,21 @@ export default class ModalDialog {
    * @returns {HTMLButtonElement} The button element.
    *
    */
+  // eslint-disable-next-line class-methods-use-this
   createSubmitButton(properties, callback) {
-    function SubmitButton(properties, callback) {
-      this.element = document.createElement('button');
-      this.element.id = properties.id;
-      this.element.className = properties.class;
-      this.element.innerHTML = properties.innerHTML;
-      Util.addEvent(this.element, 'click', callback);
-    }
+    class SubmitButton {
+      constructor() {
+        this.element = document.createElement('button');
+        this.element.id = properties.id;
+        this.element.className = properties.class;
+        this.element.innerHTML = properties.innerHTML;
+        Util.addEvent(this.element, 'click', callback);
+      }
 
-    SubmitButton.prototype.getElement = function () {
-      return this.element;
+      getElement() {
+        return this.element;
+      }
     }
-
     return new SubmitButton(properties, callback).getElement();
   }
 
@@ -278,8 +282,7 @@ export default class ModalDialog {
    * Creates the modal window object inserting a contentElement object.
    */
   create() {
-
-    /*Modal Window Structure
+    /* Modal Window Structure
     _____________________________________________________________________________________
     |wrs_modal_dialog_Container                                                         |
     | _________________________________________________________________________________ |
@@ -300,7 +303,7 @@ export default class ModalDialog {
     | | | |_|_____________ |______________|_|                                       | | |
     | | |___________________________________________________________________________| | |
     | |_______________________________________________________________________________| |
-    |___________________________________________________________________________________|*/
+    |___________________________________________________________________________________| */
 
     this.titleBar.appendChild(this.closeDiv);
     this.titleBar.appendChild(this.stackDiv);
@@ -308,7 +311,7 @@ export default class ModalDialog {
     this.titleBar.appendChild(this.minimizeDiv);
     this.titleBar.appendChild(this.title);
 
-    if (this.deviceProperties['isDesktop']) {
+    if (this.deviceProperties.isDesktop) {
       this.container.appendChild(this.titleBar);
     }
 
@@ -328,7 +331,7 @@ export default class ModalDialog {
     document.body.appendChild(this.container);
     document.body.appendChild(this.overlay);
 
-    if (this.deviceProperties['isDesktop']) { // Desktop.
+    if (this.deviceProperties.isDesktop) { // Desktop.
       this.createModalWindowDesktop();
       this.createResizeButtons();
 
@@ -337,11 +340,9 @@ export default class ModalDialog {
       if (Configuration.get('modalWindowFullScreen')) {
         this.maximize();
       }
-    }
-    else if (this.deviceProperties['isAndroid']) {
+    } else if (this.deviceProperties.isAndroid) {
       this.createModalWindowAndroid();
-    }
-    else if (this.deviceProperties['isIOS'] && !this.deviceProperties['isMobile']) {
+    } else if (this.deviceProperties.isIOS && !this.deviceProperties.isMobile) {
       this.createModalWindowIos();
     }
 
@@ -354,7 +355,7 @@ export default class ModalDialog {
 
     // Checks language directionality.
     if (this.isRTL()) {
-      this.container.style.right = window.innerWidth - this.scrollbarWidth - this.container.offsetWidth + 'px';
+      this.container.style.right = `${window.innerWidth - this.scrollbarWidth - this.container.offsetWidth}px`;
       this.container.className += ' wrs_modal_rtl';
     }
   }
@@ -404,14 +405,14 @@ export default class ModalDialog {
     Util.addClass(this.overlay, 'wrs_overlay_active');
     this.resizeDataObject = {
       x: this.eventClient(mouseEvent).X,
-      y: this.eventClient(mouseEvent).Y
+      y: this.eventClient(mouseEvent).Y,
     };
     // Save Initial state of modal to compare on drag and obtain the difference.
-    this.initialWidth = parseInt(this.container.style.width);
-    this.initialHeight = parseInt(this.container.style.height);
+    this.initialWidth = parseInt(this.container.style.width, 10);
+    this.initialHeight = parseInt(this.container.style.height, 10);
     if (!leftOption) {
-      this.initialRight = parseInt(this.container.style.right);
-      this.initialBottom = parseInt(this.container.style.bottom);
+      this.initialRight = parseInt(this.container.style.right, 10);
+      this.initialBottom = parseInt(this.container.style.bottom, 10);
     } else {
       this.leftScale = true;
     }
@@ -430,22 +431,24 @@ export default class ModalDialog {
    * if exists. By default the modal object opens in stack mode.
    */
   open() {
-    //Removing close class.
+    // Removing close class.
     this.removeClass('wrs_closed');
     // Hiding keyboard for mobile devices.
-    if (this.deviceProperties['isIOS'] || this.deviceProperties['isAndroid'] || this.deviceProperties['isMobile']) {
+    const { isIOS } = this.deviceProperties;
+    const { isAndroid } = this.deviceProperties;
+    const { isMobile } = this.deviceProperties;
+    if (isIOS || isAndroid || isMobile) {
       // Restore scale to 1.
       this.restoreWebsiteScale();
       this.lockWebsiteScroll();
       // Due to editor wait we need to wait until editor focus.
-      setTimeout(function () { this.hideKeyboard() }.bind(this), 400);
+      setTimeout(() => { this.hideKeyboard(); }, 400);
     }
 
     // New modal window. He need to create the whole object.
     if (!this.properties.created) {
       this.create();
-    }
-    else {
+    } else {
       // Previous state closed. Open method can be called even the previous state is open,
       // for example updating the content of the modal object.
       if (!this.properties.open) {
@@ -459,27 +462,26 @@ export default class ModalDialog {
       }
 
       // Maximize window only when the configuration is set and the device is not iOs or Android.
-      if (this.deviceProperties['isDesktop'] && Configuration.get('modalWindowFullScreen')) {
+      if (this.deviceProperties.isDesktop && Configuration.get('modalWindowFullScreen')) {
         this.maximize();
       }
 
       // In iOS we need to recalculate the size of the modal object because
       // iOS keyboard is a float div which can overlay the modal object.
-      if (this.deviceProperties['isIOS']) {
+      if (this.deviceProperties.isIOS) {
         this.iosSoftkeyboardOpened = false;
-        this.setContainerHeight("100" + this.iosMeasureUnit);
+        this.setContainerHeight(`${100 + this.iosMeasureUnit}`);
       }
     }
 
     if (this.contentManager.isEditorLoaded === false) {
-      var listener = Listeners.newListener('onLoad', function () {
+      const listener = Listeners.newListener('onLoad', () => {
         this.contentManager.onOpen(this);
-      }.bind(this));
-      this.contentManager.addListener(listener)
+      });
+      this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
     }
-
   }
 
   /**
@@ -498,27 +500,27 @@ export default class ModalDialog {
   /**
    * Sets the website scale to one.
    */
+  // eslint-disable-next-line class-methods-use-this
   restoreWebsiteScale() {
     let viewportmeta = document.querySelector('meta[name=viewport]');
     // Let the equal symbols in order to search and make meta's final content.
-    let contentAttrsToUpdate = ['initial-scale=', 'minimum-scale=', 'maximum-scale='];
-    let contentAttrsValuesToUpdate = ['1.0', '1.0', '1.0'];
-    let setMetaAttrFunc = (viewportelement, contentAttrsToUpdate) => {
-      let contentAttr = viewportelement.getAttribute('content');
+    const contentAttrsToUpdate = ['initial-scale=', 'minimum-scale=', 'maximum-scale='];
+    const contentAttrsValuesToUpdate = ['1.0', '1.0', '1.0'];
+    const setMetaAttrFunc = (viewportelement, contentAttrs) => {
+      const contentAttr = viewportelement.getAttribute('content');
       // If it exists, we need to maintain old values and put our values.
       if (contentAttr) {
-        let attrArray = contentAttr.split(',');
-        let finalContentMeta = "";
-        let oldAttrs = [];
-        for (let i = 0; i < attrArray.length; i++) {
+        const attrArray = contentAttr.split(',');
+        let finalContentMeta = '';
+        const oldAttrs = [];
+        for (let i = 0; i < attrArray.length; i += 1) {
           let isAttrToUpdate = false;
           let j = 0;
-          while (!isAttrToUpdate && j < contentAttrsToUpdate.length) {
-            if (attrArray[i].indexOf(contentAttrsToUpdate[j])) {
+          while (!isAttrToUpdate && j < contentAttrs.length) {
+            if (attrArray[i].indexOf(contentAttrs[j])) {
               isAttrToUpdate = true;
             }
-
-            j++;
+            j += 1;
           }
 
           if (!isAttrToUpdate) {
@@ -526,20 +528,19 @@ export default class ModalDialog {
           }
         }
 
-        for (let i = 0; i < contentAttrsToUpdate.length; i++) {
-          let attr = contentAttrsToUpdate[i] + contentAttrsValuesToUpdate[i];
-          finalContentMeta += i == 0 ? attr : ',' + attr;
+        for (let i = 0; i < contentAttrs.length; i += 1) {
+          const attr = contentAttrs[i] + contentAttrsValuesToUpdate[i];
+          finalContentMeta += i === 0 ? attr : `,${attr}`;
         }
 
-        for (let i = 0; i < oldAttrs.length; i++) {
-          finalContentMeta += ',' + oldAttrs[i];
+        for (let i = 0; i < oldAttrs.length; i += 1) {
+          finalContentMeta += `,${oldAttrs[i]}`;
         }
         viewportelement.setAttribute('content', finalContentMeta);
         // It needs to set to empty because setAttribute refresh only when attribute is different.
         viewportelement.setAttribute('content', '');
         viewportelement.setAttribute('content', contentAttr);
-      }
-      else {
+      } else {
         viewportelement.setAttribute('content', 'initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
         viewportelement.removeAttribute('content');
       }
@@ -550,8 +551,7 @@ export default class ModalDialog {
       document.getElementsByTagName('head')[0].appendChild(viewportmeta);
       setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
       viewportmeta.remove();
-    }
-    else {
+    } else {
       setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
     }
   }
@@ -565,7 +565,7 @@ export default class ModalDialog {
       bodyStyleOverflow: document.body.style.overflow ? document.body.style.overflow : '',
       htmlStyleOverflow: document.documentElement.style.overflow ? document.documentElement.style.overflow : '',
       windowScrollX: window.scrollX,
-      windowScrollY: window.scrollY
+      windowScrollY: window.scrollY,
     };
   }
 
@@ -577,7 +577,9 @@ export default class ModalDialog {
       document.body.style.position = this.websiteBeforeLockParameters.bodyStylePosition;
       document.body.style.overflow = this.websiteBeforeLockParameters.bodyStyleOverflow;
       document.documentElement.style.overflow = this.websiteBeforeLockParameters.htmlStyleOverflow;
-      window.scrollTo(this.websiteBeforeLockParameters.windowScrollX, this.websiteBeforeLockParameters.windowScrollY);
+      const { windowScrollX } = this.websiteBeforeLockParameters;
+      const { windowScrollY } = this.websiteBeforeLockParameters;
+      window.scrollTo(windowScrollX, windowScrollY);
       this.websiteBeforeLockParameters = null;
     }
   }
@@ -586,8 +588,9 @@ export default class ModalDialog {
    * Util function to known if browser is IE11.
    * @returns {Boolean} true if the browser is IE11. false otherwise.
    */
+  // eslint-disable-next-line class-methods-use-this
   isIE11() {
-    if (navigator.userAgent.search("Msie/") >= 0 || navigator.userAgent.search("Trident/") >= 0 || navigator.userAgent.search("Edge/") >= 0) {
+    if (navigator.userAgent.search('Msie/') >= 0 || navigator.userAgent.search('Trident/') >= 0 || navigator.userAgent.search('Edge/') >= 0) {
       return true;
     }
     return false;
@@ -598,11 +601,10 @@ export default class ModalDialog {
    * @return {Boolean} true if current language is RTL. false otherwise.
    */
   isRTL() {
-    if (this.attributes.language == 'ar' || this.attributes.language == 'he') {
+    if (this.attributes.language === 'ar' || this.attributes.language === 'he') {
       return true;
-    } else {
-      return this.rtl
-    };
+    }
+    return this.rtl;
   }
 
   /**
@@ -666,10 +668,10 @@ export default class ModalDialog {
    * Restore previous state, position and size of previous stacked modal dialog.
    */
   restoreState() {
-    if (this.properties.state == 'maximized') {
+    if (this.properties.state === 'maximized') {
       // Reset states for prevent return to stack state.
       this.maximize();
-    } else if (this.properties.state == 'minimized') {
+    } else if (this.properties.state === 'minimized') {
       // Reset states for prevent return to stack state.
       this.properties.state = this.properties.previousState;
       this.properties.previousState = '';
@@ -709,29 +711,26 @@ export default class ModalDialog {
   minimize() {
     // Saving width, height, top and bottom parameters to restore when opening.
     this.saveModalProperties();
-    if (this.properties.state == 'minimized' && this.properties.previousState == 'stack') {
+    if (this.properties.state === 'minimized' && this.properties.previousState === 'stack') {
       this.stack();
-    }
-    else if (this.properties.state == 'minimized' && this.properties.previousState == 'maximized') {
+    } else if (this.properties.state === 'minimized' && this.properties.previousState === 'maximized') {
       this.maximize();
-    }
-    else {
+    } else {
       // Setting css to prevent important tag into css style.
-      this.container.style.height = "30px";
-      this.container.style.width = "250px";
-      this.container.style.bottom = "0px";
-      this.container.style.right = "10px";
+      this.container.style.height = '30px';
+      this.container.style.width = '250px';
+      this.container.style.bottom = '0px';
+      this.container.style.right = '10px';
 
       this.removeListeners();
       this.properties.previousState = this.properties.state;
-      this.properties.state = "minimized";
+      this.properties.state = 'minimized';
       this.setResizeButtonsVisibility();
       this.minimizeDiv.title = StringManager.get('maximize');
 
       if (Util.containsClass(this.overlay, 'wrs_stack')) {
         this.removeClass('wrs_stack');
-      }
-      else {
+      } else {
         this.removeClass('wrs_maximized');
       }
       this.addClass('wrs_minimized');
@@ -744,7 +743,7 @@ export default class ModalDialog {
   maximize() {
     // Saving width, height, top and bottom parameters to restore when openning.
     this.saveModalProperties();
-    if (this.properties.state != 'maximized') {
+    if (this.properties.state !== 'maximized') {
       this.properties.previousState = this.properties.state;
       this.properties.state = 'maximized';
     }
@@ -754,8 +753,7 @@ export default class ModalDialog {
     if (Util.containsClass(this.overlay, 'wrs_minimized')) {
       this.minimizeDiv.title = StringManager.get('minimize');
       this.removeClass('wrs_minimized');
-    }
-    else if (Util.containsClass(this.overlay, 'wrs_stack')) {
+    } else if (Util.containsClass(this.overlay, 'wrs_stack')) {
       this.container.style.left = null;
       this.container.style.top = null;
       this.removeClass('wrs_stack');
@@ -764,19 +762,21 @@ export default class ModalDialog {
     this.addClass('wrs_maximized');
 
     // Set size to 80% screen with a max size.
-    this.setSize(parseInt(window.innerHeight * 0.8), parseInt(window.innerWidth * 0.8));
-    var sizeModificated = false;
+    this.setSize(parseInt(window.innerHeight * 0.8, 10), parseInt(window.innerWidth * 0.8, 10));
     if (this.container.clientHeight > 700) {
       this.container.style.height = '700px';
-      sizeModificated = true;
     }
     if (this.container.clientWidth > 1200) {
       this.container.style.width = '1200px';
-      sizeModificated = true;
     }
 
     // Setting modal position in center on screen.
-    this.setPosition(window.innerHeight / 2 - this.container.offsetHeight / 2, window.innerWidth / 2 - this.container.offsetWidth / 2);
+    const { innerHeight } = window;
+    const { innerWidth } = window;
+    const { offsetHeight } = this.container;
+    const { offsetWidth } = this.container;
+    const position = (innerHeight / 2 - offsetHeight / 2, innerWidth / 2 - offsetWidth / 2);
+    this.setPosition(position);
     this.recalculateScale();
     this.recalculatePosition();
     this.recalculateSize();
@@ -789,8 +789,8 @@ export default class ModalDialog {
    * @param {Number} width - Width of the ModalDialog.
    */
   setSize(height, width) {
-    this.container.style.height = height + 'px';
-    this.container.style.width = width + 'px';
+    this.container.style.height = `${height}px`;
+    this.container.style.width = `${width}px`;
     this.recalculateSize();
   }
 
@@ -800,8 +800,8 @@ export default class ModalDialog {
    * @param  {number} right - right attribute.
    */
   setPosition(bottom, right) {
-    this.container.style.bottom = bottom + 'px';
-    this.container.style.right = right + 'px';
+    this.container.style.bottom = `${bottom}px`;
+    this.container.style.right = `${right}px`;
   }
 
   /**
@@ -810,11 +810,11 @@ export default class ModalDialog {
    */
   saveModalProperties() {
     // Saving values of modal only when modal is in stack state.
-    if (this.properties.state == 'stack') {
-      this.properties.position.bottom = parseInt(this.container.style.bottom);
-      this.properties.position.right = parseInt(this.container.style.right);
-      this.properties.size.width = parseInt(this.container.style.width);
-      this.properties.size.height = parseInt(this.container.style.height);
+    if (this.properties.state === 'stack') {
+      this.properties.position.bottom = parseInt(this.container.style.bottom, 10);
+      this.properties.position.right = parseInt(this.container.style.right, 10);
+      this.properties.size.width = parseInt(this.container.style.width, 10);
+      this.properties.size.height = parseInt(this.container.style.height, 10);
     }
   }
 
@@ -822,7 +822,7 @@ export default class ModalDialog {
    * Restore ModalDialog position and size parameters.
    */
   restoreModalProperties() {
-    if (this.properties.state == 'stack') {
+    if (this.properties.state === 'stack') {
       // Restoring Bottom and Right values from last modal.
       this.setPosition(this.properties.position.bottom, this.properties.position.right);
       // Restoring Height and Left values from last modal.
@@ -834,20 +834,19 @@ export default class ModalDialog {
    * Sets the modal dialog initial size.
    */
   recalculateSize() {
-    this.wrapper.style.width = this.container.clientWidth - 12 + 'px';
-    this.wrapper.style.height = this.container.clientHeight - 38 + 'px';
-    this.contentContainer.style.height = parseInt(this.wrapper.offsetHeight - 50) + 'px';
+    this.wrapper.style.width = `${this.container.clientWidth - 12}px`;
+    this.wrapper.style.height = `${this.container.clientHeight - 38}px`;
+    this.contentContainer.style.height = `${parseInt(this.wrapper.offsetHeight - 50, 10)}px`;
   }
 
   /**
    * Enable or disable visibility of resize buttons in modal window depend on state.
    */
   setResizeButtonsVisibility() {
-    if (this.properties.state == 'stack') {
+    if (this.properties.state === 'stack') {
       this.resizerTL.style.visibility = 'visible';
       this.resizerBR.style.visibility = 'visible';
-    }
-    else {
+    } else {
       this.resizerTL.style.visibility = 'hidden';
       this.resizerBR.style.visibility = 'hidden';
     }
@@ -894,54 +893,54 @@ export default class ModalDialog {
    * @param {MouseEvent} mouseEvent - Mouse event.
    * @return {Object} With the X and Y coordinates.
    */
+  // eslint-disable-next-line class-methods-use-this
   eventClient(mouseEvent) {
-    if (typeof (mouseEvent.clientX) == 'undefined' && mouseEvent.changedTouches) {
-      var client = {
+    if (typeof (mouseEvent.clientX) === 'undefined' && mouseEvent.changedTouches) {
+      const client = {
         X: mouseEvent.changedTouches[0].clientX,
-        Y: mouseEvent.changedTouches[0].clientY
+        Y: mouseEvent.changedTouches[0].clientY,
       };
       return client;
     }
-    else {
-      client = {
-        X: mouseEvent.clientX,
-        Y: mouseEvent.clientY
-      };
-      return client;
-    }
+    const client = {
+      X: mouseEvent.clientX,
+      Y: mouseEvent.clientY,
+    };
+    return client;
   }
 
   /**
-   * Start drag function: set the object dragDataObject with the draggable object offsets coordinates.
+   * Start drag function: set the object dragDataObject with the draggable
+   * object offsets coordinates.
    * when drag starts (on touchstart or mousedown events).
    * @param {MouseEvent} mouseEvent - Touchstart or mousedown event.
    */
   startDrag(mouseEvent) {
-    if (this.properties.state == 'minimized') {
+    if (this.properties.state === 'minimized') {
       return;
     }
     if (mouseEvent.target === this.title) {
       if (typeof this.dragDataObject === 'undefined' || this.dragDataObject === null) {
-        mouseEvent = mouseEvent || event;
         // Save first click mouse point on screen.
         this.dragDataObject = {
           x: this.eventClient(mouseEvent).X,
-          y: this.eventClient(mouseEvent).Y
+          y: this.eventClient(mouseEvent).Y,
         };
         // Reset last drag position when start drag.
         this.lastDrag = {
-          x: "0px",
-          y: "0px"
+          x: '0px',
+          y: '0px',
         };
         // Init right and bottom values for window modal if it isn't exist.
-        if (this.container.style.right == '') {
-          this.container.style.right = "0px";
+        if (this.container.style.right === '') {
+          this.container.style.right = '0px';
         }
-        if (this.container.style.bottom == '') {
-          this.container.style.bottom = "0px";
+        if (this.container.style.bottom === '') {
+          this.container.style.bottom = '0px';
         }
 
-        // Needed for IE11 for apply disabled mouse events on editor because iexplorer need a dinamic object to apply this property.
+        // Needed for IE11 for apply disabled mouse events on editor because
+        // iexplorer need a dinamic object to apply this property.
         if (this.isIE11()) {
           // this.iframe.style['position'] = 'relative';
         }
@@ -952,36 +951,39 @@ export default class ModalDialog {
         this.limitWindow = this.getLimitWindow();
       }
     }
-
   }
 
   /**
-   * Updates dragDataObject with the draggable object coordinates when the draggable object is being moved.
+   * Updates dragDataObject with the draggable object coordinates when
+   * the draggable object is being moved.
    * @param {MouseEvent} mouseEvent - The mouse event.
    */
   drag(mouseEvent) {
     if (this.dragDataObject) {
       mouseEvent.preventDefault();
-      mouseEvent = mouseEvent || event;
-      // Calculate max and min between actual mouse position and limit of screeen. It restric the movement of modal into window.
-      var limitY = Math.min(this.eventClient(mouseEvent).Y, this.limitWindow.minPointer.y);
+      // Calculate max and min between actual mouse position and limit of screeen.
+      // It restric the movement of modal into window.
+      let limitY = Math.min(this.eventClient(mouseEvent).Y, this.limitWindow.minPointer.y);
       limitY = Math.max(this.limitWindow.maxPointer.y, limitY);
-      var limitX = Math.min(this.eventClient(mouseEvent).X, this.limitWindow.minPointer.x);
+      let limitX = Math.min(this.eventClient(mouseEvent).X, this.limitWindow.minPointer.x);
       limitX = Math.max(this.limitWindow.maxPointer.x, limitX);
-      // Substract limit with first position to obtain relative pixels increment to the anchor point.
-      var dragX = limitX - this.dragDataObject.x + "px";
-      var dragY = limitY - this.dragDataObject.y + "px";
+      // Substract limit with first position to obtain relative pixels increment
+      // to the anchor point.
+      const dragX = `${limitX - this.dragDataObject.x}px`;
+      const dragY = `${limitY - this.dragDataObject.y}px`;
       // Save last valid position of modal before window overflow.
       this.lastDrag = {
         x: dragX,
-        y: dragY
+        y: dragY,
       };
       // This move modal with hadware acceleration.
-      this.container.style.transform = "translate3d(" + dragX + "," + dragY + ",0)";
+      this.container.style.transform = `translate3d(${dragX},${dragY},0)`;
     }
     if (this.resizeDataObject) {
-      var limitX = Math.min(this.eventClient(mouseEvent).X, window.innerWidth - this.scrollbarWidth - 7);
-      var limitY = Math.min(this.eventClient(mouseEvent).Y, window.innerHeight - 7);
+      const { innerWidth } = window;
+      const { innerHeight } = window;
+      let limitX = Math.min(this.eventClient(mouseEvent).X, innerWidth - this.scrollbarWidth - 7);
+      let limitY = Math.min(this.eventClient(mouseEvent).Y, innerHeight - 7);
       if (limitX < 0) {
         limitX = 0;
       }
@@ -990,88 +992,96 @@ export default class ModalDialog {
         limitY = 0;
       }
 
-      var scaleMultiplier;
+      let scaleMultiplier;
       if (this.leftScale) {
         scaleMultiplier = -1;
-      }
-      else {
+      } else {
         scaleMultiplier = 1;
       }
-      this.container.style.width = this.initialWidth + scaleMultiplier * (limitX - this.resizeDataObject.x) + 'px';
-      this.container.style.height = this.initialHeight + scaleMultiplier * (limitY - this.resizeDataObject.y) + 'px';
+
+      this.container.style.width = `${this.initialWidth + scaleMultiplier * (limitX - this.resizeDataObject.x)}px`;
+      this.container.style.height = `${this.initialHeight + scaleMultiplier * (limitY - this.resizeDataObject.y)}px`;
       if (!this.leftScale) {
         if (this.resizeDataObject.x - limitX - this.initialWidth < -580) {
-          this.container.style.right = this.initialRight - (limitX - this.resizeDataObject.x) + 'px';
-        }
-        else {
-          this.container.style.right = this.initialRight + this.initialWidth - 580 + "px";
-          this.container.style.width = "580px";
+          this.container.style.right = `${this.initialRight - (limitX - this.resizeDataObject.x)}px`;
+        } else {
+          this.container.style.right = `${this.initialRight + this.initialWidth - 580}px`;
+          this.container.style.width = '580px';
         }
         if (this.resizeDataObject.y - limitY < this.initialHeight - 338) {
-          this.container.style.bottom = this.initialBottom - (limitY - this.resizeDataObject.y) + 'px';
-        }
-        else {
-          this.container.style.bottom = this.initialBottom + this.initialHeight - 338 + "px";
-          this.container.style.height = "338px";
+          this.container.style.bottom = `${this.initialBottom - (limitY - this.resizeDataObject.y)}px`;
+        } else {
+          this.container.style.bottom = `${this.initialBottom + this.initialHeight - 338}px`;
+          this.container.style.height = '338px';
         }
       }
       this.recalculateScale();
       this.recalculatePosition();
     }
   }
+
   /**
    * Returns the boundaries of actual window to limit modal movement.
    * @return {Object} Object containing mouseX and mouseY coordinates of actual mouse on screen.
    */
   getLimitWindow() {
     // Obtain dimensions of window page.
-    var maxWidth = window.innerWidth;
-    var maxHeight = window.innerHeight;
+    const maxWidth = window.innerWidth;
+    const maxHeight = window.innerHeight;
 
     // Calculate relative position of mouse point into window.
-    var offSetToolbarY = (this.container.offsetHeight + parseInt(this.container.style.bottom)) - (maxHeight - (this.dragDataObject.y - window.pageXOffset));
-    var offSetToolbarX = maxWidth - this.scrollbarWidth - (this.dragDataObject.x - window.pageXOffset) - parseInt(this.container.style.right);
+    const { offsetHeight } = this.container;
+    const contStyleBottom = parseInt(this.container.style.bottom, 10);
+    const contStyleRight = parseInt(this.container.style.right, 10);
+
+    const { pageXOffset } = window;
+    const dragY = this.dragDataObject.y;
+    const dragX = this.dragDataObject.x;
+
+    const offSetToolbarY = (offsetHeight + contStyleBottom - (maxHeight - (dragY - pageXOffset)));
+    const offSetToolbarX = maxWidth - this.scrollbarWidth - (dragX - pageXOffset) - contStyleRight;
 
     // Calculate limits with sizes of window, modal and mouse position.
-    var minPointerY = maxHeight - this.container.offsetHeight + offSetToolbarY;
-    var maxPointerY = this.title.offsetHeight - (this.title.offsetHeight - offSetToolbarY);
-    var minPointerX = maxWidth - offSetToolbarX - this.scrollbarWidth;
-    var maxPointerX = (this.container.offsetWidth - offSetToolbarX);
-    var minPointer = { x: minPointerX, y: minPointerY };
-    var maxPointer = { x: maxPointerX, y: maxPointerY };
-    return { minPointer: minPointer, maxPointer: maxPointer };
+    const minPointerY = maxHeight - this.container.offsetHeight + offSetToolbarY;
+    const maxPointerY = this.title.offsetHeight - (this.title.offsetHeight - offSetToolbarY);
+    const minPointerX = maxWidth - offSetToolbarX - this.scrollbarWidth;
+    const maxPointerX = (this.container.offsetWidth - offSetToolbarX);
+    const minPointer = { x: minPointerX, y: minPointerY };
+    const maxPointer = { x: maxPointerX, y: maxPointerY };
+    return { minPointer, maxPointer };
   }
 
   /**
    * Returns the scrollbar width size of browser
    * @returns {Number} The scrollbar width.
    */
+  // eslint-disable-next-line class-methods-use-this
   getScrollBarWidth() {
     // Create a paragraph with full width of page.
-    var inner = document.createElement('p');
-    inner.style.width = "100%";
-    inner.style.height = "200px";
+    const inner = document.createElement('p');
+    inner.style.width = '100%';
+    inner.style.height = '200px';
 
     // Create a hidden div to compare sizes.
-    var outer = document.createElement('div');
-    outer.style.position = "absolute";
-    outer.style.top = "0px";
-    outer.style.left = "0px";
-    outer.style.visibility = "hidden";
-    outer.style.width = "200px";
-    outer.style.height = "150px";
-    outer.style.overflow = "hidden";
+    const outer = document.createElement('div');
+    outer.style.position = 'absolute';
+    outer.style.top = '0px';
+    outer.style.left = '0px';
+    outer.style.visibility = 'hidden';
+    outer.style.width = '200px';
+    outer.style.height = '150px';
+    outer.style.overflow = 'hidden';
     outer.appendChild(inner);
 
     document.body.appendChild(outer);
-    var widthOuter = inner.offsetWidth;
+    const widthOuter = inner.offsetWidth;
 
     // Change type overflow of paragraph for measure scrollbar.
     outer.style.overflow = 'scroll';
-    var widthInner = inner.offsetWidth;
+    let widthInner = inner.offsetWidth;
 
     // If measure is the same, we compare with internal div.
-    if (widthOuter == widthInner) {
+    if (widthOuter === widthInner) {
       widthInner = outer.clientWidth;
     }
     document.body.removeChild(outer);
@@ -1083,14 +1093,15 @@ export default class ModalDialog {
    * Set the dragDataObject to null.
    */
   stopDrag() {
-    // Due to we have multiple events that call this function, we need only to execute the next modifiers one time,
+    // Due to we have multiple events that call this function, we need only to execute
+    // the next modifiers one time,
     // when the user stops to drag and dragDataObject is not null (the object to drag is attached).
     if (this.dragDataObject || this.resizeDataObject) {
       // If modal doesn't change, it's not necessary to set position with interpolation.
       this.container.style.transform = '';
       if (this.dragDataObject) {
-        this.container.style.right = parseInt(this.container.style.right) - parseInt(this.lastDrag.x) + "px";
-        this.container.style.bottom = parseInt(this.container.style.bottom) - parseInt(this.lastDrag.y) + "px";
+        this.container.style.right = `${parseInt(this.container.style.right, 10) - parseInt(this.lastDrag.x, 10)}px`;
+        this.container.style.bottom = `${parseInt(this.container.style.bottom, 10) - parseInt(this.lastDrag.y, 10)}px`;
       }
       // We make focus on editor after drag modal windows to prevent lose focus.
       this.focus();
@@ -1135,33 +1146,24 @@ export default class ModalDialog {
           if (this.properties.open) {
             this.contentManager.onKeyDown(keyboardEvent);
           }
-        }
-        // Code to detect shift Tab event.
-        else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') {
-          if (document.activeElement == this.cancelButton) {
+        } else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') { // Code to detect shift Tab event.
+          if (document.activeElement === this.cancelButton) {
             this.submitButton.focus();
             keyboardEvent.stopPropagation();
             keyboardEvent.preventDefault();
-          }
-          else {
+          } else {
             this.contentManager.onKeyDown(keyboardEvent);
           }
-        }
-        // Code to detect Tab event.
-        else if (keyboardEvent.key === 'Tab') {
-          if (document.activeElement == this.submitButton) {
+        } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
+          if (document.activeElement === this.submitButton) {
             this.cancelButton.focus();
             keyboardEvent.stopPropagation();
             keyboardEvent.preventDefault();
-          }
-          else {
-            //this.contentManager.skipToContentManager(true);
+          } else {
             this.contentManager.onKeyDown(keyboardEvent);
           }
         }
-      }
-      // Popupmessage oppened.
-      else {
+      } else { // Popupmessage oppened.
         this.popup.onKeyDown(keyboardEvent);
       }
     }
@@ -1171,13 +1173,13 @@ export default class ModalDialog {
    * Recalculating position for modal dialog when the browser is resized.
    */
   recalculatePosition() {
-    this.container.style.right = Math.min(parseInt(this.container.style.right), window.innerWidth - this.scrollbarWidth - this.container.offsetWidth) + "px";
-    if (parseInt(this.container.style.right) < 0) {
-      this.container.style.right = "0px";
+    this.container.style.right = `${Math.min(parseInt(this.container.style.right, 10), window.innerWidth - this.scrollbarWidth - this.container.offsetWidth)}px`;
+    if (parseInt(this.container.style.right, 10) < 0) {
+      this.container.style.right = '0px';
     }
-    this.container.style.bottom = Math.min(parseInt(this.container.style.bottom), window.innerHeight - this.container.offsetHeight) + "px";
-    if (parseInt(this.container.style.bottom) < 0) {
-      this.container.style.bottom = "0px";
+    this.container.style.bottom = `${Math.min(parseInt(this.container.style.bottom, 10), window.innerHeight - this.container.offsetHeight)}px`;
+    if (parseInt(this.container.style.bottom, 10) < 0) {
+      this.container.style.bottom = '0px';
     }
   }
 
@@ -1185,21 +1187,19 @@ export default class ModalDialog {
    * Recalculating scale for modal when the browser is resized.
    */
   recalculateScale() {
-    var sizeModificated = false;
-    if (parseInt(this.container.style.width) > 580) {
-      this.container.style.width = Math.min(parseInt(this.container.style.width), window.innerWidth - this.scrollbarWidth) + "px";
+    let sizeModificated = false;
+    if (parseInt(this.container.style.width, 10) > 580) {
+      this.container.style.width = `${Math.min(parseInt(this.container.style.width, 10), window.innerWidth - this.scrollbarWidth)}px`;
+      sizeModificated = true;
+    } else {
+      this.container.style.width = '580px';
       sizeModificated = true;
     }
-    else {
-      this.container.style.width = "580px";
+    if (parseInt(this.container.style.height, 10) > 338) {
+      this.container.style.height = `${Math.min(parseInt(this.container.style.height, 10), window.innerHeight)}px`;
       sizeModificated = true;
-    }
-    if (parseInt(this.container.style.height) > 338) {
-      this.container.style.height = Math.min(parseInt(this.container.style.height), window.innerHeight) + "px";
-      sizeModificated = true;
-    }
-    else {
-      this.container.style.height = "338px";
+    } else {
+      this.container.style.height = '338px';
       sizeModificated = true;
     }
     if (sizeModificated) {
@@ -1214,8 +1214,7 @@ export default class ModalDialog {
     this.hasScrollBar = window.innerWidth > document.documentElement.clientWidth;
     if (this.hasScrollBar) {
       this.scrollbarWidth = this.getScrollBarWidth();
-    }
-    else {
+    } else {
       this.scrollbarWidth = 0;
     }
   }
@@ -1223,6 +1222,7 @@ export default class ModalDialog {
   /**
    * Hide soft keyboards on iOS devices.
    */
+  // eslint-disable-next-line class-methods-use-this
   hideKeyboard() {
     document.activeElement.blur();
   }
@@ -1239,6 +1239,7 @@ export default class ModalDialog {
   /**
    * Returns true when the device is on portrait mode.
    */
+  // eslint-disable-next-line class-methods-use-this
   portraitMode() {
     return window.innerHeight > window.innerWidth;
   }
@@ -1247,12 +1248,11 @@ export default class ModalDialog {
    * Event handler that change container size when IOS softkeyboard is opened.
    */
   handleOpenedIosSoftkeyboard() {
-    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight == "100" + this.iosMeasureUnit) {
+    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
       if (this.portraitMode()) {
-        this.setContainerHeight("63" + this.iosMeasureUnit);
-      }
-      else {
-        this.setContainerHeight("40" + this.iosMeasureUnit);
+        this.setContainerHeight(`63${this.iosMeasureUnit}`);
+      } else {
+        this.setContainerHeight(`40${this.iosMeasureUnit}`);
       }
     }
     this.iosSoftkeyboardOpened = true;
@@ -1263,7 +1263,7 @@ export default class ModalDialog {
    */
   handleClosedIosSoftkeyboard() {
     this.iosSoftkeyboardOpened = false;
-    this.setContainerHeight("100" + this.iosMeasureUnit);
+    this.setContainerHeight(`100${this.iosMeasureUnit}`);
   }
 
   /**
@@ -1272,14 +1272,12 @@ export default class ModalDialog {
   orientationChangeIosSoftkeyboard() {
     if (this.iosSoftkeyboardOpened) {
       if (this.portraitMode()) {
-        this.setContainerHeight("63" + this.iosMeasureUnit);
+        this.setContainerHeight(`63${this.iosMeasureUnit}`);
+      } else {
+        this.setContainerHeight(`40${this.iosMeasureUnit}`);
       }
-      else {
-        this.setContainerHeight("40" + this.iosMeasureUnit);
-      }
-    }
-    else {
-      this.setContainerHeight("100" + this.iosMeasureUnit);
+    } else {
+      this.setContainerHeight(`100${this.iosMeasureUnit}`);
     }
   }
 
@@ -1287,7 +1285,7 @@ export default class ModalDialog {
    * Change container sizes when orientation is changed on Android.
    */
   orientationChangeAndroidSoftkeyboard() {
-    this.setContainerHeight("100%");
+    this.setContainerHeight('100%');
   }
 
   /**
@@ -1303,7 +1301,7 @@ export default class ModalDialog {
    * Check content of editor before close action.
    */
   showPopUpMessage() {
-    if (this.properties.state == 'minimized') {
+    if (this.properties.state === 'minimized') {
       this.stack();
     }
     this.popup.show();
@@ -1325,6 +1323,6 @@ export default class ModalDialog {
    * @returns {String} A string appending the instance id to the className.
    */
   getElementId(className) {
-    return className + "[" + this.instanceId + "]";
+    return `${className}[${this.instanceId}]`;
   }
 }
