@@ -1,7 +1,8 @@
 /**
  * This class represent a client-side text cache class. Contains pairs of
  * strings (key/value) which can be retrieved in any moment. Usually used
- * to store AJAX responses for text services like mathml2latex (c.f {@link Latex} class) or mathml2accessible (c.f {@link Accessibility} class).
+ * to store AJAX responses for text services like mathml2latex
+ * (c.f {@link Latex} class) or mathml2accessible (c.f {@link Accessibility} class).
  */
 export default class TextCache {
   /**
@@ -30,11 +31,9 @@ export default class TextCache {
    * @return {String} value - Cache value, if exists. False otherwise.
    */
   get(key) {
-    if (this.cache.hasOwnProperty(key)) {
-      return this.cache[key]
+    if (Object.prototype.hasOwnProperty.call(this.cache, key)) {
+      return this.cache[key];
     }
-    else {
-      return false;
-    }
+    return false;
   }
 }
