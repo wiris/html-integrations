@@ -1,5 +1,5 @@
-import Constants from './constants.js';
-import Util from './util.js';
+import Constants from './constants';
+import Util from './util';
 
 /**
  * This class represents a class to manage MathML objects.
@@ -12,77 +12,88 @@ export default class MathML {
    * @return {boolean} true if is inside an HTML attribute. false otherwise.
    */
   static isMathmlInAttribute(content, i) {
-    // Regex = '^[\'"][\\s]*=[\\s]*[\\w-]+([\\s]*("[^"]*"|\'[^\']*\')[\\s]*=[\\s]*[\\w-]+[\\s]*)*[\\s]+gmi<';
-    var math_att = '[\'"][\\s]*=[\\s]*[\\w-]+';                         // "=att OR '=att
-    var att_content = '"[^"]*"|\'[^\']*\'';                             // "blabla" OR 'blabla'
-    var att = '[\\s]*(' + att_content + ')[\\s]*=[\\s]*[\\w-]+[\\s]*';  // "blabla"=att OR 'blabla'=att
-    var atts = '(' + att + ')*';                                        // "blabla"=att1 "blabla"=att2
-    var regex = '^' + math_att + atts + '[\\s]+gmi<';                   // "=att "blabla"=att1 "blabla"=att2 gmi< .
-    var expression = new RegExp(regex);
+    // Regex =
+    // '^[\'"][\\s]*=[\\s]*[\\w-]+([\\s]*("[^"]*"|\'[^\']*\')[\\s]*
+    // =[\\s]*[\\w-]+[\\s]*)*[\\s]+gmi<';
+    const mathAtt = '[\'"][\\s]*=[\\s]*[\\w-]+'; // "=att OR '=att
+    const attContent = '"[^"]*"|\'[^\']*\''; // "blabla" OR 'blabla'
+    const att = `[\\s]*(${attContent})[\\s]*=[\\s]*[\\w-]+[\\s]*`; // "blabla"=att OR 'blabla'=att
+    const atts = `('${att}')*`; // "blabla"=att1 "blabla"=att2
+    const regex = `^${mathAtt}${atts}[\\s]+gmi<`; // "=att "blabla"=att1 "blabla"=att2 gmi< .
+    const expression = new RegExp(regex);
 
-    var actual_content = content.substring(0, i);
-    var reversed = actual_content.split('').reverse().join('');
-    var exists = expression.test(reversed);
+    const actualContent = content.substring(0, i);
+    const reversed = actualContent.split('').reverse().join('');
+    const exists = expression.test(reversed);
 
     return exists;
   }
 
   /**
    * Decodes an encoded MathML with standard XML tags.
-   * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+   * We use these entities because IE doesn't support html entities
+   * on its attributes sometimes. Yes, sometimes.
    * @param {string} input - string to be decoded.
    * @return {string} decoded string.
    */
   static safeXmlDecode(input) {
+    let { tagOpener } = Constants.safeXmlCharactersEntities;
+    let { tagCloser } = Constants.safeXmlCharactersEntities;
+    let { doubleQuote } = Constants.safeXmlCharactersEntities;
+    let { realDoubleQuote } = Constants.safeXmlCharactersEntities;
     // Decoding entities.
-    input = input.split(Constants.safeXmlCharactersEntities.tagOpener).join(Constants.safeXmlCharacters.tagOpener);
-    input = input.split(Constants.safeXmlCharactersEntities.tagCloser).join(Constants.safeXmlCharacters.tagCloser);
-    input = input.split(Constants.safeXmlCharactersEntities.doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
+    input = input.split(tagOpener).join(Constants.safeXmlCharacters.tagOpener);
+    input = input.split(tagCloser).join(Constants.safeXmlCharacters.tagCloser);
+    input = input.split(doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
     // Added to fix problem due to import from 1.9.x.
-    input = input.split(Constants.safeXmlCharactersEntities.realDoubleQuote).join(Constants.safeXmlCharacters.realDoubleQuote);
+    input = input.split(realDoubleQuote).join(Constants.safeXmlCharacters.realDoubleQuote);
 
     // Blackboard.
+    const { ltElement } = Constants.safeBadBlackboardCharacters;
+    const { gtElement } = Constants.safeBadBlackboardCharacters;
+    const { ampElement } = Constants.safeBadBlackboardCharacters;
     if ('_wrs_blackboard' in window && window._wrs_blackboard) {
-      input = input.split(Constants.safeBadBlackboardCharacters.ltElement).join(Constants.safeGoodBlackboardCharacters.ltElement);
-      input = input.split(Constants.safeBadBlackboardCharacters.gtElement).join(Constants.safeGoodBlackboardCharacters.gtElement);
-      input = input.split(Constants.safeBadBlackboardCharacters.ampElement).join(Constants.safeGoodBlackboardCharacters.ampElement);
+      input = input.split(ltElement).join(Constants.safeGoodBlackboardCharacters.ltElement);
+      input = input.split(gtElement).join(Constants.safeGoodBlackboardCharacters.gtElement);
+      input = input.split(ampElement).join(Constants.safeGoodBlackboardCharacters.ampElement);
     }
 
+    ({ tagOpener } = Constants.safeXmlCharacters);
+    ({ tagCloser } = Constants.safeXmlCharacters);
+    ({ doubleQuote } = Constants.safeXmlCharacters);
+    ({ realDoubleQuote } = Constants.safeXmlCharacters);
+    const { ampersand } = Constants.safeXmlCharacters;
+    const { quote } = Constants.safeXmlCharacters;
+
     // Decoding characters.
-    input = input.split(Constants.safeXmlCharacters.tagOpener).join(Constants.xmlCharacters.tagOpener);
-    input = input.split(Constants.safeXmlCharacters.tagCloser).join(Constants.xmlCharacters.tagCloser);
-    input = input.split(Constants.safeXmlCharacters.doubleQuote).join(Constants.xmlCharacters.doubleQuote);
-    input = input.split(Constants.safeXmlCharacters.ampersand).join(Constants.xmlCharacters.ampersand);
-    input = input.split(Constants.safeXmlCharacters.quote).join(Constants.xmlCharacters.quote);
+    input = input.split(tagOpener).join(Constants.xmlCharacters.tagOpener);
+    input = input.split(tagCloser).join(Constants.xmlCharacters.tagCloser);
+    input = input.split(doubleQuote).join(Constants.xmlCharacters.doubleQuote);
+    input = input.split(ampersand).join(Constants.xmlCharacters.ampersand);
+    input = input.split(quote).join(Constants.xmlCharacters.quote);
 
-    // We are replacing $ by & when its part of an entity for retrocompatibility. Now, the standard is replace § by &.
-    var returnValue = '';
-    var currentEntity = null;
+    // We are replacing $ by & when its part of an entity for retrocompatibility.
+    // Now, the standard is replace § by &.
+    let returnValue = '';
+    let currentEntity = null;
 
-    for (var i = 0; i < input.length; ++i) {
-      var character = input.charAt(i);
-
+    for (let i = 0; i < input.length; i += 1) {
+      const character = input.charAt(i);
       if (currentEntity == null) {
-        if (character == '$') {
+        if (character === '$') {
           currentEntity = '';
-        }
-        else {
+        } else {
           returnValue += character;
         }
-      }
-      else {
-        if (character == ';') {
-          returnValue += '&' + currentEntity + ';';
-          currentEntity = null;
-        }
-        else if (character.match(/([a-zA-Z0-9#._-] | '-')/)) {  // Character is part of an entity.
-          currentEntity += character;
-        }
-        else {
-          returnValue += '$' + currentEntity; // Is not an entity.
-          currentEntity = null;
-          --i; // Parse again the current character.
-        }
+      } else if (character === ';') {
+        returnValue += `&${currentEntity}`;
+        currentEntity = null;
+      } else if (character.match(/([a-zA-Z0-9#._-] | '-')/)) { // Character is part of an entity.
+        currentEntity += character;
+      } else {
+        returnValue += `$${currentEntity}`; // Is not an entity.
+        currentEntity = null;
+        i -= 1; // Parse again the current character.
       }
     }
 
@@ -91,54 +102,56 @@ export default class MathML {
 
   /**
    * Encodes a MathML with standard XML tags to a MMathML encoded with safe XML tags.
-   * We use these entities because IE doesn't support html entities on its attributes sometimes. Yes, sometimes.
+   * We use these entities because IE doesn't support html entities on its attributes sometimes.
    * @param {string} input - input string to be encoded
    * @returns {string} encoded string.
    */
   static safeXmlEncode(input) {
-    input = input.split(Constants.xmlCharacters.tagOpener).join(Constants.safeXmlCharacters.tagOpener);
-    input = input.split(Constants.xmlCharacters.tagCloser).join(Constants.safeXmlCharacters.tagCloser);
-    input = input.split(Constants.xmlCharacters.doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
-    input = input.split(Constants.xmlCharacters.ampersand).join(Constants.safeXmlCharacters.ampersand);
-    input = input.split(Constants.xmlCharacters.quote).join(Constants.safeXmlCharacters.quote);
+    const { tagOpener } = Constants.xmlCharacters;
+    const { tagCloser } = Constants.xmlCharacters;
+    const { doubleQuote } = Constants.xmlCharacters;
+    const { ampersand } = Constants.xmlCharacters;
+    const { quote } = Constants.xmlCharacters;
+
+    input = input.split(tagOpener).join(Constants.safeXmlCharacters.tagOpener);
+    input = input.split(tagCloser).join(Constants.safeXmlCharacters.tagCloser);
+    input = input.split(doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
+    input = input.split(ampersand).join(Constants.safeXmlCharacters.ampersand);
+    input = input.split(quote).join(Constants.safeXmlCharacters.quote);
 
     return input;
   }
 
   /**
-   * Converts special symbols (> 128) to entities and replaces all textual entities by its number entities.
+   * Converts special symbols (> 128) to entities and replaces all textual
+   * entities by its number entities.
    * @param {string} mathml - MathML string containing - or not - special symbols
    * @returns {string} MathML with all textual entities replaced.
    */
   static mathMLEntities(mathml) {
-    var toReturn = '';
+    let toReturn = '';
 
-    for (var i = 0; i < mathml.length; ++i) {
-
-      var character = mathml.charAt(i);
+    for (let i = 0; i < mathml.length; i += 1) {
+      const character = mathml.charAt(i);
 
       // Parsing > 128 characters.
       if (mathml.codePointAt(i) > 128) {
-        toReturn += '&#' + mathml.codePointAt(i) + ';'
+        toReturn += `&#${mathml.codePointAt(i)};`;
         // For UTF-32 characters we need to move the index one position.
         if (mathml.codePointAt(i) > 0xffff) {
-          i++;
+          i += 1;
         }
-      }
-      else if (character == '&') {
-        var end = mathml.indexOf(';', i + 1);
-
+      } else if (character === '&') {
+        const end = mathml.indexOf(';', i + 1);
         if (end >= 0) {
-          var container = document.createElement('span');
+          const container = document.createElement('span');
           container.innerHTML = mathml.substring(i, end + 1);
-          toReturn += '&#' + Util.fixedCharCodeAt((container.textContent || container.innerText), 0) + ';';
+          toReturn += `&#${Util.fixedCharCodeAt((container.textContent || container.innerText), 0)};`;
           i = end;
-        }
-        else {
+        } else {
           toReturn += character;
         }
-      }
-      else {
+      } else {
         toReturn += character;
       }
     }
@@ -153,14 +166,14 @@ export default class MathML {
    * @returns {string} MathML string with his class containing the editor toolbar string.
    */
   static addCustomEditorClassAttribute(mathml, customEditor) {
-    var toReturn = '';
+    let toReturn = '';
 
-    var start = mathml.indexOf('<math');
-    if (start == 0) {
-      var end = mathml.indexOf('>');
-      if (mathml.indexOf("class") == -1) {
+    const start = mathml.indexOf('<math');
+    if (start === 0) {
+      const end = mathml.indexOf('>');
+      if (mathml.indexOf('class') === -1) {
         // Adding custom editor type.
-        toReturn = mathml.substr(start, end) + ' class="wrs_' + customEditor + '">';
+        toReturn = `${mathml.substr(start, end)} class="wrs_${customEditor}">`;
         toReturn += mathml.substr(end + 1, mathml.length);
         return toReturn;
       }
@@ -176,18 +189,18 @@ export default class MathML {
    */
   static removeCustomEditorClassAttribute(mathml, customEditor) {
     // Discard MathML without the specified class.
-    if (mathml.indexOf('class') === -1 || mathml.indexOf('wrs_' + customEditor) === -1) {
+    if (mathml.indexOf('class') === -1 || mathml.indexOf(`wrs_${customEditor}`) === -1) {
       return mathml;
     }
 
     // Trivial case: class attribute value equal to editor name. Then
     // class attribute is removed.
-    if (mathml.indexOf('class="wrs_' + customEditor + '"') !== -1) {
-      return mathml.replace('class="wrs_' + customEditor + '"', '');
+    if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
+      return mathml.replace(`class="wrs_${customEditor}"`, '');
     }
 
     // Non Trivial case: class attribute contains editor name.
-    return mathml.replace('wrs_' + customEditor, '');
+    return mathml.replace(`wrs_${customEditor}`, '');
   }
 
   /**
@@ -195,7 +208,8 @@ export default class MathML {
    * @param {String} mathml - valid MathML.
    * @param {String} content - value to put inside annotation tag.
    * @param {String} annotationEncoding - annotation encoding.
-   * @returns {String} - 'mathml' with an annotation that contains 'content' and encoding 'encoding'.
+   * @returns {String} - 'mathml' with an annotation that contains
+   * 'content' and encoding 'encoding'.
    */
   static addAnnotation(mathml, content, annotationEncoding) {
     // If contains annotation, also contains semantics tag.
@@ -204,26 +218,25 @@ export default class MathML {
     let mathmlWithAnnotation = '';
     if (containsAnnotation !== -1) {
       const closeSemanticsIndex = mathml.indexOf('</semantics>');
-      mathmlWithAnnotation = mathml.substring(0, closeSemanticsIndex) + `<annotation encoding="${annotationEncoding}">${content}</annotation>` + mathml.substring(closeSemanticsIndex);
-    }
-    else if (MathML.isEmpty(mathml)) {
+      mathmlWithAnnotation = `${mathml.substring(0, closeSemanticsIndex)}<annotation encoding="${annotationEncoding}">${content}</annotation>${mathml.substring(closeSemanticsIndex)}`;
+    } else if (MathML.isEmpty(mathml)) {
       const endIndexInline = mathml.indexOf('/>');
       const endIndexNonInline = mathml.indexOf('>');
       const endIndex = endIndexNonInline === endIndexInline ? endIndexInline : endIndexNonInline;
-      mathmlWithAnnotation = mathml.substring(0, endIndex) + `><semantics><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
-    }
-    else {
+      mathmlWithAnnotation = `${mathml.substring(0, endIndex)}><semantics><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
+    } else {
       const beginMathMLContent = mathml.indexOf('>') + 1;
       const endMathmlContent = mathml.lastIndexOf('</math>');
       const mathmlContent = mathml.substring(beginMathMLContent, endMathmlContent);
-      mathmlWithAnnotation = mathml.substring(0, beginMathMLContent) + `<semantics>${mathmlContent}<annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
+      mathmlWithAnnotation = `${mathml.substring(0, beginMathMLContent)}<semantics>${mathmlContent}<annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
     }
 
     return mathmlWithAnnotation;
   }
 
   /**
-   * Removes specific annotation tag in MathML element. In case of remove the unique annotation, also is removed semantics tag.
+   * Removes specific annotation tag in MathML element.
+   * In case of remove the unique annotation, also is removed semantics tag.
    * @param {String} mathml - valid MathML.
    * @param {String} annotationEncoding - annotation encoding to remove.
    * @returns {String} - 'mathml' without the annotation encoding specified.
@@ -244,10 +257,11 @@ export default class MathML {
       }
 
       if (differentAnnotationFound) {
-        const endAnnotationIndex = mathml.indexOf(closeAnnotationTag, startAnnotationIndex) + closeAnnotationTag.length;
-        mathmlWithoutAnnotation = mathml.substring(0, startAnnotationIndex) + mathml.substring(endAnnotationIndex);
-      }
-      else {
+        const closeIndex = mathml.indexOf(closeAnnotationTag, startAnnotationIndex);
+        const endAnnotationIndex = closeIndex + closeAnnotationTag.length;
+        const startIndex = mathml.substring(0, startAnnotationIndex);
+        mathmlWithoutAnnotation = startIndex + mathml.substring(endAnnotationIndex);
+      } else {
         mathmlWithoutAnnotation = MathML.removeSemantics(mathml);
       }
     }
@@ -261,16 +275,17 @@ export default class MathML {
    * @returns {string} - 'mathml' without semantics tag.
    */
   static removeSemantics(mathml) {
-    var mathTagEnd = '</math>';
-    var openSemantics = '<semantics>';
-    var openAnnotation = '<annotation';
+    const mathTagEnd = '</math>';
+    const openSemantics = '<semantics>';
+    const openAnnotation = '<annotation';
 
-    var mathmlWithoutSemantics = mathml;
-    var startSemantics = mathml.indexOf(openSemantics);
-    if (startSemantics != -1) {
-      var startAnnotation = mathml.indexOf(openAnnotation, startSemantics + openSemantics.length);
-      if (startAnnotation != -1) {
-        mathmlWithoutSemantics = mathml.substring(0, startSemantics) + mathml.substring(startSemantics + openSemantics.length, startAnnotation) + mathTagEnd;
+    let mathmlWithoutSemantics = mathml;
+    const startSemantics = mathml.indexOf(openSemantics);
+    if (startSemantics !== -1) {
+      const startAnnotation = mathml.indexOf(openAnnotation, startSemantics + openSemantics.length);
+      if (startAnnotation !== -1) {
+        mathmlWithoutSemantics = mathml.substring(0, startSemantics)
+        + mathml.substring(startSemantics + openSemantics.length, startAnnotation) + mathTagEnd;
       }
     }
 
@@ -281,17 +296,18 @@ export default class MathML {
    * Transforms all xml mathml ocurrences that contain semantics to the same
    * xml mathml ocurrences without semantics.
    * @param {string} text - string that can contain xml mathml ocurrences.
-   * @param {Constants} [characters] - Constant object containing xmlCharacters or safeXmlCharacters relation.
+   * @param {Constants} [characters] - Constant object containing xmlCharacters
+   * or safeXmlCharacters relation.
    * xmlCharacters by default.
    * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
    */
   static removeSemanticsOcurrences(text, characters = Constants.xmlCharacters) {
-    const mathTagStart = characters.tagOpener + 'math';
-    const mathTagEnd = characters.tagOpener + '/math' + characters.tagCloser;
-    const mathTagEndline = '/' + characters.tagCloser;
-    const tagCloser = characters.tagCloser;
-    const semanticsTagStart = characters.tagOpener + 'semantics' + characters.tagCloser;
-    const annotationTagStart = characters.tagOpener + 'annotation encoding=';
+    const mathTagStart = `${characters.tagOpener}math`;
+    const mathTagEnd = `${characters.tagOpener}/math${characters.tagCloser}`;
+    const mathTagEndline = `/${characters.tagCloser}`;
+    const { tagCloser } = characters;
+    const semanticsTagStart = `${characters.tagOpener}semantics${characters.tagCloser}`;
+    const annotationTagStart = `${characters.tagOpener}annotation encoding=`;
 
     let output = '';
     let start = text.indexOf(mathTagStart);
@@ -305,8 +321,7 @@ export default class MathML {
       const firstTagCloser = text.indexOf(tagCloser, start);
       if (mathTagEndIndex !== -1) {
         end = mathTagEndIndex;
-      }
-      else if (mathTagEndlineIndex === firstTagCloser - 1) {
+      } else if (mathTagEndlineIndex === firstTagCloser - 1) {
         end = mathTagEndlineIndex;
       }
 
@@ -315,17 +330,16 @@ export default class MathML {
         const mmlTagStart = text.substring(start, semanticsIndex);
         const annotationIndex = text.indexOf(annotationTagStart, start);
         if (annotationIndex !== -1) {
-          const mmlContent = text.substring(semanticsIndex + semanticsTagStart.length, annotationIndex);
+          const startIndex = semanticsIndex + semanticsTagStart.length;
+          const mmlContent = text.substring(startIndex, annotationIndex);
           output += mmlTagStart + mmlContent + mathTagEnd;
           start = text.indexOf(mathTagStart, start + mathTagStart.length);
           end += mathTagEnd.length;
-        }
-        else {
+        } else {
           end = start;
           start = text.indexOf(mathTagStart, start + mathTagStart.length);
         }
-      }
-      else {
+      } else {
         end = start;
         start = text.indexOf(mathTagStart, start + mathTagStart.length);
       }
@@ -344,18 +358,16 @@ export default class MathML {
    * @static
    */
   static containClass(mathML, className) {
-    var classIndex = mathML.indexOf('class');
-    if (classIndex == -1) {
+    const classIndex = mathML.indexOf('class');
+    if (classIndex === -1) {
       return false;
-    } else {
-      var classTagEndIndex = mathML.indexOf('>', classIndex);
-      var classTag = mathML.substring(classIndex, classTagEndIndex);
-      if (classTag.indexOf(className) != -1) {
-        return true;
-      } else {
-        return false;
-      }
     }
+    const classTagEndIndex = mathML.indexOf('>', classIndex);
+    const classTag = mathML.substring(classIndex, classTagEndIndex);
+    if (classTag.indexOf(className) !== -1) {
+      return true;
+    }
+    return false;
   }
 
   /**
