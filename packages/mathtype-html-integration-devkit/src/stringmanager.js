@@ -3,9 +3,8 @@ import translations from '../lang/strings.json';
  * This class represents a string manager. It's used to load localized strings.
  */
 export default class StringManager {
-
   constructor() {
-    throw new Exception('Static class StringManager can not be instantiated.');
+    throw new Error('Static class StringManager can not be instantiated.');
   }
 
   /**
@@ -15,8 +14,7 @@ export default class StringManager {
    * @returns {string} correspondent value. If doesn't exists original key.
    */
   static get(key) {
-
-    let language = this.language;
+    let { language } = this;
 
     if (!(language in this.strings)) {
       console.warn(`Unknown language ${language} set in StringManager.`);
@@ -29,9 +27,7 @@ export default class StringManager {
     }
 
     return this.strings[language][key];
-
   }
-
 }
 
 /**
