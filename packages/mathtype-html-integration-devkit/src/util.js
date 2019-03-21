@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import MathML from './mathml';
 import Configuration from './configuration';
 import Latex from './latex';
@@ -16,13 +17,13 @@ export default class Util {
    */
   static fireEvent(eventTarget, eventName) {
     if (document.createEvent) {
-      var eventObject = document.createEvent('HTMLEvents');
+      const eventObject = document.createEvent('HTMLEvents');
       eventObject.initEvent(eventName, true, true);
       return !eventTarget.dispatchEvent(eventObject);
     }
 
-    var eventObject = document.createEventObject();
-    return eventTarget.fireEvent('on' + eventName, eventObject)
+    const eventObject = document.createEventObject();
+    return eventTarget.fireEvent(`on${eventName}`, eventObject);
   }
 
   /**
@@ -37,7 +38,7 @@ export default class Util {
       eventTarget.addEventListener(eventName, callBackFunction, true);
     } else if (eventTarget.attachEvent) {
       // Backwards compatibility.
-      eventTarget.attachEvent('on' + eventName, callBackFunction);
+      eventTarget.attachEvent(`on${eventName}`, callBackFunction);
     }
   }
 
@@ -51,9 +52,8 @@ export default class Util {
   static removeEvent(eventTarget, eventName, callBackFunction) {
     if (eventTarget.removeEventListener) {
       eventTarget.removeEventListener(eventName, callBackFunction, true);
-    }
-    else if (eventTarget.detachEvent) {
-      eventTarget.detachEvent('on' + eventName, callBackFunction);
+    } else if (eventTarget.detachEvent) {
+      eventTarget.detachEvent(`on${eventName}`, callBackFunction);
     }
   }
 
@@ -70,25 +70,25 @@ export default class Util {
    */
   static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
     if (doubleClickHandler) {
-      Util.addEvent(eventTarget, 'dblclick', function (event) {
-        var realEvent = (event) ? event : window.event;
-        var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+      Util.addEvent(eventTarget, 'dblclick', (event) => {
+        const realEvent = (event) || window.event;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         doubleClickHandler(element, realEvent);
       });
     }
 
     if (mousedownHandler) {
-      Util.addEvent(eventTarget, 'mousedown', function (event) {
-        var realEvent = (event) ? event : window.event;
-        var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+      Util.addEvent(eventTarget, 'mousedown', (event) => {
+        const realEvent = (event) || window.event;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mousedownHandler(element, realEvent);
       });
     }
 
     if (mouseupHandler) {
-      Util.addEvent(eventTarget, 'mouseup', function (event) {
-        var realEvent = (event) ? event : window.event;
-        var element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+      Util.addEvent(eventTarget, 'mouseup', (event) => {
+        const realEvent = (event) || window.event;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mouseupHandler(element, realEvent);
       });
     }
@@ -102,7 +102,7 @@ export default class Util {
    */
   static addClass(element, className) {
     if (!Util.containsClass(element, className)) {
-      element.className += " " + className;
+      element.className += ` ${className}`;
     }
   }
 
@@ -118,10 +118,10 @@ export default class Util {
       return false;
     }
 
-    var currentClasses = element.className.split(' ');
+    const currentClasses = element.className.split(' ');
 
-    for (var i = currentClasses.length - 1; i >= 0; --i) {
-      if (currentClasses[i] == className) {
+    for (let i = currentClasses.length - 1; i >= 0; i -= 1) {
+      if (currentClasses[i] === className) {
         return true;
       }
     }
@@ -136,12 +136,12 @@ export default class Util {
    * @static
    */
   static removeClass(element, className) {
-    var newClassName = '';
-    var classes = element.className.split(" ");
+    let newClassName = '';
+    const classes = element.className.split(' ');
 
-    for (var i = 0; i < classes.length; i++) {
-      if (classes[i] != className) {
-        newClassName += classes[i] + " ";
+    for (let i = 0; i < classes.length; i += 1) {
+      if (classes[i] !== className) {
+        newClassName += `${classes[i]} `;
       }
     }
     element.className = newClassName.trim();
@@ -157,17 +157,17 @@ export default class Util {
   static convertOldXmlinitialtextAttribute(text) {
     // Used to fix a bug with Cas imported from Moodle 1.9 to Moodle 2.x.
     // This could be removed in future.
-    var val = 'value=';
+    const val = 'value=';
 
-    var xitpos = text.indexOf('xmlinitialtext');
-    var valpos = text.indexOf(val, xitpos);
-    var quote = text.charAt(valpos + val.length);
-    var startquote = valpos + val.length + 1;
-    var endquote = text.indexOf(quote, startquote);
+    const xitpos = text.indexOf('xmlinitialtext');
+    const valpos = text.indexOf(val, xitpos);
+    const quote = text.charAt(valpos + val.length);
+    const startquote = valpos + val.length + 1;
+    const endquote = text.indexOf(quote, startquote);
 
-    var value = text.substring(startquote, endquote);
+    const value = text.substring(startquote, endquote);
 
-    var newvalue = value.split('«').join('§lt;');
+    let newvalue = value.split('«').join('§lt;');
     newvalue = newvalue.split('»').join('§gt;');
     newvalue = newvalue.split('&').join('§');
     newvalue = newvalue.split('¨').join('§quot;');
@@ -179,8 +179,10 @@ export default class Util {
   /**
    * Cross-browser solution for creating new elements.
    * @param {string} tagName - tag name of the wished element.
-   * @param {Object} attributes - an object where each key is a wished attribute name and each value is its value.
-   * @param {Object} [creator] - if supplied, this function will use the "createElement" method from this param. Otherwise
+   * @param {Object} attributes - an object where each key is a wished
+   * attribute name and each value is its value.
+   * @param {Object} [creator] - if supplied, this function will use
+   * the "createElement" method from this param. Otherwise
    * document will be used as creator.
    * @returns {Element} The DOM element with the specified attributes assigned.
    * @static
@@ -194,7 +196,7 @@ export default class Util {
       creator = document;
     }
 
-    var element;
+    let element;
 
     /*
     * Internet Explorer fix:
@@ -203,23 +205,19 @@ export default class Util {
     * Other browsers will throw an exception and will run the standard code.
     */
     try {
-      var html = '<' + tagName;
+      let html = `<${tagName}`;
 
-      for (var attributeName in attributes) {
-        html += ' ' + attributeName + '="' + Util.htmlEntities(attributes[attributeName]) + '"';
-      }
-
+      Object.keys(attributes).forEach((attributeName) => {
+        html += ` ${attributeName}="${Util.htmlEntities(attributes[attributeName])}"`;
+      });
       html += '>';
       element = creator.createElement(html);
-    }
-    catch (e) {
+    } catch (e) {
       element = creator.createElement(tagName);
-
-      for (var attributeName in attributes) {
+      Object.keys(attributes).forEach((attributeName) => {
         element.setAttribute(attributeName, attributes[attributeName]);
-      }
+      });
     }
-
     return element;
   }
 
@@ -235,26 +233,26 @@ export default class Util {
     }
 
     // Internet Explorer can't include "param" tag when is setting an innerHTML property.
-    objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" ');  // It is a 'span' because 'span' objects can contain 'br' nodes.
+    objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" '); // It is a 'span' because 'span' objects can contain 'br' nodes.
     objectCode = objectCode.split('</applet>').join('</span>').split('</APPLET>').join('</span>');
 
-    objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" ');          // It is a 'br' because 'br' can't contain nodes.
+    objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" '); // It is a 'br' because 'br' can't contain nodes.
     objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
 
-    var container = Util.createElement('div', {}, creator);
+    const container = Util.createElement('div', {}, creator);
     container.innerHTML = objectCode;
 
     function recursiveParamsFix(object) {
-      if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisParam') {
-        var attributesParsed = {};
+      if (object.getAttribute && object.getAttribute('wirisObject') === 'WirisParam') {
+        const attributesParsed = {};
 
-        for (var i = 0; i < object.attributes.length; ++i) {
+        for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
             attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
           }
         }
 
-        var param = Util.createElement('param', attributesParsed, creator);
+        const param = Util.createElement('param', attributesParsed, creator);
 
         // IE fix.
         if (param.NAME) {
@@ -264,32 +262,30 @@ export default class Util {
 
         param.removeAttribute('wirisObject');
         object.parentNode.replaceChild(param, object);
-      }
-      else if (object.getAttribute && object.getAttribute('wirisObject') == 'WirisApplet') {
-        var attributesParsed = {};
+      } else if (object.getAttribute && object.getAttribute('wirisObject') === 'WirisApplet') {
+        const attributesParsed = {};
 
-        for (var i = 0; i < object.attributes.length; ++i) {
+        for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
             attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
           }
         }
 
-        var applet = Util.createElement('applet', attributesParsed, creator);
+        const applet = Util.createElement('applet', attributesParsed, creator);
         applet.removeAttribute('wirisObject');
 
-        for (var i = 0; i < object.childNodes.length; ++i) {
+        for (let i = 0; i < object.childNodes.length; i += 1) {
           recursiveParamsFix(object.childNodes[i]);
 
-          if (object.childNodes[i].nodeName.toLowerCase() == 'param') {
+          if (object.childNodes[i].nodeName.toLowerCase() === 'param') {
             applet.appendChild(object.childNodes[i]);
-            --i;    // When we insert the object child into the applet, object loses one child.
+            i -= 1; // When we insert the object child into the applet, object loses one child.
           }
         }
 
         object.parentNode.replaceChild(applet, object);
-      }
-      else {
-        for (var i = 0; i < object.childNodes.length; ++i) {
+      } else {
+        for (let i = 0; i < object.childNodes.length; i += 1) {
           recursiveParamsFix(object.childNodes[i]);
         }
       }
@@ -306,41 +302,38 @@ export default class Util {
    * @static
    */
   static createObjectCode(element) {
-
     // In case that the image was not created, the object can be null or undefined.
-    if (typeof element == 'undefined' || element == null) {
-      return;
+    if (typeof element === 'undefined' || element === null) {
+      return null;
     }
 
-    if (element.nodeType == 1) { // ELEMENT_NODE.
-      var output = '<' + element.tagName;
+    if (element.nodeType === 1) { // ELEMENT_NODE.
+      let output = `<${element.tagName}`;
 
-      for (var i = 0; i < element.attributes.length; ++i) {
+      for (let i = 0; i < element.attributes.length; i += 1) {
         if (element.attributes[i].specified) {
-          output += ' ' + element.attributes[i].name + '="' + Util.htmlEntities(element.attributes[i].value) + '"';
+          output += ` ${element.attributes[i].name}="${Util.htmlEntities(element.attributes[i].value)}"`;
         }
       }
 
       if (element.childNodes.length > 0) {
         output += '>';
 
-        for (var i = 0; i < element.childNodes.length; ++i) {
+        for (let i = 0; i < element.childNodes.length; i += 1) {
           output += Util.createObject(element.childNodes[i]);
         }
 
-        output += '</' + element.tagName + '>';
-      }
-      else if (element.nodeName == 'DIV' || element.nodeName == 'SCRIPT') {
-        output += '></' + element.tagName + '>';
-      }
-      else {
+        output += `</${element.tagName}>`;
+      } else if (element.nodeName === 'DIV' || element.nodeName === 'SCRIPT') {
+        output += `></${element.tagName}>`;
+      } else {
         output += '/>';
       }
 
       return output;
     }
 
-    if (element.nodeType == 3) { // TEXT_NODE.
+    if (element.nodeType === 3) { // TEXT_NODE.
       return Util.htmlEntities(element.nodeValue);
     }
 
@@ -354,11 +347,11 @@ export default class Util {
    * @returns {string} new URL.
    */
   static concatenateUrl(path1, path2) {
-    var separator = "";
-    if ((path1.indexOf("/") != path1.length) && (path2.indexOf("/") != 0)) {
-      separator = "/";
+    let separator = '';
+    if ((path1.indexOf('/') !== path1.length) && (path2.indexOf('/') !== 0)) {
+      separator = '/';
     }
-    return (path1 + separator + path2).replace(/([^:]\/)\/+/g, "$1");
+    return (path1 + separator + path2).replace(/([^:]\/)\/+/g, '$1');
   }
 
   /**
@@ -368,7 +361,11 @@ export default class Util {
    * @static
    */
   static htmlEntities(input) {
-    return input.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;').split('"').join('&quot;');
+    return input.split('&').join('&amp;').split('<').join('&lt;')
+      .split('>')
+      .join('&gt;')
+      .split('"')
+      .join('&quot;');
   }
 
   /**
@@ -378,7 +375,14 @@ export default class Util {
    * @static
    */
   static htmlEntitiesDecode(input) {
-    return input.split('&quot;').join('"').split('&gt;').join('>').split('&lt;').join('<').split('&amp;').join('&');
+    return input.split('&quot;')
+      .join('"')
+      .split('&gt;')
+      .join('>')
+      .split('&lt;')
+      .join('<')
+      .split('&amp;')
+      .join('&');
   }
 
   /**
@@ -387,46 +391,44 @@ export default class Util {
    * @returns {XMLHttpRequest|ActiveXObject} the proper request object.
    */
   static createHttpRequest() {
-    var currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
-    if (currentPath.substr(0, 7) == 'file://') {
+    const currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
+    if (currentPath.substr(0, 7) === 'file://') {
       throw StringManager.get('exception_cross_site');
     }
 
-    if (typeof XMLHttpRequest != 'undefined') {
+    if (typeof XMLHttpRequest !== 'undefined') {
       return new XMLHttpRequest();
     }
 
     try {
       return new ActiveXObject('Msxml2.XMLHTTP');
-    }
-    catch (e) {
+    } catch (e) {
       try {
         return new ActiveXObject('Microsoft.XMLHTTP');
-      }
-      catch (oc) {
+      } catch (oc) {
+        return null;
       }
     }
-
-    return false;
   }
 
   /**
    * Converts a hash to a HTTP query.
    * @param {Object[]} properties - a key/value object.
-   * @returns {string} a HTTP query containing all the key value pairs with all the special characters replaced by their entities.
+   * @returns {string} a HTTP query containing all the key value pairs with
+   * all the special characters replaced by their entities.
    * @static
    */
   static httpBuildQuery(properties) {
-    var result = '';
+    let result = '';
 
-    for (var i in properties) {
+    Object.keys(properties).forEach((i) => {
       if (properties[i] != null) {
-        result += Util.urlEncode(i) + '=' + Util.urlEncode(properties[i]) + '&';
+        result += `${Util.urlEncode(i)}=${Util.urlEncode(properties[i])}&`;
       }
-    }
+    });
 
     // Deleting last '&' empty character.
-    if (result.substring(result.length - 1) == '&') {
+    if (result.substring(result.length - 1) === '&') {
       result = result.substring(0, result.length - 1);
     }
 
@@ -441,18 +443,18 @@ export default class Util {
    */
   static propertiesToString(hash) {
     // 1. Sort keys. We sort the keys because we want a deterministic output.
-    var keys = []
-    for (var key in hash) {
-      if (hash.hasOwnProperty(key)) {
+    const keys = [];
+    Object.keys(hash).forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(hash, key)) {
         keys.push(key);
       }
-    }
+    });
 
-    var n = keys.length;
-    for (var i = 0; i < n; i++) {
-      for (var j = i + 1; j < n; j++) {
-        var s1 = keys[i];
-        var s2 = keys[j];
+    const n = keys.length;
+    for (let i = 0; i < n; i += 1) {
+      for (let j = i + 1; j < n; j += 1) {
+        const s1 = keys[i];
+        const s2 = keys[j];
         if (Util.compareStrings(s1, s2) > 0) {
           // Swap.
           keys[i] = s2;
@@ -462,19 +464,19 @@ export default class Util {
     }
 
     // 2. Generate output.
-    var output = '';
-    for (var i = 0; i < n; i++) {
-      var key = keys[i];
+    let output = '';
+    for (let i = 0; i < n; i += 1) {
+      const key = keys[i];
       output += key;
-      output += "=";
-      var value = hash[key];
-      value = value.replace("\\", "\\\\");
-      value = value.replace("\n", "\\n");
-      value = value.replace("\r", "\\r");
-      value = value.replace("\t", "\\t");
+      output += '=';
+      let value = hash[key];
+      value = value.replace('\\', '\\\\');
+      value = value.replace('\n', '\\n');
+      value = value.replace('\r', '\\r');
+      value = value.replace('\t', '\\t');
 
       output += value;
-      output += "\n";
+      output += '\n';
     }
     return output;
   }
@@ -487,13 +489,13 @@ export default class Util {
    * @static
    */
   static compareStrings(a, b) {
-    var i;
-    var an = a.length;
-    var bn = b.length;
-    var n = (an > bn) ? bn : an;
-    for (i = 0; i < n; i++) {
-      var c = Util.fixedCharCodeAt(a, i) - Util.fixedCharCodeAt(b, i);
-      if (c != 0) {
+    let i;
+    const an = a.length;
+    const bn = b.length;
+    const n = (an > bn) ? bn : an;
+    for (i = 0; i < n; i += 1) {
+      const c = Util.fixedCharCodeAt(a, i) - Util.fixedCharCodeAt(b, i);
+      if (c !== 0) {
         return c;
       }
     }
@@ -503,28 +505,30 @@ export default class Util {
   /**
    * Fix charCodeAt() JavaScript function to handle non-Basic-Multilingual-Plane characters.
    * @param {string} string - input string
-   * @param {number} idx - an integer greater than or equal to 0 and less than the length of the string
+   * @param {number} idx - an integer greater than or equal to 0
+   * and less than the length of the string
    * @returns {number} an integer representing the UTF-16 code of the string at the given index.
    * @static
    */
   static fixedCharCodeAt(string, idx) {
     idx = idx || 0;
-    var code = string.charCodeAt(idx);
-    var hi, low;
+    const code = string.charCodeAt(idx);
+    let hi;
+    let low;
 
     /* High surrogate (could change last hex to 0xDB7F to treat high
     private surrogates as single characters) */
 
-    if (0xD800 <= code && code <= 0xDBFF) {
+    if (code >= 0xD800 && code <= 0xDBFF) {
       hi = code;
       low = string.charCodeAt(idx + 1);
-      if (isNaN(low)) {
+      if (Number.isNaN(low)) {
         throw StringManager.get('exception_high_surrogate');
       }
       return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
     }
 
-    if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate.
+    if (code >= 0xDC00 && code <= 0xDFFF) { // Low surrogate.
       /* We return false to allow loops to skip this iteration since should have
       already handled high surrogate above in the previous iteration. */
       return false;
@@ -539,23 +543,22 @@ export default class Util {
    * @static
    */
   static urlToAssArray(url) {
-    var i;
-    i = url.indexOf("?");
+    let i;
+    i = url.indexOf('?');
     if (i > 0) {
-      var query = url.substring(i + 1);
-      var ss = query.split("&");
-      var h = new Object();
-      for (i = 0; i < ss.length; i++) {
-        var s = ss[i];
-        var kv = s.split("=");
+      const query = url.substring(i + 1);
+      const ss = query.split('&');
+      const h = {};
+      for (i = 0; i < ss.length; i += 1) {
+        const s = ss[i];
+        const kv = s.split('=');
         if (kv.length > 1) {
           h[kv[0]] = decodeURIComponent(kv[1].replace(/\+/g, ' '));
         }
       }
       return h;
-    } else {
-      return new Object();
     }
+    return {};
   }
 
   /**
@@ -568,7 +571,7 @@ export default class Util {
    * @static
    */
   static urlEncode(clearString) {
-    var output = '';
+    let output = '';
     // Method encodeURIComponent doesn't encode !'()*~ .
     output = encodeURIComponent(clearString);
     return output;
@@ -586,14 +589,14 @@ export default class Util {
    * @static
    */
   static getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
-    var imgObject = Util.createObject(imgCode);
+    const imgObject = Util.createObject(imgCode);
     if (imgObject) {
-      if (imgObject.className == Configuration.get('imageClassName') || imgObject.getAttribute(Configuration.get('imageMathmlAttribute'))) {
+      if (imgObject.className === Configuration.get('imageClassName') || imgObject.getAttribute(Configuration.get('imageMathmlAttribute'))) {
         if (!convertToXml) {
           return imgCode;
         }
 
-        var xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+        let xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
         if (!Configuration.get('saveHandTraces')) {
           xmlCode = MathML.removeSemanticsOcurrences(xmlCode, Constants.safeXmlCharacters);
         }
@@ -608,13 +611,12 @@ export default class Util {
 
         return xmlCode;
       }
-      else if (imgObject.className == Configuration.get('CASClassName')) {
-        var appletCode = imgObject.getAttribute(Configuration.get('CASMathmlAttribute'));
+      if (imgObject.className === Configuration.get('CASClassName')) {
+        let appletCode = imgObject.getAttribute(Configuration.get('CASMathmlAttribute'));
         appletCode = MathML.safeXmlDecode(appletCode);
-        var appletObject = Util.createObject(appletCode);
+        const appletObject = Util.createObject(appletCode);
         appletObject.setAttribute('src', imgObject.src);
-        var object = appletObject;
-        var appletCodeToBeInserted = Util.createObjectCode(appletObject);
+        let appletCodeToBeInserted = Util.createObjectCode(appletObject);
 
         if (convertToSafeXml) {
           appletCodeToBeInserted = MathML.safeXmlEncode(appletCodeToBeInserted);
@@ -634,28 +636,27 @@ export default class Util {
    * @static
    */
   static getNodeLength(node) {
-    var staticNodeLengths = {
-      'IMG': 1,
-      'BR': 1
-    }
-    if (node.nodeType == 3) { // TEXT_NODE.
+    const staticNodeLengths = {
+      IMG: 1,
+      BR: 1,
+    };
+
+    if (node.nodeType === 3) { // TEXT_NODE.
       return node.nodeValue.length;
     }
 
-    if (node.nodeType == 1) { // ELEMENT_NODE.
-      var length = staticNodeLengths[node.nodeName.toUpperCase()];
+    if (node.nodeType === 1) { // ELEMENT_NODE.
+      let length = staticNodeLengths[node.nodeName.toUpperCase()];
 
       if (length === undefined) {
         length = 0;
       }
 
-      for (var i = 0; i < node.childNodes.length; ++i) {
-        length += getNodeLength(node.childNodes[i]);
+      for (let i = 0; i < node.childNodes.length; i += 1) {
+        length += Util.getNodeLength(node.childNodes[i]);
       }
-
       return length;
     }
-
     return 0;
   }
 
@@ -664,28 +665,29 @@ export default class Util {
    * If the caret is on a text node, concatenates it with all the previous and next text nodes.
    * @param {HTMLElement} target - the editable HTMLElement.
    * @param {boolean} isIframe  - specifies if the target is an iframe or not
-   * @param {boolean} forceGetSelection - if true, ignores IE system to get the current selection and uses window.getSelection()
-   * @returns {object} an object with the 'node' key set if the item is an element or the keys 'node' and 'caretPosition' if the element is text.
+   * @param {boolean} forceGetSelection - if true, ignores IE system to get
+   * the current selection and uses window.getSelection()
+   * @returns {object} an object with the 'node' key set if the item is an
+   * element or the keys 'node' and 'caretPosition' if the element is text.
    * @static
    */
   static getSelectedItem(target, isIframe, forceGetSelection) {
-    var windowTarget;
+    let windowTarget;
 
     if (isIframe) {
       windowTarget = target.contentWindow;
       windowTarget.focus();
-    }
-    else {
+    } else {
       windowTarget = window;
       target.focus();
     }
 
     if (document.selection && !forceGetSelection) {
-      var range = windowTarget.document.selection.createRange();
+      const range = windowTarget.document.selection.createRange();
 
       if (range.parentElement) {
         if (range.htmlText.length > 0) {
-          if (range.text.length == 0) {
+          if (range.text.length === 0) {
             return Util.getSelectedItem(target, isIframe, true);
           }
 
@@ -693,26 +695,26 @@ export default class Util {
         }
 
         windowTarget.document.execCommand('InsertImage', false, '#');
-        var temporalObject = range.parentElement();
+        let temporalObject = range.parentElement();
 
-        if (temporalObject.nodeName.toUpperCase() != 'IMG') {
-          // IE9 fix: parentElement() does not return the IMG node, returns the parent DIV node. In IE < 9, pasteHTML does not work well.
+        if (temporalObject.nodeName.toUpperCase() !== 'IMG') {
+          // IE9 fix: parentElement() does not return the IMG node,
+          // returns the parent DIV node. In IE < 9, pasteHTML does not work well.
           range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
           temporalObject = windowTarget.document.getElementById('wrs_openEditorWindow_temporalObject');
         }
 
-        var node;
-        var caretPosition;
+        let node;
+        let caretPosition;
 
-        if (temporalObject.nextSibling && temporalObject.nextSibling.nodeType == 3) { // TEXT_NODE.
+        if (temporalObject.nextSibling && temporalObject.nextSibling.nodeType === 3) { // TEXT_NODE.
           node = temporalObject.nextSibling;
           caretPosition = 0;
-        }
-        else if (temporalObject.previousSibling && temporalObject.previousSibling.nodeType == 3) { // TEXT_NODE.
+        } else if (temporalObject.previousSibling
+          && temporalObject.previousSibling.nodeType === 3) {
           node = temporalObject.previousSibling;
           caretPosition = node.nodeValue.length;
-        }
-        else {
+        } else {
           node = windowTarget.document.createTextNode('');
           temporalObject.parentNode.insertBefore(node, temporalObject);
           caretPosition = 0;
@@ -721,8 +723,8 @@ export default class Util {
         temporalObject.parentNode.removeChild(temporalObject);
 
         return {
-          'node': node,
-          'caretPosition': caretPosition
+          node,
+          caretPosition,
         };
       }
 
@@ -731,39 +733,39 @@ export default class Util {
       }
 
       return {
-        'node': range.item(0)
+        node: range.item(0),
       };
     }
 
     if (windowTarget.getSelection) {
-      var selection = windowTarget.getSelection();
+      let range;
+      const selection = windowTarget.getSelection();
 
       try {
-        var range = selection.getRangeAt(0);
-      }
-      catch (e) {
-        var range = windowTarget.document.createRange();
+        range = selection.getRangeAt(0);
+      } catch (e) {
+        range = windowTarget.document.createRange();
       }
 
-      var node = range.startContainer;
+      const node = range.startContainer;
 
-      if (node.nodeType == 3) { // TEXT_NODE.
+      if (node.nodeType === 3) { // TEXT_NODE.
         return {
-          'node': node,
-          'caretPosition': range.startOffset
+          node,
+          caretPosition: range.startOffset,
         };
       }
 
-      if (node != range.endContainer) {
+      if (node !== range.endContainer) {
         return null;
       }
 
-      if (node.nodeType == 1) { // ELEMENT_NODE.
-        var position = range.startOffset;
+      if (node.nodeType === 1) { // ELEMENT_NODE.
+        const position = range.startOffset;
 
         if (node.childNodes[position]) {
           return {
-            'node': node.childNodes[position]
+            node: node.childNodes[position],
           };
         }
       }
@@ -787,19 +789,20 @@ export default class Util {
     const textNodeValues = Latex.getLatexFromTextNode(textNode, textarea.selectionStart);
     if (textNodeValues === null) {
       return null;
-    };
+    }
 
     return {
-      'node': textNode,
-      'caretPosition': textarea.selectionStart,
-      'startPosition': textNodeValues.startPosition,
-      'endPosition': textNodeValues.endPosition
+      node: textNode,
+      caretPosition: textarea.selectionStart,
+      startPosition: textNodeValues.startPosition,
+      endPosition: textNodeValues.endPosition,
     };
   }
 
   /**
    * Looks for elements that match the given name in a HTML code string.
-   * Important: this function is very concrete for WIRIS code. It takes as preconditions lots of behaviors that are not the general case.
+   * Important: this function is very concrete for WIRIS code.
+   * It takes as preconditions lots of behaviors that are not the general case.
    * @param {string} code -  HTML code.
    * @param {string} name - element name.
    * @param {boolean} autoClosed - true if the elements are autoClosed.
@@ -807,36 +810,33 @@ export default class Util {
    * @static
    */
   static getElementsByNameFromString(code, name, autoClosed) {
-    var elements = [];
-    var code = code.toLowerCase();
+    const elements = [];
+    code = code.toLowerCase();
     name = name.toLowerCase();
-    var start = code.indexOf('<' + name + ' ');
+    let start = code.indexOf(`<${name} `);
 
-    while (start != -1) {                       // Look for nodes.
-      var endString;
+    while (start !== -1) { // Look for nodes.
+      let endString;
 
       if (autoClosed) {
         endString = '>';
-      }
-      else {
-        endString = '</' + name + '>';
+      } else {
+        endString = `</${name}>`;
       }
 
-      var end = code.indexOf(endString, start);
+      let end = code.indexOf(endString, start);
 
-      if (end != -1) {
+      if (end !== -1) {
         end += endString.length;
-
         elements.push({
-          'start': start,
-          'end': end
+          start,
+          end,
         });
-      }
-      else {
+      } else {
         end = start + 1;
       }
 
-      start = code.indexOf('<' + name + ' ', end);
+      start = code.indexOf(`<${name} `, end);
     }
 
     return elements;
@@ -849,34 +849,35 @@ export default class Util {
    * @static
    */
   static decode64(character) {
-
-    var PLUS = '+'.charCodeAt(0);
-    var SLASH = '/'.charCodeAt(0);
-    var NUMBER = '0'.charCodeAt(0);
-    var LOWER = 'a'.charCodeAt(0);
-    var UPPER = 'A'.charCodeAt(0);
-    var PLUS_URL_SAFE = '-'.charCodeAt(0);
-    var SLASH_URL_SAFE = '_'.charCodeAt(0);
-    var code = character.charCodeAt(0);
+    const PLUS = '+'.charCodeAt(0);
+    const SLASH = '/'.charCodeAt(0);
+    const NUMBER = '0'.charCodeAt(0);
+    const LOWER = 'a'.charCodeAt(0);
+    const UPPER = 'A'.charCodeAt(0);
+    const PLUS_URL_SAFE = '-'.charCodeAt(0);
+    const SLASH_URL_SAFE = '_'.charCodeAt(0);
+    const code = character.charCodeAt(0);
 
     if (code === PLUS || code === PLUS_URL_SAFE) {
       return 62; // Char '+'.
     }
     if (code === SLASH || code === SLASH_URL_SAFE) {
-      return 63 // Char '/'.
+      return 63; // Char '/'.
     }
     if (code < NUMBER) {
-      return -1 // No match.
+      return -1; // No match.
     }
     if (code < NUMBER + 10) {
-      return code - NUMBER + 26 + 26
+      return code - NUMBER + 26 + 26;
     }
     if (code < UPPER + 26) {
-      return code - UPPER
+      return code - UPPER;
     }
     if (code < LOWER + 26) {
-      return code - LOWER + 26
+      return code - LOWER + 26;
     }
+
+    return null;
   }
 
   /**
@@ -887,26 +888,35 @@ export default class Util {
    * @static
    */
   static b64ToByteArray(b64String, length) {
-
-    var tmp;
+    let tmp;
 
     if (b64String.length % 4 > 0) {
       throw new Error('Invalid string. Length must be a multiple of 4'); // Tipped base64. Length is fixed.
     }
 
-    var arr = new Array()
+    const arr = [];
 
+    let l;
+    let placeHolders;
     if (!length) { // All b64String string.
-      var placeHolders = b64String.charAt(b64String.length - 2) === '=' ? 2 : b64String.charAt(b64String.length - 1) === '=' ? 1 : 0
-      var l = placeHolders > 0 ? b64String.length - 4 : b64String.length;
+      if (b64String.charAt(b64String.length - 2) === '=') {
+        placeHolders = 2;
+      } else if (b64String.charAt(b64String.length - 1) === '=') {
+        placeHolders = 1;
+      } else {
+        placeHolders = 0;
+      }
+      l = placeHolders > 0 ? b64String.length - 4 : b64String.length;
     } else {
-      var l = length;
+      l = length;
     }
 
-    for (var i = 0; i < l; i += 4) {
+    let i;
+    for (i = 0; i < l; i += 4) {
       // Ignoring code checker standards (bitewise operators).
       // See https://tracker.moodle.org/browse/CONTRIB-5862 for further information.
       // @codingStandardsIgnoreStart
+      // eslint-disable-next-line max-len
       tmp = (Util.decode64(b64String.charAt(i)) << 18) | (Util.decode64(b64String.charAt(i + 1)) << 12) | (Util.decode64(b64String.charAt(i + 2)) << 6) | Util.decode64(b64String.charAt(i + 3));
 
       arr.push((tmp >> 16) & 0xFF);
@@ -919,17 +929,18 @@ export default class Util {
       if (placeHolders === 2) {
         // Ignoring code checker standards (bitewise operators).
         // @codingStandardsIgnoreStart
+        // eslint-disable-next-line max-len
         tmp = (Util.decode64(b64String.charAt(i)) << 2) | (Util.decode64(b64String.charAt(i + 1)) >> 4);
-        arr.push(tmp & 0xFF)
+        arr.push(tmp & 0xFF);
       } else if (placeHolders === 1) {
-        tmp = (Util.decode64(b64String.charAt(i)) << 10) | (Util.decode64(b64String.charAt(i + 1)) << 4) | (Util.decode64(b64String.charAt(i + 2)) >> 2)
+        // eslint-disable-next-line max-len
+        tmp = (Util.decode64(b64String.charAt(i)) << 10) | (Util.decode64(b64String.charAt(i + 1)) << 4) | (Util.decode64(b64String.charAt(i + 2)) >> 2);
         arr.push((tmp >> 8) & 0xFF);
         arr.push(tmp & 0xFF);
         // @codingStandardsIgnoreEnd
       }
     }
-
-    return arr
+    return arr;
   }
 
   /**
@@ -942,8 +953,9 @@ export default class Util {
     if (bytes.length < 4) {
       return false;
     }
-    var int32 = bytes.splice(0, 4);
+    const int32 = bytes.splice(0, 4);
     // @codingStandardsIgnoreStart
+    // eslint-disable-next-line no-mixed-operators
     return (int32[0] << 24 | int32[1] << 16 | int32[2] << 8 | int32[3] << 0);
     // @codingStandardsIgnoreEnd
   }
@@ -984,12 +996,13 @@ export default class Util {
       textarea.focus();
 
       if (textarea.selectionStart != null) {
-        var selectionEnd = textarea.selectionEnd;
-        textarea.value = textarea.value.substring(0, textarea.selectionStart) + text + textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+        const { selectionEnd } = textarea;
+        const selectionStart = textarea.value.substring(0, textarea.selectionStart);
+        const selectionEndSub = textarea.value.substring(selectionEnd, textarea.value.length);
+        textarea.value = selectionStart + text + selectionEndSub;
         textarea.selectionEnd = selectionEnd + text.length;
-      }
-      else {
-        var selection = document.selection.createRange();
+      } else {
+        const selection = document.selection.createRange();
         selection.text = text;
       }
     }
@@ -998,14 +1011,17 @@ export default class Util {
   /**
    * Modifies existing formula on a textarea.
    * @param {HTMLTextAreaElement} textarea - text area target.
-   * @param {string} text - text to add in the textarea. For example, if you want to add the link to the image, you can call this function as Util.updateTextarea(textarea, Parser.createImageSrc(mathml));
+   * @param {string} text - text to add in the textarea. For example, if you want to add the link
+   * to the image,you can call this function as
+   * Util.updateTextarea(textarea, Parser.createImageSrc(mathml));
    * @param {number} start - beginning index from textarea where it needs to be replaced by text.
    * @param {number} end - ending index from textarea where it needs to be replaced by text
    * @static
    */
   static updateExistingTextOnTextarea(textarea, text, start, end) {
     textarea.focus();
-    textarea.value = textarea.value.substring(0, start) + text + textarea.value.substring(end, textarea.value.length);
+    const textareaStart = textarea.value.substring(0, start);
+    textarea.value = textareaStart + text + textarea.value.substring(end, textarea.value.length);
     textarea.selectionEnd = start + text.length;
   }
 
@@ -1017,13 +1033,12 @@ export default class Util {
    * @static
    */
   static addArgument(path, parameter, value) {
-    var sep;
-    if (path.indexOf("?") > 0) {
-      sep = "&";
+    let sep;
+    if (path.indexOf('?') > 0) {
+      sep = '&';
     } else {
-      sep = "?";
+      sep = '?';
     }
-    return path + sep + parameter + "=" + value;
+    return `${path + sep + parameter}=${value}`;
   }
-
 }
