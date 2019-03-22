@@ -177,9 +177,10 @@ export default class ContentManager {
    * editor's JavaScript is loaded.
    */
   insertEditor() {
-    // To know if editor JavaScript is loaded we need to wait until com.wiris.jsEditor
-    // namespace is ready.
-    if ('com' in window && 'wiris' in window.com && 'jsEditor' in window.com.wiris) {
+    // To know if editor JavaScript is loaded we need to wait until
+    // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
+    if (window.com && window.com.wiris && window.com.wiris.jsEditor
+        && window.com.wiris.jsEditor.JsEditor && window.com.wiris.jsEditor.JsEditor.newInstance) {
       this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
