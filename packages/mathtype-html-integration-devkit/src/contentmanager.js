@@ -207,7 +207,7 @@ export default class ContentManager {
       this.listeners.fire('onLoad', {});
       this.isEditorLoaded = true;
     } else {
-      setTimeout(ContentManager.prototype.insertEditor.bind(this, this.modalDialogInstance), 100);
+      setTimeout(ContentManager.prototype.insertEditor.bind(this), 100);
     }
   }
 
