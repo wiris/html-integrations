@@ -64,7 +64,9 @@ export default class MathTypePlugin extends Plugin {
         integrationProperties.environment = {};
         integrationProperties.environment.editor = 'CKEditor5';
         integrationProperties.editorObject = editor;
-        integrationProperties.configurationService = '@param.js.configuration.path@';
+        integrationProperties.serviceProviderProperties = {};
+        integrationProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
+        integrationProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
         integrationProperties.target = editor.sourceElement;
         integrationProperties.scriptName = 'bundle.js';
         integrationProperties.managesLanguage = true;
