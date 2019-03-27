@@ -508,4 +508,4 @@ IntegrationModel.prototype.getSelectedItem = undefined;
  * An object containing a list with the overwritable class constructor properties.
  * @type {Object}
  */
-IntegrationModel.integrationParameters = ['serviceParameters', 'editorParameters'];
+IntegrationModel.integrationParameters = ['serviceProviderProperties', 'editorParameters'];
