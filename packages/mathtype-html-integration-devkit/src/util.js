@@ -375,14 +375,10 @@ export default class Util {
    * @static
    */
   static htmlEntitiesDecode(input) {
-    return input.split('&quot;')
-      .join('"')
-      .split('&gt;')
-      .join('>')
-      .split('&lt;')
-      .join('<')
-      .split('&amp;')
-      .join('&');
+    // Textarea element decodes when inner html is set.
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = input;
+    return textarea.value;
   }
 
   /**
