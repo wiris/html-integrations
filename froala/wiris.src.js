@@ -246,7 +246,7 @@ export class FroalaIntegration extends IntegrationModel {
 
     // Icon templates for MathType.
     $.FroalaEditor.DefineIconTemplate('wirisplugin', '<i class="icon icon-[NAME]"></i>');
-    $.FroalaEditor.DefineIcon('wirisEditor', {NAME: 'editor', template: 'wirisplugin'});
+    $.FroalaEditor.DefineIcon('wirisEditor', {NAME: 'mathtype-editor', template: 'wirisplugin'});
 
     // Command for MathType.
     $.FroalaEditor.RegisterCommand('wirisEditor', {
@@ -283,7 +283,7 @@ export class FroalaIntegration extends IntegrationModel {
     };
 
     // Template for ChemType.
-    $.FroalaEditor.DefineIcon('wirisChemistry', {NAME: 'chemistry', template: 'wirisplugin'});
+    $.FroalaEditor.DefineIcon('wirisChemistry', {NAME: 'mathtype-chemistry', template: 'wirisplugin'});
 
     // Command for ChemType.
     $.FroalaEditor.RegisterCommand('wirisChemistry', {

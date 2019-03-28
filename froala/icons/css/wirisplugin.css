@@ -20,7 +20,7 @@
 }
 */
 
- [class^="icon-"]:before, [class*=" icon-"]:before {
+ [class^="icon-mathtype-"]:before, [class*=" icon-mathtype-"]:before {
   font-family: "wirisplugin";
   font-style: normal;
   font-weight: normal;
@@ -55,5 +55,5 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-chemistry:before { content: '\e803'; } /* '' */
-.icon-editor:before { content: '\e805'; } /* '' */
+.icon-mathtype-chemistry:before { content: '\e803'; } /* '' */
+.icon-mathtype-editor:before { content: '\e805'; } /* '' */
