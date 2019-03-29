@@ -8,17 +8,18 @@ import Util from './util';
  * This class represents the content of a {@link ModalDialog} class, managing the following:
  * - The insertion of content into the current instance of the {@link ModalDialog} class.
  * - The actions to be done once the modal object has been submitted
- *   ({@link ContentManager.submitAction} method).
+ *   (submitAction} method).
  * - The update of the content when the {@link ModalDialog} class is also updated,
  *   for example when ModalDialog is re-opened.
  * - The communication between the {@link ModalDialog} class and itself, if the content
- *   has been changed ({@link ContentManager.hasChanges} method).
+ *   has been changed (hasChanges} method).
  */
 export default class ContentManager {
   /**
+   * @constructs
    * Class constructor
    * @param {Object} contentManagerAttributes - Object containing all attributes needed to
-   * create a new instance of ContentManager class.
+   * create a new instance.
    */
   constructor(contentManagerAttributes) {
     /**
@@ -95,7 +96,7 @@ export default class ContentManager {
 
     /**
      * Custom editor toolbar.
-     * @type {String} toolbar.
+     * @type {String}
      */
     this.toolbar = null;
 
