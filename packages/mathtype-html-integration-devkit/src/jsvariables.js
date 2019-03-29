@@ -3,6 +3,7 @@
  * @type {Object}
  * @property {string} imageClassName - Default MathType formula image class.
  * @property {string} imageClassName - Default MathType CAS image class.
+ * @ignore
  */
 const jsProperties = {
   imageCustomEditorName: 'data-custom-editor',
