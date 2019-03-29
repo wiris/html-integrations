@@ -15,7 +15,7 @@
 export default class Event {
   /**
    * @constructs
-   * Class constructor.
+   * Event class constructor.
    */
   constructor() {
     /**
