@@ -1,0 +1,26 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "include" : ["src"],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+
+    "plugins": ["../node_modules/jsdoc-export-default-interop/dist/index", "plugins/markdown"],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        }
+    },
+    "opts" : {
+        "recurse" : true,
+        "tutorials" : "doc/src/",
+        "template" : "doc/templates/mathtype-integration-jsdoc-theme",
+        "changelog": "doc/changelog.md",
+        "readme" : "doc/src/readme.md"
+    }
+}
