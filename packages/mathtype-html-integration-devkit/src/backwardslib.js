@@ -15,6 +15,7 @@ export default backwardsLib;
  * @param {Object} jsonListener - an Object containing listener name and a callback.
  * @tutorial tutorial
  * @deprecated Since version 7.6.0. Use Listeners.newListener instead.
+ * @ignore
  */
 function wrs_addPluginListener(jsonListener) {
   // TODO: Add documentation URL + doc example.
@@ -40,6 +41,7 @@ window.wrs_addPluginListener = wrs_addPluginListener;
  * @param {string} language - language for the formula.
  * @return {string} HTML code with the WIRIS data converted into LaTeX and images.
  * @deprecated Since version 7.6.0. Use Parser.initParse instead.
+ * @ignore
  */
 function wrs_initParse(code, language) {
   console.warn('Deprecated method. Use Parser.endParse instead.');
@@ -59,6 +61,7 @@ window.wrs_initParse = wrs_initParse;
  * @param {string} language - language for the formula.
  * @return {string}
  * @deprecated Since version 7.6.0. Use Parser.initParse instead.
+ * @ignore
  */
 function wrs_endParse(code, wirisProperties, language) {
   console.warn('Deprecated method. Use Parser.endParse instead.')
