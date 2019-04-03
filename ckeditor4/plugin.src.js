@@ -353,16 +353,11 @@ export class CKEditor4Integration extends IntegrationModel {
                     ckeditorIntegrationModelProperties.integrationParameters = editor.config.mathTypeParameters;
                 }
 
-                // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
-                // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
-                if (ckeditorIntegrationModelProperties.target) {
-                    const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelProperties);
-                    ckeditorIntegrationInstance.init();
-                    ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
-                    WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;
-                    WirisPlugin.currentInstance = ckeditorIntegrationInstance;
-                }
-
+                const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelProperties);
+                ckeditorIntegrationInstance.init();
+                ckeditorIntegrationInstance.listeners.fire('onTargetReady', {});
+                WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;
+                WirisPlugin.currentInstance = ckeditorIntegrationInstance;
             });
         }
     });
