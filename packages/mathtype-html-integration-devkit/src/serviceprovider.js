@@ -8,6 +8,7 @@ import Listeners from './listeners';
  */
 
 /**
+ * @classdesc
  * Class representing a serviceProvider. A serviceProvider is a class containing
  * an arbitrary number of services with the correspondent path.
  */

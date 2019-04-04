@@ -2,6 +2,7 @@ import Constants from './constants';
 import Util from './util';
 
 /**
+ * @classdesc
  * This class represents a class to manage MathML objects.
  */
 export default class MathML {

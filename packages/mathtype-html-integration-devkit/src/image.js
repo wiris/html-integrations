@@ -2,22 +2,23 @@ import Configuration from './configuration';
 import Util from './util';
 
 /**
+ * @classdesc
  * This class represents MathType Image class. Contains all the logic related
  * to MathType images manipulation.
  * All MathType images are generated using the appropriate MathType
  * integration service: showimage or createimage.
  *
  * There are two available image formats:
- * 1. svg (default)
- * 2. png
- *
+ * - svg (default)
+ * - png
  *
  * There are two formats for the image src attribute:
- * 1. A data-uri scheme containing the URL-encoded SVG or a PNG's base64.
- * 2. A link to the showimage service.
+ * - A data-uri scheme containing the URL-encoded SVG or a PNG's base64.
+ * - A link to the showimage service.
  */
 export default class Image {
   /**
+   * @static
    * Clones all MathType image attributes from a HTMLImageElement to another.
    * @param {HTMLImageElement} originImg - The original image.
    * @param {HTMLImageElement} destImg - The destination image.

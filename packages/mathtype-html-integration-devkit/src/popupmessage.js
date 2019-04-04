@@ -1,11 +1,13 @@
 /**
- * This class represents a dialog message overlaying a DOM element in order to
- * accept / cancel discard changes. The dialog can be closed i.e the overlay disappears
- * o canceled. In this last case a callback function should be called.
+
  */
 export default class PopUpMessage {
   /**
-   *
+   * @classdesc
+   * This class represents a dialog message overlaying a DOM element in order to
+   * accept / cancel discard changes. The dialog can be closed i.e the overlay disappears
+   * o canceled. In this last case a callback function should be called.
+   * @constructs
    * @param {Object} popupMessageAttributes - Object containing popup properties.
    * @param {HTMLElement} popupMessageAttributes.overlayElement - Element to overlay.
    * @param {Object} popupMessageAttributes.callbacks - Contains callback

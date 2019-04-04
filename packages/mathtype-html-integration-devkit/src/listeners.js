@@ -5,10 +5,12 @@
  * @property {Function} Listener.callback - The listener callback function.
  */
 
-/**
- * This class represents a class to manage custom listeners.
- */
 export default class Listeners {
+  /**
+   * @classdesc
+   * This class represents a custom listeners manager.
+   * @constructs
+   */
   constructor() {
     /**
      * Array containing all custom listeners.

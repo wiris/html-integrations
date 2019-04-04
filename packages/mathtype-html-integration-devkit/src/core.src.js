@@ -16,27 +16,25 @@ import ModalDialog from './modal';
 import '../styles/styles.css';
 
 /**
- * This class represents MathType integration Core, managing the following:
- * - Integration initialization.
- * - Event managing.
- * - Insertion of formulas into the edit area.
- * ```js
- *       let core = new Core();
- *       core.addListener(listener);
- *       core.language = 'en';
- *
- *       // Initializing Core class.
- *       core.init(configurationService);
- * ```
- */
-
-/**
  * @typedef {Object} CoreProperties
  * @property {ServiceProviderProperties} serviceProviderProperties
  * - The ServiceProvider class properties. *
  */
 export default class Core {
   /**
+   * @classdesc
+   * This class represents MathType integration Core, managing the following:
+   * - Integration initialization.
+   * - Event managing.
+   * - Insertion of formulas into the edit area.
+   * ```js
+   *       let core = new Core();
+   *       core.addListener(listener);
+   *       core.language = 'en';
+   *
+   *       // Initializing Core class.
+   *       core.init(configurationService);
+   * ```
    * @constructs
    * Core constructor.
    * @param {CoreProperties}

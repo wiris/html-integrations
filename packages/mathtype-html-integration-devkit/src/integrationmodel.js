@@ -26,14 +26,12 @@ import ServiceProvider from './serviceprovider';
  * - Overwritten integration parameters.
  */
 
-/**
- * This class represents an integration model, allowing the integration script to
- * communicate with Core class. Each integration must extend this class.
- */
 export default class IntegrationModel {
   /**
+   * @classdesc
+   * This class represents an integration model, allowing the integration script to
+   * communicate with Core class. Each integration must extend this class.
    * @constructs
-   * IntegrationModel constructor.
    * @param {IntegrationModelProperties} integrationModelProperties
    */
   constructor(integrationModelProperties) {

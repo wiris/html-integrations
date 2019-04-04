@@ -10,6 +10,7 @@ import Constants from './constants';
 import md5 from './md5';
 
 /**
+ * @classdesc
  * This class represent a MahML parser. Converts MathML into formulas depending on the
  * image format (SVG, PNG, base64) and the save mode (XML, safeXML, Image) configured
  * in the backend.

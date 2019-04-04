@@ -4,6 +4,7 @@ import MathML from './mathml';
 import StringManager from './stringmanager';
 
 /**
+ * @classdesc
  * This class represents MathType accessible class. Converts MathML to accessible text and manages
  * the associated client-side cache.
  */

@@ -15,14 +15,12 @@ import StringManager from './stringmanager';
  * False otherwise.
  */
 
-/**
- * This class represents a modal dialog. The modal dialog admits a ContentManager instance in order
- * to manage the content of the dialog.
- */
 export default class ModalDialog {
   /**
+   * @classdesc
+   * This class represents a modal dialog. The modal dialog admits
+   * a {@link ContentManager} instance to manage the content of the dialog.
    * @constructs
-   * Modal dialog constructor.
    * @param {Object} modalDialogAttributes  - An object containing all modal dialog attributes.
    */
   constructor(modalDialogAttributes) {

@@ -5,6 +5,7 @@ import Constants from './constants';
 import Util from './util';
 
 /**
+ * @classdesc
  * This class represents a LaTeX parser. Manages the services which allows to convert
  * LaTeX into MathML and MathML into LaTeX.
  */

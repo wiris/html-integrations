@@ -10,20 +10,18 @@
  * @property {String} CustomEditor.tooltip - Custom editor icon tooltip.
  */
 
-
-/**
- * This class represents the MathType custom editors manager.
- * A custom editor is MathType editor with a custom  toolbar.
- * This class associates a {@link CustomEditor} to:
- * - It's own formulas
- * - A custom toolbar
- * - An icon to open it from a HTML editor.
- * - A tooltip for the icon.
- * - A global variable to enable or disable it globally.
- */
 export default class CustomEditors {
   /**
-   * Creates an instance of the custom editor class.
+   * @classdesc
+   * This class represents the MathType custom editors manager.
+   * A custom editor is MathType editor with a custom  toolbar.
+   * This class associates a {@link CustomEditor} to:
+   * - It's own formulas
+   * - A custom toolbar
+   * - An icon to open it from a HTML editor.
+   * - A tooltip for the icon.
+   * - A global variable to enable or disable it globally.
+   * @constructs
    */
   constructor() {
     /**

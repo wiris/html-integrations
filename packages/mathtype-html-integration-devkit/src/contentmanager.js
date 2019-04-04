@@ -4,20 +4,18 @@ import Listeners from './listeners';
 import MathML from './mathml';
 import Util from './util';
 
-/**
- * This class represents the content of a {@link ModalDialog} class, managing the following:
- * - The insertion of content into the current instance of the {@link ModalDialog} class.
- * - The actions to be done once the modal object has been submitted
- *   (submitAction} method).
- * - The update of the content when the {@link ModalDialog} class is also updated,
- *   for example when ModalDialog is re-opened.
- * - The communication between the {@link ModalDialog} class and itself, if the content
- *   has been changed (hasChanges} method).
- */
 export default class ContentManager {
   /**
+   * @classdesc
+   * This class represents a modal dialog, managing the following:
+   * - The insertion of content into the current instance of the {@link ModalDialog} class.
+   * - The actions to be done once the modal object has been submitted
+   *   (submitAction} method).
+   * - The update of the content when the {@link ModalDialog} class is also updated,
+   *   for example when ModalDialog is re-opened.
+   * - The communication between the {@link ModalDialog} class and itself, if the content
+   *   has been changed (hasChanges} method).
    * @constructs
-   * Class constructor
    * @param {Object} contentManagerAttributes - Object containing all attributes needed to
    * create a new instance.
    */

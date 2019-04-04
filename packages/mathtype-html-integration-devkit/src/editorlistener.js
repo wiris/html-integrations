@@ -5,13 +5,14 @@
 // The rules above are disabled because we are implementing
 // an external interface.
 
-/**
- * This class represents an editor listener. It implements the EditorListener [interface](http://www.wiris.net/demo/editor/docs/api/com/wiris/editor/EditorListener.html).
- * Contains all the logic to determine if an editor has changes or not.
- */
+
 export default class EditorListener {
   /**
-   * Returns an instance of the editor listener class.
+   * @classdesc
+   * Determines if the content of the
+   * MathType Editor has changes.
+   * @implements {EditorListeners}
+   * @constructs
    */
   constructor() {
     /**

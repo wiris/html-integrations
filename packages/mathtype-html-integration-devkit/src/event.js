@@ -1,21 +1,18 @@
-/**
- * This class represents a custom event. Events should be fired by the {@link Listener} class.
- *
- * ```js
- *  let customEvent = new Event();
- *  customEvent.properties = {};
- *
- *  let listeners = new Listeners();
- *  listeners.newListener(eventName, callback);
- *
- *  listeners.fire(eventName, customEvent) *
- * ```
- *
- */
 export default class Event {
   /**
+   * @classdesc
+   * This class represents a custom event. Events should be fired by the {@link Listener} class.
+   *
+   * ```js
+   *  let customEvent = new Event();
+   *  customEvent.properties = {};
+   *
+   *  let listeners = new Listeners();
+   *  listeners.newListener(eventName, callback);
+   *
+   *  listeners.fire(eventName, customEvent) *
+   * ```
    * @constructs
-   * Event class constructor.
    */
   constructor() {
     /**
