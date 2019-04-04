@@ -8,6 +8,7 @@ import IntegrationModel from './integration-js/src/integrationmodel.js';
 import { TinyMceIntegration, currentInstance, instances } from './editor_plugin.src.js';
 import Latex from './integration-js/src/latex';
 import backwardsLib from './integration-js/src/backwardsLib';
+import Test from './integration-js/src/test';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
@@ -21,5 +22,6 @@ window.WirisPlugin = {
     currentInstance: currentInstance,
     instances: instances,
     TinyMceIntegration: TinyMceIntegration,
-    Latex: Latex
+    Latex: Latex,
+    Test : Test
 }

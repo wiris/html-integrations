@@ -10,6 +10,7 @@ import IntegrationModel from './integration-js/src/integrationmodel.js';
 import { FroalaIntegration, instances, currentInstance } from './wiris.src.js';
 import Latex from './integration-js/src/latex';
 import '../icons/css/wirisplugin.css';
+import Test from './integration-js/src/test';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
@@ -23,5 +24,6 @@ window.WirisPlugin = {
     currentInstance: currentInstance,
     instances: instances,
     FroalaIntegration: FroalaIntegration,
-    Latex: Latex
+    Latex: Latex,
+    Test: Test
 }

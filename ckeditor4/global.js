@@ -9,6 +9,7 @@ import polyfills from './integration-js/src/polyfills.js';
 import IntegrationModel from './integration-js/src/integrationmodel.js';
 import { CKEditor4Integration, instances, currentInstance } from './plugin.src.js';
 import Latex from './integration-js/src/latex';
+import Test from './integration-js/src/test';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
@@ -22,5 +23,6 @@ window.WirisPlugin = {
     currentInstance: currentInstance,
     instances: instances,
     CKEditor4Integration: CKEditor4Integration,
-    Latex: Latex
+    Latex: Latex,
+    Test: Test
 }
