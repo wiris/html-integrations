@@ -7,6 +7,7 @@ import Listeners from './listeners';
 import IntegrationModel from './integrationmodel';
 import MathML from './mathml';
 import Latex from './latex';
+import Test from './test';
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
@@ -19,4 +20,5 @@ window.WirisPlugin = {
   Listeners,
   IntegrationModel,
   Latex,
+  Test,
 };
