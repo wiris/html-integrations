@@ -519,6 +519,9 @@ export default class Core {
         item.endPosition);
     } else {
       if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
+        // There are editors (e.g: CKEditor) that put attributes in images.
+        // We don't allow that behaviour in our images.
+        Image.removeImgDataAttributes(this.editionProperties.temporalImage);
         // Clone is needed to maintain event references to temporalImage.
         Image.clone(element, this.editionProperties.temporalImage);
       } else {

@@ -18,6 +18,29 @@ import Util from './util';
  */
 export default class Image {
   /**
+   * Removes data attributes from an image.
+   * @param {HTMLImageElement} img - Image where remove data attributes.
+   */
+  static removeImgDataAttributes(img) {
+    const attributesToRemove = [];
+    const { attributes } = img;
+
+    Object.keys(attributes).forEach((key) => {
+      const attribute = attributes[key];
+      if (attribute.name.indexOf('data-') === 0) {
+        // Is preferred keep an array and remove after the search
+        // because when attribute is removed the array of attributes
+        // is modified.
+        attributesToRemove.push(attribute.name);
+      }
+    });
+
+    attributesToRemove.forEach((attribute) => {
+      img.removeAttribute(attribute);
+    });
+  }
+
+  /**
    * @static
    * Clones all MathType image attributes from a HTMLImageElement to another.
    * @param {HTMLImageElement} originImg - The original image.
