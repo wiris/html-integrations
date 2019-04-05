@@ -61,6 +61,14 @@ export class CKEditor4Integration extends IntegrationModel {
     }
 
     /**
+     * @override
+     */
+    getPath() {
+        // Delegates the responsability to get the path to CKEditor.
+        return this.editorObject.plugins.ckeditor_wiris.path;
+    }
+
+    /**
      * Adds callbacks to the following CKEditor listeners:
      * - 'focus' - updates the current instance.
      * - 'contentDom' - adds 'doubleclick' callback.
