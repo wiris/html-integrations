@@ -1,5 +1,6 @@
 {
-  "name": "mathtype-integrtion-js-dev",
+  "name": "@wiris/mathtype-integration-js-dev",
+  "version" : "7.12.0",
   "description": "MathType Web Integration JavaScript development tools",
   "main": "core.src.js",
   "scripts": {
@@ -7,6 +8,28 @@
     "build": "webpack --mode production",
     "lint": "eslint --quiet src"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wiris/mathtype-integration-js-dev"
+  },
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "maths",
+    "mathml",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage": "http://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "author": "WIRIS Team (http://www.wiris.com)",
   "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.0.0",
