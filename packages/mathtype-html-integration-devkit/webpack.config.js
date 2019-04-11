@@ -21,8 +21,6 @@ module.exports = {
                 parallel: true,
                 sourceMap: true // Set to true if you want JS source maps.
             }),
-            // CSS optimizer mainly to minimize css files.
-            new OptimizeCSSAssetsPlugin({})
         ]
     },
     module: {
@@ -40,10 +38,10 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader']
+                use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(png|jpg|gif)$/i,
+                test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
                 use: [
                   {
                     loader: 'url-loader',
@@ -55,12 +53,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new MiniCssExtractPlugin({
-            // Output path for css.
-            filename: './styles/styles.css',
-        }),
-    ],
     stats: {
         colors: true
     }
