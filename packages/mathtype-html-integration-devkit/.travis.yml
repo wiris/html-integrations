@@ -13,18 +13,8 @@ install:
 script:
 - npm run lint
 - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-after_success:
-- npm install
-- npm run build
-- git config --global user.email "travis@travis-ci.org"
-- git config --global user.name "Travis CI"
-- git clone https://github.com/wiris/moodle-atto_wiris.git
-- cd moodle-atto_wiris
-- git checkout -B $BRANCH
-- mv -f ../${FILES} .
-- sed -i "s/\$plugin->version = [[:digit:]]*/\$plugin->version = $(date +%Y%m%d00)/" version.php
-- sed -i "s/MATURITY_STABLE/MATURITY_BETA/" version.php
-- git add $(git diff --name-only)
-- git commit -m "JS API $(date +%Y%m%d%H) development version"
-- echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-- git push https://${GH_TOKEN}@${GH_REPO} $BRANCH > /dev/null 2>&1
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  on:
+    all_branches: true
