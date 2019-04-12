@@ -127,7 +127,10 @@ export default class ModalDialog {
     attributes = {};
     attributes.class = 'wrs_modal_dialogContainer';
     attributes.id = this.getElementId(attributes.class);
+    attributes.role = 'dialog';
     this.container = Util.createElement('div', attributes);
+    this.container.setAttribute('aria-labeledby', 'wrs_modal_title[0]');
+    // this.container.setAttribute('aria-describedby','wrs_modal_title[0]')
 
     attributes = {};
     attributes.class = 'wrs_modal_wrapper';
