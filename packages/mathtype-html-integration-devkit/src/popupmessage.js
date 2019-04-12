@@ -109,8 +109,9 @@ export default class PopUpMessage {
       document.activeElement.blur();
 
       // For works with Safari.
-      window.focus();
+      // window.focus();
       this.overlayWrapper.style.display = 'block';
+      this.closeButton.focus();
     } else {
       this.overlayWrapper.style.display = 'none';
       _wrs_modalWindow.focus();
