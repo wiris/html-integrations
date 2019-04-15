@@ -151,10 +151,7 @@ export class FroalaIntegration extends IntegrationModel {
      * Hides the active Froala popups.
      */
     hidePopups() {
-        var instances =  $.FroalaEditor.INSTANCES;
-        for (var i = 0; i < instances.length; i++) {
-            instances[i].popups.hideAll();
-        }
+        this.editorObject.popups.hideAll();
     }
 }
 
@@ -256,7 +253,7 @@ export class FroalaIntegration extends IntegrationModel {
     refreshAfterCallback: true,
     callback:
         function (editorObject) {
-            var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
+            var currentFroalaIntegrationInstance = WirisPlugin.instances[this.id];
             currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().disable();
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
@@ -272,13 +269,17 @@ export class FroalaIntegration extends IntegrationModel {
 
     // Prevent Froala to add it's own classes to the images generated with MathType.
     $.FroalaEditor.COMMANDS.wirisEditor.refresh = function ($btn) {
-        var selectedImage = WirisPlugin.currentInstance.editorObject.image.get();
-        if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
-            ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) {
-        $btn.removeClass('fr-hidden');
+        const selectedImage = this.image.get();
+        // Value can be undefined.
+        if (!!selectedImage) {
+            if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
+                ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) {
+
+                $btn.removeClass('fr-hidden');
+            }
         }
         else {
-        $btn.addClass('fr-hidden');
+            $btn.addClass('fr-hidden');
         }
     };
 
@@ -293,7 +294,7 @@ export class FroalaIntegration extends IntegrationModel {
     refreshAfterCallback: true,
     callback:
         function () {
-            var currentFroalaIntegrationInstance = WirisPlugin.currentInstance;
+            var currentFroalaIntegrationInstance = WirisPlugin.instances[this.id];
             currentFroalaIntegrationInstance.hidePopups();
             currentFroalaIntegrationInstance.core.getCustomEditors().enable('chemistry');
             var imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
@@ -308,14 +309,5 @@ export class FroalaIntegration extends IntegrationModel {
     });
 
     // Prevent Froala to add it's own classes to the images generated with ChemType.
-    $.FroalaEditor.COMMANDS.wirisChemistry.refresh = function ($btn) {
-        var selectedImage = WirisPlugin.currentInstance.editorObject.image.get();
-        if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
-            ($(selectedImage[0]).hasClass(WirisPlugin.Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(WirisPlugin.Configuration.get('imageClassName'))))) {
-            $btn.removeClass('fr-hidden');
-        }
-        else {
-            $btn.addClass('fr-hidden');
-        }
-    };
+    $.FroalaEditor.COMMANDS.wirisChemistry.refresh = $.FroalaEditor.COMMANDS.wirisEditor.refresh;
 })(jQuery);
