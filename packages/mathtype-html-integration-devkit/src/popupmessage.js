@@ -36,13 +36,11 @@ export default class PopUpMessage {
     this.message.setAttribute('class', 'wrs_popupmessage_panel');
     this.message.setAttribute('role', 'dialog');
     this.message.setAttribute('aria-describedby', 'description_txt');
-    // this.message.innerHTML = popupMessageAttributes.strings.message;
     const paragraph = document.createElement('p');
     const text = document.createTextNode(popupMessageAttributes.strings.message);
     paragraph.appendChild(text);
     paragraph.id = 'description_txt';
     this.message.appendChild(paragraph);
-
 
     /**
      * HTML element overlaying the overlayElement.
