@@ -107,9 +107,6 @@ export default class PopUpMessage {
     if (this.overlayWrapper.style.display !== 'block') {
       // Clear focus with blur for prevent press any key.
       document.activeElement.blur();
-
-      // For works with Safari.
-      // window.focus();
       this.overlayWrapper.style.display = 'block';
       this.closeButton.focus();
     } else {
