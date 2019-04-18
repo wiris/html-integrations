@@ -125,6 +125,15 @@ export class TinyMceIntegration extends IntegrationModel {
             }
         }
     }
+
+    /**
+     * Fires the event ExecCommand and transform a MathML into an image formula.
+     * @param {string} mathml - MathML to generate the formula and can be caught with the event.
+     */
+    updateFormula(mathml) {
+        this.editorObject.fire('ExecCommand',{command: 'updateFormula', value: mathml});
+        super.updateFormula(mathml);
+    }
 }
 
 /**
