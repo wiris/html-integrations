@@ -1136,7 +1136,7 @@ export default class ModalDialog {
    * @param {KeyboardEvent} keyboardEvent - The keyboard event.
    */
   onKeyDown(keyboardEvent) {
-    if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+    if (keyboardEvent.key !== undefined) {
       // Popupmessage is not oppened.
       if (this.popup.overlayWrapper.style.display !== 'block') {
         // Code to detect Esc event

@@ -457,7 +457,7 @@ export default class ContentManager {
    * @param {KeyboardEvent} keyboardEvent - The keyboard event.
    */
   onKeyDown(keyboardEvent) {
-    if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+    if (keyboardEvent.key !== undefined) {
       // Code to detect Esc event.
       if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
         // There should be only one element with class name 'wrs_pressed' at the same time.
