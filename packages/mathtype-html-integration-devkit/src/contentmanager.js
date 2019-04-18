@@ -457,9 +457,8 @@ export default class ContentManager {
    * @param {KeyboardEvent} keyboardEvent - The keyboard event.
    */
   onKeyDown(keyboardEvent) {
-    if (keyboardEvent.key !== undefined) {
-      // Code to detect Esc event.
-      if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
+    if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
+      if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') { // Code to detect Esc event.
         // There should be only one element with class name 'wrs_pressed' at the same time.
         let list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed');
         if (list.length === 0) {
@@ -475,38 +474,31 @@ export default class ContentManager {
         }
       } else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') { // Code to detect shift Tab event.
         if (document.activeElement === this.modalDialogInstance.submitButton) {
+          // Focus is on OK button.
           this.editor.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
         } else {
-          // There should be more than one element with class name 'wrs_selected'.
-          const list = document.getElementsByClassName('wrs_selected');
-          let done = false;
-          for (let i = 0; !done && i < list.length; i += 1) {
-            if (list[i].getAttribute('role') === 'tab' && document.activeElement === list[i]) {
-              this.modalDialogInstance.cancelButton.focus();
-              done = true;
-              keyboardEvent.stopPropagation();
-              keyboardEvent.preventDefault();
-            }
+          const element = document.querySelector('[title="Manual"]');
+          if (document.activeElement === element) {
+            // Focus is on editor help.
+            this.modalDialogInstance.cancelButton.focus();
+            keyboardEvent.stopPropagation();
+            keyboardEvent.preventDefault();
           }
         }
       } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
         if (document.activeElement === this.modalDialogInstance.cancelButton) {
-          const list = document.getElementsByClassName('wrs_selected');
-          let done = false;
-          for (let i = 0; !done && i < list.length; i += 1) {
-            if (list[i].getAttribute('role') === 'tab') {
-              list[i].focus();
-              done = true;
-              keyboardEvent.stopPropagation();
-              keyboardEvent.preventDefault();
-            }
-          }
+          // Focus is on cancel button.
+          const element = document.querySelector('[title="Manual"]');
+          element.focus();
+          keyboardEvent.stopPropagation();
+          keyboardEvent.preventDefault();
         } else {
           // There should be only one element with class name 'wrs_formulaDisplay'.
           const element = document.getElementsByClassName('wrs_formulaDisplay')[0];
           if (element.getAttribute('class') === 'wrs_formulaDisplay wrs_focused') {
+            // Focus is on formuladisplay.
             this.modalDialogInstance.submitButton.focus();
             keyboardEvent.stopPropagation();
             keyboardEvent.preventDefault();
