@@ -36,8 +36,12 @@ git config --global user.name "Travis CI";
 # Atto
 git clone https://github.com/wiris/moodle-atto_wiris.git;
 cd moodle-atto_wiris;
-git checkout -B PLUGINS-1188
-git pull
+git checkout -B $BRANCH
+if [[ `git branch --list $BRANCH` ]]
+then
+    echo "Branch name $BRANCH already exists... pull content."
+    git pull origin $BRANCH
+fi
 mv -f ../core.js .
 if [[ `git status --porcelain` ]]
 then
@@ -59,7 +63,11 @@ rm -rf github.com/wiris/moodle-atto_wiris.git;
 git clone --branch master https://github.com/wiris/moodle-tinymce_tiny_mce_wiris;
 cd moodle-tinymce_tiny_mce_wiris/tinymce/src
 git checkout -B $BRANCH
-git pull origin $BRANCH
+if [[ `git branch --list $BRANCH` ]]
+then
+    echo "Branch name $BRANCH already exists... pull content."
+    git pull origin $BRANCH
+fi
 # Change mathtype-integration-js-dev dependency to the new branch.
 sed -i "s/\@wiris\/mathtype-integration-js-dev\":[[:space:]]\"\^[0-9]*.[0-9]*.[0-9]*\"/\@wiris\/mathtype-integration-js-dev\": \"wiris\/mathtype-integration-js-dev\#$BRANCH\"/" package.json
 # Install dependencies.
