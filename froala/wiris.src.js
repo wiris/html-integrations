@@ -276,10 +276,9 @@ export class FroalaIntegration extends IntegrationModel {
                 ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) {
 
                 $btn.removeClass('fr-hidden');
+            } else {
+                $btn.addClass('fr-hidden');
             }
-        }
-        else {
-            $btn.addClass('fr-hidden');
         }
     };
 
