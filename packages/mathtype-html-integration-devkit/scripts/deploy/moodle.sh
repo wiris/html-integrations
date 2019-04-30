@@ -47,8 +47,6 @@ if [[ `git status --porcelain` ]]
 then
     # Chaging version.php
     # See https://docs.moodle.org/dev/version.php for further infornation.
-    sed -i "s/\$plugin->version = [[:digit:]]*/\$plugin->version = $(date +%Y%m%d00)/" version.php;
-    sed -i "s/MATURITY_STABLE/MATURITY_ALPHA/" version.php;
     git add $(git diff --name-only);
     git commit -m "mathtype-integration-js-dev $(date +%Y%m%d%H) development version";
     git push https://$GH_TOKEN@github.com/wiris/moodle-atto_wiris.git $BRANCH > /dev/null 2>&1;
@@ -84,9 +82,6 @@ rm tinymce/src/package-lock.json
 git status --porcelain
 if [[ `git status --porcelain` ]]
 then
-    # Change Moodle version number.
-    sed -i "s/\$plugin->version = [[:digit:]]*/\$plugin->version = $(date +%Y%m%d00)/" version.php;
-    sed -i "s/MATURITY_STABLE/MATURITY_BETA/" version.php;
     git add $(git diff --name-only);
     git commit -m "mathtype-integration-js-dev $(date +%Y%m%d%H) development version";
     echo "push"
