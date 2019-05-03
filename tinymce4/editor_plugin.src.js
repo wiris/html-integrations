@@ -300,17 +300,11 @@ export var currentInstance = null;
                 });
 
                 const content = editor.getContent();
-
-                // Bug fix: In Moodle2.x when TinyMCE is set to full screen
-                // the content doesn't need to be filtered.
-                if (!editor.getParam('fullscreen_is_enabled') && content !== "") {
-                    // We set content in html because other tiny plugins need data-mce
-                    // and this is not possible with raw format.
-                    editor.setContent(Parser.initParse(content, editor.getParam('language')), {format: "html"});
-                    // This clean undoQueue for prevent onChange and Dirty state.
-                    editor.undoManager.clear();
-                }
-
+                // We set content in html because other tiny plugins need data-mce
+                // and this is not possible with raw format.
+                editor.setContent(Parser.initParse(content, editor.getParam('language')), {format: "html"});
+                // This clean undoQueue for prevent onChange and Dirty state.
+                editor.undoManager.clear();
                 // Init parsing OK. If a setContent method is called
                 // wrs_initParse is called again.
                 // Now if source code is edited the returned code is parsed.
