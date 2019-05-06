@@ -131,7 +131,9 @@ export class TinyMceIntegration extends IntegrationModel {
      * @param {string} mathml - MathML to generate the formula and can be caught with the event.
      */
     updateFormula(mathml) {
-        this.editorObject.fire('ExecCommand',{command: 'updateFormula', value: mathml});
+        if (typeof this.editorObject.fire != 'undefined') {
+            this.editorObject.fire('ExecCommand',{command: 'updateFormula', value: mathml});
+        }
         super.updateFormula(mathml);
     }
 }
