@@ -24,6 +24,11 @@
 
 
 # Clean repository
+if [[ $BRANCH == "stable" ]]
+then
+    echo "Avoid deploy in stable branch";
+    exit 0;
+fi
 git clean -dfx;
 # Compile API
 npm install;
