@@ -16,13 +16,11 @@
 #   * GitHub repository: moodle-atto_wiris.git/
 #   * Source file: none.
 #   * Compiled file: core.js
-#   * Version file: version.php
 
 # - TinyMCE for Moodle:
 #   * GitHub repository: moodle-tinymce_tiny_mce_wiris.git/
 #   * Source file: src/editor.src.js
 #   * Compiled file: editor.js
-#   * Version file: version.php
 
 
 # Clean repository
@@ -45,8 +43,6 @@ fi
 mv -f ../core.js .
 if [[ `git status --porcelain` ]]
 then
-    # Chaging version.php
-    # See https://docs.moodle.org/dev/version.php for further infornation.
     git add $(git diff --name-only);
     git commit -m "mathtype-integration-js-dev $(date +%Y%m%d%H) development version";
     git push https://$GH_TOKEN@github.com/wiris/moodle-atto_wiris.git $BRANCH > /dev/null 2>&1;
