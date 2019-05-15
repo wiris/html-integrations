@@ -157,24 +157,6 @@ export class FroalaIntegration extends IntegrationModel {
 
 (function ($) {
     /**
-     * Auxiliary method. Returns the path of wiris.js script. Needed to load
-     * CSS styles and core.js
-     * @returns {String} - "wiris.js" file path.
-     */
-    function getScriptPath() {
-        var scriptUrl;
-        var scripts = document.getElementsByTagName("script");
-        var scriptName = "wiris.js";
-        for (var i = 0; i < scripts.length; i++) {
-            var j = scripts[i].src.lastIndexOf(scriptName);
-            if (j >= 0) {
-                scriptUrl = scripts[i].src.substr(0, j - 1);
-            }
-        }
-        return scriptUrl;
-    }
-
-    /**
      * This method creates an instance of FroalaIntegration object extending necessary methods
      * to integrate the plugin into Froala editor.
      * @param {Object} editor - Froala editor object.
@@ -196,11 +178,6 @@ export class FroalaIntegration extends IntegrationModel {
         /**@type {integrationModelProperties} */
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
-        // The next style is needed to allow dbclick event
-        // on formulas.
-        if (!$('#wrs_style').get(0)) {
-            $('head').append('<style id="wrs_style">.fr-image-resizer{pointer-events: none;}</style>');
-        }
         froalaIntegrationProperties.serviceProviderProperties = {};
         froalaIntegrationProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
         froalaIntegrationProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
@@ -273,11 +250,21 @@ export class FroalaIntegration extends IntegrationModel {
         // Value can be undefined.
         if (!!selectedImage) {
             if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') == -1) || (selectedImage[0] &&
-                ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) {
+                ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) { // Is a MathType image.
 
+                // Show MathType icons if previously were hiden.
                 $btn.removeClass('fr-hidden');
-            } else {
+                // Disable resize box.
+                if (!$('#wrs_style').get(0)) {
+                    $('head').append('<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>');
+                }
+            } else { // Is a non-MathType image.
+                // Hide MathType icons.
                 $btn.addClass('fr-hidden');
+                // Enable resize box (if it was configured).
+                if (!!$('#wrs_style').get(0)) {
+                    $('#wrs_style').get(0).remove();
+                }
             }
         }
     };
