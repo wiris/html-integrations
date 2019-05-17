@@ -676,6 +676,7 @@ export default class Core {
     // Custom editor parameters.
     const editorAttributes = {};
     Object.assign(editorAttributes, defaultEditorAttributes, Configuration.get('editorParameters'));
+    Object.assign(editorAttributes, defaultEditorAttributes, this.integrationModel.editorParameters);
     editorAttributes.language = this.language;
     editorAttributes.rtl = this.integrationModel.rtl;
 

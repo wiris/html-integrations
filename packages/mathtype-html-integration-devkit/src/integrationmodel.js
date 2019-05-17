@@ -292,6 +292,9 @@ export default class IntegrationModel {
    * @param {string} editMode - Edit Mode (LaTeX or images).
    */
   updateFormula(mathml) {
+    if (this.editorParameters) {
+      mathml = com.wiris.editor.util.EditorUtils.addAnnotation(mathml, 'application/vnd.wiris.mtweb-params+json', JSON.stringify(this.editorParameters));
+    }
     let focusElement;
     let windowTarget;
     const wirisProperties = null;
