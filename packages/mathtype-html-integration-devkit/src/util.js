@@ -2,7 +2,6 @@
 import MathML from './mathml';
 import Configuration from './configuration';
 import Latex from './latex';
-import Constants from './constants';
 import StringManager from './stringmanager';
 
 /**
@@ -592,36 +591,26 @@ export default class Util {
           return imgCode;
         }
 
-        let xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+        const dataMathML = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+        // To handle annotations, first we need the MathML in XML.
+        let mathML = MathML.safeXmlDecode(dataMathML);
+
         if (!Configuration.get('saveHandTraces')) {
-          xmlCode = MathML.removeSemanticsOcurrences(xmlCode, Constants.safeXmlCharacters);
+          mathML = MathML.removeAnnotation(mathML, 'application/json');
         }
 
-        if (xmlCode == null) {
-          xmlCode = imgObject.getAttribute('alt');
+        if (mathML == null) {
+          mathML = imgObject.getAttribute('alt');
         }
-
-        if (!convertToSafeXml) {
-          xmlCode = MathML.safeXmlDecode(xmlCode);
-        }
-
-        return xmlCode;
-      }
-      if (imgObject.className === Configuration.get('CASClassName')) {
-        let appletCode = imgObject.getAttribute(Configuration.get('CASMathmlAttribute'));
-        appletCode = MathML.safeXmlDecode(appletCode);
-        const appletObject = Util.createObject(appletCode);
-        appletObject.setAttribute('src', imgObject.src);
-        let appletCodeToBeInserted = Util.createObjectCode(appletObject);
 
         if (convertToSafeXml) {
-          appletCodeToBeInserted = MathML.safeXmlEncode(appletCodeToBeInserted);
+          const safeMathML = MathML.safeXmlEncode(mathML);
+          return safeMathML;
         }
 
-        return appletCodeToBeInserted;
+        return mathML;
       }
     }
-
     return imgCode;
   }
 
