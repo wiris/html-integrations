@@ -158,7 +158,11 @@ export default class IntegrationModel {
     if ('integrationParameters' in integrationModelProperties) {
       IntegrationModel.integrationParameters.forEach((parameter) => {
         if (parameter in integrationModelProperties.integrationParameters) {
-          this[parameter] = integrationModelProperties.integrationParameters[parameter];
+          // Don't add empty parameters.
+          const value = integrationModelProperties.integrationParameters[parameter];
+          if (Object.keys(value).length !== 0) {
+            this[parameter] = value;
+          }
         }
       });
     }
