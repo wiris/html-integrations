@@ -14,6 +14,11 @@ import Latex from './integration-js/src/latex';
 export default class CKEditor5Integration extends IntegrationModel {
 
     constructor( ckeditorIntegrationModelProperties ) {
+        const editor = ckeditorIntegrationModelProperties.editorObject;
+
+        if ( typeof editor.config != 'undefined' && typeof editor.config.get('mathTypeParameters') != 'undefined') {
+            ckeditorIntegrationModelProperties.integrationParameters = editor.config.get('mathTypeParameters');
+        }
         /**
          * CKEditor5 Integration.
          *
@@ -27,18 +32,6 @@ export default class CKEditor5Integration extends IntegrationModel {
         this.integrationFolderName = 'ckeditor_wiris';
     }
 
-    /** @inheritdoc */
-    init() {
-
-        super.init();
-
-        const editor = this.editorObject;
-
-        if ( typeof editor.config != 'undefined' && typeof editor.config.get('wiriseditorparameters') != 'undefined') {
-            Configuration.update( 'editorParameters', editor.config.get('wiriseditorparameters') );
-        }
-
-    }
 
     /**
      * @inheritdoc
