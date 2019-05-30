@@ -39,7 +39,7 @@ export default class Parser {
 
 
     // Full base64 method (edit & save).
-    if (Configuration.get('saveMode') === 'base64' && Configuration.get('editMode') === 'default') {
+    if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default') {
       data.base64 = true;
     }
 
@@ -89,7 +89,7 @@ export default class Parser {
       const result = Parser.createImageSrc(mathml, data);
       imgObject.setAttribute(Configuration.get('imageMathmlAttribute'), MathML.safeXmlEncode(mathml));
       imgObject.src = result;
-      Image.setImgSize(imgObject, result, Configuration.get('saveMode') === 'base64' && Configuration.get('editMode') === 'default');
+      Image.setImgSize(imgObject, result, Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default');
       if (Configuration.get('enableAccessibility')) {
         imgObject.alt = Accessibility.mathMLToAccessible(mathml, language, data);
       }
@@ -114,7 +114,7 @@ export default class Parser {
    */
   static createImageSrc(mathml, data) {
     // Full base64 method (edit & save).
-    if (Configuration.get('saveMode') === 'base64' && Configuration.get('editMode') === 'default') {
+    if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default') {
       data.base64 = true;
     }
 
@@ -164,7 +164,7 @@ export default class Parser {
       code = Latex.parseMathmlToLatex(code, Constants.xmlCharacters);
       code = Parser.parseMathmlToImg(code, Constants.safeXmlCharacters, language);
       code = Parser.parseMathmlToImg(code, Constants.xmlCharacters, language);
-      if (Configuration.get('saveMode') === 'base64' && Configuration.get('editMode') === 'image') {
+      if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'image') {
         code = Parser.codeImgTransform(code, 'base642showimage');
       }
     }
@@ -300,7 +300,7 @@ export default class Parser {
         code = Parser.codeImgTransform(code, 'img2mathml');
       } else if (Configuration.get('saveMode') === 'xml') {
         code = Parser.codeImgTransform(code, 'img2mathml');
-      } else if (Configuration.get('saveMode') === 'base64' && Configuration.get('editMode') === 'image') {
+      } else if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'image') {
         code = Parser.codeImgTransform(code, 'img264');
       }
     }
