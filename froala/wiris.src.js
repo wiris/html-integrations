@@ -153,6 +153,15 @@ export class FroalaIntegration extends IntegrationModel {
     hidePopups() {
         this.editorObject.popups.hideAll();
     }
+
+    /**@inheritdoc */
+    insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+        // Due to insertFormula adds an image using pure JavaScript functions,
+        // it is needed notificate to the editorObject that placeholder status
+        // has to be updated.
+        super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+        this.editorObject.placeholder.refresh();
+    }
 }
 
 (function ($) {
