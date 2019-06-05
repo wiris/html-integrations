@@ -1,4 +1,4 @@
-import Core from './core.src';
+import Core, { ReturnObject } from './core.src';
 import Image from './image';
 import Listeners from './listeners';
 import Util from './util';
@@ -332,6 +332,7 @@ export default class IntegrationModel {
    * a new image (new formula) or updating an existing one.
    * @param {string} mathml - MathML to generate the formula.
    * @param {string} editMode - Edit Mode (LaTeX or images).
+   * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
     return this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);

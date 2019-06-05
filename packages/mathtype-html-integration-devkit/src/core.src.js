@@ -345,8 +345,15 @@ export default class Core {
    * @param {Window} windowTarget - The window element where the editable content is.
    * @param {String} mathml - The MathML.
    * @param {Array.<Object>} wirisProperties - The extra attributes for the formula.
+   * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+    /**
+     * It is the object with the information of the node or latex to insert.
+     * @typedef ReturnObject
+     * @property {Node} [node] - The DOM node to insert.
+     * @property {String} [latex] - The latex to insert.
+     */
     const returnObject = {};
 
     if (!mathml) {
