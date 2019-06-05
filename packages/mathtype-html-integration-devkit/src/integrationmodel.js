@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars, import/named
 import Core, { ReturnObject } from './core.src';
 import Image from './image';
 import Listeners from './listeners';
