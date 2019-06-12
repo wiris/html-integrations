@@ -37,7 +37,7 @@ npm run build;
 git config --global user.email "travis@travis-ci.org";
 git config --global user.name "Travis CI";
 # Atto
-git clone --branch https://github.com/wiris/moodle-atto_wiris.git;
+git clone --branch master https://github.com/wiris/moodle-atto_wiris.git;
 cd moodle-atto_wiris;
 git checkout -B $BRANCH
 if [[ `git branch --list $BRANCH` ]]
