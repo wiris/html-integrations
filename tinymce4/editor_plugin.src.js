@@ -375,15 +375,20 @@ export var currentInstance = null;
             }
 
             let commonEditor;
+            const mathTypeIcon = 'mathtypeicon';
+            const chemTypeIcon = 'chemtypeicon';
+            const mathTypeIconSvg = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 300 261.7" style="enable-background:new 0 0 300 261.7;" xml:space="preserve"><g id=icon-wirisformula stroke="none" stroke-width="1" fill-rule="evenodd"><g><path class="st1" d="M90.2,257.7c-11.4,0-21.9-6.4-27-16.7l-60-119.9c-7.5-14.9-1.4-33.1,13.5-40.5c14.9-7.5,33.1-1.4,40.5,13.5l27.3,54.7L121.1,39c5.3-15.8,22.4-24.4,38.2-19.1c15.8,5.3,24.4,22.4,19.1,38.2l-59.6,179c-3.9,11.6-14.3,19.7-26.5,20.6C91.6,257.7,90.9,257.7,90.2,257.7"/></g></g><g><g><path class="st2" d="M300,32.8c0-16.4-13.4-29.7-29.9-29.7c-2.9,0-7.2,0.8-7.2,0.8c-37.9,9.1-71.3,14-112,14c-0.3,0-0.6,0-1,0c-16.5,0-29.9,13.3-29.9,29.7c0,16.4,13.4,29.7,29.9,29.7l0,0c45.3,0,83.1-5.3,125.3-15.3h0C289.3,59.5,300,47.4,300,32.8"/></g></g></svg>';
+            const chemTypeIconSvg = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">  <image id="image0" width="16" height="16" x="0" y="0"href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiChwSIwERK9BGAAABfklEQVQoz12RvUtbcRiFn/uRXKNJNCJSokFFqoKDIjHEqKA4WRAc/AsUKl2Ck5ODIKKDm4v+BbqIEr8WQ+hgQSgOElGJgkPTih+3tUabeL3353A1CX3Hcx7OC+dIAIL3CwXEmJU6XBHWuyIVgIjrOcoUblCTrolE/D+gc0QsUJePEtrGh+jajzcg1GQu0W87ldl7zZQAtPP9Dh5lADNm25rx+Xb7ZdWMCAARyHXhVQD8iwAD+qLV61B++U4Hb5pKS9Tx3w05Umr+K3Mlsk6SfY7x9oX7OvDiwlEEoLPLNkdc4yRJG9WkuCoCxBV7JMhg8cgRl7h44m9xwhM3PLyVYnBni3LBX64p4MHGYLSzOV9UWDd8AO608iW+2eP5NyVN4JR/7rRU2T0MzVRmATI197FIInsmTeIErcwTxqcAxHPDFdLHE4cJmPV4AAKZ+XStyrkCMC00K8Qnj+6+kAFKjfE/sw6/zAXf7bFUqmill+5v7es+vzVqlhukOWCLr6/ZMH/PRaOKYwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0xMC0yOVQwMTozNTowMS0wNzowMOC+eEAAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMTAtMjlUMDE6MzU6MDEtMDc6MDCR48D8AAAAAElFTkSuQmCC" /></svg>';
+
             if (tinyMCE.majorVersion === '5') {
                 commonEditor = editor.ui.registry;
+                commonEditor.addIcon(mathTypeIcon, mathTypeIconSvg);
+                commonEditor.addIcon(chemTypeIcon, chemTypeIconSvg);
             }
             else {
                 commonEditor = editor;
                 commonEditor.addCommand('tiny_mce_wiris_openFormulaEditor',openFormulaEditorFunction);
             }
-
-            const mathTypeIcon = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"viewBox="0 0 300 261.7" style="enable-background:new 0 0 300 261.7;" xml:space="preserve"><g id=icon-wirisformula stroke="none" stroke-width="1" fill-rule="evenodd"><g><path class="st1" d="M90.2,257.7c-11.4,0-21.9-6.4-27-16.7l-60-119.9c-7.5-14.9-1.4-33.1,13.5-40.5c14.9-7.5,33.1-1.4,40.5,13.5l27.3,54.7L121.1,39c5.3-15.8,22.4-24.4,38.2-19.1c15.8,5.3,24.4,22.4,19.1,38.2l-59.6,179c-3.9,11.6-14.3,19.7-26.5,20.6C91.6,257.7,90.9,257.7,90.2,257.7"/></g></g><g><g><path class="st2" d="M300,32.8c0-16.4-13.4-29.7-29.9-29.7c-2.9,0-7.2,0.8-7.2,0.8c-37.9,9.1-71.3,14-112,14c-0.3,0-0.6,0-1,0c-16.5,0-29.9,13.3-29.9,29.7c0,16.4,13.4,29.7,29.9,29.7l0,0c45.3,0,83.1-5.3,125.3-15.3h0C289.3,59.5,300,47.4,300,32.8"/></g></g></svg>';
 
             // MathType button.
             // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
@@ -396,8 +401,6 @@ export var currentInstance = null;
                 onAction: openFormulaEditorFunction,
                 icon: mathTypeIcon
             });
-
-            const chemTypeIcon = '<svg width="16" height="16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">  <image id="image0" width="16" height="16" x="0" y="0"href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfiChwSIwERK9BGAAABfklEQVQoz12RvUtbcRiFn/uRXKNJNCJSokFFqoKDIjHEqKA4WRAc/AsUKl2Ck5ODIKKDm4v+BbqIEr8WQ+hgQSgOElGJgkPTih+3tUabeL3353A1CX3Hcx7OC+dIAIL3CwXEmJU6XBHWuyIVgIjrOcoUblCTrolE/D+gc0QsUJePEtrGh+jajzcg1GQu0W87ldl7zZQAtPP9Dh5lADNm25rx+Xb7ZdWMCAARyHXhVQD8iwAD+qLV61B++U4Hb5pKS9Tx3w05Umr+K3Mlsk6SfY7x9oX7OvDiwlEEoLPLNkdc4yRJG9WkuCoCxBV7JMhg8cgRl7h44m9xwhM3PLyVYnBni3LBX64p4MHGYLSzOV9UWDd8AO608iW+2eP5NyVN4JR/7rRU2T0MzVRmATI197FIInsmTeIErcwTxqcAxHPDFdLHE4cJmPV4AAKZ+XStyrkCMC00K8Qnj+6+kAFKjfE/sw6/zAXf7bFUqmill+5v7es+vzVqlhukOWCLr6/ZMH/PRaOKYwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0xMC0yOVQwMTozNTowMS0wNzowMOC+eEAAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMTAtMjlUMDE6MzU6MDEtMDc6MDCR48D8AAAAAElFTkSuQmCC" /></svg>';
 
             // Dynamic customEditors buttons.
             var customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
