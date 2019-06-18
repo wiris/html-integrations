@@ -9,7 +9,6 @@ Easily include quality math equations in your documents and digital content.
 
 # Table of Contents
 
-- [Disclaimer](#disclaimer)
 - [Install instructions](#install-instructions)
 - [Services](#services)
 - [Documentation](#documentation)
