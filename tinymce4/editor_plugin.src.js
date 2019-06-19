@@ -399,7 +399,7 @@ export var currentInstance = null;
                 cmd: 'tiny_mce_wiris_openFormulaEditor',
                 image: WirisPlugin.instances[editor.id].getIconsPath() + 'formula.png',
                 onAction: openFormulaEditorFunction,
-                icon: mathtypeIconName
+                icon: mathTypeIcon
             });
 
             // Dynamic customEditors buttons.
@@ -420,7 +420,7 @@ export var currentInstance = null;
                         onAction: commandFunction,
                         cmd: cmd,
                         image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
-                        icon: chemtypeIconName // At the moment only chemTypeIcon because of the provisional solution for TinyMCE5.
+                        icon: chemTypeIcon // At the moment only chemTypeIcon because of the provisional solution for TinyMCE5.
                     });
                 }
             }
