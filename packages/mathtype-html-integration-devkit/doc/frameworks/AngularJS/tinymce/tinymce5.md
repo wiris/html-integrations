@@ -1,5 +1,5 @@
 
-# MathType for FroalaEditor in AngularJS
+# MathType for TinyMCE5 in AngularJS
 
 This guide explains how to use MathType as a plugin in Froala Editor using AngularJS.
 
