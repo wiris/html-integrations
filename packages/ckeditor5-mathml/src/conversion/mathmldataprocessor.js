@@ -69,7 +69,7 @@ export default class MathmlDataProcessor extends XmlDataProcessor {
         } );
 
         // Convert UTF-8 characters to entities
-        data = data.replace( /[\u00A0-\u9999]/gim, i => '&#' + i.charCodeAt( 0 ) + ';' );
+        data = data.replace( /[\u00A0-\u9999]/gm, i => '&#' + i.charCodeAt( 0 ) + ';' );
 
         // Convert input XML data to DOM DocumentFragment.
         const domFragment = this._toDom( data );
