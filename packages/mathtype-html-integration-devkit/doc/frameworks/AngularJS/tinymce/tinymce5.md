@@ -1,7 +1,7 @@
 
 # MathType for TinyMCE5 in AngularJS
 
-This guide explains how to use MathType as a plugin in Froala Editor using AngularJS.
+This guide explains how to use MathType as a plugin in TinyMCE5 using AngularJS.
 
 ## Create AngularJS project
 
@@ -12,7 +12,7 @@ ng new my-app
 cd my-app
 ~~~
 
-## Add angular-froala-wysiwyg
+## Add NPM packages
 
 1. In order to add plugins it is necessary load TinyMCE by yourself.
 

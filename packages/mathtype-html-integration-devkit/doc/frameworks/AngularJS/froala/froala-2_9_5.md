@@ -12,7 +12,7 @@ ng new my-app
 cd my-app
 ~~~
 
-## Add angular-froala-wysiwyg
+## Add NPM packages
 
 1. Install angular-froala-wysiwyg and @wiris/mathtype-froala.
 
