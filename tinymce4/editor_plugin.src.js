@@ -112,7 +112,7 @@ export class TinyMceIntegration extends IntegrationModel {
 
         // Avoid filter formulas with performance enabled.
         dataImgFiltered[this.editorObject.id] = this.editorObject.settings.images_dataimg_filter;
-        this.editorObject.settings.images_dataimg_filter = function(img) {
+        this.editorObject.settings.images_dataimg_filter = img => {
             if (img.hasAttribute('class') && img.getAttribute('class').indexOf(Configuration.get('imageClassName')) != -1) {
                 return img.hasAttribute('internal-blob');
             }
