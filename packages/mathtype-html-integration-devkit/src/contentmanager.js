@@ -423,7 +423,7 @@ export default class ContentManager {
   getToolbar() {
     let toolbar = 'general';
     if ('toolbar' in this.editorAttributes) {
-      ({ toolbar } = this.editorAttributes.toolbar);
+      ({ toolbar } = this.editorAttributes);
     }
     // TODO: Change global integration variable for integration custom toolbar.
     if (toolbar === 'general') {
