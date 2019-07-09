@@ -12,7 +12,7 @@ import Listeners from './listeners';
 import Image from './image';
 import ServiceProvider from './serviceprovider';
 import ModalDialog from './modal';
-// import { ServiceProviderProperties, ServiceProvider } from './serviceprovider';
+import './polyfills';
 import '../styles/styles.css';
 
 /**

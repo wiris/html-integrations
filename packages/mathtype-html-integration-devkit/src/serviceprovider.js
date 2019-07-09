@@ -185,7 +185,7 @@ export default class ServiceProvider {
         httpRequest.open('POST', currentPath + url, false);
       }
 
-      if (postVariables !== undefined) {
+      if (typeof postVariables !== 'undefined') {
         httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         httpRequest.send(Util.httpBuildQuery(postVariables));
       } else {
