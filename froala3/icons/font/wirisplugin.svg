@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2017 by original authors @ wirisplugin.com</metadata>
+<defs>
+<font id="wirisplugin" horiz-adv-x="1000" >
+<font-face font-family="wirisplugin" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="chemistry" unicode="&#xe803;" d="M428-133c-16 0-32 4-46 12l-334 203c-26 16-42 44-42 75v384c0 30 16 58 42 74l328 205c26 16 59 18 86 4l269-133c44-22 61-75 40-118-22-44-75-61-118-40l-225 112-246-153v-285l250-152 220 112c44 21 97 4 118-39 22-44 5-97-38-118l-265-134c-12-6-26-9-39-9z" horiz-adv-x="781" />
+
+<glyph glyph-name="editor" unicode="&#xe805;" d="M331-97c-33 0-64 18-80 48l-241 470c-23 44-5 98 39 120 44 23 98 6 120-38l149-288 194 524c13 35 46 58 84 58h343c50 0 90-40 90-89s-40-90-90-90h-281l-243-657c-12-33-43-56-78-58-2 0-4 0-6 0z" horiz-adv-x="1029" />
+</font>
+</defs>
+</svg>
