@@ -40,32 +40,33 @@ import { CKEditorModule } from 'ckeditor4-angular';
 3. Open _angular.json_ file and insert the next lines inside _assets_ to bundle a folder with CKEditor4 and its point of entry in _scripts_ property to execute ckeditor.js.
 
 ~~~
-...
+"build" {
+  ...
 
-"assets": [
+  "assets": [
 
-            ...
+              ...
 
-            { "glob": "**/*", "input": "node_modules/ckeditor", "output": "/ckeditor/" },
-            { "glob": "**/*", "input": "node_modules/@wiris/mathtype-ckeditor4", "output": "/ckeditor/plugins/ckeditor_wiris/" }
+              { "glob": "**/*", "input": "node_modules/ckeditor", "output": "/ckeditor/" },
+              { "glob": "**/*", "input": "node_modules/@wiris/mathtype-ckeditor4", "output": "/ckeditor/plugins/ckeditor_wiris/" }
 
-            ...
+              ...
 
-],
+  ],
 
-...
+  ...
 
-"scripts": [
+  "scripts": [
 
-            ...
+              ...
 
-            "node_modules/ckeditor/ckeditor.js"
+              "node_modules/ckeditor/ckeditor.js"
 
-            ...
+              ...
 
-]
-
-...
+  ],
+  ...
+}
 ~~~
 
 4. Add inside the header in _index.html_ a script to change CKEditor4 basepath.

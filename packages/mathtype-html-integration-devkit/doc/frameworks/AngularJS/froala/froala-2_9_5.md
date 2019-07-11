@@ -38,35 +38,36 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 3. Open _angular.json_ file and insert the next lines inside _styles_ and _scripts_ properties.
 
 ~~~
-...
+"build" {
+  ...
 
-"styles": [
+  "styles": [
 
-            ...
+              ...
 
-            "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-            "./node_modules/froala-editor/css/froala_style.min.css",
-            "./node_modules/font-awesome/css/font-awesome.css"
+              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+              "./node_modules/froala-editor/css/froala_style.min.css",
+              "./node_modules/font-awesome/css/font-awesome.css"
 
-            ...
+              ...
 
-],
+  ],
 
-...
+  ...
 
-"scripts": [
+  "scripts": [
 
-            ...
+              ...
 
-            "./node_modules/jquery/dist/jquery.min.js",
-            "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
-            "./node_modules/@wiris/mathtype-froala/wiris.js"
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "./node_modules/@wiris/mathtype-froala/wiris.js"
 
-            ...
+              ...
 
-]
-
-...
+  ],
+  ...
+}
 ~~~
 
 4. Append inside the class in _app.component.ts_ the options of Froala
@@ -74,7 +75,7 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 ~~~
 
 public options: Object = {
-    toolbarButtons: ['undo', 'redo' , 'bold', 'wirisEditor', 'wirisChemistry']
+  toolbarButtons: ['undo', 'redo' , 'bold', 'wirisEditor', 'wirisChemistry']
 }
 
 ~~~

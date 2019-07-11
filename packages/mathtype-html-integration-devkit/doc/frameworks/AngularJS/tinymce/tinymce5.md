@@ -39,34 +39,35 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 3. Open _angular.json_ file and insert the next lines inside _assets_ to bundle a folder with tinymce assets and its plugins; and the point of entry for TinyMCE in _scripts_ properties.
 
 ~~~
-...
+"build" {
+  ...
 
-"assets": [
+  "assets": [
 
-            ...
+              ...
 
-            { "glob": "**/*", "input": "node_modules/tinymce/skins", "output": "/tinymce/skins/" },
-            { "glob": "**/*", "input": "node_modules/tinymce/themes", "output": "/tinymce/themes/" },
-            { "glob": "**/*", "input": "node_modules/tinymce/plugins", "output": "/tinymce/plugins/" },
-            { "glob": "**/*", "input": "node_modules/@wiris/mathtype-tinymce5", "output": "/tinymce/plugins/tiny_mce_wiris/" }
+              { "glob": "**/*", "input": "node_modules/tinymce/skins", "output": "/tinymce/skins/" },
+              { "glob": "**/*", "input": "node_modules/tinymce/themes", "output": "/tinymce/themes/" },
+              { "glob": "**/*", "input": "node_modules/tinymce/plugins", "output": "/tinymce/plugins/" },
+              { "glob": "**/*", "input": "node_modules/@wiris/mathtype-tinymce5", "output": "/tinymce/plugins/tiny_mce_wiris/" }
 
-            ...
+              ...
 
-],
+  ],
 
-...
+  ...
 
-"scripts": [
+  "scripts": [
 
-            ...
+              ...
 
-            "node_modules/tinymce/tinymce.min.js"
+              "node_modules/tinymce/tinymce.min.js"
 
-            ...
+              ...
 
-]
-
-...
+  ],
+  ...
+}
 ~~~
 
 4. Add inside the class constructor in _app.component.ts_ the options to override TinyMCE baseurl default and take only minified files.
