@@ -388,17 +388,17 @@ export var currentInstance = null;
                 // The next two blocks create menu items to give the possibility
                 // of add MathType in the menubar.
                 commonEditor.addMenuItem('tiny_mce_wiris_formulaEditor', {
-                    text: 'Editor',
+                    text: 'MathType',
                     icon: mathTypeIcon,
                     onAction: openFormulaEditorFunction
                 });
 
                 // Dynamic customEditors buttons.
-                var customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
-                for (var customEditor in customEditors.editors) {
+                const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
+                Object.keys(customEditors.editors).forEach((customEditor) => {
                     if (customEditors.editors[customEditor].confVariable) {
                         commonEditor.addMenuItem(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
-                            text: customEditors.editors[customEditor].name,
+                            text: customEditors.editors[customEditor].title,
                             icon: chemTypeIcon, // Parametrize when other custom editors are added.
                             onAction: () => {
                                 customEditors.enable(customEditor);
@@ -406,7 +406,7 @@ export var currentInstance = null;
                             }
                         });
                     }
-                }
+                });
             }
             else {
                 commonEditor = editor;
