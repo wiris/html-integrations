@@ -2,11 +2,11 @@
 
 TinyMCE5 allows to define a list of items in the menu bar. This behavior can be configured through [menu](https://www.tiny.cloud/docs/configure/editor-appearance/#menu) and [menubar](https://www.tiny.cloud/docs/configure/editor-appearance/#menubar) configuration properties.
 
-## Steps to display Wiris menu item
+## Display MathType and ChemType as menu items
 
-In order to display a Wiris menu item it is necessary having [**_MathType for TinyMCE_**](https://www.npmjs.com/package/@wiris/mathtype-tinymce5) and **load the next configuration** in TinyMCE5.
+Update the TinyMCE configuration with the following parameters:
 
-```
+```js
 {
 ...
 menu: {
