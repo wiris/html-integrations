@@ -29,29 +29,29 @@ Easily include quality math equations in your documents and digital content.
    * Add MathType and ChemType buttons to the toolbar and the image menu:
 
      ```js
-     ${}.froalaEditor({
+     const FroalaEditor = new FroalaEditor('#placementid', {
        toolbar = ['wirisEditor', 'wirisChemistry']
        toolbarButtons: ['wirisEditor', 'wirisChemistry'],
        toolbarButtonsMD: ['wirisEditor', 'wirisChemistry'],
        toolbarButtonsSM: ['wirisEditor', 'wirisChemistry'],
        toolbarButtonsXS: ['wirisEditor', 'wirisChemistry'],
        imageEditButtons: ['wirisEditor', 'wirisChemistry'],
-     })
+     });
      ```
    * Allow all tags, in order to allow MathML:
 
      ```js
-     ${}.froalaEditor({
+     const FroalaEditor = new FroalaEditor('#placementid', {
        htmlAllowedTags:  ['.*'],
        htmlAllowedAttrs: ['.*'],
-     })
+     });
      ```
    * Disable `useClasses`:
 
      ```js
-     ${}.froalaEditor({
+     const FroalaEditor = new FroalaEditor('#placementid', {
        useClasses: false,
-     })
+     });
      ```
 
      Notice the example assumes this directory structure:
