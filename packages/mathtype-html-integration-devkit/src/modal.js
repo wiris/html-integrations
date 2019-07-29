@@ -775,8 +775,10 @@ export default class ModalDialog {
     const { innerWidth } = window;
     const { offsetHeight } = this.container;
     const { offsetWidth } = this.container;
-    const position = (innerHeight / 2 - offsetHeight / 2, innerWidth / 2 - offsetWidth / 2);
-    this.setPosition(position);
+    const bottom = innerHeight / 2 - offsetHeight / 2;
+    const right = innerWidth / 2 - offsetWidth / 2;
+
+    this.setPosition(bottom, right);
     this.recalculateScale();
     this.recalculatePosition();
     this.recalculateSize();
