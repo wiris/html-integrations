@@ -1226,7 +1226,15 @@ export default class ModalDialog {
    */
   // eslint-disable-next-line class-methods-use-this
   hideKeyboard() {
-    document.activeElement.blur();
+    // iOS keyboard can't be detected or hide directly from JavaScript.
+    // So, this method simulates that user focus a text input and blur
+    // the selection.
+    const inputField = document.createElement('input');
+    this.container.appendChild(inputField);
+    inputField.focus();
+    inputField.blur();
+    // Is removed to not see it.
+    inputField.remove();
   }
 
   /**
