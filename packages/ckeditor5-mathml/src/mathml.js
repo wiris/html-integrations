@@ -53,6 +53,19 @@ export default class MathML extends Plugin {
 
                 }
 
+                /* Add hardcoded converters for href attribute only, as a
+                preventive measure so as to avoid a similar behavior to PLUGINS-1228*/
+                editor.conversion.attributeToAttribute( {
+                    model: {
+                        name: modelName,
+                        key: 'href',
+                    },
+                    view: {
+                        name: realName,
+                        key: 'href',
+                    }
+                } );
+
             }
 
         }
