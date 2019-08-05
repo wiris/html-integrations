@@ -31,6 +31,6 @@
   ],
   "main": "src/plugin.js",
   "dependencies": {
-    "@wiris/ckeditor5-mathml": "github:wiris/ckeditor5-mathml"
+    "@wiris/ckeditor5-mathml": "^1.0.0"
   }
 }
