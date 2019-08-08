@@ -18,6 +18,9 @@ export function downcast( editor ) {
             // Consume all the children now so they won't get converted later.
             for ( const child of editor.model.createRangeIn( math ).getItems() ) {
                 conversionApi.consumable.consume( child, 'insert' );
+                for ( const attributeKey of child.getAttributeKeys() ) {
+                    conversionApi.consumable.consume( child, 'attribute:' + attributeKey );
+                }
             }
 
             const htmlDataProcessor = new HtmlDataProcessor();
