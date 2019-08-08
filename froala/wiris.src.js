@@ -163,6 +163,13 @@ export class FroalaIntegration extends IntegrationModel {
         this.editorObject.placeholder.refresh();
         return obj;
     }
+
+    /**@inheritdoc */
+    getSelection() {
+        // Focus editor object to create a selection.
+        this.editorObject.el.focus();
+        return this.editorObject.selection.get();
+    }
 }
 
 (function ($) {
