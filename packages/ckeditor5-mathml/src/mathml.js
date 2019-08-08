@@ -18,9 +18,6 @@ export default class MathML extends Plugin {
         const editor = this.editor;
         const schema = editor.model.schema;
 
-        // If the MathType plugin is loaded, we don't create editingDowncasts
-        let editingDowncast = true;//!editor.config.get( 'plugins' ).some( plugin => plugin.name == 'Wiris' );
-
         /*** Extend model ***/
 
         // For every element of MathML...
@@ -32,26 +29,10 @@ export default class MathML extends Plugin {
             // Add casting?
             if ( needsCasting ) {
 
-                if ( editingDowncast ) {
-
-                    editor.conversion.elementToElement( {
-                        model: modelName,
-                        view: realName
-                    } );
-
-                } else {
-
-                    editor.conversion.for( 'upcast' ).elementToElement( {
-                        model: modelName,
-                        view: realName
-                    } );
-
-                    editor.conversion.for( 'dataDowncast' ).elementToElement( {
-                        model: modelName,
-                        view: realName
-                    } );
-
-                }
+                editor.conversion.elementToElement( {
+                    model: modelName,
+                    view: realName
+                } );
 
                 /* Add hardcoded converters for href attribute only, as a
                 preventive measure so as to avoid a similar behavior to PLUGINS-1228*/
