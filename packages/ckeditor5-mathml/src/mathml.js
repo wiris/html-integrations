@@ -69,6 +69,14 @@ export default class MathML extends Plugin {
                         .map( element => element.modelName )
         } );
 
+        // Disallow text attributes (bold, italics, etc.) on text nodes
+        schema.addAttributeCheck( context => {
+            const contextArray = Array.from( context.getNames() );
+            if ( contextArray[ contextArray.length - 1 ] == '$text' && contextArray.some( name => name.startsWith( 'math-' ) ) ) {
+                return false;
+            }
+        } );
+
         // Data processor to output proper MathML
         editor.data.processor = new MathmlDataProcessor();
 
