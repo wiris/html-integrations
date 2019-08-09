@@ -1,6 +1,8 @@
 import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel.js';
 import Configuration from './integration-js/src/configuration.js';
 import Parser from './integration-js/src/parser.js';
+import Constants from './integration-js/src/constants.js';
+import MathML from './integration-js/src/mathml.js';
 
 /**
  * This property contains all Froala Integration instances.
@@ -67,16 +69,42 @@ export class FroalaIntegration extends IntegrationModel {
 
         // Adding parse MathML to images after command event to prevent
         // lost image formulas.
-        editor.events.on('commands.after', function (cmd) {
+        editor.events.on('commands.after', (cmd) => {
             if(cmd == "html"){
                 if(!editor.codeView.isActive()){
-                    var parsedContent = Parser.initParse(editor.html.get(), editor.opts.language);
+                    // Froala transform entities like &#62; to its equivalent ('<' in this case).
+                    // so MathML properties need to be parsed.
+                    const contentMathMLPropertiesEncoded = this.parseMathMLProperties(editor.html.get());
+                    const parsedContent = Parser.initParse(contentMathMLPropertiesEncoded, editor.opts.language);
                     editor.html.set(parsedContent);
                 }
             }
         });
 
         super.init();
+    }
+
+    parseMathMLProperties(text) {
+        const mathTagStart = `${Constants.xmlCharacters.tagOpener}math`;
+        const mathTagEnd = `${Constants.xmlCharacters.tagOpener}/math${Constants.xmlCharacters.tagCloser}`;
+
+        let output = '';
+        let start = text.indexOf(mathTagStart);
+        let end = 0;
+        while (start !== -1) {
+            // Add all the content between the past found mathml and the actual.
+            output += text.substring(end, start);
+            // Current mathml end.
+            end = text.indexOf(mathTagEnd, start);
+            const mathml = text.substring(start, end);
+            const mathmlEntitiesParsed = MathML.encodeProperties(mathml);
+            output += mathmlEntitiesParsed;
+            // Next mathml first position.
+            start = text.indexOf(mathTagStart, end);
+        }
+
+        output += text.substring(end, text.length);
+        return output;
     }
 
     /**@inheritdoc */
