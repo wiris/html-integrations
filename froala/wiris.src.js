@@ -1,6 +1,8 @@
 import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel.js';
 import Configuration from './integration-js/src/configuration.js';
 import Parser from './integration-js/src/parser.js';
+import Constants from './integration-js/src/constants.js';
+import MathML from './integration-js/src/mathml.js';
 
 /**
  * This property contains all Froala Integration instances.
@@ -82,6 +84,11 @@ export class FroalaIntegration extends IntegrationModel {
         super.init();
     }
 
+    /**
+     * Encodes html entities in mathml properties ocurrences inside 'text'.
+     * @param {String} text - text that can contain mathml elements or not.
+     * @returns {String} - 'text' with all mathml properties html entity encoded.
+     */
     parseMathMLProperties(text) {
         const mathTagStart = `${Constants.xmlCharacters.tagOpener}math`;
         const mathTagEnd = `${Constants.xmlCharacters.tagOpener}/math${Constants.xmlCharacters.tagCloser}`;

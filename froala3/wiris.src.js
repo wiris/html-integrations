@@ -84,6 +84,11 @@ export class FroalaIntegration extends IntegrationModel {
         super.init();
     }
 
+    /**
+     * Encodes html entities in mathml properties ocurrences inside 'text'.
+     * @param {String} text - text that can contain mathml elements or not.
+     * @returns {String} - 'text' with all mathml properties html entity encoded.
+     */
     parseMathMLProperties(text) {
         const mathTagStart = `${Constants.xmlCharacters.tagOpener}math`;
         const mathTagEnd = `${Constants.xmlCharacters.tagOpener}/math${Constants.xmlCharacters.tagCloser}`;
