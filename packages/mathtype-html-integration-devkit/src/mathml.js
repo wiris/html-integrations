@@ -402,4 +402,27 @@ export default class MathML {
 
     return empty;
   }
+
+  /**
+   * Encodes html entities inside properties.
+   * @param {String} mathml - valid MathML with standard XML tags.
+   * @returns {String} - 'mathml' with property entities encoded.
+   */
+  static encodeProperties(mathml) {
+    // Search all the properties.
+    const regex = /\w+=".*?"/g;
+    // Encode html entities.
+    const replacer = (match) => {
+      // It has the shape:
+      // <math propertyOne="somethingOne"><children propertyTwo="somethingTwo"></children></math>.
+      const quoteIndex = match.indexOf('"');
+      const propertyValue = match.substring(quoteIndex + 1, match.length - 1);
+      const propertyValueEncoded = Util.htmlEntities(propertyValue);
+      const matchEncoded = `${match.substring(0, quoteIndex + 1)}${propertyValueEncoded}"`;
+      return matchEncoded;
+    };
+
+    const mathmlEncoded = mathml.replace(regex, replacer);
+    return mathmlEncoded;
+  }
 }
