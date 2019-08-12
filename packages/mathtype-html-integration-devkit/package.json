@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-integration-js-dev",
-  "version" : "7.15.0",
+  "version" : "7.16.0",
   "description": "MathType Web Integration JavaScript development tools",
   "main": "core.src.js",
   "scripts": {
