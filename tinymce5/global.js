@@ -7,7 +7,7 @@ import Listeners from './integration-js/src/listeners';
 import IntegrationModel from './integration-js/src/integrationmodel.js';
 import { TinyMceIntegration, currentInstance, instances } from './editor_plugin.src.js';
 import Latex from './integration-js/src/latex';
-import backwardsLib from './integration-js/src/backwardsLib';
+import backwardsLib from './integration-js/src/backwardslib';
 import Test from './integration-js/src/test';
 
 // Expose WirisPlugin variable to the window.
