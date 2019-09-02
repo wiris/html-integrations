@@ -12,6 +12,7 @@ Easily include quality math equations in your documents and digital content.
 - [Install instructions](#install-instructions)
 - [Services](#services)
 - [Documentation](#documentation)
+- [Displaying on Target Page](#displaying-on-target-page)
 
 ## Install instructions
 
@@ -46,6 +47,13 @@ Easily include quality math equations in your documents and digital content.
 This npm module uses remotely hosted services to render MathML data. In case of wanting to install these services on your own backend, please contact <support@wiris.com>.
 
 [comment]: <> (TODO: fill this section when the documentation is ready)
+
+## Displaying on Target Page
+
+In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+```html
+<script src="https://wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
+```
 
 ## Documentation
 

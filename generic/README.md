@@ -19,6 +19,7 @@ Easily include quality math equations in your documents and digital content.
     * [PHP](#php)
     * [ASP .NET](#asp-net)
     * [Ruby on Rails](#ruby-on-rails)
+- [Displaying on Target Page](#displaying-on-target-page)
 - [Documentation](#documentation)
 
 ## Getting started
@@ -59,7 +60,7 @@ To integrate MathType, please follow the steps below. Please, note you may adjus
      var genericIntegrationProperties = {};
      genericIntegrationProperties.target = document.getElementById('htmlEditor');
      genericIntegrationProperties.toolbar = document.getElementById('toolbar');
-   
+
      // GenericIntegration instance.
      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
      genericIntegrationInstance.init();
@@ -84,7 +85,7 @@ After following these steps, you should have something like this:
   <body>
     <div id="toolbar"></div>
     <div id="htmlEditor" contenteditable="true">Try me!</div>
-    
+
     <script>
       var genericIntegrationProperties = {};
       genericIntegrationProperties.target = document.getElementById('htmlEditor');
@@ -246,7 +247,7 @@ To install the ASP .NET services, please, follow the steps below:
     ```
 
     The previous example would end up like this:
-    
+
     ```js
     <script>
       var genericIntegrationProperties = {};
@@ -282,7 +283,7 @@ To install the Ruby on Rails services, please, follow the steps below:
     ```
 
     The previous example would end up like this:
-    
+
     ```js
     <script>
       var genericIntegrationProperties = {};
@@ -298,6 +299,13 @@ To install the Ruby on Rails services, please, follow the steps below:
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
     </script>
     ```
+
+## Displaying on Target Page
+
+In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+```html
+<script src="https://wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
+```
 
 ## Documentation
 

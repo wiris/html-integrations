@@ -12,8 +12,9 @@ Easily include quality math equations in your documents and digital content.
 - [Install instructions](#install-instructions)
 - [Services](#services)
 - [Documentation](#documentation)
+- [Displaying on Target Page](#displaying-on-target-page)
 
-## Installation
+## Install instructions
 
 1. Install the npm module:
 
@@ -44,7 +45,7 @@ Easily include quality math equations in your documents and digital content.
    ```
     └───index.html
     └───node_modules
-        └───@wiris/mathtype-tinymce4
+        └───@wiris/mathtype-tinymce5
    ```
 
 ## Services
@@ -54,6 +55,13 @@ This npm module uses remotely hosted services to render MathML data. However, we
 The services are available for Java, PHP, .NET and Ruby on Rails. If you use any of these technologies, please download the plugin for your backend technology from [here](http://www.wiris.com/en/plugins/services/download).
 
 In order to install the plugin along with the correspondent services, please follow the [TinyMCE5 install instructions](https://github.com/wiris/mathtype-integration-js-dev/blob/master/doc/src/services_tinymce.md).
+
+## Displaying on Target Page
+
+In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+```html
+<script src="https://wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
+```
 
 ## Documentation
 
