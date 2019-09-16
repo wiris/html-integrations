@@ -4,6 +4,15 @@ import Configuration from './configuration';
 import Listeners from './listeners';
 import StringManager from './stringmanager';
 
+import closeIcon from '../styles/icons/general/close_icon.svg';
+import closeHoverIcon from '../styles/icons/hover/close_icon_h.svg';
+import fullsIcon from '../styles/icons/general/fulls_icon.svg';
+import fullsHoverIcon from '../styles/icons/hover/fulls_icon_h.svg';
+import minIcon from '../styles/icons/general/min_icon.svg';
+import minHoverIcon from '../styles/icons/hover/min_icon_h.svg';
+import minsIcon from '../styles/icons/general/mins_icon.svg';
+import minsHoverIcon from '../styles/icons/hover/mins_icon_h.svg';
+
 /**
  * @typedef {Object} DeviceProperties
  * @property {String} DeviceProperties.orientation - Indicates of the orientation of the device.
@@ -100,8 +109,15 @@ export default class ModalDialog {
     attributes.class = 'wrs_modal_close_button';
     attributes.id = this.getElementId(attributes.class);
     attributes.title = StringManager.get('close');
+    attributes.style = {};
     this.closeDiv = Util.createElement('a', attributes);
     this.closeDiv.setAttribute('role', 'button');
+    // Apply styles and events after the creation as createElement doesn't process them correctly
+    let generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeIcon)})`;
+    let hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeHoverIcon)})`;
+    this.closeDiv.setAttribute('style', generalStyle);
+    this.closeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.closeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
 
     attributes = {};
     attributes.class = 'wrs_modal_stack_button';
@@ -109,6 +125,12 @@ export default class ModalDialog {
     attributes.title = StringManager.get('exit_fullscreen');
     this.stackDiv = Util.createElement('a', attributes);
     this.stackDiv.setAttribute('role', 'button');
+    generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsIcon)})`;
+    hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsHoverIcon)})`;
+    this.stackDiv.setAttribute('style', generalStyle);
+    this.stackDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.stackDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+
 
     attributes = {};
     attributes.class = 'wrs_modal_maximize_button';
@@ -116,6 +138,11 @@ export default class ModalDialog {
     attributes.title = StringManager.get('fullscreen');
     this.maximizeDiv = Util.createElement('a', attributes);
     this.maximizeDiv.setAttribute('role', 'button');
+    generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsIcon)})`;
+    hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsHoverIcon)})`;
+    this.maximizeDiv.setAttribute('style', generalStyle);
+    this.maximizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.maximizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
 
     attributes = {};
     attributes.class = 'wrs_modal_minimize_button';
@@ -123,6 +150,11 @@ export default class ModalDialog {
     attributes.title = StringManager.get('minimize');
     this.minimizeDiv = Util.createElement('a', attributes);
     this.minimizeDiv.setAttribute('role', 'button');
+    generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
+    hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
+    this.minimizeDiv.setAttribute('style', generalStyle);
+    this.minimizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
 
     attributes = {};
     attributes.class = 'wrs_modal_dialogContainer';
