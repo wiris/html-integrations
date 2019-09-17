@@ -12,6 +12,8 @@ import minIcon from '../styles/icons/general/min_icon.svg';
 import minHoverIcon from '../styles/icons/hover/min_icon_h.svg';
 import minsIcon from '../styles/icons/general/mins_icon.svg';
 import minsHoverIcon from '../styles/icons/hover/mins_icon_h.svg';
+import maxIcon from '../styles/icons/general/max_icon.svg';
+import maxHoverIcon from '../styles/icons/hover/max_icon_h.svg';
 
 /**
  * @typedef {Object} DeviceProperties
@@ -724,6 +726,13 @@ export default class ModalDialog {
     this.removeClass('wrs_minimized');
     this.addClass('wrs_stack');
 
+    // Change maximize/minimize icon to minimize icon
+    const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
+    const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
+    this.minimizeDiv.setAttribute('style', generalStyle);
+    this.minimizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+
     this.restoreModalProperties();
 
     if (typeof this.resizerBR !== 'undefined' && typeof this.resizerTL !== 'undefined') {
@@ -766,6 +775,13 @@ export default class ModalDialog {
         this.removeClass('wrs_maximized');
       }
       this.addClass('wrs_minimized');
+
+      // Change minimize icon to maximize icon
+      const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxIcon)})`;
+      const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxHoverIcon)})`;
+      this.minimizeDiv.setAttribute('style', generalStyle);
+      this.minimizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+      this.minimizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
     }
   }
 
@@ -792,6 +808,13 @@ export default class ModalDialog {
     }
 
     this.addClass('wrs_maximized');
+
+    // Change maximize icon to minimize icon
+    const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
+    const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
+    this.minimizeDiv.setAttribute('style', generalStyle);
+    this.minimizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
 
     // Set size to 80% screen with a max size.
     this.setSize(parseInt(window.innerHeight * 0.8, 10), parseInt(window.innerWidth * 0.8, 10));
