@@ -49,7 +49,12 @@ module.exports = {
                     }
                   }
                 ]
-            }
+            },
+            {
+                // For the modal close, minimize, maximize icons
+                test: /\.svg$/,
+                use: [ 'raw-loader' ]
+            },
         ]
     },
     stats: {
