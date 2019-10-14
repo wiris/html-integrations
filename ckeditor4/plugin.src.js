@@ -105,6 +105,8 @@ export class CKEditor4Integration extends IntegrationModel {
 
                 }.bind(this));
 
+                this.addEvents();
+
             }.bind(this));
 
 
