@@ -752,6 +752,7 @@ export default class ModalDialog {
   minimize() {
     // Saving width, height, top and bottom parameters to restore when opening.
     this.saveModalProperties();
+    this.title.style.cursor = 'pointer';
     if (this.properties.state === 'minimized' && this.properties.previousState === 'stack') {
       this.stack();
     } else if (this.properties.state === 'minimized' && this.properties.previousState === 'maximized') {
@@ -841,6 +842,20 @@ export default class ModalDialog {
   }
 
   /**
+   * Expand again the modal object from a minimized state.
+   */
+  reExpand() {
+    if (this.properties.state === 'minimized') {
+      if (this.properties.previousState === 'maximized') {
+        this.maximize();
+      } else {
+        this.stack();
+      }
+      this.title.style.cursor = '';
+    }
+  }
+
+  /**
    * Sets modal size.
    * @param {Number} height - Height of the ModalDialog
    * @param {Number} width - Width of the ModalDialog.
@@ -918,6 +933,7 @@ export default class ModalDialog {
     this.stackDiv.addEventListener('click', this.stack.bind(this), true);
     this.minimizeDiv.addEventListener('click', this.minimize.bind(this), true);
     this.closeDiv.addEventListener('click', this.cancelAction.bind(this));
+    this.title.addEventListener('click', this.reExpand.bind(this));
 
     // Overlay events (close).
     this.overlay.addEventListener('click', this.cancelAction.bind(this));
