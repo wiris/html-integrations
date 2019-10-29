@@ -41,7 +41,13 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
+                // For the modal close, minimize, maximize icons
+                test: /styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
+                use: [ 'raw-loader' ]
+            },
+            {
                 test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
+                exclude: /styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
                 use: [
                   {
                     loader: 'url-loader',
