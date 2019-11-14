@@ -1,8 +1,8 @@
-import XmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/xmldataprocessor';
+import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 import { BR_FILLER } from '@ckeditor/ckeditor5-engine/src/view/filler';
 import DomConverter from '@ckeditor/ckeditor5-engine/src/view/domconverter';
 
-export default class MathmlDataProcessor extends XmlDataProcessor {
+export default class MathmlDataProcessor extends HtmlDataProcessor {
 
     /**
      * Creates a new instance of the MathML data processor class.
