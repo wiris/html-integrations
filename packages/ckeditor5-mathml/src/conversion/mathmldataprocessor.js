@@ -73,7 +73,7 @@ export default class MathmlDataProcessor extends HtmlDataProcessor {
         const domFragment = this._toDom( data );
 
         // Convert DOM DocumentFragment to view DocumentFragment.
-        return this._domConverter.domToView( domFragment, { keepOriginalCase: true } );
+        return this._domConverter.domToView( domFragment, { keepOriginalCase: false } );
 
     }
 
