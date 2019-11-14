@@ -28,11 +28,6 @@ export default class MathmlDataProcessor extends HtmlDataProcessor {
         let current;
         while ( current = frontier.pop() ) {
 
-            // Removes any block fillers CKEditor might've added
-            if ( current.nodeName.toLowerCase() == 'br' && current.hasAttribute( 'data-cke-filler' ) && current.closest( 'math' ) ) {
-                current.parentNode.removeChild( current );
-            }
-
             // Replaces < with &lt;, > with &gt;, & with &amp; in attributes
             for ( let attr of current.attributes ) {
                 current.setAttribute( attr.name, attr.value
