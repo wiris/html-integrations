@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-integration-js-dev",
-  "version" : "7.17.1",
+  "version": "7.17.1",
   "description": "MathType Web Integration JavaScript development tools",
   "main": "core.src.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
