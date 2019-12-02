@@ -1,0 +1,22 @@
+{
+    "npm": {
+        "uri": "https://www.wiris.net/demo/plugins/app",
+        "server": "java"
+    },
+    "java": {
+        "uri": "/pluginwiris_engine/app/",
+        "server": "java"
+    },
+    "php": {
+        "uri": "integration",
+        "server": "php"
+    },
+    "aspx": {
+        "uri": "integration",
+        "server": "aspx"
+    },
+    "ruby": {
+        "uri": "/wirispluginengine/integration/",
+        "server": "ruby"
+    }
+}
