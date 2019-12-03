@@ -1,4 +1,1 @@
-package.lib.json
-package.dev.json
-dev.README.md
-lib.README.md
+# This file left empty on purpose so npm doesn't use .gitignore as a replacement of .npmignore.

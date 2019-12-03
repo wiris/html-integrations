@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, ''),
-        filename: '../plugin.min.js'
+        filename: './plugin.min.js'
     },
     // Set watch to true for dev purposes.
     watch: false,

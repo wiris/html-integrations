@@ -1,8 +1,10 @@
-import IntegrationModel from './integration-js/src/integrationmodel.js';
-import Configuration from './integration-js/src/configuration.js';
-import Parser from './integration-js/src/parser.js';
-import Util from './integration-js/src/util';
-import Listeners from './integration-js/src/listeners';
+import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel.js';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration.js';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util';
+import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
+
+import {version as pluginVersion} from './package.json';
 
 /**
  * TinyMCE integration class. This class extends IntegrationModel class.
@@ -217,10 +219,10 @@ export var currentInstance = null;
              */
             var integrationModelProperties = {};
             integrationModelProperties.serviceProviderProperties= {};
-            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
-            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
-            integrationModelProperties.version = '@plugin.version@';
-            integrationModelProperties.isMoodle = @param.js.isMoodle@;
+            integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
+            integrationModelProperties.serviceProviderProperties.server = 'java';
+            integrationModelProperties.version = pluginVersion;
+            integrationModelProperties.isMoodle = false;
             if (typeof(editor.getParam('wiriscontextpath')) !== 'undefined') {
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
                 editor.getParam('wiriscontextpath') + '/' + integrationModelProperties.configurationService;
@@ -456,7 +458,7 @@ export var currentInstance = null;
                 author : 'Maths for More',
                 authorurl : 'http://www.wiris.com',
                 infourl : 'http://www.wiris.com',
-                version : '@plugin.version@'
+                version : pluginVersion,
             };
         }
     });
