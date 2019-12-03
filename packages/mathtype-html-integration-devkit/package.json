@@ -1,17 +1,7 @@
 {
-  "name": "@wiris/mathtype-integration-js-dev",
-  "version": "7.17.1",
-  "description": "MathType Web Integration JavaScript development tools",
-  "main": "core.src.js",
-  "scripts": {
-    "build-dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "lint": "eslint --quiet src"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wiris/mathtype-integration-js-dev#stable"
-  },
+  "name": "@wiris/mathtype-html-integration-devkit",
+  "version": "0.0.1",
+  "description": "Allows to integrate Mathtype Web into any JavaScript HTML WYSIWYG rich text editor.",
   "keywords": [
     "chem",
     "chemistry",
@@ -20,8 +10,8 @@
     "equation",
     "latex",
     "math",
-    "maths",
     "mathml",
+    "maths",
     "mathtype",
     "wiris"
   ],
@@ -29,9 +19,15 @@
   "bugs": {
     "email": "support@wiris.com"
   },
-  "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
-  "dependencies": {
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "main": "core.src.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
+    "lint": "eslint --quiet src"
+  },
+  "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
