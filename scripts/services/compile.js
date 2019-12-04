@@ -37,8 +37,7 @@ if (!module.parent) { // This file is being executed as a script.
     const args = process.argv.slice(2);
 
     if (args.length != 3) {
-        console.error("3 parameters required: the location of the file to replace, the location of the folder to copy and the technology to use.");
-        process.exit(1);
+        throw new Error("3 parameters required: the location of the file to replace, the location of the folder to copy and the technology to use.");
     }
 
     // Do the replacing and copying

@@ -16,22 +16,19 @@ const copy = (tech, src) => {
     const techs = require('./techs.json');
 
     if (!Object.keys(techs).includes(tech)) {
-        console.error(`Tech ${tech} is unknown.`);
-        process.exit(1);
+        throw new Error(`Tech ${tech} is unknown.`);
     }
 
     const srcNormalized = path.normalize(src);
     const editor = path.basename(path.resolve(src).match(/mathtype-(.*)/)[1]);
     const dest = path.join(src, '..', '..', 'output', tech + '-' + editor);
+    const filter = folder => ![ // List of files and folders to skip when copying
+            'node_modules',
+        ].includes(folder);
 
-    return new Promise((resolve, reject) => {
-        fs.copy(srcNormalized, dest, (err) => {
-            if (err) {
-                reject(err);
-            }
-            resolve();
-        });
-    });
+    return fs.remove(dest) // remove the destination folder to avoid having old files
+        .then(() => fs.copy(srcNormalized, dest, {filter: filter})) // do the copying
+        .then(() => { console.log(`Copied ${path.resolve(srcNormalized)} to ${path.resolve(dest)}.`); });
 
 };
 
@@ -41,8 +38,7 @@ if (!module.parent) { // This file is being executed as a script.
     const args = process.argv.slice(2);
 
     if (args.length != 2) {
-        console.error("2 parameters required: the technology to use and the location of the folder to copy.");
-        process.exit(1);
+        throw new Error("2 parameters required: the technology to use and the location of the folder to copy.");
     }
 
     // Do the copying

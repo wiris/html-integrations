@@ -8,7 +8,7 @@
 
 'use strict';
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 const replace = (tech, target) => {
@@ -16,8 +16,7 @@ const replace = (tech, target) => {
     const techs = require('./techs.json');
     
     if (!Object.keys(techs).includes(tech)) {
-        console.error(`Tech ${tech} is unknown.`);
-        process.exit(1);
+        throw new Error(`Tech ${tech} is unknown.`);
     }
 
     const techData = techs[tech];
@@ -33,29 +32,15 @@ const replace = (tech, target) => {
             from: /^([^\S\n\r]*integration(?:Model)?Properties\.serviceProviderProperties\.server = ')(.*)(';)$/gm,
             to: `$1${techData.server}$3`,
         },
-        
     ];
 
-    return new Promise((resolve, reject) => {
-        // Read the file to replace
-        fs.readFile(targetNormalized, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            }
-            // Do the replacements
-            let result = data;
-            for (const replacement of replacements) {
-                result = result.replace(replacement.from, replacement.to);
-            }
-            // Save the replaced string
-            fs.writeFile(targetNormalized, result, 'utf8', (err) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve();
-            });
-        });
-    });
+    // Used to reduce a list of replacements applying them to a string
+    const reducer = (contents, replacement) => contents.replace(replacement.from, replacement.to);
+
+    return fs.readFile(targetNormalized, 'utf8') // take the file's contents
+        .then(data => replacements.reduce(reducer, data)) // apply the replacements to the contents
+        .then(result => fs.writeFile(targetNormalized, result, 'utf8')) // save the result to the file
+        .then(() => { console.log(`Replaced variables in ${path.resolve(targetNormalized)}.`); });
 
 };
 
@@ -65,8 +50,7 @@ if (!module.parent) { // This file is being executed as a script.
     const args = process.argv.slice(2);
 
     if (args.length != 2) {
-        console.error("2 parameters required: the technology to use and the location of the file to replace.");
-        process.exit(1);
+        throw new Error("2 parameters required: the technology to use and the location of the file to replace.");
     }
 
     // Do the replacing
