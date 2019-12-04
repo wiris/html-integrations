@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "clean": "npx rimraf output"
+  },
   "devDependencies": {
     "fs-extra": "^8.1.0",
     "lerna": "^3.18.3"
