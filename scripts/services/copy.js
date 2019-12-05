@@ -42,7 +42,8 @@ if (!module.parent) { // This file is being executed as a script.
     }
 
     // Do the copying
-    copy(...args);
+    copy(...args)
+        .catch(err => { console.error(err); });
 
 } else { // This file is being imported as a module.
     module.exports = copy;

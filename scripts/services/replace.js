@@ -54,7 +54,8 @@ if (!module.parent) { // This file is being executed as a script.
     }
 
     // Do the replacing
-    replace(...args);
+    replace(...args)
+        .catch(err => { console.error(err); });
 
 } else { // This file is being imported as a module.
     module.exports = replace;

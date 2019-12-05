@@ -18,6 +18,8 @@ Replaces the default services that point to the Wiris service with local service
 
 Replaces the default services that point to the Wiris service with local services (PHP, Java, ASPX, etc.), builds it and copies the given folder to output/ in the root of the monorepo with the appropriate name for the tech it uses. Then, undoes the replacement in the original folder.
 
+This script also checks whether te file that is going to be replaced is a symbolic link or not and acts differently in each case. This is related to the way the sources of the TinyMCE plugins are stored. To know more, read `packages/mathtype-tinymce/README.md`.
+
 ### `techs.json`
 
 List of metadata related to each backend technology.

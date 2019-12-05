@@ -1,1 +1,1 @@
-../mathtype-tinymce4/editor_plugin.src.js
+../mathtype-tinymce/editor_plugin.src.js
