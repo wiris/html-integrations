@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, ''),
-        filename: '../wirisplugin-generic.js'
+        filename: './wirisplugin-generic.js'
     },
     // Set watch to true for dev purposes.
     watch: false,

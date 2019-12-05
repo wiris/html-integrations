@@ -1,8 +1,10 @@
-import IntegrationModel, { IntegrationModelProperties } from './integration-js/src/integrationmodel';
-import Parser from './integration-js/src/parser';
-import Util from './integration-js/src/util';
-import formulaIcon from '../icons/formula.png';
-import chemIcon from '../icons/chem.png';
+import IntegrationModel, { IntegrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util';
+import formulaIcon from './icons/formula.png';
+import chemIcon from './icons/chem.png';
+
+import {version as pluginVersion} from './package.json';
 
 /**
  * Inits MathType creating an object with all properties that the IntegrationModel class
@@ -37,10 +39,10 @@ export default class GenericIntegration extends IntegrationModel {
     constructor(integrationModelProperties) {
         if (typeof(integrationModelProperties.serviceProviderProperties) === 'undefined') {
             integrationModelProperties.serviceProviderProperties = {};
-            integrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
-            integrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
+            integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
+            integrationModelProperties.serviceProviderProperties.server = 'java';
         }
-        integrationModelProperties.version = '@plugin.version@';
+        integrationModelProperties.version = pluginVersion;
         integrationModelProperties.scriptName = "wirisplugin-generic.js";
         integrationModelProperties.environment = {};
         integrationModelProperties.environment.editor = "GenericHTML";
