@@ -1,8 +1,10 @@
-import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel.js';
-import Configuration from './integration-js/src/configuration.js';
-import Parser from './integration-js/src/parser.js';
-import Constants from './integration-js/src/constants.js';
-import MathML from './integration-js/src/mathml.js';
+import IntegrationModel, { integrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel.js';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration.js';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
+import Constants from '@wiris/mathtype-html-integration-devkit/src/constants.js';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
+
+import {version as pluginVersion} from './package.json';
 
 /**
  * This property contains all Froala Integration instances.
@@ -229,9 +231,9 @@ export class FroalaIntegration extends IntegrationModel {
         var froalaIntegrationProperties = {};
         froalaIntegrationProperties.target = target;
         froalaIntegrationProperties.serviceProviderProperties = {};
-        froalaIntegrationProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
-        froalaIntegrationProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
-        froalaIntegrationProperties.version = '@plugin.version@';
+        froalaIntegrationProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
+        froalaIntegrationProperties.serviceProviderProperties.server = 'java';
+        froalaIntegrationProperties.version = pluginVersion;
         froalaIntegrationProperties.scriptName = "wiris.js";
         froalaIntegrationProperties.environment = {};
         froalaIntegrationProperties.environment.editor = "Froala";

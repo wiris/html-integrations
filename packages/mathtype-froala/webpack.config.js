@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, ''),
-        filename: '../wiris.js'
+        filename: './wiris.js'
     },
     // Set watch to true for dev purposes.
     watch: false,

@@ -1,0 +1,52 @@
+{
+  "name": "@wiris/mathtype-froala",
+  "version": "7.17.0",
+  "description": "MathType Web for Froala editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "froala",
+    "latex",
+    "math",
+    "mathml",
+    "maths",
+    "mathtype",
+    "wiris"
+  ],
+  "homepage": "http://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "GPL-3.0",
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "main": "wiris.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
+    "clean": "npx rimraf wiris.js",
+    "compile": "node ../../scripts/services/compile wiris.src.js ."
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@wiris/mathtype-html-integration-devkit": "^0.0.1",
+    "babel-loader": "^8.0.2",
+    "css-loader": "^1.0.0",
+    "esdoc": "^1.1.0",
+    "esdoc-inject-script-plugin": "^1.0.0",
+    "esdoc-inject-style-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0",
+    "jsdoc-export-default-interop": "^0.3.1",
+    "mini-css-extract-plugin": "^0.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "raw-loader": "^3.1.0",
+    "style-loader": "^0.23.0",
+    "uglifyjs-webpack-plugin": "^1.2.8",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
+  }
+}
