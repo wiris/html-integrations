@@ -25,11 +25,11 @@ const replace = (tech, target) => {
     // Replacement data
     const replacements = [
         {
-            from: /^([^\S\n\r]*(?:froalaI|i)ntegration(?:Model)?Properties\.serviceProviderProperties\.URI = ')(.*)(';)$/gm,
+            from: /^([^\S\n\r]*(?:froalaI|ckeditorI|i)ntegration(?:Model)?Properties\.serviceProviderProperties\.URI = ')(.*)(';)$/gm,
             to: `$1${techData.uri}$3`,
         },
         {
-            from: /^([^\S\n\r]*(?:froalaI|i)ntegration(?:Model)?Properties\.serviceProviderProperties\.server = ')(.*)(';)$/gm,
+            from: /^([^\S\n\r]*(?:froalaI|ckeditorI|i)ntegration(?:Model)?Properties\.serviceProviderProperties\.server = ')(.*)(';)$/gm,
             to: `$1${techData.server}$3`,
         },
     ];

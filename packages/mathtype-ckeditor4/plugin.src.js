@@ -1,7 +1,9 @@
-import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel';
-import Parser from './integration-js/src/parser';
-import Util from './integration-js/src/util';
-import Configuration from './integration-js/src/configuration';
+import IntegrationModel, { integrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
+
+import {version as pluginVersion} from './package.json';
 
 /**
  * This property contains all Froala Integration instances.
@@ -338,9 +340,9 @@ export class CKEditor4Integration extends IntegrationModel {
                 // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
                 ckeditorIntegrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
                 ckeditorIntegrationModelProperties.serviceProviderProperties = {};
-                ckeditorIntegrationModelProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
-                ckeditorIntegrationModelProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
-                ckeditorIntegrationModelProperties.version = '@plugin.version@';
+                ckeditorIntegrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
+                ckeditorIntegrationModelProperties.serviceProviderProperties.server = 'java';
+                ckeditorIntegrationModelProperties.version = pluginVersion;
                 ckeditorIntegrationModelProperties.scriptName = "plugin.js";
                 ckeditorIntegrationModelProperties.environment = {};
                 ckeditorIntegrationModelProperties.environment.editor = "CKEditor4";
