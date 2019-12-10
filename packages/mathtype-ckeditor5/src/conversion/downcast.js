@@ -1,6 +1,6 @@
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 
-import Parser from '../integration-js/src/parser.js';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
 
 import CustomMathmlDataProcessor from './custommathmldataprocessor'
 

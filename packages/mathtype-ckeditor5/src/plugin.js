@@ -3,16 +3,16 @@ import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
-import { integrationModelProperties } from './integration-js/src/integrationmodel';
-import Core from './integration-js/src/core.src.js';
-import Parser from './integration-js/src/parser.js';
-import Util from './integration-js/src/util.js';
-import Image from './integration-js/src/image.js';
-import Configuration from './integration-js/src/configuration.js';
-import Listeners from './integration-js/src/listeners';
-import IntegrationModel from './integration-js/src/integrationmodel.js';
-import CoreMathML from './integration-js/src/mathml.js';
-import Latex from './integration-js/src/latex';
+import { integrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
+import Core from '@wiris/mathtype-html-integration-devkit/src/core.src.js';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util.js';
+import Image from '@wiris/mathtype-html-integration-devkit/src/image.js';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration.js';
+import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
+import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel.js';
+import CoreMathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
+import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
 
 import MathML from '@wiris/ckeditor5-mathml/src/mathml';
 
@@ -65,8 +65,8 @@ export default class MathTypePlugin extends Plugin {
         integrationProperties.environment.editor = 'CKEditor5';
         integrationProperties.editorObject = editor;
         integrationProperties.serviceProviderProperties = {};
-        integrationProperties.serviceProviderProperties.URI = '@param.js.serviceProviderProperties.URI@';
-        integrationProperties.serviceProviderProperties.server = '@param.js.serviceProviderProperties.server@';
+        integrationProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
+        integrationProperties.serviceProviderProperties.server = 'java';
         integrationProperties.target = editor.sourceElement;
         integrationProperties.scriptName = 'bundle.js';
         integrationProperties.managesLanguage = true;

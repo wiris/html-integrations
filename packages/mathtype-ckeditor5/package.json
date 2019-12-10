@@ -1,19 +1,19 @@
 {
   "name": "@wiris/mathtype-ckeditor5",
-  "version": "@version@",
+  "version": "7.17.1",
   "description": "MathType Web for CKEditor5 editor",
   "keywords": [
-    "ckeditor",
-    "ckeditor5",
     "chem",
     "chemistry",
     "chemtype",
+    "ckeditor",
+    "ckeditor5",
     "editor",
     "equation",
     "latex",
     "math",
-    "maths",
     "mathml",
+    "maths",
     "mathtype",
     "wiris"
   ],
@@ -21,8 +21,8 @@
   "bugs": {
     "email": "support@wiris.com"
   },
-  "author": "WIRIS Team (http://www.wiris.com)",
   "license": "GPL-3.0",
+  "author": "WIRIS Team (http://www.wiris.com)",
   "files": [
     "/src",
     "icons",
@@ -30,7 +30,10 @@
     "lang"
   ],
   "main": "src/plugin.js",
-  "dependencies": {
-    "@wiris/ckeditor5-mathml": "^1.0.0"
+  "scripts": {
+    "build": "# CKEditor 5 doesn't require build",
+    "build-dev": "# CKEditor 5 doesn't require build",
+    "clean": "# Nothing to clean",
+    "compile": "node ../../scripts/services/compile src/plugin.js ."
   }
 }

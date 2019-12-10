@@ -2,10 +2,10 @@ import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
 import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor'
 
-import IntegrationModel, { integrationModelProperties } from './integration-js/src/integrationmodel';
-import Util from './integration-js/src/util';
-import Configuration from './integration-js/src/configuration';
-import Latex from './integration-js/src/latex';
+import IntegrationModel, { integrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
+import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
 
 /**
  * This class represents the MathType integration for CKEditor5.

@@ -1,7 +1,7 @@
 import MathmlDataProcessor from '@wiris/ckeditor5-mathml/src/conversion/mathmldataprocessor';
 
-import MathML from '../integration-js/src/mathml.js';
-import Parser from '../integration-js/src/parser.js';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
 
 export default class CustomMathmlDataProcessor extends MathmlDataProcessor {
 
