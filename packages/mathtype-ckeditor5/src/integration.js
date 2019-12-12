@@ -214,7 +214,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         const range = this.editorObject.model.createRangeIn( element );
         const descendants = Array.from( range.getItems() );
         for ( const node of descendants ) {
-            if ( node.is( 'textProxy' ) && node.data == viewElement.data ) {
+            if ( node.is( 'textProxy' ) && node.data == viewElement.data.replace( String.fromCharCode( 160 ), " " ) ) {
                 return node.textNode;
             }
         }
