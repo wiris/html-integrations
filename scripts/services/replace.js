@@ -19,8 +19,13 @@ const replace = (tech, target) => {
         throw new Error(`Tech ${tech} is unknown.`);
     }
 
-    const techData = techs[tech];
+    let techData = techs[tech];
     const targetNormalized = path.normalize(target);
+
+    // In CKEditor 5 for PHP and ASPX, the integration path is plugins/wiris/integration
+    if (path.resolve(targetNormalized).includes('ckeditor5') && ['php', 'aspx'].includes(tech)) {
+        techData.uri = 'plugins/wiris/' + techData.uri;
+    }
 
     // Replacement data
     const replacements = [
