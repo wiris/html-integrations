@@ -28,7 +28,7 @@ const run = (command, options) => new Promise((resolve, reject) => {
 // Actual logic of the compilation
 const compileActual = (target, src, tech) =>
     replace(tech, target) // npm -> tech
-        .then(() => run('npm run build', {cwd: src})) // build
+        .then(() => run('npm run --if-present build', {cwd: src})) // build
         .then(() => { console.log(`Built package in ${path.resolve(src)}.`); })
         .then(() => copy(tech, src)) // copy
         .then(() => replace('npm', target)); // tech -> npm

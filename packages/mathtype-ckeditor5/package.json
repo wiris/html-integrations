@@ -31,9 +31,6 @@
   ],
   "main": "src/plugin.js",
   "scripts": {
-    "build": "# CKEditor 5 doesn't require build",
-    "build-dev": "# CKEditor 5 doesn't require build",
-    "clean": "# Nothing to clean",
     "compile": "node ../../scripts/services/compile src/plugin.js ."
   },
   "dependencies": {
