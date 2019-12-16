@@ -5,12 +5,6 @@ MathType Web Integration JavaScript SDK
 
 ## Install instructions
 
-Clone the repository:
-
-```bash
-$ git clone https://github.com/wiris/mathtype-integration-js-dev
-```
-
 Install dependencies:
 
 ```bash
