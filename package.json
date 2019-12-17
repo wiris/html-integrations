@@ -2,10 +2,12 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "clean": "npx rimraf output"
+    "clean": "npx rimraf output & npx lerna run clean",
+    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules"
   },
   "devDependencies": {
     "fs-extra": "^8.1.0",
-    "lerna": "^3.18.3"
+    "lerna": "^3.18.3",
+    "rimraf": "^3.0.0"
   }
 }

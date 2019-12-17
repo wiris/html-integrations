@@ -25,6 +25,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
+    "clean": "npx rimraf core.js",
     "lint": "eslint --quiet src"
   },
   "devDependencies": {
