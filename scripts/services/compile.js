@@ -26,14 +26,14 @@ const run = (command, options) => new Promise((resolve, reject) => {
 });
 
 // Actual logic of the compilation
-const compileActual = (target, src, tech) =>
+const compileActual = (dev, target, src, tech) =>
     replace(tech, target) // npm -> tech
-        .then(() => run('npm run --if-present build', {cwd: src})) // build
+        .then(() => run('npm run --if-present build' + (dev ? '-dev' : ''), {cwd: src})) // build
         .then(() => { console.log(`Built package in ${path.resolve(src)}.`); })
         .then(() => copy(tech, src)) // copy
         .then(() => replace('npm', target)); // tech -> npm
 
-const compile = (target, src, tech) => {
+const compile = (dev, target, src, tech) => {
     const targetNormalized = path.normalize(target);
     return fs.lstat(targetNormalized)
         .then(stats => stats.isSymbolicLink()
@@ -44,14 +44,14 @@ const compile = (target, src, tech) => {
                     fs.remove(targetNormalized) // if we don't remove the symlink first, node thinks we're trying to copy a file to itself
                         .then(() => fs.copy(targetOriginal, targetNormalized)) // replace the symlink with a copy of its source
                         .then(() => { console.log(`Copied original symlinked source file ${targetOriginal} to ${targetNormalized}.`); })
-                        .then(() => compileActual(target, src, tech)) // do the actual compiling
+                        .then(() => compileActual(dev, target, src, tech)) // do the actual compiling
                         .then(() => fs.remove(targetNormalized)) // again, delete the copied file before recreating the symlink
                         .then(() => fs.symlink(targetOriginal, targetNormalized)) // replace source back with symlink
                         .then(() => { console.log(`Created symlink to ${targetOriginal} in ${targetNormalized}.`); })
                 )
 
             // if it's not a symlink, just go for it
-            : compileActual(target, src, tech)
+            : compileActual(dev, target, src, tech)
 
         );
 };
@@ -61,12 +61,21 @@ if (!module.parent) { // This file is being executed as a script.
     // Process args
     const args = process.argv.slice(2);
 
+    // Check if --dev flag is being used
+    const devPosition = args.indexOf('--dev');
+    const dev = devPosition > -1;
+
+    if (dev) {
+        args.splice(devPosition, 1);
+    }
+
+    // Check the number of arguments
     if (args.length != 3) {
         throw new Error("3 parameters required: the location of the file to replace, the location of the folder to copy and the technology to use.");
     }
 
     // Do the replacing and copying
-    compile(...args)
+    compile(dev, ...args)
         .catch(err => { console.error(err); });
 
 } else { // This file is being imported as a module.

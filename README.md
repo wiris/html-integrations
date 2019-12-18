@@ -74,7 +74,7 @@ plugins-frontend$ npm run bootstrap
 To try out a package, it can be compiled as such:
 
 ```sh
-plugins-frontend/packages/mathtype-[editor]$ npm run compile -- [tech]
+plugins-frontend/packages/mathtype-[editor]$ npm run compile -- [tech] [--dev]
 ```
 
 Where [editor] can be any of:
@@ -94,6 +94,9 @@ and [tech] can be any of:
 - `npm`,
 - `php`,
 - `ruby`.
+
+The `--dev` optional flag calls the `build-dev` script defined in the plugin's `package.json`
+instead of the `build` script.
 
 This replaces the service provider URI and server with the appropriate values,
 builds the sources with Webpack, and places the result in

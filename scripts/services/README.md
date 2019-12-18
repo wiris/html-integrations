@@ -45,3 +45,9 @@ $ npm run compile -- php
 ```
 
 The double dash (--) is necessary for npm to pass the `php` parameter to the script instead of passing it to `npm`.
+
+An optional `--dev` flag can be passed at any position to call the `build-dev` step instead of `build` in the package to compile. For example:
+
+```bash
+$ npm run compile -- php --dev
+```
