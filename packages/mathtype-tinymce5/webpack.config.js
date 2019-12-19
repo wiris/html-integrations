@@ -26,7 +26,7 @@ module.exports = {
             {
                 // Rule to translate ES5 javascript files to ES6.
                 test: /\.js$/,
-                exclude: /node_modules/,
+                exclude: /node_modules\/(?!(@wiris\/mathtype-html-integration-devkit)\/).*/,
                 use: {
                     loader: 'babel-loader',
                     options: {
