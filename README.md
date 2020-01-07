@@ -128,6 +128,46 @@ plugins-frontend$ npm run clean-all
 
 This will require you to `npm i` and `npx lerna bootstrap` in the root again.
 
+### Versioning
+
+In this project [semantic](https://semver.org),
+[independent](https://github.com/lerna/lerna#independent-mode) versioning is
+used.
+
+The semantic version convention is applied:
+
+> Given a version number MAJOR.MINOR.PATCH, increment the:
+>
+> 1. MAJOR version when you make incompatible API changes,
+> 2. MINOR version when you add functionality in a backwards compatible manner, and
+> 3. PATCH version when you make backwards compatible bug fixes.
+
+Lerna introduces a tool `lerna version` useful for updating the appropriate
+number for each package that has changes, making a commit, and tagging it.
+
+In general, when publishing changes, just run:
+
+```sh
+lerna version
+```
+
+This will prompt you with each package with changes since the last version
+and ask you whether to increase the patch, minor, or major number.
+
+It is responsibility of the developer to keep track of which kind of changes
+have been introduced in each package.
+
+Each editor plugin that is distributed built (e.g. those that include a
+`webpack.config.js` file) must have two
+[npm lifecycle scripts](https://docs.npmjs.com/misc/scripts):
+
+- prepare: Run both BEFORE the package is packed and published, on local npm
+install without any arguments, and when installing git dependencies
+- preversion: Run BEFORE bumping the package version.
+
+Both should do the same task: build the package (generally by calling
+`npm run build`).
+
 ## Documentation
 
 [npm](https://docs.npmjs.com/)
