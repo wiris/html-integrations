@@ -27,12 +27,13 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "clean": "npx rimraf wiris.js",
-    "compile": "node ../../scripts/services/compile wiris.src.js ."
+    "compile": "node ../../scripts/services/compile wiris.src.js .",
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@wiris/mathtype-html-integration-devkit": "^0.0.2",
+    "@wiris/mathtype-html-integration-devkit": "0.0.3",
     "babel-loader": "^8.0.2",
     "css-loader": "^1.0.0",
     "esdoc": "^1.1.0",
