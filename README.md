@@ -1,4 +1,4 @@
-# Plugins Frontend mono-repository
+# MathType HTML Integrations mono-repository
 
 Mono-repository for the MathType Web plugins and their dependencies.
 
@@ -35,9 +35,9 @@ are explained in this guide.
 First, clone the repository:
 
 ```sh
-$ git clone https://github.com/wiris/plugins-frontend
-$ cd plugins-frontend
-plugins-frontend$
+$ git clone https://github.com/wiris/html-integrations
+$ cd html-integrations
+html-integrations$
 ```
 
 On Windows, you will need to have administrator privileges or activate
@@ -45,7 +45,7 @@ On Windows, you will need to have administrator privileges or activate
 in your account, and then use the `core.symlinks` when cloning the repository:
 
 ```sh
-projects$ git clone --config core.symlinks=true https://github.com/wiris/plugins-frontend
+projects$ git clone --config core.symlinks=true https://github.com/wiris/html-integrations
 ```
 
 ### Bootstrapping
@@ -58,7 +58,7 @@ stated in the root `package.json` file as they are used in the scripts of all
 packages:
 
 ```sh
-plugins-frontend$ npm install
+html-integrations$ npm install
 ```
 
 Then, we need to bootstrap all the packages. What this does is try to find
@@ -66,7 +66,7 @@ which dependencies of the mono-repo packages are present inside the mono-repo
 itself, and link to them instead of downloading them from the npm repository.
 
 ```sh
-plugins-frontend$ npm run bootstrap
+html-integrations$ npm run bootstrap
 ```
 
 ### Compiling
@@ -74,7 +74,7 @@ plugins-frontend$ npm run bootstrap
 To try out a package, it can be compiled as such:
 
 ```sh
-plugins-frontend/packages/mathtype-[editor]$ npm run compile -- [tech] [--dev]
+html-integrations/packages/mathtype-[editor]$ npm run compile -- [tech] [--dev]
 ```
 
 Where [editor] can be any of:
@@ -100,7 +100,7 @@ instead of the `build` script.
 
 This replaces the service provider URI and server with the appropriate values,
 builds the sources with Webpack, and places the result in
-`plugins-frontend/output/[tech]-[editor]`.
+`html-integrations/output/[tech]-[editor]`.
 
 ### Batch actions
 
@@ -109,7 +109,7 @@ mono-repository. For example, you can build all editors for a single technology
 like this:
 
 ```sh
-plugins-frontend$ npx lerna run compile -- npm
+html-integrations$ npx lerna run compile -- npm
 ```
 
 ### Cleaning up
@@ -117,13 +117,13 @@ plugins-frontend$ npx lerna run compile -- npm
 Clean the output in the root folder and in the packages:
 
 ```sh
-plugins-frontend$ npm run clean
+html-integrations$ npm run clean
 ```
 
 Clean the outputs and also all of the `node_modules`:
 
 ```sh
-plugins-frontend$ npm run clean-all
+html-integrations$ npm run clean-all
 ```
 
 This will require you to `npm i` and `npx lerna bootstrap` in the root again.
