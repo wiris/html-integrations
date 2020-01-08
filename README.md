@@ -148,7 +148,7 @@ number for each package that has changes, making a commit, and tagging it.
 In general, when publishing changes, just run:
 
 ```sh
-lerna version
+lerna version --exact
 ```
 
 This will prompt you with each package with changes since the last version
@@ -157,16 +157,20 @@ and ask you whether to increase the patch, minor, or major number.
 It is responsibility of the developer to keep track of which kind of changes
 have been introduced in each package.
 
+The `--exact` option forces Lerna to modify packages that depend on others that
+have been modified. For example, if `@wiris/mathtype-html-integration-devkit` is
+modified, all the editor plugins that depend on it will also require to have
+their version increased.
+
+### Publishing
+
 Each editor plugin that is distributed built (e.g. those that include a
-`webpack.config.js` file) must have two
-[npm lifecycle scripts](https://docs.npmjs.com/misc/scripts):
+`webpack.config.js` file) must have a `prepack`
+[npm lifecycle script](https://docs.npmjs.com/misc/scripts), which is run
+BEFORE a tarball is packed (on `npm pack`, `npm publish`, and when installing
+git dependencies).
 
-- prepare: Run both BEFORE the package is packed and published, on local npm
-install without any arguments, and when installing git dependencies
-- preversion: Run BEFORE bumping the package version.
-
-Both should do the same task: build the package (generally by calling
-`npm run build`).
+This script should build the package (generally by calling `npm run build`).
 
 ## Documentation
 
