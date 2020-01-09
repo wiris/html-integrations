@@ -508,7 +508,7 @@ export default class ModalDialog {
       }
     }
 
-    if (this.contentManager.isEditorLoaded === false) {
+    if (!this.contentManager.isEditorLoaded()) {
       const listener = Listeners.newListener('onLoad', () => {
         this.contentManager.onOpen(this);
       });

@@ -128,12 +128,6 @@ export default class ContentManager {
      * @type {IntegrationModel}
      */
     this.integrationModel = null;
-
-    /**
-     * Indicates if the editor is loaded.
-     * @type {Boolean}
-     */
-    this.isEditorLoaded = false;
   }
 
   /**
@@ -176,10 +170,7 @@ export default class ContentManager {
    * editor's JavaScript is loaded.
    */
   insertEditor() {
-    // To know if editor JavaScript is loaded we need to wait until
-    // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
-    if (window.com && window.com.wiris && window.com.wiris.jsEditor
-        && window.com.wiris.jsEditor.JsEditor && window.com.wiris.jsEditor.JsEditor.newInstance) {
+    if (this.isEditorLoaded()) {
       this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
@@ -204,7 +195,6 @@ export default class ContentManager {
       // Fire onLoad event. Necessary to set the MathML into the editor
       // after is loaded.
       this.listeners.fire('onLoad', {});
-      this.isEditorLoaded = true;
     } else {
       setTimeout(ContentManager.prototype.insertEditor.bind(this), 100);
     }
@@ -214,29 +204,79 @@ export default class ContentManager {
    * Initializes the current class by loading MathType script.
    */
   init() {
+    if (!this.isEditorLoaded()) {
+      this.addEditorAsExternalDependency();
+    }
+  }
+
+  addEditorAsExternalDependency() {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     let editorUrl = Configuration.get('editorUrl');
     // We create an object url for parse url string and work more efficiently.
-    const urlObject = document.createElement('a');
-    urlObject.href = editorUrl;
+    const anchorElement = document.createElement('a');
 
+    this.setHrefToAnchorElement(anchorElement, editorUrl);
+    this.setProtocolToAnchorElement(anchorElement);
+
+    editorUrl = this.getURLFromAnchorElement(anchorElement);
+
+    // Load editor URL. We add stats as GET params.
+    const stats = this.getEditorStats();
+    script.src = `${editorUrl}?lang=${this.language}&stats-editor=${stats.editor}&stats-mode=${stats.mode}&stats-version=${stats.version}`;
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  /**
+   * Sets the specified url to the anchor element.
+   * @param {HTMLAnchorElement} anchorElement - Element where set 'url'.
+   * @param {String} url - URL to set.
+   */
+  setHrefToAnchorElement(anchorElement, url) {
+    anchorElement.href = url;
+  }
+
+  /**
+   * Sets the current protocol to the anchor element.
+   * @param {HTMLAnchorElement} anchorElement - Element where set its protocol.
+   */
+  setProtocolToAnchorElement(anchorElement) {
     // Change to https if necessary.
     if (window.location.href.indexOf('https://') === 0) {
       // It check if browser is https and configuration is http.
       // If this is so, we will replace protocol.
-      if (urlObject.protocol === 'http:') {
-        urlObject.protocol = 'https:';
+      if (anchorElement.protocol === 'http:') {
+        anchorElement.protocol = 'https:';
       }
     }
+  }
 
+  /**
+   * Returns the url of the anchor element adding the current port
+   * if it is needed.
+   * @param {HTMLAnchorElement} anchorElement - Element where extract the url.
+   * @returns {String}
+   */
+  getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
-    if (urlObject.port === '80' || urlObject.port === '443') {
-      editorUrl = `${urlObject.protocol}//${urlObject.hostname}/${urlObject.pathname}`;
+    if (anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '') {
+      return `${anchorElement.protocol}//${anchorElement.hostname}/${anchorElement.pathname}`;
     } else {
-      editorUrl = `${urlObject.protocol}//${urlObject.hostname}:${urlObject.port}/${urlObject.pathname}`;
+      return `${anchorElement.protocol}//${anchorElement.hostname}:${anchorElement.port}/${anchorElement.pathname}`;
     }
+  }
 
+  /**
+   * Returns object with editor stats.
+   *
+   * @typedef {Object} EditorStatsObject
+   * @property {string} editor - Editor name.
+   * @property {string} mode - Current configuration for formula save mode.
+   * @property {string} version - Current plugins version.
+   * @returns {EditorStatsObject}
+   */
+  getEditorStats() {
     // Editor stats. Use environment property to set it.
     const stats = {};
     if ('editor' in this.environment) {
@@ -257,10 +297,18 @@ export default class ContentManager {
       stats.version = Configuration.get('version');
     }
 
-    // Load editor URL. We add stats as GET params.
-    script.src = `${editorUrl}?lang=${this.language}&stats-editor=${stats.editor}&stats-mode=${stats.mode}&stats-version=${stats.version}`;
+    return stats;
+  }
 
-    document.getElementsByTagName('head')[0].appendChild(script);
+  /**
+   * Returns true if editor is loaded. Otherwise, false.
+   * @returns {Boolean}
+   */
+  isEditorLoaded() {
+    // To know if editor JavaScript is loaded we need to wait until
+    // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
+    return (window.com && window.com.wiris && window.com.wiris.jsEditor
+      && window.com.wiris.jsEditor.JsEditor && window.com.wiris.jsEditor.JsEditor.newInstance);
   }
 
   /**
