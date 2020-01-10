@@ -3,6 +3,7 @@ import Util from './util';
 import Configuration from './configuration';
 import Listeners from './listeners';
 import StringManager from './stringmanager';
+import ContentManager from './contentmanager';
 
 import closeIcon from '../styles/icons/general/close_icon.svg';
 import closeHoverIcon from '../styles/icons/hover/close_icon_h.svg';
