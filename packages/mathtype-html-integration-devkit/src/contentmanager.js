@@ -170,7 +170,7 @@ export default class ContentManager {
    * editor's JavaScript is loaded.
    */
   insertEditor() {
-    if (this.isEditorLoaded()) {
+    if (ContentManager.isEditorLoaded()) {
       this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
@@ -204,11 +204,14 @@ export default class ContentManager {
    * Initializes the current class by loading MathType script.
    */
   init() {
-    if (!this.isEditorLoaded()) {
+    if (!ContentManager.isEditorLoaded()) {
       this.addEditorAsExternalDependency();
     }
   }
 
+  /**
+   * Adds script element to the DOM to include editor externally.
+   */
   addEditorAsExternalDependency() {
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -216,10 +219,10 @@ export default class ContentManager {
     // We create an object url for parse url string and work more efficiently.
     const anchorElement = document.createElement('a');
 
-    this.setHrefToAnchorElement(anchorElement, editorUrl);
-    this.setProtocolToAnchorElement(anchorElement);
+    ContentManager.setHrefToAnchorElement(anchorElement, editorUrl);
+    ContentManager.setProtocolToAnchorElement(anchorElement);
 
-    editorUrl = this.getURLFromAnchorElement(anchorElement);
+    editorUrl = ContentManager.getURLFromAnchorElement(anchorElement);
 
     // Load editor URL. We add stats as GET params.
     const stats = this.getEditorStats();
@@ -233,7 +236,7 @@ export default class ContentManager {
    * @param {HTMLAnchorElement} anchorElement - Element where set 'url'.
    * @param {String} url - URL to set.
    */
-  setHrefToAnchorElement(anchorElement, url) {
+  static setHrefToAnchorElement(anchorElement, url) {
     anchorElement.href = url;
   }
 
@@ -241,7 +244,7 @@ export default class ContentManager {
    * Sets the current protocol to the anchor element.
    * @param {HTMLAnchorElement} anchorElement - Element where set its protocol.
    */
-  setProtocolToAnchorElement(anchorElement) {
+  static setProtocolToAnchorElement(anchorElement) {
     // Change to https if necessary.
     if (window.location.href.indexOf('https://') === 0) {
       // It check if browser is https and configuration is http.
@@ -258,13 +261,13 @@ export default class ContentManager {
    * @param {HTMLAnchorElement} anchorElement - Element where extract the url.
    * @returns {String}
    */
-  getURLFromAnchorElement(anchorElement) {
+  static getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
     if (anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '') {
       return `${anchorElement.protocol}//${anchorElement.hostname}/${anchorElement.pathname}`;
-    } else {
-      return `${anchorElement.protocol}//${anchorElement.hostname}:${anchorElement.port}/${anchorElement.pathname}`;
     }
+
+    return `${anchorElement.protocol}//${anchorElement.hostname}:${anchorElement.port}/${anchorElement.pathname}`;
   }
 
   /**
@@ -304,7 +307,7 @@ export default class ContentManager {
    * Returns true if editor is loaded. Otherwise, false.
    * @returns {Boolean}
    */
-  isEditorLoaded() {
+  static isEditorLoaded() {
     // To know if editor JavaScript is loaded we need to wait until
     // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
     return (window.com && window.com.wiris && window.com.wiris.jsEditor
