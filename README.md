@@ -172,6 +172,19 @@ git dependencies).
 
 This script should build the package (generally by calling `npm run build`).
 
+### Demos
+
+In order to manually test each plugin, demos will be developed in the future.
+
+*Note*: To be taken into account when developing the new demos is the fact that
+CKEditor 5 issues a duplicated modules error when installing the plugin using
+a "file:..." protocol or a .tgz file. In order to avoid this, in the old
+plugins repository we make a hacky string replacement that removes the
+dependencies in the CKEditor 5 plugin `package.json`, compiles the demo
+(which does contain those dependencies), and then restores the original
+`package.json`. A similar approach could be used here when the CKEditor 5 demo
+is to be developed.
+
 ## Documentation
 
 [npm](https://docs.npmjs.com/)
