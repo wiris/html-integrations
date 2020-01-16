@@ -2,7 +2,7 @@ import Command from '@ckeditor/ckeditor5-core/src/command';
 
 import CKEditor5Integration from '../integration';
 
-export default class MathType extends Command {
+export default class MathTypeCommand extends Command {
 
     constructor( editor ) {
         super( editor );

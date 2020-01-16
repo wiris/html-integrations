@@ -1,7 +1,5 @@
 import Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
-import CustomMathmlDataProcessor from './conversion/custommathmldataprocessor'
-
 import IntegrationModel, { integrationModelProperties } from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
@@ -141,25 +139,25 @@ export default class CKEditor5Integration extends IntegrationModel {
 
             const core = this.getCore();
 
-            const mathmlDP = new CustomMathmlDataProcessor();
-
-            // "<math>" -> <math>
-            let modelElementNew;
-            if ( mathml ) {
-                const viewFragment = mathmlDP.toView( mathml );
-                // <math> -> <math-math>
-                modelElementNew = this.editorObject.data.toModel( viewFragment ).getChild( 0 );
+            // If empty, use a default template
+            if ( !mathml ) {
+                mathml = '<math xmlns="http://www.w3.org/1998/Math/MathML"></math>';
             }
 
-            // The DOM <img> object corresponding to the formula
+            const modelElementNew = writer.createElement( 'mathml', { formula: mathml } );
+
+            // This shouldn't happen
+            if ( !modelElementNew ) {
+                return;
+            }
+
+            // Obtain the DOM <span><img ... /></span> object corresponding to the formula
             if ( core.editionProperties.isNewElement ) {
 
                 let viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
                 let modelPosition = this.editorObject.editing.mapper.toModelPosition( viewSelection.getLastPosition() );
 
-                if ( modelElementNew ) {
-                    writer.insert( modelElementNew, modelPosition );
-                }
+                writer.insert( modelElementNew, modelPosition );
 
                 // Remove selection
                 if ( !viewSelection.isCollapsed ) {
@@ -173,10 +171,10 @@ export default class CKEditor5Integration extends IntegrationModel {
             } else {
 
                 const img = core.editionProperties.temporalImage;
-                const viewElement = this.editorObject.editing.view.domConverter.domToView( img );
+                const viewElement = this.editorObject.editing.view.domConverter.domToView( img ).parent;
                 const modelElementOld = this.editorObject.editing.mapper.toModelElement( viewElement );
 
-                // Insert the new <math-math> and remove the old one
+                // Insert the new <mathml> and remove the old one
                 const position = Position._createBefore( modelElementOld );
                 if ( modelElementNew ) {
                     writer.insert( modelElementNew, position );
