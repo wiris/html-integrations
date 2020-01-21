@@ -29,7 +29,7 @@
     "build-dev": "webpack --mode development",
     "clean": "npx rimraf plugin.js",
     "compile": "node ../../scripts/services/compile plugin.src.js .",
-    "prepack": "npm run build"
+    "prepack": "npm install && npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
