@@ -138,6 +138,9 @@ export default class MathType extends Plugin {
         editor.ui.componentFactory.add( 'MathType', locale => {
             const view = new ButtonView( locale );
 
+            // View is enabled iff command is enabled
+            view.bind( 'isEnabled' ).to( editor.commands.get( 'MathType' ), 'isEnabled' );
+
             view.set( {
                 label: 'Insert a math equation - MathType',
                 icon: mathIcon,
@@ -157,6 +160,9 @@ export default class MathType extends Plugin {
         // Add button for the chemistry formula editor
         editor.ui.componentFactory.add( 'ChemType', locale => {
             const view = new ButtonView( locale );
+
+            // View is enabled iff command is enabled
+            view.bind( 'isEnabled' ).to( editor.commands.get( 'ChemType' ), 'isEnabled' );
 
             view.set( {
                 label: 'Insert a chemistry formula - ChemType',
