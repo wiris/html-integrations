@@ -23,8 +23,7 @@ import CoreMathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
 
 // Local imports
-import MathTypeCommand from './commands/mathtypecommand';
-import ChemTypeCommand from './commands/chemtypecommand';
+import { MathTypeCommand, ChemTypeCommand } from './commands';
 import CKEditor5Integration from './integration';
 
 import mathIcon from '../theme/icons/formula.svg';
