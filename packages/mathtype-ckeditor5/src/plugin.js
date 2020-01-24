@@ -19,7 +19,7 @@ import Image from '@wiris/mathtype-html-integration-devkit/src/image.js';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration.js';
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel.js';
-import CoreMathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
 
 // Local imports
@@ -207,7 +207,21 @@ export default class MathType extends Plugin {
 
         const editor = this.editor;
 
-        // View -> Model
+        // Editing view -> Model
+        editor.conversion.for( 'upcast' ).elementToElement( {
+            view: {
+                name: 'span',
+                class: 'ck-math-widget',
+            },
+            model: ( viewElement, modelWriter ) => {
+                const formula = MathML.safeXmlDecode( viewElement.getChild( 0 ).getAttribute( 'data-mathml' ) );
+                return modelWriter.createElement( 'mathml', {
+                    formula: formula,
+                } );
+            }
+        } );
+
+        // Data view -> Model
         editor.data.upcastDispatcher.on( 'element:math', ( evt, data, conversionApi ) => {
             const { consumable, writer } = conversionApi;
             const viewItem = data.viewItem;
@@ -298,7 +312,7 @@ export default class MathType extends Plugin {
 
             /* Although we use the HtmlDataProcessor to obtain the attributes,
             we must create a new EmptyElement which is independent of the
-            DataProcessor being used by this editor instance */ 
+            DataProcessor being used by this editor instance */
             return viewWriter.createEmptyElement( 'img', imgElement.getAttributes() );
 
         }
@@ -314,7 +328,7 @@ export default class MathType extends Plugin {
             Core: Core,
             Parser: Parser,
             Image: Image,
-            MathML: CoreMathML,
+            MathML: MathML,
             Util: Util,
             Configuration: Configuration,
             Listeners: Listeners,
