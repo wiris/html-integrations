@@ -281,28 +281,65 @@ export default class MathType extends Plugin {
         // Model -> Editing view
         editor.conversion.for( 'editingDowncast' ).elementToElement( {
             model: 'mathml',
-            view: createMathMLWidget
+            view: createViewWidget
         } );
 
         // Model -> Data view
         editor.conversion.for( 'dataDowncast' ).elementToElement( {
             model: 'mathml',
-            view: createMathElement
+            view: createDataString
         } );
 
-        function createMathMLWidget( modelItem, viewWriter ) {
+        /**
+         * Makes a copy of the given view node.
+         * @param {module:engine/view/node~Node} sourceNode Node to copy.
+         * @returns {module:engine/view/node~Node} Copy of the node.
+         */
+        function clone( viewWriter, sourceNode ) {
+            if ( sourceNode.is( 'text' ) ) {
+                return viewWriter.createText( sourceNode.data );
+            } else if ( sourceNode.is( 'element' ) ) {
+
+                if ( sourceNode.is( 'emptyElement' ) ) {
+                    return viewWriter.createEmptyElement( sourceNode.name, sourceNode.getAttributes() );
+                } else {
+                    const element = viewWriter.createContainerElement( sourceNode.name, sourceNode.getAttributes() );
+                    for ( const child of sourceNode.getChildren() ) {
+                        viewWriter.insert( viewWriter.createPositionAt( element, 0 ) , clone( viewWriter, child ) );
+                    }
+                    return element;
+                }
+
+            }
+
+            throw new Exception('Given node has unsupported type.');
+
+        }
+
+        function createDataString( modelItem, viewWriter ) {
+
+            const htmlDataProcessor = new HtmlDataProcessor();
+
+            const mathString = Parser.endParseSaveMode( modelItem.getAttribute( 'formula' ) );
+            const sourceMathElement = htmlDataProcessor.toView( mathString ).getChild( 0 );
+
+            return clone( viewWriter, sourceMathElement );
+
+        }
+
+        function createViewWidget( modelItem, viewWriter ) {
             const widgetElement = viewWriter.createContainerElement( 'span', {
                 class: 'ck-math-widget'
             } );
 
-            const mathUIElement = createMathElement( modelItem, viewWriter );
+            const mathUIElement = createViewImage( modelItem, viewWriter );
 
             viewWriter.insert( viewWriter.createPositionAt( widgetElement, 0 ), mathUIElement );
 
             return toWidget( widgetElement, viewWriter );
         }
 
-        function createMathElement( modelItem, viewWriter ) {
+        function createViewImage( modelItem, viewWriter ) {
 
             const htmlDataProcessor = new HtmlDataProcessor();
 
