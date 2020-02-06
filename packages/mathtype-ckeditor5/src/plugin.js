@@ -331,7 +331,7 @@ export default class MathType extends Plugin {
                 } else {
                     const element = viewWriter.createContainerElement( sourceNode.name, sourceNode.getAttributes() );
                     for ( const child of sourceNode.getChildren() ) {
-                        viewWriter.insert( viewWriter.createPositionAt( element, 0 ) , clone( viewWriter, child ) );
+                        viewWriter.insert( viewWriter.createPositionAt( element, 'end' ) , clone( viewWriter, child ) );
                     }
                     return element;
                 }
