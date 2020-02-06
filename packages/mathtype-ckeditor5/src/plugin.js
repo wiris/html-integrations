@@ -231,19 +231,29 @@ export default class MathType extends Plugin {
                 return;
             }
 
+            // If we encounter any <math> with a LaTeX annotation inside,
+            // convert it into a "$$...$$" string.
+            let isLatex = mathIsLatex( viewItem );
+
             // Get the formula of the <math> (which is all its children).
             const processor = new XmlDataProcessor();
+            // Only god knows why the following line makes viewItem lose all of its children,
+            // so we obtain isLatex before doing this because we need viewItem's children for that.
             const viewDocumentFragment = new ViewDocumentFragment( viewItem.getChildren() );
             let formula = processor.toData( viewDocumentFragment ) || '';
             formula = `<math xmlns="http://www.w3.org/1998/Math/MathML">${ formula }</math>`;
 
-            // Create the <mathml> model element.
-            const modelElement = writer.createElement( 'mathml', { formula } );
+            /* Model node that contains what's going to actually be inserted. This can be either:
+            - A <mathml> element with a formula attribute set to the given formula, or
+            - If the original <math> had a LaTeX annotation, then the annotation surrounded by "$$...$$" */
+            const modelNode = isLatex
+                ? writer.createText( Parser.initParse( formula, editor.config.get( 'language' ) ) )
+                : writer.createElement( 'mathml', { formula } );
 
             // Find allowed parent for element that we are going to insert.
             // If current parent does not allow to insert element but one of the ancestors does
             // then split nodes to allowed parent.
-            const splitResult = conversionApi.splitToAllowedParent( modelElement, data.modelCursor );
+            const splitResult = conversionApi.splitToAllowedParent( modelNode, data.modelCursor );
 
             // When there is no split result it means that we can't insert element to model tree, so let's skip it.
             if ( !splitResult ) {
@@ -251,16 +261,16 @@ export default class MathType extends Plugin {
             }
 
             // Insert element on allowed position.
-            conversionApi.writer.insert( modelElement, splitResult.position );
+            conversionApi.writer.insert( modelNode, splitResult.position );
 
             // Consume appropriate value from consumable values list.
             consumable.consume( viewItem, { name: true } );
 
-            const parts = conversionApi.getSplitParts( modelElement );
+            const parts = conversionApi.getSplitParts( modelNode );
 
             // Set conversion result range.
             data.modelRange = writer.createRange(
-                conversionApi.writer.createPositionBefore( modelElement ),
+                conversionApi.writer.createPositionBefore( modelNode ),
                 conversionApi.writer.createPositionAfter( parts[ parts.length - 1 ] )
             );
 
@@ -277,6 +287,22 @@ export default class MathType extends Plugin {
                 data.modelCursor = data.modelRange.end;
             }
         } );
+
+        /**
+         * Whether the given view <math> element has a LaTeX annotation element.
+         * @param {*} math 
+         * @returns {bool}
+         */
+        function mathIsLatex( math ) {
+            const semantics = math.getChild( 0 );
+            if ( !semantics || semantics.name !== 'semantics' ) return false;
+            for ( const child of semantics.getChildren() ) {
+                if ( child.name === 'annotation' && child.getAttribute( 'encoding' ) === 'LaTeX' ) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         // Model -> Editing view
         editor.conversion.for( 'editingDowncast' ).elementToElement( {
