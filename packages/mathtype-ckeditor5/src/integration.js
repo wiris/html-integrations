@@ -139,20 +139,13 @@ export default class CKEditor5Integration extends IntegrationModel {
 
             const core = this.getCore();
 
-            // If empty, use a default template
-            if ( !mathml ) {
-                mathml = '<math xmlns="http://www.w3.org/1998/Math/MathML"></math>';
-            }
-
             const modelElementNew = writer.createElement( 'mathml', { formula: mathml } );
-
-            // This shouldn't happen
-            if ( !modelElementNew ) {
-                return;
-            }
 
             // Obtain the DOM <span><img ... /></span> object corresponding to the formula
             if ( core.editionProperties.isNewElement ) {
+
+                // Don't bother inserting anything at all if the MathML is empty.
+                if ( !mathml ) return;
 
                 let viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
                 let modelPosition = this.editorObject.editing.mapper.toModelPosition( viewSelection.getLastPosition() );
@@ -176,7 +169,9 @@ export default class CKEditor5Integration extends IntegrationModel {
 
                 // Insert the new <mathml> and remove the old one
                 const position = Position._createBefore( modelElementOld );
-                if ( modelElementNew ) {
+
+                // If the given MathML is empty, don't insert a new formula.
+                if ( mathml ) {
                     writer.insert( modelElementNew, position );
                 }
                 writer.remove( modelElementOld );
