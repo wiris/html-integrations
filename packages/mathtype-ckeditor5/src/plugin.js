@@ -240,8 +240,11 @@ export default class MathType extends Plugin {
             // Only god knows why the following line makes viewItem lose all of its children,
             // so we obtain isLatex before doing this because we need viewItem's children for that.
             const viewDocumentFragment = new ViewDocumentFragment( viewItem.getChildren() );
+            const mathAttributes = [ ...viewItem.getAttributes() ]
+                .map( ( [ key, value ] ) => ` ${ key }="${ value }"` )
+                .join( '' );
             let formula = processor.toData( viewDocumentFragment ) || '';
-            formula = `<math xmlns="http://www.w3.org/1998/Math/MathML">${ formula }</math>`;
+            formula = `<math${ mathAttributes }>${ formula }</math>`;
 
             /* Model node that contains what's going to actually be inserted. This can be either:
             - A <mathml> element with a formula attribute set to the given formula, or
