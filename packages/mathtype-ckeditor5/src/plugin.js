@@ -349,7 +349,13 @@ export default class MathType extends Plugin {
 
             const htmlDataProcessor = new HtmlDataProcessor();
 
-            const mathString = Parser.endParseSaveMode( modelItem.getAttribute( 'formula' ) );
+            let mathString = Parser.endParseSaveMode( modelItem.getAttribute( 'formula' ) );
+
+            // Remove the traces from Hand. This code should be removed once PLUGINS-1307 is solved.
+            if ( !Configuration.get( 'saveHandTraces' ) ) {
+                mathString = MathML.removeAnnotation( mathString, 'application/json' );
+            }
+
             const sourceMathElement = htmlDataProcessor.toView( mathString ).getChild( 0 );
 
             return clone( viewWriter, sourceMathElement );
