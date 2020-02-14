@@ -1,0 +1,47 @@
+body {
+    background-color: rgb(228, 230, 231);
+    margin-top: 1%;
+}
+
+.componentsToolbarEditable {
+    margin: 0 auto;
+    border-bottom-right-radius: 2%;
+    border-bottom-left-radius: 2%;
+    border-top-right-radius: 2%;
+    max-width: 850px;
+    min-height: 300px;
+    width: 75%;
+    border: 3px solid rgb(228, 230, 231);
+}
+
+.componentsToolbarEditable:hover ~ #toolbar {
+    border:3px solid #7AF78F;
+    /* border-opacity: 0.6; */
+    /* filter: blur(4px); */
+}
+
+#toolbar {
+    display: inline;    
+    background-color: white; 
+    border-bottom: 1px solid rgb(233, 233, 233);
+}
+
+#toolbar:hover {
+    border
+}
+
+#editable {
+    padding: 2%;
+    width: auto;
+    background-color: white; 
+}
+
+#editorIcon {
+    padding: 1%;
+    background-color: white;
+}
+
+#chemistryIcon {
+    padding: 1%;
+    background-color: white;
+}
