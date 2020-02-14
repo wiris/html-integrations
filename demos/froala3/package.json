@@ -2,10 +2,9 @@
   "name": "froala3",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "global.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
     "build-dev": "webpack-dev-server --open",
     "build": "webpack --mode production"
   },

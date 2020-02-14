@@ -7,7 +7,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'generic.js'
+        filename: 'demo.js'
     },
     devServer: {
         writeToDisk: true,
