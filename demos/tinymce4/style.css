@@ -1,0 +1,15 @@
+body {
+    background-color: rgb(228, 230, 231);
+    margin-top: 1%;
+}
+
+.editorContent {
+    margin: 0 auto !important;
+    max-width: 750px !important;
+    width: 75% !important;
+    background-color: white !important;
+}
+
+.editorContent:hover {
+    box-shadow: 0 0 10px #7AF78F;
+}

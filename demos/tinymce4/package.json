@@ -1,0 +1,36 @@
+{
+  "name": "demo-ckeditor4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "global.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dev-firstime": "lerna bootstrap ; webpack-dev-server --open",
+    "build-dev": "webpack-dev-server --open",
+    "build": "webpack --mode production"
+  },
+  "author": "Carla Lara",
+  "license": "ISC",
+  "dependencies": {
+    "@wiris/mathtype-tinymce4": "^7.17.0",
+    "tinymce": "^5.2.0",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@wiris/mathtype-html-integration-devkit": "^0.0.3",
+    "babel-loader": "^8.0.2",
+    "css-loader": "^1.0.0",
+    "lerna": "^3.20.2",
+    "mini-css-extract-plugin": "^0.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "raw-loader": "^3.1.0",
+    "style-loader": "^0.23.0",
+    "uglifyjs-webpack-plugin": "^1.2.8",
+    "url-loader": "^1.1.1",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
