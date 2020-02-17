@@ -5,17 +5,20 @@ body {
 
 .componentsToolbarEditable {
     margin: 0 auto;
-    border-bottom-right-radius: 2%;
-    border-bottom-left-radius: 2%;
-    border-top-right-radius: 2%;
+    border-radius: 10px;
     max-width: 850px;
     min-height: 300px;
     width: 75%;
-    border: 3px solid rgb(228, 230, 231);
+    background-color: white;
+    border: 1px solid rgb(201, 201, 201);
 }
 
-.componentsToolbarEditable:hover ~ #toolbar {
-    border:3px solid #7AF78F;
+[contenteditable] {
+    outline: 0px solid transparent;
+  }
+
+.componentsToolbarEditable:hover {
+    box-shadow: 0 0 10px #7AF78F;
     /* border-opacity: 0.6; */
     /* filter: blur(4px); */
 }
@@ -23,25 +26,23 @@ body {
 #toolbar {
     display: inline;    
     background-color: white; 
-    border-bottom: 1px solid rgb(233, 233, 233);
-}
-
-#toolbar:hover {
-    border
+    border-radius: 11px;
 }
 
 #editable {
     padding: 2%;
     width: auto;
     background-color: white; 
+    border-top: 1px solid rgb(230, 230, 230);
 }
 
 #editorIcon {
-    padding: 1%;
+    padding: 1.4% 1% 1.4% 2%;
     background-color: white;
+    border-radius: inherit;
 }
 
 #chemistryIcon {
-    padding: 1%;
+    padding: 1.4% 1% 1.4% 1%;
     background-color: white;
 }

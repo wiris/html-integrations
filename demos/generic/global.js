@@ -1,5 +1,9 @@
+// Load scripts
+import {wrsInitEditor} from '@wiris/mathtype-generic/wirisplugin-generic.src';
+import '@wiris/mathtype-generic/wirisplugin-generic.js';
 
-import {wrsInitEditor} from '@wiris/mathtype-generic/wirisplugin-generic.src'
+// Load styles
+import './style.css';
 
 const editableDiv  = document.getElementById('editable'); 
 const toolbarDiv = document.getElementById('toolbar');
