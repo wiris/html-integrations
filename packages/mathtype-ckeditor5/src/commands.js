@@ -19,20 +19,72 @@ export class MathTypeCommand extends Command {
             throw 'Must pass a valid CKEditor5Integration instance as attribute "integration" of options';
         }
 
+        // Save the integration instance as a property of the command.
+        this.integration = options.integration;
+
+        // Set custom editor or disable it
+        this.setEditor();
+
         // Open the editor
-        this._open( options.integration );
+        this.openEditor();
 
     }
 
     /**
-     * Opens the editor on the given CKEditor 5 integration
-     * @param {CKEditor5Integration} integration the integration
+     * Sets the appropriate custom editor, if any, or disables them.
      */
-    _open( integration ) {
+    setEditor() {
         // It's possible that a custom editor was last used.
         // We need to disable it to avoid wrong behaviors.
-        integration.core.getCustomEditors().disable();
-        integration.openNewFormulaEditor();
+        this.integration.core.getCustomEditors().disable();
+    }
+
+    /**
+     * Checks whether we are editing an existing formula or a new one and opens the editor.
+     */
+    openEditor() {
+        const image = this._getSelectedImage();
+        if ( typeof image !== 'undefined' && image !== null && image.classList.contains( WirisPlugin.Configuration.get( 'imageClassName' ) ) ) {
+            this.integration.core.editionProperties.temporalImage = image;
+            this.integration.openExistingFormulaEditor();
+        } else {
+            this.integration.openNewFormulaEditor();
+        }
+    }
+
+    /**
+     * Gets the currently selected formula image
+     * @returns {Element} selected image, if any, undefined otherwise
+     */
+    _getSelectedImage() {
+
+        const selection = this.editor.editing.view.document.selection;
+
+        // If we can not extract the formula, fall back to default behavior.
+        if ( selection.isCollapsed || selection.rangeCount !== 1 ) {
+            return;
+        }
+
+        // Look for the <span> wrapping the formula and then for the <img/> inside
+
+        const range = selection.getFirstRange();
+
+        let image;
+
+        for ( const span of range ) {
+            if ( span.item.name !== 'span' ) {
+                return;
+            }
+            image = span.item.getChild( 0 );
+            break;
+        }
+
+        if ( !image ) {
+            return;
+        }
+
+        return this.editor.editing.view.domConverter.mapViewToDom( image );
+
     }
 
 }
@@ -41,8 +93,7 @@ export class MathTypeCommand extends Command {
  * Command for opening the ChemType editor
  */
 export class ChemTypeCommand extends MathTypeCommand {
-    _open( integration ) {
-        integration.core.getCustomEditors().enable( 'chemistry' );
-        integration.openNewFormulaEditor();
+    setEditor() {
+        this.integration.core.getCustomEditors().enable( 'chemistry' );
     }
 }
