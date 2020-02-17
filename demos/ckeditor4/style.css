@@ -1,0 +1,46 @@
+body {
+    background-color: rgb(228, 230, 231);
+    margin-top: 1%;
+}
+
+.cke {
+    margin: 0 auto !important;
+    border-radius: 10px !important;
+    max-width: 750px !important;
+    min-height: 300px !important;
+    width: 75% !important;
+    background-color: white !important;
+    border: 1px solid rgb(201, 201, 201) !important;
+}
+.cke:hover {
+    box-shadow: 0 0 10px #7AF78F;
+}
+
+.cke_inner {
+    border-radius: 10px;
+}
+
+#cke_1_top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#cke_1_bottom {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#cke_8 {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#cke_1_toolbox {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+} 
+
+#cke_editor_arialbl {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;    
+}
