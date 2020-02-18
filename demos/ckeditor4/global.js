@@ -6,7 +6,7 @@ import './style.css';
 
 
 // Add wiris plugin
-CKEDITOR.plugins.addExternal('ckeditor_wiris', './node_modules/@wiris/mathtype-ckeditor4/', 'plugin.js');
+CKEDITOR.plugins.addExternal('ckeditor_wiris', window.location.href + 'node_modules/@wiris/mathtype-ckeditor4/', 'plugin.js');
 
 // Initialize plugin
 CKEDITOR.replace( 'editor', {
