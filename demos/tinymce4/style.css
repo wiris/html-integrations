@@ -3,13 +3,13 @@ body {
     margin-top: 1%;
 }
 
-.tox {
+.editorContent {
     margin: 0 auto !important;
     max-width: 750px !important;
     width: 75% !important;
     background-color: white !important;
 }
 
-.tox:hover {
+.editorContent:hover {
     box-shadow: 0 0 10px #7AF78F;
 }
