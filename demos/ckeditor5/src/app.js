@@ -8,13 +8,13 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 import './static/style.css';
 
 ClassicEditor
-    .create( document.querySelector( '#editor' ), {
-        plugins: [ Essentials, Paragraph, Bold, Italic, MathType, Alignment ],
-        toolbar: [ 'bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right' ]
-    } )
-    .then( editor => {
-        console.log( 'Editor was initialized', editor );
-    } )
-    .catch( error => {
-        console.error( error.stack );
-    } );
+  .create(document.querySelector('#editor'), {
+    plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
+    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
+  })
+  .then((editor) => {
+    console.log('Editor was initialized', editor);
+  })
+  .catch((error) => {
+    console.error(error.stack);
+  });
