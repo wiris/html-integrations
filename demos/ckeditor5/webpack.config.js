@@ -17,7 +17,6 @@ module.exports = {
 
     devServer: {
         writeToDisk: true,
-        compress: true,
         contentBase: path.join(__dirname, ''),
         port: 8006
     },
