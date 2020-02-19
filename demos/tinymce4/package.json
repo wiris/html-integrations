@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev-lerna": "lerna bootstrap ; cd ../../packages/mathtype-tinymce4/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "build-dev": "webpack-dev-server --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "lint": "eslint --quiet src"
   },
   "author": "Carla Lara",
   "license": "GPL-3.0",
@@ -22,6 +23,9 @@
     "@wiris/mathtype-html-integration-devkit": "^0.0.3",
     "babel-loader": "^8.0.2",
     "css-loader": "^1.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
     "lerna": "^3.20.2",
     "mini-css-extract-plugin": "^0.4.2",
     "raw-loader": "^3.1.0",
