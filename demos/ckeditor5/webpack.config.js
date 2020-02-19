@@ -7,7 +7,7 @@ const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
 module.exports = {
     entry: {
-        app: './global.js'
+        app: './src/app.js'
     },
 
     output: {

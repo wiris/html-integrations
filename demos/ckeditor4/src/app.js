@@ -2,7 +2,7 @@
 import '@wiris/mathtype-ckeditor4/plugin.js';
 
 // Load styles
-import './style.css';
+import './static/style.css';
 
 
 // Add wiris plugin

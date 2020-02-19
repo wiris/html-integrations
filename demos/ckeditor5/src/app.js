@@ -5,7 +5,7 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
-import './style.css';
+import './static/style.css';
 
 ClassicEditor
     .create( document.querySelector( '#editor' ), {

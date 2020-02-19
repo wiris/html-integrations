@@ -3,7 +3,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './global.js'
+        app: './src/app.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -32,17 +32,6 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                // Rule to translate ES5 javascript files to ES6.
-                test: /\.js$/,
-                exclude: /node_modules\/(?!(@wiris\/mathtype-html-integration-devkit)\/).*/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/env']
-                    }
-                }
-            },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']

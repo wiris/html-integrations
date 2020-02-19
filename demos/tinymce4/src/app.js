@@ -2,7 +2,7 @@
 
 
 // Load styles
-import './style.css';
+import './static/style.css';
 
 // Inicialyze default editor
 tinymce.init({
