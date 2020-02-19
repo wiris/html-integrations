@@ -1,0 +1,19 @@
+body {
+    background-color: rgb(228, 230, 231);
+    margin-top: 1%;
+}
+ #editor {
+    margin: 0 auto !important;
+    border-radius: 10px !important;
+    max-width: 750px !important;
+    width: 75% !important;
+    background-color: white !important;
+}
+
+#editor:hover {
+    box-shadow: 0 0 10px #7AF78F;
+}
+
+.fr-wrapper {
+    min-height: 180px;
+} 
