@@ -66,7 +66,13 @@ which dependencies of the mono-repo packages are present inside the mono-repo
 itself, and link to them instead of downloading them from the npm repository.
 
 ```sh
-html-integrations$ npm run bootstrap
+html-integrations$ lerna bootstrap
+```
+
+If this fails, try using `npx`:
+
+```sh
+html-integrations$ npx lerna bootstrap
 ```
 
 ### Compiling
