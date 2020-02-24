@@ -8,24 +8,28 @@ import {version as pluginVersion} from './package.json';
 
 /**
  * Inits MathType creating an object with all properties that the IntegrationModel class
- * needs to initialize the plugin and create an instance of IntegrationModel child.
+ * needs to initialize the plugin and create an instance of IntegrationModel child. 
  * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
  * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
-window.wrs_int_init = function(target,toolbar) {
+export function wrsInitEditor(target,toolbar) {
     /**
      * @type {integrationModelProperties}
      */
-    var genericIntegrationProperties = {};
+    let genericIntegrationProperties = {};
     genericIntegrationProperties.target = target;
     genericIntegrationProperties.toolbar = toolbar;
 
     // GenericIntegration instance.
-    var genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
+    const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
     genericIntegrationInstance.init();
     genericIntegrationInstance.listeners.fire('onTargetReady', {});
 }
 
+/**
+ * Backwards compatibility init method.
+ */
+window.wrs_int_init = wrsInitEditor;
 /**
  * IntegrationModel constructor. This method sets the dependant
  * integration properties needed by the IntegrationModel class to init the plugin.
@@ -81,7 +85,7 @@ export default class GenericIntegration extends IntegrationModel {
         }
 
         /* Creating toolbar buttons */
-        var formulaButton = document.createElement('img');
+        let formulaButton = document.createElement('img');
         formulaButton.id = "editorIcon";
         formulaButton.src = formulaIcon;
         formulaButton.style.cursor = 'pointer';
@@ -94,11 +98,11 @@ export default class GenericIntegration extends IntegrationModel {
         this.toolbar.appendChild(formulaButton);
 
         // Dynamic customEditors buttons.
-        var customEditors = this.getCore().getCustomEditors();
+        let customEditors = this.getCore().getCustomEditors();
         // Iterate from all custom editors.
-        for (var customEditor in customEditors.editors) {
+        for (let customEditor in customEditors.editors) {
             if (customEditors.editors[customEditor].confVariable) {
-                var customEditorButton = document.createElement('img');
+                let customEditorButton = document.createElement('img');
                 // TODO make this work and add promises polyfill
                 // import('./icons/' + customEditors.editors[customEditor].icon).then(({default: customEditorIcon}) => {
                 //     customEditorButton.src = customEditorIcon;
