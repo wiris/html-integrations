@@ -1,14 +1,15 @@
-// Generate scripts
-var jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-
-// Load sripts
-document.head.appendChild(jsDemoImagesTransform);
-
 // Load styles
 import './static/style.css';
 
+// Generate scripts
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated sripts
+document.head.appendChild(jsDemoImagesTransform);
+
+// Set up the editor
 tinymce.init({
   selector: '#editor',
   external_plugins: {
@@ -17,12 +18,12 @@ tinymce.init({
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
 
   // Handle on loaded content event
-  setup: function(editor) {
-    editor.on('LoadContent', function(e) {
+  setup(editor) {
+    editor.on('LoadContent', () => {
       const editorContent = tinyMCE.activeEditor.getContent();
       document.getElementById('editorContentTransform').innerHTML = editorContent;
     });
-  }
+  },
 });
 
 // Takes the data of the editor
@@ -34,6 +35,6 @@ function updateFunction() {
 }
 
 // Add listener on click button to launch updateFunction
-document.getElementById('btn-update').addEventListener('click', ()=>{
+document.getElementById('btn-update').addEventListener('click', () => {
   updateFunction();
 });
