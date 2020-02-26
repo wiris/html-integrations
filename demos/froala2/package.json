@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev-lerna": "lerna bootstrap ; cd ../../packages/mathtype-froala/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "build-dev": "webpack-dev-server --open",
+    "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "eslint --quiet src"
   },
