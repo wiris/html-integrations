@@ -1,15 +1,17 @@
-// Generate scripts
-var jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-
 // Load scripts
 import '@wiris/mathtype-froala3/wiris';
-document.head.appendChild(jsDemoImagesTransform);
 
 // Load styles
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';
+
+// Generate scripts
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated scripts
+document.head.appendChild(jsDemoImagesTransform);
 
 // Initialize editor.
 FroalaEditor('#editor', {
@@ -33,16 +35,16 @@ function updateFunction() {
 }
 
 // Add listener on click button to launch updateFunction
-document.getElementById('btn-update').addEventListener('click', ()=>{
+document.getElementById('btn-update').addEventListener('click', () => {
   updateFunction();
 });
 
-// Execute, just for the first time, 
+// Execute, just for the first time,
 // the transformation of the actual CKEDITOR4 content
 // FroalaEditor.on('documentReady', function() {
 //   updateFunction();
-// }); 
+// });
 
-setTimeout(function() {
+setTimeout(() => {
   updateFunction();
 }, 500);
