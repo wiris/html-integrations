@@ -38,10 +38,10 @@ ClassicEditor
     });
 
     // Execute, just for the first time,
-    // the transformation of the actual CKEDITOR4 content
-    editor.on('instanceReady', () => {
+    // the transformation of the actual CKEDITOR5 content
+    // editor.on('instanceReady', function() {
       updateFunction();
-    });
+    // });
   })
   .catch((error) => {
     console.error(error.stack);
