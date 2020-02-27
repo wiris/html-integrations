@@ -33,7 +33,7 @@ ClassicEditor
     function updateFunction() {
       const editorContent = editor.getData();
       document.getElementById('editorContentTransform').innerHTML = editorContent;
-      com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
+      com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));        //eslint-disable-line
     }
 
     // Add listener on click button to launch updateFunction.

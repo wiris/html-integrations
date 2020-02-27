@@ -17,7 +17,7 @@ document.head.appendChild(jsDemoImagesTransform);
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
 
 // Initialize editor.
-FroalaEditor('#editor', {
+FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
   // toolbarButtons: ['undo', 'redo' , 'bold', '|','clear', 'insert']
   toolbarButtons: ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'],
 
@@ -32,9 +32,9 @@ FroalaEditor('#editor', {
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
-  const editorContent = FroalaEditor.INSTANCES[0].html.get();
+  const editorContent = FroalaEditor.INSTANCES[0].html.get();                                           //eslint-disable-line
   document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));                //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.

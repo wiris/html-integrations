@@ -13,7 +13,7 @@ document.head.appendChild(jsDemoImagesTransform);
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
 
 // Set up the editor.
-tinymce.init({
+tinymce.init({                                                                                          //eslint-disable-line
   selector: '#editor',
   external_plugins: {
     tiny_mce_wiris: 'http://localhost:8006/node_modules/@wiris/mathtype-tinymce5/plugin.min.js',
@@ -24,9 +24,9 @@ tinymce.init({
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
-  const editorContent = tinyMCE.activeEditor.getContent();
+  const editorContent = tinyMCE.activeEditor.getContent();                      //eslint-disable-line
   document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));      //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.

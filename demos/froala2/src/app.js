@@ -2,9 +2,8 @@
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';
 
-$('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');
-$('head').append('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css">');
-$('head').append('<script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>');
+$('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');    //eslint-disable-line
+$('head').append('<script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>');       //eslint-disable-line
 
 // Copy the editor content before initializing it.
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
@@ -25,14 +24,14 @@ const froalaConfiguration = {
 };
 
 // Initialyze the editor.
-$('#editor').froalaEditor(froalaConfiguration);
+$('#editor').froalaEditor(froalaConfiguration);       //eslint-disable-line
 
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
-  const editorContent = $('#editor').froalaEditor('html.get');
+  const editorContent = $('#editor').froalaEditor('html.get');                                      //eslint-disable-line
   document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));      //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.

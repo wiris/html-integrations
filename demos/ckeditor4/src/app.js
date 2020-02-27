@@ -16,10 +16,10 @@ document.head.appendChild(jsDemoImagesTransform);
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
 
 // Add wiris plugin.
-CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js');
+CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js'); //eslint-disable-line
 
 // Initialize plugin.
-CKEDITOR.replace('editor', {
+CKEDITOR.replace('editor', { //eslint-disable-line
   extraPlugins: 'ckeditor_wiris',
   allowedContent: true,
 });
@@ -27,9 +27,9 @@ CKEDITOR.replace('editor', {
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
-  const editorContent = CKEDITOR.instances.editor.getData();
+  const editorContent = CKEDITOR.instances.editor.getData(); //eslint-disable-line
   document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform')); //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.
