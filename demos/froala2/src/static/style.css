@@ -16,7 +16,11 @@ body {
 
 .fr-wrapper {
     min-height: 200px;
-} 
+}
+
+#text1 {
+    margin:0%;
+}
 
 .imageEditorContent {
     margin: 0 auto;

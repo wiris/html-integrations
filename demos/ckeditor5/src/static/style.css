@@ -25,6 +25,10 @@ body {
     border-bottom-right-radius: 10px !important;
 }
 
+#text1 {
+    margin:0% !important;
+}
+
 .imageEditorContent {
     margin: 0 auto;
     border-radius: 10px;

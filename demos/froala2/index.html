@@ -2,26 +2,27 @@
 <html lang="en">
 
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
-        <script type="text/javascript" src="node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
+        <title> Demo Froala2 </title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+        <script src="node_modules/froala-editor/js/froala_editor.pkgd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
         <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
     </head>
 
     <body>
         <div id="editor" contenteditable="true">
-            <p style="margin:0%;"> Double click on the following formula to edit it.</p>
+            <p id="text1"> Double click on the following formula to edit it.</p>
             <p style="text-align:center;">
-                <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> 
+                <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>
             </p>
         </div>
         <div class="updateContainer">
             <a id="btn-update" href="#" class="button buttonUpdate">Change</a>
         </div>
         <div class="imageEditorContent" id="editorContentTransform">
-            
+
         </div>
     </body>
     <script src="./dist/demo.js"></script>

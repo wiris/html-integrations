@@ -45,6 +45,14 @@ body {
     background-color: white;
 }
 
+#text1 {
+    margin:0%;
+}
+
+#eq {
+    text-align: center;
+}
+
 .imageEditorContent {
     margin: 0 auto;
     border-radius: 10px;
