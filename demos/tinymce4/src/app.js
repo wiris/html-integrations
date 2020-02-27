@@ -16,7 +16,7 @@ document.getElementById('editorContentTransform').innerHTML = document.getElemen
 tinymce.init({
   selector: '#editor',
   external_plugins: {
-    tiny_mce_wiris: 'http://localhost:8006/node_modules/@wiris/mathtype-tinymce4/plugin.min.js',
+    tiny_mce_wiris: `${window.location.href}node_modules/@wiris/mathtype-tinymce4/plugin.min.js`,
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
 });
