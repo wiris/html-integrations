@@ -14,7 +14,7 @@ const toolbarDiv = document.getElementById('toolbar');
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv);
 
-// Define the undefined mode 'parseModes'
+// Define the undefined mode 'parseModes'.
 WirisPlugin.Configuration.set('parseModes', 'latex');
 
 // Takes the data of the editor.
@@ -25,7 +25,7 @@ function updateFunction() {
   com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));
 }
 
-// Add listener on click button to launch updateFunction
+// Add listener on click button to launch updateFunction.
 document.getElementById('btn-update').addEventListener('click', () => {
   updateFunction();
 });
