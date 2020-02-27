@@ -14,9 +14,6 @@ const toolbarDiv = document.getElementById('toolbar');
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv);
 
-// Define the undefined mode 'parseModes'.
-WirisPlugin.Configuration.set('parseModes', 'latex');
-
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
