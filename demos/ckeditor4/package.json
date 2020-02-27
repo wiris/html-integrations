@@ -9,7 +9,9 @@
     "build-dev": "webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
-    "lint": "eslint --quiet src"
+    "lint": "eslint --quiet src",
+    "stylelint": "npx stylelint '**/*.css'",
+    "linthtml": "html-validate index.html"
   },
   "author": "Carla Lara",
   "license": "GPL-3.0",
@@ -26,6 +28,8 @@
     "lerna": "^3.20.2",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.0",
+    "stylelint": "^13.2.0",
+    "stylelint-config-standard": "^20.0.0",
     "url-loader": "^1.1.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.1.0",

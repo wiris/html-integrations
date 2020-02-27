@@ -1,79 +1,81 @@
 body {
-    background-color: rgb(228, 230, 231);
-    margin-top: 1%;
+  background-color: rgb(228, 230, 231);
+  margin-top: 1%;
 }
 
- .ck-editor{
-    margin: 0 auto !important;
-    border-radius: 10px !important;
-    max-width: 760px !important;
-    width: 75% !important;
-    background-color: white !important;
+.ck-editor {
+  margin: 0 auto !important;
+  border-radius: 10px !important;
+  max-width: 760px !important;
+  width: 75% !important;
+  background-color: white !important;
 }
-.ck-editor:hover{
-    box-shadow: 0 0 10px #7AF78F;
+
+.ck-editor:hover {
+  box-shadow: 0 0 10px #7af78f;
 }
 
 .ck-content {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    min-height: 250px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  min-height: 250px;
 }
 
-.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable), .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-rounded-corners {
-    border-bottom-left-radius: 10px !important;
-    border-bottom-right-radius: 10px !important;
+.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-rounded-corners {
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
 }
 
 #text1 {
-    margin:0% !important;
+  margin: 0% !important;
 }
 
 .imageEditorContent {
-    margin: 0 auto;
-    border-radius: 10px;
-    max-width: 700px;
-    min-height: 250px;
-    width: 75%;
-    background-color: white;
-    border: 1px solid rgb(201, 201, 201);
+  margin: 0 auto;
+  border-radius: 10px;
+  max-width: 700px;
+  min-height: 250px;
+  width: 75%;
+  background-color: white;
+  border: 1px solid rgb(201, 201, 201);
 }
 
 .imageEditorContent:hover {
-    box-shadow: 0 0 10px #7AF78F;
+  box-shadow: 0 0 10px #7af78f;
 }
 
 .updateContainer {
-    text-align: center;
+  text-align: center;
 }
 
 .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .buttonUpdate {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #4CAF50;
-    margin:15px;
-  }
-  
-  .buttonUpdate:hover {
-    background-color: #4CAF50;
-    color: white;
-  }
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
-  #editorContentTransform {
-      padding: 10px 25px;
-  }
+.buttonUpdate {
+  background-color: white;
+  color: black;
+  border: 2px solid #4caf50;
+  margin: 15px;
+}
+
+.buttonUpdate:hover {
+  background-color: #4caf50;
+  color: white;
+}
+
+#editorContentTransform {
+  padding: 10px 25px;
+}
