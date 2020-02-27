@@ -18,6 +18,9 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated scripts
 document.head.appendChild(jsDemoImagesTransform);
 
+// Copy the editor content before initializing it.
+document.getElementById('editorContentTransform').innerHTML = document.getElementById('editable').innerHTML;
+
 ClassicEditor
   .create(document.querySelector('#editable'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
@@ -36,12 +39,6 @@ ClassicEditor
     document.getElementById('btn-update').addEventListener('click', () => {
       updateFunction();
     });
-
-    // Execute, just for the first time,
-    // the transformation of the actual CKEDITOR5 content
-    // editor.on('instanceReady', function() {
-      updateFunction();
-    // });
   })
   .catch((error) => {
     console.error(error.stack);

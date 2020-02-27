@@ -9,6 +9,9 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated sripts
 document.head.appendChild(jsDemoImagesTransform);
 
+// Copy the editor content before initializing it.
+document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+
 // Set up the editor
 tinymce.init({
   selector: '#editor',
@@ -16,14 +19,6 @@ tinymce.init({
     tiny_mce_wiris: 'http://localhost:8006/node_modules/@wiris/mathtype-tinymce5/plugin.min.js',
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
-
-  // Handle on loaded content event
-  setup(editor) {
-    editor.on('LoadContent', () => {
-      const editorContent = tinyMCE.activeEditor.getContent();
-      document.getElementById('editorContentTransform').innerHTML = editorContent;
-    });
-  },
 });
 
 // Takes the data of the editor

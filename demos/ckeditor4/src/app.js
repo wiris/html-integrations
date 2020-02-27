@@ -12,6 +12,9 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated scripts
 document.head.appendChild(jsDemoImagesTransform);
 
+// Copy the editor content before initializing it.
+document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+
 // Add wiris plugin
 CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js');
 
@@ -31,11 +34,5 @@ function updateFunction() {
 
 // Add listener on click button to launch updateFunction
 document.getElementById('btn-update').addEventListener('click', () => {
-  updateFunction();
-});
-
-// Execute, just for the first time,
-// the transformation of the actual CKEDITOR4 content
-CKEDITOR.on('instanceReady', () => {
   updateFunction();
 });
