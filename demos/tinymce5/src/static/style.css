@@ -15,6 +15,10 @@ body {
     box-shadow: 0 0 10px #7AF78F;
 }
 
+#editor_ifr {
+    min-height: 200px;
+}
+
 .imageEditorContent {
     margin: 0 auto;
     border-radius: 10px;

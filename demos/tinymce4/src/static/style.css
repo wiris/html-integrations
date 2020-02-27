@@ -3,14 +3,14 @@ body {
     margin-top: 1%;
 }
 
-.editorContent {
+#mceu_7 {
     margin: 0 auto !important;
     max-width: 750px !important;
     width: 75% !important;
     background-color: white !important;
 }
 
-.editorContent:hover {
+#mceu_7:hover {
     box-shadow: 0 0 10px #7AF78F;
 }
 
