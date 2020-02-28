@@ -17,7 +17,7 @@ document.head.appendChild(jsDemoImagesTransform);
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
 
 // Initialize editor.
-FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
+new FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
   // toolbarButtons: ['undo', 'redo' , 'bold', '|','clear', 'insert']
   toolbarButtons: ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'],
 
@@ -27,6 +27,17 @@ FroalaEditor('#editor', {                                                       
   // Allowed tags.
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
+
+  // Execute on initialyzed editor
+  events: {
+    initialized() {
+      // Get froala and wiris plugin versions.
+      const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
+      const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
+      document.getElementById('version-wiris').innerHTML += versionWiris;
+      document.getElementById('version-froala').innerHTML += versionFroala;
+    },
+  },
 });
 
 // Takes the data of the editor.
