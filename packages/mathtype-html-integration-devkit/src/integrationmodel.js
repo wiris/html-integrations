@@ -229,6 +229,14 @@ export default class IntegrationModel {
   }
 
   /**
+   * Returns integration model plugin version
+   * @param {string} - Plugin version 
+   */
+  getVersion() {
+    return this.version;
+  }
+
+  /**
    * Sets the language property.
    * @param {string} language - language code.
    */
