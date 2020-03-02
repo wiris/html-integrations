@@ -1,12 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: rgb(228, 230, 231);
-  margin-top: 1%;
+}
+
+#titlePage {
+  margin: 0 auto;
+  max-width: 750px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #7eff83;
+  margin-bottom: 16px !important;
+  min-height: 60px;
+}
+
+.column {
+  float: left;
+}
+
+#versions {
+  float: right;
+}
+
+#versionText {
+  margin-right: 90px;
+  margin-top: 5px;
+}
+
+#versionContent {
+  font-size: 14px;
+  margin-left: 30px;
+  margin-top: 3px;
+}
+
+.version {
+  margin-top: 2px;
+}
+
+#titlePageContent {
+  font-size: 1.8em;
+  font-weight: 400;
+  margin: 10px;
+  vertical-align: middle;
+  margin-left: 20px;
 }
 
 #editor {
   margin: 0 auto !important;
   border-radius: 10px !important;
-  max-width: 760px !important;
+  max-width: 750px !important;
   width: 75% !important;
   background-color: white !important;
 }
@@ -42,7 +87,7 @@ body {
 }
 
 .button {
-  background-color: #4caf50; /* Green */
+  background-color: #69e26d; /* Green */
   border: none;
   color: white;
   padding: 16px 32px;
@@ -59,12 +104,12 @@ body {
 .buttonUpdate {
   background-color: white;
   color: black;
-  border: 2px solid #4caf50;
+  border: 2px solid #69e26d;
   margin: 15px;
 }
 
 .buttonUpdate:hover {
-  background-color: #4caf50;
+  background-color: #69e26d;
   color: white;
 }
 

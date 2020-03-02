@@ -4,7 +4,6 @@
     ],
    
     "rules": {
-      "close-order": "error",
-      "void": ["warn", {"style": "omit"}]
+      "close-order": "error"
     }
   }

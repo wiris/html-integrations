@@ -23,8 +23,16 @@ const froalaConfiguration = {
   htmlAllowedAttrs: ['.*'],
 };
 
+// Get froala and wiris plugin versions when editor initialized.
+$('#editor').on('froalaEditor.initialized', function(e, editor) {          //eslint-disable-line
+  const versionWiris = WirisPlugin.currentInstance.version;                //eslint-disable-line
+  const versionFroala = $.FE.VERSION;                                      //eslint-disable-line
+  document.getElementById('version-wiris').innerHTML += versionWiris;
+  document.getElementById('version-froala').innerHTML += versionFroala;
+});
+
 // Initialyze the editor.
-$('#editor').froalaEditor(froalaConfiguration);       //eslint-disable-line
+$('#editor').froalaEditor(froalaConfiguration);           //eslint-disable-line
 
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
