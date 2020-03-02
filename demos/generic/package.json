@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev-lerna": "lerna bootstrap ; cd ../../packages/mathtype-generic/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
-    "build-dev": "webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-generic/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "eslint --quiet src",
@@ -17,6 +16,9 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@wiris/mathtype-generic": "^7.17.0",
+    "async": "^3.2.0",
+    "await": "^0.2.6",
+    "regenerator-runtime": "^0.13.3",
     "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {

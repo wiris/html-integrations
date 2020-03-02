@@ -14,6 +14,18 @@ const toolbarDiv = document.getElementById('toolbar');
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv);
 
+document.onreadystatechange = function () {
+  if (document.readyState == "interactive") {
+    console.log('handled');
+    const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
+    document.getElementById('version-wiris').innerHTML += versionWiris;
+  }
+}
+
+// Get froala and wiris plugin versions.
+// const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
+// document.getElementById('version-wiris').innerHTML += versionWiris;
+
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
