@@ -15,12 +15,12 @@ const toolbarDiv = document.getElementById('toolbar');
 wrsInitEditor(editableDiv, toolbarDiv);
 
 document.onreadystatechange = function () {
-  if (document.readyState == "interactive") {
+  if (document.readyState === 'interactive') {
     console.log('handled');
     const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
     document.getElementById('version-wiris').innerHTML += versionWiris;
   }
-}
+};
 
 // Get froala and wiris plugin versions.
 // const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
