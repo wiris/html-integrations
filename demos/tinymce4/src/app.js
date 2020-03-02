@@ -24,8 +24,8 @@ tinymce.init({                                                                  
   setup(editor) {
     editor.on('init', () => {
       // Get tinymce and wiris plugin versions.
-       const versionWiris = WirisPlugin.currentInstance.version;                          //eslint-disable-line
-       const versionTinymce = tinymce.majorVersion + '.' + tinymce.minorVersion;          //eslint-disable-line
+      const versionWiris = WirisPlugin.currentInstance.version;                          //eslint-disable-line
+      const versionTinymce = tinymce.majorVersion + '.' + tinymce.minorVersion;          //eslint-disable-line
       document.getElementById('version-wiris').innerHTML += versionWiris;
       document.getElementById('version-tinymce').innerHTML += versionTinymce;
     });

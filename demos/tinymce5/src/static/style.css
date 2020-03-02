@@ -1,6 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: rgb(228, 230, 231);
-  margin-top: 1%;
+}
+
+#titlePage {
+  margin: 0 auto;
+  max-width: 750px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #7eff83;
+  margin-bottom: 16px !important;
+  min-height: 60px;
+}
+
+.column {
+  float: left;
+}
+
+#versions {
+  float: right;
+}
+
+#versionText {
+  margin-right: 90px;
+  margin-top: 5px;
+}
+
+#versionContent {
+  font-size: 14px;
+  margin-left: 30px;
+  margin-top: 3px;
+}
+
+.version {
+  margin-top: 2px;
+}
+
+#titlePageContent {
+  font-size: 1.8em;
+  font-weight: 400;
+  margin: 10px;
+  vertical-align: middle;
+  margin-left: 20px;
 }
 
 .tox {
