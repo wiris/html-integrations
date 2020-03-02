@@ -6,7 +6,7 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel.js';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
-import GenericIntegration from './wirisplugin-generic.src.js';
+import {GenericIntegration, currentInstance} from './wirisplugin-generic.src.js';
 import Test from '@wiris/mathtype-html-integration-devkit/src/test';
 /** Don't delete this - non used - imports. */
 import backwardsLib from '@wiris/mathtype-html-integration-devkit/src/backwardslib.js';
@@ -21,6 +21,7 @@ window.WirisPlugin = {
     Configuration: Configuration,
     Listeners: Listeners,
     IntegrationModel: IntegrationModel,
+    currentInstance: currentInstance,
     Latex: Latex,
     GenericIntegration: GenericIntegration,
     Test: Test,

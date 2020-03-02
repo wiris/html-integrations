@@ -7,6 +7,13 @@ import chemIcon from './icons/chem.png';
 import {version as pluginVersion} from './package.json';
 
 /**
+ * This property contains the current Generic integration instance,
+ * which is the instance of the active editor.
+ * @type {IntegrationModel}
+ */
+export var currentInstance = null;
+
+/**
  * Inits MathType creating an object with all properties that the IntegrationModel class
  * needs to initialize the plugin and create an instance of IntegrationModel child. 
  * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
@@ -24,6 +31,8 @@ export function wrsInitEditor(target,toolbar) {
     const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
     genericIntegrationInstance.init();
     genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+    WirisPlugin.currentInstance = genericIntegrationInstance;
 }
 
 /**
