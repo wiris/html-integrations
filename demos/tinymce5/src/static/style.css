@@ -87,7 +87,7 @@ body {
 }
 
 .button {
-  background-color: #4caf50; /* Green */
+  background-color: #69e26d; /* Green */
   border: none;
   color: white;
   padding: 16px 32px;
@@ -104,12 +104,12 @@ body {
 .buttonUpdate {
   background-color: white;
   color: black;
-  border: 2px solid #4caf50;
+  border: 2px solid #69e26d;
   margin: 15px;
 }
 
 .buttonUpdate:hover {
-  background-color: #4caf50;
+  background-color: #69e26d;
   color: white;
 }
 
