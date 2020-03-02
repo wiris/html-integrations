@@ -25,7 +25,7 @@ CKEDITOR.replace('editor', { //eslint-disable-line
 });
 
 CKEDITOR.on('instanceReady', function() {                     //eslint-disable-line
-  // Get froala and wiris plugin versions.
+  // Get ckeditor and wiris plugin versions.
   const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
   const versionCKeditor = CKEDITOR.version;                             //eslint-disable-line
   document.getElementById('version-wiris').innerHTML += versionWiris;

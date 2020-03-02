@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev-lerna": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
-    "build-dev": "webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "eslint --quiet src",
@@ -16,14 +15,15 @@
   "author": "Carla Lara",
   "license": "GPL-3.0",
   "dependencies": {
+    "@ckeditor/ckeditor5-alignment": "^16.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^16.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.8",
     "@ckeditor/ckeditor5-editor-classic": "^16.0.0",
     "@ckeditor/ckeditor5-essentials": "^16.0.0",
     "@ckeditor/ckeditor5-paragraph": "^16.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^16.0.0",
-    "@ckeditor/ckeditor5-alignment": "^16.0.0",
     "@wiris/mathtype-ckeditor5": "^7.17.1",
+    "ckeditor5": "^17.0.0",
     "postcss-loader": "^3.0.0",
     "webpack-dev-server": "^3.10.3"
   },

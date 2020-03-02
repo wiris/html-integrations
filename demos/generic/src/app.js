@@ -22,10 +22,6 @@ document.onreadystatechange = function () {
   }
 };
 
-// Get froala and wiris plugin versions.
-// const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
-// document.getElementById('version-wiris').innerHTML += versionWiris;
-
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {

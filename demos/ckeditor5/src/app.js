@@ -40,6 +40,9 @@ ClassicEditor
     document.getElementById('btn-update').addEventListener('click', () => {
       updateFunction();
     });
+
+    // Get ckeditor and wiris plugin versions.
+    document.getElementById('version-ckeditor').innerHTML += '5.0.0';
   })
   .catch((error) => {
     console.error(error.stack);
