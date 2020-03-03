@@ -38,6 +38,16 @@ Easily include quality math equations in your documents and digital content.
    };
    ```
 
+4. Add MathType and ChemType buttons to the toolbar, just in case you want to modify it
+
+   ```js
+   CKEDITOR.editorConfig = function (config) {
+       config.toolbar = [
+         {name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry']}
+       ];
+   };
+   ```
+
    Notice the example assumes this directory structure:
 
    ```
