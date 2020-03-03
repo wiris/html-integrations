@@ -22,8 +22,14 @@ CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modu
 CKEDITOR.replace('editor', { //eslint-disable-line
   extraPlugins: 'ckeditor_wiris',
   allowedContent: true,
+  toolbar: [
+    { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike'] },
+    { name: 'clipboard', items: ['Undo', 'Redo'] },
+    { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
+  ],
 });
 
+// Handle on editor ready event
 CKEDITOR.on('instanceReady', function() {                     //eslint-disable-line
   // Get ckeditor and wiris plugin versions.
   const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line

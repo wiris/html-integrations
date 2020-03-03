@@ -58,6 +58,10 @@ body {
   border: 1px solid rgb(201, 201, 201) !important;
 }
 
+#cke_1_contents {
+  min-height: 250px;
+}
+
 .cke:hover {
   box-shadow: 0 0 10px #7af78f;
 }
