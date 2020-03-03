@@ -19,7 +19,7 @@
   "bugs": {
     "email": "support@wiris.com"
   },
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "WIRIS Team (http://www.wiris.com)",
   "main": "wirisplugin-generic.js",
   "scripts": {
