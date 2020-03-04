@@ -1,0 +1,42 @@
+{
+  "name": "react-froala3",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@wiris/mathtype-froala3": "^7.17.0",
+    "jquery": "^3.4.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-froala-wysiwyg": "^3.1.0",
+    "react-scripts": "3.4.0"
+  },
+  "scripts": {
+    "deploy": "react-scripts start",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build-dev": "react-scripts build",
+    "lint": "eslint --quiet src",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "author": "Daniel Canet",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
