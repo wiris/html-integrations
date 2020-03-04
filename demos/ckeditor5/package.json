@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
-    "deploy": "webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - ; npm install ../../packages/mathtype-ckeditor5/$filename ; webpack-dev-server --open",
+    "deploy": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "eslint --quiet src",
     "stylelint": "npx stylelint '**/*.css'",
@@ -22,7 +22,7 @@
     "@ckeditor/ckeditor5-essentials": "^16.0.0",
     "@ckeditor/ckeditor5-paragraph": "^16.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^16.0.0",
-    "@wiris/mathtype-ckeditor5": "^7.17.1",
+    "@wiris/mathtype-ckeditor5": "file:../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.17.1.tgz",
     "ckeditor5": "^17.0.0",
     "postcss-loader": "^3.0.0",
     "webpack-dev-server": "^3.10.3"
