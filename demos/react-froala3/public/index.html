@@ -24,11 +24,28 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Demo Froala3 on a React App</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <header id="headerPage">
+      <div id="titlePage">
+          <h1 class="column" id="titlePageContent"> MathType for Froala3 with React</h1>
+          <div class="column" id="versions">
+              <p id="versionText">Versions used:</p>
+              <div id="versionContent">
+                  <p class="version" id="version-wiris">Wiris plugin: </p>
+                  <p class="version" id="version-froala">Froala editor: </p>
+              </div>
+          </div>
+      </div>
+    </header>
+    <div id="editor"></div>
+    <div class="updateContainer">
+        <a id="btn-update" href="#" class="button buttonUpdate">Change</a>
+    </div>
+    <div class="imageEditorContent" id="editorContentTransform">
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
