@@ -13,7 +13,6 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 // Add jquery.
 import $ from 'jquery';
 
-
 // This needs to be included before the '@wiris/mathtype-froala3' is loaded synchronously
 window.$ = $;
 window.FroalaEditor = require('froala-editor');
@@ -22,6 +21,18 @@ window.FroalaEditor = require('froala-editor');
 require('@wiris/mathtype-froala3');
 
 
+// Generate scripts.
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated scripts.
+document.head.appendChild(jsDemoImagesTransform);
+
+// Copy the editor content before initializing it.
+document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+
+// Initialize editor.
 // Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
 const froalaConfig = {

@@ -28,9 +28,10 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
     <header id="headerPage">
       <div id="titlePage">
-          <h1 class="column" id="titlePageContent"> MathType for Froala3 with React</h1>
+          <h1 class="column" id="titlePageContent">MathType for Froala3 with React</h1>
           <div class="column" id="versions">
               <p id="versionText">Versions used:</p>
               <div id="versionContent">
@@ -40,12 +41,19 @@
           </div>
       </div>
     </header>
-    <div id="editor"></div>
+    <div id="editor">
+      
+      <p id="text1"> Double click on the following formula to edit it.</p>
+      <p style="text-align:center;">
+          <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>
+      </p>
+    </div>
 
-    <!-- <div class="updateContainer">
+    <div class="updateContainer">
         <a id="btn-update" href="#" class="button buttonUpdate">Change</a>
     </div>
-    <div class="imageEditorContent" id="editorContentTransform"> -->
+
+    <div class="imageEditorContent" id="editorContentTransform"> 
 
     <!--
       This HTML file is a template.
