@@ -17,6 +17,7 @@
     "mathtype",
     "wiris"
   ],
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5",
   "homepage": "http://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"

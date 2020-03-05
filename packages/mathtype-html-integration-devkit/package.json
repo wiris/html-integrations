@@ -15,6 +15,7 @@
     "mathtype",
     "wiris"
   ],
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-html-integration-devkit",
   "homepage": "http://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
