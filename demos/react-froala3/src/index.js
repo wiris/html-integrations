@@ -20,7 +20,6 @@ window.FroalaEditor = require('froala-editor');
 // Load scripts synchronously.
 require('@wiris/mathtype-froala3');
 
-
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -31,7 +30,6 @@ document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
 document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
-
 
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
@@ -51,34 +49,34 @@ document.getElementById('btn-update').addEventListener('click', () => {
 // Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
 const froalaConfig = {
-  iframe: true,
-  charCounterCount: false,
-  imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
+  // iframe: true,
   toolbarButtons: toolbar,
-  toolbarButtonsMD: toolbar,
-  toolbarButtonsSM: toolbar,
-  toolbarButtonsXS: toolbar,
+  imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
+
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
-  htmlAllowedEmptyTags: ['mprescripts'],
-  imageResize : false,
-  key: 'CA5D-16E3A2E3G1I4A8B8A9B1D2rxycF-7b1C3vyz==',
-  heightMax: 310,
-  useClasses: false,
+
+  // htmlAllowedEmptyTags: ['mprescripts'],
+  // imageResize : false,
+  // key: 'CA5D-16E3A2E3G1I4A8B8A9B1D2rxycF-7b1C3vyz==',
+  // heightMax: 310,
+  // useClasses: false,
+
   // Execute on initialyzed editor
   events: {
     initialized: function (e) {
       // Get froala and wiris plugin versions.
-      // const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
+      // const versionWiris  = WirisPlugin.currentInstance.version;             //eslint-disable-line
       const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
+
+      console.log(versionFroala);
+
       // document.getElementById('version-wiris').innerHTML += versionWiris;
       document.getElementById('version-froala').innerHTML += versionFroala;
 
       // const editor = this;
       // console.log('@@@@@@initialized', editor, e);
 
-      console.log($('#editor'));
-      // $('#editor').html('<p>oigan</p>');
     }
   }
 };
