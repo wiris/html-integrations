@@ -44,7 +44,6 @@ document.getElementById('btn-update').addEventListener('click', () => {
   updateFunction();
 });
 
-
 // Initialize editor.
 // Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
@@ -68,8 +67,6 @@ const froalaConfig = {
       // Get froala and wiris plugin versions.
       // const versionWiris  = WirisPlugin.currentInstance.version;             //eslint-disable-line
       const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
-
-      console.log(versionFroala);
 
       // document.getElementById('version-wiris').innerHTML += versionWiris;
       document.getElementById('version-froala').innerHTML += versionFroala;
