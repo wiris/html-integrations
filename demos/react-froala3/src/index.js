@@ -1,23 +1,28 @@
-// Default React App from create-react-app command
+// Default React App from create-react-app command.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
  
-// Froala Editor.
+// Add Froala 3 Editor.
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'froala-editor/js/plugins.pkgd.min.js';
 
+// Add jquery.
 import $ from 'jquery';
- 
-window.$ = $;
 
+
+// This needs to be included before the '@wiris/mathtype-froala3' is loaded synchronously
+window.$ = $;
 window.FroalaEditor = require('froala-editor');
- 
+
+// Load scripts synchronously.
 require('@wiris/mathtype-froala3');
 
+
+// Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
 const froalaConfig = {
   iframe: true,
@@ -45,10 +50,14 @@ const froalaConfig = {
 
       // const editor = this;
       // console.log('@@@@@@initialized', editor, e);
+
+      console.log($('#editor'));
+      // $('#editor').html('<p>oigan</p>');
     }
   }
 };
 
+// Render our components on page.
 ReactDOM.render(<FroalaEditorComponent config={ froalaConfig } />, document.getElementById('editor'));
  
 // If you want your app to work offline and load faster, you can change
