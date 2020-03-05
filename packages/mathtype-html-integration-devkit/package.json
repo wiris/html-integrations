@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-html-integration-devkit",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Allows to integrate Mathtype Web into any JavaScript HTML WYSIWYG rich text editor.",
   "keywords": [
     "chem",
