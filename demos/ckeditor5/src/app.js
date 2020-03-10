@@ -10,6 +10,8 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 // Load styles.
 import './static/style.css';
 
+import {version as pluginVersion} from '@wiris/mathtype-ckeditor5/package.json';
+
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -42,6 +44,7 @@ ClassicEditor
     });
 
     // Get ckeditor and wiris plugin versions.
+    document.getElementById('version_wiris').innerHTML += pluginVersion;
     document.getElementById('version_ckeditor').innerHTML += '5.0.0';
   })
   .catch((error) => {
