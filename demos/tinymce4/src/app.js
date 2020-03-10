@@ -10,7 +10,7 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
 // Inicialyze default editor.
 tinymce.init({                                                                                                              //eslint-disable-line
@@ -26,8 +26,8 @@ tinymce.init({                                                                  
       // Get tinymce and wiris plugin versions.
       const versionWiris = WirisPlugin.currentInstance.version;                          //eslint-disable-line
       const versionTinymce = tinymce.majorVersion + '.' + tinymce.minorVersion;          //eslint-disable-line
-      document.getElementById('version-wiris').innerHTML += versionWiris;
-      document.getElementById('version-tinymce').innerHTML += versionTinymce;
+      document.getElementById('version_wiris').innerHTML += versionWiris;
+      document.getElementById('version_tinymce').innerHTML += versionTinymce;
     });
   },
 });
@@ -36,11 +36,11 @@ tinymce.init({                                                                  
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
   const editorContent = tinyMCE.activeEditor.getContent();                                        //eslint-disable-line
-  document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));    //eslint-disable-line
+  document.getElementById('transform_content').innerHTML = editorContent;
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));    //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.
-document.getElementById('btn-update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', () => {
   updateFunction();
 });

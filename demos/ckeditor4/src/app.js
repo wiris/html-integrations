@@ -13,7 +13,7 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
 // Add wiris plugin.
 CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js'); //eslint-disable-line
@@ -34,19 +34,19 @@ CKEDITOR.on('instanceReady', function() {                     //eslint-disable-l
   // Get ckeditor and wiris plugin versions.
   const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
   const versionCKeditor = CKEDITOR.version;                             //eslint-disable-line
-  document.getElementById('version-wiris').innerHTML += versionWiris;
-  document.getElementById('version-ckeditor').innerHTML += versionCKeditor;
+  document.getElementById('version_wiris').innerHTML += versionWiris;
+  document.getElementById('version_ckeditor').innerHTML += versionCKeditor;
 });
 
 // Takes the data of the editor.
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
   const editorContent = CKEDITOR.instances.editor.getData(); //eslint-disable-line
-  document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform')); //eslint-disable-line
+  document.getElementById('transform_content').innerHTML = editorContent;
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content')); //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.
-document.getElementById('btn-update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', () => {
   updateFunction();
 });

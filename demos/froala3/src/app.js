@@ -14,7 +14,7 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
 // Initialize editor.
 new FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
@@ -34,8 +34,8 @@ new FroalaEditor('#editor', {                                                   
       // Get froala and wiris plugin versions.
       const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
       const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
-      document.getElementById('version-wiris').innerHTML += versionWiris;
-      document.getElementById('version-froala').innerHTML += versionFroala;
+      document.getElementById('version_wiris').innerHTML += versionWiris;
+      document.getElementById('version_froala').innerHTML += versionFroala;
     },
   },
 });
@@ -44,11 +44,11 @@ new FroalaEditor('#editor', {                                                   
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
   const editorContent = FroalaEditor.INSTANCES[0].html.get();                                           //eslint-disable-line
-  document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));                //eslint-disable-line
+  document.getElementById('transform_content').innerHTML = editorContent;
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));                //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.
-document.getElementById('btn-update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', () => {
   updateFunction();
 });

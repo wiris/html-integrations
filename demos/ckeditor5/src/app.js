@@ -19,7 +19,7 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-document.getElementById('editorContentTransform').innerHTML = document.getElementById('editable').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editable').innerHTML;
 
 // Create the CKeditor5.
 ClassicEditor
@@ -32,17 +32,17 @@ ClassicEditor
 
     function updateFunction() {
       const editorContent = editor.getData();
-      document.getElementById('editorContentTransform').innerHTML = editorContent;
-      com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));        //eslint-disable-line
+      document.getElementById('transform_content').innerHTML = editorContent;
+      com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));        //eslint-disable-line
     }
 
     // Add listener on click button to launch updateFunction.
-    document.getElementById('btn-update').addEventListener('click', () => {
+    document.getElementById('btn_update').addEventListener('click', () => {
       updateFunction();
     });
 
     // Get ckeditor and wiris plugin versions.
-    document.getElementById('version-ckeditor').innerHTML += '5.0.0';
+    document.getElementById('version_ckeditor').innerHTML += '5.0.0';
   })
   .catch((error) => {
     console.error(error.stack);

@@ -22,7 +22,7 @@
     "@ckeditor/ckeditor5-essentials": "^16.0.0",
     "@ckeditor/ckeditor5-paragraph": "^16.0.0",
     "@ckeditor/ckeditor5-theme-lark": "^16.0.0",
-    "@wiris/mathtype-ckeditor5": "file:../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.17.1.tgz",
+    "@wiris/mathtype-ckeditor5": "file:../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.18.0.tgz",
     "ckeditor5": "^17.0.0",
     "postcss-loader": "^3.0.0",
     "webpack-dev-server": "^3.10.3"

@@ -6,7 +6,7 @@ $('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesom
 $('head').append('<script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>');       //eslint-disable-line
 
 // Copy the editor content before initializing it.
-document.getElementById('editorContentTransform').innerHTML = document.getElementById('editor').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
 // Define the elements that will appear in the toolbar.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', '|', 'insertImage', 'html'];
@@ -27,8 +27,8 @@ const froalaConfiguration = {
 $('#editor').on('froalaEditor.initialized', function(e, editor) {          //eslint-disable-line
   const versionWiris = WirisPlugin.currentInstance.version;                //eslint-disable-line
   const versionFroala = $.FE.VERSION;                                      //eslint-disable-line
-  document.getElementById('version-wiris').innerHTML += versionWiris;
-  document.getElementById('version-froala').innerHTML += versionFroala;
+  document.getElementById('version_wiris').innerHTML += versionWiris;
+  document.getElementById('version_froala').innerHTML += versionFroala;
 });
 
 // Initialyze the editor.
@@ -38,11 +38,11 @@ $('#editor').froalaEditor(froalaConfiguration);           //eslint-disable-line
 // Replaces the content of a div with the data transformed.
 function updateFunction() {
   const editorContent = $('#editor').froalaEditor('html.get');                                      //eslint-disable-line
-  document.getElementById('editorContentTransform').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('editorContentTransform'));      //eslint-disable-line
+  document.getElementById('transform_content').innerHTML = editorContent;
+  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));      //eslint-disable-line
 }
 
 // Add listener on click button to launch updateFunction.
-document.getElementById('btn-update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', () => {
   updateFunction();
 });

@@ -14,5 +14,6 @@ $ npm run deploy
 If you want to build a development enviorment, you must link packages of the mono-repositoy on your local directoy. Also, every time, a package is modified, it has to be compiled. To do this, run:
 
 ```sh
+$ npm i
 $ npm run build-dev
 ```
