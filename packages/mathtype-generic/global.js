@@ -26,3 +26,5 @@ window.WirisPlugin = {
     GenericIntegration: GenericIntegration,
     Test: Test,
 }
+
+Configuration.set('parseModes', 'latex');
