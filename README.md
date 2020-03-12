@@ -66,12 +66,13 @@ which dependencies of the mono-repo packages are present inside the mono-repo
 itself, and link to them instead of downloading them from the npm repository.
 
 ```sh
-html-integrations$ lerna bootstrap
+html-integrations$ npm start
 ```
 
 If this fails, try using `npx`:
 
 ```sh
+html-integrations$ ./packages/mathtype-ckeditor5/npm pack
 html-integrations$ npx lerna bootstrap
 ```
 

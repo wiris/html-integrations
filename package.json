@@ -2,6 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "prestart": "cd packages/mathtype-ckeditor5 && npm pack",
+    "start": "lerna bootstrap",
     "clean": "npx lerna run clean & npx rimraf output",
     "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules"
   },
