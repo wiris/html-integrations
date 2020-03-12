@@ -13,7 +13,7 @@
     "linthtml": "html-validate index.html"
   },
   "author": "Carla Lara",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-tinymce4": "^7.17.0",
     "tinymce": "^5.2.0",
