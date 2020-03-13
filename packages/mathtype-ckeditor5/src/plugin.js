@@ -211,7 +211,7 @@ export default class MathType extends Plugin {
         editor.conversion.for( 'upcast' ).elementToElement( {
             view: {
                 name: 'span',
-                class: 'ck-math-widget',
+                classes: 'ck-math-widget',
             },
             model: ( viewElement, modelWriter ) => {
                 const formula = MathML.safeXmlDecode( viewElement.getChild( 0 ).getAttribute( 'data-mathml' ) );
