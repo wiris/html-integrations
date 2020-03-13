@@ -15,7 +15,7 @@
   "author": "Carla Lara",
   "license": "GPL-3.0",
   "dependencies": {
-    
+    "@wiris/mathtype-ckeditor4": "^7.17.0",
     "ckeditor4": "^4.13.1",
     "webpack-dev-server": "^3.10.3"
   },

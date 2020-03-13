@@ -15,7 +15,7 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    
+    "@wiris/mathtype-generic": "^7.17.0",
     "regenerator-runtime": "^0.13.3",
     "webpack-dev-server": "^3.10.3"
   },
