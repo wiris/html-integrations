@@ -10,6 +10,12 @@ First you have to install all the project dependencies on the root folder:
 $ npm i
 ```
 
+Then, to work with lerna, you must add the following line on the packages place in lerna.json
+
+```sh
+$ "demos/*"
+```
+
 To run a demo, go on the desired editor folder and run, to init the editor:
 
 ```sh
@@ -25,3 +31,5 @@ $ npm run build-dev
 ```
 
 Hint: The commant "npm i" it's just necessary the first time you initialyze an editor.
+
+To work with the ckeditor5 demo with lerna, it's necessary to cut the dependencies of the plugin package and copy them on the demo package
