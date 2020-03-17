@@ -30,8 +30,6 @@ ClassicEditor
     toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
   })
   .then((editor) => {
-    console.log('Editor was initialized', editor);
-
     function updateFunction() {
       const editorContent = editor.getData();
       document.getElementById('transform_content').innerHTML = editorContent;
