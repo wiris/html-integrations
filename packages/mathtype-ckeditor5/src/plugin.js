@@ -211,7 +211,7 @@ export default class MathType extends Plugin {
         editor.conversion.for( 'upcast' ).elementToElement( {
             view: {
                 name: 'span',
-                class: 'ck-math-widget',
+                classes: 'ck-math-widget',
             },
             model: ( viewElement, modelWriter ) => {
                 const formula = MathML.safeXmlDecode( viewElement.getChild( 0 ).getAttribute( 'data-mathml' ) );
@@ -236,10 +236,10 @@ export default class MathType extends Plugin {
             let isLatex = mathIsLatex( viewItem );
 
             // Get the formula of the <math> (which is all its children).
-            const processor = new XmlDataProcessor();
+            const processor = new XmlDataProcessor( editor.editing.view.document );
             // Only god knows why the following line makes viewItem lose all of its children,
             // so we obtain isLatex before doing this because we need viewItem's children for that.
-            const viewDocumentFragment = new ViewDocumentFragment( viewItem.getChildren() );
+            const viewDocumentFragment = conversionApi.writer.createDocumentFragment( viewItem.getChildren() );
             const mathAttributes = [ ...viewItem.getAttributes() ]
                 .map( ( [ key, value ] ) => ` ${ key }="${ value }"` )
                 .join( '' );
@@ -347,7 +347,7 @@ export default class MathType extends Plugin {
 
         function createDataString( modelItem, viewWriter ) {
 
-            const htmlDataProcessor = new HtmlDataProcessor();
+            const htmlDataProcessor = new HtmlDataProcessor( viewWriter.document );
 
             let mathString = Parser.endParseSaveMode( modelItem.getAttribute( 'formula' ) );
 
@@ -376,7 +376,7 @@ export default class MathType extends Plugin {
 
         function createViewImage( modelItem, viewWriter ) {
 
-            const htmlDataProcessor = new HtmlDataProcessor();
+            const htmlDataProcessor = new HtmlDataProcessor( viewWriter.document );
 
             const mathString = modelItem.getAttribute( 'formula' );
             const imgHtml = Parser.initParse( mathString, editor.config.get( 'language' ) );

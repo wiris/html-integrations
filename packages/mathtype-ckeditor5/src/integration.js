@@ -168,7 +168,7 @@ export default class CKEditor5Integration extends IntegrationModel {
                 const modelElementOld = this.editorObject.editing.mapper.toModelElement( viewElement );
 
                 // Insert the new <mathml> and remove the old one
-                const position = Position._createBefore( modelElementOld );
+                const position = this.editorObject.model.createPositionBefore( modelElementOld );
 
                 // If the given MathML is empty, don't insert a new formula.
                 if ( mathml ) {
@@ -250,7 +250,7 @@ export default class CKEditor5Integration extends IntegrationModel {
             returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
                 this.editorObject.editing.mapper.toViewElement(
                     this.insertMathml( mathml )
-                )
+                ), windowTarget.document
             );
         }
 
