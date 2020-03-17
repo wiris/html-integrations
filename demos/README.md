@@ -10,10 +10,13 @@ First you have to install all the project dependencies on the root folder:
 $ npm i
 ```
 
-Then, to work with lerna, you must add the following line on the packages place in lerna.json
+Then, to work with lerna, you must add the following line on the packages place in lerna.json. Or temporarily replace the content with the one from lerna.demos.json file.
 
-```sh
-$ "demos/*"
+```javascript
+  "packages": [
+    "demos/**/*",
+    "packages/*"
+  ],
 ```
 
 To run a demo, go on the desired editor folder and run, to init the editor:

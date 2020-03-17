@@ -1,0 +1,13 @@
+{
+  "packages": [
+    "demos/**/*",
+    "packages/*"
+  ],
+  "command": {
+    "version": {
+      "allowBranch": ["stable"],
+      "exact": "true"
+    }
+  },
+  "version": "independent"
+}
