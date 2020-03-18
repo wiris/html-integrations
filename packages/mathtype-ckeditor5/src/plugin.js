@@ -4,9 +4,9 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver';
-import ViewDocumentFragment from '@ckeditor/ckeditor5-engine/src/view/documentfragment';
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 import XmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/xmldataprocessor';
+import UpcastWriter from '@ckeditor/ckeditor5-engine/src/view/upcastwriter'
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 import Widget from '@ckeditor/ckeditor5-widget/src/widget';
 
@@ -237,13 +237,21 @@ export default class MathType extends Plugin {
 
             // Get the formula of the <math> (which is all its children).
             const processor = new XmlDataProcessor( editor.editing.view.document );
+
             // Only god knows why the following line makes viewItem lose all of its children,
             // so we obtain isLatex before doing this because we need viewItem's children for that.
-            const viewDocumentFragment = conversionApi.writer.createDocumentFragment( viewItem.getChildren() );
+            const upcastWriter = new UpcastWriter( editor.editing.view.document );
+            const viewDocumentFragment = upcastWriter.createDocumentFragment( viewItem.getChildren() );
+
+            // and obtain the attributes of <math> too!
             const mathAttributes = [ ...viewItem.getAttributes() ]
                 .map( ( [ key, value ] ) => ` ${ key }="${ value }"` )
                 .join( '' );
+
+            // We process the document fragment
             let formula = processor.toData( viewDocumentFragment ) || '';
+
+            // And obtain the complete formula
             formula = `<math${ mathAttributes }>${ formula }</math>`;
 
             /* Model node that contains what's going to actually be inserted. This can be either:
