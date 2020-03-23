@@ -1,6 +1,8 @@
 MathType for Froala [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
 ===
 
+:warning: **This package is for froala version 2!** If you're looking for froala version 3 package, there is one name froala3. 
+
 Type and handwrite mathematical notation with MathType.
 
 Easily include quality math equations in your documents and digital content.
