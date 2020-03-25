@@ -1,7 +1,8 @@
-MathType for Froala [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
+MathType for Froala Version 2 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
 ===
 
-:warning: **This package is for froala version 2!** If you're looking for froala version 3 Mathtype package, go to @wiris/mathtype-froala3. 
+**Warning: This package is for froala Version 2 which is discontinued.  If you're using Froala Version 3 , use [@wiris/mathtype-froala3](https://www.npmjs.com/package/@wiris/mathtype-froala3) package**. 
+===
 
 Type and handwrite mathematical notation with MathType.
 
