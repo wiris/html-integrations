@@ -1,7 +1,6 @@
 {
   "packages": [
-    "packages/*",
-    "demos/*"
+    "packages/*"
   ],
   "command": {
     "version": {

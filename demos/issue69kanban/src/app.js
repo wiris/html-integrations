@@ -36,8 +36,6 @@ CKEDITOR.on('instanceReady', function() {                     //eslint-disable-l
   const versionCKeditor = CKEDITOR.version;                             //eslint-disable-line
   document.getElementById('version_wiris').innerHTML += versionWiris;
   document.getElementById('version_ckeditor').innerHTML += versionCKeditor;
-  CKEDITOR.instances.editor.on('change', function() {console.log('onChange')});
-  CKEDITOR.instances.editor.fire('change');
 });
 
 // Takes the data of the editor.
