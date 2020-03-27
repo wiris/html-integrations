@@ -8,7 +8,7 @@ Clone this repo and:
 
 ```sh
 $ npm i
-$ lerna bootstrap
+$ npm start
 $ lerna run compile -- npm
 ```
 
