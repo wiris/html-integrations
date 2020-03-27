@@ -50,3 +50,5 @@ function updateFunction() {
 document.getElementById('btn_update').addEventListener('click', () => {
   updateFunction();
 });
+
+CKEDITOR.instances.editor.on('change', function() {console.log('onChange')});
