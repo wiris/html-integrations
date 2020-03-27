@@ -20,7 +20,7 @@ CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modu
 
 // Initialize plugin.
 CKEDITOR.replace('editor', { //eslint-disable-line
-  extraPlugins: 'ckeditor_wiris,placeholder',
+  extraPlugins: 'ckeditor_wiris',
   allowedContent: true,
   toolbar: [
     { name: 'basicstyles', items: ['Bold', 'Italic', 'Strike'] },
