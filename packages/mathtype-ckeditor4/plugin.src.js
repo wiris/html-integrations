@@ -253,8 +253,7 @@ export class CKEditor4Integration extends IntegrationModel {
         // it is needed notificate to the editorObject that placeholder status
         // has to be updated.
         CKEDITOR.instances.editor.fire('change');
-        const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
-        return obj;
+        return super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
     }
 
 
