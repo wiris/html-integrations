@@ -254,6 +254,10 @@ export default class CKEditor5Integration extends IntegrationModel {
             );
         }
 
+        /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.
+        We probably should add it here as well, but we should look further into how */
+        // this.editorObject.fire('change');
+
         return returnObject;
 
     }
