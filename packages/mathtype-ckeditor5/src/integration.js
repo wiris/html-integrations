@@ -254,6 +254,9 @@ export default class CKEditor5Integration extends IntegrationModel {
             );
         }
 
+        // Fire the 'change' event.
+        // this.editorObject.fire('change');
+
         return returnObject;
 
     }
