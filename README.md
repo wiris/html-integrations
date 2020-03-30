@@ -7,8 +7,9 @@ Mono-repository for the MathType Web plugins and their dependencies.
 Clone this repo and:
 
 ```sh
-$ npm i
-$ lerna bootstrap
+$ npm install
+$ rm demos/ckeditor5/package-lock.json 
+$ npm start
 $ lerna run compile -- npm
 ```
 
@@ -181,7 +182,7 @@ This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
 
-### Demos
+### Technical Demos
 
 In order to manually test each plugin, demos will be developed in the future.
 
