@@ -8,7 +8,8 @@ Clone this repo and:
 
 ```sh
 $ npm install
-$ rm demos/ckeditor5/package-lock.json 
+$ rm packages/mathtype-ckeditor4/package-lock.json 
+$ rm packages/mathtype-ckeditor5/package-lock.json 
 $ npm start
 $ lerna run compile -- npm
 ```
