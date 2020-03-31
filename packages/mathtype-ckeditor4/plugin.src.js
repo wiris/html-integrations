@@ -248,8 +248,14 @@ export class CKEditor4Integration extends IntegrationModel {
         }
     }
 
- 
-
+    /** @inheritdoc */ 
+    insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+        // Due to insertFormula adds an image using pure JavaScript functions,
+        // it is needed notificate to the editorObject that placeholder status
+        // has to be updated.
+        this.editorObject.fire('change');
+        return super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+    }
 
     /** @inheritdoc */
     getCorePath() {
