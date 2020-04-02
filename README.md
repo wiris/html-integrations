@@ -1,36 +1,40 @@
 # MathType HTML Integrations mono-repository
 
-Mono-repository for the MathType Web plugins and their dependencies.
-
-## Quick start
-
-Clone this repo and:
-
-```sh
-$ npm install
-$ rm packages/mathtype-ckeditor4/package-lock.json 
-$ rm packages/mathtype-ckeditor5/package-lock.json 
-$ npm start
-$ lerna run compile -- npm
-```
-
-## Structure
-
-- `packages`. Each folder contains one npm package. All the usual npm commands
-work inside.
-- `lerna.json`, `package.json`, `package-lock.json`. Configuration files for the
-root npm package and the Lerna mono-repository.
-- `scripts`. Folder containing different scripts used at compile time, etc.
+Mono-repository for the MathType Web plugins and their dependencies. 
 
 ## Requirements
 
 This project requires basic knowledge of the `git` and `npm` commands.
 It also uses the `npx` tool which comes bundled with `npm`.
 
-`lerna` is used as a cornerstone of the project structure. Its main features
-are explained in this guide.
+[Lerna](https://lerna.js.org/) is used as a cornerstone of the project structure. Its main features are explained in this guide.
 
 ## Instructions
+
+Folow these instructions to use the libraries.
+
+### Important files & Folder Structure
+
+- `lerna.json`, `package.json`, `package-lock.json`. Configuration files for the
+root npm package and the Lerna mono-repository.
+- `packages/`. Each folder contains one npm package. All the usual npm commands
+work inside.
+- `demos/`. A growing set of technical demos to help developers integrate these plugins on different scenarios.
+- `scripts/`. Folder containing different scripts used at compile time, etc.
+
+
+### Quick start
+
+Clone this repo and open a Terminal window to run these next commands:
+
+```sh
+$ npm install
+$ npm start
+```
+
+In case you want to try out the [Technical Demos](#technical-demos) you'd need to copy the contents
+from `lerna.demos.json` to `lerna.json` before executing this command. 🤷 
+
 
 ### Cloning
 
@@ -63,7 +67,9 @@ packages:
 html-integrations$ npm install
 ```
 
-Then, we need to bootstrap all the packages. What this does is try to find
+### Compiling
+
+Then, we need to compile all the packages. What this does is try to find
 which dependencies of the mono-repo packages are present inside the mono-repo
 itself, and link to them instead of downloading them from the npm repository.
 
@@ -78,9 +84,13 @@ html-integrations$ ./packages/mathtype-ckeditor5/npm pack
 html-integrations$ npx lerna bootstrap
 ```
 
-### Compiling
 
-To try out a package, it can be compiled as such:
+### Batch actions
+
+
+#### Compiling packages individually
+
+To try out a single package, it can be compiled individually as such:
 
 ```sh
 html-integrations/packages/mathtype-[editor]$ npm run compile -- [tech] [--dev]
@@ -111,17 +121,17 @@ This replaces the service provider URI and server with the appropriate values,
 builds the sources with Webpack, and places the result in
 `html-integrations/output/[tech]-[editor]`.
 
-### Batch actions
+#### Compile packages by technology
 
 Lerna allows to run a single command on all or any packages in the
-mono-repository. For example, you can build all editors for a single technology
+mono-repository. For example, you can build all editors for a all technologies
 like this:
 
 ```sh
 html-integrations$ npx lerna run compile -- npm
 ```
 
-### Cleaning up
+#### Cleaning up
 
 Clean the output in the root folder and in the packages:
 
@@ -183,11 +193,14 @@ This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
 
-### Technical Demos
+## Technical Demos
 
-In order to manually test each plugin, demos will be developed in the future.
+In order to manually test each plugin, there's a set of technical demos on
+the 'demos/' folder.
 
-*Note*: To be taken into account when developing the new demos is the fact that
+Refer to the README file for more information.
+
+**Note**: To be taken into account when developing the new demos is the fact that
 CKEditor 5 issues a duplicated modules error when installing the plugin using
 a "file:..." protocol or a .tgz file. In order to avoid this, in the old
 plugins repository we make a hacky string replacement that removes the
@@ -198,6 +211,9 @@ is to be developed.
 
 ## Documentation
 
-[npm](https://docs.npmjs.com/)
+- [npm](https://docs.npmjs.com/)
 
-[Lerna](https://github.com/lerna/lerna#readme) 
+- [Lerna](https://github.com/lerna/lerna#readme) 
+
+## License
+

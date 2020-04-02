@@ -2,11 +2,11 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "prestart": "cd packages/mathtype-ckeditor5 && npm pack",
+    "prestart": "cd packages/mathtype-ckeditor5 && npm pack && cd .. && cd .. & rm demos/ckeditor5/package-lock.json ",
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
-    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules"
+    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules"
   },
   "devDependencies": {
     "fs-extra": "^8.1.0",
