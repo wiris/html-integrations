@@ -1,5 +1,6 @@
 // Load styles.
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import '../../../resources/demos/design.css';
 import './static/style.css';
 
 $('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');    //eslint-disable-line

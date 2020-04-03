@@ -3,6 +3,7 @@ import '@wiris/mathtype-froala3/wiris';
 
 // Load styles.
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import '../../../resources/demos/design.css';
 import './static/style.css';
 
 // Generate scripts.

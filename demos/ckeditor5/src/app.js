@@ -9,6 +9,7 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 
 // Load styles.
 import './static/style.css';
+import '../../../resources/demos/design.css';
 
 import {version as pluginVersion} from '@wiris/mathtype-ckeditor5/package.json';
 

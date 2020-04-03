@@ -4,6 +4,7 @@ import '@wiris/mathtype-generic/wirisplugin-generic';
 
 // Load styles.
 import './static/style.css';
+import '../../../resources/demos/design.css';
 
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = document.getElementById('editable').innerHTML;

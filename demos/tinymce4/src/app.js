@@ -1,5 +1,6 @@
 // Load styles
 import './static/style.css';
+import '../../../resources/demos/design.css';
 
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
