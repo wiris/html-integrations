@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "prestart": "cd packages/mathtype-ckeditor5 && npm pack && cd .. && cd .. & rm demos/ckeditor5/package-lock.json ",
+    "prestart": "cd packages/mathtype-ckeditor5 && npm pack && cd .. && cd .. & rimraf demos/ckeditor5/package-lock.json ",
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
