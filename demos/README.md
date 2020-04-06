@@ -1,16 +1,14 @@
 # Demos integration
 
-Some kind of esplanation 
+Technical demos folder to test wiris plugins with different types of editors.
 
-## Quick start
+## Instructions
 
-First you have to install all the project dependencies on the root folder:
+First, follow the instructions of the README file you can find in the root directory of the project.
 
-```sh
-$ npm i
-```
+### Adding lerna dependencies
 
-Then, to work with lerna, you must add the following line on the packages place in lerna.json. Or temporarily replace the content with the one from lerna.demos.json file.
+To work with lerna, you must replace the packages content, with the following lines, in the file lerna.json you can find in the root directory of the project. Or temporarily replace all the content with the one from lerna.demos.json file.
 
 ```javascript
   "packages": [
@@ -19,20 +17,35 @@ Then, to work with lerna, you must add the following line on the packages place 
   ],
 ```
 
-To run a demo, go on the desired editor folder and run, to init the editor:
+### Quick start
+
+Go on the desired editor folder and run;
+
+```
+$ npm i
+```
+Now you have the environment ready to start running the demo.
+
+#### Run a demo with the public npm package
+
+To run a demo and initialize the editor execute:
 
 ```sh
-$ npm i
 $ npm run deploy
 ```
 
-If you want to build a development enviorment, you must link packages of the mono-repositoy on your local directoy. Also, every time, a package is modified, it has to be compiled. To do this, run:
+#### Run a demo with the local package
+
+If you want to build a development enviorment and run the demo, you must link packages of the mono-repositoy on your local directoy. Also, every time a package is modified, the following command must be executed so the changes can be appreciated. The line to be executed is:
 
 ```sh
-$ npm i
 $ npm run build-dev
 ```
 
 Hint: The commant "npm i" it's just necessary the first time you initialyze an editor.
 
-To work with the ckeditor5 demo with lerna, it's necessary to cut the dependencies of the plugin package and copy them on the demo package
+## License
+
+
+## Contact information
+team.support.europe@wiris.com 
