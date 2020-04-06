@@ -1,15 +1,15 @@
 body {
-  background-color: rgb(228, 230, 231);
+  background-color: #e4e6e7;
 }
 
 .cke {
-  margin: 0 auto !important;
+  background-color: #ffffff !important;
+  border: 1px solid rgb(201, 201, 201) !important;
   border-radius: 10px !important;
+  margin: 0 auto !important;
   max-width: 750px !important;
   min-height: 300px !important;
   width: 75% !important;
-  background-color: white !important;
-  border: 1px solid rgb(201, 201, 201) !important;
 }
 
 #cke_1_contents {
@@ -24,7 +24,10 @@ body {
   border-radius: 10px;
 }
 
-#cke_1_top {
+#cke_1_top,
+#cke_8,
+#cke_1_toolbox,
+#cke_editor_arialbl {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -32,19 +35,4 @@ body {
 #cke_1_bottom {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-#cke_8 {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-#cke_1_toolbox {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-#cke_editor_arialbl {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }

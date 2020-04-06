@@ -4,22 +4,22 @@
   }
 
   .header {
-    margin: 0 auto;
-    max-width: 750px;
-    padding-top: 15px;
-    padding-bottom: 15px;
     background-color: #7eff83;
+    margin: 0 auto;
     margin-bottom: 16px !important;
+    max-width: 750px;
     min-height: 60px;
+    padding-bottom: 15px;
+    padding-top: 15px;    
   }
 
   .header_title {
+    float: left;
     font-size: 1.8em;
     font-weight: 400;
     margin: 10px;
-    vertical-align: middle;
     margin-left: 20px;
-    float: left;
+    vertical-align: middle;  
   }
   
   .header_versions {
@@ -42,11 +42,11 @@
   }
 
   #editor {
-    margin: 0 auto !important;
+    background-color: #ffffff !important;
     border-radius: 10px !important;
+    margin: 0 auto !important;
     max-width: 750px !important;
     width: 75% !important;
-    background-color: white !important;
   }
   
   #editor:hover {
@@ -62,31 +62,30 @@
   }
   
   .btn {
+    cursor: pointer;
+    font-size: 16px;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
     transition-duration: 0.4s;
-    cursor: pointer;
-    
   }
   
   #btn_update {
-    background-color: white;
-    color: black;
+    background-color: #ffffff;
     border: 2px solid #69e26d;
+    color: #000000;
     margin: 15px;
   }
   
   #btn_update:hover {
     background-color: #69e26d;
-    color: white;
+    color: #ffffff;
   }
   
   .btn_update-distances {
-    padding: 16px 32px;
-    margin: 4px 2px;
-    border-radius: 5px;
     border: none;
+    border-radius: 5px;
+    margin: 4px 2px;
+    padding: 16px 32px;   
   }
   
   .btn_update-display {
@@ -94,13 +93,13 @@
   }
 
   .transform {
-    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #c9c9c9;
     border-radius: 10px;
+    margin: 0 auto;
     max-width: 700px;
     min-height: 200px;
     width: 75%;
-    background-color: white;
-    border: 1px solid rgb(201, 201, 201);
   }
   
   .transform:hover {

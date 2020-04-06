@@ -1,13 +1,13 @@
 body {
-  background-color: rgb(228, 230, 231);
+  background-color: #e4e6e7;
 }
 
 .ck-editor {
-  margin: 0 auto !important;
+  background-color: #ffffff !important;
   border-radius: 10px !important;
+  margin: 0 auto !important;
   max-width: 760px !important;
   width: 75% !important;
-  background-color: white !important;
 }
 
 .ck-editor:hover {
@@ -20,7 +20,8 @@ body {
   min-height: 250px;
 }
 
-.ck-rounded-corners .ck.ck-editor__editable:not(.ck-editor__nested-editable),
+.ck-rounded-corners,
+.ck.ck-editor__editable:not(.ck-editor__nested-editable),
 .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-rounded-corners {
   border-bottom-left-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
