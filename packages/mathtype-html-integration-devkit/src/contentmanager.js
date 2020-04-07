@@ -265,12 +265,7 @@ export default class ContentManager {
     // Check protocol and remove port if it's standard.
     if (anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '') {
       return `${anchorElement.protocol}//${anchorElement.hostname}/${anchorElement.pathname}`;
-    }
-
-    return `${anchorElement.protocol}//${anchorElement.hostname}:${anchorElement.port}/${anchorElement.pathname}`;
-  }
-
-    return `${anchorElement.protocol}//${anchorElement.hostname}:${anchorElement.port}/${anchorElement.pathname}`;
+    }    
   }
 
   /**
