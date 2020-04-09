@@ -6,6 +6,11 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import '../../../resources/demos/design.css';
 import './static/style.css';
 
+// Load and display html content.
+import * as htmlContent from '../../../resources/demos/index.html';
+
+document.body.innerHTML = htmlContent;
+
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -13,6 +18,10 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
+document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
@@ -36,7 +45,7 @@ new FroalaEditor('#editor', {                                                   
       const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
       const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
       document.getElementById('version_wiris').innerHTML += versionWiris;
-      document.getElementById('version_froala').innerHTML += versionFroala;
+      document.getElementById('version_editor').innerHTML += versionFroala;
     },
   },
 });
