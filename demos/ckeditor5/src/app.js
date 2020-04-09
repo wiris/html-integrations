@@ -15,7 +15,6 @@ import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json
 // Load and display html content.
 import * as htmlContent from '../../../resources/demos/index.html';
 
-
 document.body.innerHTML = htmlContent;
 
 // Generate scripts.

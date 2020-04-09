@@ -9,6 +9,7 @@
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "eslint --quiet src",
+    "lint-fix": "npx eslint --quiet --fix src",
     "stylelint": "npx stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },
