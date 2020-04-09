@@ -51,6 +51,11 @@ module.exports = {
                 test: /\.svg$/,
                 use: [ 'raw-loader' ]
             },
+            {
+                test: /\.html$/i,
+                exclude: /node_modules/,
+                loader: 'html-loader'
+            },
         ]
     },
     stats: {

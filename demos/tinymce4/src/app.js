@@ -2,6 +2,11 @@
 import './static/style.css';
 import '../../../resources/demos/design.css';
 
+// Load and display html content.
+import * as htmlContent from '../../../resources/demos/index.html';
+
+document.body.innerHTML = htmlContent;
+
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -12,6 +17,10 @@ document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
+document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
 
 // Inicialyze default editor.
 tinymce.init({                                                                                                              //eslint-disable-line
@@ -28,7 +37,7 @@ tinymce.init({                                                                  
       const versionWiris = WirisPlugin.currentInstance.version;                          //eslint-disable-line
       const versionTinymce = tinymce.majorVersion + '.' + tinymce.minorVersion;          //eslint-disable-line
       document.getElementById('version_wiris').innerHTML += versionWiris;
-      document.getElementById('version_tinymce').innerHTML += versionTinymce;
+      document.getElementById('version_editor').innerHTML += versionTinymce;
     });
   },
 });

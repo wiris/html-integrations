@@ -11,6 +11,11 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 import './static/style.css';
 import '../../../resources/demos/design.css';
 
+// Load and display html content.
+import * as htmlContent from '../../../resources/demos/index.html';
+
+document.body.innerHTML = htmlContent;
+
 import {version as pluginVersion} from '@wiris/mathtype-ckeditor5/package.json';
 
 // Generate scripts.
@@ -21,12 +26,16 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
 
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
+document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
+
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editable').innerHTML;
+document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
 // Create the CKeditor5.
 ClassicEditor
-  .create(document.querySelector('#editable'), {
+  .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
     toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
   })
@@ -44,7 +53,7 @@ ClassicEditor
 
     // Get ckeditor and wiris plugin versions.
     document.getElementById('version_wiris').innerHTML += pluginVersion;
-    document.getElementById('version_ckeditor').innerHTML += '5.0.0';
+    document.getElementById('version_editor').innerHTML += '5.0.0';
   })
   .catch((error) => {
     console.error(error.stack);

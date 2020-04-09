@@ -6,6 +6,15 @@ import './static/style.css';
 $('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');    //eslint-disable-line
 $('head').append('<script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>');       //eslint-disable-line
 
+// Load and display html content.
+import * as htmlContent from '../../../resources/demos/index.html';
+
+document.body.innerHTML = htmlContent;
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
+document.getElementById('version_editor').innerHTML = 'Froala editor: ';
+
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
 
@@ -29,7 +38,7 @@ $('#editor').on('froalaEditor.initialized', function(e, editor) {          //esl
   const versionWiris = WirisPlugin.currentInstance.version;                //eslint-disable-line
   const versionFroala = $.FE.VERSION;                                      //eslint-disable-line
   document.getElementById('version_wiris').innerHTML += versionWiris;
-  document.getElementById('version_froala').innerHTML += versionFroala;
+  document.getElementById('version_editor').innerHTML += versionFroala;
 });
 
 // Initialyze the editor.

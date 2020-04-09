@@ -5,6 +5,11 @@ import '@wiris/mathtype-ckeditor4/plugin';
 import './static/style.css';
 import '../../../resources/demos/design.css';
 
+// Load and display html content.
+import * as htmlContent from '../../../resources/demos/index.html';
+
+document.body.innerHTML = htmlContent;
+
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -12,6 +17,10 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
+document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
 
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
@@ -36,7 +45,7 @@ CKEDITOR.on('instanceReady', function() {                     //eslint-disable-l
   const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
   const versionCKeditor = CKEDITOR.version;                             //eslint-disable-line
   document.getElementById('version_wiris').innerHTML += versionWiris;
-  document.getElementById('version_ckeditor').innerHTML += versionCKeditor;
+  document.getElementById('version_editor').innerHTML += versionCKeditor;
 });
 
 // Takes the data of the editor.
