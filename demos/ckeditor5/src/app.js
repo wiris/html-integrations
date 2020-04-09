@@ -11,12 +11,12 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 import './static/style.css';
 import '../../../resources/demos/design.css';
 
+import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
 // Load and display html content.
 import * as htmlContent from '../../../resources/demos/index.html';
 
-document.body.innerHTML = htmlContent;
 
-import {version as pluginVersion} from '@wiris/mathtype-ckeditor5/package.json';
+document.body.innerHTML = htmlContent;
 
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');
