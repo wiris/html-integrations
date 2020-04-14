@@ -5,7 +5,7 @@ import '@wiris/mathtype-ckeditor4/plugin';
 import './static/style.css';
 
 // Load the file that contains common imports between demos
-import * as Generic from '../../../resources/demos/imports.js';
+import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
@@ -31,10 +31,10 @@ CKEDITOR.replace('editor', { //eslint-disable-line
 // Handle on editor ready event.
 CKEDITOR.on('instanceReady', function() {                     //eslint-disable-line
   // Get and set the editor and wiris versions in this order.
-  Generic.setEditorAndWirisVersion(CKEDITOR.version, WirisPlugin.currentInstance.version);
+  Generic.setEditorAndWirisVersion(CKEDITOR.version, WirisPlugin.currentInstance.version);          //eslint-disable-line
 });
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  Generic.updateContent(CKEDITOR.instances.editor.getData(), 'transform_content');
+  Generic.updateContent(CKEDITOR.instances.editor.getData(), 'transform_content');                  //eslint-disable-line
 });

@@ -3,7 +3,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';       //eslint-disable-line
 
 // Load the file that contains common imports between demos
-import * as Generic from '../../../resources/demos/imports.js';
+import * as Generic from '../../../resources/demos/imports';
 
 $('head').append('<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />');    //eslint-disable-line
 $('head').append('<script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>');  //eslint-disable-line
@@ -33,7 +33,7 @@ const froalaConfiguration = {
 // On editor initialized event.
 $('#editor').on('froalaEditor.initialized', function(e, editor) {          //eslint-disable-line
   // Get and set the editor and wiris versions in this order.
-  Generic.setEditorAndWirisVersion($.FE.VERSION, WirisPlugin.currentInstance.version);
+  Generic.setEditorAndWirisVersion($.FE.VERSION, WirisPlugin.currentInstance.version);        //eslint-disable-line
 });
 
 // Initialyze the editor.
@@ -41,5 +41,5 @@ $('#editor').froalaEditor(froalaConfiguration);           //eslint-disable-line
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  Generic.updateContent($('#editor').froalaEditor('html.get'), 'transform_content');
+  Generic.updateContent($('#editor').froalaEditor('html.get'), 'transform_content');          //eslint-disable-line
 });

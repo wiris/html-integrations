@@ -6,7 +6,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';
 
 // Load the file that contains common imports between demos
-import * as Generic from '../../../resources/demos/imports.js';
+import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
@@ -31,12 +31,12 @@ new FroalaEditor('#editor', {                                                   
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.
-      Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version);
+      Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version);        //eslint-disable-line
     },
   },
 });
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), 'transform_content');
+  Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), 'transform_content');                     //eslint-disable-line
 });

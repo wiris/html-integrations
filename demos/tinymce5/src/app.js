@@ -2,7 +2,7 @@
 import './static/style.css';
 
 // Load the file that contains common imports between demos
-import * as Generic from '../../../resources/demos/imports.js';
+import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
@@ -24,12 +24,12 @@ tinymce.init({                                                                  
     // Launch on init event
     editor.on('init', () => {
       // Get and set the editor and wiris versions in this order.
-      Generic.setEditorAndWirisVersion(tinymce.majorVersion + '.' + tinymce.minorVersion, WirisPlugin.currentInstance.version);
+      Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, WirisPlugin.currentInstance.version);   //eslint-disable-line
     });
   },
 });
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  Generic.updateContent(tinyMCE.activeEditor.getContent(), 'transform_content');
+  Generic.updateContent(tinyMCE.activeEditor.getContent(), 'transform_content');            //eslint-disable-line
 });
