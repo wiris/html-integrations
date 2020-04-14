@@ -3,27 +3,16 @@ import '@wiris/mathtype-ckeditor4/plugin';
 
 // Load styles.
 import './static/style.css';
-import '../../../resources/demos/design.css';
 
-// Load and display html content.
-import * as htmlContent from '../../../resources/demos/index.html';
-
-document.body.innerHTML = htmlContent;
-
-// Generate scripts.
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-
-// Load generated scripts.
-document.head.appendChild(jsDemoImagesTransform);
+// Load the file that contains common imports between demos
+import * as Generic from '../../../resources/demos/imports.js';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
 document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
+Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Add wiris plugin.
 CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js'); //eslint-disable-line
@@ -39,24 +28,13 @@ CKEDITOR.replace('editor', { //eslint-disable-line
   ],
 });
 
-// Handle on editor ready event
+// Handle on editor ready event.
 CKEDITOR.on('instanceReady', function() {                     //eslint-disable-line
-  // Get ckeditor and wiris plugin versions.
-  const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
-  const versionCKeditor = CKEDITOR.version;                             //eslint-disable-line
-  document.getElementById('version_wiris').innerHTML += versionWiris;
-  document.getElementById('version_editor').innerHTML += versionCKeditor;
+  // Get and set the editor and wiris versions in this order.
+  Generic.setEditorAndWirisVersion(CKEDITOR.version, WirisPlugin.currentInstance.version);
 });
 
-// Takes the data of the editor.
-// Replaces the content of a div with the data transformed.
-function updateFunction() {
-  const editorContent = CKEDITOR.instances.editor.getData(); //eslint-disable-line
-  document.getElementById('transform_content').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content')); //eslint-disable-line
-}
-
-// Add listener on click button to launch updateFunction.
+// Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  updateFunction();
+  Generic.updateContent(CKEDITOR.instances.editor.getData(), 'transform_content');
 });

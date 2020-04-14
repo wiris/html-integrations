@@ -21,7 +21,7 @@ export function setEditorAndWirisVersion(editorVersion, wirisVersion) {
 /**
  * Takes the editor content,
  * Transforms it into an image,
- * Places it on a reserved space.
+ * Places it on a reserved containder identified with and idContainer.
  * @param {*} editorContent Content of the editor to be transformed.
  * @param {String} containerId Identifier of the container place.
  */

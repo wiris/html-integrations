@@ -3,28 +3,17 @@ import '@wiris/mathtype-froala3/wiris';
 
 // Load styles.
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-import '../../../resources/demos/design.css';
 import './static/style.css';
 
-// Load and display html content.
-import * as htmlContent from '../../../resources/demos/index.html';
-
-document.body.innerHTML = htmlContent;
-
-// Generate scripts.
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-
-// Load generated scripts.
-document.head.appendChild(jsDemoImagesTransform);
+// Load the file that contains common imports between demos
+import * as Generic from '../../../resources/demos/imports.js';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
+Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Initialize editor.
 new FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
@@ -41,24 +30,13 @@ new FroalaEditor('#editor', {                                                   
   // Execute on initialyzed editor
   events: {
     initialized() {
-      // Get froala and wiris plugin versions.
-      const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
-      const versionFroala = FroalaEditor.VERSION;                           //eslint-disable-line
-      document.getElementById('version_wiris').innerHTML += versionWiris;
-      document.getElementById('version_editor').innerHTML += versionFroala;
+      // Get and set the editor and wiris versions in this order.
+      Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version);
     },
   },
 });
 
-// Takes the data of the editor.
-// Replaces the content of a div with the data transformed.
-function updateFunction() {
-  const editorContent = FroalaEditor.INSTANCES[0].html.get();                                           //eslint-disable-line
-  document.getElementById('transform_content').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));                //eslint-disable-line
-}
-
-// Add listener on click button to launch updateFunction.
+// Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  updateFunction();
+  Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), 'transform_content');
 });
