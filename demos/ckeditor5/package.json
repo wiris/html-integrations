@@ -8,7 +8,7 @@
     "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - ; npm install ../../packages/mathtype-ckeditor5/$filename ; webpack-dev-server -d --open",
     "deploy": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server --open",
     "build": "webpack --mode production",
-    "lint": "eslint --quiet src",
+    "lint": "npx eslint --quiet src/ webpack.config.js",
     "stylelint": "npx stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },

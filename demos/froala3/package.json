@@ -8,8 +8,7 @@
     "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-froala3/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
-    "lint": "eslint --quiet src",
-    "lint-fix": "npx eslint --quiet --fix src",
+    "lint": "npx eslint --quiet src/ webpack.config.js",
     "stylelint": "npx stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },

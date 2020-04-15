@@ -44,6 +44,30 @@ $ npm run build-dev
 
 Hint: The commant "npm i" it's just necessary the first time you initialyze an editor.
 
+#### Use an extension to check that the files follow the standards
+
+For detailed information, take a look at this same section found in the README at the root of the project.
+
+Each of the folders where the demos are located have specific scripts to make a check of the files in it. These are the following:
+* To make a check of the .js files you can execute either of the following two commands:
+  ```sh
+  $ npm run lint
+  $ npx eslint --quiet [options] <dir|file|glob>
+  ```
+* To make a check of the .css files you can execute either of the following two commands:
+  ```sh
+  $ npm run stylelint
+  $ npx stylelint [options] <dir|file|glob>
+  ```
+
+* To make a check of the .html files you can execute either of the following two commands:
+  ```sh
+  $ npm run linthtml
+  $ html-validate [options] <dir|file|glob>
+  ```
+
+In case you want to automatically apply the possible fixes, just add the --fix option in the desired command, the second command found in each specific block of commands, or in those explained in the README file at the root of the project.
+
 ## License
 
 
