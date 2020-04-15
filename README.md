@@ -147,6 +147,24 @@ html-integrations$ npm run clean-all
 
 This will require you to `npm i` and `npx lerna bootstrap` in the root again.
 
+### Analyzing and fixing code
+
+There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analisis shows the error and where it is, then it can be fixed. The commands are:
+
+* To make a check of the .js files
+    ```
+    $ npx eslint --quiet [options] <dir|file|glob>*
+    ```
+* To make a check of the .css files
+    ```
+    $ npx stylelint [options] <dir|file|glob>*
+    ```
+* To make a check of the .html files
+    ```
+    $ html-validate [options] <dir|file|glob>*
+    ```
+It is possible to automatically fix some of the errors, just add the `--fix` option in the desired command and run it.
+
 ### Versioning
 
 In this project [semantic](https://semver.org),
