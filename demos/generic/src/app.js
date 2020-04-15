@@ -24,6 +24,7 @@ const toolbarDiv = document.getElementById('toolbar');
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv);
 
+// eslint-disable-next-line func-names
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line

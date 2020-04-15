@@ -3,7 +3,7 @@ body {
 }
 
 .componentsToolbarEditable {
-  background-color: #ffffff;
+  background-color: #fff;
   border: 1px solid #c9c9c9;
   border-radius: 10px;
   margin: 0 auto;
@@ -21,26 +21,26 @@ body {
 }
 
 #toolbar {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 11px;
   display: inline;
 }
 
 #editable {
-  background-color: #ffffff;
+  background-color: #fff;
   border-top: 1px solid #e6e6e6;
   padding: 2%;
   width: auto;
 }
 
 #editorIcon {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: inherit;
   padding: 1.4% 1% 1.4% 2%;
 }
 
 #chemistryIcon {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 1.4% 1% 1.4% 1%;
 }
 

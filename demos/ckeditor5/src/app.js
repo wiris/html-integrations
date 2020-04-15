@@ -38,5 +38,5 @@ ClassicEditor
     Generic.setEditorAndWirisVersion('5.0.0', pluginVersion);
   })
   .catch((error) => {
-    console.error(error.stack);
+    console.error(error.stack); //eslint-disable-line
   });

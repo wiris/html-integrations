@@ -5,7 +5,7 @@
  */
 export function copyContentFromxToy(x, y) {
   const content = document.getElementById(x).innerHTML;
-  document.getElementById(y).innerHTML = content
+  document.getElementById(y).innerHTML = content;
 }
 
 /**
