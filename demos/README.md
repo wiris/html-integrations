@@ -6,11 +6,21 @@ Technical demos is a internal project developed to test, finding bugs and improv
 
 - [Requirements](#requirements)
 - [Instructions](#instructions)
-  - [Adding lerna dependencies](#adding-lerna-dependencies)
+  - [Cloning](#cloning)
   - [Quick start](#quick-start)
+    - [Bootstraping](#bootstraping)
+    - [Installation](#installation)
     - [Run a demo with the public npm package](#run-a-demo-with-the-public-npm-package)
     - [Run a demo with the local package](#run-a-demo-with-the-local-package)
     - [Use an extension to check that the files follow the standards](#use-an-extension-to-check-that-the-files-follow-the-standards)
+- [File manifest](#file-manifest)
+  - [Important files and folder structure](#important-files-and-folder-structure)
+  - [Supported editors](#supported-editors)
+  - [Technologies with a demo](#technologies-with-a-demo)
+- [Known bugs](#known-bugs)
+- [Change log](#change-log)
+- [News](#news)
+- [Documentation](#documentation)
 - [License](#license)
 - [Contact information](#contact-information)
 
@@ -165,6 +175,36 @@ This is the list of editors with a supported custom wiris plugins especially cre
 - `html5`
 - [Comming soon] `React`
 - [Comming soon] `Angular`
+
+## Known bugs
+
+- `CKeditor5` has problems working with lerna, because the ck5 architecture prohibits having duplicate dependencies, but there is a temporal solution.
+
+- `Froala3` launches a reference error that doesn’t affect the proper performance of the demo.
+
+We are working to improve the user experience and fix the errors previously detailed. :smile:
+
+## Change log
+
+- An `improvement` in the project `structure` has been implemented.
+
+- Improvements have been made to the functioning of .css, .html, and .js files, creating a `resource folder` containing all the common code between the demos.
+
+- `Duplicate` configuration `files` have been `removed`.
+
+- Technical demos project `documentation` has been `improved`.
+
+## News
+
+- :tada: Now there is a demo for froala version 3 with `react` technology. 
+
+## Documentation
+
+- [npm](https://docs.npmjs.com/)
+
+- [Lerna](https://github.com/lerna/lerna#readme) 
+
+- [Mathtype by Wiris](http://www.wiris.com/mathtype)
 
 ## License
 
