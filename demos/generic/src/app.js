@@ -1,12 +1,22 @@
 // Load scripts.
 import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
+import * as Generic from '../../../resources/demos/generic';
 
 // Load styles.
 import './static/style.css';
+import '../../../resources/demos/design.css';
+
+// Generate scripts.
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated scripts.
+document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editable').innerHTML;
+Generic.copyContentFromxToy('editable', 'transform_content');
 
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
@@ -14,6 +24,7 @@ const toolbarDiv = document.getElementById('toolbar');
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv);
 
+// eslint-disable-next-line func-names
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
@@ -21,15 +32,7 @@ document.onreadystatechange = function () {
   }
 };
 
-// Takes the data of the editor.
-// Replaces the content of a div with the data transformed.
-function updateFunction() {
-  const editorContent = WirisPlugin.Parser.initParse(editableDiv.innerHTML);                           //eslint-disable-line
-  document.getElementById('transform_content').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));        //eslint-disable-line
-}
-
-// Add listener on click button to launch updateFunction.
+// Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  updateFunction();
+  Generic.updateContent(WirisPlugin.Parser.initParse(editableDiv.innerHTML), 'transform_content');      //eslint-disable-line
 });

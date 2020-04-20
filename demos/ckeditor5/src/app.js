@@ -10,41 +10,33 @@ import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
 // Load styles.
 import './static/style.css';
 
-import {version as pluginVersion} from '@wiris/mathtype-ckeditor5/package.json';
+import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
 
-// Generate scripts.
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+// Load the file that contains common imports between demos
+import * as Generic from '../../../resources/demos/imports';
 
-// Load generated scripts.
-document.head.appendChild(jsDemoImagesTransform);
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
+document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editable').innerHTML;
+Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Create the CKeditor5.
 ClassicEditor
-  .create(document.querySelector('#editable'), {
+  .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
     toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
   })
   .then((editor) => {
-    function updateFunction() {
-      const editorContent = editor.getData();
-      document.getElementById('transform_content').innerHTML = editorContent;
-      com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));        //eslint-disable-line
-    }
-
-    // Add listener on click button to launch updateFunction.
+    // Add listener on click button to launch updateContent function.
     document.getElementById('btn_update').addEventListener('click', () => {
-      updateFunction();
+      Generic.updateContent(editor.getData(), 'transform_content');
     });
 
-    // Get ckeditor and wiris plugin versions.
-    document.getElementById('version_wiris').innerHTML += pluginVersion;
-    document.getElementById('version_ckeditor').innerHTML += '5.0.0';
+    // Get and set the editor and wiris versions in this order.
+    Generic.setEditorAndWirisVersion('5.0.0', pluginVersion);
   })
   .catch((error) => {
-    console.error(error.stack);
+    console.error(error.stack); //eslint-disable-line
   });

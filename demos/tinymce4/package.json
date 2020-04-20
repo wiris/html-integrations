@@ -8,7 +8,7 @@
     "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-tinymce4/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
-    "lint": "eslint --quiet src",
+    "lint": "npx eslint --quiet src/ webpack.config.js",
     "stylelint": "npx stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },
@@ -24,6 +24,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
+    "html-loader": "^1.1.0",
     "lerna": "^3.20.2",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.0",

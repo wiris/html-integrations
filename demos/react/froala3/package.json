@@ -20,6 +20,7 @@
     "prebuild-dev": "lerna bootstrap ; cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev ",
     "build-dev": "react-scripts start",
     "lint": "eslint --quiet src",
+    "lint-fix": "npx eslint --quiet --fix src",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

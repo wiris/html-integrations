@@ -1,46 +1,35 @@
 // Load styles.
 import './static/style.css';
 
-// Generate scripts.
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+// Load the file that contains common imports between demos
+import * as Generic from '../../../resources/demos/imports';
 
-// Load generated sripts.
-document.head.appendChild(jsDemoImagesTransform);
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
+document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = document.getElementById('editor').innerHTML;
+Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Set up the editor.
 tinymce.init({                                                                                          //eslint-disable-line
   selector: '#editor',
   external_plugins: {
-    tiny_mce_wiris: 'http://localhost:8006/node_modules/@wiris/mathtype-tinymce5/plugin.min.js',
+    tiny_mce_wiris: `${window.location.href}node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
-  
+
   // Handle events
   setup(editor) {
+    // Launch on init event
     editor.on('init', () => {
-      // Get tinymce and wiris plugin versions.
-      const versionWiris = WirisPlugin.currentInstance.version;                          //eslint-disable-line
-      const versionTinymce = tinymce.majorVersion + '.' + tinymce.minorVersion;          //eslint-disable-line
-      document.getElementById('version_wiris').innerHTML += versionWiris;
-      document.getElementById('version_tinymce').innerHTML += versionTinymce;
+      // Get and set the editor and wiris versions in this order.
+      Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, WirisPlugin.currentInstance.version);   //eslint-disable-line
     });
   },
 });
 
-// Takes the data of the editor.
-// Replaces the content of a div with the data transformed.
-function updateFunction() {
-  const editorContent = tinyMCE.activeEditor.getContent();                      //eslint-disable-line
-  document.getElementById('transform_content').innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById('transform_content'));      //eslint-disable-line
-}
-
-// Add listener on click button to launch updateFunction.
+// Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  updateFunction();
+  Generic.updateContent(tinyMCE.activeEditor.getContent(), 'transform_content');            //eslint-disable-line
 });
