@@ -121,6 +121,51 @@ In case you want to automatically apply the possible fixes, just add the --fix o
 
 ## File manifest
 
+### Important files and folder structure
+
+The next tree you will see represents the structure of this project in major terms. 
+
+```bash
+demos
+├── technoloy-1
+│   ├── editor-1
+|   |   ├── ...
+|   |   └── package.json
+│   ├── editor-2
+|   ├── ...
+|   └── editor-m
+├── technology-2
+│   ├── editor-1
+│   ├── editor-2
+|   ├── ...
+|   └── editor-m
+├── ...
+├── technology-n
+└── README.md
+```
+
+There is a set of `n` supported `technologies` and its `m` supported `editors`, which will be detailed below. 
+
+Every editor has a package.json for the editor dependencies and, relying on the folder you are in, you will see one kind of structure or another following the technlology requirements and implementation.
+
+### Supported editors
+
+This is the list of editors with a supported custom wiris plugins especially created for the editors:
+
+- `ckeditor4`,
+- `ckeditor5`,
+- `froala2`,
+- `froala3`,
+- `generic`,
+- `tinymce4`,
+- `tinymce5`;
+
+### Technologies with a demo
+
+- `html5`
+- [Comming soon] `React`
+- [Comming soon] `Angular`
+
 ## License
 
 ## Contact information
