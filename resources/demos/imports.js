@@ -1,13 +1,13 @@
-// Import styles
+// Import styles.
 import './design.css';
 
 // Load html content.
 import * as htmlContent from './index.html';
 
-// Export generic functions
-export * from './generic.js';
+// Export generic functions.
+export * from './common.js';
 
-// Display html content
+// Display html content.
 document.body.innerHTML = htmlContent;
 
 // Generate scripts.

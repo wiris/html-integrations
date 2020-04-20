@@ -1,7 +1,7 @@
 // Load styles.
 import './static/style.css';
 
-// Load the file that contains common imports between demos
+// Load the file that contains common imports between demos.
 import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
@@ -19,9 +19,9 @@ tinymce.init({                                                                  
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
 
-  // Handle events
+  // Handle events.
   setup(editor) {
-    // Launch on init event
+    // Launch on init event.
     editor.on('init', () => {
       // Get and set the editor and wiris versions in this order.
       Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, WirisPlugin.currentInstance.version);   //eslint-disable-line

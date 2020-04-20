@@ -4,7 +4,7 @@ import '@wiris/mathtype-ckeditor4/plugin';
 // Load styles.
 import './static/style.css';
 
-// Load the file that contains common imports between demos
+// Load the file that contains common imports between demos.
 import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.

@@ -5,7 +5,7 @@ import '@wiris/mathtype-froala3/wiris';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';
 
-// Load the file that contains common imports between demos
+// Load the file that contains common imports between demos.
 import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
@@ -27,7 +27,7 @@ new FroalaEditor('#editor', {                                                   
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
 
-  // Execute on initialyzed editor
+  // Execute on initialyzed editor.
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.

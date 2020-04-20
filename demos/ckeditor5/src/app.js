@@ -12,7 +12,7 @@ import './static/style.css';
 
 import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
 
-// Load the file that contains common imports between demos
+// Load the file that contains common imports between demos.
 import * as Generic from '../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
