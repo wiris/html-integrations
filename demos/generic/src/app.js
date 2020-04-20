@@ -1,7 +1,7 @@
 // Load scripts.
 import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
-import * as Generic from '../../../resources/demos/generic';
+import * as Generic from '../../../resources/demos/common';
 
 // Load styles.
 import './static/style.css';
