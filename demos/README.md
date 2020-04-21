@@ -1,6 +1,6 @@
 # Demos integration
 
-Technical demos is an internal project developed to test, finding bugs and improvements, and validate the wiris plugins with different types of editors.
+Technical demos is an internal project developed to test, find bugs and improvements, and validate the WIRIS plugins with different types of editors.
 
 ## Table of contents
 
@@ -67,11 +67,11 @@ projects$ git clone --config core.symlinks=true https://github.com/wiris/html-in
 The mono-repository is managed through [Lerna](https://lerna.js.org/), a tool
 designed for maintaining multiple npm packages in a single git repository.
 
-To work with lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
+To work with Lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
 
 #### Installation
 
-After cloning this repo, and optionally adding lerna dependencies, open a Terminal window to run these next commands:
+After cloning this repo, and optionally adding Lerna dependencies, open a Terminal window to run these next commands:
 
 ```sh
 html-integrations$ npm install
@@ -103,7 +103,7 @@ If you want to build a development environment and run the demo, you must link p
 $ npm run build-dev
 ```
 
-Hint: The command "npm i" it's just necessary the first time you initialize an editor.
+Hint: The command `npm i` its just necessary the first time you initialize an editor.
 
 #### Use an extension to check that the files follow the standards
 
@@ -137,7 +137,7 @@ The next tree you will see represents the structure of this project in major ter
 
 ```bash
 demos
-├── technoloy-1
+├── technology-1
 │   ├── editor-1
 |   |   ├── ...
 |   |   └── package.json
@@ -156,19 +156,19 @@ demos
 
 There is a set of `n` supported `technologies` and its `m` supported `editors`, which will be detailed below. 
 
-Every editor has a package.json for the editor dependencies and, relying on the folder you are in, you will see one kind of structure or another following the technlology requirements and implementation.
+Every editor has a package.json for the editor dependencies and, depending on the folder you are in, you will see one kind of structure or another following the technology requirements and implementation.
 
 ### Supported editors
 
-This is the list of editors with a supported custom wiris plugins especially created for the editors:
+This is the list of editors with a supported custom WIRIS plugins especially created for the editors:
 
-- `ckeditor4`,
-- `ckeditor5`,
-- `froala2`,
-- `froala3`,
+- `CKeditor 4`,
+- `CKeditor 5`,
+- `Froala 2`,
+- `Froala 3`,
 - `generic`,
-- `tinymce4`,
-- `tinymce5`;
+- `TinyMCE 4`,
+- `TinyMCE 5`;
 
 ### Technologies with a demo
 
@@ -182,9 +182,9 @@ Automatic test will be coming soon.
 
 ## Known bugs
 
-- `CKeditor5` has problems working with lerna, because the ck5 architecture prohibits having duplicate dependencies, but there is a temporal solution.
+- `CKeditor 5` has problems working with Lerna, because the CKeditor 5 architecture prohibits having duplicate dependencies, but there is a temporal solution.
 
-- `Froala3` launches a reference error that doesn’t affect the proper performance of the demo.
+- `Froala 3` launches a reference error that doesn’t affect the proper performance of the demo.
 
 We are working to improve the user experience and fix the errors previously detailed. :smile:
 
@@ -208,7 +208,7 @@ We are working to improve the user experience and fix the errors previously deta
 
 - [Lerna](https://github.com/lerna/lerna#readme) 
 
-- [Mathtype by Wiris](http://www.wiris.com/mathtype)
+- [Mathtype by WIRIS](http://www.wiris.com/mathtype)
 
 ## License
 
