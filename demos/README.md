@@ -1,6 +1,6 @@
 # Demos integration
 
-Technical demos is a internal project developed to test, finding bugs and improvements, and validate the wiris plugins with different types of editors.
+Technical demos is an internal project developed to test, finding bugs and improvements, and validate the wiris plugins with different types of editors.
 
 ## Table of contents
 
@@ -65,7 +65,7 @@ projects$ git clone --config core.symlinks=true https://github.com/wiris/html-in
 #### Bootstraping
 
 The mono-repository is managed through [Lerna](https://lerna.js.org/), a tool
-designed for mantaining multiple npm packages in a single git repository.
+designed for maintaining multiple npm packages in a single git repository.
 
 To work with lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
 
@@ -78,18 +78,18 @@ html-integrations$ npm install
 html-integrations$ npm start
 ```
 
-Then go on the folders demo, select the technology and the editor and run;
+Then go on the demos folder, select the technology and the editor and run;
 
 ```
 html-integrations/demos/[technology]/[editor]$ npm i
 ```
 You can find clarification on which technologies and which publishers you can work with on this project in [File manifest](#file-manifest) section.
 
-Now you have the environment ready to start running the demo.
+Now, you have the environment ready to start running the demo.
 
 #### Run a demo with the public npm package
 
-To run a demo and initialize the editor execute:
+To run a demo and initialize the editor, execute:
 
 ```sh
 $ npm run deploy
@@ -97,17 +97,17 @@ $ npm run deploy
 
 #### Run a demo with the local package
 
-If you want to build a development enviorment and run the demo, you must link packages of the mono-repositoy on your local directoy. Also, every time a package is modified, the following command must be executed so the changes can be appreciated:
+If you want to build a development environment and run the demo, you must link packages of the mono-repositoy on your local directory. Also, every time a package is modified, the following command must be executed so the changes can be appreciated:
 
 ```sh
 $ npm run build-dev
 ```
 
-Hint: The commant "npm i" it's just necessary the first time you initialyze an editor.
+Hint: The command "npm i" it's just necessary the first time you initialize an editor.
 
 #### Use an extension to check that the files follow the standards
 
-For detailed information, take a look at this same section found in the README at the root of the project.
+For more detailed information, take a look at this same section found in the README at the root of the project.
 
 Each of the folders where the demos are located have specific scripts to make a check of the files in it. These are the following:
 * To make a check of the .js files you can execute either of the following two commands:
@@ -176,6 +176,10 @@ This is the list of editors with a supported custom wiris plugins especially cre
 - [Comming soon] `React`
 - [Comming soon] `Angular`
 
+## Running tests
+
+Automatic test will be coming soon.
+
 ## Known bugs
 
 - `CKeditor5` has problems working with lerna, because the ck5 architecture prohibits having duplicate dependencies, but there is a temporal solution.
@@ -207,6 +211,8 @@ We are working to improve the user experience and fix the errors previously deta
 - [Mathtype by Wiris](http://www.wiris.com/mathtype)
 
 ## License
+
+Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
 
 ## Contact information
 team.support.europe@wiris.com 
