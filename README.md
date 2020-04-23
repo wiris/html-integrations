@@ -2,6 +2,8 @@
 
 Mono-repository for the MathType Web plugins and their dependencies. 
 
+![Alt text](http://www.wiris.com/en/system/files/froala_wiris.png)
+
 ## Requirements
 
 This project requires basic knowledge of the `git` and `npm` commands.
