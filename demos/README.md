@@ -190,13 +190,13 @@ We are working to improve the user experience and fix the errors previously deta
 
 ## Change log
 
-- An `improvement` in the project `structure` has been implemented.
+- An **improvement** in the project **structure** has been implemented.
 
-- Improvements have been made to the functioning of .css, .html, and .js files, creating a `resource folder` containing all the common code between the demos.
+- Improvements have been made to the functioning of .css, .html, and .js files, creating a **resource folder** containing all the common code between the demos.
 
-- `Duplicate` configuration `files` have been `removed`.
+- **Duplicate** configuration **files** have been **removed**.
 
-- Technical demos project `documentation` has been `improved`.
+- Technical demos project **documentation** has been **improved**.
 
 ## News
 
