@@ -1,11 +1,11 @@
 {
-  "name": "demo-tinymce5",
+  "name": "froala",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-froala/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",
@@ -15,8 +15,8 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-tinymce5": "^7.17.0",
-    "tinymce": "^5.2.0",
+    "@wiris/mathtype-froala": "^7.17.0",
+    "froala-editor": "^2",
     "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {
@@ -30,7 +30,6 @@
     "style-loader": "^0.23.0",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0",
-    "uglifyjs-webpack-plugin": "^1.2.8",
     "url-loader": "^1.1.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.1.0",
