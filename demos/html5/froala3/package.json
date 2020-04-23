@@ -1,11 +1,11 @@
 {
-  "name": "demo-ckeditor4",
+  "name": "froala3",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-ckeditor4/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",
@@ -13,11 +13,10 @@
     "linthtml": "html-validate index.html"
   },
   "author": "Carla Lara",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-ckeditor4": "^7.17.0",
-    "ckeditor4": "^4.13.1",
-    "webpack-dev-server": "^3.10.3"
+    "@wiris/mathtype-froala3": "^7.17.0",
+    "froala-editor": "^3.1.0"
   },
   "devDependencies": {
     "css-loader": "^1.0.0",
@@ -30,6 +29,7 @@
     "style-loader": "^0.23.0",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0",
+    "uglifyjs-webpack-plugin": "^1.2.8",
     "url-loader": "^1.1.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.1.0",

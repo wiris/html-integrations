@@ -1,11 +1,11 @@
 {
-  "name": "demo-tinymce4",
+  "name": "demo-tinymce5",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "lerna bootstrap ; cd ../../packages/mathtype-tinymce4/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
+    "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",
@@ -15,7 +15,7 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-tinymce4": "^7.17.0",
+    "@wiris/mathtype-tinymce5": "^7.17.0",
     "tinymce": "^5.2.0",
     "webpack-dev-server": "^3.10.3"
   },
