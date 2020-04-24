@@ -4,16 +4,38 @@ Mono-repository for the MathType Web plugins and their dependencies.
 
 ![Alt text](http://www.wiris.com/en/system/files/froala_wiris.png)
 
+## Table of contents
+
+- [Requirements](#requirements)
+- [Instructions](#instructions)
+  - [Cloning](#cloning)
+  - [Quick start](#quick-start)
+    - [Bootstraping](#bootstraping)
+    - [Installation](#installation)
+    - [Run a demo with the public npm package](#run-a-demo-with-the-public-npm-package)
+    - [Run a demo with the local package](#run-a-demo-with-the-local-package)
+    - [Use an extension to check that the files follow the standards](#use-an-extension-to-check-that-the-files-follow-the-standards)
+- [File manifest](#file-manifest)
+  - [Important files and folder structure](#important-files-and-folder-structure)
+  - [Supported editors](#supported-editors)
+  - [Technologies with a demo](#technologies-with-a-demo)
+- [Known bugs](#known-bugs)
+- [Change log](#change-log)
+- [News](#news)
+- [Documentation](#documentation)
+- [License](#license)
+- [Contact information](#contact-information)
+
 ## Requirements
 
 This project requires basic knowledge of the `git` and `npm` commands.
 It also uses the `npx` tool which comes bundled with `npm`.
 
+To install node and npm follow this [guide-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), and use this other one [guide-git](https://www.atlassian.com/git/tutorials/install-git) to install git.
+
 [Lerna](https://lerna.js.org/) is used as a cornerstone of the project structure. Its main features are explained in this guide.
 
-## Instructions
-
-Folow these instructions to use the libraries.
+## FILE MANIFEST
 
 ### Important files & Folder Structure
 
@@ -23,24 +45,29 @@ root npm package and the Lerna mono-repository.
 work inside.
 - `demos/`. A growing set of technical demos to help developers integrate these plugins on different scenarios.
 - `scripts/`. Folder containing different scripts used at compile time, etc.
+- `resources`. Folder containing different resources files that are needed in the demos folder.
 
+### Supported browsers
 
-### Quick start
+### Supported editors
 
-Clone this repo and open a Terminal window to run these next commands:
+- `CKeditor 4`
+- `CKeditor 5`
+- `Froala 2`
+- `Froala 3`
+- `TinyMCE 4`
+- `TinyMCE 5`
+- `generic` is a global integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
-```sh
-$ npm install
-$ npm start
-```
+## Instructions
 
-In case you want to try out the [Technical Demos](#technical-demos) you'd need to copy the contents
-from `lerna.demos.json` to `lerna.json` before executing this command. 🤷 
-
+Folow these instructions to use the libraries.
 
 ### Cloning
 
-First, clone the repository:
+First, clone the repository
+
+#### Linux/Mac
 
 ```sh
 $ git clone https://github.com/wiris/html-integrations
@@ -48,13 +75,26 @@ $ cd html-integrations
 html-integrations$
 ```
 
-On Windows, you will need to have administrator privileges or activate
+#### Windows
+
+You will need to have administrator privileges or activate
 [developer mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development)
 in your account, and then use the `core.symlinks` when cloning the repository:
 
 ```sh
 projects$ git clone --config core.symlinks=true https://github.com/wiris/html-integrations
 ```
+
+### Installation
+
+After cloning this repo, open a Terminal window to run these next commands:
+
+```sh
+$ npm install
+$ npm start
+```
+
+In case you want to try out the [Technical Demos](#technical-demos) you can go to the **demos** folder and follow the instructions you can find in the folder README file. 
 
 ### Bootstrapping
 
@@ -71,7 +111,7 @@ html-integrations$ npm install
 
 ### Compiling
 
-Then, we need to compile all the packages. What this does is try to find
+It is possible to compile manually all the packages. What this does is try to find
 which dependencies of the mono-repo packages are present inside the mono-repo
 itself, and link to them instead of downloading them from the npm repository.
 
@@ -147,7 +187,7 @@ Clean the outputs and also all of the `node_modules`:
 html-integrations$ npm run clean-all
 ```
 
-This will require you to `npm i` and `npx lerna bootstrap` in the root again.
+This will require you to `npm i` and `npm start` in the root again.
 
 ### Analyzing and fixing code
 
@@ -229,11 +269,57 @@ dependencies in the CKEditor 5 plugin `package.json`, compiles the demo
 `package.json`. A similar approach could be used here when the CKEditor 5 demo
 is to be developed.
 
+## Running tests
+
+Automatic test will be coming soon.
+
+## Known bugs
+
+- **Technical demos** project errors. Please, refer to its README file for more information.
+
+We are working to improve the user experience and fix the errors previously detailed. :smile:
+
+## Change log
+
+- **Improvements** in the **demos** project has been implemented. Please, refer to its README file for more information.
+
+- **Reduced** the **time** when loading a second instance of mathtype formula editor in the same page
+
+## News
+
+- :tada: Technical demos are now live! Go and test the WIRIS plugins on your favourite editor. 
+
 ## Documentation
 
 - [npm](https://docs.npmjs.com/)
 
 - [Lerna](https://github.com/lerna/lerna#readme) 
 
+- [WIRIS](http://www.wiris.com)
+
+## Autors
+
+- **Manuel Cagigas** - *CTO at Wiris and developer*  - [manuelwiris](https://github.com/manuelwiris)
+
+- **Xavier Ripoll** - *Developer* - [xaviripo](https://github.com/xaviripo)
+
+- **Diego** - ** - [diegoWiris](https://github.com/diegoWiris)
+
+- **Dani Canet** - *Team lead and developer* - [dcanetma](https://github.com/dcanetma)
+
+- **Daniel Marques** - ** - [dani31415](https://github.com/dani31415)
+
+- **Henry Qiulo** - ** - [HENRYQIULO](https://github.com/HENRYQIULO)
+
+- **Diana** - ** - [dianawiris](https://github.com/dianawiris)
+
+- **Carla Lara** - *Developer* - [carlawiris](https://github.com/carlawiris)
+
+
 ## License
+
+Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](LICENSE).
+
+## Contact information
+team.support.europe@wiris.com 
 
