@@ -1,6 +1,8 @@
-# MathType HTML Integrations mono-repository
+# MathType HTML Integrations mono-repository &nbsp; &nbsp; <img src="https://pbs.twimg.com/profile_images/968130684719190016/bKicbmwM_400x400.jpg" width="40"> 
 
-Mono-repository for the MathType Web plugins and their dependencies. 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]() &nbsp; &nbsp; &nbsp; ![](https://img.shields.io/static/v1.svg?label=Downloads&message=36&color=yellow) &nbsp; &nbsp; &nbsp; ![](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)
+
+Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
 ![Alt text](http://www.wiris.com/en/system/files/froala_wiris.png)
 
@@ -315,10 +317,70 @@ We are working to improve the user experience and fix the errors previously deta
 
 - **Carla Lara** - *Developer* - [carlawiris](https://github.com/carlawiris)
 
+## Contributing guidelines
+
+To **contribute**, clone this repo, create a branch from master, code and submit a PR. We'll review, discuss, and merge changes as needed. Thank you!
+
+If you want to **report an error**, please send an email to team.support.europe@wiris.com with a description of the error you have, how to reproduce it, and a demo with the code that causes this problem.
+
+We encourage any king of participation from the most varied and diverse background possible.
+
+### Wishlist/To Do List
+
+## Code of conduct
+
+### Introduction
+
+WIRIS is dedicated to provide a good environment so that everybody can have a good experience. It's not tolerated any type of harassment or violation of physical boundaries of partifipants. We ask you to be considetare to others and behave respectfull and professionally. 
+
+We aim to provide to our comunity a safe and friendly environment for everyone, regardless of their knowledge, personal aspects or any other qualifications.
+
+Remember, we are all humans and it's common to make mistakes. Let's work together to help each other instead of causing trouble.
+
+### Expected behavior
+
+ - Respect.
+
+ - Be profesional.
+
+ - Be responisble.
+
+ - Be polite.
+
+ - Be kind.
+  
+ - Be supportive.
+
+### Unacceptable behaviour
+
+Harassment is not tolerated and must be reported. Harassment includes:
+
+- Offensive verbal comments related to gender, sexual orientation, disability, physical appearance, body size, race, ethnicity, religion, sexual images, deliberate intimidation, stalking, sustained disruption, and unwelcome sexual attention.
+
+- Disrespect opinions.
+
+- Intimidation, stalking or bullying.
+
+- Virtual harassment.
+
+Every individual asked to stop any kind of harasing is expected to comply imediately.
+
+We encourage to report any harassment sufered.
+
+### Reporting 
+
+If you are the subject of harassed, notice that someone else is being harassed, or have any other concerns, please contact us by email ____________@wiris.com as soon as posible.
 
 ## License
 
 Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](LICENSE).
+
+## Credits and acknowledgements
+
+- We want to thank all the participation, they helped this project to be what it is now, especially the authors of it.
+
+- Thanks to the [docker-code-of-conduct](https://github.com/docker/code-of-conduct), [CKeditor 5](https://github.com/ckeditor/ckeditor5) and [PurpleBooth README-Template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) for inspiration and for giving us ideas.
+
 
 ## Contact information
 team.support.europe@wiris.com 
