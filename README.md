@@ -9,23 +9,33 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 ## Table of contents
 
 - [Requirements](#requirements)
+- [File Manifest](#file-manifest)
+  - [Important files & Folder Structure](#important-files--folder-structure)
+  - [Supported browsers](#supported-browsers)
+  - [Supported editors](#supported-editors)
 - [Instructions](#instructions)
   - [Cloning](#cloning)
-  - [Quick start](#quick-start)
-    - [Bootstraping](#bootstraping)
-    - [Installation](#installation)
-    - [Run a demo with the public npm package](#run-a-demo-with-the-public-npm-package)
-    - [Run a demo with the local package](#run-a-demo-with-the-local-package)
-    - [Use an extension to check that the files follow the standards](#use-an-extension-to-check-that-the-files-follow-the-standards)
-- [File manifest](#file-manifest)
-  - [Important files and folder structure](#important-files-and-folder-structure)
-  - [Supported editors](#supported-editors)
-  - [Technologies with a demo](#technologies-with-a-demo)
+  - [Installation](#installation)
+  - [Bootstrapping](#bootstrapping)
+  - [Compiling](#compiling)
+  - [Batch actions](#batch-actions)
+    - [Compiling packages individually](#compiling-packages-individually)
+    - [Compile packages by technology](#compile-packages-by-technology)
+    - [Cleaning up](#cleaning-up)
+  - [Analyzing and fixing code](#analyzing-and-fixing-code)
+  - [Versioning](#versioning)
+  - [Publishing](#publishing)
+- [Technical Demos](#technical-demos)
+- [Running tests](#running-tests)
 - [Known bugs](#known-bugs)
 - [Change log](#change-log)
 - [News](#news)
 - [Documentation](#documentation)
+- [Autors](#autors)
+- [Contributing guidelines](#contributing-guidelines)
+- [Code of conduct](#code-of-conduct)
 - [License](#license)
+- [Credits and acknowledgements](#credits-and-acknowledgements)
 - [Contact information](#contact-information)
 
 ## Requirements
@@ -37,7 +47,7 @@ To install node and npm follow this [guide-npm](https://docs.npmjs.com/downloadi
 
 [Lerna](https://lerna.js.org/) is used as a cornerstone of the project structure. Its main features are explained in this guide.
 
-## FILE MANIFEST
+## File Manifest
 
 ### Important files & Folder Structure
 
@@ -301,7 +311,7 @@ We are working to improve the user experience and fix the errors previously deta
 
 ## Autors
 
-- **Manuel Cagigas** - *CTO at Wiris and developer*  - [manuelwiris](https://github.com/manuelwiris)
+- **Manuel Cagigas** - *CTO at WIRIS and developer*  - [manuelwiris](https://github.com/manuelwiris)
 
 - **Xavier Ripoll** - *Developer* - [xaviripo](https://github.com/xaviripo)
 
