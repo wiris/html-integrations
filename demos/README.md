@@ -162,13 +162,15 @@ Every editor has a package.json for the editor dependencies and, depending on th
 
 This is the list of editors with a supported custom WIRIS plugins especially created for the editors:
 
-- `CKeditor 4`,
-- `CKeditor 5`,
-- `Froala 2`,
-- `Froala 3`,
-- `generic`,
-- `TinyMCE 4`,
-- `TinyMCE 5`;
+- `CKeditor 4`
+- `CKeditor 5`
+- `Froala 2`
+- `Froala 3`
+- `generic`
+- `TinyMCE 4`
+- `TinyMCE 5`
+
+>Generic it's not a editor itserl, it's a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
 ### Technologies with a demo
 
