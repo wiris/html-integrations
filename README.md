@@ -1,6 +1,9 @@
 # MathType HTML Integrations mono-repository &nbsp; &nbsp; <img src="https://pbs.twimg.com/profile_images/968130684719190016/bKicbmwM_400x400.jpg" width="40"> 
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]() &nbsp; &nbsp; &nbsp; ![](https://img.shields.io/static/v1.svg?label=Downloads&message=36&color=yellow) &nbsp; &nbsp; &nbsp; ![](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
+[![Maintenance](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
+[![](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic) &nbsp; &nbsp; &nbsp; 
+[![](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)](http://www.wiris.com/mathtype)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
@@ -10,7 +13,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 
 - [Requirements](#requirements)
 - [File Manifest](#file-manifest)
-- [Instructions](#instructions)
+- [Quick start](#quick-start)
   - [Cloning](#cloning)
   - [Installation](#installation)
   - [Bootstrapping](#bootstrapping)
@@ -58,7 +61,7 @@ work inside.
 - `TinyMCE 5`
 - `generic` is a global integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
-## Instructions
+## Quick start
 
 Folow these instructions to use the libraries.
 
