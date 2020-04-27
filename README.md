@@ -1,13 +1,13 @@
-# MathType HTML Integrations mono-repository &nbsp; &nbsp; <img src="https://pbs.twimg.com/profile_images/968130684719190016/bKicbmwM_400x400.jpg" width="40"> 
+# MathType HTML Integrations mono-repository &nbsp; <img src="resources/img/logo.jpg" width="40"> 
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![Maintenance](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic) &nbsp; &nbsp; &nbsp; 
-[![](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)](http://www.wiris.com/mathtype)
+[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
+[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic) &nbsp; &nbsp; &nbsp; 
+[![Version](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)](http://www.wiris.com/mathtype)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
-![Alt text](http://www.wiris.com/en/system/files/froala_wiris.png)
+![Wiris mathtype plugin example](resources/img/wiris_plugin_example.png)
 
 ## Table of contents
 
