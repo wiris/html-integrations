@@ -1,9 +1,8 @@
 # MathType HTML Integrations mono-repository &nbsp; <img src="resources/img/logo.jpg" width="40"> 
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
 [![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic) &nbsp; &nbsp; &nbsp; 
-[![Version](https://img.shields.io/static/v1.svg?label=Version&message=7.20.0&color=blue)](http://www.wiris.com/mathtype)
+[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
@@ -26,7 +25,6 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Versioning](#versioning)
   - [Publishing](#publishing)
 - [Technical Demos](#technical-demos)
-- [Running tests](#running-tests)
 - [More information](#more-information)
 - [License](#license)
 
@@ -260,7 +258,7 @@ because they need to have the source replaced before building.
 In order to manually test each plugin, there's a set of technical demos on
 the 'demos/' folder.
 
-Refer to the README file for more information.
+Refer to the [README](demos/README.md) file for more information.
 
 **Note**: To be taken into account when developing the new demos is the fact that
 CKEditor 5 issues a duplicated modules error when installing the plugin using
@@ -270,10 +268,6 @@ dependencies in the CKEditor 5 plugin `package.json`, compiles the demo
 (which does contain those dependencies), and then restores the original
 `package.json`. A similar approach could be used here when the CKEditor 5 demo
 is to be developed.
-
-## Running tests
-
-Automatic test will be coming soon.
 
 ## More information
 
