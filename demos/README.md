@@ -184,7 +184,7 @@ Automatic test will be coming soon.
 
 ## Known bugs
 
-- `CKeditor 5` has problems working with Lerna, because the CKeditor 5 architecture prohibits having duplicate dependencies, but there is a temporal solution.
+- `CKeditor 5` has problems working with Lerna, because the CKeditor 5 architecture prohibits having duplicate dependencies, but there is a temporal solution, which compiles and pack the plugin into a .tgz before bootstraping, then, this .tgz file defined as a dependency on the package.json.
 
 - `Froala 3` launches a reference error that doesn’t affect the proper performance of the demo.
 
