@@ -61,7 +61,7 @@ work inside.
 
 ## Quick start
 
-Folow these instructions to use the libraries.
+Follow these instructions to use the libraries.
 
 ### Cloning
 
@@ -99,7 +99,7 @@ In case you want to try out the [Technical Demos](#technical-demos) you can go t
 ### Bootstrapping
 
 The mono-repository is managed through [Lerna](https://lerna.js.org/), a tool
-designed for mantaining multiple npm packages in a single git repository.
+designed for maintaining multiple npm packages in a single git repository.
 
 Before using Lerna, it is recommended to install the development dependencies
 stated in the root `package.json` file as they are used in the scripts of all
@@ -191,7 +191,7 @@ This will require you to `npm i` and `npm start` in the root again.
 
 ### Analyzing and fixing code
 
-There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analisis shows the error and where it is, then it can be fixed. The commands are:
+There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 
 * To make a check of the .js files
     ```

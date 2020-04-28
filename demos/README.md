@@ -97,7 +97,7 @@ $ npm run deploy
 
 #### Run a demo with the local package
 
-If you want to build a development environment and run the demo, you must link packages of the mono-repositoy on your local directory. Also, every time a package is modified, the following command must be executed so the changes can be appreciated:
+If you want to build a development environment and run the demo, you must link packages of the mono-repository on your local directory. Also, every time a package is modified, the following command must be executed so the changes can be appreciated:
 
 ```sh
 $ npm run build-dev
@@ -170,13 +170,13 @@ This is the list of editors with a supported custom WIRIS plugins especially cre
 - `TinyMCE 4`
 - `TinyMCE 5`
 
->Generic it's not a editor itserl, it's a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
+>Generic is not an editor itself, it's a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
 ### Technologies with a demo
 
 - `html5`
-- [Comming soon] `React`
-- [Comming soon] `Angular`
+- [Coming soon] `React`
+- [Coming soon] `Angular`
 
 ## Running tests
 
