@@ -1,8 +1,8 @@
-# MathType HTML Integrations mono-repository &nbsp; <img src="resources/img/logo.jpg" width="40"> 
+# Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img src="resources/img/logo.jpg" width="40"> 
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
 [![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=yellow)](https://github.com/wiris/html-integrations/graphs/traffic)
+[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
@@ -12,6 +12,8 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 
 - [Requirements](#requirements)
 - [File Manifest](#file-manifest)
+  - [Important files & Folder Structure](#important-files--folder-structure)
+  - [Supported editors](#supported-editors)
 - [Quick start](#quick-start)
   - [Cloning](#cloning)
   - [Installation](#installation)
@@ -41,6 +43,8 @@ To install node and npm follow this [guide-npm](https://docs.npmjs.com/downloadi
 
 ### Important files & Folder Structure
 
+In this section we give a small description of the files that we consider the most important of the project, also we will talk about the content of the subfolders of the project and its usefulness.
+
 - `lerna.json`, `package.json`, `package-lock.json`. Configuration files for the
 root npm package and the Lerna mono-repository.
 - `packages/`. Each folder contains one npm package. All the usual npm commands
@@ -50,6 +54,8 @@ work inside.
 - `resources`. Folder containing different resources files that are needed in the demos folder.
 
 ### Supported editors
+
+In the next list, you will see the editors that have a specialized WIRIS plugin of the mathtype formula editor.
 
 - `CKeditor 4`
 - `CKeditor 5`
@@ -259,15 +265,6 @@ In order to manually test each plugin, there's a set of technical demos on
 the 'demos/' folder.
 
 Refer to the [README](demos/README.md) file for more information.
-
-**Note**: To be taken into account when developing the new demos is the fact that
-CKEditor 5 issues a duplicated modules error when installing the plugin using
-a "file:..." protocol or a .tgz file. In order to avoid this, in the old
-plugins repository we make a hacky string replacement that removes the
-dependencies in the CKEditor 5 plugin `package.json`, compiles the demo
-(which does contain those dependencies), and then restores the original
-`package.json`. A similar approach could be used here when the CKEditor 5 demo
-is to be developed.
 
 ## More information
 
