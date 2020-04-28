@@ -1,8 +1,8 @@
 ## Introduction
 
-WIRIS is dedicated to provide a good environment so that everybody can have a good experience. It's not tolerated any type of harassment or violation of physical boundaries of partifipants. We ask you to be considetare to others and behave respectfull and professionally. 
+WIRIS is dedicated to providing a good environment so that everybody can have a good experience. No type of harassment is tolerated nor violation of physical boundaries of participants. We ask you to be considerate to others and behave respectfully and professionally. 
 
-We aim to provide to our comunity a safe and friendly environment for everyone, regardless of their knowledge, personal aspects or any other qualifications.
+We aim to provide to our community a safe and friendly environment for everyone, regardless of their knowledge, personal aspects or any other qualifications.
 
 Remember, we are all humans and it's common to make mistakes. Let's work together to help each other instead of causing trouble.
 
@@ -10,9 +10,9 @@ Remember, we are all humans and it's common to make mistakes. Let's work togethe
 
  - Respect.
 
- - Be profesional.
+ - Be professional.
 
- - Be responisble.
+ - Be responsible.
 
  - Be polite.
 
@@ -20,7 +20,7 @@ Remember, we are all humans and it's common to make mistakes. Let's work togethe
   
  - Be supportive.
 
-## Unacceptable behaviour
+## Unacceptable behavior
 
 Harassment is not tolerated and must be reported. Harassment includes:
 
@@ -32,10 +32,10 @@ Harassment is not tolerated and must be reported. Harassment includes:
 
 - Virtual harassment.
 
-Every individual asked to stop any kind of harasing is expected to comply imediately.
+Every individual asked to stop any kind of harassment is expected to comply immediately.
 
-We encourage to report any harassment sufered.
+We encourage to report any harassment suffered.
 
 ## Reporting 
 
-If you are the subject of harassed, notice that someone else is being harassed, or have any other concerns, please contact us by email ____________@wiris.com as soon as posible.
+If you are the subject of harassment, notice that someone else is being harassed, or have any other concerns, please contact us by email ____________@wiris.com as soon as possible.
