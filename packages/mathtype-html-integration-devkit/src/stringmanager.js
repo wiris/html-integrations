@@ -16,13 +16,20 @@ export default class StringManager {
   static get(key) {
     let { language } = this;
 
-    if (!(language in this.strings)) {
+    // Cut down on strings. e.g. en_US -> en
+    if (language.length > 2) {
+      language = language.slice(0, 2);
+    }
+
+    // Check if we support the language
+    if (!this.strings.includes(language)) {
       console.warn(`Unknown language ${language} set in StringManager.`);
       language = 'en';
     }
 
-    if (!(key in this.strings[language])) {
-      console.warn(`Unknown key ${key} in StringManager.`);
+    // Check if the key is supported in the given language
+    if (!this.strings[language].includes(key)) {
+      console.warn(`Unknown key ${key} for language ${language} in StringManager.`);
       return key;
     }
 
