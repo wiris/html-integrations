@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import * as ClassicEditor from '../ckeditor';
-
 // Load WIRISplugins.js dinamically
 const jsDemoImagesTransform = document.createElement('script');
 jsDemoImagesTransform.type = 'text/javascript';
@@ -11,20 +9,37 @@ document.head.appendChild(jsDemoImagesTransform);
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
+
+
+
 export class AppComponent {
+  title = 'tinymce5';
 
-  public Editor = ClassicEditor;
-
-  // Initializate the editors content.
   public content: string = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-  
+
   public options: Object = {
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'MathType', 'ChemType' ],
+    height: 500,
+    menubar: false,
+    base_url: '/tinymce', // Root for resources
+    suffix: '.min',        // Suffix to use when loading resources
+
+    // Add wiris plugin
+    external_plugins: {
+      'tiny_mce_wiris' : 'http://localhost:4200/node_modules/@wiris/mathtype-tinymce5/plugin.min.js'
+    },
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code help wordcount '
+    ],
+    toolbar: [
+      ' bold italic | \
+       tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry '
+    ],
     htmlAllowedTags:  ['.*'],
     htmlAllowedAttrs: ['.*'],
-  }
-  
-  title = 'ckeditor5';
+  };
 }
