@@ -9,7 +9,7 @@ You can contribute in this project by different ways:
     * Submitting any code you think that may improve this project.
 
 2. **Reporting issues**. You can report an error by:
-    * Sending an email to team.support.europe@wiris.com.
+    * Sending an email to team.support.europe@wiris.com or.
     * Opening a GitHub issue on this repository.
 
     To give you a good and fast support we need the following information: 
