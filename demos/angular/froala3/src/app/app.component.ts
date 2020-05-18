@@ -8,8 +8,26 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
 
+import * as Generic from 'resources/demos/imports';
+
+declare const require: any;
+(window as any).FroalaEditor = require('froala-editor');
+require('@wiris/mathtype-froala3')
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
+document.getElementById('version_editor').innerHTML = 'Froala editor: ';
+
+// Copy the editor content before initializing it.
+Generic.copyContentFromxToy('editor', 'transform_content');
+
+// Add listener on click button to launch updateContent function.
+document.getElementById('btn_update').addEventListener('click', () => {
+  Generic.updateContent((window as any).FroalaEditor.INSTANCES[0].html.get(), 'transform_content');                     //eslint-disable-line
+});
+
 @Component({
-  selector: 'app-root',
+  selector: '#editor1',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -41,5 +59,12 @@ export class AppComponent {
 
     // Disables image resize
     imageResize : false,
+
+    events: {
+      initialized() {
+        // Get and set the editor and wiris versions in this order.
+        // Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version);        //eslint-disable-line
+      },
+    },
   };
 }

@@ -14,9 +14,7 @@ import 'froala-editor/js/languages/it.js';
 
 // 2.5. Import WIRIS Mathtype formula editor.
 // Expose FroalaEditor instance to window.
-declare const require: any;
-(window as any).FroalaEditor = require('froala-editor');
-require('@wiris/mathtype-froala3')
+
 
 // 2.6 Import Angular plugin.
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
