@@ -8,7 +8,7 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
 
-import * as Generic from 'resources/demos/imports';
+import * as Generic from 'resources/demos/angular-imports';
 
 declare const require: any;
 (window as any).FroalaEditor = require('froala-editor');
@@ -18,8 +18,11 @@ require('@wiris/mathtype-froala3')
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
+// Create the initial editor content.
+const editorContent = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editor', 'transform_content');
+document.getElementById('transform_content').innerHTML = editorContent;
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
@@ -27,7 +30,7 @@ document.getElementById('btn_update').addEventListener('click', () => {
 });
 
 @Component({
-  selector: '#editor1',
+  selector: '#editor',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -38,7 +41,7 @@ export class AppComponent {
   title = 'Angular froala3 demo';
 
   // Initializate the editors content.
-  public content: string = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+  public content: string = editorContent;
 
   // Set options for the editor.
   public options: Object = {
@@ -63,7 +66,7 @@ export class AppComponent {
     events: {
       initialized() {
         // Get and set the editor and wiris versions in this order.
-        // Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version);        //eslint-disable-line
+        Generic.setEditorAndWirisVersion((window as any).FroalaEditor.VERSION, (window as any).WirisPlugin.currentInstance.version);        //eslint-disable-line
       },
     },
   };
