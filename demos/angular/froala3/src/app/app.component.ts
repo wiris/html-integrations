@@ -1,18 +1,7 @@
 import { Component } from '@angular/core';
 
-// 3. Import WIRIS Mathtype
-// Load WIRISplugins.js dinamically
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-// Load generated scripts.
-document.head.appendChild(jsDemoImagesTransform);
-
+// Import common resources.
 import * as Generic from 'resources/demos/angular-imports';
-
-declare const require: any;
-(window as any).FroalaEditor = require('froala-editor');
-require('@wiris/mathtype-froala3')
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
