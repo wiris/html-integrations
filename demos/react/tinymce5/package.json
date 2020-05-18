@@ -12,7 +12,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "tinymce": "^5.2.2"
+    "tinymce": "^5.2.2",
+    "resources": "file:../../../resources"
   },
   "scripts": {
     "start": "react-scripts start",
