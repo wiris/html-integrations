@@ -21,6 +21,7 @@
     "@angular/router": "~9.1.4",
     "@wiris/mathtype-generic": "^7.20.0",
     "@wiris/mathtype-html-integration-devkit": "^1.1.0",
+    "resources": "file:../../../resources",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
