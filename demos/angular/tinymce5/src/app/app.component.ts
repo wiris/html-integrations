@@ -1,25 +1,39 @@
 import { Component } from '@angular/core';
 
-// Load WIRISplugins.js dinamically
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-// Load generated scripts.
-document.head.appendChild(jsDemoImagesTransform);
+// Import common resources.
+import * as Generic from 'resources/demos/angular-imports';
+
+// Apply specific demo names to all the objects.
+document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
+document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
+
+// Create the initial editor content.
+const editorContent = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+
+// Copy the editor content before initializing it.
+document.getElementById('transform_content').innerHTML = editorContent;
+
+// Add listener on click button to launch updateContent function.
+document.getElementById('btn_update').addEventListener('click', () => {
+  Generic.updateContent((window as any).tinyMCE.activeEditor.getContent(), 'transform_content');            //eslint-disable-line
+});
+
 
 @Component({
-  selector: 'app-root',
+  selector: '#editor',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 
-
-
 export class AppComponent {
-  title = 'tinymce5';
 
-  public content: string = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+  //Set app title.
+  title = 'Angular + tinymce5 demo';
 
+  // Initializate the editor content.
+  public content: string = editorContent;
+
+  // Set options for the editor.
   public options: Object = {
     height: 500,
     menubar: false,
@@ -28,7 +42,7 @@ export class AppComponent {
 
     // Add wiris plugin
     external_plugins: {
-      'tiny_mce_wiris' : 'http://localhost:4200/node_modules/@wiris/mathtype-tinymce5/plugin.min.js'
+      'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
     },
     plugins: [
       'advlist autolink lists link image charmap print preview anchor',
@@ -36,10 +50,19 @@ export class AppComponent {
       'insertdatetime media table paste code help wordcount '
     ],
     toolbar: [
-      ' bold italic | \
-       tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry '
+      ' bold italic |' +
+       'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry '
     ],
     htmlAllowedTags:  ['.*'],
     htmlAllowedAttrs: ['.*'],
+
+    // Handle events.
+    setup(editor) {
+      // Launch on init event.
+      editor.on('init', () => {
+        // Get and set the editor and wiris versions in this order.
+        Generic.setEditorAndWirisVersion(`${(window as any).tinymce.majorVersion}.${(window as any).tinymce.minorVersion}`, (window as any).WirisPlugin.currentInstance.version);   //eslint-disable-line
+      });
+    },
   };
 }

@@ -21,6 +21,7 @@
     "@angular/router": "~9.1.4",
     "@tinymce/tinymce-angular": "^3.5.1",
     "@wiris/mathtype-tinymce5": "^7.17.0",
+    "resources": "file:../../../resources",
     "rxjs": "~6.5.4",
     "tinymce": "^5.2.2",
     "tslib": "^1.10.0",

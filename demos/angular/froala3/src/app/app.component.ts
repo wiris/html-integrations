@@ -29,7 +29,7 @@ export class AppComponent {
   // Set App Title.
   title = 'Angular froala3 demo';
 
-  // Initializate the editors content.
+  // Initializate the editor content.
   public content: string = editorContent;
 
   // Set options for the editor.
