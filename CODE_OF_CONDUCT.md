@@ -8,9 +8,9 @@ Remember, we are all humans and it's common to make mistakes. Let's work togethe
 
 ## Expected behavior
 
- - **Respect**. We may not agree always between us, but this is not a excuse to have bad manners against the other people. I'ts important to mantain a respectull comunity to feel confortable and be more productive.
+ - **Respect**. We may not agree always between us, but this is not a excuse to have bad manners against the other people. It's important to maintain a respectful community to feel comfortable and be more productive.
 
- - **Be professional**. We are a community of profeswsional, so it's important to remain like that and be careful of the words we choose.
+ - **Be professional**. We are a community of professional, so it's important to remain like that and be careful of the words we choose.
 
  - **Be responsible**. It is important at work to remain responsible and to act accordingly, since our actions and our contributions can have an effect on other people and projects.
 
