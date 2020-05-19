@@ -51,8 +51,8 @@ class Editor extends React.Component {
   render() {
     // Array of react components.
     return [
-      <Toolbar />,
-      <HtmlEditor data = {content} />
+      <Toolbar key="toolbar-generic" />,
+      <HtmlEditor data = {content} key="editor-generic" />
     ];
   }
 }
