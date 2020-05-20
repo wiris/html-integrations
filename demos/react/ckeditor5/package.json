@@ -1,5 +1,5 @@
 {
-  "name": "ckeditor5_demo",
+  "name": "demo-react-ckeditor5",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

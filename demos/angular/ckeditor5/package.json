@@ -1,5 +1,5 @@
 {
-  "name": "ckeditor5",
+  "name": "demo-angular-ckeditor5",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
