@@ -42,7 +42,7 @@ const options = {
 
   // Add wiris plugin
   external_plugins: {
-    'tiny_mce_wiris' : 'http://localhost:4200/node_modules/@wiris/mathtype-tinymce5/plugin.min.js' 
+    'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js` 
   },
   plugins: [
     'advlist autolink lists link image charmap print preview anchor',
