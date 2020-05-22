@@ -1,4 +1,4 @@
-# Tinymce integration in ReactJS
+# TinyMCE integration in ReactJS
 
 A simple ReactJS App integrating WIRIS MathType on a TinyMCE 5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
 
@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add mathtype to the editor from scratch
+## How to add MathType to TinyMCE from scratch
 
 1. Run the following through the terminal
 
@@ -140,6 +140,8 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 For more information about the Tinymce or it’s options, you can check their [documentation](https://www.tiny.cloud/docs/integrations/react/).
+
+To get more information about wiris MathType you can check on the [official documentation](http://www.wiris.com/mathtype)
 
 ## License
 
