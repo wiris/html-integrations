@@ -21,7 +21,7 @@ document.getElementById('version_wiris').innerHTML += pluginVersion;
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', () => {
-  Generic.updateContent(WirisPlugin.Parser.initParse(editableDiv.innerHTML), 'transform_content');      //eslint-disable-line
+  Generic.updateContent(WirisPlugin.Parser.initParse(htmlEditor.innerHTML), 'transform_content');      //eslint-disable-line
 });
 
 
