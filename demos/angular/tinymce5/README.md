@@ -10,6 +10,7 @@ A simple Angular App integrating WIRIS MathType on a TinyMCE 5 and step-by-step 
 ## How to run the demo
 
 ```sh
+$ npm install
 $ npm run deploy
 ```
 
@@ -98,6 +99,7 @@ You will also see any lint errors in the console.
 
         title = 'tinymce5';
         
+        // Editor initial content with a mathml formula.
         public content: string = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
 
         // Define the initial options of the editor
@@ -127,7 +129,7 @@ You will also see any lint errors in the console.
 
     ```
 
-    *Notice that the content can be empty or anything*
+    *Notice that the content can be empty or set as you prefer in the component*
 
 5. Open *src/app/app.component.html* and replace all with:
 
@@ -158,7 +160,7 @@ You can learn more in the [Create Angular App documentation](https://angular.io/
 
 To learn more about Angular, check out the [Angular documentation](https://angular.io/).
 
-For more information about the Tinymce or it’s options, you can check their [documentation](https://www.tiny.cloud/docs/integrations/angular/).
+For more information about the TinyMCE or it’s options, you can check their [documentation](https://www.tiny.cloud/docs/integrations/angular/).
 
 To get more information about wiris MathType you can check on the [official documentation](http://www.wiris.com/mathtype)
 
