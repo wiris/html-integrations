@@ -6,7 +6,7 @@
     "email": "support@wiris.com"
   },
   "scripts": {
-    "prestart": "cd packages/mathtype-ckeditor5 && npm pack && cd .. && cd .. & rimraf demos/html5/ckeditor5/package-lock.json ",
+    "prestart": "cd packages/mathtype-ckeditor5 && npm pack  ",
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
