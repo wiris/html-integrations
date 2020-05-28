@@ -1,7 +1,6 @@
 {
   "packages": [
-    "packages/*",
-    "demos/html5/ckeditor5"
+    "packages/*"
   ],
   "command": {
     "version": {
