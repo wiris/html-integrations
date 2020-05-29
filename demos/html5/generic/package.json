@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-generic": "^7.17.0",
+    "@wiris/mathtype-html-integration-devkit": "^1.1.0",
     "regenerator-runtime": "^0.13.3",
     "webpack-dev-server": "^3.10.3"
   },

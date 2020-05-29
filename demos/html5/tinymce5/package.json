@@ -15,7 +15,7 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-tinymce5": "^7.17.0",
+    "@wiris/mathtype-tinymce5": "^7.20.0",
     "tinymce": "^5.2.0",
     "webpack-dev-server": "^3.10.3"
   },

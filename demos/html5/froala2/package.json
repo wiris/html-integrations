@@ -15,9 +15,9 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala": "^7.17.0",
+    "@wiris/mathtype-froala": "^7.20.0",
     "froala-editor": "^2",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
     "css-loader": "^1.0.0",
