@@ -1,10 +1,17 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Generic integration in ReactJS
 
-## Available Scripts
+A simple ReactJS App integrating WIRIS MathType on a generic and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
 
-In the project directory, you can run:
+## Requirements
 
-### `yarn start`
+* **npm** (*Currently* v6.13.4)
+* **create-react-app** (*Currently* v3.4.0)
+
+## How to run the demo
+
+```sh
+$ npm run deploy
+```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,30 +19,102 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+## How to add MathType to TinyMCE from scratch
+
+1. Run the following through the terminal
+
+    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+
+    ```sh
+    $ create-react-app $APP_NAME
+    $ cd $APP_NAME
+    $ npm i @wiris/mathtype-generic
+    $ npm i @wiris/mathtype-html-integration-devkit
+    ```
+
+2. Replace all the content in *src/index.js* by:
+
+    ```js
+    // Default create-react-app imports
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+    import './index.css';
+    import * as serviceWorker from './serviceWorker';
+    
+    // Import and load functions from wiris mathype-generic plugin.
+    import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
+    import '@wiris/mathtype-generic/wirisplugin-generic';
+    
+    // Load WIRISplugins.js render dynamically
+    const jsDemoImagesTransform = document.createElement('script');
+    jsDemoImagesTransform.type = 'text/javascript';
+    jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+    // Load the generated script.
+    document.head.appendChild(jsDemoImagesTransform);
+    
+    // Create toolbar component
+    function Toolbar() {
+        return (
+            <div id="toolbar"></div>
+        );
+    }
+    
+    /**
+    * Create editable area component.
+    * @param {String} props.data  String that represents the initial content of the editor. It can be either mathml or any other html tag.
+    */
+    function HtmlEditor(props) {
+        return (
+            <div id="htmlEditor" contentEditable="true" dangerouslySetInnerHTML={{ __html: props.data }}></div>
+        );
+    }
+    
+    // Create an extension of the react components called editor.
+    class Editor extends React.Component {
+        // Execute after the render.
+        componentDidMount() {
+            // Load the toolbar and the editable area into const variables to work easy with them.
+            const editableDiv = document.getElementById('htmlEditor');
+            const toolbarDiv = document.getElementById('toolbar');
+            
+            // Initialize the editor.
+            wrsInitEditor(editableDiv, toolbarDiv);
+        }
+        render() {
+            return [
+                <Toolbar />,
+                <HtmlEditor data = {content} />
+            ];
+        }
+    }
+    
+    // Define the initial content to place on the editor.
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+    
+    // Render the editor react component.
+    ReactDOM.render(
+        <Editor />,
+        document.getElementById('root')
+    );
+    
+    // If you want your app to work offline and load faster, you can change
+    // unregister() to register() below. Note this comes with some pitfalls.
+    // Learn more about service workers: https://bit.ly/CRA-PWA
+    serviceWorker.unregister();
+    ```
+
+    *Note that the **content** can be empty or anything you want to set as the initial editor content.*
+
+3. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+
+## How to run the tests
+
+```sh
+$ npm run test
+```
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## Learn More
 
@@ -43,26 +122,8 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+To get more information about wiris MathType you can check on the [official documentation](http://www.wiris.com/mathtype)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## License
 
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
