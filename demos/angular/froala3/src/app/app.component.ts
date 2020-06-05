@@ -36,7 +36,7 @@ export class AppComponent {
   public options: Object = {
     // The editor's content will be placed in an iframe and isolated from the rest of the page.
     iframe: true,
-    language: 'it',
+    // language: 'en',
     charCounterCount: false,
 		toolbarInline: false,
 		toolbarButtons: ['bold', 'italic', 'undo', 'redo', 'wirisEditor', 'wirisChemistry'],

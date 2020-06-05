@@ -39,16 +39,16 @@ You will also see any lint errors in the console.
 2. Open the *src/app/app.module.ts* file and add:
 
     ```ts
-    // 2. From Froala instructions.
-    // 2.1 Import all Froala Editor plugins.
+    // From Froala instructions.
+    // Import all Froala Editor plugins.
     import 'froala-editor/js/plugins.pkgd.min.js';
     
     // Expose FroalaEditor instance to window.
     declare const require: any;
     (window as any).FroalaEditor = require('froala-editor');
-    require('@wiris/mathtype-froala3'); // 2.5. Import WIRIS Mathtype formula editor.
+    require('@wiris/mathtype-froala3'); // Import WIRIS Mathtype formula editor.
     
-    // 2.6 Import Angular plugin.
+    // Import Angular plugin.
     import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
     ```
     ...
@@ -75,7 +75,6 @@ You will also see any lint errors in the console.
     ```ts
     import { Component } from '@angular/core';
  
-    // 3. Import WIRIS Mathtype
     // Load WIRISplugins.js dynamically
     const jsDemoImagesTransform = document.createElement('script');
     jsDemoImagesTransform.type = 'text/javascript';
@@ -101,7 +100,6 @@ You will also see any lint errors in the console.
         public options: Object = {
             // The editor's content will be placed in an iframe and isolated from the rest of the page.
             iframe: true,
-            language: 'it',
             charCounterCount: false,
             toolbarInline: false,
             toolbarButtons: ['bold', 'italic', 'undo', 'redo', 'wirisEditor', 'wirisChemistry'],
@@ -141,6 +139,8 @@ $ npm run test
 Execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Learn More
+
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
 
 You can learn more in the [Create Angular App documentation](https://angular.io/cli/new).
 
