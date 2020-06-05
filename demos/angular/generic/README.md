@@ -90,7 +90,7 @@ You will also see any lint errors in the console.
     <div id="htmlEditor" contenteditable="true">Try me!</div>
     ```
 
-5. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+5. Finally, you are ready to run the development server through the command: ```ng serve```
 
 ## How to run the tests
 
