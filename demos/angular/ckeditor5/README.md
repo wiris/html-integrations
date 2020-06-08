@@ -1,6 +1,6 @@
-# CKeditor integration in Angular
+# CKEditor integration in Angular
 
-A simple Angular App integrating WIRIS MathType on a CKeditor 5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
+A simple Angular App integrating WIRIS MathType on a CKEditor 5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
 
 ## Requirements
 
@@ -38,7 +38,7 @@ You will also see any lint errors in the console.
 2. Open the *src/app/app.module.ts* file and add:
 
     ```ts
-    // Import CKeditor module for angular
+    // Import CKEditor module for angular
     import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ```
     ...
@@ -77,7 +77,7 @@ You will also see any lint errors in the console.
             htmlAllowedAttrs: ['.*'],
         }
         
-        title = 'ckeditor5';
+        title = 'CKEditor5';
     }
     ```
 
@@ -115,7 +115,7 @@ You can learn more in the [Create Angular App documentation](https://angular.io/
 
 To learn more about Angular, check out the [Angular documentation](https://angular.io/).
 
-For more information about the CKeditor or it’s options, you can check their [documentation](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/angular.html).
+For more information about the CKEditor or it’s options, you can check their [documentation](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/angular.html).
 
 To get more information about wiris MathType you can check on the [official documentation](http://www.wiris.com/mathtype)
 
