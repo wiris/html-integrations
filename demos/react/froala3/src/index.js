@@ -23,7 +23,7 @@ import { version as pluginVersion } from '@wiris/mathtype-froala3/package.json';
 window.$ = $;
 window.FroalaEditor = require('froala-editor');
 
-// Load scripts synchronously..
+// Load scripts synchronously.
 require('@wiris/mathtype-froala3');
 
 // Apply specific demo names to all the objects.
