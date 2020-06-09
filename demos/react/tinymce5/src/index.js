@@ -21,8 +21,8 @@ window.tinymce = require('tinymce');
 require('@wiris/mathtype-tinymce5');
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
-document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
+document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
+document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Set the initial content.
 const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'; // eslint-disable-next-line
@@ -35,7 +35,7 @@ document.getElementById('btn_update').addEventListener('click', () => {
   Generic.updateContent(tinyMCE.activeEditor.getContent(), 'transform_content');            //eslint-disable-line
 });
 
-// Define the toolbar & configuration options for the tinymce editor.
+// Define the toolbar & configuration options for the TinyMCE editor.
 const options = {
   height: 500,
   menubar: false,

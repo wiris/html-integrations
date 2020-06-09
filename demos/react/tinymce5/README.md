@@ -5,15 +5,12 @@ A simple ReactJS App integrating WIRIS MathType on a TinyMCE 5 and step-by-step 
 ## Requirements
 
 * **npm** (*Currently* v6.13.4)
-* **create-react-app** (*Currently* v3.4.0)
+* **create-react-app** (*Currently* v3.4.1)
 
 ## How to run the demo
 
 ```sh
-$ yarn deploy
-```
-or
-```sh
+$ npm i
 $ npm run deploy
 ```
 
@@ -47,7 +44,7 @@ You will also see any lint errors in the console.
     import './index.css';
     import * as serviceWorker from './serviceWorker';
     
-    // Import the react editor tinymce component.
+    // Import the react editor TinyMCE component.
     import { Editor } from '@tinymce/tinymce-react';
     
     // Add jquery.
@@ -61,7 +58,7 @@ You will also see any lint errors in the console.
     
     // This needs to be included before the '@wiris/mathtype-tinymce5' is loaded synchronously
     window.$ = $;
-    window.tinymce = require('tinymce');  // Expose the tinymce to the window.
+    window.tinymce = require('tinymce');  // Expose the TinyMCE to the window.
     
     // Load wiris plugin synchronously.
     require('@wiris/mathtype-tinymce5');
@@ -116,16 +113,12 @@ You will also see any lint errors in the console.
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     ```
 
-4. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+4. Finally, you are ready to run the development server through the specified command ```npm run start```
 
 5. The **content** can be empty or anything you want to set as the initial editor content.
 
 ## How to run the tests
 
-```sh
-$ yarn test
-```
-or
 ```sh
 $ npm run test
 ```
@@ -135,11 +128,13 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Learn More
 
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
+
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-For more information about the Tinymce or it’s options, you can check their [documentation](https://www.tiny.cloud/docs/integrations/react/).
+For more information about the TinyMCE or it’s options, you can check their [documentation](https://www.tiny.cloud/docs/integrations/react/).
 
 To get more information about wiris MathType you can check on the [official documentation](http://www.wiris.com/mathtype)
 

@@ -1,4 +1,4 @@
-# FAQs
+# FAQs for TinyMCE 5 with react demo
 
 * **Is this integration currently supported?** <br>
     Yes
