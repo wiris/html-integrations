@@ -38,7 +38,7 @@ You will also see any lint errors in the console.
 2. Replace all the content in *src/index.js* by:
 
     ```js
-    // Load react default libraries
+    // Load react default libraries.
     import React from 'react';
     import ReactDOM from 'react-dom';
     import './index.css';
@@ -50,24 +50,24 @@ You will also see any lint errors in the console.
     import FroalaEditorComponent from 'react-froala-wysiwyg';
     import 'froala-editor/js/plugins.pkgd.min.js';
 
-    // Import jQuery so we can expose Froala editor to the window
+    // Import jQuery so we can expose Froala editor to the window.
     import $ from 'jquery';
     
-    // Expose froala-editor to the window
+    // Expose froala-editor to the window.
     window.$ = $;
     window.FroalaEditor = require('froala-editor');
 
-    // Load wiris mathtype-froala plugin
+    // Load wiris mathtype-froala plugin.
     require('@wiris/mathtype-froala3');
 
-    // Load WIRISplugins.js dynamically
+    // Load WIRISplugins.js dynamically.
     const jsDemoImagesTransform = document.createElement('script');
     jsDemoImagesTransform.type = 'text/javascript';
     jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
     // Load generated scripts.
     document.head.appendChild(jsDemoImagesTransform);
     
-    // Define the toolbar content and the editor configuration
+    // Define the toolbar content and the editor configuration.
     const toolbar = ['wirisEditor', 'wirisChemistry'];
     const froalaConfig = {
         iframe: true,
@@ -112,6 +112,8 @@ Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Learn More
+
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
