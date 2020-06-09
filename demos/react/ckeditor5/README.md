@@ -10,6 +10,7 @@ A simple ReactJS App integrating WIRIS MathType on a CKeditor 5 and step-by-step
 ## How to run the demo
 
 ```sh
+$ npm install
 $ npm run deploy
 ```
 
@@ -95,7 +96,7 @@ You will also see any lint errors in the console.
     c. You can also add as many plugins as your project will need which are not on the default ClassicEditor build (We also added  the align plugin). <br>
     d. We recommend you to just clone the branch and copy the compiled file with the editor and the new configurations placed on **build/ckeditor.js** on your project src folder. If you decide to do it by other ways, you will have to change the way the custom build is imported on your app.component.ts file.
 
-4. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+4. Finally, you are ready to run the development server through the specified commant ```npm run start```
 
 ## How to run the tests
 
@@ -107,6 +108,8 @@ Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ## Learn More
+
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
