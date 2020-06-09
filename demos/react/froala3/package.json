@@ -1,7 +1,7 @@
 {
   "name": "demo-react-froala3",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple ReactJS App integrating WIRIS MathType",
   "dependencies": {
     "@testing-library/jest-dom": "^5.9.0",
     "@testing-library/react": "^10.2.1",
@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "author": "Daniel Canet",
+  "author": "Daniel Canet & Carla Lara",
   "license": "MIT",
   "eslintConfig": {
     "extends": "react-app"
