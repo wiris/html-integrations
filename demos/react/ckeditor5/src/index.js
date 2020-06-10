@@ -4,24 +4,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-// CKeditor.
+// Import CKEditor.
 import CKEditor from '@ckeditor/ckeditor5-react';
 
-// import ckeditor custom build'.
+// import CKEditor custom build'.
 import * as ClassicEditor from './ckeditor';
-
-// Add jquery.
-import $ from 'jquery';
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
 import * as Generic from 'resources/demos/react-imports';
 
 // Import the wiris plugin version.
 import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
- 
-window.$ = $;
-// window.FroalaEditor = require('froala-editor');
-// require('@wiris/makthtype-ckeditor5');
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
@@ -32,7 +25,6 @@ const content = '<p class="text"> Double click on the following formula to edit 
 
 // Copy the editor content before initializing it.
 document.getElementById('transform_content').innerHTML = content;
-
 
 
 // Initialize editor.
@@ -49,6 +41,7 @@ const ckConfig = {
   useClasses: false
 };
 
+// Function to call when the editor is initialyzed so it can add listeners on buttons.
 function updateContent(ckeditor) {
     // Add listener on click button to launch updateContent function.
     document.getElementById('btn_update').addEventListener('click', () => {
