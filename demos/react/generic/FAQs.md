@@ -1,4 +1,4 @@
-# FAQs
+# FAQs file for the Generic integration with react demo
 
 * **Is this integration currently supported?** <br>
     Yes

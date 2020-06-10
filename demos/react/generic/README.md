@@ -1,15 +1,16 @@
 # Generic integration in ReactJS
 
-A simple ReactJS App integrating WIRIS MathType on a generic and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
+A simple ReactJS App integrating WIRIS MathType on a generic editor, build with your own html and css, and step-by-step information on how to build it. The code of this example loads a text editor instance with a default value.
 
 ## Requirements
 
 * **npm** (*Currently* v6.13.4)
-* **create-react-app** (*Currently* v3.4.0)
+* **create-react-app** (*Currently* v3.4.1)
 
 ## How to run the demo
 
 ```sh
+$ npm install
 $ npm run deploy
 ```
 
@@ -19,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType to TinyMCE from scratch
+## How to add MathType with a Generic integration from scratch
 
 1. Run the following through the terminal
 
@@ -28,8 +29,8 @@ You will also see any lint errors in the console.
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm i @wiris/mathtype-generic
-    $ npm i @wiris/mathtype-html-integration-devkit
+    $ npm install @wiris/mathtype-generic
+    $ npm install @wiris/mathtype-html-integration-devkit
     ```
 
 2. Replace all the content in *src/index.js* by:
