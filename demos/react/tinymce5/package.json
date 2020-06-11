@@ -16,6 +16,7 @@
     "resources": "file:../../../resources"
   },
   "scripts": {
+    "start": "react-scripts start",
     "deploy": "react-scripts start",
     "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev && cd - ; react-scripts start",
     "build": "react-scripts build",
