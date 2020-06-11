@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - ; npm install ../../../packages/mathtype-ckeditor5/$filename ; webpack-dev-server -d --open",
+    "start": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server --open",
     "deploy": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",

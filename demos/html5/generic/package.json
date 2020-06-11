@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-generic/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
+    "start": "webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",
