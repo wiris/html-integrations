@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve",
     "deploy": "ng serve",
     "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev && cd - ; ng serve",
     "build": "ng build",
