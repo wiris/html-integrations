@@ -24,8 +24,7 @@
     "@ckeditor/ckeditor5-paragraph": ">=18.0.0",
     "@ckeditor/ckeditor5-theme-lark": ">=18.0.0",
     "@wiris/mathtype-ckeditor5": "file:../../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.20.0.tgz",
-    "postcss-loader": "^3.0.0",
-    "webpack-dev-server": "^3.10.3"
+    "postcss-loader": "^3.0.0"
   },
   "devDependencies": {
     "css-loader": "^1.0.0",
@@ -41,6 +40,6 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }
