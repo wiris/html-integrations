@@ -10,7 +10,7 @@ A simple ReactJS App integrating WIRIS MathType on a TinyMCE 5 and step-by-step 
 ## How to run the demo
 
 ```sh
-$ npm i
+$ npm install
 $ npm run deploy
 ```
 
