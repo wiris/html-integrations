@@ -1,6 +1,7 @@
 {
   "name": "demo-angular-froala3",
   "version": "1.0.0",
+  "description": "A simple Angular App integrating WIRIS MathType in a Froala rich text editor.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,6 +12,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "author": "Carla Lara",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.1",

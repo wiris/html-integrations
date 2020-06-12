@@ -1,6 +1,7 @@
 {
   "name": "demo-react-generic",
   "version": "1.0.0",
+  "description": "A simple ReactJS App integrating WIRIS MathType in a Generic integration.",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -28,6 +29,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "author": "Carla Lara",
+  "license": "MIT",
   "eslintConfig": {
     "extends": "react-app"
   },
