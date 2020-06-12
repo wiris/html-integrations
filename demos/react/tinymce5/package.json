@@ -15,6 +15,13 @@
     "tinymce": "^5.2.2",
     "resources": "file:../../../resources"
   },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "stylelint": "^13.2.0",
+    "stylelint-config-standard": "^20.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "deploy": "react-scripts start",

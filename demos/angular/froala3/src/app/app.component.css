@@ -1,9 +1,8 @@
 body {
-    background-color: #e4e6e7;
-    font-family: "Roboto", sans-serif;
-  }
-  
-  .fr-wrapper {
-    min-height: 200px;
-  }
-  
+  background-color: #e4e6e7;
+  font-family: "Roboto", sans-serif;
+}
+
+.fr-wrapper {
+  min-height: 200px;
+}
