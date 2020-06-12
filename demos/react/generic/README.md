@@ -119,6 +119,8 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Learn More
 
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
+
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
