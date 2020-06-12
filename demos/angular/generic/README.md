@@ -102,6 +102,8 @@ Execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Learn More
 
+Checkout the [FAQ](FAQs.md) file learn more about the most frequent asked questions.
+
 You can learn more in the [Create Angular App documentation](https://angular.io/cli/new).
 
 To learn more about Angular, check out the [Angular documentation](https://angular.io/).
