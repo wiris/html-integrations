@@ -128,7 +128,7 @@ You will also see any lint errors in the console.
     <div id="editor" [froalaEditor]="options" [(froalaModel)]="content"></div>
     ```
 
-6. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+6. Finally, you are ready to run the development server through the specified command ```ng serve```
 
 ## How to run the tests
 
