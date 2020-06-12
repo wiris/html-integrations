@@ -106,7 +106,7 @@ You will also see any lint errors in the console.
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*
 
-3. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+3. Finally, you are ready to run the development server through the specified command ```npm run start```
 
 ## How to run the tests
 

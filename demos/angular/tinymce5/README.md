@@ -142,7 +142,7 @@ You will also see any lint errors in the console.
     ></editor>
     ```
 
-6. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+6. Finally, you are ready to run the development server through the specified command ```ng serve```
 
 5. The **content** can be empty or anything you want to set as the initial editor content.
 

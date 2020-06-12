@@ -99,7 +99,7 @@ You will also see any lint errors in the console.
     c. You can also add as many plugins as your project will need which are not on the default ClassicEditor build (We also added  the align plugin). <br>
     d. We recommend you to just clone the branch and copy the compiled file with the editor and the new configurations placed on **build/ckeditor.js** on your project src folder. If you decide to do it by other ways, you will have to change the way the custom build is imported on your app.component.ts file.
 
-6. Finally, you are ready to run the development server through the specified [command](#How-to-run-the-demo)
+6. Finally, you are ready to run the development server through the specified command ```ng serve```
 
 ## How to run the tests
 
