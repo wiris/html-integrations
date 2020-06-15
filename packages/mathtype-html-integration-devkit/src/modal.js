@@ -15,6 +15,7 @@ import minsIcon from '../styles/icons/general/mins_icon.svg';
 import minsHoverIcon from '../styles/icons/hover/mins_icon_h.svg';
 import maxIcon from '../styles/icons/general/max_icon.svg';
 import maxHoverIcon from '../styles/icons/hover/max_icon_h.svg';
+import TelemetryService from './telemetry';
 
 /**
  * @typedef {Object} DeviceProperties
@@ -466,6 +467,18 @@ export default class ModalDialog {
    * if exists. By default the modal object opens in stack mode.
    */
   open() {
+
+    // TODO change the call to telemetry to use events
+    TelemetryService.send([{
+      "timestamp": new Date().toJSON(),
+      "topic": "0",
+      "level": "info",
+      "message": "HELO telemetry.wiris.net",
+    }])
+    .then(response => {
+      console.log('response:', response);
+    })
+
     // Removing close class.
     this.removeClass('wrs_closed');
     // Hiding keyboard for mobile devices.
