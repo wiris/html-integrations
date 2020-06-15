@@ -38,7 +38,7 @@ The technologies with demos are:
 
 ### Cloning
 
-You can clone the project following the instructions on the clonnig secction of this [guide](../README.md).
+You can clone the project following the instructions on the clonig section of this [guide](../README.md).
 
 ### Folder structure
 
@@ -93,7 +93,7 @@ To work with Lerna and try out the packages, with your local changes instead of 
 ### How to run a demo with the local package
 
 Before running the demo, you must first go on the desired folder for a framework and editor.<br>
-If you want to build a development environment and run the demo, you must link packages of the mono-repository on your local directory. the following commands must be executed:
+If you want to build a development environment and run the demo, you must link packages of the mono-repository on your local directory. The following commands must be executed:
 
 ```sh
 html-integrations/demos/[technology]/[editor]$ npm install
@@ -129,7 +129,7 @@ In case you want to automatically apply the possible fixes, just add the --fix o
 
 ## Updates
 
-- :tada: Demos with `react` and `angular`frameworks arenow live.
+- :tada: Demos with `react` and `angular`frameworks are now live.
 
 - An **improvement** in the project **structure** has been implemented.
 
