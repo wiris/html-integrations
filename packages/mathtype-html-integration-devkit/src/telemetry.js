@@ -67,8 +67,8 @@ export default class TelemetryService {
       // Tech related
       deployment: TelemetryService.deployment, // TODO
       editor_version: '0.0.0', // TODO
-      plugin_version: WirisPlugin.currentInstance.version,
-      plugin_backend_version: '7.18.0', // TODO
+      product_version: WirisPlugin.currentInstance.version,
+      product_backend_version: '7.18.0', // TODO
       backend: WirisPlugin.currentInstance.serviceProviderProperties.server, // TODO
       framework: WirisPlugin.currentInstance.environment.editor, // TODO
     };
