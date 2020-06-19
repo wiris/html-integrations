@@ -1,6 +1,10 @@
 {
-  "name": "root",
+  "name": "@wiris/html-integrations",
   "private": true,
+  "homepage": "http://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
   "scripts": {
     "prestart": "cd packages/mathtype-ckeditor5 && npm pack && cd .. && cd .. & rimraf demos/html5/ckeditor5/package-lock.json ",
     "start": "lerna bootstrap",
@@ -18,5 +22,7 @@
     "fs-extra": "^8.1.0",
     "lerna": "^3.20.2",
     "rimraf": "^3.0.0"
-  }
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (http://www.wiris.com)"
 }
