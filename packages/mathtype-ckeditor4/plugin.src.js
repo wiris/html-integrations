@@ -355,6 +355,7 @@ export class CKEditor4Integration extends IntegrationModel {
                 ckeditorIntegrationModelProperties.scriptName = "plugin.js";
                 ckeditorIntegrationModelProperties.environment = {};
                 ckeditorIntegrationModelProperties.environment.editor = "CKEditor4";
+                ckeditorIntegrationModelProperties.environment.editorVersion = "4" + '.x';
                 // Updating integration paths if context path is overwritten by editor javascript configuration.
                 if ('wiriscontextpath' in editor.config) {
                     ckeditorIntegrationModelProperties.configurationService  = editor.config.wiriscontextpath + ckeditorIntegrationModelProperties.configurationService;

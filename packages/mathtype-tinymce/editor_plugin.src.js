@@ -241,7 +241,8 @@ export var currentInstance = null;
             if (tinyMCE.majorVersion === '5') {
                 editorVersion = '5';
             }
-            integrationModelProperties.environment.editor = 'TinyMCE ' + editorVersion + '.x';
+            integrationModelProperties.environment.editor = 'TinyMCE ' + editorVersion + '.x';  
+            integrationModelProperties.environment.editorVersion = tinyMCE.majorVersion + tinyMCE.minorVersion;
 
             integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
             integrationModelProperties.editorObject = editor;

@@ -76,6 +76,7 @@ export default class MathType extends Plugin {
         const integrationProperties = {};
         integrationProperties.environment = {};
         integrationProperties.environment.editor = 'CKEditor5';
+        integrationProperties.environment.editorVersion = '5' + '.x';
         integrationProperties.editorObject = editor;
         integrationProperties.serviceProviderProperties = {};
         integrationProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';

@@ -59,6 +59,7 @@ export default class GenericIntegration extends IntegrationModel {
         integrationModelProperties.scriptName = "wirisplugin-generic.js";
         integrationModelProperties.environment = {};
         integrationModelProperties.environment.editor = "GenericHTML";
+        integrationModelProperties.environment.editorVersion = "1.0.0";
 
         super(integrationModelProperties);
 
