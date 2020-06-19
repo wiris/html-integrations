@@ -53,9 +53,9 @@ export default class TelemetryService {
     };
 
     const response = await fetch(TelemetryService.endpoint, data);
-    console.log('response:', response);
+    // console.log('response:', response);
     const result = await response.json();
-    console.log('result:', result);
+    // console.log('result:', result);
     return result;
   }
 
@@ -165,10 +165,9 @@ export default class TelemetryService {
 }
 
 // Telemetry server
-// TODO: convert to an array and environment variables
-const endPointLocal = 'http://localhost:4000';
-const endPointDev = 'https://telemetry.formiga.net'; // Cal tenir VPN
-const endPointTest = 'https://telemetry.wiris.test';
-const endPointProduction = 'https://telemetry.wiris.net';
+const telemetryURL = {
+  local: 'http://localhost:4000',
+  production: 'https://telemetry.wiris.net',
+};
 
-TelemetryService.endpoint = endPointLocal; // TODO
+TelemetryService.endpoint = telemetryURL.local; // TODO
