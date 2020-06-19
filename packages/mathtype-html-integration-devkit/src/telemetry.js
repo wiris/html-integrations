@@ -15,7 +15,7 @@ export default class TelemetryService {
   */
   static get senderId() {
     if (!this._senderId) {
-      this._senderId = TelemetryService.composeUUID();
+      this._senderId = TelemetryService.composeSenderUUID();
     }
     return this._senderId;
   }
@@ -37,8 +37,6 @@ export default class TelemetryService {
   * Sends the specified array of messages to the telemetry endpoint.
   */
   static send(messages) {
-    console.log('pepe', TelemetryService.senderId);
-    // console.log('pepa', TelemetryService.senderId);
 
     const data = {
       method: 'POST',
@@ -54,13 +52,13 @@ export default class TelemetryService {
     };
 
     // DEBUG
-    console.log('TelemetryService.send - data:', data);
+    // console.log('TelemetryService.send - data:', data);
 
     return fetch(TelemetryService.endpoint, data)
       .then(response => response)
       .catch((error) => {
         // DEBUG
-        console.error('TelemetryService.send - error:', error);
+        // console.error('TelemetryService.send - error:', error);
       });
   }
 
@@ -160,6 +158,12 @@ export default class TelemetryService {
     });
     return uuid;
   }
+
+  // TODO: generate an anonymous unique sender footprint based on the local configuration
+  static composeSenderUUID() {
+    return this.composeUUID();
+  }
+
 }
 
 /**
