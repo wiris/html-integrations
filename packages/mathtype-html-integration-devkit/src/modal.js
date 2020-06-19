@@ -467,8 +467,7 @@ export default class ModalDialog {
    * if exists. By default the modal object opens in stack mode.
    */
   open() {
-    // TODO change the call to telemetry to use events
-    // TODO decide whether to use async or not
+    // TODO Change the call to telemetry to use events.
     try {
       TelemetryService.send([{
         timestamp: new Date().toJSON(),
@@ -477,26 +476,14 @@ export default class ModalDialog {
         message: 'HELO telemetry.wiris.net',
       }])
         .then((response) => {
-        // TODO: manage retries for codes
-          console.log('Telemetry debug - response:', response);
+          // TODO: manage retries for codes
+          // DEBUG
+          console.log('modal.open TelemetryService.send - response:', response);
         });
     } catch (error) {
-      console.log('Error at modal.js:', error);
+      // DEBUG
+      console.log('modal.open TelemetryService.send - error:', error);
     }
-
-    // Not supported by our target (webpack)
-    // try {
-    //   TelemetryService.sendAsync([{
-    //     timestamp: new Date().toJSON(),
-    //     topic: '0',
-    //     level: 'info',
-    //     message: 'HELO telemetry.wiris.net',
-    //   }]).then(data => console.log(data));
-    // } catch (error) {
-    //   console.log('Error at modal.js');
-    //   console.log(error);
-    // }
-
 
     // Removing close class.
     this.removeClass('wrs_closed');

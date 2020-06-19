@@ -4,6 +4,19 @@
 */
 export default class TelemetryService {
   constructor() {
+
+    /**
+     * Telemetry sender uuid.
+     * @type {String}
+     */
+    this.senderId = TelemetryService.composeUUID();
+
+    /**
+     * Telemetry sender uuid.
+     * @type {String}
+     */
+    this.sessionId = TelemetryService.composeUUID();
+
     throw new Error('Static class StringManager can not be instantiated.');
   }
 
@@ -24,86 +37,66 @@ export default class TelemetryService {
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
 
+    // DEBUG
+    console.log('TelemetryService.send - data:', data);
+
     return fetch(TelemetryService.endpoint, data)
       .then(response => response)
       .catch((error) => {
-        console.error(error);
+        // DEBUG
+        console.error('TelemetryService.send - error:', error);
       });
   }
 
   /**
-  * Sends asyncrhonously the specified array of messages to the telemetry endpoint.
-  * Usage: try {
-  *   TelemetryService.sendAsync([{...}]).then(data => console.log(data));
-  *   }
-  *   catch (error) { console.log(error) }
-  */
-  static async sendAsync() {
-    const data = {
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': '$api-key', // TODO
-        'accept-version': '1', // TODO
-      },
-      // mode: 'cors', // TODO
-      mode: 'no-cors',
-      body: JSON.stringify(TelemetryService.composeBody(messages)),
+   * Composes the 'session' object for the Telemetry Service request call.
+   */
+  static get session() {
+    return {
+      id: this.sessionId,
+      page: 0,
     };
-
-    const response = await fetch(TelemetryService.endpoint, data);
-    // console.log('response:', response);
-    const result = await response.json();
-    // console.log('result:', result);
-    return result;
   }
 
   /**
-  * Given messages, composes the body as a JSON.
-  */
-  static composeBody(messages) {
-    const body = {
-      messages,
-      test: '413',
-      version: '1',
-      sender: TelemetryService.sender,
-      session: TelemetryService.session,
-    };
-    console.log(body);
-
-    return body;
-  }
-
-  static get session() {
-    return {
-      id: '3ed99c27-82ca-4774-92ee-0574eb770527', // TODO
-      page: 1, // TODO
-    };
-  }
-
+   * Composes the 'sender' object for the Telemetry Service request call.
+   */
   static get sender() {
     return {
-      // Client related
-      id: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx', // TODO
+      // 1. Client related
+      id: this.senderId,
       // This returns 'Linux x86_64'
       // Not as complete as the example 'Ubuntu; Linux x86_64'
       os: navigator.oscpu,
       user_agent: window.navigator.userAgent,
 
-      // Server related
+      // 2. Server related
       domain: window.location.hostname,
 
-      // Tech related
-      deployment: TelemetryService.deployment, // TODO
-      editor_version: '0.0.0', // TODO
+      // 3. Tech related
+      // The deployment key id as defined on the specification.
+      deployment: TelemetryService.deployment,
+      // Backend: the server language of the service. The possible
+      // values are: php, aspx, java or ruby.
+      backend: WirisPlugin.currentInstance.serviceProviderProperties.server,
+      backend_version: '', // TODO: next iteration.
+      // The version of the current javascript package.
       product_version: WirisPlugin.currentInstance.version,
-      product_backend_version: '7.18.0', // TODO
-      backend: WirisPlugin.currentInstance.serviceProviderProperties.server, // TODO
-      framework: WirisPlugin.currentInstance.environment.editor, // TODO
+      // The version of the editor.
+      editor_version: WirisPlugin.currentInstance.editorVersion,
+      // The language of the editor.
+      editor_language: WirisPlugin.currentInstance.language,
+      // product_backend_version: '7.18.0', // TODO.
+      // TODO: We can't know this, yet. This should be injected from the right package.
+      // framework: WirisPlugin.currentInstance.environment.editor, // TODO
     };
   }
 
+  /**
+   * Composes the deployment id key for 'mathtype-web-*'.
+   * It follows the convention defined at the 'doc/adr/XXX-telemetry-deployment-name-convention'
+   * TODO: create the 'doc/adr'.
+   */
   static get deployment() {
     const { editor } = WirisPlugin.currentInstance.environment;
 
@@ -123,51 +116,43 @@ export default class TelemetryService {
     return `${prefix}${suffix}`;
   }
 
-  // static get editorName() {
-  //   const { editor } = WirisPlugin.currentInstance.environment;
+  /**
+  * Given 'messages', composes the Telemetry request body as a JSON.
+  */
+  static composeBody(messages) {
+    const body = {
+      messages,
+      sender: TelemetryService.sender,
+      session: TelemetryService.session,
+    };
+    return body;
+  }
 
-  //   if (/Generic/.test(editor)) {
-  //     return 'generic';
-  //   } if (/Froala/.test(editor)) {
-  //     return 'froala';
-  //   } if (/CKEditor/.test(editor)) {
-  //     return 'ckeditor';
-  //   } if (/TinyMCE/.test(editor)) {
-  //     return 'tinymce';
-  //   }
-  // }
-
-
-  // static get EditorVersion() {
-  //   const version = '';
-  //   switch (editor) {
-  //     case 'froala':
-  //       // TODO: How we know for sure that FroalaEditor object is available
-  //       // TODO: Support for versions 2 and 3
-  //       // Froala 2:
-  //       // $.FE.VERSION
-  //       // Froala 3:
-  //       // FroalaEditor.VERSION
-  //       version = FroalaEditor.VERSION;
-  //       break;
-  //     case 'ckeditor':
-
-  //       break;
-  //     case 'tinymce':
-
-  //       break;
-
-  //     default:
-  //       break;
-  //   }
-  //   return version;
-  // }
+  /**
+  * Helper function that generates a random UUID used to identify both the batch and the sender.
+  * Wikipedia: A universally unique identifier (UUID) is an identifier standard
+  * used in software construction. A UUID is simply a 128-bit value.
+  * The meaning of each bit is defined by any of several variants. For human-readable display,
+  * many systems use a canonical format using hexadecimal text with inserted hyphen characters.
+  */
+  static composeUUID() {
+    let dt = new Date().getTime();
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (dt + Math.random() * 16) % 16 | 0;
+      dt = Math.floor(dt / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+  }
 }
 
-// Telemetry server
-const telemetryURL = {
+/**
+ * TelemetryServer
+ * The URL for the telemetry server host is hard-coded header.
+ */
+const telemetryHost = {
   local: 'http://localhost:4000',
   production: 'https://telemetry.wiris.net',
 };
 
-TelemetryService.endpoint = telemetryURL.local; // TODO
+TelemetryService.endpoint = telemetryHost.local; // TODO set production 
