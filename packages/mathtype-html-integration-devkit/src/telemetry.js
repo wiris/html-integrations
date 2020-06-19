@@ -51,9 +51,9 @@ export default class TelemetryService {
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
 
+
     // DEBUG
     // console.log('TelemetryService.send - data:', data);
-
     return fetch(TelemetryService.endpoint, data)
       .then(response => response)
       .catch((error) => {
@@ -90,19 +90,20 @@ export default class TelemetryService {
       // 3. Tech related
       // The deployment key id as defined on the specification.
       deployment: TelemetryService.deployment,
+      // The version of the editor.
+      editor_version: WirisPlugin.currentInstance.editorVersion,
+      // The configured language of the editor.
+      editor_language: WirisPlugin.currentInstance.language,
+      // The version of the current javascript package.
+      product_version: WirisPlugin.currentInstance.version,
+      // product_backend_version: '7.18.0', // TODO.
       // Backend: the server language of the service. The possible
       // values are: php, aspx, java or ruby.
       backend: WirisPlugin.currentInstance.serviceProviderProperties.server,
       backend_version: '', // TODO: next iteration.
-      // The version of the current javascript package.
-      product_version: WirisPlugin.currentInstance.version,
-      // The version of the editor.
-      editor_version: WirisPlugin.currentInstance.editorVersion,
-      // The language of the editor.
-      editor_language: WirisPlugin.currentInstance.language,
-      // product_backend_version: '7.18.0', // TODO.
       // TODO: We can't know this, yet. This should be injected from the right package.
-      // framework: WirisPlugin.currentInstance.environment.editor, // TODO
+      // framework: WirisPlugin.currentInstance.environment.framework, // TODO
+      // platform: WirisPlugin.currentInstance.environment.platform, // TODO
     };
   }
 
