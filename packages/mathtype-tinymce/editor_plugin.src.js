@@ -242,7 +242,7 @@ export var currentInstance = null;
                 editorVersion = '5';
             }
             integrationModelProperties.environment.editor = 'TinyMCE ' + editorVersion + '.x';  
-            integrationModelProperties.environment.editorVersion = tinyMCE.majorVersion + tinyMCE.minorVersion;
+            integrationModelProperties.environment.editorVersion = tinyMCE.majorVersion + '.' + tinyMCE.minorVersion;
 
             integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
             integrationModelProperties.editorObject = editor;
