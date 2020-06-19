@@ -37,7 +37,6 @@ export default class TelemetryService {
   * Sends the specified array of messages to the telemetry endpoint.
   */
   static send(messages) {
-
     const data = {
       method: 'POST',
       cache: 'no-cache',
@@ -91,7 +90,7 @@ export default class TelemetryService {
       // The deployment key id as defined on the specification.
       deployment: TelemetryService.deployment,
       // The version of the editor.
-      editor_version: WirisPlugin.currentInstance.editorVersion,
+      editor_version: WirisPlugin.currentInstance.environment.editorVersion,
       // The configured language of the editor.
       language: WirisPlugin.currentInstance.language,
       // The version of the current javascript package.
@@ -139,6 +138,8 @@ export default class TelemetryService {
       messages,
       sender: TelemetryService.sender,
       session: TelemetryService.session,
+      // version: '1',
+      // test: 204,
     };
     return body;
   }
@@ -164,7 +165,6 @@ export default class TelemetryService {
   static composeSenderUUID() {
     return this.composeUUID();
   }
-
 }
 
 /**
