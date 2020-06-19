@@ -93,7 +93,7 @@ export default class TelemetryService {
       // The version of the editor.
       editor_version: WirisPlugin.currentInstance.editorVersion,
       // The configured language of the editor.
-      editor_language: WirisPlugin.currentInstance.language,
+      language: WirisPlugin.currentInstance.language,
       // The version of the current javascript package.
       product_version: WirisPlugin.currentInstance.version,
       // product_backend_version: '7.18.0', // TODO.
