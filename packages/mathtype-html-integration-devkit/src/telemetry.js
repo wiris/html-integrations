@@ -4,26 +4,42 @@
 */
 export default class TelemetryService {
   constructor() {
-
-    /**
-     * Telemetry sender uuid.
-     * @type {String}
-     */
-    this.senderId = TelemetryService.composeUUID();
-
-    /**
-     * Telemetry sender uuid.
-     * @type {String}
-     */
-    this.sessionId = TelemetryService.composeUUID();
-
     throw new Error('Static class StringManager can not be instantiated.');
+  }
+
+  /**
+  * Static property.
+  * The sender uuid..
+  * @private
+  * @type {String}
+  */
+  static get senderId() {
+    if (!this._senderId) {
+      this._senderId = TelemetryService.composeUUID();
+    }
+    return this._senderId;
+  }
+
+  /**
+  * Static property.
+  * The session uuid.
+  * @private
+  * @type {String}
+  */
+  static get sessionId() {
+    if (!this._sessionId) {
+      this._sessionId = TelemetryService.composeUUID();
+    }
+    return this._sessionId;
   }
 
   /**
   * Sends the specified array of messages to the telemetry endpoint.
   */
   static send(messages) {
+    console.log('pepe', TelemetryService.senderId);
+    // console.log('pepa', TelemetryService.senderId);
+
     const data = {
       method: 'POST',
       cache: 'no-cache',
@@ -53,7 +69,7 @@ export default class TelemetryService {
    */
   static get session() {
     return {
-      id: this.sessionId,
+      id: TelemetryService.sessionId,
       page: 0,
     };
   }
@@ -64,7 +80,7 @@ export default class TelemetryService {
   static get sender() {
     return {
       // 1. Client related
-      id: this.senderId,
+      id: TelemetryService.senderId,
       // This returns 'Linux x86_64'
       // Not as complete as the example 'Ubuntu; Linux x86_64'
       os: navigator.oscpu,
@@ -155,4 +171,23 @@ const telemetryHost = {
   production: 'https://telemetry.wiris.net',
 };
 
-TelemetryService.endpoint = telemetryHost.local; // TODO set production 
+/**
+ * Stores the Telemetry endpoint host URL.
+ * @private
+ * @type {String}
+ */
+TelemetryService.endpoint = telemetryHost.local;
+
+/**
+ * Stores the sender uuid.
+ * @private
+ * @type {String}
+ */
+TelemetryService._senderId = '';
+
+/**
+ * Stores the session uuid.
+ * @private
+ * @type {String}
+ */
+TelemetryService._sessionId = '';
