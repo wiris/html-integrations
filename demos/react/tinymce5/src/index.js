@@ -31,7 +31,8 @@ const content = '<p class="text"> Double click on the following formula to edit 
 document.getElementById('transform_content').innerHTML = content;
 
 // Add listener on click button to launch updateContent function.
-document.getElementById('btn_update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', (e) => {
+  e.preventDefault();
   Generic.updateContent(tinyMCE.activeEditor.getContent(), 'transform_content');            //eslint-disable-line
 });
 
