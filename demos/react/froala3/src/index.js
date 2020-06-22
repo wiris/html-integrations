@@ -37,7 +37,8 @@ const content = '<p class="text"> Double click on the following formula to edit 
 document.getElementById('transform_content').innerHTML = content;
 
 // Add listener on click button to launch updateFunction.
-document.getElementById('btn_update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', (e) => {
+  e.preventDefault();
   Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), 'transform_content');                     //eslint-disable-line
 });
 
