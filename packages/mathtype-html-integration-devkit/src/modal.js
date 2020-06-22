@@ -478,11 +478,11 @@ export default class ModalDialog {
         .then((response) => {
           // TODO: manage retries for codes
           // DEBUG
-          console.log('modal.open TelemetryService.send - response:', response);
+          // console.log('modal.open TelemetryService.send - response:', response);
         });
     } catch (error) {
       // DEBUG
-      console.log('modal.open TelemetryService.send - error:', error);
+      // console.log('modal.open TelemetryService.send - error:', error);
     }
 
     // Removing close class.
