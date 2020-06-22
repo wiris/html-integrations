@@ -50,7 +50,6 @@ export default class TelemetryService {
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
 
-
     // DEBUG
     // console.log('TelemetryService.send - data:', data);
     return fetch(TelemetryService.endpoint, data)
@@ -76,33 +75,39 @@ export default class TelemetryService {
    */
   static get sender() {
     return {
-      // 1. Client related
+      // 1. Client related.
       id: TelemetryService.senderId,
-      // This returns 'Linux x86_64'
-      // Not as complete as the example 'Ubuntu; Linux x86_64'
+      // This returns 'Linux x86_64'.
+      // Not as complete as the example 'Ubuntu; Linux x86_64'.
       os: navigator.oscpu,
       user_agent: window.navigator.userAgent,
 
-      // 2. Server related
+      // 2. Server related.
       domain: window.location.hostname,
 
-      // 3. Tech related
+      // 3. Tech related.
       // The deployment key id as defined on the specification.
       deployment: TelemetryService.deployment,
       // The version of the editor.
-      editor_version: WirisPlugin.currentInstance.environment.editorVersion,
+      editor_version: (WirisPlugin.currentInstance.environment.editorVersion ? WirisPlugin.currentInstance.environment.editorVersion : ''),
       // The configured language of the editor.
       language: WirisPlugin.currentInstance.language,
       // The version of the current javascript package.
       product_version: WirisPlugin.currentInstance.version,
-      // product_backend_version: '7.18.0', // TODO.
-      // Backend: the server language of the service. The possible
-      // values are: php, aspx, java or ruby.
-      backend: WirisPlugin.currentInstance.serviceProviderProperties.server,
-      backend_version: '', // TODO: next iteration.
-      // TODO: We can't know this, yet. This should be injected from the right package.
-      // framework: WirisPlugin.currentInstance.environment.framework, // TODO
-      // platform: WirisPlugin.currentInstance.environment.platform, // TODO
+      // product_backend_version: '7.18.0', // TODO: next iteration.
+      backend: (WirisPlugin.currentInstance.serviceProviderProperties.server ? WirisPlugin.currentInstance.serviceProviderProperties.server : ''),
+
+      // TODOs:
+      // 1. Backend version, the server language of the service.
+      // The possible values are: php, aspx, java or ruby.
+      // eslint-disable-next-line max-len
+      // backend_version: (WirisPlugin.currentInstance.environment.backend_version ? WirisPlugin.currentInstance.environment.backend_version : ''), // TODO: next iteration.
+      // 2. Framework & platform. We can't know this, yet. 
+      // This should be injected from the right package.
+      // eslint-disable-next-line max-len
+      // framework: (WirisPlugin.currentInstance.serviceProviderProperties.framework ? WirisPlugin.currentInstance.serviceProviderProperties.framework : ''), // TODO: next iteration.
+      // eslint-disable-next-line max-len
+      // platform: (WirisPlugin.currentInstance.serviceProviderProperties.platform ? WirisPlugin.currentInstance.serviceProviderProperties.platform : ''), // TODO: next iteration.
     };
   }
 
@@ -138,8 +143,6 @@ export default class TelemetryService {
       messages,
       sender: TelemetryService.sender,
       session: TelemetryService.session,
-      // version: '1',
-      // test: 204,
     };
     return body;
   }
@@ -169,7 +172,7 @@ export default class TelemetryService {
 
 /**
  * TelemetryServer
- * The URL for the telemetry server host is hard-coded header.
+ * The URL for the telemetry server host is hard-coded.
  */
 const telemetryHost = {
   local: 'http://localhost:4000',
