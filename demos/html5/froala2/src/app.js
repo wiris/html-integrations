@@ -40,6 +40,7 @@ $('#editor').on('froalaEditor.initialized', function(e, editor) {          //esl
 $('#editor').froalaEditor(froalaConfiguration);           //eslint-disable-line
 
 // Add listener on click button to launch updateContent function.
-document.getElementById('btn_update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', (e) => {
+  e.preventDefault();
   Generic.updateContent($('#editor').froalaEditor('html.get'), 'transform_content');          //eslint-disable-line
 });

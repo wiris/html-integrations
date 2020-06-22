@@ -35,6 +35,7 @@ CKEDITOR.on('instanceReady', function() {                     //eslint-disable-l
 });
 
 // Add listener on click button to launch updateContent function.
-document.getElementById('btn_update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', (e) => {
+  e.preventDefault();
   Generic.updateContent(CKEDITOR.instances.editor.getData(), 'transform_content');                  //eslint-disable-line
 });

@@ -33,6 +33,7 @@ document.onreadystatechange = function () {
 };
 
 // Add listener on click button to launch updateContent function.
-document.getElementById('btn_update').addEventListener('click', () => {
+document.getElementById('btn_update').addEventListener('click', (e) => {
+  e.preventDefault();
   Generic.updateContent(WirisPlugin.Parser.initParse(editableDiv.innerHTML), 'transform_content');      //eslint-disable-line
 });

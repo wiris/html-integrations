@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
     wrsInitEditor(editableDiv, toolbarDiv);
 
     // Add listener on click button to launch updateContent function.
-    document.getElementById('btn_update').addEventListener('click', () => {
+    document.getElementById('btn_update').addEventListener('click', (e) => {
+      e.preventDefault();
       Generic.updateContent((window as any).WirisPlugin.Parser.initParse(editableDiv.innerHTML), 'transform_content');      //eslint-disable-line
     });
 

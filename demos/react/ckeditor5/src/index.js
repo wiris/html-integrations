@@ -44,7 +44,8 @@ const ckConfig = {
 // Function to call when the editor is initialyzed so it can add listeners on buttons.
 function updateContent(ckeditor) {
     // Add listener on click button to launch updateContent function.
-    document.getElementById('btn_update').addEventListener('click', () => {
+    document.getElementById('btn_update').addEventListener('click', (e) => {
+      e.preventDefault();
       Generic.updateContent(ckeditor.getData(), 'transform_content');
     });
 }
