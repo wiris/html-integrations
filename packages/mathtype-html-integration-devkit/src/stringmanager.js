@@ -17,7 +17,7 @@ export default class StringManager {
     let { language } = this;
 
     // Cut down on strings. e.g. en_US -> en
-    if (language.length > 2) {
+    if (language && language.length > 2) {
       language = language.slice(0, 2);
     }
 
