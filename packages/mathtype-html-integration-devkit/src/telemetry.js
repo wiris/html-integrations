@@ -45,8 +45,8 @@ export default class TelemetryService {
         'x-api-key': '$api-key', // TODO
         'accept-version': '1', // TODO
       },
-      // mode: 'cors', // TODO
-      mode: 'no-cors',
+      mode: 'cors', // TODO
+      // mode: 'no-cors',
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
 
