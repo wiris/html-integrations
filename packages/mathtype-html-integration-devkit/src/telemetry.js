@@ -94,7 +94,6 @@ export default class TelemetryService {
       language: WirisPlugin.currentInstance.language,
       // The version of the current javascript package.
       product_version: WirisPlugin.currentInstance.version,
-      // product_backend_version: '7.18.0', // TODO: next iteration.
       backend: (WirisPlugin.currentInstance.serviceProviderProperties.server ? WirisPlugin.currentInstance.serviceProviderProperties.server : ''),
 
       // TODOs:
@@ -108,6 +107,8 @@ export default class TelemetryService {
       // framework: (WirisPlugin.currentInstance.serviceProviderProperties.framework ? WirisPlugin.currentInstance.serviceProviderProperties.framework : ''), // TODO: next iteration.
       // eslint-disable-next-line max-len
       // platform: (WirisPlugin.currentInstance.serviceProviderProperties.platform ? WirisPlugin.currentInstance.serviceProviderProperties.platform : ''), // TODO: next iteration.
+      // 3. Product backend version.
+      // product_backend_version: '7.18.0', // TODO: next iteration.
     };
   }
 
