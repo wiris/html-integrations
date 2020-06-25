@@ -1,6 +1,6 @@
 # Technical demos of WIRIS MathType Web plugins
 
-Technical demos is a collection of code examples created to test, find bugs and improvements, and validate the WIRIS MathType plugins on different editors.
+'Technical demos' is a collection of code examples that we've to test, validate and show **how to integrate MathType Javascript plugins on different editors using technologies**, from vanilla HTML to modern javascript frameworks.
 
 ## Table of contents
 
