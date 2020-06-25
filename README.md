@@ -29,6 +29,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 - [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
 - [Privacy policy](#privacy-policy)
+- [Contact information](#contact-information)
 - [License](#license)
 
 ## Requirements
@@ -265,6 +266,10 @@ In order to manually test each plugin, there's a set of technical demos on
 the 'demos/' folder.
 
 Refer to the [README](demos/README.md) file for more information.
+
+## Contact information
+
+team.support.europe@wiris.com
 
 
 ## Privacy policy

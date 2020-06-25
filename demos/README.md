@@ -139,7 +139,6 @@ team.support.europe@wiris.com
 ## License
 
 Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
-<<<<<<< HEAD
 
 ## Privacy policy
 
@@ -149,5 +148,3 @@ The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) cove
 ## Contact information
 
 team.support.europe@wiris.com
-=======
->>>>>>> LICENSE section should be the last one
