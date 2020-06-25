@@ -12,7 +12,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 
 - [Requirements](#requirements)
 - [File Manifest](#file-manifest)
-  - [Important files & Folder Structure](#important-files--folder-structure)
+  - [Important files & folder structure](#important-files--folder-structure)
   - [Supported editors](#supported-editors)
 - [Quick start](#quick-start)
   - [Cloning](#cloning)
@@ -26,7 +26,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Analyzing and fixing code](#analyzing-and-fixing-code)
   - [Versioning](#versioning)
   - [Publishing](#publishing)
-- [Technical Demos](#technical-demos)
+- [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
 - [License](#license)
 
@@ -41,7 +41,7 @@ To install node and npm follow this [guide-npm](https://docs.npmjs.com/downloadi
 
 ## File Manifest
 
-### Important files & Folder Structure
+### Important files & folder structure
 
 In this section we give a small description of the files that we consider the most important of the project, also we will talk about the content of the subfolders of the project and its usefulness.
 
@@ -57,13 +57,12 @@ work inside.
 
 In the next list, you will see the editors that have a specialized WIRIS plugin of the mathtype formula editor.
 
-- `CKeditor 4`
-- `CKeditor 5`
-- `Froala 2`
-- `Froala 3`
-- `TinyMCE 4`
-- `TinyMCE 5`
-- `generic` is a global integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
+- CKEditor
+- Froala
+- TinyMCE 
+- Generic* 
+ 
+> *: generic is a global integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
 ## Quick start
 
@@ -146,21 +145,21 @@ html-integrations/packages/mathtype-[editor]$ npm run compile -- [tech] [--dev]
 
 Where [editor] can be any of:
 
-- `ckeditor4`,
-- `ckeditor5`,
-- `froala`,
-- `froala3`,
-- `generic`,
-- `tinymce4`,
-- `tinymce5`;
+- `ckeditor4`
+- `ckeditor5`
+- `froala`
+- `froala3`
+- `generic`
+- `tinymce4`
+- `tinymce5`
 
 and [tech] can be any of:
 
-- `aspx`,
-- `java`,
-- `npm`,
-- `php`,
-- `ruby`.
+- `aspx`
+- `java`
+- `npm`
+- `php`
+- `ruby`
 
 The `--dev` optional flag calls the `build-dev` script defined in the plugin's `package.json`
 instead of the `build` script.
@@ -259,20 +258,13 @@ This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
 
-## Technical Demos
+## Examples for developers
 
 In order to manually test each plugin, there's a set of technical demos on
 the 'demos/' folder.
 
 Refer to the [README](demos/README.md) file for more information.
 
-## More information
-
-- [npm](https://docs.npmjs.com/)
-
-- [Lerna](https://github.com/lerna/lerna#readme) 
-
-- [WIRIS](http://www.wiris.com)
 
 ## License
 
