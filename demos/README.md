@@ -4,8 +4,8 @@
 
 ## Table of contents
 
-- [Supported editors & technologies](#supported-editors--technologies)
 - [Using the demos](#using-the-demos)
+    - [Supported editors & technologies](#supported-editors--technologies)
     - [Folder structure](#folder-structure)
     - [How to run a demo](#how-to-run-a-demo)
 - [Using the demos in development mode](#using-the-demos-in-development-mode)
@@ -16,7 +16,10 @@
 - [Contact information](#contact-information)
 - [License](#license)
 
-## Supported editors & technologies
+
+## Using the demos
+
+### Supported editors & technologies
 
 On this folder you'll find functional examples of how to integrate WIRIS MathType editor for these next editors:
 
@@ -33,29 +36,27 @@ We've prepared the very same example app for these next list of technologies:
 - ReactJS 
 - Angular 
 
-## Using the demos
-
 ### Folder structure
 
-The next tree you will see represents the structure of this project in major terms. 
+This next diagram represents the folder structure for this project. 
 
 ```bash
-demos
-├── technology-1
-│   ├── editor-1
-|   |   ├── ...
-|   |   └── package.json
-│   ├── editor-2
-|   ├── ...
-|   └── editor-m
-├── technology-2
-│   ├── editor-1
-│   ├── editor-2
-|   ├── ...
-|   └── editor-m
-├── ...
-├── technology-n
-└── README.md
+    demos
+    ├── technology-1
+    │   ├── editor-1
+    |   |   ├── ...
+    |   |   └── package.json
+    │   ├── editor-2
+    |   ├── ...
+    |   └── editor-m
+    ├── technology-2
+    │   ├── editor-1
+    │   ├── editor-2
+    |   ├── ...
+    |   └── editor-m
+    ├── ...
+    ├── technology-n
+    └── README.md
 ```
 
 There is a set of `n` supported `technologies` and its `m` supported `editors`, which will be detailed below. You will find which are the technologies and editors in the [Supported editors & technologies](#supported-editors-&-technologies) section.
