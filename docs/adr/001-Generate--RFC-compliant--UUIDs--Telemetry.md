@@ -4,11 +4,11 @@ Date: 22-jun-2020
 
 ## Status
 
-PROPOSED  
+ACCEPTED  
 
 ## Summary
 
-*When sending Telemetry data*  
+*When sending Telemetry data*
 *a session & user uuids are used.*
 *We need to generate RFC consistent uuids.*
 *Using a thid-party library*
@@ -17,58 +17,45 @@ PROPOSED
 
 ## Context (Discussion)
 
-> The issue motivating this decision, and any context that influences or constrains the decision.
+In the context of the Telemetry project, the generation of
+valid and consisten UUIDs are needed to ensure the uniqueness
+and its validity.
 
-> What is the issue that we're seeing that is motivating this decision or change?
- 
-> Explains the forces at play (technical, political, social, project).
-> This is the story explaining the problem we are looking to resolve.
+It would be unwise to write our own library to generate this
+UUIDs since there are third party solutions, that supports UUIDs  for RFC4122 version 1, 3, 4, and 5.
+
 
 ## Decision
 
-> What is the change that we're proposing and/or doing?
-> The change that we're proposing or have agreed to implement.
-> Explains how the decision will solve the problem.
+We'll add the library 'uuid' as the first functional dependency of the 'MathType Web Integration JavaScript SDK', known as npm package as '@wiris/mathtype-html-integration-devkit'.
 
 
 ### Pros and Cons of the Options 
 
 #### Implement our own Javascript library for that
 
-[example | description | pointer to more information | …]
+- Bad, because Javascript Math.random function is not very good. 
+- Bad, because We'll need to maintain it.
+- Bad, because More work to the backlog.
 
-    Good, because [argument a]
-    Good, because [argument b]
-    Bad, because [argument c]
-    …
 
 #### Using a third party library like github.com/uuidjs/uuid
 
-[example | description | pointer to more information | …]
 
-    Good, because [argument a]
-    Good, because [argument b]
-    Bad, because [argument c]
-    …
-
-#### [option 3]
-
-[example | description | pointer to more information | …]
-
-    Good, because [argument a]
-    Good, because [argument b]
-    Bad, because [argument c]
-    …
+- Good, because complies RFC
+- Good, because its well maintained, no issues and widely used
+- Good, because solves our problem immediately.
 
 
 ## Consequences (Results)
 
-What becomes easier or more difficult to do and any risks introduced by the change that will need to be mitigated.
+Adding a dependency to our main library means that all the packages we've done for other editors will have it as a depedency, too.
 
-What becomes easier or more difficult to do because of this change?
+This is, all the rest of packages and all the demos, too.
 
-> Explains the results of the decision over the long term.
-> Did it work, not work, was changed, upgraded, etc.
+We'll need to pay attention and make audits regularly to the package to avoid risks.
+
+Github dependabot's makes this task for us.
 
 ## Links
 
