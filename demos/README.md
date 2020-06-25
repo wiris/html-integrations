@@ -6,7 +6,6 @@ Technical demos is a collection of code examples created to test, find bugs and 
 
 - [Supported editors & technologies](#supported-editors--technologies)
 - [Using the demos](#using-the-demos)
-    - [Cloning](#cloning)
     - [Folder structure](#folder-structure)
     - [How to run a demo](#how-to-run-a-demo)
 - [Using the demos in development mode](#using-the-demos-in-development-mode)
@@ -89,9 +88,6 @@ To work with Lerna and try out the packages, with your local changes instead of 
 ### How to run a demo with the local package
 
 Before running the demo, you must first go on the desired folder for a framework and editor.<br>
-If you want to build a development environment and run the demo, you must link packages of the mono-repository on your local directory. The following commands must be executed:
-
-
 
 ```sh
 $ cd demos/[technology]/[editor]
