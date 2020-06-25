@@ -44,11 +44,9 @@ export default class TelemetryService {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m', // TODO
+        'x-api-key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m',
         'accept-version': '1', // TODO
       },
-      mode: 'cors', // TODO
-      // mode: 'no-cors',
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
 
