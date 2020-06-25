@@ -13,9 +13,8 @@
     - [How to run a demo with the local package](#how-to-run-a-demo-with-the-local-package)
     - [Linting files](#linting-files)
 - [Updates](#updates)
-- [License](#license)
-- [Privacy policy](#privacy-policy)
 - [Contact information](#contact-information)
+- [License](#license)
 
 ## Supported editors & technologies
 
@@ -133,10 +132,14 @@ In case you want to automatically apply the possible fixes, just add the --fix o
 
 - :tada: Examples for developers for ReactJS and Angular are now available.
 
+## Contact information
+
+team.support.europe@wiris.com
 
 ## License
 
 Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
+<<<<<<< HEAD
 
 ## Privacy policy
 
@@ -146,3 +149,5 @@ The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) cove
 ## Contact information
 
 team.support.europe@wiris.com
+=======
+>>>>>>> LICENSE section should be the last one
