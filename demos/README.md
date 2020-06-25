@@ -1,6 +1,6 @@
 # Technical demos of WIRIS MathType Web plugins
 
-'Technical demos' is a collection of code examples that we've to test, validate and show **how to integrate MathType Javascript plugins on different editors using technologies**, from vanilla HTML to modern javascript frameworks.
+'Technical demos' is a collection of code examples that we've prepared to test, validate and show **how to integrate MathType Javascript plugins on different editors using technologies**, from vanilla HTML to modern javascript frameworks.
 
 ## Table of contents
 
@@ -23,7 +23,7 @@ On this folder you'll find functional examples of how to integrate WIRIS MathTyp
 - CKEditor
 - Froala
 - TinyMCE
-- Generic
+- _Generic_
 
 >Generic is not an editor itself but a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
@@ -101,9 +101,7 @@ $ cd demos/angular/ckeditor5
 html-integrations/demos/angular/ckeditor5$ npm run build-dev
 ```
 
-
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
-
 
 ### Linting files
 
@@ -111,17 +109,20 @@ For more detailed information, take a look at this same section found in the REA
 
 The important commands to lint the files are:
 
-* To make a check of the .js files you can execute:
+To check all the .js files you can execute:
+
 ```sh
 $ npx eslint --quiet [options] <dir|file|glob>
 ```
 
-* To make a check of the .css files you can execute:
+To check all the .css files you can execute:
+
 ```sh
 $ npx stylelint [options] <dir|file|glob>
 ```
 
-* To make a check of the .html files you can execute:
+To check all the .html files you can execute:
+
 ```sh
 $ html-validate [options] <dir|file|glob>
 ```
