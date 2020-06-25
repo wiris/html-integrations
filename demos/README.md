@@ -74,7 +74,7 @@ $ npm install
 $ npm start
 ```
 
-You can find clarification on which technologies and which frameworks you can work with on this project in [Supported editors & technologies](#supported-editors-technologies) section.
+You can find clarification on which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-technologies) section above.
 
 *Note: The command `npm install` its just necessary the first time you initialize an editor.*
 
@@ -89,7 +89,7 @@ To work with Lerna and try out the packages, with your local changes instead of 
 
 ### How to run a demo with the local package
 
-Before running the demo, you must first go on the desired folder for a framework and editor.<br>
+Before running the demo, you must first go to the desired folder for a framework and editor.<br>
 
 ```sh
 $ cd demos/[technology]/[editor]
