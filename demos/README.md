@@ -4,41 +4,37 @@ Technical demos is a collection of code examples created to test, find bugs and 
 
 ## Table of contents
 
-- [Supported editors & technologies](#supported-editors-&-technologies)
-- [Demos usage](#demos-usage)
-  - [Cloning](#cloning)
-  - [Folder structure](#folder-structure)
-  - [How to run the demo](#how-to-run-the-demo)
-- [Using the demos in development mode](#file-manifest)
-  - [Environment set up](#environment-set-up)
-  - [How to run a demo with the local package](#how-to-run-a-demo-with-the-local-package)
-  - [Linting files](#linting-files)
+- [Supported editors & technologies](#supported-editors--technologies)
+- [Using the demos](#using-the-demos)
+    - [Cloning](#cloning)
+    - [Folder structure](#folder-structure)
+    - [How to run a demo](#how-to-run-a-demo)
+- [Using the demos in development mode](#using-the-demos-in-development-mode)
+    - [Environment set up](#environment-set-up)
+    - [How to run a demo with the local package](#how-to-run-a-demo-with-the-local-package)
+    - [Linting files](#linting-files)
 - [Updates](#updates)
 - [License](#license)
 - [Contact information](#contact-information)
 
 ## Supported editors & technologies
 
-This is the list of editors with a supported custom WIRIS plugins especially created for the editors:
+On this folder you'll find functional examples of how to integrate WIRIS MathType editor for these next editors:
 
-- `CKeditor`
-- `Froala`
-- `generic`
-- `TinyMCE`
+- CKEditor
+- Froala
+- TinyMCE
+- Generic
 
->Generic is not an editor itself, it's a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
+>Generic is not an editor itself but a generic integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
-The technologies with demos are:
+We've prepared the very same example app for these next list of technologies:
 
-- **html5**
-- **React** 
-- **Angular** 
+- HTML5
+- ReactJS 
+- Angular 
 
-## Demos usage
-
-### Cloning
-
-You can clone the project following the instructions on the clonig section of this [guide](../README.md).
+## Using the demos
 
 ### Folder structure
 
@@ -67,14 +63,14 @@ There is a set of `n` supported `technologies` and its `m` supported `editors`, 
 
 Every editor has a package.json for the editor dependencies and, depending on the folder you are in, you will see one kind of structure or another following the technology requirements and implementation.
 
-### How to run the demo
+### How to run a demo
 
 Before running the demo, you must first go on the desired folder for a framework and editor.<br>
 To run a demo and initialize the editor, run:
 
 ```sh
 html-integrations/demos/[technology]/[editor]$ npm install
-html-integrations/demos/[technology]/[editor]$ npm run deploy
+html-integrations/demos/[technology]/[editor]$ npm start
 ```
 
 You can find clarification on which technologies and which frameworks you can work with on this project in [Supported editors & technologies](#supported-editors-technologies) section.
@@ -95,14 +91,23 @@ To work with Lerna and try out the packages, with your local changes instead of 
 Before running the demo, you must first go on the desired folder for a framework and editor.<br>
 If you want to build a development environment and run the demo, you must link packages of the mono-repository on your local directory. The following commands must be executed:
 
+
+
 ```sh
-html-integrations/demos/[technology]/[editor]$ npm install
-html-integrations/demos/[technology]/[editor]$ npm run deploy
+$ cd demos/[technology]/[editor]
+html-integrations/demos/[technology]/[editor]$ npm run build-dev
 ```
 
-You can find clarification on which technologies and which frameworks you can work with on this project in [Supported editors & technologies](#supported-editors-&-technologies) section.
+Example:
 
-*Note: The command `npm install` its just necessary the first time you initialize an editor.*
+```sh
+$ cd demos/angular/ckeditor5
+html-integrations/demos/angular/ckeditor5$ npm run build-dev
+```
+
+
+You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
+
 
 ### Linting files
 
@@ -129,9 +134,8 @@ In case you want to automatically apply the possible fixes, just add the --fix o
 
 ## Updates
 
-- :tada: Demos with `react` and `angular`frameworks are now live.
+- :tada: Examples for developers for ReactJS and Angular are now available.
 
-- An **improvement** in the project **structure** has been implemented.
 
 ## License
 
