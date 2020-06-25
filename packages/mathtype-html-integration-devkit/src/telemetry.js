@@ -1,3 +1,5 @@
+import {v4 as createUuid} from 'uuid';
+
 /**
 * @classdesc
 * Sends and receuives Wiris telemetry data.
@@ -42,7 +44,7 @@ export default class TelemetryService {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': '$api-key', // TODO
+        'x-api-key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m', // TODO
         'accept-version': '1', // TODO
       },
       mode: 'cors', // TODO
@@ -156,13 +158,7 @@ export default class TelemetryService {
   * many systems use a canonical format using hexadecimal text with inserted hyphen characters.
   */
   static composeUUID() {
-    let dt = new Date().getTime();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = (dt + Math.random() * 16) % 16 | 0;
-      dt = Math.floor(dt / 16);
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    return uuid;
+    return createUuid();
   }
 
   // TODO: generate an anonymous unique sender footprint based on the local configuration
