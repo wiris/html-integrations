@@ -1,6 +1,6 @@
 # Technical demos of WIRIS MathType Web plugins
 
-'Technical demos' is a collection of code examples that we've prepared to test, validate and show **how to integrate MathType Javascript plugins on different editors using technologies**, from vanilla HTML to modern javascript frameworks.
+'Technical demos' is a collection of code examples that we've prepared to test, validate and show **how to integrate MathType Javascript plugins on different editors and technologies**, from vanilla HTML to modern javascript frameworks.
 
 ## Table of contents
 
@@ -59,7 +59,7 @@ This next diagram represents the folder structure for this project.
     └── README.md
 ```
 
-There is a set of `n` supported `technologies` and its `m` supported `editors`, which will be detailed below. You will find which are the technologies and editors in the [Supported editors & technologies](#supported-editors-&-technologies) section.
+There is a set of `n` supported `technologies` and its `m` supported `editors`, which will be detailed below. 
 
 Every editor has a package.json for the editor dependencies and, depending on the folder you are in, you will see one kind of structure or another following the technology requirements and implementation.
 
@@ -69,8 +69,9 @@ Before running the demo, you must first go on the desired folder for a framework
 To run a demo and initialize the editor, run:
 
 ```sh
-html-integrations/demos/[technology]/[editor]$ npm install
-html-integrations/demos/[technology]/[editor]$ npm start
+$ cd demos/[technology]/[editor]
+$ npm install
+$ npm start
 ```
 
 You can find clarification on which technologies and which frameworks you can work with on this project in [Supported editors & technologies](#supported-editors-technologies) section.
