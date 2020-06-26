@@ -17,8 +17,23 @@ export default class TelemetryService {
   */
   static get senderId() {
     if (!this._senderId) {
-      this._senderId = TelemetryService.composeSenderUUID();
+
+      // Look for previous cookie and use that
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      for (const [ key, value ] of cookies) {
+        if (key === senderIdCookieName) {
+          this._senderId = value;
+          break;
+        }
+      }
+
+      // No cookie has been previously set
+      if (!this._senderId) {
+        this._senderId = TelemetryService.composeUUID();
+        document.cookie = composeCookie(senderIdCookieName, this._senderId, senderIdCookieMaxAge);
+      }
     }
+    console.log('sender',this._senderId);
     return this._senderId;
   }
 
@@ -32,6 +47,7 @@ export default class TelemetryService {
     if (!this._sessionId) {
       this._sessionId = TelemetryService.composeUUID();
     }
+    console.log('session',this._sessionId);
     return this._sessionId;
   }
 
@@ -163,7 +179,22 @@ export default class TelemetryService {
   static composeSenderUUID() {
     return this.composeUUID();
   }
+
+  static composeCookie(name, content, maxAge) {
+    const duration = (maxAge == null) ? '' : `; max-age=${maxAge}`;
+    return `${name}=${content}${duration}`;
+  }
 }
+
+/**
+ * Name of the cookie that keeps the sender id.
+ */
+const senderIdCookieName = 'senderId';
+
+/**
+ * Time in seconds that the cookie with the sender id should last.
+ */
+const senderIdCookieMaxAge = 60 * 60 * 24;
 
 /**
  * TelemetryServer
