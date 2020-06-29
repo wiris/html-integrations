@@ -1,6 +1,13 @@
 {
   "packages": [
-    "packages/*"
+    "packages/*",
+    "demos/html5/ckeditor4",
+    "demos/html5/froala2",
+    "demos/html5/froala3",
+    "demos/html5/generic",
+    "demos/html5/tinymce4",
+    "demos/html5/tinymce5"
+
   ],
   "command": {
     "version": {
