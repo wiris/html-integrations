@@ -59,7 +59,7 @@ export default class TelemetryService {
       headers: {
         'Content-Type': 'application/json',
         'X-Api-Key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m',
-        // 'accept-version': '1', // TODO
+        'Accept-Version': '1', // TODO
       },
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
