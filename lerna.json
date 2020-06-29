@@ -7,7 +7,8 @@
     "demos/html5/generic",
     "demos/html5/tinymce4",
     "demos/html5/tinymce5",
-    "demos/html5/ckeditor5"
+    "demos/angular/*",
+    "demos/react/*"
 
   ],
   "command": {
