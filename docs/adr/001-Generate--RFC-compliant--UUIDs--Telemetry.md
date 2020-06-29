@@ -27,9 +27,9 @@ We don't want to reinvent the wheel and it seems unwise to write our own library
 
 ## Decision
 
-We'll use 'uuid' library to generate RFC4122 version 4 UUIDs to use on the Telemetry implementation. 
+We'll use [uuid package] to generate RFC4122 version 4 UUIDs to use on the Telemetry implementation. The code of the [uuid project] is available at github.
 
-It becomes the first functional dependency of the 'MathType Web Integration JavaScript SDK', known as npm package as '@wiris/mathtype-html-integration-devkit'.
+Therefore, **uuid** becomes the first functional dependency of the 'MathType Web Integration JavaScript SDK', known as npm package as '@wiris/mathtype-html-integration-devkit'.
 
 * [uuid project](https://github.com/uuidjs/uuid)
 * [uuid package](https://www.npmjs.com/package/uuid)
