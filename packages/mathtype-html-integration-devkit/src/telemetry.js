@@ -30,10 +30,9 @@ export default class TelemetryService {
       // No cookie has been previously set
       if (!this._senderId) {
         this._senderId = TelemetryService.composeUUID();
-        document.cookie = composeCookie(senderIdCookieName, this._senderId, senderIdCookieMaxAge);
+        document.cookie = this.composeCookie(senderIdCookieName, this._senderId, senderIdCookieMaxAge);
       }
     }
-    console.log('sender',this._senderId);
     return this._senderId;
   }
 
@@ -47,7 +46,6 @@ export default class TelemetryService {
     if (!this._sessionId) {
       this._sessionId = TelemetryService.composeUUID();
     }
-    console.log('session',this._sessionId);
     return this._sessionId;
   }
 
@@ -60,8 +58,8 @@ export default class TelemetryService {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m',
-        'accept-version': '1', // TODO
+        'X-Api-Key': 'CK20op1pOx2LAUjPFP7kB2UPveHZRidG51UJE26m',
+        // 'accept-version': '1', // TODO
       },
       body: JSON.stringify(TelemetryService.composeBody(messages)),
     };
@@ -210,7 +208,7 @@ const telemetryHost = {
  * @private
  * @type {String}
  */
-TelemetryService.endpoint = telemetryHost.local;
+TelemetryService.endpoint = telemetryHost.production;
 
 /**
  * Stores the sender uuid.
