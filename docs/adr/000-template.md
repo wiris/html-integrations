@@ -8,7 +8,7 @@ Date: DATE
 
 STATUS  
 
-## Summary
+## Summary [optional]
 
 > Statement to summarize:
 >    In the context of (use case)
@@ -30,7 +30,6 @@ STATUS
 > What is the change that we're proposing and/or doing?
 > The change that we're proposing or have agreed to implement.
 > Explains how the decision will solve the problem.
-
 
 ### Pros and Cons of the Options  [optional]
 
@@ -61,7 +60,6 @@ STATUS
     Bad, because [argument c]
     …
 
-
 ## Consequences (Results)
 
 > What becomes easier or more difficult to do and any risks introduced by the change that will need to be mitigated.
@@ -72,7 +70,6 @@ STATUS
 > Did it work, not work, was changed, upgraded, etc.
 
 ## Links [optional]
-
 
 - [Link type] [Link to ADR]
 - …
