@@ -28,6 +28,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Publishing](#publishing)
 - [Technical Demos](#technical-demos)
 - [More information](#more-information)
+- [Privacy policy](#privacy-policy)
 - [License](#license)
 
 ## Requirements
