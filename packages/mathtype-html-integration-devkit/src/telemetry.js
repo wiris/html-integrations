@@ -187,7 +187,7 @@ export default class TelemetryService {
 /**
  * Name of the cookie that keeps the sender id.
  */
-const senderIdCookieName = 'senderId';
+const senderIdCookieName = 'wiris_telemetry_mathtype_web_senderid';
 
 /**
  * Time in seconds that the cookie with the sender id should last.
