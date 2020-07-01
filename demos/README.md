@@ -22,6 +22,7 @@ Technical demos is an internal project developed to test, find bugs and improvem
 - [News](#news)
 - [Documentation](#documentation)
 - [License](#license)
+- [Privacy policy](#privacy-policy)
 - [Contact information](#contact-information)
 
 ## Requirements
@@ -215,6 +216,11 @@ We are working to improve the user experience and fix the errors previously deta
 ## License
 
 Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
+
+## Privacy policy
+
+The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users.
+
 
 ## Contact information
 team.support.europe@wiris.com 

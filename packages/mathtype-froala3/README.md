@@ -13,6 +13,7 @@ Easily include quality math equations in your documents and digital content.
 - [Services](#services)
 - [Documentation](#documentation)
 - [Displaying on Target Page](#displaying-on-target-page)
+- [Privacy policy](#privacy-policy)
 
 ## Installation
 
@@ -87,3 +88,7 @@ To find out more information about MathType, please go to the following document
 * [Introductory tutorials](http://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials)
 * [Service customization](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table)
 * [Testing](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test)
+
+## Privacy policy
+
+The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users.
