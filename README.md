@@ -277,7 +277,7 @@ Refer to the [README](demos/README.md) file for more information.
 
 ## Privacy policy
 
-The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data collection and usage for MathType users, and it is an addendum of the general Privacy Policy for users of any product or service from our company. The [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users.
+The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users
 
 ## License
 
