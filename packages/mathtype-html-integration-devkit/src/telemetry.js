@@ -191,8 +191,9 @@ const senderIdCookieName = 'senderId';
 
 /**
  * Time in seconds that the cookie with the sender id should last.
+ * It's set to 10 years since we'd like to never be deleted.
  */
-const senderIdCookieMaxAge = 60 * 60 * 24;
+const senderIdCookieMaxAge = 60 * 60 * 24 * 365 * 10; 
 
 /**
  * TelemetryServer
