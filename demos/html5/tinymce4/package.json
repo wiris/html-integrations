@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-tinymce4/ && npm run compile -- npm --dev && cd - ; webpack-dev-server --open",
+    "compile-package": "cd ../../../packages/mathtype-tinymce4/ && npm run compile -- npm --dev",
+    "build-dev": "lerna bootstrap && npm run compile-package && webpack-dev-server --open",
     "start": "webpack-dev-server --open",
     "deploy": "webpack-dev-server --open",
     "build": "webpack --mode production",
