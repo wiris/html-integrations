@@ -37,7 +37,7 @@
   "scripts": {
     "start": "react-scripts start",
     "deploy": "react-scripts start",
-    "build-dev": "lerna bootstrap ; cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - ; npm install ../../../packages/mathtype-ckeditor5/$filename ; react-scripts start",
+    "build-dev": "lerna bootstrap && cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - && npm install ../../../packages/mathtype-ckeditor5/$filename && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
