@@ -318,12 +318,11 @@ export default class Parser {
    * @returns {Object} JSON object containing showimage response.
    */
   static createShowImageSrc(data, language) {
-    const dataMd5 = [];
+    const dataMd5 = {};
     const renderParams = ['mml', 'color', 'centerbaseline', 'zoom', 'dpi', 'fontSize', 'fontFamily', 'defaultStretchy', 'backgroundColor', 'format'];
     renderParams.forEach((key) => {
-      const param = renderParams[key];
-      if (typeof data[param] !== 'undefined') {
-        dataMd5[param] = data[param];
+      if (typeof data[key] !== 'undefined') {
+        dataMd5[key] = data[key];
       }
     });
     // Data variables to get.
