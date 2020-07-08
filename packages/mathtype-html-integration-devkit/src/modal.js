@@ -5,17 +5,16 @@ import Listeners from './listeners';
 import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
 
-import closeIcon from '../styles/icons/general/close_icon.svg';
-import closeHoverIcon from '../styles/icons/hover/close_icon_h.svg';
-import fullsIcon from '../styles/icons/general/fulls_icon.svg';
-import fullsHoverIcon from '../styles/icons/hover/fulls_icon_h.svg';
-import minIcon from '../styles/icons/general/min_icon.svg';
-import minHoverIcon from '../styles/icons/hover/min_icon_h.svg';
-import minsIcon from '../styles/icons/general/mins_icon.svg';
-import minsHoverIcon from '../styles/icons/hover/mins_icon_h.svg';
-import maxIcon from '../styles/icons/general/max_icon.svg';
-import maxHoverIcon from '../styles/icons/hover/max_icon_h.svg';
-import TelemetryService from './telemetry';
+import closeIcon from '!!raw-loader!../styles/icons/general/close_icon.svg';  //eslint-disable-line
+import closeHoverIcon from '!!raw-loader!../styles/icons/hover/close_icon_h.svg';  //eslint-disable-line
+import fullsIcon from '!!raw-loader!../styles/icons/general/fulls_icon.svg';  //eslint-disable-line
+import fullsHoverIcon from '!!raw-loader!../styles/icons/hover/fulls_icon_h.svg';  //eslint-disable-line
+import minIcon from '!!raw-loader!../styles/icons/general/min_icon.svg';  //eslint-disable-line
+import minHoverIcon from '!!raw-loader!../styles/icons/hover/min_icon_h.svg';  //eslint-disable-line
+import minsIcon from '!!raw-loader!../styles/icons/general/mins_icon.svg';  //eslint-disable-line
+import minsHoverIcon from '!!raw-loader!../styles/icons/hover/mins_icon_h.svg';  //eslint-disable-line
+import maxIcon from '!!raw-loader!../styles/icons/general/max_icon.svg';  //eslint-disable-line
+import maxHoverIcon from '!!raw-loader!../styles/icons/hover/max_icon_h.svg';  //eslint-disable-line
 
 /**
  * @typedef {Object} DeviceProperties
