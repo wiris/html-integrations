@@ -7,7 +7,7 @@
   },
   "scripts": {
     "prestart": "cd demos/html5/ckeditor5 & rm -r package-lock.json & npm i",
-    "start": "npm i && lerna bootstrap",
+    "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
     "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules"
