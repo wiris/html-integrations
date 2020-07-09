@@ -5,7 +5,7 @@
   ],
   "command": {
     "version": {
-      "allowBranch": ["stable"],
+      "allowBranch": ["stable", "master"],
       "exact": "true"
     }
   },
