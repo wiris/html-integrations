@@ -53,10 +53,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: "./puppeteer/setup.js",
+  globalSetup: './puppeteer/setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: "./puppeteer/teardown.js",
+  globalTeardown: './puppeteer/teardown.js',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -139,7 +139,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "./puppeteer/puppeteer_environment.js",
+  testEnvironment: './puppeteer/puppeteer_environment.js',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
