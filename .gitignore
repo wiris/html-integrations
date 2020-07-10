@@ -106,3 +106,6 @@ dist
 
 ## Compiled output
 /output/
+
+# Reports for the jest tests
+test-report.html*
