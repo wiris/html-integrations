@@ -10,19 +10,24 @@
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
-    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules"
+    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules",
+    "test": "cd packages/mathtype-html-integration-devkit && jest",
+    "lint": "npm i -g eslint && eslint . --ext .js && cd packages/mathtype-html-integration-devkit && npx eslint src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^23.18.0",
-    "stylelint": "^13.3.2",
-    "stylelint-config-standard": "^20.0.0",
-    "html-validate": "^2.20.0",
     "fs-extra": "^8.1.0",
     "html-validate": "^2.20.0",
-    "lerna": "^3.22.1",
+    "husky": "^4.2.5",
+    "lerna": "^3.20.2",
     "rimraf": "^3.0.0",
     "stylelint": "^13.3.2",
     "stylelint-config-standard": "^20.0.0"
