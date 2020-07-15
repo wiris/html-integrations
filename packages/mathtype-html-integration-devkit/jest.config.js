@@ -18,10 +18,10 @@ module.exports = {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  collectCoverage: true,
+  // collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['<rootDir>/src/**'],
+  // collectCoverageFrom: ['<rootDir>/src/**'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -32,10 +32,10 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  reporters: [
-    'lcov',
-    'test-summary',
-  ],
+  // reporters: [
+  //   'lcov',
+  //   'test-summary',
+  // ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
@@ -50,10 +50,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: './puppeteer/setup.js',
+  // globalSetup: './puppeteer/setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: './puppeteer/teardown.js',
+  // globalTeardown: './puppeteer/teardown.js',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -136,7 +136,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: './puppeteer/puppeteer_environment.js',
+  // testEnvironment: './puppeteer/puppeteer_environment.js',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
