@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 // For a detailed explanation regarding each configuration property, visit:
-// https://jestjs.io/docs/en/configuration.html
-
+// https://jestjs.io/docs/en/configuration.html'
 module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -19,10 +18,10 @@ module.exports = {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  // collectCoverage: false,
+  collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  // collectCoverageFrom: null,
+  collectCoverageFrom: ['<rootDir>/src/**'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -33,12 +32,10 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  reporters: [
+    'lcov',
+    'test-summary',
+  ],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
