@@ -1,0 +1,6 @@
+**/node_modules/
+**/dist/
+node_modules/
+webpack.config.js*
+packages/mathtype-html-integration-devkit/
+**/e2e/
