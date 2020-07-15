@@ -11,7 +11,7 @@
     "poststart": "lerna run compile -- npm",
     "clean": "npx lerna run clean & npx rimraf output",
     "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules",
-    "test": "cd packages/mathtype-html-integration-devkit && jest",
+    "test": "cd packages/mathtype-html-integration-devkit && npm i && jest",
     "lint": "npm i -g eslint && eslint . --ext .js && cd packages/mathtype-html-integration-devkit && npx eslint src"
   },
   "husky": {
