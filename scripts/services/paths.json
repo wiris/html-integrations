@@ -1,3 +1,25 @@
 {
-    "devkit": "./packages/mathtype-html-integration-devkit/"
+    "devkit": "./packages/mathtype-html-integration-devkit/",
+    "mathCKEditor4": "./packages/mathtype-ckeditor4/",
+    "mathCKEditor5": "./packages/mathtype-ckeditor5/",
+    "mathFroala2": "./packages/mathtype-froala/",
+    "mathFroala3": "./packages/mathtype-froala3/",
+    "mathGeneric": "./packages/mathtype-generic/",
+    "mathTinyMCE4": "./packages/mathtype-tinymce4/",
+    "mathTinyMCE5": "./packages/mathtype-tinymce5/",
+    "reactCKEditor5": "./demos/react/ckeditor5/",
+    "reactFroala3": "./demos/react/froala3/",
+    "reactGeneric": "./demos/react/generic/",
+    "reactTinyMCE5": "./demos/react/tinymce5/",
+    "angularCKEditor5": "./demos/angular/ckeditor5/",
+    "angularFroala3": "./demos/angular/froala3/",
+    "angularGeneric": "./demos/angular/generic/",
+    "angularTinyMCE5": "./demos/angular/tinymce5/",
+    "html5CKEditor4": "./demos/html5/ckeditor4/",
+    "html5CKEditor5": "./demos/html5/ckeditor5/",
+    "html5Froala2": "./demos/html5/froala2/",
+    "html5Froala3": "./demos/html5/froala3/",
+    "html5Generic": "./demos/html5/generic/",
+    "html5TinyMCE4": "./demos/html5/tinymce4/",
+    "html5TinyMCE5": "./demos/html5/tinymce5/"
 }
