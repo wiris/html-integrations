@@ -33,5 +33,10 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "license": "MIT",
-  "author": "WIRIS Team (http://www.wiris.com)"
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "dependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-jest": "^26.1.0"
+  }
 }
