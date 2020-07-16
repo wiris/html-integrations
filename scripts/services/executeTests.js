@@ -4,8 +4,8 @@ const { exec } = require('child_process');
 const process = require('process');
 
 /**
- * Install all the dependencies of the entire project
- * to be able to execute tests later.
+ * Install all the dependencies of the specified folder in the route parameter
+ * to be able to execute its tests later.
  */
 const installDeps = route => new Promise((resolve, reject) => {
   exec(`npm install --prefix ${path.normalize(route)}`, (err, stdout, stderr) => {
@@ -17,7 +17,7 @@ const installDeps = route => new Promise((resolve, reject) => {
 });
 
 /**
- * Executes all the tests of the project in paralel.
+ * Executes all the tests of the route folder.
  */
 const runTests = route => new Promise((resolve, reject) => {
   // html-integration-devkit
@@ -30,14 +30,14 @@ const runTests = route => new Promise((resolve, reject) => {
 });
 
 /**
- * Executes the tests and the install for the devkit package.
+ * Executes the tests and the install for the folder package/demo.
  * The run in sequence as the install must be done before executing the tests.
  */
-const devkit = route => Promise.resolve(
+const sequenceExecution = route => Promise.resolve(
   installDeps(route).then((installOut) => {
     console.log(installOut);  //eslint-disable-line
     runTests(route).then((testsOut) => {
-    console.log(testsOut);  //eslint-disable-line
+      console.log(testsOut);  //eslint-disable-line
     });
   }),
 );
@@ -46,10 +46,12 @@ const devkit = route => Promise.resolve(
  * Execute all the tests and installs of the project.
  */
 const executeTests = () => new Promise((resolve) => {
+  // require the folder that contains the paths
   const paths = require('./paths.json'); // eslint-disable-line global-require
   resolve(
     Promise.all([
-      devkit(paths.devkit),
+      sequenceExecution(paths.devkit),
+    //   sequenceExecution(paths.html5CKEditor4),
     ]),
   );
 });
@@ -67,5 +69,5 @@ if (!module.parent) {
   // Execute all the tests and resolve when finished
   executeTests();
 } else { // This file is being imported as a module.
-  module.exports = runTests;
+  module.exports = executeTests;
 }
