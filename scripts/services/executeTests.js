@@ -47,12 +47,19 @@ const sequenceExecution = route => Promise.resolve(
  */
 const executeTests = () => new Promise((resolve) => {
   // require the folder that contains the paths
-  const paths = require('./paths.json'); // eslint-disable-line global-require
+  const pathsMap = require('./paths.json'); // eslint-disable-line global-require
+
+  // Save all the routes in a object to run the test execution in one line
+  const pathsRoutes = Object.values(pathsMap);  //eslint-disable-line
+
   resolve(
-    Promise.all([
-      sequenceExecution(paths.devkit),
-    //   sequenceExecution(paths.html5CKEditor4),
-    ]),
+    Promise.all(
+    //   pathsRoutes.map(async (route) => { sequenceExecution(route); }),  // Run all the tests
+      [ // Run the tests by package
+        sequenceExecution(pathsMap.devkit),
+        sequenceExecution(pathsMap.html5CKEditor4),
+      ],
+    ),
   );
 });
 
