@@ -57,7 +57,7 @@ const executeTests = () => new Promise((resolve) => {
     //   pathsRoutes.map(async (route) => { sequenceExecution(route); }),  // Run all the tests
       [ // Run the tests by package
         sequenceExecution(pathsMap.devkit),
-        sequenceExecution(pathsMap.html5CKEditor4),
+        // sequenceExecution(pathsMap.html5CKEditor4),
       ],
     ),
   );
