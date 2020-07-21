@@ -26,6 +26,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Analyzing and fixing code](#analyzing-and-fixing-code)
   - [Versioning](#versioning)
   - [Publishing](#publishing)
+  - [Testing](#testing)
 - [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
 - [Privacy policy](#privacy-policy)
@@ -259,6 +260,20 @@ git dependencies).
 This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
+
+### Testing
+
+This project has tests to check if the code made complies with the required standards. 
+
+All tests can be executed with the `npm test` command from the root of the project. Tests will be run on all wiris packages and all the demos that exist to test them.
+
+There is also another way to run the tests just on a plugin or demo. First you will have to go to the desired folder and run the tests: 
+
+```sh
+html-integrations$ cd $DESIRED_FOLDER$
+html-integrations/DESIRED_FOLDER$ npm install
+html-integrations/DESIRED_FOLDER$ npm test
+```
 
 ## Examples for developers
 
