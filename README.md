@@ -223,24 +223,13 @@ It is possible to automatically fix some of the errors, just add the `--fix` opt
 
 ### Testing 
 
-> - Fem servir jest per a tots els tests. 
+This project uses the [jest](#https://jestjs.io/) framework to test our package code and developer code examples.
 
-> - Fem/farem 3 tipus de tests: unitaris, e2e i integració.
-
-> - El nostre projecte inclou tests a nivell de packages i de demos.  
-
-> - En el cas dels e2e fem servir pupeteer.
-
-"Aquest projecte fa servir [jest](#) per testejar el codi dels nostres paquets i els exemples per desenvolupadores."
-
-"Hem preparat tests unitaris, d'integratió i e2e; en aquests últims, fem servir la extensió Pupeeteer."
-
-
-> - La comanda habitual per engegar un test i a quin/s directori/s.
+We have prepared a set of unit tests, integration tests and e2e; for the latter we have used an extension called Pupeeteer.
 
 **Run all tests at once**
 
-All tests can be executed with the `npm test` command from the root of the project. Tests will be run on all wiris packages and all the demos that exist to test them.
+All tests can be executed with the `npm test` command from the root of the project. Tests will be run on all wiris packages and all the demos that exists.
 
 ```sh
   $ npm test
@@ -248,7 +237,7 @@ All tests can be executed with the `npm test` command from the root of the proje
 
 **Run all tests for a certain package/demo**
 
-Podeu executar els tests en concret d'un paquet o un exemple de codi, executant en el seu directori la comanda `npm test`.
+You can run the specific tests of a package or one of the demos as example code, by executing in your directory the `npm test` command.
 
 For example
 
@@ -257,11 +246,6 @@ For example
   $ npm install
   $ npm test
 ```
-
-
-// This project has tests to check if the code made complies with the required standards. 
-// There is also another way to run the tests just on a plugin or demo. First you will have to go to the desired folder and run the tests: 
-
 
 ### Versioning
 
