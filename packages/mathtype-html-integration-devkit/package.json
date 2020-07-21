@@ -27,7 +27,8 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "clean": "npx rimraf core.js",
-    "lint": "eslint --quiet src"
+    "lint": "eslint --quiet src",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
