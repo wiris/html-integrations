@@ -24,9 +24,9 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
     - [Compile packages by technology](#compile-packages-by-technology)
     - [Cleaning up](#cleaning-up)
   - [Analyzing and fixing code](#analyzing-and-fixing-code)
+  - [Testing](#testing)
   - [Versioning](#versioning)
   - [Publishing](#publishing)
-  - [Testing](#testing)
 - [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
 - [Privacy policy](#privacy-policy)
@@ -201,19 +201,67 @@ This will require you to `npm i` and `npm start` in the root again.
 
 There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 
-* To make a check of the .js files
-    ```
-    $ npx eslint --quiet [options] <dir|file|glob>*
-    ```
-* To make a check of the .css files
-    ```
+**Check all the .js files**
+
+```sh
+  $ npx eslint --quiet [options] <dir|file|glob>*
+```
+
+**Check all the .css files**
+
+```sh
     $ npx stylelint [options] <dir|file|glob>*
-    ```
-* To make a check of the .html files
-    ```
+```
+
+**Check all the .html files**
+    
+```sh
     $ html-validate [options] <dir|file|glob>*
-    ```
+```
+
 It is possible to automatically fix some of the errors, just add the `--fix` option in the desired command and run it.
+
+### Testing 
+
+> - Fem servir jest per a tots els tests. 
+
+> - Fem/farem 3 tipus de tests: unitaris, e2e i integració.
+
+> - El nostre projecte inclou tests a nivell de packages i de demos.  
+
+> - En el cas dels e2e fem servir pupeteer.
+
+"Aquest projecte fa servir [jest](#) per testejar el codi dels nostres paquets i els exemples per desenvolupadores."
+
+"Hem preparat tests unitaris, d'integratió i e2e; en aquests últims, fem servir la extensió Pupeeteer."
+
+
+> - La comanda habitual per engegar un test i a quin/s directori/s.
+
+**Run all tests at once**
+
+All tests can be executed with the `npm test` command from the root of the project. Tests will be run on all wiris packages and all the demos that exist to test them.
+
+```sh
+  $ npm test
+```
+
+**Run all tests for a certain package/demo**
+
+Podeu executar els tests en concret d'un paquet o un exemple de codi, executant en el seu directori la comanda `npm test`.
+
+For example
+
+```sh
+  $ cd packages/mathtype-html-integration-devkit/generic
+  $ npm install
+  $ npm test
+```
+
+
+// This project has tests to check if the code made complies with the required standards. 
+// There is also another way to run the tests just on a plugin or demo. First you will have to go to the desired folder and run the tests: 
+
 
 ### Versioning
 
@@ -261,19 +309,7 @@ This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
 
-### Testing
 
-This project has tests to check if the code made complies with the required standards. 
-
-All tests can be executed with the `npm test` command from the root of the project. Tests will be run on all wiris packages and all the demos that exist to test them.
-
-There is also another way to run the tests just on a plugin or demo. First you will have to go to the desired folder and run the tests: 
-
-```sh
-html-integrations$ cd $DESIRED_FOLDER$
-html-integrations/DESIRED_FOLDER$ npm install
-html-integrations/DESIRED_FOLDER$ npm test
-```
 
 ## Examples for developers
 
