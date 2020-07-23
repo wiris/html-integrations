@@ -6,7 +6,7 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  bail: 10,
+  // bail: 10,
 
   // Respect "browser" field in package.json when resolving modules
   // browser: false,
@@ -50,10 +50,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: './puppeteer/setup.js',
+  // globalSetup: './puppeteer/setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: './puppeteer/teardown.js',
+  // globalTeardown: './puppeteer/teardown.js',
 
   // A set of global variables that need to be available in all test environments
   globals: {
