@@ -1,28 +1,23 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 const NodeEnvironment = require('jest-environment-node');
-const fs = require('fs');
-const path = require('path');
-const puppeteer = require('puppeteer');
-const os = require('os');
-
-const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
+const { exec } = require('child_process');
+const waitForLocalhost = require('wait-for-localhost');
+const config = require('./config');
 
 class PuppeteerEnvironment extends NodeEnvironment {
+  // eslint-disable-next-line
   constructor(config) {
     super(config);
   }
 
   async setup() {
     await super.setup();
-    // get the wsEndpoint
-    const wsEndpoint = fs.readFileSync(path.join(DIR, 'wsEndpoint'), 'utf8');
-    if (!wsEndpoint) {
-      throw new Error('wsEndpoint not found');
-    }
 
-    // connect to puppeteer
-    this.global.__BROWSER__ = await puppeteer.connect({
-      browserWSEndpoint: wsEndpoint,
-    });
+    this.global.config = config;
+
+    // Instructuions that will open the current demo and wait until ready
+    exec('webpack-dev-server');
+    await waitForLocalhost({ port: 8006 });
   }
 
   async teardown() {
