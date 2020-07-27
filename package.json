@@ -37,6 +37,7 @@
   "dependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
-    "babel-jest": "^26.1.0"
+    "babel-jest": "^26.1.0",
+    "wait-for-localhost": "^3.3.0"
   }
 }
