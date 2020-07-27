@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@tinymce/tinymce-react": "^3.6.0",
     "@wiris/mathtype-tinymce5": "^7.17.0",
+    "cross-env": "^7.0.2",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -24,8 +25,8 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "deploy": "react-scripts start",
+    "start": "cross-env PORT=3006 react-scripts start",
+    "deploy": "cross-env PORT=3006 react-scripts start",
     "compile-package": "cd ../../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && react-scripts start",
     "build": "react-scripts build",

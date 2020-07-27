@@ -65,7 +65,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "tinymce5:build"
+            "browserTarget": "tinymce5:build",
+            "port": 4006
           },
           "configurations": {
             "production": {

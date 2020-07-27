@@ -20,6 +20,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@wiris/mathtype-ckeditor5": "^7.20.0",
     "ckeditor5": "^19.0.0",
+    "cross-env": "^7.0.2",
     "html-loader": "^1.1.0",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
@@ -37,8 +38,8 @@
     "html-validate": "^2.20.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "deploy": "react-scripts start",
+    "start": "cross-env PORT=3002 react-scripts start",
+    "deploy": "cross-env PORT=3002 react-scripts start",
     "build-dev": "lerna bootstrap && cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - && npm install ../../../packages/mathtype-ckeditor5/$filename && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

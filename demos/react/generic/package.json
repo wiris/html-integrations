@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@wiris/mathtype-generic": "^7.20.0",
     "@wiris/mathtype-html-integration-devkit": "^1.1.0",
+    "cross-env": "^7.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -22,8 +23,8 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "deploy": "react-scripts start",
+    "start": "cross-env PORT=3007 react-scripts start",
+    "deploy": "cross-env PORT=3007 react-scripts start",
     "compile-package": "cd ../../../packages/mathtype-generic/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && react-scripts start",
     "build": "react-scripts build",
