@@ -2,13 +2,14 @@ const path = require('path');
 const { emitWarning } = require('process');
 const { exec } = require('child_process');
 const process = require('process');
+const waitForLocalhost = require('wait-for-localhost');
 
 /**
  * Install all the dependencies of the specified folder in the route parameter
  * to be able to execute its tests later.
  */
-const installDeps = route => new Promise((resolve, reject) => {
-  exec(`npm install --prefix ${path.normalize(route)}`, (err, stdout, stderr) => {
+const installDeps = route => new Promise(async (resolve, reject) => {
+  exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
     if (err) {
       reject(err);
     }
@@ -17,11 +18,39 @@ const installDeps = route => new Promise((resolve, reject) => {
 });
 
 /**
+ * This function is dedicated to open a server. First, install dependencies and then open the server
+ * Doing that 'cd' command just applies on the exec function, not on the project, 
+ * so we will not change folder but execute the command un that folder
+ */
+async function openServer(route) {
+  const installOut = await installDeps(route);
+  if (route.demo) {
+    // Instructuions that will open the current demo server and wait until ready
+    exec(`cd ${path.normalize(route.path)} && webpack-dev-server`);
+    await waitForLocalhost({ port: route.port });
+    return (installOut);
+  } else {
+    return (installOut);
+  }
+}
+
+/**
  * Executes all the tests of the route folder.
  */
 const runTests = route => new Promise((resolve, reject) => {
-  // html-integration-devkit
-  exec(`jest --config=${route}jest.config.js ${route}`, (err, stdout, stderr) => {
+  exec(`jest --config=${path.normalize(route.path)}jest.config.js ${path.normalize(route.path)}`, (err, stdout, stderr) => {
+    if (err) {
+      reject(err);
+    }
+    resolve({ derr: stderr });
+  });
+});
+
+/**
+ * Close server
+ */
+const closeServer = route => new Promise((resolve, reject) => {
+  exec(`fuser -k ${route.port}/tcp`, (err, stdout, stderr) => {
     if (err) {
       reject(err);
     }
@@ -34,10 +63,11 @@ const runTests = route => new Promise((resolve, reject) => {
  * The run in sequence as the install must be done before executing the tests.
  */
 const sequenceExecution = route => Promise.resolve(
-  installDeps(route).then((installOut) => {
+  openServer(route).then((installOut) => {
     console.log(installOut);  //eslint-disable-line
     runTests(route).then((testsOut) => {
       console.log(testsOut);  //eslint-disable-line
+      if (route.demo) closeServer(route);
     });
   }),
 );
@@ -47,16 +77,17 @@ const sequenceExecution = route => Promise.resolve(
  */
 const executeTests = () => new Promise((resolve) => {
   // require the folder that contains the paths
-  const pathsMap = require('./paths.json'); // eslint-disable-line global-require
-
+  const testFolders = require('./paths.json'); // eslint-disable-line global-require
+  
   // Save all the routes in a object to run the test execution in one line
-  const pathsRoutes = Object.values(pathsMap);  //eslint-disable-line
+  const pathsRoutes = Object.values(testFolders);  //eslint-disable-line
 
   resolve(
     Promise.all(
     //   pathsRoutes.map(async (route) => { sequenceExecution(route); }),  // Run all the tests
       [ // Run the tests by package
-        sequenceExecution(pathsMap.devkit),
+        sequenceExecution(testFolders.devkit),
+        // sequenceExecution(testFolders.html5Froala3),
         // sequenceExecution(pathsMap.html5CKEditor4),
       ],
     ),
