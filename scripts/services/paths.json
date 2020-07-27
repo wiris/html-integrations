@@ -97,7 +97,7 @@
     "html5Froala3": {
         "path": "./demos/html5/froala3/",
         "demo": true,
-        "port": "8006"
+        "port": "8004"
     },
     "html5Generic": {
         "path": "./demos/html5/generic/",

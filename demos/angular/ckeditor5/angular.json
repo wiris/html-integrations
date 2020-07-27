@@ -62,7 +62,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ckeditor5:build"
+            "browserTarget": "ckeditor5:build",
+            "port": 4002
           },
           "configurations": {
             "production": {
