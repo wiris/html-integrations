@@ -108,4 +108,4 @@ dist
 /output/
 
 # Reports for the jest tests
-test-report.html*
+**test-report.html
