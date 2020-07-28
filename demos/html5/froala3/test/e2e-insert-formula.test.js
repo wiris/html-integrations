@@ -27,7 +27,7 @@ describe('e2e test to check that a formula is inserted',
     // Execute before each test of the file to open the demo page
     beforeEach(async () => {
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
-      await page.goto('http://localhost:8006/', { waitUntil: 'load', timeout: 0 });
+      await page.goto('http://localhost:8004/', { waitUntil: 'load', timeout: 0 });
     });
 
     // Execute after each test of the file to close the demo page
