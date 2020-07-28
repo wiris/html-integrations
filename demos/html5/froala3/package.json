@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-froala3": "^7.20.0",
-    "@wiris/mathtype-html-integration-devkit": "1.1.0",
+    "@wiris/mathtype-html-integration-devkit": "^1.1.0",
     "froala-editor": "^3.1.1",
     "wait-for-localhost": "^3.2.0"
   },
