@@ -77,7 +77,19 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  // Transform paths that jest does not recognize into paths that does recognize
+  moduleNameMapper: {
+    '!!raw-loader!../styles/icons/general/close_icon.svg': '../styles/icons/general/close_icon.svg',
+    '!!raw-loader!../styles/icons/hover/close_icon_h.svg': '../styles/icons/hover/close_icon_h.svg',
+    '!!raw-loader!../styles/icons/general/fulls_icon.svg': '../styles/icons/general/fulls_icon.svg',
+    '!!raw-loader!../styles/icons/hover/fulls_icon_h.svg': '../styles/icons/hover/fulls_icon_h.svg',
+    '!!raw-loader!../styles/icons/general/min_icon.svg': '../styles/icons/general/min_icon.svg',
+    '!!raw-loader!../styles/icons/hover/min_icon_h.svg': '../styles/icons/hover/min_icon_h.svg',
+    '!!raw-loader!../styles/icons/general/mins_icon.svg': '../styles/icons/general/mins_icon.svg',
+    '!!raw-loader!../styles/icons/hover/mins_icon_h.svg': '../styles/icons/hover/mins_icon_h.svg',
+    '!!raw-loader!../styles/icons/general/max_icon.svg': '../styles/icons/general/max_icon.svg',
+    '!!raw-loader!../styles/icons/hover/max_icon_h.svg': '../styles/icons/hover/max_icon_h.svg'
+},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -171,7 +183,16 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: null,
+  /**
+   * It accepts babel jest for the ES6 files
+   * It recognizes svg files from raw-loader
+   * It accepts css imports from ES6 files
+   */
+  transform: {
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.svg$": "jest-raw-loader",
+    '^.+\\.css$': 'jest-css-modules-transform'
+  }
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
