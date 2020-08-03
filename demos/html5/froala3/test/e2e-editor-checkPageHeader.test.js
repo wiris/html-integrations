@@ -6,7 +6,7 @@ const timeout = 10000;
 let browser;
 let page;
 
-describe('Insert Formula. TAG = ',
+describe('e2e test to check the page header. TAG = Editor',
   () => {
     // Execute before all the file tests to define the browser with puppeteer
     beforeAll(async () => {
@@ -40,18 +40,11 @@ describe('Insert Formula. TAG = ',
       await page.close();
     });
 
-    /**
-     * This test will try to insert a formula and check that the created image exists
-     */
-    it('Insert Formula test', async () => {
-      jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
-      await page.click('#wirisEditor-1');
-      await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
-      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
-      await page.waitFor(1500);
-      await page.click('[id="wrs_modal_button_accept[0]"]');
-      await page.waitFor(1000);
-      expect(await page.waitFor('body > [id="editor"] > div.fr-wrapper > div > p.text:nth-child(1) > img.Wirisformula')).toBeDefined();
+    // Waits for the header page to be defined and expects the title
+    it('Check formula header', async () => {
+      // const element = await page.$('#header_title_name');
+      const title = await page.$eval('#header_title_name', el => el.textContent); // await page.evaluate(element => element.textContent, element);
+      expect(title).toBe('Mathtype for Froala');
     });
   },
   timeout);

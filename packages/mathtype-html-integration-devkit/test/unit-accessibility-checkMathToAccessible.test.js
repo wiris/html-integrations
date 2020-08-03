@@ -1,9 +1,15 @@
 import Accessibility from "../src/accessibility";
 import Core from '../src/core.src';
 
-describe('e2e test to check that a formula is inserted',
+/**
+ * This tests is focused on check the accessibility class and his unique function
+ */
+describe('Test the acessibility class. TAG = Accessibility',
   () => {
-    // Call the core module to initialyze properties that will be needed when creating the accessible text
+    /** 
+     * Before the execution of all the tests in this file is necessary to:
+     * init the core module to initialyze properties that will be needed when calling the function to be tested.
+     */
     beforeAll(async () => {
       const serviceProviderProperties = {
         URI: 'https://www.wiris.net/demo/plugins/app',
@@ -13,7 +19,11 @@ describe('e2e test to check that a formula is inserted',
       await new Core(corePR).init();
   });
 
-    // Checks that the mathtoaccessible function returns the correct expected value
+    /** 
+     * Checks that the mathtoaccessible function returns the correct expected value with some input.
+     * Define some parameters to call the function corretly.
+     * Core class is expected to be initialyzed.
+     */
     it('Check 1 + 2 accessible text return', async () => {
       // Initialyze the parameters for the mathml to accesible function
       const mathml = '<math><mn>1</mn><mo>+</mo><mn>2</mn></math>';
