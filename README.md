@@ -40,7 +40,12 @@ It also uses the `npx` tool which comes bundled with `npm`.
 
 To install node and npm follow this [guide-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), and use this other one [guide-git](https://www.atlassian.com/git/tutorials/install-git) to install git.
 
-[Lerna](https://lerna.js.org/) is used as a cornerstone of the project structure. Its main features are explained in this guide.
+[Lerna] is used as a cornerstone of the project structure. Its main features are explained in this guide.
+
+In case you want to run the automated tests included on this repository, you will need to install [Jest] on your local machine.
+
+[lerna]: https://lerna.js.org/
+[jest]: https://jestjs.io
 
 ## File Manifest
 

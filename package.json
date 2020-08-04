@@ -27,6 +27,7 @@
     "fs-extra": "^8.1.0",
     "html-validate": "^2.20.0",
     "husky": "^4.2.5",
+    "jest": "^26.2.2",
     "lerna": "^3.20.2",
     "rimraf": "^3.0.0",
     "stylelint": "^13.3.2",
