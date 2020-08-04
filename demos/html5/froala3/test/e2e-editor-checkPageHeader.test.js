@@ -6,6 +6,9 @@ const timeout = 10000;
 let browser;
 let page;
 
+/**
+ * This test checks that the demo is loaded correctly with the expected html file
+ */
 describe('e2e test to check the page header. TAG = Editor',
   () => {
     // Execute before all the file tests to define the browser with puppeteer

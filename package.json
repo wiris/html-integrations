@@ -21,14 +21,14 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.0",
     "eslint-plugin-jest": "^23.18.0",
     "fs-extra": "^8.1.0",
     "html-validate": "^2.20.0",
     "husky": "^4.2.5",
     "jest": "^26.2.2",
-    "lerna": "^3.20.2",
+    "lerna": "^3.22.1",
     "rimraf": "^3.0.0",
     "stylelint": "^13.3.2",
     "stylelint-config-standard": "^20.0.0"

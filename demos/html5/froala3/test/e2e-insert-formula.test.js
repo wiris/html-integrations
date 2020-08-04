@@ -6,7 +6,11 @@ const timeout = 10000;
 let browser;
 let page;
 
-describe('Insert Formula. TAG = ',
+/**
+ * This section is dedicated to tests the insertion of a formula in the froala3 demo.
+ * It should test the MT formula insertion and the CT formula insertion
+ */
+describe('Insert Formula. TAG = Insert',
   () => {
     // Execute before all the file tests to define the browser with puppeteer
     beforeAll(async () => {

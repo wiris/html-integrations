@@ -4,6 +4,10 @@ const puppeteer = require('puppeteer');
 let browser;
 let page;
 
+/**
+ * The objective is to check that the demo loads correctly the buttons to insert MT and CT formula.
+ * It also checks that they can be clicked once created.
+ */
 describe('Check buttons click and visibility. TAG = Device',
   () => {
     // Execute before all the file tests to define the browser with puppeteer

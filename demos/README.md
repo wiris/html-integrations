@@ -12,6 +12,7 @@
     - [Environment set up](#environment-set-up)
     - [How to run a demo with the local package](#how-to-run-a-demo-with-the-local-package)
     - [Linting files](#linting-files)
+- [Testing](#testing)
 - [Updates](#updates)
 - [Contact information](#contact-information)
 - [License](#license)
@@ -131,6 +132,23 @@ $ html-validate [options] <dir|file|glob>
 ```
 
 In case you want to automatically apply the possible fixes, just add the --fix option in the desired command.
+
+## Testing
+
+To run the tests for the demos you should wo to the framework and editor that needs to be tested.
+
+```sh
+demos$ cd [framework]/[editor]
+```
+
+Then the demo server has to be opened with one of the commands dedicated to that. 
+When the demo is ready, you can finally run the following command to test:
+
+```sh
+demos/[framework]/[editor]$ npm test
+```
+
+This command executes all the tests of the desired demo. If you want to run the tests with other options that are not currentply in the desired demo, you can go on the [Jest documentation](https://jestjs.io/en/) and change the configurations or execute the test with other flags.
 
 ## Updates
 
