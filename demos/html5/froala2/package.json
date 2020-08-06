@@ -8,7 +8,7 @@
     "compile-package": "cd ../../../packages/mathtype-froala/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && webpack-dev-server --open",
     "start": "webpack-dev-server --open",
-    "deploy": "webpack-dev-server --open",
+    "serve": "webpack-dev-server",
     "build": "webpack --mode production",
     "lint": "npx eslint --quiet src/ webpack.config.js",
     "stylelint": "npx stylelint '**/*.css'",

@@ -8,7 +8,7 @@ const waitForLocalhost = require('wait-for-localhost');
  * Install all the dependencies of the specified folder in the route parameter
  * to be able to execute its tests later.
  */
-const installDeps = route => new Promise(async (resolve, reject) => {
+const installDeps = route => new Promise((resolve, reject) => {
   exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
     if (err) {
       reject(err);
@@ -29,9 +29,8 @@ async function openServer(route) {
     exec(`cd ${path.normalize(route.path)} && webpack-dev-server`);
     await waitForLocalhost({ port: route.port });
     return (installOut);
-  } else {
-    return (installOut);
-  }
+  } 
+  return (installOut);
 }
 
 /**

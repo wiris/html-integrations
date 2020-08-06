@@ -23,7 +23,7 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
-    "deploy": "cross-env PORT=3004 react-scripts start",
+    "serve": "BROWSER=none cross-env PORT=3004 react-scripts start",
     "start": "cross-env PORT=3004 react-scripts start",
     "build": "react-scripts build",
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
