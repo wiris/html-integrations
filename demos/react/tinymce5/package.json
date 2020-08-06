@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "cross-env PORT=3006 react-scripts start",
-    "deploy": "cross-env PORT=3006 react-scripts start",
+    "serve": "BROWSER=none cross-env PORT=3006 react-scripts start",
     "compile-package": "cd ../../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && react-scripts start",
     "build": "react-scripts build",

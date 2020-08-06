@@ -141,7 +141,7 @@ To run the tests for the demos you should wo to the framework and editor that ne
 demos$ cd [framework]/[editor]
 ```
 
-Then the demo server has to be opened with one of the commands dedicated to that. 
+Then the demo server has to be opened with one of the [commands](#how-to-run-a-demo) dedicated to that. This means you have to run the demo, but we recommend you to use the command `npm serve` that will serve the demo but won't open the browser automatically.
 When the demo is ready, you can finally run the following command to test:
 
 ```sh
@@ -149,6 +149,8 @@ demos/[framework]/[editor]$ npm test
 ```
 
 This command executes all the tests of the desired demo. If you want to run the tests with other options that are not currentply in the desired demo, you can go on the [Jest documentation](https://jestjs.io/en/) and change the configurations or execute the test with other flags.
+
+Remember to close the demo so you can free the used port when you are done with the tests.
 
 ## Updates
 
