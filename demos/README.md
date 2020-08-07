@@ -135,14 +135,19 @@ In case you want to automatically apply the possible fixes, just add the --fix o
 
 ## Testing
 
-To run the tests for the demos you should wo to the framework and editor that needs to be tested.
+There are a set of tests for each demo to validate code and expected behavior.
+
+Open a Terminal window, and follow these steps to run these tests.
 
 ```sh
 demos$ cd [framework]/[editor]
 ```
 
-Then the demo server has to be opened with one of the [commands](#how-to-run-a-demo) dedicated to that. This means you have to run the demo, but we recommend you to use the command `npm serve` that will serve the demo but won't open the browser automatically.
-When the demo is ready, you can finally run the following command to test:
+Then, run the demo by following the commands on the [How to run a demo](#how-to-run-a-demo) section, above.
+
+> **Hint**: Use the command `npm serve` to run the demo without openning a new browser window automatically.
+
+When the demo is ready, open a new terminal window and use the following command to run the tests:
 
 ```sh
 demos/[framework]/[editor]$ npm test

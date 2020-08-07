@@ -228,9 +228,7 @@ It is possible to automatically fix some of the errors, just add the `--fix` opt
 
 ### Testing 
 
-This project uses the [jest](#https://jestjs.io/) framework to test our package code and developer code examples.
-
-We have prepared a set of unit tests, integration tests and e2e; for the latter we have used an extension called Pupeeteer.
+We have prepared a set of tests to validate our packages code and developer code examples. There are unit, integration and e2e tests; for the latter we have used an extension called Pupeeteer.
 
 **Run all tests at once**
 
@@ -247,16 +245,18 @@ You can run the specific tests of a package or one of the demos as example code,
 For example
 
 ```sh
+  # Run the MathType package demo.
   $ cd packages/mathtype-html-integration-devkit/generic
   $ npm install
+  $ npm start
+  # Wait for the demo to start.
+  # Then, run the tests on a new Terminal window.
   $ npm test
 ```
 
 ### Versioning
 
-In this project [semantic](https://semver.org),
-[independent](https://github.com/lerna/lerna#independent-mode) versioning is
-used.
+In this project [semantic](https://semver.org), [independent](https://github.com/lerna/lerna#independent-mode) versioning is used.
 
 The semantic version convention is applied:
 
@@ -272,7 +272,7 @@ number for each package that has changes, making a commit, and tagging it.
 In general, when publishing changes, just run:
 
 ```sh
-lerna version --exact
+  $ lerna version --exact
 ```
 
 This will prompt you with each package with changes since the last version
