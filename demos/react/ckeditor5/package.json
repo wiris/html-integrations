@@ -47,9 +47,6 @@
   },
   "author": "Carla Lara",
   "license": "MIT",
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

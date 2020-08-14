@@ -12,7 +12,7 @@
     "clean": "npx lerna run clean & npx rimraf output",
     "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules",
     "test": "node scripts/services/executeTests.js",
-    "lint": "npm i -g eslint && eslint . --ext .js && cd packages/mathtype-html-integration-devkit && npx eslint src"
+    "lint": "eslint . --ext .js"
   },
   "husky": {
     "hooks": {

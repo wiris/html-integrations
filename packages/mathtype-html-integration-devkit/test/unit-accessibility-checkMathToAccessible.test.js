@@ -6,7 +6,7 @@ import Core from '../src/core.src';
  */
 describe('Test the acessibility class. TAG = Accessibility',
   () => {
-    /** 
+    /**
      * Before the execution of all the tests in this file is necessary to:
      * init the core module to initialyze properties that will be needed
      * when calling the function to be tested.
@@ -14,11 +14,11 @@ describe('Test the acessibility class. TAG = Accessibility',
     beforeAll(async () => {
       const serviceProviderProperties = {
         URI: 'https://www.wiris.net/demo/plugins/app',
-        server: 'java'
-      }
-      const corePR = {serviceProviderProperties};
+        server: 'java',
+      };
+      const corePR = { serviceProviderProperties };
       await new Core(corePR).init();
-  });
+    });
 
     /**
      * Checks that the mathtoaccessible function returns the correct expected value with some input.

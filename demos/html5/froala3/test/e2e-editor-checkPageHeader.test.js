@@ -46,7 +46,7 @@ describe('e2e test to check the page header. TAG = Editor',
     // Waits for the header page to be defined and expects the title
     it('Check formula header', async () => {
       // const element = await page.$('#header_title_name');
-      const title = await page.$eval('#header_title_name', el => el.textContent); // await page.evaluate(element => element.textContent, element);
+      const title = await page.$eval('#header_title_name', (el) => el.textContent); // await page.evaluate(element => element.textContent, element);
       expect(title).toBe('Mathtype for Froala');
     });
   },
