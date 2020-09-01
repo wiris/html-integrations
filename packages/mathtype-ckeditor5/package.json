@@ -35,10 +35,10 @@
     "compile": "node ../../scripts/services/compile src/plugin.js ."
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-core": ">=18.0.0",
-    "@ckeditor/ckeditor5-engine": ">=18.0.0",
-    "@ckeditor/ckeditor5-ui": ">=18.0.0",
-    "@ckeditor/ckeditor5-widget": ">=18.0.0",
+    "@ckeditor/ckeditor5-core": ">=22.0.0",
+    "@ckeditor/ckeditor5-engine": ">=22.0.0",
+    "@ckeditor/ckeditor5-ui": ">=22.0.0",
+    "@ckeditor/ckeditor5-widget": ">=22.0.0",
     "@wiris/mathtype-html-integration-devkit": "1.4.0"
   }
 }
