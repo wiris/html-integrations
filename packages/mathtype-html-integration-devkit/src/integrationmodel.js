@@ -174,14 +174,7 @@ export default class IntegrationModel {
    */
   init() {
     // Check if language is an object and select the property necessary
-    const languageObject = this.getLanguage();
-
-    if (typeof (languageObject) === 'object') {
-      // eslint-disable-next-line no-prototype-builtins
-      if (languageObject.hasOwnProperty('ui')) {
-        this.language = languageObject.ui;
-      } else this.language = 'en';
-    } else this.language = languageObject;
+    this.language = this.getLanguage();
 
     // We need to wait until Core class is loaded ('onLoad' event) before
     // call the callback method.
