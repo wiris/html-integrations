@@ -354,7 +354,7 @@ export default class MathType extends Plugin {
 
         }
 
-        function createDataString( modelItem, viewWriter ) {
+        function createDataString( modelItem, { writer: viewWriter } ) {
 
             const htmlDataProcessor = new HtmlDataProcessor( viewWriter.document );
 
@@ -371,19 +371,19 @@ export default class MathType extends Plugin {
 
         }
 
-        function createViewWidget( modelItem, viewWriter ) {
+        function createViewWidget( modelItem, { writer: viewWriter } ) {
             const widgetElement = viewWriter.createContainerElement( 'span', {
                 class: 'ck-math-widget'
             } );
 
-            const mathUIElement = createViewImage( modelItem, viewWriter );
+            const mathUIElement = createViewImage( modelItem, { writer: viewWriter } );
 
             viewWriter.insert( viewWriter.createPositionAt( widgetElement, 0 ), mathUIElement );
 
             return toWidget( widgetElement, viewWriter );
         }
 
-        function createViewImage( modelItem, viewWriter ) {
+        function createViewImage( modelItem, { writer: viewWriter } ) {
 
             const htmlDataProcessor = new HtmlDataProcessor( viewWriter.document );
 
