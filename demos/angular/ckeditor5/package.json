@@ -35,7 +35,7 @@
     "@ckeditor/ckeditor5-link": ">=22.0.0",
     "@ckeditor/ckeditor5-list": ">=22.0.0",
     "@ckeditor/ckeditor5-paragraph": ">=22.0.0",
-    "@wiris/mathtype-ckeditor5": "file:../../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.23.0.tgz",
+    "@wiris/mathtype-ckeditor5": "^7.20.0",
     "resources": "file:../../../resources",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
