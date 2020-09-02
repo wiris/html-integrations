@@ -46,7 +46,6 @@ export default class CKEditor5Integration extends IntegrationModel {
             } else return 'en';
           } 
         return languageObject;
-        // return this.editorObject.config.get( 'language' );
     }
 
     /**
