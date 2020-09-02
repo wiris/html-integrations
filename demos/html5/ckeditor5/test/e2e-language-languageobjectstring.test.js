@@ -8,7 +8,7 @@ let page;
  * The objective is to check that the demo loads correctly the buttons to insert MT and CT formula.
  * It also checks that they can be clicked once created.
  */
-describe('Check buttons click and visibility. TAG = Device',
+describe('Check The language object. TAG = language',
   () => {
     // Execute before all the file tests to define the browser with puppeteer
     beforeAll(async () => {
@@ -43,10 +43,11 @@ describe('Check buttons click and visibility. TAG = Device',
     });
 
     // Get the selector for the MT and CT buttons and then assert them to be defined
-    test('Check language object works', async () => {
+    test('Check language default string works', async () => {
       await page.waitForSelector('.ck-toolbar__items > button:nth-child(0n+3', { visible: true });
       await page.click('.ck-toolbar__items > button:nth-child(0n+3');
       await page.waitFor(1000);
+      // eslint-disable-next-line no-useless-escape
       const cancelButton = await page.$eval('[id="wrs_modal_button_cancel\[0\]"]', (el) => el.textContent);
       expect(cancelButton).toBe('Cancel');
     });
