@@ -9,13 +9,24 @@ const waitForLocalhost = require('wait-for-localhost');
  * to be able to execute its tests later.
  */
 const installDeps = (route) => new Promise((resolve, reject) => {
-  exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
-    if (err) {
-      reject(err);
-    }
-    resolve({ dout: stdout, derr: stderr });
-  });
+  if ((route.path).includes('html5/ckeditor5')) {
+    exec(`cd ${path.normalize(route.path)} && npm uninstall --save @wiris/mathtype-ckeditor5 && npm install`, (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+      }
+      resolve({ dout: stdout, derr: stderr });
+    });
+  }
+  else {
+    exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+      }
+      resolve({ dout: stdout, derr: stderr });
+    });
+  }
 });
+
 
 /**
  * This function is dedicated to open a server. First, install dependencies and then open the server
@@ -26,7 +37,7 @@ async function openServer(route) {
   const installOut = await installDeps(route);
   if (route.demo) {
     // Instructuions that will open the current demo server and wait until ready
-    exec(`cd ${path.normalize(route.path)} && webpack-dev-server`);
+    exec(`cd ${path.normalize(route.path)} && npm run serve`);
     await waitForLocalhost({ port: route.port });
     return (installOut);
   }
@@ -86,8 +97,8 @@ const executeTests = () => new Promise((resolve) => {
     //   pathsRoutes.map(async (route) => { sequenceExecution(route); }),  // Run all the tests
       [ // Run the tests by package
         sequenceExecution(testFolders.devkit),
-        // sequenceExecution(testFolders.html5Froala3),
-        // sequenceExecution(pathsMap.html5CKEditor4),
+        sequenceExecution(testFolders.html5Froala3),
+        sequenceExecution(testFolders.html5CKEditor5),
       ],
     ),
   );
