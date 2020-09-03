@@ -13,7 +13,13 @@ describe('Check The language object. TAG = language',
     // Execute before all the file tests to define the browser with puppeteer
     beforeAll(async () => {
       browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
+        args: [
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
         timeout: 10000,
         devtools: false,
         slowMo: 0,
