@@ -47,8 +47,9 @@ describe('Insert Formula. TAG = Insert',
     /**
      * This test will try to insert a formula and check that the created image exists
      */
-    it('Insert Formula test', async () => {
-      jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
+    test('Insert Formula test', async () => {
+      const MTButton = await page.waitForSelector('#wirisEditor-1', { visible: true }); // eslint-disable-line
+      // jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
       await page.click('#wirisEditor-1');
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
       await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
