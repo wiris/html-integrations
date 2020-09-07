@@ -1,7 +1,5 @@
 const puppeteer = require('puppeteer');
 
-const timeout = 10000;
-
 // Declare browser and page that will contain the demo page
 let browser;
 let page;
@@ -57,6 +55,8 @@ describe('Insert Formula. TAG = Insert',
       const MTButton = await page.waitForSelector('#wirisEditor-1', { visible: true }); // eslint-disable-line
       // jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
       await page.click('#wirisEditor-1');
+      await page.waitFor(1000);
+      // wait for the wiris modal to be loaded
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
       await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
       await page.waitFor(1500);
@@ -64,5 +64,4 @@ describe('Insert Formula. TAG = Insert',
       await page.waitFor(1000);
       expect(await page.waitFor('body > [id="editor"] > div.fr-wrapper > div > p.text:nth-child(1) > img.Wirisformula')).toBeDefined();
     });
-  },
-  timeout);
+  });
