@@ -100,6 +100,7 @@ const executeTests = () => new Promise((resolve) => {
         sequenceExecution(testFolders.html5Froala3),
         sequenceExecution(testFolders.html5CKEditor5),
         sequenceExecution(testFolders.html5Generic),
+        sequenceExecution(testFolders.html5Froala2)
       ],
     ),
   );
