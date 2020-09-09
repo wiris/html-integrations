@@ -36,7 +36,7 @@ describe('Insert Formula. TAG = Insert',
     beforeEach(async () => {
       jest.setTimeout(10000);
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
-      await page.goto('http://localhost:8001/', { waitUntil: 'load', timeout: 0 });
+      await page.goto('http://localhost:8005/', { waitUntil: 'load', timeout: 0 });
     });
 
     /**
@@ -53,19 +53,18 @@ describe('Insert Formula. TAG = Insert',
      * This test will try to insert a formula and check that the created image exists
      */
     test('Insert Formula test', async () => {
-      const MTButton = await page.waitForSelector('#cke_17', { visible: true }); // eslint-disable-line
+      const MTButton = await page.waitForSelector('#mceu_5-button', { visible: true }); // eslint-disable-line
       jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
-      await page.click('#cke_17');
-      await page.waitFor(1000);
+      await page.click('#mceu_5-button');
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
       await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
       await page.waitFor(1500);
       await page.click('[id="wrs_modal_button_accept[0]"]');
       await page.waitFor(1000);
       // iframe content is not accessible from the root dom unless it has an url
-      // CKeditor 4 iframe url is undefined
+      // TinyMCE 4 iframe url is undefined
       // To get the image we have to get the content in another way
-      const secondHtml = await page.evaluate(() => document.getElementsByClassName('cke_wysiwyg_frame')[0].contentWindow.document.getElementsByClassName('text')[0].getElementsByClassName('Wirisformula')[0]);
+      const secondHtml = await page.evaluate(() => document.getElementById('editor_ifr').contentWindow.document.getElementsByClassName('text')[0].getElementsByClassName('Wirisformula')[0]);
       expect(secondHtml).not.toBeUndefined();
     });
   });
