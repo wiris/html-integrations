@@ -34,6 +34,7 @@ describe('Insert Formula. TAG = Insert',
 
     // Execute before each test of the file to open the demo page
     beforeEach(async () => {
+      jest.setTimeout(30000);
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
       await page.goto('http://localhost:8004/', { waitUntil: 'load', timeout: 0 });
     });
