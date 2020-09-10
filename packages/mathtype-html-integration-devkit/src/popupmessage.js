@@ -117,7 +117,7 @@ export default class PopUpMessage {
       this.closeButton.focus();
     } else {
       this.overlayWrapper.style.display = 'none';
-      _wrs_modalWindow.focus();
+      // _wrs_modalWindow.focus(); This throws an error of not existing _wrs_modalWindow
     }
   }
 
