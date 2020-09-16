@@ -41,7 +41,7 @@ export default class ModalDialog {
     // Metrics.
     const ua = navigator.userAgent.toLowerCase();
     const isAndroid = ua.indexOf('android') > -1;
-    const isIOS = ((ua.indexOf('ipad') > -1) || (ua.indexOf('iphone') > -1));
+    const isIOS = ContentManager.isIOS();
     this.iosSoftkeyboardOpened = false;
     this.iosMeasureUnit = ua.indexOf('crios') === -1 ? '%' : 'vh';
     this.iosDivHeight = `100%${this.iosMeasureUnit}`;
