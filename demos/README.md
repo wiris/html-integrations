@@ -89,9 +89,20 @@ designed for maintaining multiple npm packages in a single git repository.
 
 To work with Lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
 
+```sh
+html-integrations$ cp lerna.demos.json lerna.json
+```
+Before running the demo, you must first 'bootstrap' and 'compile' the libraries. Follow the instructions on the [README.md](./README.md) file.
+
+```sh
+html-integrations$ npm install
+html-integrations$ npm start
+```
+
+
 ### How to run a demo with the local package
 
-Before running the demo, you must first go to the desired folder for a framework and editor.<br>
+Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.<br>
 
 ```sh
 $ cd demos/[technology]/[editor]
