@@ -1,8 +1,6 @@
 # Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img src="resources/img/logo.jpg" width="40"> 
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md) &nbsp; &nbsp; &nbsp; 
-[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](CONTRIBUITING.md)&nbsp;[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md)&nbsp;[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
@@ -303,7 +301,7 @@ because they need to have the source replaced before building.
 ## Examples for developers
 
 In order to manually test each plugin, there's a set of technical demos on
-the 'demos/' folder.
+the ['demos/'](./demos/) folder on this project.
 
 Refer to the [README](demos/README.md) file for more information.
 
