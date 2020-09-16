@@ -22,7 +22,7 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType to TinyMCE from scratch
+## How to add MathType to CKEditor from scratch
 
 1. Run the following through the terminal
 

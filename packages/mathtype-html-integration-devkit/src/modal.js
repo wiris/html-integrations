@@ -41,7 +41,7 @@ export default class ModalDialog {
     // Metrics.
     const ua = navigator.userAgent.toLowerCase();
     const isAndroid = ua.indexOf('android') > -1;
-    const isIOS = ((ua.indexOf('ipad') > -1) || (ua.indexOf('iphone') > -1));
+    const isIOS = ContentManager.isIOS();
     this.iosSoftkeyboardOpened = false;
     this.iosMeasureUnit = ua.indexOf('crios') === -1 ? '%' : 'vh';
     this.iosDivHeight = `100%${this.iosMeasureUnit}`;
@@ -367,6 +367,7 @@ export default class ModalDialog {
     document.body.appendChild(this.overlay);
 
     if (this.deviceProperties.isDesktop) { // Desktop.
+
       this.createModalWindowDesktop();
       this.createResizeButtons();
 
@@ -377,7 +378,7 @@ export default class ModalDialog {
       }
     } else if (this.deviceProperties.isAndroid) {
       this.createModalWindowAndroid();
-    } else if (this.deviceProperties.isIOS && !this.deviceProperties.isMobile) {
+    } else if (this.deviceProperties.isIOS) {
       this.createModalWindowIos();
     }
 

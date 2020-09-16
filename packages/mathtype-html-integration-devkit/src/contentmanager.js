@@ -90,7 +90,8 @@ export default class ContentManager {
      */
     this.deviceProperties = {};
     this.deviceProperties.isAndroid = this.ua.indexOf('android') > -1;
-    this.deviceProperties.isIOS = ((this.ua.indexOf('ipad') > -1) || (this.ua.indexOf('iphone') > -1));
+    this.deviceProperties.isIOS = ContentManager.isIOS();
+  
 
     /**
      * Custom editor toolbar.
@@ -187,7 +188,12 @@ export default class ContentManager {
 
       // iOS events.
       if (this.modalDialogInstance.deviceProperties.isIOS) {
-        setTimeout(function hide() { this.modalDialogInstance.hideKeyboard(); }, 400);
+        setTimeout(function hide() { 
+          // Make sure the modalDialogInstance is available when the timeout is over
+          // to avoid throw errors and stop execution.
+          if(this.hasOwnProperty('modalDialogInstance')) this.modalDialogInstance.hideKeyboard(); 
+        }, 400);
+
         const formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
         Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.handleOpenedIosSoftkeyboard);
         Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.handleClosedIosSoftkeyboard);
@@ -299,6 +305,23 @@ export default class ContentManager {
     }
 
     return stats;
+  }
+
+  /**
+   * Returns true if device is iOS. Otherwise, false.
+   * @returns {Boolean}
+   */
+  static isIOS() {
+    return [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod'
+    ].includes(navigator.platform)
+    // iPad on iOS 13 detection
+    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
   }
 
   /**
