@@ -254,11 +254,18 @@ export default class CKEditor5Integration extends IntegrationModel {
             } );
 
         } else {
-            returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
-                this.editorObject.editing.mapper.toViewElement(
-                    this.insertMathml( mathml )
-                ), windowTarget.document
-            );
+            try {
+                returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
+                    this.editorObject.editing.mapper.toViewElement(
+                        this.insertMathml( mathml )
+                    ), windowTarget.document
+                );
+            }  catch ( e ) {
+                const x = e.toString();
+                if( ( x ).includes( "CKEditorError: Cannot read property 'parent' of undefined" ) ) {
+                    this.core.modalDialog.cancelAction();
+                }
+            }
         }
 
         /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.
