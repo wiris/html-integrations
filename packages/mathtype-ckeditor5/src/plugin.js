@@ -7,7 +7,7 @@ import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobs
 import HtmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor';
 import XmlDataProcessor from '@ckeditor/ckeditor5-engine/src/dataprocessor/xmldataprocessor';
 import UpcastWriter from '@ckeditor/ckeditor5-engine/src/view/upcastwriter'
-import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
+import { toWidget, viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
 import Widget from '@ckeditor/ckeditor5-widget/src/widget';
 
 // MathType API imports
@@ -397,6 +397,12 @@ export default class MathType extends Plugin {
             return viewWriter.createEmptyElement( 'img', imgElement.getAttributes() );
 
         }
+
+        // This stops the view selection getting into the <span>s and messing up caret movement
+        editor.editing.mapper.on(
+            'viewToModelPosition',
+            viewToModelPositionOutsideModelElement( editor.model, viewElement => viewElement.hasClass( 'ck-math-widget' ) )
+        );
 
     }
 
