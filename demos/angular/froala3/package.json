@@ -4,8 +4,8 @@
   "description": "A simple Angular App integrating WIRIS MathType in a Froala rich text editor.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
-    "serve": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --open",
+    "serve": "ng serve --host 0.0.0.0 ",
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && ng serve",
     "build": "ng build",
@@ -13,7 +13,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "author": "Carla Lara",
+  "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "private": true,
   "dependencies": {

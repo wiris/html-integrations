@@ -8,8 +8,8 @@ import './static/style.css';
 import * as Generic from '../../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
-document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
+document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor';
+document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Copy the editor content before initializing it.
 Generic.copyContentFromxToy('editor', 'transform_content');

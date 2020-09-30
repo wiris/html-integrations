@@ -1,18 +1,18 @@
 {
   "name": "demo-angular-ckeditor5",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple Angular App integrating WIRIS MathType in a CKEditor rich text editor.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
-    "serve": "ng serve",
+    "start": "ng serve --host 0.0.0.0 --open",
+    "serve": "ng serve --host 0.0.0.0 ",
     "build-dev": "lerna bootstrap && cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - && npm install ../../../packages/mathtype-ckeditor5/$filename && ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "author": "Carla Lara",
+  "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -35,7 +35,7 @@
     "@ckeditor/ckeditor5-link": ">=22.0.0",
     "@ckeditor/ckeditor5-list": ">=22.0.0",
     "@ckeditor/ckeditor5-paragraph": ">=22.0.0",
-    "@wiris/mathtype-ckeditor5": "^7.20.0",
+    "@wiris/mathtype-ckeditor5": "^7.24.1",
     "resources": "file:../../../resources",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
