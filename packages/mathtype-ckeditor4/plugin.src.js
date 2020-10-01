@@ -190,6 +190,8 @@ export class CKEditor4Integration extends IntegrationModel {
             if (dataContainer) {
                 newElement = document.getElementById(dataContainer + '_contents');
                 _wrs_int_divIframe = true;
+                // The events have to be added again
+                newElement.wirisActive = false;
             }
         }
 
