@@ -59,7 +59,7 @@ describe('Check buttons click and visibility. TAG = Device',
 
     // Get the MT button, click it, wait for the modal window to load and expect it to be defined
     test('Click MT Button', async () => {
-      const MTButton = await page.waitForSelector('#wirisEditor-1', { visible: true }); // eslint-disable-line
+      await page.waitForSelector('#wirisEditor-1', { visible: true }); // eslint-disable-line
       await page.click('#wirisEditor-1');
       await page.waitFor(1000);
       // wait for modal window to load. We assume load is completed once hand icon is visible

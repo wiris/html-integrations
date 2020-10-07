@@ -53,15 +53,13 @@ describe('Insert Formula. TAG = Insert',
      * This test will try to insert a formula and check that the created image exists
      */
     test('Insert Formula test', async () => {
-      const MTButton = await page.waitForSelector('#cke_17', { visible: true }); // eslint-disable-line
-      jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
+      await page.waitForSelector('#cke_17', { visible: true }); // eslint-disable-line
       await page.click('#cke_17');
-      await page.waitFor(1000);
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
-      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
-      await page.waitFor(1500);
-      await page.click('[id="wrs_modal_button_accept[0]"]');
       await page.waitFor(1000);
+      // Sometimes it detects the modal open but it's not ready to be written
+      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
+      await page.click('[id="wrs_modal_button_accept[0]"]');
       // iframe content is not accessible from the root dom unless it has an url
       // CKeditor 4 iframe url is undefined
       // To get the image we have to get the content in another way
