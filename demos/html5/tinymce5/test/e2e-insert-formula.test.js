@@ -34,6 +34,7 @@ describe('Insert Formula. TAG = Insert',
 
     // Execute before each test of the file to open the demo page
     beforeEach(async () => {
+      jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
       await page.goto('http://localhost:8006/', { waitUntil: 'load', timeout: 0 });
     });
@@ -53,14 +54,12 @@ describe('Insert Formula. TAG = Insert',
      */
     test('Insert Formula test', async () => {
       const MTButton = await page.waitForSelector('[aria-label="Insert a math equation - MathType"]', { visible: true }); // eslint-disable-line
-      // jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
       await page.click('[aria-label="Insert a math equation - MathType"]');
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
-      await page.waitFor(10);
-      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
-      await page.waitFor(1500);
-      await page.click('[id="wrs_modal_button_accept[0]"]');
       await page.waitFor(1000);
+      // Sometimes it detects the modal open but it's not ready to be written
+      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
+      await page.click('[id="wrs_modal_button_accept[0]"]');
       // // iframe content is not accessible from the root dom unless it has an url
       // // TinyMCE 4 iframe url is undefined
       // // To get the image we have to get the content in another way

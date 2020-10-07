@@ -36,6 +36,7 @@ describe('Insert Formula. TAG = Insert',
 
     // Execute before each test of the file to open the demo page
     beforeEach(async () => {
+      jest.setTimeout(10000);
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
       await page.goto('http://localhost:8007/', { waitUntil: 'load', timeout: 0 });
     });
@@ -54,15 +55,13 @@ describe('Insert Formula. TAG = Insert',
      * This test will try to insert a formula and check that the created image exists
      */
     test('Insert Formula test', async () => {
-      const MTButton = await page.waitForSelector('#editorIcon', { visible: true }); // eslint-disable-line
-      jest.setTimeout(10000); // Large timeouts seem to be necessary. Default timeout to 5000ms
+      await page.waitForSelector('#editorIcon', { visible: true }); // eslint-disable-line
       await page.click('#editorIcon');
-      await page.waitFor(1000);
       await page.waitFor('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay'); // eslint-disable-line no-useless-escape
-      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
-      await page.waitFor(1500);
-      await page.click('[id="wrs_modal_button_accept[0]"]');
       await page.waitFor(1000);
+      // Sometimes it detects the modal open but it's not ready to be written
+      await page.type('[id="wrs_content_container\[0\]"] > div > div.wrs_formulaDisplayWrapper > div.wrs_formulaDisplay', '1+2', { delay: 0 }); // eslint-disable-line no-useless-escape
+      await page.click('[id="wrs_modal_button_accept[0]"]');
       expect(await page.waitFor('body > div.componentsToolbarEditable > [id="editable"] > p.text:nth-child(1) > img.Wirisformula')).toBeDefined();
     });
   },

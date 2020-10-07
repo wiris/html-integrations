@@ -10,7 +10,7 @@ const waitForLocalhost = require('wait-for-localhost');
  */
 const installDeps = (route) => new Promise((resolve, reject) => {
   if ((route.path).includes('html5/ckeditor5')) {
-    exec(`cd ${path.normalize(route.path)} && npm uninstall --save @wiris/mathtype-ckeditor5 && npm install`, (err, stdout, stderr) => {
+    exec(`cd ${path.normalize(route.path)} && npm uninstall --save @wiris/mathtype-ckeditor5 && rm -rf node_modules && rm -rf package-lock.json && npm install`, (err, stdout, stderr) => {
       if (err) {
         reject(err);
       }
@@ -52,7 +52,7 @@ const runTests = (route) => new Promise((resolve, reject) => {
     if (err) {
       reject(err);
     }
-    resolve({ derr: stderr });
+    resolve({ stderr });
   });
 });
 
@@ -101,7 +101,9 @@ const executeTests = () => new Promise((resolve) => {
         sequenceExecution(testFolders.html5CKEditor5),
         sequenceExecution(testFolders.html5CKEditor4),
         sequenceExecution(testFolders.html5Generic),
-        sequenceExecution(testFolders.html5Froala2)
+        sequenceExecution(testFolders.html5Froala2),
+        sequenceExecution(testFolders.html5TinyMCE4),
+        sequenceExecution(testFolders.html5TinyMCE5)
       ],
     ),
   );

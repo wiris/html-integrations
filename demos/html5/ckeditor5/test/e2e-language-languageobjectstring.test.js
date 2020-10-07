@@ -34,6 +34,7 @@ describe('Check The language object. TAG = language',
 
     // Execute before each test of the file to open the demo page
     beforeEach(async () => {
+      jest.setTimeout(10000);
       page = (await browser.pages())[0]; // eslint-disable-line prefer-destructuring
       await page.goto('http://localhost:8002/', { waitUntil: 'load', timeout: 0 });
     });
@@ -52,7 +53,7 @@ describe('Check The language object. TAG = language',
     test('Check language default string works', async () => {
       await page.waitForSelector('.ck-toolbar__items > button:nth-child(0n+3', { visible: true });
       await page.click('.ck-toolbar__items > button:nth-child(0n+3');
-      await page.waitFor(1000);
+      await page.waitForTimeout(1000);
       // eslint-disable-next-line no-useless-escape
       const cancelButton = await page.$eval('[id="wrs_modal_button_cancel\[0\]"]', (el) => el.textContent);
       expect(cancelButton).toBe('Cancel');

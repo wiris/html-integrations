@@ -24,7 +24,7 @@
     "@ckeditor/ckeditor5-essentials": ">=22.0.0",
     "@ckeditor/ckeditor5-paragraph": ">=22.0.0",
     "@ckeditor/ckeditor5-theme-lark": ">=22.0.0",
-    "@wiris/mathtype-ckeditor5": "^7.24.0",
+    "@wiris/mathtype-ckeditor5": "^7.24.1",
     "postcss-loader": "^3.0.0",
     "webpack-dev-server": "^3.10.3"
   },
