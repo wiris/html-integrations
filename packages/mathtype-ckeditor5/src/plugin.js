@@ -214,7 +214,7 @@ export default class MathType extends Plugin {
                 name: 'span',
                 classes: 'ck-math-widget',
             },
-            model: ( viewElement, modelWriter ) => {
+            model: ( viewElement, { writer: modelWriter } ) => {
                 const formula = MathML.safeXmlDecode( viewElement.getChild( 0 ).getAttribute( 'data-mathml' ) );
                 return modelWriter.createElement( 'mathml', {
                     formula: formula,
