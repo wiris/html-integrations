@@ -240,15 +240,22 @@ All tests can be executed with the `npm test` command from the root of the proje
 
 You can run the specific tests of a package or one of the demos as example code, by executing in your directory the `npm test` command.
 
-For example
+For a package:
 
 ```sh
-  # Run the MathType package demo.
-  $ cd packages/mathtype-html-integration-devkit/generic
+  $ cd packages/mathtype-html-integration-devkit/
   $ npm install
-  $ npm start
+  $ npm test
+```
+
+For a demo:
+
+```sh
+  $ cd demos/[frameworks]/[editor]  # example: demos/html5/generic
+  $ npm install
+  $ npm serve
   # Wait for the demo to start.
-  # Then, run the tests on a new Terminal window.
+  # Then, run the tests on a new Terminal window in the same folder.
   $ npm test
 ```
 
