@@ -253,7 +253,7 @@ For a demo:
 ```sh
   $ cd demos/[frameworks]/[editor]  # example: demos/html5/generic
   $ npm install
-  $ npm serve
+  $ npm run serve
   # Wait for the demo to start.
   # Then, run the tests on a new Terminal window in the same folder.
   $ npm test
