@@ -38,14 +38,21 @@ export default class CKEditor5Integration extends IntegrationModel {
      */
     getLanguage() {
         // Returns the CKEDitor instance language taking into account that the language can be an object.
+        try {
+            return this.editorParameters.language;
+        } catch (e) {}
         const languageObject = this.editorObject.config.get( 'language' );
-        if (typeof (languageObject) === 'object') {
-            // eslint-disable-next-line no-prototype-builtins
-            if (languageObject.hasOwnProperty('ui')) {
-              return languageObject.ui;
-            } else return 'en';
-          } 
-        return languageObject;
+        if (languageObject != null) {
+            if (typeof (languageObject) === 'object') {
+                // eslint-disable-next-line no-prototype-builtins
+                if (languageObject.hasOwnProperty('ui')) {
+                return languageObject.ui;
+                } else return super.getLanguage();
+            } 
+            return languageObject;
+        } else {
+            return super.getLanguage();
+        }
     }
 
     /**

@@ -29,7 +29,10 @@ ClassicEditor
   .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
     toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
-    language: 'en',
+    // language: 'de',
+    // mathTypeParameters: {
+    //   editorParameters: { language: 'es' }, // MathType config, including language
+    // },
   })
   .then((editor) => {
     window.editor = editor;

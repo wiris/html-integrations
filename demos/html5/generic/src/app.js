@@ -20,9 +20,12 @@ Generic.copyContentFromxToy('editable', 'transform_content');
 
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
+const mathTypeParameters = {
+  editorParameters: { language: 'es' }, // MathType config, including language
+};
 
 // Initialyze the editor.
-wrsInitEditor(editableDiv, toolbarDiv);
+wrsInitEditor(editableDiv, toolbarDiv, mathTypeParameters);
 
 // eslint-disable-next-line func-names
 document.onreadystatechange = function () {

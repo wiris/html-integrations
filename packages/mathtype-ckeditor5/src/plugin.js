@@ -29,6 +29,8 @@ import CKEditor5Integration from './integration';
 import mathIcon from '../theme/icons/formula.svg';
 import chemIcon from '../theme/icons/chem.svg';
 
+export var currentInstance = null;
+
 export default class MathType extends Plugin {
 
     static get requires() {
@@ -43,6 +45,7 @@ export default class MathType extends Plugin {
 
         // Create the MathType API Integration object
         const integration = this._addIntegration();
+        currentInstance = integration
 
         // Add the MathType and ChemType commands to the editor
         this._addCommands();
@@ -420,6 +423,7 @@ export default class MathType extends Plugin {
             Configuration: Configuration,
             Listeners: Listeners,
             IntegrationModel: IntegrationModel,
+            CurrentInstance: currentInstance,
             Latex: Latex
         }
 

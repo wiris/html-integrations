@@ -26,6 +26,10 @@ CKEDITOR.replace('editor', { //eslint-disable-line
     { name: 'clipboard', items: ['Undo', 'Redo'] },
     { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
   ],
+  // language: 'de',
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'es' }, // MathType config, including language
+  // },
 });
 
 // Handle on editor ready event.

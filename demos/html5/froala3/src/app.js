@@ -27,6 +27,11 @@ new FroalaEditor('#editor', {                                                   
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
 
+  // language: 'de',
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'es' }, // MathType config, including language
+  // },
+
   // Execute on initialyzed editor.
   events: {
     initialized() {

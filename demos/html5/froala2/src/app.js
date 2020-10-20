@@ -28,6 +28,10 @@ const froalaConfiguration = {
   toolbarButtonsXS: toolbar,
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
+  // language: 'de',
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'es' }, // MathType config, including language
+  // },
 };
 
 // On editor initialized event.

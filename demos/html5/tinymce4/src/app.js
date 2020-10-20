@@ -18,6 +18,10 @@ tinymce.init({                                                                  
     tiny_mce_wiris: `${window.location.href}node_modules/@wiris/mathtype-tinymce4/plugin.min.js`,
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+  // language: 'de',
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'es' }, // MathType config, including language
+  // },
 
   // Handle events.
   setup(editor) {
