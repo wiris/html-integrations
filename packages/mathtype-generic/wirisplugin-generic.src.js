@@ -19,14 +19,17 @@ export var currentInstance = null;
  * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
  * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
-export function wrsInitEditor(target,toolbar) {
+export function wrsInitEditor(target,toolbar, mathtypeProperties) {
     /**
      * @type {integrationModelProperties}
      */
     let genericIntegrationProperties = {};
     genericIntegrationProperties.target = target;
     genericIntegrationProperties.toolbar = toolbar;
-
+    if (typeof mathtypeProperties !== 'undefined') {
+        genericIntegrationProperties.integrationParameters = mathtypeProperties;
+    }
+    
     // GenericIntegration instance.
     const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties);
     genericIntegrationInstance.init();
@@ -76,7 +79,11 @@ export default class GenericIntegration extends IntegrationModel {
      * @returns {string} demo language.
      */
     getLanguage() {
+        try {
+            return this.editorParameters.language;
+        } catch (e) {}
         if (typeof _wrs_int_langCode !== 'undefined') {
+            console.warn('This feature will be depracted soon. We recomend you to change this parameter to the current accepted one: mathTypeParameters: { editorParameters: { language: "es" }}. And pass it through the wiris init function');
             return  _wrs_int_langCode;
         } else {
             return super.getLanguage();

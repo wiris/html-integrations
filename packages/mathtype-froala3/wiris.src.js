@@ -41,10 +41,13 @@ export class FroalaIntegration extends IntegrationModel {
      * When no language is set, ckeditor sets the toolbar to english.
      */
     getLanguage() {
+        try {
+            return this.editorParameters.language;
+        } catch (e) {}
         if (this.editorObject.opts.language != null) {
             return this.editorObject.opts.language;
         } else {
-            return 'en';
+            return super.getLanguage();
         }
     }
 

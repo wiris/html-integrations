@@ -72,14 +72,17 @@ export class TinyMceIntegration extends IntegrationModel {
      * @returns {String} - Integration language.
      */
     getLanguage() {
-        if (this.editorObject.settings['wirisformulaeditorlang']) {
-            return editor.settings['wirisformulaeditorlang'];
-        }
-        else if (this.editorObject.settings.mathTypeParameters.editorParameters.language) {
-            return this.editorObject.settings.mathTypeParameters.editorParameters.language;
+        const editorSettings = this.editorObject.settings;
+        try {
+            return editorSettings.mathTypeParameters.editorParameters.language;
+        } catch (e) {}
+        // Get the depracted wirisformulaeditorlang
+        if (editorSettings['wirisformulaeditorlang']) {
+            console.warn('This feature will be depracted soon. We recomend you to change this parameter to the current accepted one: mathTypeParameters: { editorParameters: { language: "es" }}');
+            return editorSettings['wirisformulaeditorlang'];
         }
         const langParam = this.editorObject.getParam('language');
-        return langParam ? langParam : 'en';
+        return langParam ? langParam : super.getLanguage();
     }
 
     /**
