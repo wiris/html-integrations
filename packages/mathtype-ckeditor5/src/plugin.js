@@ -404,6 +404,17 @@ export default class MathType extends Plugin {
             viewToModelPositionOutsideModelElement( editor.model, viewElement => viewElement.hasClass( 'ck-math-widget' ) )
         );
 
+        // Keep a reference to the original get function
+        const get = editor.data.get;
+
+        /**
+         * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
+         */
+        editor.data.get = ( options ) => {
+            const output = get.bind( editor.data )( options );
+            return Parser.endParse( output );
+        };
+
     }
 
     /**
