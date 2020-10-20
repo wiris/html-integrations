@@ -1,6 +1,7 @@
 {
   "packages": [
-    "packages/*"
+    "packages/*",
+    "demos/html5/tinymce5"
   ],
   "command": {
     "version": {
