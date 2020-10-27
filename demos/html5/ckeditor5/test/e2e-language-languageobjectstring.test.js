@@ -50,7 +50,7 @@ describe('Check The language object. TAG = language',
     });
 
     // Get the selector for the MT and CT buttons and then assert them to be defined
-    test('Check language default string works', async () => {
+    test('Check no defining language works', async () => {
       await page.waitForSelector('.ck-toolbar__items > button:nth-child(0n+3', { visible: true });
       await page.click('.ck-toolbar__items > button:nth-child(0n+3');
       await page.waitForTimeout(1000);
