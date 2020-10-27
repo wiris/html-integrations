@@ -88,8 +88,8 @@ module.exports = {
     '!!raw-loader!../styles/icons/general/mins_icon.svg': '../styles/icons/general/mins_icon.svg',
     '!!raw-loader!../styles/icons/hover/mins_icon_h.svg': '../styles/icons/hover/mins_icon_h.svg',
     '!!raw-loader!../styles/icons/general/max_icon.svg': '../styles/icons/general/max_icon.svg',
-    '!!raw-loader!../styles/icons/hover/max_icon_h.svg': '../styles/icons/hover/max_icon_h.svg'
-},
+    '!!raw-loader!../styles/icons/hover/max_icon_h.svg': '../styles/icons/hover/max_icon_h.svg',
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -189,10 +189,10 @@ module.exports = {
    * It accepts css imports from ES6 files
    */
   transform: {
-    "^.+\\.js$": "babel-jest",
-    "^.+\\.svg$": "jest-raw-loader",
-    '^.+\\.css$': 'jest-css-modules-transform'
-  }
+    '^.+\\.js$': 'babel-jest',
+    '^.+\\.svg$': 'jest-raw-loader',
+    '^.+\\.css$': 'jest-css-modules-transform',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

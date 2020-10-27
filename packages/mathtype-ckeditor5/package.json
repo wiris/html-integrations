@@ -32,7 +32,8 @@
   ],
   "main": "src/plugin.js",
   "scripts": {
-    "compile": "node ../../scripts/services/compile src/plugin.js ."
+    "compile": "node ../../scripts/services/compile src/plugin.js .",
+    "test": "jest"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-core": ">=22.0.0",
@@ -40,5 +41,12 @@
     "@ckeditor/ckeditor5-ui": ">=22.0.0",
     "@ckeditor/ckeditor5-widget": ">=22.0.0",
     "@wiris/mathtype-html-integration-devkit": "1.4.2"
+  },
+  "devDependencies": {
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0",
+    "jest-css-modules-transform": "^4.0.1",
+    "jest-html-reporter": "^3.1.3",
+    "jest-raw-loader": "^1.0.1"
   }
 }

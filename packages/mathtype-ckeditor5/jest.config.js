@@ -6,7 +6,7 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 10,
+  bail: 10,
 
   // Respect "browser" field in package.json when resolving modules
   // browser: false,
@@ -56,9 +56,7 @@ module.exports = {
   // globalTeardown: './puppeteer/teardown.js',
 
   // A set of global variables that need to be available in all test environments
-  globals: {
-    URL: 'http://localhost:8006 ',
-  },
+  // globals: {},
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
   // maxWorkers: "50%",
@@ -79,6 +77,7 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
+  // Transform paths that jest does not recognize into paths that does recognize
   moduleNameMapper: {
     '!!raw-loader!../styles/icons/general/close_icon.svg': '../styles/icons/general/close_icon.svg',
     '!!raw-loader!../styles/icons/hover/close_icon_h.svg': '../styles/icons/hover/close_icon_h.svg',
@@ -193,7 +192,6 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.svg$': 'jest-raw-loader',
     '^.+\\.css$': 'jest-css-modules-transform',
-    '^.+\\.html?$': 'html-loader-jest',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
