@@ -83,7 +83,7 @@ export default class GenericIntegration extends IntegrationModel {
             return this.editorParameters.language;
         } catch (e) {}
         if (typeof _wrs_int_langCode !== 'undefined') {
-            console.warn('This feature will be depracted soon. We recomend you to change this parameter to the current accepted one: mathTypeParameters: { editorParameters: { language: "es" }}. And pass it through the wiris init function');
+            console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
             return  _wrs_int_langCode;
         } else {
             return super.getLanguage();

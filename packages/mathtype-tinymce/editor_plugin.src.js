@@ -76,9 +76,9 @@ export class TinyMceIntegration extends IntegrationModel {
         try {
             return editorSettings.mathTypeParameters.editorParameters.language;
         } catch (e) {}
-        // Get the depracted wirisformulaeditorlang
+        // Get the deprecated wirisformulaeditorlang
         if (editorSettings['wirisformulaeditorlang']) {
-            console.warn('This feature will be depracted soon. We recomend you to change this parameter to the current accepted one: mathTypeParameters: { editorParameters: { language: "es" }}');
+            console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
             return editorSettings['wirisformulaeditorlang'];
         }
         const langParam = this.editorObject.getParam('language');
