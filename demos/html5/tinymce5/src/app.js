@@ -14,14 +14,15 @@ Generic.copyContentFromxToy('editor', 'transform_content');
 // Set up the editor.
 tinymce.init({                                                                                          //eslint-disable-line
   selector: '#editor',
-  // wirisformulaeditorlang: 'ar',
   external_plugins: {
     tiny_mce_wiris: `${window.location.href}node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
   },
   toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
-  // language: 'de',
+
+  // language: 'fr_FR',
+  // // You could set a different language for MathType editor:
   // mathTypeParameters: {
-  //   editorParameters: { language: 'es' }, // MathType config, including language
+  //   editorParameters: { language: 'de' },
   // },
 
   // Handle events.
