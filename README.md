@@ -314,7 +314,7 @@ Refer to the [README](demos/README.md) file for more information.
 
 ## Contact information
 
-team.support.europe@wiris.com
+support@wiris.com
 
 
 ## Privacy policy

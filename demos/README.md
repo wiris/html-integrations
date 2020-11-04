@@ -174,7 +174,7 @@ Remember to close the demo so you can free the used port when you are done with 
 
 ## Contact information
 
-team.support.europe@wiris.com
+support@wiris.com
 
 ## License
 
