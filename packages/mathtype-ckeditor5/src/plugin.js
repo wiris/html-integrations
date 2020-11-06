@@ -208,6 +208,7 @@ export default class MathType extends Plugin {
      * Add the downcast and upcast converters
      */
     _addConverters() {
+        console.log('execute')
 
         const editor = this.editor;
 
@@ -264,6 +265,7 @@ export default class MathType extends Plugin {
             const modelNode = isLatex
                 ? writer.createText( Parser.initParse( formula, editor.config.get( 'language' ) ) )
                 : writer.createElement( 'mathml', { formula } );
+                modelNode.data = formula;
 
             // Find allowed parent for element that we are going to insert.
             // If current parent does not allow to insert element but one of the ancestors does

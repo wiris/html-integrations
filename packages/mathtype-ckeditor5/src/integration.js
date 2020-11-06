@@ -154,6 +154,7 @@ export default class CKEditor5Integration extends IntegrationModel {
             const core = this.getCore();
 
             const modelElementNew = writer.createElement( 'mathml', { formula: mathml } );
+            modelElementNew.data = mathml;
 
             // Obtain the DOM <span><img ... /></span> object corresponding to the formula
             if ( core.editionProperties.isNewElement ) {
