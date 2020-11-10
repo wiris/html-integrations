@@ -29,11 +29,17 @@ export class CKEditor4Integration extends IntegrationModel {
      * @param {IntegrationModelProperties}
      */
     constructor(ckeditorIntegrationModelProperties) {
+        const editor = ckeditorIntegrationModelProperties.editorObject;
+        
+        if ( typeof editor.config != 'undefined' && typeof editor.config.mathTypeParameters != 'undefined') {
+            ckeditorIntegrationModelProperties.integrationParameters = editor.config.mathTypeParameters;
+        }
         /**
          * CKEditor4 Integration.
          *
          * @param {IntegrationModelProperties} integrationModelAttributes
          */
+        console.log(ckeditorIntegrationModelProperties)
         super(ckeditorIntegrationModelProperties);
         /**
          * Folder name used for the integration inside CKEditor plugins folder.
