@@ -28,6 +28,11 @@ export class FroalaIntegration extends IntegrationModel {
      * @param {IntegrationModelProperties} froalaModelProperties
      */
     constructor(froalaModelProperties) {
+        const editor = froalaModelProperties.editorObject;
+
+        if ( typeof editor.opts != 'undefined' && typeof editor.opts.mathTypeParameters != 'undefined') {
+            froalaModelProperties.integrationParameters = editor.opts.mathTypeParameters;
+        }
         super(froalaModelProperties);
 
         /**
