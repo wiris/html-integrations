@@ -15,7 +15,7 @@
         "port": ""
     },
     "mathFroala2": {
-        "path": "./packages/mathtype-froala2/",
+        "path": "./packages/mathtype-froala/",
         "demo": false,
         "port": ""
     },
