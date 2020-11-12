@@ -12,6 +12,12 @@ import {version as pluginVersion} from './package.json';
 export class TinyMceIntegration extends IntegrationModel {
 
     constructor(integrationModelProperties) {
+        const editor = integrationModelProperties.editorObject;
+
+        if ( typeof editor.settings != 'undefined' && typeof editor.settings.mathTypeParameters != 'undefined') {
+            integrationModelProperties.integrationParameters = editor.settings.mathTypeParameters;
+        }
+
         super(integrationModelProperties);
         /**
          * Indicates if the content of the TinyMCe editor has
@@ -72,14 +78,13 @@ export class TinyMceIntegration extends IntegrationModel {
      * @returns {String} - Integration language.
      */
     getLanguage() {
-        const editorSettings = this.editorObject.settings;
         try {
-            return editorSettings.mathTypeParameters.editorParameters.language;
+            return this.editorParameters.language;
         } catch (e) {}
         // Get the deprecated wirisformulaeditorlang
-        if (editorSettings['wirisformulaeditorlang']) {
+        if (this.editorObject.settings['wirisformulaeditorlang']) {
             console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
-            return editorSettings['wirisformulaeditorlang'];
+            return this.editorObject.settings['wirisformulaeditorlang'];
         }
         const langParam = this.editorObject.getParam('language');
         return langParam ? langParam : super.getLanguage();
