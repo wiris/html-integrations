@@ -1,16 +1,19 @@
-import './jquery-global.js';
+// Expose the Froala instance to the window
+import './windowSetUp.js';
 import { FroalaIntegration } from '../wiris.src'
 
+// Define a global integration to be assigned
 let integration;
 
 /**
- * This tests is focused on check the mathtype language definition through the mathtypeParameters
+ * This tests is focused on check the mathtype getLanguage function 
+ * through the mathtypeParameters
  */
-describe('Test the language property. TAG = Language',
+describe('Froala3: Test the language property. TAG = Language',
   () => {
     /**
-     * Before the execution of all the tests in this file is necessary to:
-     * initialyze the integration of the CKEditor5 wiris plugin with
+     * Before the execution of the test is necessary to:
+     * initialyze the integration of the Froala3 wiris plugin with
      * the parameters to be tested
      */
     beforeAll(async () => {
@@ -33,7 +36,7 @@ describe('Test the language property. TAG = Language',
     });
 
     /**
-     * Retrieves the language from the integration CKEditor5 definition.
+     * Retrieves the language from the Froala3 integration definition.
      * It has to be retrieved from editorParameters.
      */
     it('MathtypeParameters: language defined', async () => {

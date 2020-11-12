@@ -197,7 +197,7 @@ module.exports = {
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // It ignores node mudules but ckeditor5, wiris and loadsh-es
   transformIgnorePatterns: [
-    'node_modules/(?!(@ckeditor|@wiris|lodash-es)/)',
+    'node_modules/(?!(@wiris|lodash-es)/)',
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

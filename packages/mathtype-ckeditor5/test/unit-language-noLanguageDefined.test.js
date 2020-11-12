@@ -1,15 +1,16 @@
 import CKEditor5Integration from '../src/integration'
 
+// Define a global integration to be assigned
 let integration;
 
 /**
  * This tests is focused on check if the browser language is corretly getted
  * when there's not a mathtype or editor language defined.
  */
-describe('Test the language property. TAG = Language',
+describe('CKEditor5: Test the language property. TAG = Language',
   () => {
     /**
-     * Before the execution of all the tests in this file is necessary to:
+     * Before the execution of the test is necessary to:
      * initialyze the integration of the CKEditor5 wiris plugin with
      * the parameters to be tested
      */
@@ -31,9 +32,8 @@ describe('Test the language property. TAG = Language',
     });
 
     /**
-     * Checks that the mathtoaccessible function returns the correct expected value with some input.
-     * Define some parameters to call the function corretly.
-     * Core class is expected to be initialyzed.
+     * Retrieves the language from the browser if
+     * there's not a language definition on the editor
      */
     it('No language defined', async () => {
       const lang = await integration.getLanguage();

@@ -39,7 +39,6 @@ export class CKEditor4Integration extends IntegrationModel {
          *
          * @param {IntegrationModelProperties} integrationModelAttributes
          */
-        console.log(ckeditorIntegrationModelProperties)
         super(ckeditorIntegrationModelProperties);
         /**
          * Folder name used for the integration inside CKEditor plugins folder.

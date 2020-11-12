@@ -1,15 +1,16 @@
 import CKEditor5Integration from '../src/integration'
 
+// Define a global integration to be assigned
 let integration;
 
 /**
- * This tests is focused on check the mathtype language definition through the 
- * mathtypeParameters and also the editor langauge to check the priorities.
+ * This tests is focused on check the mathtype getLanguage function when the
+ * mathtypeParameters language and editor language are defined to see the priorities
  */
-describe('Test the language property. TAG = Language',
+describe('CKEditor5: Test the language property. TAG = Language',
   () => {
     /**
-     * Before the execution of all the tests in this file is necessary to:
+     * Before the execution of the test is necessary to:
      * initialyze the integration of the CKEditor5 wiris plugin with
      * the parameters to be tested
      */
@@ -35,7 +36,7 @@ describe('Test the language property. TAG = Language',
     });
 
     /**
-     * Retrieves the language from the integration CKEditor5 definition.
+     * Retrieves the language from the CKEditor5 integration definition.
      * It has to be retrieved from editorParameters although the editor language is defined.
      * The mathtypeParameters language definition takes advantage on the editor language
      */

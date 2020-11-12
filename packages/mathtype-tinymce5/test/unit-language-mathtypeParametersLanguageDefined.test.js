@@ -1,18 +1,20 @@
-// Import Jquery exposion to the window so it does not throw error in the next import
+// Set up the test environment
 import '../setUpTests.js';
-import './jquery-global.js';
+// Expose the TinyMCE instance to the window
+import './windowSetUp.js';
 import { TinyMceIntegration } from '../editor_plugin.src';
 
 let integration;
 
 /**
- * This tests is focused on check the mathtype language definition through the mathtypeParameters
+ * This tests is focused on check the mathtype getLanguage function 
+ * through the mathtypeParameters
  */
-describe('Test the language property. TAG = Language',
+describe('TinyMCE: Test the language property. TAG = Language',
   () => {
     /**
-     * Before the execution of all the tests in this file is necessary to:
-     * initialyze the integration of the CKEditor5 wiris plugin with
+     * Before the execution of the test is necessary to:
+     * initialyze the integration of the TinyMCE wiris plugin with
      * the parameters to be tested
      */
     beforeAll(async () => {
@@ -36,7 +38,7 @@ describe('Test the language property. TAG = Language',
     });
 
     /**
-     * Retrieves the language from the integration CKEditor5 definition.
+     *  Retrieves the language from the TinyMCE integration definition.
      * It has to be retrieved from editorParameters.
      */
     it('MathtypeParameters: language defined', async () => {
