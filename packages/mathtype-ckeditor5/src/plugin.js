@@ -208,8 +208,6 @@ export default class MathType extends Plugin {
      * Add the downcast and upcast converters
      */
     _addConverters() {
-        console.log('execute')
-
         const editor = this.editor;
 
         // Editing view -> Model
