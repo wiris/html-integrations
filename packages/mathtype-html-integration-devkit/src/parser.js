@@ -320,8 +320,7 @@ export default class Parser {
   static createShowImageSrc(data, language) {
     const dataMd5 = [];
     const renderParams = ['mml', 'color', 'centerbaseline', 'zoom', 'dpi', 'fontSize', 'fontFamily', 'defaultStretchy', 'backgroundColor', 'format'];
-    renderParams.forEach((key) => {
-      const param = renderParams[key];
+    renderParams.forEach((param) => {
       if (typeof data[param] !== 'undefined') {
         dataMd5[param] = data[param];
       }
