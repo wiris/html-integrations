@@ -4,20 +4,17 @@
   "description": "A simple Angular App integrating WIRIS MathType in a Froala rich text editor.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --open",
-    "serve": "ng serve --host 0.0.0.0 ",
+    "start": "ng serve --open",
+    "serve": "ng serve",
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@angular/animations": "~9.1.1",
     "@angular/common": "~9.1.1",
     "@angular/compiler": "~9.1.1",
     "@angular/core": "~9.1.1",
@@ -25,39 +22,29 @@
     "@angular/platform-browser": "~9.1.1",
     "@angular/platform-browser-dynamic": "~9.1.1",
     "@angular/router": "~9.1.1",
-    "@wiris/mathtype-froala3": "^7.20.0",
-    "angular-froala-wysiwyg": "^3.1.0",
-    "moment": "^2.25.3",
-    "resources": "file:../../../resources",
-    "rxjs": "~6.5.4",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
-  },
-  "devDependencies": {
     "@angular-builders/custom-webpack": "^9.1.0",
     "@angular-devkit/build-angular": "^0.901.8",
     "@angular/cli": "^9.1.6",
     "@angular/compiler-cli": "~9.1.1",
-    "@angular/language-service": "~9.1.1",
-    "@types/jasmine": "~3.5.0",
-    "@types/jasminewd2": "~2.0.3",
+    "@wiris/mathtype-froala3": "^7.20.0",
+    "angular-froala-wysiwyg": "^3.1.0",
+    "resources": "file:../../../resources",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2",
+    "typescript": "~3.8.3"
+  },
+  "devDependencies": {
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
-    "jasmine-core": "~3.5.0",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~4.4.1",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~2.1.0",
-    "karma-jasmine": "~3.0.1",
-    "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "~5.4.3",
-    "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.16.0",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "~9.1.1"
   }
 }
