@@ -4,9 +4,6 @@
   "description": "A simple ReactJS App integrating WIRIS MathType in a Generic integration.",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "@wiris/mathtype-generic": "^7.20.0",
     "@wiris/mathtype-html-integration-devkit": "^1.1.0",
     "cross-env": "^7.0.2",
@@ -28,7 +25,6 @@
     "compile-package": "cd ../../../packages/mathtype-generic/ && npm run compile -- npm --dev",
     "build-dev": "lerna bootstrap && npm run compile-package && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "author": "Carla Lara",
