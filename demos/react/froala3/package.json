@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "A simple ReactJS App integrating WIRIS MathType in a Froala rich text editor.",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/react": "^10.2.1",
-    "@testing-library/user-event": "^11.2.1",
     "@wiris/mathtype-froala3": "^7.20.0",
     "cross-env": "^7.0.2",
     "jquery": "^3.5.1",
@@ -30,7 +27,6 @@
     "build-dev": "lerna bootstrap && npm run compile-package && react-scripts start",
     "lint": "eslint --quiet src",
     "lint-fix": "npx eslint --quiet --fix src",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "author": "Daniel Canet & Carla Lara",

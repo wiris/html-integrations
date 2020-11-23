@@ -44,5 +44,8 @@
     "eslint-plugin-import": "^2.16.0",
     "stylelint": "^13.2.0",
     "stylelint-config-standard": "^20.0.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "~9.1.1"
   }
 }
