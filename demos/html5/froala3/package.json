@@ -19,19 +19,18 @@
   "dependencies": {
     "@wiris/mathtype-froala3": "^7.20.0",
     "@wiris/mathtype-html-integration-devkit": "^1.1.0",
-    "froala-editor": "^3.1.1",
-    "wait-for-localhost": "^3.2.0"
+    "froala-editor": "^3.1.1"
   },
   "devDependencies": {
-    "css-loader": "^3.5.3",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
-    "html-loader": "^1.1.0",
     "jest": "^26.1.0",
     "jest-html-reporter": "^3.1.3",
     "lerna": "^3.22.1",
     "puppeteer": "^5.0.0",
+    "css-loader": "^3.5.3",
+    "html-loader": "^1.1.0",
     "raw-loader": "^4.0.1",
     "style-loader": "^1.2.1",
     "stylelint": "^13.6.0",
