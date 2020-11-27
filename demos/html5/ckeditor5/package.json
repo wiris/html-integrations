@@ -19,7 +19,6 @@
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": ">=22.0.0",
     "@ckeditor/ckeditor5-basic-styles": ">=22.0.0",
-    "@ckeditor/ckeditor5-core": "22.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.8",
     "@ckeditor/ckeditor5-editor-classic": ">=22.0.0",
     "@ckeditor/ckeditor5-essentials": ">=22.0.0",
