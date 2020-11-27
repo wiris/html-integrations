@@ -63,7 +63,7 @@ Here we will take a look to some easy and dificult cases to see the reasoning fo
 
 **There are the simple cases**
 
-There are some clear cases or almost clear. For example:
+There are some clear cases or almost clear cases that are devdependencies. For example:
 
 * Packages like *ESLint* are always devdependency, unless excepcional cases like if you are building a CLI whose job is running ESLint.
 * Testing frameworks: Mocha, Jest, etc.
