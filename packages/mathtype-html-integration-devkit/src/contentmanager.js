@@ -269,9 +269,8 @@ export default class ContentManager {
    */
   static getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
-    if (anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '') {
-      return `${anchorElement.protocol}//${anchorElement.hostname}/${anchorElement.pathname}`;
-    }    
+    const removePort = anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '';
+    return `${anchorElement.protocol}//${anchorElement.hostname}${ removePort ? '' : (':' + anchorElement.port) }/${anchorElement.pathname}`;
   }
 
   /**
