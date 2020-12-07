@@ -14,11 +14,6 @@
     "test": "node scripts/services/executeTests.js",
     "lint": "eslint . --ext .js"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
-  },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.2.0",
