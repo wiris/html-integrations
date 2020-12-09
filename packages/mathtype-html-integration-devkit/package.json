@@ -51,7 +51,7 @@
     "puppeteer": "^5.0.0",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.0",
-    "uglifyjs-webpack-plugin": "^1.2.8",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^1.1.1",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
