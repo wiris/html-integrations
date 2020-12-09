@@ -29,7 +29,8 @@
     "build-dev": "webpack --mode development",
     "clean": "npx rimraf plugin.min.js",
     "compile": "node ../../scripts/services/compile editor_plugin.src.js .",
-    "prepack": "npm install && npm run compile -- npm # We use compile for TinyMCE plugins because we need to copy the source first"
+    "prepack": "npm install && npm run compile -- npm # We use compile for TinyMCE plugins because we need to copy the source first",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -49,6 +50,14 @@
     "uglifyjs-webpack-plugin": "^1.2.8",
     "url-loader": "^1.1.1",
     "webpack": "^4.17.2",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0",
+    "jest-css-modules-transform": "^4.0.1",
+    "jest-html-reporter": "^3.1.3",
+    "jest-raw-loader": "^1.0.1"
+  },
+  "dependencies": {
+    "tinymce": "^5.5.1"
   }
 }
