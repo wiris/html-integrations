@@ -4,6 +4,7 @@ import Configuration from './configuration';
 import Listeners from './listeners';
 import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
+import TelemetryService from './telemetry';
 
 import closeIcon from '!!raw-loader!../styles/icons/general/close_icon.svg';  //eslint-disable-line
 import closeHoverIcon from '!!raw-loader!../styles/icons/hover/close_icon_h.svg';  //eslint-disable-line
