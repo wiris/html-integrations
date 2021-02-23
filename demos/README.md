@@ -13,8 +13,8 @@
     - [How to run a demo with the local package](#how-to-run-a-demo-with-the-local-package)
     - [Linting files](#linting-files)
 - [Testing](#testing)
-- [Updates](#updates)
-- [Contact information](#contact-information)
+- [Troubleshooting](#troubleshooting)
+- [Technical support](#technical-support)
 - [License](#license)
 - [Privacy Policity](#privacy-policity)
 
@@ -118,8 +118,6 @@ html-integrations/demos/angular/ckeditor5$ npm run build-dev
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
 
->There is a special case, with the html5+CKEditor5 demo, where the command `npm run build-dev` doesn't work in Windows. For this case, there's a special command to be used: `npm run build-dev-windows`.
-
 ### Linting files
 
 For more detailed information, take a look at this same section found in the README at the root of the project.
@@ -170,17 +168,19 @@ This command executes all the tests of the desired demo. If you want to run the 
 
 Remember to close the demo so you can free the used port when you are done with the tests.
 
-## Updates
+## Troubleshooting
 
-- :tada: Examples for developers for ReactJS and Angular are now available.
+### 01. Build command not working on Windows for the HTML5+CKEditor5
 
-## Contact information
+On windows, run the `npm run build-dev-windows` instead of `npm run build-dev`.
 
-support@wiris.com
+### Technical Support
+
+If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
 
 ## Privacy policy
 
