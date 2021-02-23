@@ -28,7 +28,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 - [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
 - [Privacy policy](#privacy-policy)
-- [Contact information](#contact-information)
+- [Technical support](#technical-support)
 - [License](#license)
 
 ## Requirements
@@ -312,9 +312,9 @@ the ['demos/'](./demos/) folder on this project.
 
 Refer to the [README](demos/README.md) file for more information.
 
-## Contact information
+### Technical Support
 
-support@wiris.com
+If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
 
 
 ## Privacy policy
@@ -323,4 +323,4 @@ The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) cove
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](LICENSE).
