@@ -1,20 +1,23 @@
 const { exec } = require('child_process');
+const { emitWarning } = require('process');
 
 const pack = () => new Promise((resolve, reject) => {
   exec('cd packages/mathtype-ckeditor5/ && npm pack --quiet ', (err, stdout, stderr) => {
     if (err) {
       reject(err);
     }
+    // eslint-disable-next-line no-console
     console.log({ dout: stdout, derr: stderr });
     resolve({ dout: stdout, derr: stderr });
   });
 });
 
-const install_mathtype = (path) => new Promise((resolve, reject) => {
+const installMathtype = (path) => new Promise((resolve, reject) => {
   exec(`cd demos/html5/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/${path}`, (err, stdout, stderr) => {
     if (err) {
       reject(err);
     }
+    // eslint-disable-next-line no-console
     console.log({ dout: stdout, derr: stderr });
     resolve({ dout: stdout, derr: stderr });
   });
@@ -22,7 +25,7 @@ const install_mathtype = (path) => new Promise((resolve, reject) => {
 
 const sequenceExecution = () => Promise.resolve(
   pack().then((packOut) => {
-    install_mathtype(packOut.dout);
+    installMathtype(packOut.dout);
   }),
 );
 
