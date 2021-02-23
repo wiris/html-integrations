@@ -118,6 +118,8 @@ html-integrations/demos/angular/ckeditor5$ npm run build-dev
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
 
+>There is a special case, with the html5+CKEditor5 demo, where the command `npm run build-dev` doesn't work in Windows. For this case, there's a special command to be used: `npm run build-dev-windows`.
+
 ### Linting files
 
 For more detailed information, take a look at this same section found in the README at the root of the project.
