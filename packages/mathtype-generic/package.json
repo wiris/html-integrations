@@ -41,7 +41,7 @@
     "@babel/preset-env": "^7.0.0",
     "@wiris/mathtype-html-integration-devkit": "1.4.4",
     "babel-loader": "^8.0.2",
-    "css-loader": "^1.0.0",
+    "css-loader": "^5.0.2",
     "mini-css-extract-plugin": "^0.4.2",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "raw-loader": "^3.1.0",
