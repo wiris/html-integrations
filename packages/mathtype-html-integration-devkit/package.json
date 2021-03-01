@@ -16,12 +16,12 @@
     "wiris"
   ],
   "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-html-integration-devkit",
-  "homepage": "http://www.wiris.com/",
+  "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
   },
   "license": "MIT",
-  "author": "WIRIS Team (http://www.wiris.com)",
+  "author": "WIRIS Team (https://www.wiris.com)",
   "main": "core.src.js",
   "scripts": {
     "build": "webpack --mode production",
