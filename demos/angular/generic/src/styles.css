@@ -2,11 +2,11 @@
 @import url('../node_modules/resources/demos/design.css');
 
 body {
-    background-color: #e4e6e7;
-  }
-  
+  background-color: #e4e6e7;
+}
+
 .componentsToolbarEditable {
-  background-color: #fff; 
+  background-color: #fff;
   border: 1px solid #c9c9c9;
   border-radius: 10px;
   margin: 0 auto;

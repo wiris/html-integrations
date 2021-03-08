@@ -1,4 +1,4 @@
-## Contributing guidelines
+# Contributing guidelines
 
 You can contribute in this project by different ways:
 

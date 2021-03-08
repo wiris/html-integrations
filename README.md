@@ -1,6 +1,6 @@
 # Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img src="resources/img/logo.jpg" width="40"> 
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](CONTRIBUITING.md)&nbsp;[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](CONTRIBUITING.md)&nbsp;[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
 
@@ -200,19 +200,23 @@ html-integrations$ npm run clean-all
 
 This will require you to `npm i` and `npm start` in the root again.
 
-### Analyzing and fixing code
+### Linting code
 
 There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 
 **Check all the .js files**
 
 ```sh
+  $ npm run eslint
+  # From...
   $ npx eslint --quiet [options] <dir|file|glob>*
 ```
 
 **Check all the .css files**
 
 ```sh
+    $ npm run stylelint
+    # From...
     $ npx stylelint [options] <dir|file|glob>*
 ```
 
