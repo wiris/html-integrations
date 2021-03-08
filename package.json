@@ -1,7 +1,7 @@
 {
   "name": "@wiris/html-integrations",
   "private": true,
-  "homepage": "http://www.wiris.com/",
+  "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
   },
@@ -12,33 +12,26 @@
     "clean": "npx lerna run clean & npx rimraf output",
     "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules",
     "test": "node scripts/services/executeTests.js",
-    "lint": "eslint . --ext .js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
+    "lint": "eslint . --ext .js",
+    "stylelint": "stylelint '**/*.css'"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.0",
-    "eslint-plugin-jest": "^23.18.0",
-    "fs-extra": "^8.1.0",
-    "html-validate": "^3.2.0",
-    "husky": "^4.2.5",
-    "jest": "^24.9.0",
-    "lerna": "^3.22.1",
-    "rimraf": "^3.0.0",
-    "stylelint": "^13.3.2",
-    "stylelint-config-standard": "^20.0.0"
-  },
-  "license": "MIT",
-  "author": "WIRIS Team (http://www.wiris.com)",
-  "dependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "babel-jest": "^24.9.0",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.1.0",
+    "fs-extra": "^9.1.0",
+    "html-validate": "^4.6.0",
+    "jest": "^26.6.0",
+    "lerna": "^4.0.0",
+    "rimraf": "^3.0.0",
+    "stylelint": "^13.3.2",
+    "stylelint-config-standard": "^20.0.0",
     "wait-for-localhost": "^3.3.0"
-  }
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (https://www.wiris.com)"
 }
