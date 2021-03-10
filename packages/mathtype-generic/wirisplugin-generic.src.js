@@ -140,4 +140,32 @@ export default class GenericIntegration extends IntegrationModel {
             }
         }
     }
+
+        /**
+     * @inheritdoc
+     * @param {HTMLElement} element - DOM object target.
+     */
+    doubleClickHandler(element) {
+        this.core.editionProperties.temporalImage = element;
+        super.doubleClickHandler(element);
+    }
+
+    /**@inheritdoc */
+    openNewFormulaEditor() {
+        // If it exists a temporal image saved, open the existing formula editor
+        const image = this.core.editionProperties.temporalImage;
+        if (image !== null && typeof image !== 'undefined') {
+            super.openExistingFormulaEditor(); 
+        } else {
+            super.openNewFormulaEditor();
+        }
+    }
+
+    insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+        const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+
+        // Delete temporal image when inserting a formula
+        this.core.editionProperties.temporalImage = null;
+        return obj;
+      }
 }
