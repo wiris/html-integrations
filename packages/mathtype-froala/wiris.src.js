@@ -149,6 +149,10 @@ export class FroalaIntegration extends IntegrationModel {
      * @param {HTMLElement} element - DOM object target.
      */
     doubleClickHandler(element) {
+        // Save a image to a temporal register to detect when we want to
+        // change between MT and CT.
+        // Will be deleted when inserting the formula or canceling it
+        this.core.editionProperties.temporalImage = element;
         this.simulateClick(document);
         super.doubleClickHandler(element);
     }
@@ -161,8 +165,14 @@ export class FroalaIntegration extends IntegrationModel {
 
     /**@inheritdoc */
     openNewFormulaEditor() {
-        this.simulateClick(document);
-        super.openNewFormulaEditor();
+        // If it exists a temporal image saved, open the existing formula editor
+        const image = this.core.editionProperties.temporalImage;
+        if (image !== null && typeof image !== 'undefined' && image.classList.contains( WirisPlugin.Configuration.get( 'imageClassName' ) ) ) {
+            this.openExistingFormulaEditor(); 
+        } else {
+            this.simulateClick(document);
+            super.openNewFormulaEditor();
+        }
     }
 
     /**
@@ -199,6 +209,8 @@ export class FroalaIntegration extends IntegrationModel {
         // has to be updated.
         this.editorObject.events.trigger('contentChanged');
         const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+        // Delete temporal image when inserting a formula
+        this.core.editionProperties.temporalImage = null; 
         this.editorObject.placeholder.refresh();
         return obj;
     }
