@@ -434,7 +434,7 @@ export default class MathType extends Plugin {
             Configuration: Configuration,
             Listeners: Listeners,
             IntegrationModel: IntegrationModel,
-            CurrentInstance: currentInstance,
+            currentInstance: currentInstance,
             Latex: Latex
         }
 
