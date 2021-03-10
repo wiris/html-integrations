@@ -40,7 +40,7 @@
     "@ckeditor/ckeditor5-engine": ">=23.0.0",
     "@ckeditor/ckeditor5-ui": ">=23.0.0",
     "@ckeditor/ckeditor5-widget": ">=23.0.0",
-    "@wiris/mathtype-html-integration-devkit": "1.4.4"
+    "@wiris/mathtype-html-integration-devkit": "^1.4.4"
   },
   "devDependencies": {
     "babel-jest": "^26.1.0",
