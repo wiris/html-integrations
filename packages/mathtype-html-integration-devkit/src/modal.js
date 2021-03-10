@@ -5,6 +5,7 @@ import Listeners from './listeners';
 import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
 import TelemetryService from './telemetry';
+import IntegrationModel from './integrationmodel';
 
 import closeIcon from '!!raw-loader!../styles/icons/general/close_icon.svg';  //eslint-disable-line
 import closeHoverIcon from '!!raw-loader!../styles/icons/hover/close_icon_h.svg';  //eslint-disable-line
@@ -543,6 +544,9 @@ export default class ModalDialog {
    * Closes modal window and restores viewport header.
    */
   close() {
+    // Set temporal image to null to avoid
+    // opening a existing formula editor when trying to open a new one
+    IntegrationModel.setTemporalImageToNull();
     this.removeClass('wrs_maximized');
     this.removeClass('wrs_minimized');
     this.removeClass('wrs_stack');

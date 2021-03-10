@@ -232,7 +232,7 @@ export default class IntegrationModel {
 
   /**
    * Returns integration model plugin version
-   * @param {string} - Plugin version 
+   * @param {string} - Plugin version
    */
   getVersion() {
     return this.version;
@@ -513,6 +513,13 @@ export default class IntegrationModel {
    */
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
   getSelectedItem(target, isIframe) {}
+
+  static setTemporalImageToNull() {
+    // eslint-disable-next-line no-undef
+    if (WirisPlugin.currentInstance) {
+      WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
+    }
+  }
 }
 
 // To know if the integration that extends this class implements
