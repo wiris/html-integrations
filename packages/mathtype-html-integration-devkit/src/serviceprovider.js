@@ -207,7 +207,8 @@ export default class ServiceProvider {
   static getService(service, postVariables, get) {
     let response;
     if (get === true) {
-      const serviceUrl = `${ServiceProvider.getServicePath(service)}?${postVariables}`;
+      let getVariables = postVariables ? '?' + postVariables : '';
+      const serviceUrl = `${ServiceProvider.getServicePath(service)}${getVariables}`;
       response = ServiceProvider.getUrl(serviceUrl);
     } else {
       const serviceUrl = ServiceProvider.getServicePath(service);
