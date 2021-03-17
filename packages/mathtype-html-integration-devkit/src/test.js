@@ -10,7 +10,7 @@ export default class Test {
   static testServices() {
     let data;
     console.log('Testing configuration service...');
-    console.log(ServiceProvider.getService('configurationjs', '', true));
+    console.log(ServiceProvider.getService('configurationjs', '', 'get'));
     console.log('Testing showimage service...');
     data = [];
     data.mml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>x</mi><mn>2</mn></msup></math>';
@@ -18,7 +18,7 @@ export default class Test {
     console.log('Testing createimage service...');
     data = [];
     data.mml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>x</mi><mn>2</mn></msup></math>';
-    console.log(ServiceProvider.getService('createimage', data));
+    console.log(ServiceProvider.getService('createimage', data, 'post'));
     console.log('Testing MathML2Latex service...');
     data = [];
     data.service = 'mathml2latex';

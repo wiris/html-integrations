@@ -255,7 +255,7 @@ export default class Core {
   init() {
     if (!Core.initialized) {
       const serviceProviderListener = Listeners.newListener('onInit', () => {
-        const jsConfiguration = ServiceProvider.getService('configurationjs', '', true);
+        const jsConfiguration = ServiceProvider.getService('configurationjs', '', 'get');
         const jsonConfiguration = JSON.parse(jsConfiguration);
         Configuration.addConfiguration(jsonConfiguration);
         // Adding JavaScript (not backend) configuration variables.
