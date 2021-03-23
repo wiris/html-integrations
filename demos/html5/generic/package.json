@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-generic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple html5 App integrating WIRIS MathType in a Generic integration.",
   "main": "app.js",
   "scripts": {
@@ -9,39 +9,29 @@
     "build-dev": "lerna bootstrap && npm run compile-package && webpack-dev-server --open",
     "start": "webpack-dev-server --open",
     "serve": "webpack-dev-server",
-    "build": "webpack --mode production",
-    "lint": "npx eslint --quiet src/ webpack.config.js",
-    "stylelint": "npx stylelint '**/*.css'",
-    "linthtml": "html-validate index.html"
+    "build": "webpack --mode production"
   },
-  "author": "Carla Lara",
+  "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-generic": "^7.20.0",
-    "@wiris/mathtype-html-integration-devkit": "^1.1.0",
-    "regenerator-runtime": "^0.13.5",
-    "webpack-dev-server": "^3.11.0"
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.0.0",
+    "html-loader": "^1.0.0",
+    "raw-loader": "^4.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^4.0.0",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^3.0.0",
+    "webpack-dev-server": "^3.0.0",
+    "@wiris/mathtype-generic": "^7.0.0",
+    "@wiris/mathtype-html-integration-devkit": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^3.5.3",
-    "eslint": "^7.2.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
-    "html-loader": "^1.1.0",
-    "lerna": "^3.22.1",
-    "raw-loader": "^4.0.1",
-    "style-loader": "^1.2.1",
-    "stylelint": "^13.6.0",
-    "stylelint-config-standard": "^20.0.0",
-    "url-loader": "^4.1.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
-    "jest": "^26.1.0",
-    "jest-html-reporter": "^3.1.3",
+    "jest": "^26.0.0",
+    "jest-html-reporter": "^3.0.0",
+    "lerna": "^4.0.0",
     "puppeteer": "^5.0.0"
   }
 }
