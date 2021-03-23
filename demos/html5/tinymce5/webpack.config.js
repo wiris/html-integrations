@@ -1,5 +1,4 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -20,16 +19,6 @@ module.exports = {
   },
   // Set watch to true for dev purposes.
   watch: false,
-  optimization: {
-    minimizer: [
-      // Javascript optimizer mainly to minimize js files.
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true, // Set to true if you want JS source maps.
-      }),
-    ],
-  },
   module: {
     rules: [
       {
