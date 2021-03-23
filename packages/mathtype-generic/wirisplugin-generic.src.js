@@ -39,6 +39,18 @@ export function wrsInitEditor(target,toolbar, mathtypeProperties) {
 }
 
 /**
+ * Gets the html content of the Generic editor and parses it to transform the latex
+ * $$$$ into a mathml image
+ * @param {HTMLElement} target - DOM target, in this integration the editable iframe
+ * @returns {HTMLElement} The html content of the target parsed with the wiris funcions
+ */
+export function wrsGetTargetHtml(target) {
+    const html = target.innerHTML;
+    return Parser.endParse(html);
+ }
+ 
+
+/**
  * Backwards compatibility init method.
  */
 window.wrs_int_init = wrsInitEditor;

@@ -1,5 +1,5 @@
 // Load scripts.
-import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
+import { wrsInitEditor, wrsGetTargetHtml } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
 import * as Generic from '../../../../resources/demos/common';
 
@@ -38,5 +38,6 @@ document.onreadystatechange = function () {
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', (e) => {
   e.preventDefault();
-  Generic.updateContent(WirisPlugin.Parser.initParse(editableDiv.innerHTML), 'transform_content');      //eslint-disable-line
+  const innerHTMLEditor = wrsGetTargetHtml(editableDiv);
+  Generic.updateContent(innerHTMLEditor, 'transform_content');      //eslint-disable-line
 });
