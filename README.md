@@ -207,15 +207,15 @@ There are configuration files at the root of the project to help. They staticall
 **Check all the .js files**
 
 ```sh
-  $ npm run eslint
+  $ npm run lint
   # From...
-  $ npx eslint --quiet [options] <dir|file|glob>*
+  $ npx eslint --ext [options] <dir|file|glob>*
 ```
 
 **Check all the .css files**
 
 ```sh
-    $ npm run stylelint
+    $ npm run lint-css
     # From...
     $ npx stylelint [options] <dir|file|glob>*
 ```
@@ -223,6 +223,8 @@ There are configuration files at the root of the project to help. They staticall
 **Check all the .html files**
     
 ```sh
+    $ npm run lint-html
+    # From...
     $ html-validate [options] <dir|file|glob>*
 ```
 

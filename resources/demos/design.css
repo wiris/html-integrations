@@ -53,6 +53,10 @@
   box-shadow: 0 0 10px #7af78f;
 }
 
+#editor p.formula {
+  text-align: center;
+}
+
 .text {
   margin: 0%;
 }
