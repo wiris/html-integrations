@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-tinymce4",
-  "version": "7.24.6",
+  "version": "7.26.0",
   "description": "MathType Web for TinyMCE4 editor",
   "keywords": [
     "chem",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@wiris/mathtype-html-integration-devkit": "^1.4.4",
+    "@wiris/mathtype-html-integration-devkit": "1.5.0",
     "babel-loader": "^8.0.2",
     "css-loader": "^1.0.0",
     "esdoc": "^1.1.0",
