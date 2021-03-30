@@ -29,7 +29,7 @@
     "build-dev": "webpack --mode development",
     "clean": "npx rimraf plugin.min.js",
     "compile": "node ../../scripts/services/compile editor_plugin.src.js .",
-    "prepack": "npm install && npm run compile -- npm # We use compile for TinyMCE plugins because we need to copy the source first"
+    "prepack": "npm install && npm run compile -- npm"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
