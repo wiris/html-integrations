@@ -33,7 +33,7 @@
     "@ckeditor/ckeditor5-essentials": ">=22.0.0",
     "@ckeditor/ckeditor5-heading": ">=22.0.0",
     "@ckeditor/ckeditor5-link": ">=22.0.0",
-    "@ckeditor/ckeditor5-list": ">=22.0.0",
+    "@ckeditor/ckeditor5-list": ">=27.0.0",
     "@ckeditor/ckeditor5-paragraph": ">=22.0.0",
     "@wiris/mathtype-ckeditor5": "^7.20.0",
     "resources": "file:../../../resources",
