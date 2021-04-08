@@ -41,7 +41,7 @@
     "esdoc-inject-style-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
     "jsdoc-export-default-interop": "^0.3.1",
-    "mini-css-extract-plugin": "^0.4.2",
+    "mini-css-extract-plugin": "^1.4.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.0",
