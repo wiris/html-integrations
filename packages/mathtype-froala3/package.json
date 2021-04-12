@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.0.0",
     "@wiris/mathtype-html-integration-devkit": "1.5.0",
     "babel-loader": "^8.0.2",
-    "css-loader": "^1.0.0",
+    "css-loader": "^5.2.1",
     "esdoc": "^1.1.0",
     "esdoc-inject-script-plugin": "^1.0.0",
     "esdoc-inject-style-plugin": "^1.0.0",
