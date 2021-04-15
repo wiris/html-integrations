@@ -1,4 +1,8 @@
 # This deploy file synchronizes the JS API branches with it's Moodle dependencies.
+# 
+# IMPORTANT: This information is OBSOLETE.
+#            Don't follow this guide to update dependencies on the moodle plugins.
+#            On April - 2021.
 #
 # The structure among the API and it's dependencies is the following:
 #                 JS API                                 Dependency
