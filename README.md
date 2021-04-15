@@ -309,7 +309,62 @@ This script should build the package (generally by calling `npm run build`).
 As a special case, the TinyMCE plugins call the `services/compile.js` script
 because they need to have the source replaced before building.
 
+## Moodle integrations
 
+MathTypeis used as a Third Party dependency on some Moodle plugins so it can be used on this LMS platform.
+
+Therefore, some packages on this project contains a js file used by Moodle and they need to be updated on the corresponding Moodle plugins on every release.
+
+| Plugin                                                                          | Package                          | File                 |
+| ------------------------------------------------------------------------------- | -------------------------------- | -------------------- |
+| [MathType for Atto](https://github.com/wiris/moodle-atto_wiris)                 | mathtype-html-integration-devkit | `plugin.min.moodle.js` |
+| [MathType for TinyMCE](https://github.com/wiris/moodle-tinymce_tiny_mce_wiris/) | mathtype-tinymce4                | `core.js`*             |
+
+> *: this file is not included on the repo and needs to be generate using the `build` command.
+
+### How to update dependencies
+
+**1. Prepare the environment.**
+
+```sh
+  # Install this project dependencies, in case you didn't already.
+  $ npm install
+  # You may need to run the clean command, if you executed the start command previously.
+  $ npm run clean-all 
+```
+
+**2. Generate the Javascript files**
+
+Run the 'moodle' command, first. And compile the `mathtype-html-integration-devkit` package.
+
+```sh
+  $ npm run clean-all 
+  # Run the Moodle generation command:
+  # It will run the lerna bootstrap command and then compile the packages
+  # using the 'moodle' parameter. See 'scripts/services/README.md' for more
+  # details.
+  # npm run clean => lerna bootstrap => lerna run compile -- moodle
+  $ npm run moodle
+  cp output/moodle-tinymce4/plugin.min.js packages/mathtype-tinymce4/plugin.min.moodle.js
+
+  # Since 'lerna bootstrap' has been run, it's the turn to update 'Atto' editor.
+  cd packages/mathtype-html-integration-devkit
+  npm run build
+```
+
+**3. Copy the files to the Moodle plugins**
+
+Last step consists on updating the Third Party library dependency files on the Moodle plugin source code.
+
+```sh
+  # 'TinyMCE' editor.
+  # {MOODLE_TINYMCE_PLUGIN} is the path for the Moodle plugin source code. 
+  cp packages/mathtype-tinymce4/plugin.min.moodle.js {MOODLE_TINYMCE_PLUGIN}/tinymce/editor_plugin.js
+  # 'Atto' editor.
+  # {MOODLE_ATTO_PLUGIN} is the path for the Moodle plugin source code. 
+  cp packages/mathtype-html-integration-devkit {MOODLE_ATTO_PLUGIN}/core.js
+
+```
 
 ## Examples for developers
 

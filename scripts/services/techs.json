@@ -11,6 +11,10 @@
         "uri": "integration",
         "server": "php"
     },
+    "moodle": {
+        "uri": "/filter/wiris/integration",
+        "server": "php"
+    },
     "aspx": {
         "uri": "integration",
         "server": "aspx"

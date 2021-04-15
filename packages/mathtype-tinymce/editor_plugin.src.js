@@ -39,6 +39,7 @@ export class TinyMceIntegration extends IntegrationModel {
      */
     getPath() {
         if (this.isMoodle) {
+            // return '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce/';
             var search = 'lib/editor/tinymce';
             var pos = tinymce.baseURL.indexOf(search);
             var baseURL = tinymce.baseURL.substr(0, pos + search.length);
@@ -228,7 +229,7 @@ export var currentInstance = null;
             integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
             integrationModelProperties.serviceProviderProperties.server = 'java';
             integrationModelProperties.version = pluginVersion;
-            integrationModelProperties.isMoodle = false;
+            integrationModelProperties.isMoodle = ((typeof M === 'object' && M !== null ) ? true : false);
             if (typeof(editor.getParam('wiriscontextpath')) !== 'undefined') {
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
                 editor.getParam('wiriscontextpath') + '/' + integrationModelProperties.configurationService;
