@@ -311,9 +311,9 @@ because they need to have the source replaced before building.
 
 ## Moodle integrations
 
-MathTypeis used as a Third Party dependency on some Moodle plugins so it can be used on this LMS platform.
+MathType is used as a Third Party dependency on some Moodle plugins so it can be used on this LMS platform.
 
-Therefore, some packages on this project contains a js file used by Moodle and they need to be updated on the corresponding Moodle plugins on every release.
+Therefore, some packages on this project contain a Javscript file used by Moodle and they need to be updated on the corresponding Moodle plugins on every release.
 
 | Plugin                                                                          | Package                          | File                 |
 | ------------------------------------------------------------------------------- | -------------------------------- | -------------------- |
