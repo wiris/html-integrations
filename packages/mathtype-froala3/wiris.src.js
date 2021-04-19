@@ -149,6 +149,11 @@ export class FroalaIntegration extends IntegrationModel {
      * @param {HTMLElement} element - DOM object target.
      */
     doubleClickHandler(element) {
+        // If the editor is in readOnly mode, don't add the handler
+        if (this.editorObject.edit.isDisabled()) {
+            return;
+        }
+
         // Save a image to a temporal register to detect when we want to
         // change between MT and CT.
         // Will be deleted when inserting the formula or canceling it
