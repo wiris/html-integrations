@@ -8,7 +8,13 @@ Install dependencies:
 $ npm install
 ```
 
-Compile:
+Compile using npm packages:
+
+```bash
+$ npm run build
+```
+
+Compile using local packages using 'lerna':
 
 ```bash
 $ npm run build-dev
@@ -25,6 +31,14 @@ Test:
 ```bash
 $ npm run test
 ```
+
+Generate documentation:
+
+```bash
+$ npm run build-docs
+```
+
+
 
 ## Privacy policy
 
