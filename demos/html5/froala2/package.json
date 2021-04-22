@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-froala2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple html5 App integrating WIRIS MathType in a Froala2 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -17,27 +17,27 @@
   "author": "Carla Lara",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala": "^7.20.0",
-    "froala-editor": "^2.9.8",
-    "webpack-dev-server": "^3.11.0"
+    "@wiris/mathtype-froala": "^7.0.0",
+    "@wiris/mathtype-html-integration-devkit": "*",
+    "froala-editor": "^2.9.8"
   },
   "devDependencies": {
-    "css-loader": "^3.5.3",
+    "css-loader": "^3.0.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
-    "html-loader": "^1.1.0",
-    "lerna": "^3.22.1",
-    "raw-loader": "^4.0.1",
-    "style-loader": "^1.2.1",
+    "html-loader": "^1.0.0",
+    "lerna": "^4.0.0",
+    "raw-loader": "^4.0.0",
+    "style-loader": "^1.0.0",
     "stylelint": "^13.6.0",
     "stylelint-config-standard": "^20.0.0",
-    "url-loader": "^4.1.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
-    "jest": "^26.1.0",
-    "jest-html-reporter": "^3.1.3",
-    "puppeteer": "^5.0.0"
+    "jest": "^26.0.0",
+    "jest-html-reporter": "^3.0.0",
+    "url-loader": "^4.0.0",
+    "puppeteer": "^5.0.0",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^3.0.0",
+    "webpack-dev-server": "^3.0.0"
   }
 }
