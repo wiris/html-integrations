@@ -42,7 +42,7 @@
     "@wiris/mathtype-html-integration-devkit": "1.5.0",
     "babel-loader": "^8.0.2",
     "css-loader": "^1.0.0",
-    "mini-css-extract-plugin": "^0.4.2",
+    "mini-css-extract-plugin": "^1.5.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "raw-loader": "^3.1.0",
     "style-loader": "^0.23.0",
