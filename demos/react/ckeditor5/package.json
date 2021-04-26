@@ -33,9 +33,9 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^23.18.0",
+    "html-validate": "^2.20.0",
     "stylelint": "^13.3.2",
-    "stylelint-config-standard": "^20.0.0",
-    "html-validate": "^2.20.0"
+    "stylelint-config-standard": "^20.0.0"
   },
   "scripts": {
     "start": "cross-env PORT=3002 HOST=0.0.0.0 react-scripts start",
