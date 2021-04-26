@@ -14,7 +14,7 @@
     "stylelint": "npx stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },
-  "author": "Carla Lara",
+  "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-froala": "^7.0.0",

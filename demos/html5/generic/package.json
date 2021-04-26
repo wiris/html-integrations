@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-generic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple html5 App integrating WIRIS MathType in a Generic integration.",
   "main": "app.js",
   "scripts": {
@@ -14,8 +14,8 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-generic": "^7.26.0",
-    "@wiris/mathtype-html-integration-devkit": "^1.0.0"
+    "@wiris/mathtype-generic": "^7.0.0",
+    "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
