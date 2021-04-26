@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-ckeditor4",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple html5 App integrating WIRIS MathType in a CKEditor4 rich text editor.",
   "main": "app.js",
   "scripts": {

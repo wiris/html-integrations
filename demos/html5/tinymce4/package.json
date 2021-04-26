@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-tinymce4",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple html5 App integrating WIRIS MathType in a TinyMCE4 rich text editor.",
   "main": "app.js",
   "scripts": {
