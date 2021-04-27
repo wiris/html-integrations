@@ -119,7 +119,13 @@ html-integrations$ npm start
 
 ### How to run a demo with the local package
 
+<<<<<<< HEAD
 Go to the desired folder for the framework and editor of your choice and run the 'start' command.
+=======
+> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
+
+Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.
+>>>>>>> Fix vulnerabilities on all demos
 
 ```sh
 $ cd demos/[technology]/[editor]
@@ -134,6 +140,32 @@ demos/angular/ckeditor5$ npm start
 ```
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
+
+## How to run a React demo with the local package
+
+Before running the demo, you must first 'bootstrap' and 'compile' the libraries. More information on the instructions on the [README.md](./README.md) file.
+
+```bash
+$ npm install
+$ npm start 
+
+```
+
+Then, go to the desired folder, inside `demos/react` folder, to choose the editor and run the `build-dev` command using `yarn`.
+
+```sh
+$ cd demos/react/[editor]
+html-integrations/demos/react/[editor]$ yarn run build-dev
+```
+
+Example:
+
+```sh
+html-integrations$ npm install
+html-integrations$ npm start 
+html-integrations$ cd demos/angular/generic
+html-integrations/demos/react/ckeditor5$ yarn run build-dev
+```
 
 ### Linting files
 
