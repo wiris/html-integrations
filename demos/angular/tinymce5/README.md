@@ -4,39 +4,36 @@ A simple Angular App integrating WIRIS MathType on a TinyMCE 5 and step-by-step 
 
 ## Requirements
 
-* **npm** (*Currently* v6.13.4)
-* **@angular/cli** (*Currently* v9.1.4)
+* npm
+* Angular (*Currently* v11.2.10)
 
 ## How to run the demo
 
 ```sh
 $ npm install
-$ npm run deploy
+$ npm start
 ```
 
 *More information on the different ways to run a demo [here](../../README.md)*
 
-Runs the app in the development mode.<br />
-Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Runs the app in the development mode.
+Opens [http://localhost:4006/](http://localhost:4006/) to view it in the browser.
 
 ## How to add MathType to TinyMCE from scratch
 
 1. Run the following through the terminal
 
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+> Notice that **$APP_NAME** needs to be replaced by the name that you choose.
 
     ```sh
     $ ng new $APP_NAME
     $ cd $APP_NAME
     $ npm install --save @tinymce/tinymce-angular
     $ npm install --save tinymce
-    $ npm install @wiris/mathtype-tinymce5
+    $ npm install --save @wiris/mathtype-tinymce5
     ```
 
-2. Open the *src/app/app.module.ts* file and add:
+2. Edit `src/app/app.module.ts`:
 
     ```js
     // Import the tinymce options
@@ -59,7 +56,7 @@ You will also see any lint errors in the console.
     })
     ```
 
-3. Open *.angular.json* file and add:
+3. Edit `.angular.json`:
     
     ```js
     "assets": [
@@ -77,7 +74,7 @@ You will also see any lint errors in the console.
     ]
     ```
 
-4. Open *src/app/app.component.ts* and replace all with:
+4. Edit `src/app/app.component.ts` and replace its contents with:
 
     ```ts
     import { Component } from '@angular/core';
@@ -129,9 +126,9 @@ You will also see any lint errors in the console.
 
     ```
 
-    *Notice that the content can be empty or set as you prefer in the component*
+> Notice that the content can be empty or set as you prefer in the component.
 
-5. Open *src/app/app.component.html* and replace all with:
+5. Edit `src/app/app.component.html` and replace its contents with:
 
     ```html
     <h1>TinyMCE 5 Angular Demo</h1>
@@ -142,9 +139,9 @@ You will also see any lint errors in the console.
     ></editor>
     ```
 
-6. Finally, you are ready to run the development server through the specified command ```ng serve```
+6. Finally, you are ready to run the development server through the specified command `ng serve`
 
-5. The **content** can be empty or anything you want to set as the initial editor content.
+7. The editor's initial value can be null or set value.
 
 ## How to run the tests
 
@@ -168,4 +165,4 @@ To get more information about wiris MathType you can check on the [official docu
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).

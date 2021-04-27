@@ -4,14 +4,14 @@ A simple Angular App integrating WIRIS MathType on a CKEditor 5 and step-by-step
 
 ## Requirements
 
-* **npm** (*Currently* v6.13.4)
-* **@angular/cli** (*Currently* v9.1.4)
+* npm
+* Angular (*Currently* v11.2.10)
 
 ## How to run the demo
 
 ```sh
 $ npm install
-$ npm run deploy
+$ npm start
 ```
 
 *More information on the different ways to run a demo [here](../../README.md)*
@@ -31,7 +31,7 @@ You will also see any lint errors in the console.
     ```sh
     $ ng new $APP_NAME
     $ cd $APP_NAME
-    $ npm install --save-dev @ckeditor/ckeditor5-angular
+    $ npm install --save @ckeditor/ckeditor5-angular
     $ npm install --save @wiris/mathtype-ckeditor5
     ```
 
@@ -123,4 +123,4 @@ To get more information about wiris MathType you can check on the [official docu
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).

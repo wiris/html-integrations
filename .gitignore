@@ -70,7 +70,6 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -109,3 +108,8 @@ dist
 
 # Reports for the jest tests
 **test-report.html
+
+## Custom
+# Exclude package-lock.json from the repo
+/package-lock.json
+packages/*/package-lock.json

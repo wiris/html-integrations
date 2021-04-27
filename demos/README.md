@@ -76,33 +76,43 @@ $ npm install
 $ npm start
 ```
 
+> **Note**: Use `yarn` instead of `npm install` in all react demos. Otherwise, they might not work.
+
 You can find clarification on which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-technologies) section above.
 
 *Note: The command `npm install` its just necessary the first time you initialize an editor.*
 
 ## Using the demos in development mode
 
+The above instructions will use the MathType packages released at npmjs.org to build the demo.
+
+You may need to build the very same demos but using the MathType packages on this repository, instead. 
+
 ### Environment set up
 
 The mono-repository is managed through [Lerna](https://lerna.js.org/), a tool
 designed for maintaining multiple npm packages in a single git repository.
+
+> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
 
 To work with Lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
 
 ```sh
 html-integrations$ cp lerna.demos.json lerna.json
 ```
-Before running the demo, you must first 'bootstrap' and 'compile' the libraries. Follow the instructions on the [README.md](./README.md) file.
+
+Before running the demo, you must first 'bootstrap' and 'compile' the libraries. More information on the instructions on the [README.md](./README.md) file.
 
 ```sh
 html-integrations$ npm install
 html-integrations$ npm start
 ```
 
-
 ### How to run a demo with the local package
 
-Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.<br>
+> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
+
+Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.
 
 ```sh
 $ cd demos/[technology]/[editor]
@@ -117,6 +127,32 @@ html-integrations/demos/angular/ckeditor5$ npm run build-dev
 ```
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
+
+## How to run a React demo with the local package
+
+Before running the demo, you must first 'bootstrap' and 'compile' the libraries. More information on the instructions on the [README.md](./README.md) file.
+
+```bash
+$ npm install
+$ npm start 
+
+```
+
+Then, go to the desired folder, inside `demos/react` folder, to choose the editor and run the `build-dev` command using `yarn`.
+
+```sh
+$ cd demos/react/[editor]
+html-integrations/demos/react/[editor]$ yarn run build-dev
+```
+
+Example:
+
+```sh
+html-integrations$ npm install
+html-integrations$ npm start 
+html-integrations$ cd demos/angular/generic
+html-integrations/demos/react/ckeditor5$ yarn run build-dev
+```
 
 ### Linting files
 

@@ -40,20 +40,20 @@ You will also see any lint errors in the console.
     import React from 'react';
     import ReactDOM from 'react-dom';
     import './index.css';
-    import * as serviceWorker from './serviceWorker';
-    
+    import reportWebVitals from './reportWebVitals';
+
     // Import CKEditor 5 WYSIWYG editor component for React.
     import CKEditor from '@ckeditor/ckeditor5-react';
-    
+
     // Import CKEditor custom build.
     import * as ClassicEditor from './ckeditor';
-    
+
     // Set the initial content of the editor.
     const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-    
+
     // Define the toolbar icons to be shown
     const toolbar = ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'];
-    
+
     // Initialize editor & define the configuration options for the CKEditor.
     const ckConfig = {
         iframe: true,
@@ -65,7 +65,7 @@ You will also see any lint errors in the console.
         imageResize : false,
         useClasses: false
     };
-    
+
     /* Create a component to be rendered later.
     This is important to remove complexity from the reactDom.render
     and to be able to add other functionality. */
@@ -76,13 +76,13 @@ You will also see any lint errors in the console.
             );
         }
     }
-    
+
     ReactDOM.render(<Editor />, document.getElementById('root'));
-    
+
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.
     // Learn more about service workers: https://bit.ly/CRA-PWA
-    serviceWorker.unregister();
+    reportWebVitals();
     ```
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*

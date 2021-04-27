@@ -14,7 +14,7 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-generic": "^7.0.0",
+    "@wiris/mathtype-generic": "^7.26.0",
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 {
   "packages": [
-    "demos/**/*",
+    "demos/html5/**/*",
+    "demos/angular/**/*",
     "packages/*"
   ],
   "command": {

@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
 import * as Generic from 'resources/demos/angular-imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
-document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
+document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
+document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Create the initial editor content.
 const editorContent = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
@@ -29,7 +29,7 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 export class AppComponent {
 
   //Set app title.
-  title = 'Angular + tinymce5 demo';
+  title = 'Angular + TinyMCE 5 demo';
 
   // Initializate the editor content.
   public content: string = editorContent;

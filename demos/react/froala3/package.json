@@ -1,26 +1,19 @@
 {
   "name": "demo-react-froala3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple ReactJS App integrating WIRIS MathType in a Froala rich text editor.",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/react": "^10.2.1",
-    "@testing-library/user-event": "^11.2.1",
-    "@wiris/mathtype-froala3": "^7.20.0",
-    "cross-env": "^7.0.2",
-    "jquery": "^3.5.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-froala-wysiwyg": "^3.1.1",
-    "react-scripts": "3.4.1",
-    "resources": "file:../../../resources"
+    "@wiris/mathtype-froala3": "^7.26.0",
+    "react-froala-wysiwyg": "^3.2.6"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.16.0",
-    "stylelint": "^13.2.0",
-    "stylelint-config-standard": "^20.0.0"
+    "cross-env": "^7.0.0",
+    "jquery": "^3.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-scripts": "^4.0.0",
+    "resources": "file:../../../resources",
+    "web-vitals": "^1.0.0"
   },
   "scripts": {
     "serve": "BROWSER=none cross-env PORT=3004 react-scripts start",
