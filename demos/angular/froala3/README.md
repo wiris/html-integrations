@@ -4,23 +4,21 @@ A simple Angular App integrating WIRIS MathType on a Froala 3 and step-by-step i
 
 ## Requirements
 
-* **npm** (*Currently* v6.13.4)
-* **@angular/cli** (*Currently* v9.1.4)
+* npm
+* Angular (*Currently* v11.2.10)
 
 ## How to run the demo
 
 ```sh
 $ npm install
-$ npm run deploy
+$ npm start
 ```
 
-*More information on the different ways to run a demo [here](../../README.md)*
+> *More information on the different ways to run a demo [here](../../README.md)*
 
-Runs the app in the development mode.<br />
+Runs the app in the development mode.
+
 Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
 ## How to add MathType to Froala from scratch
 
@@ -36,7 +34,7 @@ You will also see any lint errors in the console.
     $ npm install --save @wiris/mathtype-froala3
     ```
 
-2. Open the *src/app/app.module.ts* file and add:
+2. Open the `src/app/app.module.ts` file and add:
 
     ```ts
     // From Froala instructions.
@@ -60,7 +58,7 @@ You will also see any lint errors in the console.
     })
     ```
 
-3. Open *.angular.json* file and add:
+3. Open `.angular.json` file and add:
     
     ```json
     "styles": [
@@ -70,7 +68,7 @@ You will also see any lint errors in the console.
     ]
     ```
 
-4. Open *src/app/app.component.ts* and replace all with:
+4. Open `src/app/app.component.ts` and replace all with:
 
     ```ts
     import { Component } from '@angular/core';
@@ -118,9 +116,9 @@ You will also see any lint errors in the console.
     }
     ```
 
-    *Notice that the content can be empty or set as you prefer in the component*
+> *Notice that the content can be empty or set as you prefer in the component*.
 
-5. Open *src/app/app.component.html* and replace all with:
+5. Open `src/app/app.component.html` and replace all with:
 
     ```html
     <h1>Angular and Froala 3 demo</h1>
@@ -128,7 +126,7 @@ You will also see any lint errors in the console.
     <div id="editor" [froalaEditor]="options" [(froalaModel)]="content"></div>
     ```
 
-6. Finally, you are ready to run the development server through the specified command ```ng serve```
+6. Finally, you are ready to run the development server through the specified command `ng serve`
 
 ## How to run the tests
 
@@ -152,4 +150,4 @@ To get more information about wiris MathType you can check on the [official docu
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).

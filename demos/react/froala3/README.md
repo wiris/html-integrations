@@ -42,8 +42,8 @@ You will also see any lint errors in the console.
     import React from 'react';
     import ReactDOM from 'react-dom';
     import './index.css';
-    import * as serviceWorker from './serviceWorker';
-    
+    import reportWebVitals from './reportWebVitals';
+
     // Load Froala Editor scripts and styles.
     import 'froala-editor/css/froala_style.min.css';
     import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -52,7 +52,7 @@ You will also see any lint errors in the console.
 
     // Import jQuery so we can expose Froala editor to the window.
     import $ from 'jquery';
-    
+
     // Expose froala-editor to the window.
     window.$ = $;
     window.FroalaEditor = require('froala-editor');
@@ -66,7 +66,7 @@ You will also see any lint errors in the console.
     jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
     // Load generated scripts.
     document.head.appendChild(jsDemoImagesTransform);
-    
+
     // Define the toolbar content and the editor configuration.
     const toolbar = ['wirisEditor', 'wirisChemistry'];
     const froalaConfig = {
@@ -89,13 +89,13 @@ You will also see any lint errors in the console.
     // Set the initial content.
     const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
 
-    
+
     ReactDOM.render(<FroalaEditorComponent config={ froalaConfig } model={ content } />, document.getElementById('root'));
-    
+
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.
     // Learn more about service workers: https://bit.ly/CRA-PWA
-    serviceWorker.unregister();
+    reportWebVitals();
     ```
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*

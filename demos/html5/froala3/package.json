@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-froala3",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple html5 App integrating WIRIS MathType in a Froala3 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -14,9 +14,9 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala3": "^7.0.0",
+    "@wiris/mathtype-froala3": "^7.26.0",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "froala-editor": "3.2.1"
+    "froala-editor": "^3.2.6"
   },
   "devDependencies": {
     "css-loader": "^3.0.0",

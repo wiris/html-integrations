@@ -15,8 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "*",
-    "@wiris/mathtype-tinymce5": "^7.0.0",
-    "tinymce": "^5.0.0"
+    "@wiris/mathtype-tinymce5": "^7.26.0",
+    "tinymce": "^5.7.1"
   },
   "devDependencies": {
     "css-loader": "^3.0.0",

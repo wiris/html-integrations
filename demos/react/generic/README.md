@@ -40,26 +40,26 @@ You will also see any lint errors in the console.
     import React from 'react';
     import ReactDOM from 'react-dom';
     import './index.css';
-    import * as serviceWorker from './serviceWorker';
-    
+    import reportWebVitals from './reportWebVitals';
+
     // Import and load functions from wiris mathype-generic plugin.
     import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
     import '@wiris/mathtype-generic/wirisplugin-generic';
-    
+
     // Load WIRISplugins.js render dynamically
     const jsDemoImagesTransform = document.createElement('script');
     jsDemoImagesTransform.type = 'text/javascript';
     jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
     // Load the generated script.
     document.head.appendChild(jsDemoImagesTransform);
-    
+
     // Create toolbar component
     function Toolbar() {
         return (
             <div id="toolbar"></div>
         );
     }
-    
+
     /**
     * Create editable area component.
     * @param {String} props.data  String that represents the initial content of the editor. It can be either mathml or any other html tag.
@@ -69,7 +69,7 @@ You will also see any lint errors in the console.
             <div id="htmlEditor" contentEditable="true" dangerouslySetInnerHTML={{ __html: props.data }}></div>
         );
     }
-    
+
     // Create an extension of the react components called editor.
     class Editor extends React.Component {
         // Execute after the render.
@@ -77,7 +77,7 @@ You will also see any lint errors in the console.
             // Load the toolbar and the editable area into const variables to work easy with them.
             const editableDiv = document.getElementById('htmlEditor');
             const toolbarDiv = document.getElementById('toolbar');
-            
+
             // Initialize the editor.
             wrsInitEditor(editableDiv, toolbarDiv);
         }
@@ -88,20 +88,20 @@ You will also see any lint errors in the console.
             ];
         }
     }
-    
+
     // Define the initial content to place on the editor.
     const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-    
+
     // Render the editor react component.
     ReactDOM.render(
         <Editor />,
         document.getElementById('root')
     );
-    
+
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.
     // Learn more about service workers: https://bit.ly/CRA-PWA
-    serviceWorker.unregister();
+    reportWebVitals();
     ```
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*

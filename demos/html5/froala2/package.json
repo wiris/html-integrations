@@ -17,7 +17,7 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala": "^7.0.0",
+    "@wiris/mathtype-froala": "^7.26.0",
     "@wiris/mathtype-html-integration-devkit": "*",
     "froala-editor": "^2.9.8"
   },

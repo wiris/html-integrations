@@ -4,23 +4,22 @@ A simple Angular App integrating WIRIS MathType on a Generic editor and step-by-
 
 ## Requirements
 
-* **npm** (*Currently* v6.13.4)
-* **@angular/cli** (*Currently* v9.1.4)
+* npm
+* Angular (*Currently* v11.2.10)
 
 ## How to run the demo
 
 ```sh
 $ npm install
-$ npm run deploy
+$ npm start
 ```
 
-*More information on the different ways to run a demo [here](../../README.md)*
+> *More information on the different ways to run a demo [here](../../README.md)*.
 
-Runs the app in the development mode.<br />
+Runs the app in the development mode.
+
 Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
 ## How to add MathType to TinyMCE from scratch
 
@@ -31,11 +30,10 @@ You will also see any lint errors in the console.
     ```sh
     $ ng new $APP_NAME
     $ cd $APP_NAME
-    $ npm install @wiris/mathtype-generic
-    $ npm install @wiris/mathtype-html-integration-devkit
+    $ npm install @wiris/mathtype-generic --save
     ```
 
-2. Add the following import on *src/app/app.module.ts*:
+2. Add the following import on `src/app/app.module.ts`:
 
     ```ts
     ...
@@ -43,7 +41,7 @@ You will also see any lint errors in the console.
     import '@wiris/mathtype-generic/wirisplugin-generic';
     ```
 
-3. Open *src/app/app.component.ts* and replace all with:
+3. Open `src/app/app.component.ts` and replace all with:
     
     ```ts
     import { Component, OnInit } from '@angular/core';
@@ -81,16 +79,16 @@ You will also see any lint errors in the console.
         title = 'Demo for Angular and Generic';
     }
     ```
-    *Notice that the content can be empty or set as you prefer in the component*
+> *Notice that the content can be empty or set as you prefer in the component*.
 
-4. Open *src/app/app.component.html* and replace all with:
+1. Open `src/app/app.component.html` and replace all with:
 
     ```html
     <div id="toolbar"></div>
     <div id="htmlEditor" contenteditable="true">Try me!</div>
     ```
 
-5. Finally, you are ready to run the development server through the command: ```ng serve```
+2. Finally, you are ready to run the development server through the command: ```ng serve```
 
 ## How to run the tests
 
@@ -112,4 +110,4 @@ To get more information about wiris MathType you can check on the [official docu
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).

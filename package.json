@@ -6,7 +6,6 @@
     "email": "support@wiris.com"
   },
   "scripts": {
-    "prestart": "cd demos/html5/ckeditor5 & rm -r package-lock.json & npm i",
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
     "premoodle": "npm run clean && npx rimraf output && lerna bootstrap",

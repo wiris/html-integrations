@@ -42,35 +42,35 @@ You will also see any lint errors in the console.
     import React from 'react';
     import ReactDOM from 'react-dom';
     import './index.css';
-    import * as serviceWorker from './serviceWorker';
-    
+    import reportWebVitals from './reportWebVitals';
+
     // Import the react editor TinyMCE component.
     import { Editor } from '@tinymce/tinymce-react';
-    
+
     // Add jquery.
     import $ from 'jquery';
-    
+
     // Load wiris formula render script.
     const jsDemoImagesTransform = document.createElement('script');
     jsDemoImagesTransform.type = 'text/javascript';
     jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
     document.head.appendChild(jsDemoImagesTransform);
-    
+
     // This needs to be included before the '@wiris/mathtype-tinymce5' is loaded synchronously
     window.$ = $;
     window.tinymce = require('tinymce');  // Expose the TinyMCE to the window.
-    
+
     // Load wiris plugin synchronously.
     require('@wiris/mathtype-tinymce5');
-    
+
     // Set the initial editor content
     const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-    
+
     // Init the editor and define its options
     const options = {
         height: 500,
         menubar: false,
-        
+
         // Add wiris plugin
         external_plugins: {
             'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
@@ -87,7 +87,7 @@ You will also see any lint errors in the console.
         htmlAllowedTags:  ['.*'],
         htmlAllowedAttrs: ['.*'],
     };
-    
+
     /* Create a component to be rendered later.
     This is important to remove complexity from the reactDom.render
     and to be able to add other functionality. */
@@ -98,13 +98,13 @@ You will also see any lint errors in the console.
             );
         }
     }
-    
+
     ReactDOM.render(<EditorTiny />, document.getElementById('root'));
-    
+
     // If you want your app to work offline and load faster, you can change
     // unregister() to register() below. Note this comes with some pitfalls.
     // Learn more about service workers: https://bit.ly/CRA-PWA
-    serviceWorker.unregister();
+    reportWebVitals();
     ```
 
 3. Add the following script on the head of the *public/index.html*

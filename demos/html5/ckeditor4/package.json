@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-ckeditor4",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple html5 App integrating WIRIS MathType in a CKEditor4 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -17,9 +17,9 @@
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-ckeditor4": "^7.0.0",
+    "@wiris/mathtype-ckeditor4": "^7.26.0",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "ckeditor4": "^4.14.0"
+    "ckeditor4": "^4.16.0"
   },
   "devDependencies": {
     "css-loader": "^5.0.0",
