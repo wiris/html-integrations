@@ -7,7 +7,7 @@
     },
     "services" : {
         "title" : "Services overview",
-        "children" : ["services_generic", "services_tinymce", "services_froala", "services_ckeditor4"]
+        "children" : ["services_generic", "services_tinymce", "services_froala", "services_ckeditor4", "services_ckeditor5", "menu_item"]
     },
     "services_generic" : {
         "title" : "Generic Editor services"
@@ -20,5 +20,11 @@
     },
     "services_ckeditor4" : {
         "title" : "CKEditor 4 services"
+    },
+    "services_ckeditor5" : {
+        "title" : "CKEditor 5 services"
+    },
+    "menu_item" : {
+        "title" : "TinyMCE 5 services"
     }
 }
