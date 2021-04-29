@@ -1,12 +1,16 @@
 ## MathType JavaScript documentation
-### Technical documentation
-#### Services
 
-* [Generic Editor](tutorial-services_generic.html)
-* [Froala](tutorial-services_ckeditor4.html)
-* [TinyMCE](tutorial-services_tinymce.html)
-* [CKEDitor 4](tutorial-services_ckeditor4.html)
-### Examples
-* [Parsig Data](tutorial-data.html)
 ### API
+
 * [Api Reference](api.html)
+
+### Tutorials
+
+* [Parsing Data](tutorial-data.html)
+* [Getting Started](tutorial-getting_started.html)
+* [Services overview](tutorial-services.html)
+    - [Generic editor services](tutorial-services_generic.html)
+    - [TinyMCE services](tutorial-services_tinymce.html)
+    - [Froala services](tutorial-services_froala.html)
+    - [CKEditor 4 services](tutorial-services_ckeditor4.html)
+    - [CKEditor 5 services](tutorial-services_ckeditor5.html)
