@@ -1,4 +1,4 @@
-The following instructions allows to customizate MathType Web Integration services TinyMCE 4 and TinyMCE5.
+The following instructions allows to customizate MathType Web Integration services Froala.
 
 ## Install instructions
 

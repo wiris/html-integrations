@@ -32,13 +32,22 @@ Test:
 $ npm run test
 ```
 
-Generate documentation:
+## Generate the package documentation site
+
+This project uses `jsdoc` to build an HTML documentation site of this package and its API.
+
+The `jsdoc` theme for this site is [mathtype-integration-jsdoc-theme](https://github.com/wiris/mathtype-integration-jsdoc-theme).
+
+**How to generate the documentation site**
+
+Run these commands:
 
 ```bash
+$ npm install
 $ npm run build-docs
 ```
 
-
+The source code of the documentation site is generated on the `/out` folder.
 
 ## Privacy policy
 
