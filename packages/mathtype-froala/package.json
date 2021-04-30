@@ -37,7 +37,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
-    "css-loader": "^1.0.0",
+    "css-loader": "^5.2.4",
     "mini-css-extract-plugin": "^0.4.2",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "raw-loader": "^3.1.0",
