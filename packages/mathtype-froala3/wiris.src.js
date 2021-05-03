@@ -4,7 +4,7 @@ import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
 import Constants from '@wiris/mathtype-html-integration-devkit/src/constants.js';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml.js';
 
-import {version as pluginVersion} from './package.json';
+import packageInfo from './package.json';
 
 /**
  * This property contains all Froala Integration instances.
@@ -247,7 +247,7 @@ export class FroalaIntegration extends IntegrationModel {
         froalaIntegrationProperties.serviceProviderProperties = {};
         froalaIntegrationProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
         froalaIntegrationProperties.serviceProviderProperties.server = 'java';
-        froalaIntegrationProperties.version = pluginVersion;
+        froalaIntegrationProperties.version = packageInfo.version;
         froalaIntegrationProperties.scriptName = "wiris.js";
         froalaIntegrationProperties.environment = {};
         froalaIntegrationProperties.environment.editor = "Froala3";
