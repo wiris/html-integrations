@@ -4,5 +4,24 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     target-branch: "master"
+    versioning-strategy: increase
+    reviewers:
+          - "carlawiris"
+          - "dcanet"
+          - "xaviripo"
+    commit-message:
+          prefix: "npm prod"
+          prefix-development: "npm dev"
+          include: "scope"
+    labels:
+          - "type:dependencies"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "stable"
+    labels:
+          - "type:dependencies"
