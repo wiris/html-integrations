@@ -4,7 +4,7 @@ import Parser from '@wiris/mathtype-html-integration-devkit/src/parser.js';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
 
-import {version as pluginVersion} from './package.json';
+import packageInfo from './package.json';
 
 /**
  * TinyMCE integration class. This class extends IntegrationModel class.
@@ -228,7 +228,7 @@ export var currentInstance = null;
             integrationModelProperties.serviceProviderProperties= {};
             integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
             integrationModelProperties.serviceProviderProperties.server = 'java';
-            integrationModelProperties.version = pluginVersion;
+            integrationModelProperties.version = packageInfo.version;
             integrationModelProperties.isMoodle = ((typeof M === 'object' && M !== null ) ? true : false);
             if (typeof(editor.getParam('wiriscontextpath')) !== 'undefined') {
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
@@ -466,7 +466,7 @@ export var currentInstance = null;
                 author : 'Maths for More',
                 authorurl : 'http://www.wiris.com',
                 infourl : 'http://www.wiris.com',
-                version : pluginVersion,
+                version : packageInfo.version,
             };
         }
     });

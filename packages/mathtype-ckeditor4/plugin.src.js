@@ -3,7 +3,7 @@ import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 
-import {version as pluginVersion} from './package.json';
+import packageInfo from './package.json';
 
 /**
  * This property contains all Froala Integration instances.
@@ -361,7 +361,7 @@ export class CKEditor4Integration extends IntegrationModel {
                 ckeditorIntegrationModelProperties.serviceProviderProperties = {};
                 ckeditorIntegrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
                 ckeditorIntegrationModelProperties.serviceProviderProperties.server = 'java';
-                ckeditorIntegrationModelProperties.version = pluginVersion;
+                ckeditorIntegrationModelProperties.version = packageInfo.version;
                 ckeditorIntegrationModelProperties.scriptName = "plugin.js";
                 ckeditorIntegrationModelProperties.environment = {};
                 ckeditorIntegrationModelProperties.environment.editor = "CKEditor4";

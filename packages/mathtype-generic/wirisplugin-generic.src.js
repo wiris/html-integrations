@@ -4,7 +4,7 @@ import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import formulaIcon from './icons/formula.png';
 import chemIcon from './icons/chem.png';
 
-import {version as pluginVersion} from './package.json';
+import packageInfo from './package.json';
 
 /**
  * This property contains the current Generic integration instance,
@@ -70,7 +70,7 @@ export default class GenericIntegration extends IntegrationModel {
             integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
             integrationModelProperties.serviceProviderProperties.server = 'java';
         }
-        integrationModelProperties.version = pluginVersion;
+        integrationModelProperties.version = packageInfo.version;
         integrationModelProperties.scriptName = "wirisplugin-generic.js";
         integrationModelProperties.environment = {};
         integrationModelProperties.environment.editor = "GenericHTML";
