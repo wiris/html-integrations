@@ -1,7 +1,5 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -14,14 +12,16 @@ module.exports = {
     // Set watch to true for dev purposes.
     watch: false,
     optimization: {
-        minimizer: [
-            // Javascript optimizer mainly to minimize js files.
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: true // Set to true if you want JS source maps.
-            }),
-        ]
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            // These options prevent Terser from generating a LICENSE.txt file
+            terserOptions: {
+                format: {
+                    comments: false,
+                },
+            },
+            extractComments: false,
+        })],
     },
     module: {
         rules: [
