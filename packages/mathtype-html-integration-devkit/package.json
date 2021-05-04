@@ -44,7 +44,6 @@
     "jest-html-reporter": "^3.3.0",
     "jest-raw-loader": "^1.0.1",
     "puppeteer": "^9.0.0",
-    "raw-loader": "^4.0.2",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "url-loader": "^4.1.1",
@@ -52,6 +51,7 @@
     "webpack-cli": "^4.6.0"
   },
   "dependencies": {
+    "raw-loader": "^4.0.2",
     "uuid": "^8.3.2"
   }
 }
