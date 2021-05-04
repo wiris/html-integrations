@@ -8,9 +8,7 @@ updates:
     target-branch: "master"
     versioning-strategy: increase
     reviewers:
-          - "carlawiris"
-          - "dcanet"
-          - "xaviripo"
+          - "wiris/integrations"
     commit-message:
           prefix: "npm prod"
           prefix-development: "npm dev"
