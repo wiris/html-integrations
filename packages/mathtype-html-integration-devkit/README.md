@@ -32,6 +32,24 @@ Test:
 $ npm run test
 ```
 
+## Dependencies
+
+The following packages are dependencies of the project:
+
+- [`uuid`](https://www.npmjs.com/package/uuid)
+
+    In order to conform to RFC specifications when generating UUIDs, we leverage this package instead of maintaining all the logic that is unrelated to MathType.
+
+- [`raw-loader`](https://www.npmjs.com/package/raw-loader)
+
+    This dependency is used by Webpack in order to transpile the source files down to a single, minified, cross-browser compatible JavaScript file.
+    In particular, it is used to load SVG files for button icons that are used in the modal window that contains the MathType editor.
+    Unfortunately, for these resources to be loaded properly, the `raw-loader` must be applied in the `webpack.config.js` file.
+    See a working example of such file in this folder.
+
+    **Note**: As a consequence of this dependency, if you want to integrate `mathtype-html-integration-devkit` in your own project, you will have to apply `raw-loader` to the MathType source files in your own `webpack.config.js`.
+
+
 ## Generate the package documentation site
 
 This project uses `jsdoc` to build an HTML documentation site of this package and its API.
