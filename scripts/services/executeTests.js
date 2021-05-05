@@ -2,7 +2,7 @@ const path = require('path');
 const { emitWarning } = require('process');
 const { exec } = require('child_process');
 const process = require('process');
-const waitForLocalhost = require('wait-for-localhost');
+const waitForLocalhost = require('wait-for-localhost'); // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * Install all the dependencies of the specified folder in the route parameter
@@ -16,8 +16,7 @@ const installDeps = (route) => new Promise((resolve, reject) => {
       }
       resolve({ dout: stdout, derr: stderr });
     });
-  }
-  else {
+  } else {
     exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
       if (err) {
         reject(err);
@@ -26,7 +25,6 @@ const installDeps = (route) => new Promise((resolve, reject) => {
     });
   }
 });
-
 
 /**
  * This function is dedicated to open a server. First, install dependencies and then open the server

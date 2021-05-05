@@ -14,9 +14,12 @@
     "clean": "shx rm -rf output && lerna run clean",
     "clean-all": "npm run clean && shx rm -rf node_modules 'packages/*/node_modules' 'demos/**/*/node_modules'",
     "test": "node scripts/services/executeTests.js",
-    "lint": "eslint . --ext .js",
-    "lint-html": "html-validate 'demos/**/*.html' && html-validate 'resources/**/*.html'",
-    "lint-css": "stylelint '**/*.css'"
+    "lint-js": "eslint . --ext .js",
+    "lint-html": "html-validate 'demos/**/*.html' & html-validate 'resources/**/*.html'",
+    "lint-css": "stylelint '**/*.css'",
+    "lint-js-specific": "eslint $npm_config_route --ext .js",
+    "lint-html-specific": "html-validate $npm_config_route",
+    "lint-css-specific": "stylelint $npm_config_route"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
