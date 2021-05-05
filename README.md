@@ -1,8 +1,8 @@
-# Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img src="resources/img/logo.jpg" width="40"> 
+# Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img alt="" src="resources/img/logo.jpg" width="40">
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
 
-Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies. 
+Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies.
 
 ![Wiris mathtype plugin example](resources/img/wiris_plugin_example.png)
 
@@ -65,9 +65,9 @@ In the next list, you will see the editors that have a specialized WIRIS plugin 
 
 - CKEditor
 - Froala
-- TinyMCE 
-- Generic* 
- 
+- TinyMCE
+- Generic*
+
 > *: generic is a global integration made so that, from there, the WIRIS plugin can be integrated into any editor by following its steps.
 
 ## Quick start
@@ -105,7 +105,7 @@ $ npm install
 $ npm start
 ```
 
-In case you want to try out the [Technical Demos](#technical-demos) you can go to the **demos** folder and follow the instructions you can find in the folder README file. 
+In case you want to try out the [Technical Demos](#technical-demos) you can go to the **demos** folder and follow the instructions you can find in the folder README file.
 
 ### Bootstrapping
 
@@ -204,33 +204,62 @@ This will require you to `npm i` and `npm start` in the root again.
 
 There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 
-**Check all the .js files**
+**Extension .js files**
+
+To check all the .js files of the project, run:
 
 ```sh
-  $ npm run lint
-  # From...
-  $ npx eslint --ext [options] <dir|file|glob>*
+  $ npm run lint-js
 ```
 
-**Check all the .css files**
+To check specific .js files or folders of the project, run:
+
+```sh
+  $ npm run lint-js-specific --route=path
+  # Example:
+  $ npm run lint-js-specific --route=demos
+```
+
+> Where **path** is the folder or the specific file you want to lint.
+
+**Extension .css files**
+
+To check all the .css files of the project, run:
 
 ```sh
     $ npm run lint-css
-    # From...
-    $ npx stylelint [options] <dir|file|glob>*
 ```
 
-**Check all the .html files**
-    
+To check specific .css files or folders of the project, run:
+
+```sh
+  $ npm run lint-css-specific --route=path
+  # Example:
+  $ npm run lint-css-specific --route=demos/**/*.css
+```
+
+> Where **path** is the folder or the specific file you want to lint.
+> In this case it's necessary to specify the file extension you want to lint to avoid having linted undesired files.
+
+**Extension .html files**
+
 ```sh
     $ npm run lint-html
-    # From...
-    $ html-validate [options] <dir|file|glob>*
 ```
+
+To check specific .html files or folders of the project, run:
+
+```sh
+  $ npm run lint-html-specific --route=path
+  # Example:
+  $ npm run lint-html-specific --route=demos
+```
+
+> Where **path** is the folder or the specific file you want to lint.
 
 It is possible to automatically fix some of the errors, just add the `--fix` option in the desired command and run it.
 
-### Testing 
+### Testing
 
 We have prepared a set of tests to validate our packages code and developer code examples. There are unit, integration and e2e tests; for the latter we have used an extension called Pupeeteer.
 
@@ -330,7 +359,7 @@ Therefore, some packages on this project contain a Javscript file used by Moodle
   # Install this project dependencies, in case you didn't already.
   $ npm install
   # You may need to run the clean command, if you executed the start command previously.
-  $ npm run clean-all 
+  $ npm run clean-all
 ```
 
 **2. Generate the Javascript files**
@@ -338,7 +367,7 @@ Therefore, some packages on this project contain a Javscript file used by Moodle
 Run the 'moodle' command, first. And compile the `mathtype-html-integration-devkit` package.
 
 ```sh
-  $ npm run clean-all 
+  $ npm run clean-all
   # Run the Moodle generation command:
   # It will run the lerna bootstrap command and then compile the packages
   # using the 'moodle' parameter. See 'scripts/services/README.md' for more
@@ -358,10 +387,10 @@ Last step consists on updating the Third Party library dependency files on the M
 
 ```sh
   # 'TinyMCE' editor.
-  # {MOODLE_TINYMCE_PLUGIN} is the path for the Moodle plugin source code. 
+  # {MOODLE_TINYMCE_PLUGIN} is the path for the Moodle plugin source code.
   cp packages/mathtype-tinymce4/plugin.min.moodle.js {MOODLE_TINYMCE_PLUGIN}/tinymce/editor_plugin.js
   # 'Atto' editor.
-  # {MOODLE_ATTO_PLUGIN} is the path for the Moodle plugin source code. 
+  # {MOODLE_ATTO_PLUGIN} is the path for the Moodle plugin source code.
   cp packages/mathtype-html-integration-devkit {MOODLE_ATTO_PLUGIN}/core.js
 
 ```
