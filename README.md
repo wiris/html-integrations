@@ -212,12 +212,12 @@ To check all the .js files of the project, run:
   $ npm run lint-js
 ```
 
-To check specific .js files or folders of the project, run:
+To check specific .js files or folders of the project, add the --route option to the previous commands:
 
 ```sh
-  $ npm run lint-js-specific --route=path
+  $ npm run lint-js --route=path
   # Example:
-  $ npm run lint-js-specific --route=demos
+  $ npm run lint-js --route=demos
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
@@ -230,16 +230,16 @@ To check all the .css files of the project, run:
     $ npm run lint-css
 ```
 
-To check specific .css files or folders of the project, run:
+To check specific .css files or folders of the project, add the --route option to the previous commands:
 
 ```sh
-  $ npm run lint-css-specific --route=path
+  $ npm run lint-css --route=path
   # Example:
-  $ npm run lint-css-specific --route=demos/**/*.css
+  $ npm run lint-css --route=demos/**/*.css
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
-> In this case it's necessary to specify the file extension you want to lint to avoid having linted undesired files.
+> In this case it's necessary to specify the file extension you want to lint to avoid a stylelint error. Is the folder/files has not html extension, it'll throw a warning message.
 
 **Extension .html files**
 
@@ -247,12 +247,12 @@ To check specific .css files or folders of the project, run:
     $ npm run lint-html
 ```
 
-To check specific .html files or folders of the project, run:
+To check specific .html files or folders of the project, add the --route option to the previous commands:
 
 ```sh
-  $ npm run lint-html-specific --route=path
+  $ npm run lint-html --route=path
   # Example:
-  $ npm run lint-html-specific --route=demos
+  $ npm run lint-html --route=demos
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
