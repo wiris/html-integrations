@@ -1,7 +1,3 @@
 {
-  "extends": "stylelint-config-standard",
-  "ignoreFiles": [
-    "packages/mathtype-html-integration-devkit/doc/templates/**/*.css",
-    "output/**/*.css"
-  ]
+  "extends": "stylelint-config-standard"
 }
