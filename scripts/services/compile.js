@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable max-len */
 /**
  * Replaces the default services that point to the Wiris service with local services (PHP, Java, ASPX, etc.), builds it
  * and copies the given folder to output/ in the root of the monorepo with the appropriate name for the tech it uses.
@@ -38,17 +37,21 @@ const compile = (dev, target, src, tech) => {
   return fs.lstat(targetNormalized)
     .then((stats) => (stats.isSymbolicLink()
 
-    // if the source file is a symlink, we want to copy the source first in order not to change the original file
+      // if the source file is a symlink, we want to copy the source first in order not to change the original file
       ? fs.readlink(targetNormalized) // get the symlink's source file
         .then((targetOriginal) => fs.remove(targetNormalized) // if we don't remove the symlink first, node thinks we're trying to copy a file to itself
           .then(() => fs.copy(targetOriginal, targetNormalized)) // replace the symlink with a copy of its source
-          .then(() => { console.log(`Copied original symlinked source file ${targetOriginal} to ${targetNormalized}.`); }) // eslint-disable-line no-console
+          .then(() => {
+            console.log(`Copied original symlinked source file ${targetOriginal} to ${targetNormalized}.`); // eslint-disable-line no-console, max-len
+          })
           .then(() => compileActual(dev, target, src, tech)) // do the actual compiling
           .then(() => fs.remove(targetNormalized)) // again, delete the copied file before recreating the symlink
           .then(() => fs.symlink(targetOriginal, targetNormalized)) // replace source back with symlink
-          .then(() => { console.log(`Created symlink to ${targetOriginal} in ${targetNormalized}.`); })) // eslint-disable-line no-console
+          .then(() => {
+            console.log(`Created symlink to ${targetOriginal} in ${targetNormalized}.`); // eslint-disable-line no-console
+          }))
 
-    // if it's not a symlink, just go for it
+      // if it's not a symlink, just go for it
       : compileActual(dev, target, src, tech)));
 };
 
@@ -66,7 +69,10 @@ if (!module.parent) { // This file is being executed as a script.
 
   // Check the number of arguments
   if (args.length !== 3) {
-    throw new Error('3 parameters required: the location of the file to replace, the location of the folder to copy and the technology to use.');
+    const errorMessage = '3 parameters required: '
+                     + 'the location of the file to replace, '
+                     + 'the location of the folder to copy and the technology to use.';
+    throw new Error(errorMessage);
   }
 
   // Do the replacing and copying
