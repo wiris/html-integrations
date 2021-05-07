@@ -8,14 +8,14 @@
   "scripts": {
     "start": "lerna bootstrap",
     "poststart": "lerna run compile -- npm",
-    "premoodle": "npm run clean && npx rimraf output && lerna bootstrap",
-    "postmoodle": "cp output/moodle-tinymce4/plugin.min.moodle.js packages/mathtype-tinymce4/plugin.min.moodle.js",
+    "premoodle": "npm run clean && shx rm -rf output && lerna bootstrap",
+    "postmoodle": "shx cp output/moodle-tinymce4/plugin.min.moodle.js packages/mathtype-tinymce4/plugin.min.moodle.js",
     "moodle": "lerna run compile -- moodle",
-    "clean": "npx rimraf output & npx lerna run clean",
-    "clean-all": "npm run clean & npx rimraf node_modules packages/*/node_modules demos/**/*/node_modules",
+    "clean": "shx rm -rf output && lerna run clean",
+    "clean-all": "npm run clean && shx rm -rf node_modules 'packages/*/node_modules' 'demos/**/*/node_modules'",
     "test": "node scripts/services/executeTests.js",
     "lint": "eslint . --ext .js",
-    "lint-html": "html-validate 'demos/**/*.html' & html-validate 'resources/**/*.html'",
+    "lint-html": "html-validate 'demos/**/*.html' && html-validate 'resources/**/*.html'",
     "lint-css": "stylelint '**/*.css'"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "html-validate": "^4.0.0",
     "jest": "^26.0.0",
     "lerna": "^4.0.0",
-    "rimraf": "^3.0.0",
+    "shx": "^0.3.3",
     "stylelint": "^13.0.0",
     "stylelint-config-standard": "^20.0.0",
     "wait-for-localhost": "^3.0.0"
