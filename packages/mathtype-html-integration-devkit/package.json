@@ -25,10 +25,10 @@
   "main": "core.src.js",
   "scripts": {
     "prebuild-docs": "rm -rf doc/templates/mathtype-integration-jsdoc-theme && git clone git@github.com:wiris/mathtype-integration-jsdoc-theme doc/templates/mathtype-integration-jsdoc-theme",
-    "build-docs": "npx jsdoc -c doc/conf.json --verbose",
+    "build-docs": "jsdoc -c doc/conf.json --verbose",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
-    "clean": "npx rimraf core.js",
+    "clean": "shx rm -f core.js",
     "lint": "eslint --quiet src",
     "test": "jest"
   },
@@ -46,6 +46,7 @@
     "jsdoc": "^3.6.6",
     "jsdoc-export-default-interop": "^0.3.1",
     "puppeteer": "^9.0.0",
+    "shx": "^0.3.3",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "url-loader": "^4.1.1",
