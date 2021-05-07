@@ -5,12 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "jest",
-    "compile-package": "",
-    "build-dev-windows": "npx lerna bootstrap && cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd ../../ && node scripts/installCK5Windows.js && cd demos/html5/ckeditor5/ && npx webpack-dev-server -d --open",
-    "build-dev": "lerna bootstrap && cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && filename=$( npm pack --quiet ) && cd ../../demos/html5/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/$filename && webpack-dev-server -d --open",
-    "start": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server --open",
-    "serve": "npm uninstall --save @wiris/mathtype-ckeditor5 && npm install --save @wiris/mathtype-ckeditor5 && webpack-dev-server",
-    "build": "webpack --mode production",
+    "compile-package": "cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && filename=$( npm pack --quiet ) && cd ../../demos/html5/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/$filename",
+    "compile-package-windows": "cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd ../../ && node scripts/installCK5Windows.js && cd demos/html5/ckeditor5/",
+    "start": "webpack-dev-server --open",
     "lint": "eslint --quiet src/ webpack.config.js",
     "stylelint": "stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
