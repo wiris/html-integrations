@@ -27,7 +27,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
-    "clean": "npx rimraf plugin.js",
+    "clean": "shx rm -f plugin.js",
     "compile": "node ../../scripts/services/compile plugin.src.js .",
     "prepack": "npm install && npm run build"
   },
@@ -40,6 +40,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
     "raw-loader": "^4.0.2",
+    "shx": "^0.3.3",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "url-loader": "^4.1.1",

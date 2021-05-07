@@ -10,8 +10,8 @@
     "start": "webpack-dev-server --open",
     "serve": "webpack-dev-server",
     "build": "webpack --mode production",
-    "lint": "npx eslint --quiet src/ webpack.config.js",
-    "stylelint": "npx stylelint '**/*.css'",
+    "lint": "eslint --quiet src/ webpack.config.js",
+    "stylelint": "stylelint '**/*.css'",
     "linthtml": "html-validate index.html"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
