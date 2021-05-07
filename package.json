@@ -32,7 +32,7 @@
     "lerna": "^4.0.0",
     "rimraf": "^3.0.0",
     "stylelint": "^13.0.0",
-    "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-standard": "^22.0.0",
     "wait-for-localhost": "^3.0.0"
   },
   "license": "MIT",
