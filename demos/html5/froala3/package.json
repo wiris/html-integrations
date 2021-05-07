@@ -6,10 +6,7 @@
   "scripts": {
     "test": "jest",
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
-    "build-dev": "lerna bootstrap && npm run compile-package && webpack-dev-server --open",
-    "start": "webpack-dev-server --open",
-    "serve": "webpack-dev-server",
-    "build": "webpack --mode production"
+    "start": "webpack-dev-server --open"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
