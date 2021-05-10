@@ -20,7 +20,10 @@ const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', '
 
 // Define editor configuration.
 const froalaConfiguration = {
-  pluginsEnabled: ['wiris', 'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'embedly', 'emoticons', 'entities', 'file', 'fontAwesome', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageTUI', 'imageManager', 'inlineStyle', 'inlineClass', 'lineHeight', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
+  pluginsEnabled: ['wiris', 'align', 'charCounter', 'codeBeautifier', 'codeView', 'colors',
+    'draggable', 'embedly', 'emoticons', 'entities', 'file', 'fontAwesome', 'fontFamily', 'fontSize', 'fullscreen', 'image',
+    'imageTUI', 'imageManager', 'inlineStyle', 'inlineClass', 'lineHeight', 'link', 'lists', 'paragraphFormat', 'paragraphStyle',
+    'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageRemove'],
   toolbarButtons: toolbar,
   toolbarButtonsMD: toolbar,

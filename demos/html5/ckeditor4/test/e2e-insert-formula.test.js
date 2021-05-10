@@ -63,7 +63,8 @@ describe('Insert Formula. TAG = Insert',
       // iframe content is not accessible from the root dom unless it has an url
       // CKeditor 4 iframe url is undefined
       // To get the image we have to get the content in another way
-      const secondHtml = await page.evaluate(() => document.getElementsByClassName('cke_wysiwyg_frame')[0].contentWindow.document.getElementsByClassName('text')[0].getElementsByClassName('Wirisformula')[0]);
+      const evaluateCode = document.getElementsByClassName('cke_wysiwyg_frame')[0].contentWindow.document.getElementsByClassName('text')[0].getElementsByClassName('Wirisformula')[0];
+      const secondHtml = await page.evaluate(() => evaluateCode);
       expect(secondHtml).not.toBeUndefined();
     });
   });
