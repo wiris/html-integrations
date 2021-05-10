@@ -6,12 +6,10 @@
         "node": true
     },
     "plugins": [
-        "jest",
-        "prettier"
+        "jest"
     ],
     "extends": [
-        "airbnb-base",
-        "prettier"
+        "airbnb-base"
     ],
     "parser": "babel-eslint",
     "globals": {
@@ -27,7 +25,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "prettier/prettier": ["warn"],
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
         "jest/no-identical-title": "error",
