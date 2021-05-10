@@ -7,7 +7,7 @@
  * @param string file to make the replacement in
  */
 
-const fs = require('fs-extra'); // eslint-disable-line import/no-extraneous-dependencies
+const fs = require('fs-extra');
 const path = require('path');
 const techs = require('./techs.json');
 
@@ -55,7 +55,7 @@ if (!module.parent) { // This file is being executed as a script.
 
   // Do the replacing
   replace(...args)
-    .catch((err) => { console.error(err); }); // eslint-disable-line no-console
+    .catch((err) => { console.error(err); });
 } else { // This file is being imported as a module.
   module.exports = replace;
 }
