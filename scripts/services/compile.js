@@ -9,7 +9,7 @@
  * @param string tech of the built package (php, aspx, etc.)
  */
 
-const fs = require('fs-extra'); // eslint-disable-line import/no-extraneous-dependencies
+const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
 const replace = require('./replace');
@@ -42,7 +42,7 @@ const compile = (dev, target, src, tech) => {
         .then((targetOriginal) => fs.remove(targetNormalized) // if we don't remove the symlink first, node thinks we're trying to copy a file to itself
           .then(() => fs.copy(targetOriginal, targetNormalized)) // replace the symlink with a copy of its source
           .then(() => {
-            console.log(`Copied original symlinked source file ${targetOriginal} to ${targetNormalized}.`); // eslint-disable-line no-console, max-len
+            console.log(`Copied original symlinked source file ${targetOriginal} to ${targetNormalized}.`); // eslint-disable-line no-console
           })
           .then(() => compileActual(dev, target, src, tech)) // do the actual compiling
           .then(() => fs.remove(targetNormalized)) // again, delete the copied file before recreating the symlink
@@ -77,7 +77,7 @@ if (!module.parent) { // This file is being executed as a script.
 
   // Do the replacing and copying
   compile(dev, ...args)
-    .catch((err) => { console.error(err); }); // eslint-disable-line no-console
+    .catch((err) => { console.error(err); });
 } else { // This file is being imported as a module.
   module.exports = compile;
 }
