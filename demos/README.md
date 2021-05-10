@@ -67,7 +67,8 @@ Every editor has a package.json for the editor dependencies and, depending on th
 
 ### How to run a demo
 
-Before running the demo, you must first go on the desired folder for a framework and editor.<br>
+Before running the demo, you must first go on the desired folder for a framework and editor.
+
 To run a demo and initialize the editor, run:
 
 ```sh
@@ -112,18 +113,18 @@ html-integrations$ npm start
 
 > **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
 
-Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.
+Go to the desired folder for the framework and editor of your choice and run the 'start' command.
 
 ```sh
 $ cd demos/[technology]/[editor]
-html-integrations/demos/[technology]/[editor]$ npm run build-dev
+demos/[technology]/[editor]$ npm start
 ```
 
 Example:
 
 ```sh
 $ cd demos/angular/ckeditor5
-html-integrations/demos/angular/ckeditor5$ npm run build-dev
+demos/angular/ckeditor5$ npm start
 ```
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
@@ -138,11 +139,11 @@ $ npm start
 
 ```
 
-Then, go to the desired folder, inside `demos/react` folder, to choose the editor and run the `build-dev` command using `yarn`.
+Then, go to the desired folder, inside `demos/react` folder, to choose the editor and run the `start` command using `yarn`.
 
 ```sh
 $ cd demos/react/[editor]
-html-integrations/demos/react/[editor]$ yarn run build-dev
+html-integrations/demos/react/[editor]$ yarn start
 ```
 
 Example:
@@ -150,8 +151,8 @@ Example:
 ```sh
 html-integrations$ npm install
 html-integrations$ npm start 
-html-integrations$ cd demos/angular/generic
-html-integrations/demos/react/ckeditor5$ yarn run build-dev
+html-integrations$ cd demos/react/generic
+html-integrations/demos/react/ckeditor5$ yarn start
 ```
 
 ### Linting files
@@ -208,7 +209,7 @@ Remember to close the demo so you can free the used port when you are done with 
 
 ### 01. Build command not working on Windows for the HTML5+CKEditor5
 
-On windows, run the `npm run build-dev-windows` instead of `npm run build-dev`.
+On windows, run the `npm run compile-package-windows` before running `npm start`.
 
 ### Technical Support
 
