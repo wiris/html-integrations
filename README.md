@@ -27,8 +27,8 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Publishing](#publishing)
 - [Examples for developers](#examples-for-developers)
 - [More information](#more-information)
-- [Privacy policy](#privacy-policy)
 - [Technical support](#technical-support)
+- [Privacy policy](#privacy-policy)
 - [License](#license)
 
 ## Requirements
@@ -373,7 +373,7 @@ the ['demos/'](./demos/) folder on this project.
 
 Refer to the [README](demos/README.md) file for more information.
 
-### Technical Support
+## Technical Support
 
 If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
 
