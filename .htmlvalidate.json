@@ -4,6 +4,8 @@
     ],
 
     "rules": {
-      "close-order": "error"
+      "close-order": "error",
+      "element-permitted-content": "off",
+      "void-style": "off"
     }
   }
