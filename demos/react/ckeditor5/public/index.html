@@ -5,10 +5,6 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -28,7 +24,7 @@
   </head>
   <body>
     <header class="header">
-      <h1 class="header_title" id="header_title_name"></h1>
+      <h1 class="header_title" id="header_title_name">&nbsp;</h1>
       <div class="header_versions">
           <p class="header_versions_text">Versions used:</p>
           <ul class="header_versions_content">
@@ -39,7 +35,8 @@
   </header>
   <div id="editor">
       <p class="text"> Double click on the following formula to edit it.</p>
-      <p style="text-align:center;">
+      <!-- [html-validate-disable-next no-inline-style] -->
+      <p style="text-align: center;">
           <math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>
       </p>
   </div>

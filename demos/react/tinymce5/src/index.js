@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
 
+// eslint-disable-next-line no-unused-vars
 import { Editor } from '@tinymce/tinymce-react';
 // Add jquery.
 import $ from 'jquery';
@@ -12,6 +12,7 @@ import * as Generic from 'resources/demos/react-imports';
 
 // Import the wiris plugin version.
 import { version as pluginVersion } from '@wiris/mathtype-tinymce5/package.json';
+import reportWebVitals from './reportWebVitals';
 
 // This needs to be included before the '@wiris/mathtype-froala3' is loaded synchronously
 window.$ = $;
@@ -25,6 +26,7 @@ document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
 document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Set the initial content.
+// eslint-disable-next-line max-len
 const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
 
 // Copy the editor content before initializing it.
@@ -43,18 +45,18 @@ const options = {
 
   // Add wiris plugin
   external_plugins: {
-    'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js` 
+    tiny_mce_wiris: `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
   },
   plugins: [
     'advlist autolink lists link image charmap print preview anchor',
     'searchreplace visualblocks code fullscreen',
-    'insertdatetime media table paste code help wordcount '
+    'insertdatetime media table paste code help wordcount ',
   ],
   toolbar: [
-    ' bold italic |' +
-       'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry '
+    ' bold italic |'
+       + 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry ',
   ],
-  htmlAllowedTags:  ['.*'],
+  htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
 
   // Handle events.
@@ -67,11 +69,12 @@ const options = {
   },
 };
 
-
 /* Create a component to be rendered later.
- This is important to remove complexity from the reactDom.render 
+ This is important to remove complexity from the reactDom.render
  and to be able to add other functionality. */
- class EditorTiny extends React.Component {
+// eslint-disable-next-line no-unused-vars
+class EditorTiny extends React.Component {
+  // eslint-disable-next-line class-methods-use-this
   render() {
     return (
       <Editor init ={ options } initialValue = { content } />
