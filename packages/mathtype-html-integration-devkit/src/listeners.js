@@ -19,7 +19,6 @@ export default class Listeners {
     this.listeners = [];
   }
 
-
   /**
    * Add a listener to Listener class.
    * @param {Object} listener - A listener object.

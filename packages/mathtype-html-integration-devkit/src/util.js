@@ -943,8 +943,7 @@ export default class Util {
       return false;
     }
     const int32 = bytes.splice(0, 4);
-    // @codingStandardsIgnoreStart
-    // eslint-disable-next-line no-mixed-operators
+    // @codingStandardsIgnoreStart¡
     return (int32[0] << 24 | int32[1] << 16 | int32[2] << 8 | int32[3] << 0);
     // @codingStandardsIgnoreEnd
   }

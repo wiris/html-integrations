@@ -51,7 +51,6 @@ function wrs_initParse(code, language) {
 // Expose the method globally.
 window.wrs_initParse = wrs_initParse;
 
-
 /**
  * Parses end HTML code. The end HTML code is HTML code with embedded images or LaTeX formulas created with MathType. <br>
  * By default this method converts the formula images and LaTeX strings in MathML. <br>

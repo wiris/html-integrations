@@ -22,13 +22,13 @@ export default class StringManager {
     }
 
     // Check if we support the language
-    if (!this.strings.hasOwnProperty(language)) {
+    if (!this.strings.hasOwnProperty(language)) { // eslint-disable-line no-prototype-builtins
       console.warn(`Unknown language ${language} set in StringManager.`);
       language = 'en';
     }
 
     // Check if the key is supported in the given language
-    if (!this.strings[language].hasOwnProperty(key)) {
+    if (!this.strings[language].hasOwnProperty(key)) { // eslint-disable-line no-prototype-builtins
       console.warn(`Unknown key ${key} for language ${language} in StringManager.`);
       return key;
     }

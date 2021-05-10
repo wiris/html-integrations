@@ -91,7 +91,6 @@ export default class ContentManager {
     this.deviceProperties = {};
     this.deviceProperties.isAndroid = this.ua.indexOf('android') > -1;
     this.deviceProperties.isIOS = ContentManager.isIOS();
-  
 
     /**
      * Custom editor toolbar.
@@ -188,10 +187,10 @@ export default class ContentManager {
 
       // iOS events.
       if (this.modalDialogInstance.deviceProperties.isIOS) {
-        setTimeout(function hide() { 
+        setTimeout(function () {
           // Make sure the modalDialogInstance is available when the timeout is over
           // to avoid throw errors and stop execution.
-          if(this.hasOwnProperty('modalDialogInstance')) this.modalDialogInstance.hideKeyboard(); 
+          if (this.hasOwnProperty('modalDialogInstance')) this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
         }, 400);
 
         const formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
@@ -270,7 +269,7 @@ export default class ContentManager {
   static getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
     const removePort = anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '';
-    return `${anchorElement.protocol}//${anchorElement.hostname}${ removePort ? '' : (':' + anchorElement.port) }${anchorElement.pathname.startsWith('/') ? anchorElement.pathname : ('/' + anchorElement.pathname)}`;
+    return `${anchorElement.protocol}//${anchorElement.hostname}${removePort ? '' : (`:${anchorElement.port}`)}${anchorElement.pathname.startsWith('/') ? anchorElement.pathname : (`/${anchorElement.pathname}`)}`; // eslint-disable-line max-len
   }
 
   /**
@@ -317,10 +316,10 @@ export default class ContentManager {
       'iPod Simulator',
       'iPad',
       'iPhone',
-      'iPod'
+      'iPod',
     ].includes(navigator.platform)
     // iPad on iOS 13 detection
-    || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+    || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   }
 
   /**

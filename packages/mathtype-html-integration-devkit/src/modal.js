@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import PopUpMessage from './popupmessage';
 import Util from './util';
 import Configuration from './configuration';
@@ -135,7 +136,6 @@ export default class ModalDialog {
     this.stackDiv.setAttribute('style', generalStyle);
     this.stackDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
     this.stackDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
-
 
     attributes = {};
     attributes.class = 'wrs_modal_maximize_button';
@@ -369,7 +369,6 @@ export default class ModalDialog {
     document.body.appendChild(this.overlay);
 
     if (this.deviceProperties.isDesktop) { // Desktop.
-
       this.createModalWindowDesktop();
       this.createResizeButtons();
 
@@ -477,7 +476,7 @@ export default class ModalDialog {
         level: 'info',
         message: 'HELO telemetry.wiris.net',
       }])
-        .then((response) => {
+        .then((response) => { // eslint-disable-line no-unused-vars
           // TODO: manage retries for codes
           // DEBUG
           // console.log('modal.open TelemetryService.send - response:', response);
@@ -856,8 +855,8 @@ export default class ModalDialog {
     const { innerWidth } = window;
     const { offsetHeight } = this.container;
     const { offsetWidth } = this.container;
-    const bottom = innerHeight / 2 - offsetHeight / 2;
-    const right = innerWidth / 2 - offsetWidth / 2;
+    const bottom = (innerHeight / 2) - (offsetHeight / 2);
+    const right = (innerWidth / 2) - (offsetWidth / 2);
 
     this.setPosition(bottom, right);
     this.recalculateScale();
@@ -984,7 +983,6 @@ export default class ModalDialog {
     // Key events.
     Util.removeEvent(this.container, 'keydown', this.onKeyDown);
   }
-
 
   /**
    * Returns mouse or touch coordinates (on touch events ev.ClientX doesn't exists)
