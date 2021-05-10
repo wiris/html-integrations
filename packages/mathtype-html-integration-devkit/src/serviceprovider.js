@@ -207,7 +207,7 @@ export default class ServiceProvider {
   static getService(service, postVariables, get) {
     let response;
     if (get === true) {
-      let getVariables = postVariables ? '?' + postVariables : '';
+      const getVariables = postVariables ? `?${postVariables}` : '';
       const serviceUrl = `${ServiceProvider.getServicePath(service)}${getVariables}`;
       response = ServiceProvider.getUrl(serviceUrl);
     } else {
@@ -216,7 +216,6 @@ export default class ServiceProvider {
     }
     return response;
   }
-
 
   /**
    * Returns the server language of a certain service. The possible values
@@ -280,7 +279,6 @@ ServiceProvider._integrationPath = '';
  * @private
  */
 ServiceProvider._listeners = new Listeners();
-
 
 /**
  * Service provider parameters.

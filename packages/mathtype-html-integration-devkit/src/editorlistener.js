@@ -5,7 +5,6 @@
 // The rules above are disabled because we are implementing
 // an external interface.
 
-
 export default class EditorListener {
   /**
    * @classdesc

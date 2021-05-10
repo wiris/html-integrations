@@ -1,4 +1,24 @@
-import {v4 as createUuid} from 'uuid';
+import { v4 as createUuid } from 'uuid';
+
+/**
+ * Name of the cookie that keeps the sender id.
+ */
+const senderIdCookieName = 'wiris_telemetry_mathtype_web_senderid';
+
+/**
+* Time in seconds that the cookie with the sender id should last.
+* It's set to 10 years since we'd like to never be deleted.
+*/
+const senderIdCookieMaxAge = 60 * 60 * 24 * 365 * 10;
+
+/**
+* TelemetryServer
+* The URL for the telemetry server host is hard-coded.
+*/
+const telemetryHost = {
+  local: 'http://localhost:4000',
+  production: 'https://telemetry.wiris.net',
+};
 
 /**
 * @classdesc
@@ -17,10 +37,9 @@ export default class TelemetryService {
   */
   static get senderId() {
     if (!this._senderId) {
-
       // Look for previous cookie and use that
-      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
-      for (const [ key, value ] of cookies) {
+      const cookies = document.cookie.split(';').map((cookie) => cookie.trim().split('='));
+      for (const [key, value] of cookies) {
         if (key === senderIdCookieName) {
           this._senderId = value;
           break;
@@ -67,8 +86,9 @@ export default class TelemetryService {
     // DEBUG
     // console.log('TelemetryService.send - data:', data);
     return fetch(TelemetryService.endpoint, data)
-      .then(response => response)
+      .then((response) => response)
       .catch((error) => {
+        console.warn(error);
         // DEBUG
         // console.error('TelemetryService.send - error:', error);
       });
@@ -113,13 +133,10 @@ export default class TelemetryService {
       // TODOs:
       // 1. Backend version, the server language of the service.
       // The possible values are: php, aspx, java or ruby.
-      // eslint-disable-next-line max-len
       // backend_version: (WirisPlugin.currentInstance.environment.backend_version ? WirisPlugin.currentInstance.environment.backend_version : ''), // TODO: next iteration.
-      // 2. Framework & platform. We can't know this, yet. 
+      // 2. Framework & platform. We can't know this, yet.
       // This should be injected from the right package.
-      // eslint-disable-next-line max-len
       // framework: (WirisPlugin.currentInstance.serviceProviderProperties.framework ? WirisPlugin.currentInstance.serviceProviderProperties.framework : ''), // TODO: next iteration.
-      // eslint-disable-next-line max-len
       // platform: (WirisPlugin.currentInstance.serviceProviderProperties.platform ? WirisPlugin.currentInstance.serviceProviderProperties.platform : ''), // TODO: next iteration.
       // 3. Product backend version.
       // product_backend_version: '7.18.0', // TODO: next iteration.
@@ -183,26 +200,6 @@ export default class TelemetryService {
     return `${name}=${content}${duration}`;
   }
 }
-
-/**
- * Name of the cookie that keeps the sender id.
- */
-const senderIdCookieName = 'wiris_telemetry_mathtype_web_senderid';
-
-/**
- * Time in seconds that the cookie with the sender id should last.
- * It's set to 10 years since we'd like to never be deleted.
- */
-const senderIdCookieMaxAge = 60 * 60 * 24 * 365 * 10; 
-
-/**
- * TelemetryServer
- * The URL for the telemetry server host is hard-coded.
- */
-const telemetryHost = {
-  local: 'http://localhost:4000',
-  production: 'https://telemetry.wiris.net',
-};
 
 /**
  * Stores the Telemetry endpoint host URL.
