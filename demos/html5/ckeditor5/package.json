@@ -22,7 +22,7 @@
     "@ckeditor/ckeditor5-essentials": ">=27.1.0",
     "@ckeditor/ckeditor5-paragraph": ">=27.1.0",
     "@ckeditor/ckeditor5-theme-lark": ">=27.1.0",
-    "@wiris/mathtype-ckeditor5": "^7.26.0",
+    "@wiris/mathtype-ckeditor5": "^7.26.1",
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {

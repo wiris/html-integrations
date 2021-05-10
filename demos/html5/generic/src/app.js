@@ -27,7 +27,6 @@ const mathTypeParameters = {
 // Initialyze the editor.
 wrsInitEditor(editableDiv, toolbarDiv, mathTypeParameters);
 
-// eslint-disable-next-line func-names
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line

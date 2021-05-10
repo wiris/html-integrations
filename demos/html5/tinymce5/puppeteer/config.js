@@ -3,7 +3,6 @@
 */
 const config = {};
 
-
 config.OPTS = {
   headless: false,
   timeout: 10000,
@@ -12,6 +11,5 @@ config.OPTS = {
   defaultViewport: null,
 };
 config.DEMO_URL = 'http://localhost:8006';
-
 
 module.exports = config;
