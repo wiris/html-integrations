@@ -15,8 +15,8 @@
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [Technical support](#technical-support)
-- [License](#license)
 - [Privacy Policity](#privacy-policity)
+- [License](#license)
 
 
 ## Using the demos
@@ -191,14 +191,14 @@ Remember to close the demo so you can free the used port when you are done with 
 
 On windows, run the `npm run compile-package-windows` before running `npm start`.
 
-### Technical Support
+## Technical Support
 
 If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
-
-## License
-
-Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
 
 ## Privacy policy
 
 The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users.
+
+## License
+
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../LICENSE).
