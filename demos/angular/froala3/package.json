@@ -5,9 +5,7 @@
   "scripts": {
     "start": "ng serve --host localhost --open",
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
