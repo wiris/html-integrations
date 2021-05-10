@@ -6,10 +6,7 @@
   "scripts": {
     "test": "jest",
     "compile-package": "cd ../../../packages/mathtype-froala/ && npm run compile -- npm --dev",
-    "start": "webpack-dev-server --open",
-    "lint": "eslint --quiet src/ webpack.config.js",
-    "stylelint": "stylelint '**/*.css'",
-    "linthtml": "html-validate index.html"
+    "start": "webpack-dev-server --open"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
@@ -20,9 +17,6 @@
   },
   "devDependencies": {
     "css-loader": "^3.0.0",
-    "eslint": "^7.2.0",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
     "html-loader": "^1.0.0",
     "jest": "^26.0.0",
     "jest-html-reporter": "^3.0.0",
@@ -30,8 +24,6 @@
     "puppeteer": "^5.0.0",
     "raw-loader": "^4.0.0",
     "style-loader": "^1.0.0",
-    "stylelint": "^13.6.0",
-    "stylelint-config-standard": "^20.0.0",
     "url-loader": "^4.0.0",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.0.0",
