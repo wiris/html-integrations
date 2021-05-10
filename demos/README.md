@@ -94,7 +94,15 @@ You may need to build the very same demos but using the MathType packages on thi
 The mono-repository is managed through [Lerna](https://lerna.js.org/), a tool
 designed for maintaining multiple npm packages in a single git repository.
 
-> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
+> **Note**: The React demos require an extra step beforehand.
+>
+> Go to the desired demo folder and run `yarn`, e.g.:
+>
+> ```sh
+> html-integrations/demo/react/ckeditor5$ yarn
+> ```
+>
+> All other demos (HTML5 and Angular) do not require this step.
 
 To work with Lerna and try out the packages, with your local changes instead of the published packages, you'd need to copy the contents from `lerna.demos.json` to `lerna.json`.
 
@@ -111,8 +119,6 @@ html-integrations$ npm start
 
 ### How to run a demo with the local package
 
-> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
-
 Go to the desired folder for the framework and editor of your choice and run the 'start' command.
 
 ```sh
@@ -128,32 +134,6 @@ demos/angular/ckeditor5$ npm start
 ```
 
 You can find a list of which technologies and which frameworks you can work with on this project in the [Supported editors & technologies](#supported-editors-&-technologies) section.
-
-## How to run a React demo with the local package
-
-Before running the demo, you must first 'bootstrap' and 'compile' the libraries. More information on the instructions on the [README.md](./README.md) file.
-
-```bash
-$ npm install
-$ npm start 
-
-```
-
-Then, go to the desired folder, inside `demos/react` folder, to choose the editor and run the `start` command using `yarn`.
-
-```sh
-$ cd demos/react/[editor]
-html-integrations/demos/react/[editor]$ yarn start
-```
-
-Example:
-
-```sh
-html-integrations$ npm install
-html-integrations$ npm start 
-html-integrations$ cd demos/react/generic
-html-integrations/demos/react/ckeditor5$ yarn start
-```
 
 ### Linting files
 
