@@ -37,7 +37,6 @@ export default class Parser {
     data.metrics = 'true';
     data.centerbaseline = 'false';
 
-
     // Full base64 method (edit & save).
     if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default') {
       data.base64 = true;
@@ -318,7 +317,7 @@ export default class Parser {
    * @returns {Object} JSON object containing showimage response.
    */
   static createShowImageSrc(data, language) {
-    let dataMd5 = {};
+    const dataMd5 = {};
     const renderParams = ['mml', 'color', 'centerbaseline', 'zoom', 'dpi', 'fontSize', 'fontFamily', 'defaultStretchy', 'backgroundColor', 'format'];
     renderParams.forEach((param) => {
       if (typeof data[param] !== 'undefined') {
@@ -493,7 +492,7 @@ if (typeof MutationObserver !== 'undefined') {
   Parser.observer = Object.create(mutationObserver);
   Parser.observer.Config = { attributes: true, attributeOldValue: true };
   // We use own default config.
-  Parser.observer.observe = function name(target) {
+  Parser.observer.observe = function (target) {
     Object.getPrototypeOf(this).observe(target, this.Config);
   };
 }

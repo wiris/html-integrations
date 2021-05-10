@@ -318,7 +318,6 @@ export default class Core {
       });
     }
 
-
     // Read only.
     beforeUpdateEvent.language = this.language;
     beforeUpdateEvent.editMode = this.editMode;
@@ -537,7 +536,6 @@ export default class Core {
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
   }
-
 
   /**
    * Opens a modal dialog containing MathType editor..

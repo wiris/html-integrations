@@ -108,11 +108,6 @@
   padding: 0;
 }
 
-.wrs_modal_wrapper {
-  display: block;
-  margin: 6px;
-}
-
 .wrs_modal_title_bar {
   display: block;
   background-color: #778e9a;
@@ -145,7 +140,6 @@
   opacity: 0;
 }
 
-
 /* Class that exists but hasn't got css properties defined
 .wrs_modal_dialogContainer.wrs_modal_desktop.wrs_minimized.wrs_drag {} */
 
@@ -173,7 +167,6 @@
   transform: translate(50%, -50%);
   top: 50%;
   right: 50% !important;
-  position: fixed;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_ios {
@@ -185,9 +178,7 @@
   transform: translate(50%, -50%);
   top: 50%;
   right: 50% !important;
-  position: fixed;
 }
-
 
 /* Class that exists but hasn't got css properties defined
 .wrs_content_container.wrs_maximized {} */
