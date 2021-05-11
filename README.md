@@ -204,6 +204,8 @@ This will require you to `npm i` and `npm start` in the root again.
 
 There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 
+> Before running the lint commands, make sure that the dependenceis fo the folder/folders where you're trying to lint file/files are installed.
+
 **Extension .js files**
 
 To check all the .js files of the project, run:
