@@ -163,29 +163,7 @@ html-integrations/demos/react/ckeditor5$ yarn run build-dev
 
 ### Linting files
 
-For more detailed information, take a look at this same section found in the README at the root of the project.
-
-The important commands to lint the files are:
-
-To check all the .js files you can execute:
-
-```sh
-$ npx eslint --quiet [options] <dir|file|glob>
-```
-
-To check all the .css files you can execute:
-
-```sh
-$ npx stylelint [options] <dir|file|glob>
-```
-
-To check all the .html files you can execute:
-
-```sh
-$ html-validate [options] <dir|file|glob>
-```
-
-In case you want to automatically apply the possible fixes, just add the --fix option in the desired command.
+In order to lint demos files, go to the README root file to check detailed information about it in the Lint section.
 
 ## Testing
 
