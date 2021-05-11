@@ -119,13 +119,7 @@ html-integrations$ npm start
 
 ### How to run a demo with the local package
 
-<<<<<<< HEAD
 Go to the desired folder for the framework and editor of your choice and run the 'start' command.
-=======
-> **Note**: The demos on the `react` folder use `yarn` instead of `npm`. You can skip this whole section and [follow the instructions from the React section](#how-to-run-a-react-demo-with-the-local-package), instead.  
-
-Go to the desired folder for the framework and editor of your choice and run the 'build-dev' command.
->>>>>>> Fix vulnerabilities on all demos
 
 ```sh
 $ cd demos/[technology]/[editor]
