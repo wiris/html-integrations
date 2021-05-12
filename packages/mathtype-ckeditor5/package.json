@@ -18,7 +18,7 @@
     "wiris"
   ],
   "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5",
-  "homepage": "http://www.wiris.com/",
+  "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
   },
@@ -40,7 +40,7 @@
     "@ckeditor/ckeditor5-engine": ">=23.0.0",
     "@ckeditor/ckeditor5-ui": ">=23.0.0",
     "@ckeditor/ckeditor5-widget": ">=23.0.0",
-    "@wiris/mathtype-html-integration-devkit": "^1.5.0"
+    "@wiris/mathtype-html-integration-devkit": "^1.5.1"
   },
   "devDependencies": {
     "babel-jest": "^26.1.0",

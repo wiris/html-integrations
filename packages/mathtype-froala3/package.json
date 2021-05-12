@@ -17,7 +17,8 @@
     "mathtype",
     "wiris"
   ],
-  "homepage": "http://www.wiris.com/",
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala3",
+  "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
   },
@@ -32,7 +33,7 @@
     "prepack": "npm install && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.5.1"
+    "@wiris/mathtype-html-integration-devkit": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

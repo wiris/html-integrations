@@ -15,7 +15,8 @@
     "mathtype",
     "wiris"
   ],
-  "homepage": "http://www.wiris.com/",
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-generic",
+  "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
   },
@@ -30,7 +31,7 @@
     "prepack": "npm install && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.5.1"
+    "@wiris/mathtype-html-integration-devkit": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -44,77 +45,5 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0"
-  },
-  "esdoc": {
-    "source": ".",
-    "destination": "./docs",
-    "includes": [
-      "\\.js$",
-      "/core/src"
-    ],
-    "excludes": [
-      "backwardslib.js",
-      "cas.js",
-      "core.js",
-      "display.js",
-      "generic_demo.js",
-      "global.js",
-      "jsvariables.js",
-      "md5.js",
-      "polyfills.js",
-      "node_modules",
-      "lang",
-      "integration/",
-      "docs",
-      "out",
-      "wirisplugin-generic.js",
-      "webpack.config.js"
-    ],
-    "plugins": [
-      {
-        "name": "esdoc-standard-plugin",
-        "option": {
-          "lint": {
-            "enable": true
-          },
-          "coverage": {
-            "enable": true
-          },
-          "accessor": {
-            "access": [
-              "public",
-              "protected",
-              "private"
-            ],
-            "autoPrivate": true
-          },
-          "undocumentIdentifier": {
-            "enable": true
-          },
-          "unexportedIdentifier": {
-            "enable": false
-          },
-          "typeInference": {
-            "enable": true
-          },
-          "brand": {
-            "title": "My Library",
-            "description": "this is awesome library",
-            "site": "http://my-library.org",
-            "author": "https://twitter.com/foo",
-            "image": "http://my-library.org/logo.png"
-          }
-        }
-      },
-      {
-        "name": "esdoc-inject-style-plugin",
-        "option": {
-          "enable": true,
-          "styles": [
-            "./src-doc/styles.css"
-          ]
-        }
-      }
-    ]
   }
 }
