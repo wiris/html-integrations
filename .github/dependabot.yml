@@ -6,13 +6,13 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "master"
-    versioning-strategy: increase
+    versioning-strategy: increase # Stategy that'll increase the version number in package.json instead of the package-lock.json
     reviewers:
           - "wiris/integrations"
     commit-message:
-          prefix: "npm prod"
-          prefix-development: "npm dev"
-          include: "scope"
+          prefix: "npm prod" # Prefix to PR title in updating dependencies
+          prefix-development: "npm dev" # Prefix to PR title in updating devDependencies
+          include: "scope" # It'll include all the reviews and changes proposal
     labels:
           - "type:dependencies"
 
@@ -23,3 +23,7 @@ updates:
     target-branch: "stable"
     labels:
           - "type:dependencies"
+    commit-message:
+          prefix: "st:npm prod"
+          prefix-development: "st:npm dev"
+          include: "scope"
