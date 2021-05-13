@@ -1,10 +1,23 @@
-# Mono-repository for the MathType Web plugins and their dependencies. &nbsp; <img alt="" src="resources/img/logo.jpg" width="40">
+# ![MathType logo](resources/img/mathtype_logo.png) MathType Web Integrations
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Updated](https://img.shields.io/badge/Updated%3F-yes-green.svg)](docs/CONTRIBUITING.md)&nbsp;[![Downloads](https://img.shields.io/static/v1.svg?label=Downloads&message=40&color=blue)](https://github.com/wiris/html-integrations/graphs/traffic)
+<img src="resources/img/wiris_plugin_example.png" alt="Wiris MathType plugin example" width="40%" style="min-width: 480px"/>
 
-Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies.
+**MathType Web** is the official open-source JavaScript library for [MathType by Wiris], the leading formula editor and equation writer for CMS, LMS, and web applications.
 
-![Wiris mathtype plugin example](resources/img/wiris_plugin_example.png)
+This repository contains the source code of the plugins for the most popular HTML editors, such as [CKEditor], [Froala], and [TinyMCE]. They are available from the [npm](https://www.npmjs.com/~wiris) directory. It also provides a collection of working examples, including step-by-step information, on how to integrate MathType in vanilla HTML, [Angular], [React] projects, or even your own custom web editor.
+
+Our main goal is to enable web developers to integrate MathType on the widest range of technologies available. We also try to keep the library light, simple, and free from third-party dependencies. Everything you need to build and deploy is in the sources.
+
+**MathType can be used for free** up to a certain level of uses per natural year,  [more details](https://www.wiris.com/en/pricing/).
+
+[MathType by Wiris]: https://www.wiris.com/en/mathtype/
+
+[CKEditor]: https://ckeditor.com/
+[Froala]: https://froala.com/
+[TinyMCE]: https://www.tiny.cloud/tinymce/
+
+[Angular]: https://angular.io/
+[React]: https://reactjs.org/
 
 ## Table of contents
 
