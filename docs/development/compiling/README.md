@@ -1,6 +1,6 @@
 # Compiling the packages
 
-<small>[⇱ Back to root](../../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
+<small>[MathType Web Integrations](../../../README.md) → [Documentation](../../README.md) → [Development guide](../README.md) → Compiling the packages</small>
 
 The MathType Web plugins consist mostly of JavaScript.
 In order to offer cross-browser compatibility and the latest features, most of these plugins need to be "compiled" using [Webpack].
