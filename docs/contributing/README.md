@@ -1,6 +1,6 @@
 # Contributing guidelines
 
-<small>[⇱ Back to root](../README.md)</small>
+<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Documentation](../README.md)</small>
 
 You can contribute in this project in different ways.
 
