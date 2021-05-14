@@ -1,6 +1,6 @@
 # Linting
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
+<small>[⇱ Back to root](../../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
 
 There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
 

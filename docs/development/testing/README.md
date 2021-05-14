@@ -1,6 +1,6 @@
 # Testing
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
+<small>[⇱ Back to root](../../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
 
 We have prepared a set of tests to validate our packages code and developer code examples.
 There are unit, integration and E2E tests; for the latter we have used an extension called [Puppeteer].
