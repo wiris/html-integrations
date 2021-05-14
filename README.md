@@ -26,7 +26,7 @@ Our main goal is to enable web developers to integrate MathType on the widest ra
 - [What is MathType](#what-is-mathtype)
 - [Editors and platforms support](#editors-and-platforms-support)
 - [Examples for developers](#examples-for-developers)
-- [#documentation--important-links](#documentation--important-links)
+- [Documentation & Important Links](#documentation--important-links)
 - [Technical Support](#technical-support)
 - [Privacy policy](#privacy-policy)
 - [License](#license)
