@@ -1,6 +1,6 @@
 # Contributing guidelines
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Documentation](../README.md)</small>
+<small>[MathType Web Integrations](../../README.md) → [Documentation](../README.md) → Contributing guidelines</small>
 
 You can contribute in this project in different ways.
 

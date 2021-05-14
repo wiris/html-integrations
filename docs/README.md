@@ -1,6 +1,6 @@
 # Documentation
 
-<small>[⇱ Back to root](../README.md)</small>
+<small>[MathType Web Integrations](../README.md) → Documentation</small>
 
 Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins and their dependencies.
 

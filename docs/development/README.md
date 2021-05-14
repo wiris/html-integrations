@@ -1,6 +1,6 @@
 # Development guide
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Documentation](../README.md)</small>
+<small>[MathType Web Integrations](../../README.md) → [Documentation](../README.md) → Development guide</small>
 
 - [Compiling the packages](compiling/README.md)
 - [Trying out the demos in development mode](demos/README.md)

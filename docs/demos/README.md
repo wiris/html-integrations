@@ -1,6 +1,6 @@
 # Trying out the demos
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Documentation](../README.md)</small>
+<small>[MathType Web Integrations](../../README.md) → [Documentation](../README.md) → Trying out the demos</small>
 
 We create and curate working code examples in order to test, validate, and showcase how to integrate MathType on different editors and technologies, from vanilla HTML to modern JavaScript frameworks.
 
