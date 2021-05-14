@@ -1,4 +1,4 @@
-# ![MathType logo](resources/img/mathtype_logo.png) MathType Web Integrations {#root}
+# ![MathType logo](resources/img/mathtype_logo.png) MathType Web Integrations
 
 <img src="resources/img/wiris_plugin_example.png" alt="Wiris MathType plugin example" width="40%" style="min-width: 480px"/>
 
