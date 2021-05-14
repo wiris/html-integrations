@@ -1,6 +1,6 @@
 # Packaging
 
-<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
+<small>[⇱ Back to root](../../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
 
 Each editor plugin that is distributed built (e.g. those that include a `webpack.config.js` file) must have a `prepack` [npm lifecycle script](https://docs.npmjs.com/misc/scripts), which is run BEFORE a tarball is packed (on `npm pack`, `npm publish`, and when installing git dependencies).
 
