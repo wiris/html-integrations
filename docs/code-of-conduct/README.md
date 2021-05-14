@@ -1,6 +1,6 @@
 ## Code of conduct
 
-<small>[⇱ Back to root](../README.md)</small>
+<small>[⇱ Back to root](../../README.md)<br>[↖ Back to Documentation](../README.md)</small>
 
 This code of conduct outlines our expectations for participants as well as steps to reporting unacceptable behavior. Wiris is dedicated to providing a good environment so that everybody can have a good experience. No type of harassment is tolerated. We ask you to be considerate to others and behave respectfully and professionally.
 
