@@ -12,9 +12,6 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
   - [Cloning the repository](#cloning-the-repository)
   - [Bootstrapping](#bootstrapping)
 - [Next steps](#next-steps)
-- [Technical Support](#technical-support)
-- [Privacy policy](#privacy-policy)
-- [License](#license)
 
 ## Requirements
 
