@@ -62,7 +62,7 @@ Refer to the [documentation](docs/demos/README.md) for more information.
 
 ## Support
 
-If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
+If you have questions or need help integrating MathType, please contact us ([support@wiris.com](mailto:support@wiris.com)) instead of opening an issue.
 
 ## Privacy policy
 
