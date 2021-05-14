@@ -1,8 +1,8 @@
-## Introduction
+## Code of conduct
 
 <small>[⇱ Back to root](../README.md)</small>
 
-This code of conduct outlines our expectations for participants as well as steps to reporting unacceptable behavior. WIRIS is dedicated to providing a good environment so that everybody can have a good experience. No type of harassment is tolerated. We ask you to be considerate to others and behave respectfully and professionally.
+This code of conduct outlines our expectations for participants as well as steps to reporting unacceptable behavior. Wiris is dedicated to providing a good environment so that everybody can have a good experience. No type of harassment is tolerated. We ask you to be considerate to others and behave respectfully and professionally.
 
 We aim to provide to our community a safe and friendly environment for everyone, regardless of their knowledge, personal aspects or any other qualifications.
 

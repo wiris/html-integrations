@@ -45,7 +45,7 @@ If your website hosts its own MathType Web services, instead of using the wiris.
 ```sh
 $ npm run compile -- [tech] [--dev]
 ```
-Where [tech] is one of:
+Where `[tech]` is one of:
 
 - `aspx`
 - `java`
