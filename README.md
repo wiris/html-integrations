@@ -23,22 +23,27 @@ Our main goal is to enable web developers to integrate MathType on the widest ra
 
 ## Table of contents
 
-- [Features](#features)
-- [Supported editors](#supported-editors)
-- [Demos](#demos)
+- [What is MathType](#what-is-mathtype)
+- [Editors and platforms support](#editors-and-platforms-support)
+- [Examples for developers](#examples-for-developers)
 - [Documentation](#documentation)
-- [Support](#support)
+- [Technical Support](#technical-support)
 - [Privacy policy](#privacy-policy)
 - [License](#license)
 
-## Features
+## What is MathType
+
+MathType is a formula editor and equation writer that allows to type and handwrite mathematical notation on your applications. 
+
+**Features**
 
 - **Ease of use**. Write equations with an interface that provides a user-friendly experience from day one; forget about having to learn LaTeX to write math on a computer.
 - **Professionality**. MathType is an online equation editor that provides perfect quality math formulas.
 - **Handwriting**. Working on a touch device? No worries, MathType will convert your handwritten formula into a clean digital equation ready to be used in your documents.
 - **Accessibility**. MathType is compliant with accessibility requirements to create software for individuals with disabilities.
+- **Multiple contexts**: MathType is seamlessly integrated into diverse platforms like Moodle, Microsoft Word, Google Apps, ...
 
-## Supported editors
+## Editors and platforms support
 
 We develop and maintain MathType Web plugins for [CKEditor], [Froala], and [TinyMCE].
 
@@ -47,7 +52,7 @@ You can adapt this integration to use MathType in the web editor of your choice.
 
 For the MathType integration for Moodle and other LMS see [here](https://www.wiris.com/es/solutions/education/).
 
-## Demos
+## Examples for developers
 
 In order to manually try out each plugin, there's a set of developer demos on the [`demos`](demos) folder.
 
@@ -60,7 +65,7 @@ Refer to the [documentation](docs/demos/README.md) for more information.
 - [Integrating MathType in your website](docs/integration/README.md)
 - [Development guide](docs/development/README.md)
 
-## Support
+## Technical Support
 
 If you have questions or need help integrating MathType, please contact us ([support@wiris.com](mailto:support@wiris.com)) instead of opening an issue.
 
