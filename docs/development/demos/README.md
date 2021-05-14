@@ -1,6 +1,6 @@
 # Trying out the demos in development mode
 
-<small>[⇱ Back to root](../../../README.md)<br>[↖ Back to Development guide](../README.md)</small>
+<small>[MathType Web Integrations](../../../README.md) → [Documentation](../../README.md) → [Development guide](../README.md) → Trying out the demos in development mode</small>
 
 By default, these demos download the latest version of the MathType plugins from npm.
 This document explains what to do if you are modifying the source code of the plugins in this repo, and want to try that out instead.
