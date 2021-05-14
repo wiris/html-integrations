@@ -26,16 +26,14 @@ Our main goal is to enable web developers to integrate MathType on the widest ra
 - [What is MathType](#what-is-mathtype)
 - [Editors and platforms support](#editors-and-platforms-support)
 - [Examples for developers](#examples-for-developers)
-- [Documentation](#documentation)
+- [#documentation--important-links](#documentation--important-links)
 - [Technical Support](#technical-support)
 - [Privacy policy](#privacy-policy)
 - [License](#license)
 
 ## What is MathType
 
-MathType is a formula editor and equation writer that allows to type and handwrite mathematical notation on your applications. 
-
-**Features**
+MathType is a formula editor and equation writer. It allows to type and handwrite mathematical notation on your applications. Developed and maintained by [Wiris](https://www.wiris.com).
 
 - **Ease of use**. Write equations with an interface that provides a user-friendly experience from day one; forget about having to learn LaTeX to write math on a computer.
 - **Professionality**. MathType is an online equation editor that provides perfect quality math formulas.
@@ -58,12 +56,14 @@ In order to manually try out each plugin, there's a set of developer demos on th
 
 Refer to the [documentation](docs/demos/README.md) for more information.
 
-## Documentation
+## Documentation & Important Links
 
-- [Introduction](docs/README.md)
+- [Documentation](docs/README.md)
 - [Trying out the demos](docs/demos/README.md)
 - [Integrating MathType in your website](docs/integration/README.md)
 - [Development guide](docs/development/README.md)
+- [Contributing guidelines](docs/contributing/README.md)
+- [Code of conduct](docs/code-of-conduct/README.md)
 
 ## Technical Support
 
