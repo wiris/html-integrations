@@ -8,12 +8,12 @@ ACCEPTED
 
 ## Summary
 
-*When writing custom scripts in the node project*
-*that perform common tasks like file manipulation (deleting, moving ...)*
-*we want to ensure cross-platform compatibility*
-*while keeping a simple syntax and reducing vulnerability issues.*
-*We decided to use [shx][shx-url] package*
-*as a wrapper around ShellJS Unix commands in all scripts of the project.*
+*When writing custom scripts in the node project*  
+*that perform common tasks like file manipulation (deleting, moving ...)*  
+*we want to ensure cross-platform compatibility*  
+*while keeping a simple syntax and reducing vulnerability issues.*  
+*We decided to use [shx][shx-url] package*  
+*as a wrapper around ShellJS Unix commands in all scripts of the project.*  
 
 ## Context (Discussion)
 
