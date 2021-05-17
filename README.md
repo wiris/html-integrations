@@ -26,8 +26,8 @@ Our main goal is to enable web developers to integrate MathType on the widest ra
 - [What is MathType](#what-is-mathtype)
 - [Editors and platforms support](#editors-and-platforms-support)
 - [Examples for developers](#examples-for-developers)
-- [Documentation & Important Links](#documentation--important-links)
-- [Technical Support](#technical-support)
+- [Documentation and important links](#documentation-and-important-links)
+- [Technical support](#technical-support)
 - [Privacy policy](#privacy-policy)
 - [License](#license)
 
@@ -56,7 +56,7 @@ In order to manually try out each plugin, there's a set of developer demos on th
 
 Refer to the [documentation](docs/demos/README.md) for more information.
 
-## Documentation & Important Links
+## Documentation and important links
 
 - [Documentation](docs/README.md)
 - [Trying out the demos](docs/demos/README.md)
@@ -65,7 +65,7 @@ Refer to the [documentation](docs/demos/README.md) for more information.
 - [Contributing guidelines](docs/contributing/README.md)
 - [Code of conduct](docs/code-of-conduct/README.md)
 
-## Technical Support
+## Technical support
 
 If you have questions or need help integrating MathType, please contact us ([support@wiris.com](mailto:support@wiris.com)) instead of opening an issue.
 
