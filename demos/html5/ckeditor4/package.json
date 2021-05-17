@@ -16,6 +16,9 @@
     "ckeditor4": "^4.16.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.0",
     "css-loader": "^5.0.0",
     "html-loader": "^1.0.0",
     "jest": "^26.0.0",
