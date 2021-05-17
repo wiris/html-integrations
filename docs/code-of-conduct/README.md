@@ -1,4 +1,4 @@
-## Code of conduct
+# Code of conduct
 
 <small>[MathType Web Integrations](../../README.md) → [Documentation](../README.md) → Code of conduct</small>
 
