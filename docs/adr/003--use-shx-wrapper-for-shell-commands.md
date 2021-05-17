@@ -48,7 +48,7 @@ Using only one library introduces homogeneity and makes development easier.
 
 The main drawback could be overhead: shx contains a lot more functionality than we need by the moment.
 
-We've also added a new root-level thid-party depdendency that will need to be maintained in order to reduce vulnerability risks. 
+We've also added a new root-level thid-party dependency that will need to be maintained in order to reduce vulnerability risks. 
 
 ## Links
 
