@@ -2,6 +2,7 @@
 import './design.css';
 
 // Export generic functions.
+// eslint-disable-next-line import/extensions
 export * from './common.js';
 
 // Generate scripts.

@@ -5,6 +5,7 @@ import './design.css';
 import * as htmlContent from './index.html';
 
 // Export generic functions.
+// eslint-disable-next-line import/extensions
 export * from './common.js';
 
 // Display html content.

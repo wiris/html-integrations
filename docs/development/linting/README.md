@@ -2,9 +2,7 @@
 
 <small>[MathType Web Integrations](../../../README.md) → [Documentation](../../README.md) → [Development guide](../README.md) → Linting</small>
 
-There are configuration files at the root of the project to help. They statically analyze and fix code errors in files with extensions .js, .css and .html. The analysis shows the error and where it is, then it can be fixed. The commands are:
-
-> Before running the lint commands, make sure that the dependenceis fo the folder/folders where you're trying to lint file/files are installed.
+We've implemented a complete lint strategy for the JavaScript, HTML and CSS files include on this project.
 
 ## Table of contents
 
@@ -14,13 +12,13 @@ There are configuration files at the root of the project to help. They staticall
 
 ## JavaScript files
 
-To check all the .js files of the project, run:
+To validate all the `.js` files of the project, run:
 
 ```sh
   $ npm run lint-js
 ```
 
-To check specific .js files or folders of the project, add the --route option to the previous commands:
+To validate specific `.js` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
   $ npm run lint-js --route=path
@@ -32,13 +30,13 @@ To check specific .js files or folders of the project, add the --route option to
 
 ## CSS files
 
-To check all the .css files of the project, run:
+To validate all the `.css` files of the project, run:
 
 ```sh
     $ npm run lint-css
 ```
 
-To check specific .css files or folders of the project, add the --route option to the previous commands:
+To validate specific `.css` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
   $ npm run lint-css --route=path
@@ -55,7 +53,7 @@ To check specific .css files or folders of the project, add the --route option t
     $ npm run lint-html
 ```
 
-To check specific .html files or folders of the project, add the --route option to the previous commands:
+To validate specific `.html` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
   $ npm run lint-html --route=path

@@ -7,9 +7,11 @@ module.exports = {
   },
   plugins: [
     'jest', // We use the plugin jest so we can lint test files
+    'import',
   ],
   extends: [
     'airbnb-base', // We extend our linting to follow the airbnb rules
+    'plugin:import/recommended',
   ],
   parser: 'babel-eslint', // Parser that'll help linting react demos
 
@@ -29,7 +31,9 @@ module.exports = {
     sourceType: 'module', // This project's code is in ECMAScript modules.
   },
   rules: {
-    // First 5 rules, specific for testing purposes
+    // Change 'no-unresolved' to warn to avoid raising errors on node_modules imports.
+    'import/no-unresolved': 'warn',
+    // First 5 rules, specific for testing purposes.
     'jest/no-disabled-tests': 'warn',
     'jest/no-focused-tests': 'error',
     'jest/no-identical-title': 'error',
