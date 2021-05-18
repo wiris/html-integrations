@@ -27,7 +27,7 @@ export default class Image {
 
     Object.keys(attributes).forEach((key) => {
       const attribute = attributes[key];
-      if (attribute.name.indexOf('data-') === 0) {
+      if (attribute !== undefined && attribute.name !== undefined && attribute.name.indexOf('data-') === 0) {
         // Is preferred keep an array and remove after the search
         // because when attribute is removed the array of attributes
         // is modified.
