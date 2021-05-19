@@ -176,6 +176,7 @@ export const currentInstance = null;
         'mpadded[*]',
         'mphantom[*]',
         'mprescripts[*]',
+        'none[*]',
         'mroot[*]',
         'mrow[*]',
         'ms[*]',
