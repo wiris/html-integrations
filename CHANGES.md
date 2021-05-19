@@ -18,3 +18,5 @@ Last release of this project is was 7th of May 2021.
   - Implement an initial selection of E2E & smoke tests
   - Integrate with GitHub actions build system
 - Fix "Undo & Redo broken buttons when there is Wiris in TinyMCE toolbar" (KB-13094 - Issue #275).
+- Fixed some character entities not behaving correctly in LaTeX mode (e.g. "<").
+- ...
