@@ -93,22 +93,24 @@ export default class CKEditor5Integration extends IntegrationModel {
      * @param {MouseEvent} event - event which trigger the handler.
      */
   doubleClickHandler(element, event) {
-    if (element.nodeName.toLowerCase() === 'img') {
-      if (Util.containsClass(element, Configuration.get('imageClassName'))) {
-        // Some plugins (image2, image) open a dialog on double click. On formulas
-        // doubleclick event ends here.
-        if (typeof event.stopPropagation !== 'undefined') { // old I.E compatibility.
-          event.stopPropagation();
-        } else {
-          event.returnValue = false;
+    if (this.editorObject.isReadOnly == false) {
+      if (element.nodeName.toLowerCase() === 'img') {
+        if (Util.containsClass(element, Configuration.get('imageClassName'))) {
+          // Some plugins (image2, image) open a dialog on double click. On formulas
+          // doubleclick event ends here.
+          if (typeof event.stopPropagation !== 'undefined') { // old I.E compatibility.
+            event.stopPropagation();
+          } else {
+            event.returnValue = false;
+          }
+          this.core.getCustomEditors().disable();
+          const customEditorAttr = element.getAttribute(Configuration.get('imageCustomEditorName'));
+          if (customEditorAttr) {
+            this.core.getCustomEditors().enable(customEditorAttr);
+          }
+          this.core.editionProperties.temporalImage = element;
+          this.openExistingFormulaEditor();
         }
-        this.core.getCustomEditors().disable();
-        const customEditorAttr = element.getAttribute(Configuration.get('imageCustomEditorName'));
-        if (customEditorAttr) {
-          this.core.getCustomEditors().enable(customEditorAttr);
-        }
-        this.core.editionProperties.temporalImage = element;
-        this.openExistingFormulaEditor();
       }
     }
   }
