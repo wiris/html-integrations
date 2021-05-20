@@ -93,7 +93,7 @@ export default class CKEditor5Integration extends IntegrationModel {
      * @param {MouseEvent} event - event which trigger the handler.
      */
   doubleClickHandler(element, event) {
-    if (this.editorObject.isReadOnly == false) {
+    if (this.editorObject.isReadOnly === false) {
       if (element.nodeName.toLowerCase() === 'img') {
         if (Util.containsClass(element, Configuration.get('imageClassName'))) {
           // Some plugins (image2, image) open a dialog on double click. On formulas
