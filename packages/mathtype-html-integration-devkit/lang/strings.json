@@ -367,8 +367,8 @@
     "he": {
         "latex": "LaTeX",
         "cancel": "ביטול",
-        "accept": "הוספה",
-        "manual": "מדריך",
+        "accept": "עדכון",
+        "manual": "ידני",
         "insert_math": "הוספת נוסחה מתמטית - MathType",
         "insert_chem": "הוספת כתיבה כימית - ChemType",
         "minimize": "מזערי",
