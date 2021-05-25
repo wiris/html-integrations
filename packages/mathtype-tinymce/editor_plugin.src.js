@@ -132,10 +132,63 @@ export class TinyMceIntegration extends IntegrationModel {
      * @param {string} mathml - MathML to generate the formula and can be caught with the event.
      */
   updateFormula(mathml) {
+    // Enable editor to be edited again once the formula is updated
+    this.editorObject.mode.set("design");
+
     if (typeof this.editorObject.fire !== 'undefined') {
       this.editorObject.fire('ExecCommand', { command: 'updateFormula', value: mathml });
     }
     super.updateFormula(mathml);
+  }
+  
+  /** @inheritdoc */
+  openNewFormulaEditor() {
+    super.openNewFormulaEditor();
+
+    // Set editor to readOnly mode
+    this.editorObject.mode.set("readonly");
+
+    // Enable editor to be edited again once cancel button is clicked
+    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
+    cancelButton.onclick = function(event) {
+      tinyMCE.activeEditor.mode.set("design");
+    }
+  }
+
+  /** @inheritdoc */
+  openExistingFormulaEditor() {
+    super.openExistingFormulaEditor();
+
+    // Set editor to readOnly mode
+    this.editorObject.mode.set("readonly");
+
+    // Enable editor to be edited again once cancel button is clicked
+    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
+    cancelButton.onclick = function() {
+      tinyMCE.activeEditor.mode.set("design");
+    }
+  }
+
+  /**
+   * @inheritdoc
+   * @param {HTMLElement} element - DOM object target.
+   */
+  doubleClickHandler(element) {
+    // If the editor is in readOnly mode, don't add the handler
+    if (this.editorObject.mode.isReadOnly()) {
+      return;
+    }
+
+    super.doubleClickHandler(element);
+
+    // Set editor to readOnly mode
+    this.editorObject.mode.set("readonly");
+
+    // Enable editor to be edited again once cancel button is clicked
+    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
+    cancelButton.onclick = function() {
+      tinyMCE.activeEditor.mode.set("design");
+    }
   }
 }
 
