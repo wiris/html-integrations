@@ -1,6 +1,6 @@
 # ![MathType logo](resources/img/mathtype_logo.png) MathType Web Integrations
 
-<img src="resources/img/wiris_plugin_example.png" alt="Wiris MathType plugin example" width="40%" style="min-width: 480px"/>
+![MathType plugin example](resources/img/wiris_plugin_example.png)
 
 **MathType Web** is the official open-source JavaScript library for [MathType by Wiris], the leading formula editor and equation writer for CMS, LMS, and web applications.
 
@@ -10,22 +10,12 @@ Our main goal is to enable web developers to integrate MathType on the widest ra
 
 **MathType can be used for free** up to a certain level of uses per natural year,  [more details](https://www.wiris.com/en/pricing/).
 
-[MathType by Wiris]: https://www.wiris.com/en/mathtype/
-
-[CKEditor]: https://ckeditor.com/
-[Froala]: https://froala.com/
-[TinyMCE]: https://www.tiny.cloud/tinymce/
-
-[Angular]: https://angular.io/
-[React]: https://reactjs.org/
-
----
-
 ## Table of contents
 
 - [What is MathType](#what-is-mathtype)
 - [Editors and platforms support](#editors-and-platforms-support)
 - [Examples for developers](#examples-for-developers)
+- [Releases](#releases)
 - [Documentation and important links](#documentation-and-important-links)
 - [Technical support](#technical-support)
 - [Privacy policy](#privacy-policy)
@@ -56,6 +46,25 @@ In order to manually try out each plugin, there's a set of developer demos on th
 
 Refer to the [documentation](docs/demos/README.md) for more information.
 
+## Releases
+
+All notable changes to this project are documented in the [CHANGES.md](CHANGES.md) file.
+
+Visit the [MathType integrations release notes](https://docs.wiris.com/en/mathtype/integrations/release_notes/start) page for more information.
+
+### Packages
+
+| Name                                                                                    | Version                                                                                                                                                              | Description                                                 |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| [`@wiris/mathtype-html-integration-devkit`](packages/mathtype-html-integration-devkit/) | <a href="https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit"><img src="https://img.shields.io/npm/v/@wiris/mathtype-html-integration-devkit"></a> | The JavaScript devkit to use MathType web in your projects. |
+| [`@wiris/mathtype-generic`](packages/mathtype-generic)                                  | <a href="https://www.npmjs.com/package/@wiris/mathtype-generic"><img src="https://img.shields.io/npm/v/@wiris/mathtype-generic"></a>                                 | MathType Web for a generic HTML textarea.                   |
+| [`@wiris/mathtype-ckeditor4`](packages/mathtype-ckeditor4)                              | <a href="https://www.npmjs.com/package/@wiris/mathtype-ckeditor4"><img src="https://img.shields.io/npm/v/@wiris/mathtype-ckeditor4"></a>                             | MathType Web for CKEditor4 editor.                          |
+| [`@wiris/mathtype-ckeditor5`](packages/mathtype-ckeditor5)                              | <a href="https://www.npmjs.com/package/@wiris/mathtype-ckeditor5"><img src="https://img.shields.io/npm/v/@wiris/mathtype-ckeditor5"></a>                             | MathType Web for CKEditor5 editor.                          |
+| [`@wiris/mathtype-froala`](packages/mathtype-froala)                                    | <a href="https://www.npmjs.com/package/@wiris/mathtype-froala"><img src="https://img.shields.io/npm/v/@wiris/mathtype-froala"></a>                                   | MathType Web for Froala2 editor.                            |
+| [`@wiris/mathtype-froala3`](packages/mathtype-froala3)                                  | <a href="https://www.npmjs.com/package/@wiris/mathtype-froala3"><img src="https://img.shields.io/npm/v/@wiris/mathtype-froala3"></a>                                 | MathType Web for Froala3 editor.                            |
+| [`@wiris/mathtype-tinymce4`](packages/mathtype-tinymce4)                                | <a href="https://www.npmjs.com/package/@wiris/mathtype-tinymce4"><img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce4"></a>                               | MathType Web for TinyMCE4 editor.                           |
+| [`@wiris/mathtype-tinymce5`](packages/mathtype-tinymce5)                                | <a href="https://www.npmjs.com/package/@wiris/mathtype-tinymce5"><img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5"></a>                               | MathType Web for TinyMCE5 editor.                           |
+
 ## Documentation and important links
 
 - [Documentation](docs/README.md)
@@ -76,3 +85,10 @@ The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) cove
 ## License
 
 Copyright © 2010-2021 [Wiris](http://www.wiris.com). Released under the [MIT License](LICENSE).
+
+[MathType by Wiris]: https://www.wiris.com/en/mathtype/
+[CKEditor]: https://ckeditor.com/
+[Froala]: https://froala.com/
+[TinyMCE]: https://www.tiny.cloud/tinymce/
+[Angular]: https://angular.io/
+[React]: https://reactjs.org/
