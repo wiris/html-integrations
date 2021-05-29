@@ -29,8 +29,14 @@ const froalaConfiguration = {
   toolbarButtonsMD: toolbar,
   toolbarButtonsSM: toolbar,
   toolbarButtonsXS: toolbar,
+
+  // Allowed tags and attributes.
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
+
+  // Allow these empty tags for the proper renderization of formulas
+  htmlAllowedEmptyTags: ['mprescripts', 'none'],
+
   // language: 'de',
   // mathTypeParameters: {
   //   editorParameters: { language: 'es' }, // MathType config, including language
