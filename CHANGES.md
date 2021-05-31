@@ -20,4 +20,5 @@ Last release of this project is was 7th of May 2021.
 - Fix "Undo & Redo broken buttons when there is Wiris in TinyMCE toolbar" (KB-13094 - Issue #275).
 - Fixed some character entities not behaving correctly in LaTeX mode (e.g. "<").
 - Fixed formulas being resizable on TinyMCE.
+- Updated the CKEditor 5 HTML5 demo documentation to use local packages.
 - ...
