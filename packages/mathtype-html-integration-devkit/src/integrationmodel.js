@@ -519,6 +519,17 @@ export default class IntegrationModel {
     if (WirisPlugin.currentInstance) {
       WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
     }
+
+    // Make focus come back on the previous place it was when click cancel button
+    const currentInstance = WirisPlugin.currentInstance;
+    const editorSelection = currentInstance.getSelection();
+    editorSelection.removeAllRanges();
+
+    if (currentInstance.core.editionProperties.range) {
+      const { range } = currentInstance.core.editionProperties;
+      currentInstance.core.editionProperties.range = null;
+      editorSelection.addRange(range);
+    }
   }
 }
 
