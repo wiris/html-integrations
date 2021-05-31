@@ -279,6 +279,9 @@ export default class ModalDialog {
    * will be shown if hasChanges returns true.
    */
   cancelAction() {
+    // Set temporal image to null to avoid
+    // opening a existing formula editor when trying to open a new one
+    IntegrationModel.setTemporalImageToNull();
     if (typeof this.contentManager.hasChanges === 'undefined') {
       this.close();
     } else if (!this.contentManager.hasChanges()) {
@@ -543,9 +546,6 @@ export default class ModalDialog {
    * Closes modal window and restores viewport header.
    */
   close() {
-    // Set temporal image to null to avoid
-    // opening a existing formula editor when trying to open a new one
-    IntegrationModel.setTemporalImageToNull();
     this.removeClass('wrs_maximized');
     this.removeClass('wrs_minimized');
     this.removeClass('wrs_stack');
