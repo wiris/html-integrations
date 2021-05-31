@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "babel-jest": "^26.0.0",
+    "babel-jest": "^27.0.2",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.0.0",
