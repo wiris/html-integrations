@@ -34,6 +34,6 @@ Then, just move to the desired demo folder and run:
 $ npm run start
 ```
 
->**Note**: On Windows, the CKEditor 5 demo for HTML5 might raise an error.
+>**Note**: The CKEditor 5 demo for HTML5 might raise an error.
 >
-> In such case, run `npm run compile-package-windows` before running `npm start`.
+> In such case, run `npm run compile-package` before running `npm start` (or `npm run compile-package-windows` if you're using Windows).
