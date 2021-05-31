@@ -85,15 +85,17 @@ export default class Util {
     }
 
     if (mouseupHandler) {
+      const callback = (event) => {
+        const realEvent = (event) || window.event;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+        mouseupHandler(element, realEvent);
+      };
       // Chrome doesn't trigger this event for eventTarget if we release the mouse button
       // while the mouse is outside the editor text field.
       // This is a workaround: we trigger the event independently of where the mouse
       // is when we release its button.
-      Util.addEvent(document, 'mouseup', (event) => {
-        const realEvent = (event) || window.event;
-        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
-        mouseupHandler(element, realEvent);
-      });
+      Util.addEvent(document, 'mouseup', callback);
+      Util.addEvent(eventTarget, 'mouseup', callback);
     }
   }
 
