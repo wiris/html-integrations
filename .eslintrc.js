@@ -25,6 +25,7 @@ module.exports = {
     tinymce: 'readonly',
     CKEDITOR: 'readonly',
     FroalaEditor: 'readonly',
+    tinyMCE: 'true',
   },
   parserOptions: {
     ecmaVersion: 6, // We use version-based naming instead of year-based naming.

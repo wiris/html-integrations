@@ -519,6 +519,12 @@ export default class IntegrationModel {
     if (WirisPlugin.currentInstance) {
       WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
     }
+
+    // Actions for only tinymce on cancel mathtype
+    if (typeof tinyMCE !== 'undefined') {
+      // Enable editor to be edited again once cancel button is clicked
+      tinyMCE.activeEditor.mode.set('design');
+    }
   }
 }
 
