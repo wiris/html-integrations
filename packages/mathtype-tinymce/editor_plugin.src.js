@@ -133,26 +133,20 @@ export class TinyMceIntegration extends IntegrationModel {
      */
   updateFormula(mathml) {
     // Enable editor to be edited again once the formula is updated
-    this.editorObject.mode.set("design");
+    this.editorObject.mode.set('design');
 
     if (typeof this.editorObject.fire !== 'undefined') {
       this.editorObject.fire('ExecCommand', { command: 'updateFormula', value: mathml });
     }
     super.updateFormula(mathml);
   }
-  
+
   /** @inheritdoc */
   openNewFormulaEditor() {
     super.openNewFormulaEditor();
 
     // Set editor to readOnly mode
-    this.editorObject.mode.set("readonly");
-
-    // Enable editor to be edited again once cancel button is clicked
-    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
-    cancelButton.onclick = function(event) {
-      tinyMCE.activeEditor.mode.set("design");
-    }
+    this.editorObject.mode.set('readonly');
   }
 
   /** @inheritdoc */
@@ -160,13 +154,7 @@ export class TinyMceIntegration extends IntegrationModel {
     super.openExistingFormulaEditor();
 
     // Set editor to readOnly mode
-    this.editorObject.mode.set("readonly");
-
-    // Enable editor to be edited again once cancel button is clicked
-    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
-    cancelButton.onclick = function() {
-      tinyMCE.activeEditor.mode.set("design");
-    }
+    this.editorObject.mode.set('readonly');
   }
 
   /**
@@ -182,13 +170,7 @@ export class TinyMceIntegration extends IntegrationModel {
     super.doubleClickHandler(element);
 
     // Set editor to readOnly mode
-    this.editorObject.mode.set("readonly");
-
-    // Enable editor to be edited again once cancel button is clicked
-    const cancelButton = document.getElementById("wrs_modal_button_cancel[0]");
-    cancelButton.onclick = function() {
-      tinyMCE.activeEditor.mode.set("design");
-    }
+    this.editorObject.mode.set('readonly');
   }
 }
 
