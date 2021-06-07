@@ -10,12 +10,12 @@ A simple ReactJS App integrating WIRIS MathType on a CKEditor 5 and step-by-step
 ## How to run the demo
 
 ```sh
-$ npm install
-$ npm run deploy
+$ yarn install
+$ yarn start
 ```
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3002](http://localhost:3002) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
@@ -29,8 +29,8 @@ You will also see any lint errors in the console.
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm install --save @ckeditor/ckeditor5-react
-    $ npm install @wiris/mathtype-ckeditor5
+    $ yarn add --save @ckeditor/ckeditor5-react
+    $ yarn add @wiris/mathtype-ckeditor5
     ```
 
 2. Replace all the content in *src/index.js* by:
@@ -49,7 +49,7 @@ You will also see any lint errors in the console.
     import * as ClassicEditor from './ckeditor';
 
     // Set the initial content of the editor.
-    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
 
     // Define the toolbar icons to be shown
     const toolbar = ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'];
@@ -96,12 +96,12 @@ You will also see any lint errors in the console.
     c. You can also add as many plugins as your project will need which are not on the default ClassicEditor build (We also added the align plugin). <br>
     d. We recommend you to just clone the branch and copy the compiled file with the editor and the new configurations placed on **build/ckeditor.js** on your project src folder. If you decide to do it by other ways (found in the guide above), you will have to change the way the custom build is imported on your app.component.ts file.
 
-4. Finally, you are ready to run the development server through the specified commant ```npm run start```
+4. Finally, you are ready to run the development server through the specified commant ```yarn start```
 
 ## How to run the tests
 
 ```sh
-$ npm run test
+$ yarn test
 ```
 
 Launches the test runner in the interactive watch mode.<br />

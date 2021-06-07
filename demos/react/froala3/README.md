@@ -10,12 +10,12 @@ A simple ReactJS App integrating WIRIS MathType on a Froala 3 and step-by-step i
 ## How to run the demo
 
 ```sh
-$ npm install
-$ npm run deploy
+$ yarn install
+$ yarn start
 ```
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3004](http://localhost:3004) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
@@ -29,9 +29,9 @@ You will also see any lint errors in the console.
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm install react-froala-wysiwyg --save
-    $ npm install @wiris/mathtype-froala3 --save
-    $ npm install jquery --save
+    $ yarn add react-froala-wysiwyg --save
+    $ yarn add @wiris/mathtype-froala3 --save
+    $ yarn add jquery --save
 
     ```
 
@@ -87,7 +87,7 @@ You will also see any lint errors in the console.
     };
 
     // Set the initial content.
-    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
 
 
     ReactDOM.render(<FroalaEditorComponent config={ froalaConfig } model={ content } />, document.getElementById('root'));
@@ -100,12 +100,12 @@ You will also see any lint errors in the console.
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*
 
-3. Finally, you are ready to run the development server through the specified ```npm run start```
+3. Finally, you are ready to run the development server through the specified ```yarn start```
 
 ## How to run the tests
 
 ```sh
-$ npm run test
+$ yarn test
 ```
 
 Launches the test runner in the interactive watch mode.<br />
