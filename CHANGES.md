@@ -17,3 +17,4 @@ Last release of this project is was 7th of May 2021.
   - Add common fixtures
   - Implement an initial selection of E2E & smoke tests
   - Integrate with GitHub actions build system
+- Fix "Undo & Redo broken buttons when there is Wiris in TinyMCE toolbar" (KB-13094 - Issue #275).
