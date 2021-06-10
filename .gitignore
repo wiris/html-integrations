@@ -111,5 +111,10 @@ dist
 
 ## Custom
 # Exclude package-lock.json from the repo
-/package-lock.json
+# /package-lock.json
 packages/*/package-lock.json
+/sandbox
+
+# Cypress
+cypress/screenshots
+cypress/videos

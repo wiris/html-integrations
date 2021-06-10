@@ -2,11 +2,9 @@ module.exports = {
   env: { // Define the environment where the linting will take place
     browser: true,
     es6: true,
-    jest: true,
     node: true,
   },
   plugins: [
-    'jest', // We use the plugin jest so we can lint test files
     'import',
   ],
   extends: [
@@ -25,6 +23,7 @@ module.exports = {
     tinymce: 'readonly',
     CKEDITOR: 'readonly',
     FroalaEditor: 'readonly',
+    cy: 'readonly',
   },
   parserOptions: {
     ecmaVersion: 6, // We use version-based naming instead of year-based naming.
@@ -33,12 +32,6 @@ module.exports = {
   rules: {
     // Change 'no-unresolved' to warn to avoid raising errors on node_modules imports.
     'import/no-unresolved': 'warn',
-    // First 5 rules, specific for testing purposes.
-    'jest/no-disabled-tests': 'warn',
-    'jest/no-focused-tests': 'error',
-    'jest/no-identical-title': 'error',
-    'jest/prefer-to-have-length': 'warn',
-    'jest/valid-expect': 'error',
     'max-len': [
       'error',
       {
