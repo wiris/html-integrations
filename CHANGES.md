@@ -10,4 +10,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Last release of this project is was 7th of May 2021.
 
 ## [Unreleased]
-- ...
+- Add Cypress to the project.
+- Remove Jest from the project.

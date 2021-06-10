@@ -111,9 +111,16 @@ dist
 
 ## Custom
 # Exclude package-lock.json from the repo
-/package-lock.json
+# /package-lock.json
 packages/*/package-lock.json
 # We do this temporarily for the 7.26.2 release of this package.
 # Since lerna forces to add 'package-lock.json' to the repo.
 # See: https://github.com/lerna/lerna/issues/2391
 !packages/mathtype-tinymce4/package-lock.json
+
+# Sandbox
+/sandbox
+
+# Cypress
+cypress/screenshots
+cypress/videos
