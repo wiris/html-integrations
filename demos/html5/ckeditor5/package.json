@@ -23,17 +23,10 @@
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {
-    "babel-jest": "^26.0.0",
     "css-loader": "^5.0.0",
     "html-loader": "^1.0.0",
-    "html-loader-jest": "^0.2.1",
-    "jest": "^26.0.0",
-    "jest-css-modules-transform": "^4.0.0",
-    "jest-html-reporter": "^3.0.0",
-    "jest-raw-loader": "^1.0.0",
     "lerna": "^3.0.0",
     "postcss-loader": "^3.0.0",
-    "puppeteer": "^5.0.0",
     "raw-loader": "^4.0.0",
     "style-loader": "^1.0.0",
     "url-loader": "^4.0.0",

@@ -4,7 +4,6 @@
   "description": "A simple html5 App integrating WIRIS MathType in a Generic integration.",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
     "compile-package": "cd ../../../packages/mathtype-generic/ && npm run compile -- npm --dev",
     "start": "webpack-dev-server --open"
   },
@@ -20,10 +19,7 @@
     "babel-loader": "^8.0.0",
     "css-loader": "^3.0.0",
     "html-loader": "^1.0.0",
-    "jest": "^26.0.0",
-    "jest-html-reporter": "^3.0.0",
     "lerna": "^4.0.0",
-    "puppeteer": "^5.0.0",
     "raw-loader": "^4.0.0",
     "style-loader": "^1.0.0",
     "url-loader": "^4.0.0",
