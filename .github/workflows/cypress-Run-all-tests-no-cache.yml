@@ -48,7 +48,8 @@ jobs:
     strategy:
       matrix:
         # Define values for browsers from
-        browser: ["chrome", "edge", "firefox", "chromium"]
+        browser: ["chrome"]
+        # browser: ["chrome", "edge", "firefox", "chromium"]
         type: ["all"]
         # type: ["smoke","e2e", "ui", "validation"]
 
