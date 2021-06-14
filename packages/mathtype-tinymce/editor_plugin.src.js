@@ -230,12 +230,15 @@ export var currentInstance = null;
             integrationModelProperties.serviceProviderProperties.server = 'java';
             integrationModelProperties.version = packageInfo.version;
             integrationModelProperties.isMoodle = ((typeof M === 'object' && M !== null ) ? true : false);
+            if (integrationModelProperties.isMoodle) {
+                integrationModelProperties.configurationService = M.cfg.wwwroot + '/filter/wiris/integration/configurationjs.php';  
+            }
             if (typeof(editor.getParam('wiriscontextpath')) !== 'undefined') {
                 integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
                 editor.getParam('wiriscontextpath') + '/' + integrationModelProperties.configurationService;
                 console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters on instead.', editor.opts.wiriscontextpath)
             }
-
+            
             // Overriding MathType integration parameters.
             if (typeof(editor.getParam('mathTypeParameters')) !== 'undefined') {
                 integrationModelProperties.integrationParameters = editor.getParam('mathTypeParameters');
