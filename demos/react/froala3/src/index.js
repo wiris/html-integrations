@@ -46,7 +46,6 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 // Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
 const froalaConfig = {
-  // iframe: true,
   toolbarButtons: toolbar,
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
@@ -54,29 +53,29 @@ const froalaConfig = {
   htmlAllowedAttrs: ['.*'],
 
   htmlAllowedEmptyTags: ['mprescripts'],
-  imageResize: false,
-  key: 'CA5D-16E3A2E3G1I4A8B8A9B1D2rxycF-7b1C3vyz==',
-  // heightMax: 310,
-  // useClasses: false,
 
   // Execute on initialyzed editor.
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.
       Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, pluginVersion);        //eslint-disable-line
+
+      // Parse the initial content set on the editor through html to render it
+      const contentRendered = WirisPlugin.Parser.initParse(this.html.get());
+      this.html.set(contentRendered);
     },
   },
 };
 
 /* Create a component to be rendered later.
- This is important to remove complexity from the reactDom.render
- and to be able to add other functionality. */
+This is important to remove complexity from the reactDom.render
+and to be able to add other functionality. */
 // eslint-disable-next-line no-unused-vars
 class Editor extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
-      <FroalaEditorComponent config={ froalaConfig } model={ content } />
+      <FroalaEditorComponent config={ froalaConfig } model = { content } />
     );
   }
 }

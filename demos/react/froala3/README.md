@@ -70,7 +70,6 @@ You will also see any lint errors in the console.
     // Define the toolbar content and the editor configuration.
     const toolbar = ['wirisEditor', 'wirisChemistry'];
     const froalaConfig = {
-        iframe: true,
         charCounterCount: false,
         imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageRemove'],
         toolbarButtons: toolbar,
@@ -80,14 +79,18 @@ You will also see any lint errors in the console.
         htmlAllowedTags: ['.*'],
         htmlAllowedAttrs: ['.*'],
         htmlAllowedEmptyTags: ['mprescripts'],
-        imageResize : false,
-        key: 'CA5D-16E3A2E3G1I4A8B8A9B1D2rxycF-7b1C3vyz==',
-        heightMax: 310,
-        useClasses: false
+
+        events: {
+            initialized() {
+            // Parse the initial content set on the editor through html to render it
+            const contentRendered = WirisPlugin.Parser.initParse(this.html.get());
+            this.html.set(contentRendered);
+            },
+        },
     };
 
     // Set the initial content.
-    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
 
 
     ReactDOM.render(<FroalaEditorComponent config={ froalaConfig } model={ content } />, document.getElementById('root'));
