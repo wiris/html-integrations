@@ -14,7 +14,7 @@ context('MathType button', () => {
     // Assemble: no need in this case.
 
     // Act
-    clickMathTypeButton();
+    cy.clickMathType();
 
     // cy.get('.wrs_modal_dialogContainer')
     //   .should('be.visible');
@@ -27,13 +27,18 @@ context('MathType button', () => {
     });
 
     // Insert formula
-    cy.contains('Insertar')
-      .click();
+    // cy.wait(2000)
+    cy.clickModalButton('insert');
+    // cy.wait(1000);
+    // cy.clickModalButton('hand')
+    // cy.wait(1000);
+    // cy.clickModalButton('hand')
+    cy.editMathFormula('doubleClick', 1);
 
     // Assert
-    cy.fixture('formulas').then((formulas) => {
-      cy.get(`[alt="${formulas['formula-string-simple-accessible-es']}"]`)
-        .should('be.visible');
-    });
+    // cy.fixture('formulas').then((formulas) => {
+    //   cy.get(`[alt="${formulas['formula-string-simple-accessible-es']}"]`)
+    //     .should('be.visible');
+    // });
   });
 });
