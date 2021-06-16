@@ -23,7 +23,6 @@ module.exports = {
     tinymce: 'readonly',
     CKEDITOR: 'readonly',
     FroalaEditor: 'readonly',
-    cy: 'readonly',
   },
   parserOptions: {
     ecmaVersion: 6, // We use version-based naming instead of year-based naming.
@@ -130,6 +129,14 @@ module.exports = {
         com: 'readonly',
         ActiveXObject: 'readonly',
       },
+    },
+    {
+      files: [
+        'cypress/**/*.js',
+      ],
+      extends: [
+        'plugin:cypress/recommended',
+      ],
     },
   ],
 };
