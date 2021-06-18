@@ -25,41 +25,43 @@ declare namespace Cypress {
 
         /**
          * Clicks the specified button on the MathType Modal Dialog
-         * @param {String} button Button identifier. Values can be:
-         *      - insert: inserts a formula
-         *      - cancel: close the modal, if there are changes, opens a confirmation dialog
-         *      - confirmationClose: closes the mathtype modal and deletes the changes (button on the confirmation dialog)
-         *      - confirmationCancel: cancels the confirmation dialog and returns to editing the formula
-         *      - xClose: closes the modal through the top right x button
-         *      - maximize: makes the modal full screen through the top right button
-         *      - stack: changes the modal to not be full screen through the top right button
-         *      - minimize: hides the modal, if visible, and shows it awain, if not visible, through the top right button
-         *      - hand: Open/close hand mode edition
+         * @param {string} button Button identifier. Values can be:
+         *     - insert: inserts a formula
+         *     - cancel: close the modal, if there are changes, opens a confirmation dialog
+         *     - confirmationClose: closes the mathtype modal and deletes the changes (button on the confirmation dialog)
+         *     - confirmationCancel: cancels the confirmation dialog and returns to editing the formula
+         *     - xClose: closes the modal through the top right x button
+         *     - maximize: makes the modal full screen through the top right button
+         *     - stack: changes the modal to not be full screen through the top right button
+         *     - minimize: hides the modal, if visible, and shows it awain, if not visible, through the top right button
+         *     - hand: Open/close hand mode edition
          */
         clickModalButton(button: string)
 
         /**
-         * 
+         * Obtain a formula from a given identifier.
          * @param formulaId formula identifier to open it. The number of the formula, inside the editor, e.g: the 5th formula. The identification starts with 0, meaning the first formula is the number 0.
          * @returns formula.
          */
-        getFormula(formulaId: number):Element
+        getFormula(formulaId: number): Chainable
 
         /**
          * Edit an existing MathType formula through MathType or ChemType button
          * Must be applied on a father command unless latex is set to TRUE.
-         * @param formulaId  If latex = FALSE, exclude latex formulas when counting. If latex = TRUE, count only latex formulas.
-         * @param options
-         *                 chem: {default = FALSE} Defines if we edit a chem or math formula.
-         *                 latex: {default = FALSE} Defines if we want to edit a latex formula or not.
+         * @param subject the formula to apply this command to
+         * @param options object with options:
+         *     chem {default = FALSE} whether we edit a chem or math formula
+         *     latex {default = FALSE} whether we want to edit a latex formula or not
+         *     formulaId id of the formula to edit. Only used when latex = true
          */
-        editFormula(options?: { chem?: boolean, latex?: boolean })
+        editFormula(subject: Element, options?: { chem?: boolean, latex?: boolean, formulaId?: number }): Chainable | null
 
         /**
          * Double ckick a formula to edit it.
          * Must be applied on a father command.
+         * @param subject the formula to apply this command to
          */
-        doubleClickFormula()
+        doubleClickFormula(subject: Element): Chainable
 
         /**
          * Press the ESC keboard button
@@ -75,9 +77,10 @@ declare namespace Cypress {
         /**
          * Drag and Drop a Formula.
          * Must be applied on a father command.
+         * @param subject the formula to apply this command to
          * @param coordinates Place to drop the formula
          */
-        dragDropFormula(coordinates: {x: number, y: number})
+        dragDropFormula(subject: Element, coordinates: {x: number, y: number}): Chainable
 
         /**
          * Draw a formula with the hand mode
@@ -88,8 +91,9 @@ declare namespace Cypress {
         /**
          * Resize formula.
          * Must be applied on a father command.
+         * @param subject the formula to apply this command to
          */
-        resizeFormula()
+        resizeFormula(subject: Element): Chainable
 
     }
 }
