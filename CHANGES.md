@@ -12,3 +12,8 @@ Last release of this project is was 7th of May 2021.
 ## [Unreleased]
 - Add Cypress to the project.
 - Remove Jest from the project.
+- Make a minimal Cypress working environment:
+  - Create a command and validation API
+  - Add common fixtures
+  - Implement an initial selection of E2E & smoke tests
+  - Integrate with GitHub actions build system

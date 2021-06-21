@@ -1,10 +1,14 @@
 {
   "formula-general": "x + y",
+  "formula-general-alt-en": "x space plus space y",
+  "formula-general-alt-es": "x espacio más espacio y",
   "formula-addition": " = z",
+  "formula-total-alt-es": "x espacio más espacio y espacio igual espacio z",
   "text-alignment": "2222",
   "formula-alignment": "2+2",
-  "latex-general": "$$\\cos^2(x) + \\sin^2(x)$$",
-  "latex-addition": " = \\log(e)",
+  "latex-general": "$$\\cos^2(x)+\\sin^2(x)$$",
+  "latex-general-alt-en": "cos squared left parenthesis x right parenthesis plus sin squared left parenthesis x right parenthesis",
+  "latex-addition": "=log(e)",
   "quadratic": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#xB1;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>",
   "quadratic-accessible-en": "x equals fraction numerator negative b plus-or-minus square root of b squared minus 4 a c end root over denominator 2 a end fraction",
   "formula-drawn": [
