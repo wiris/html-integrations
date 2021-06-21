@@ -85,6 +85,7 @@ jobs:
     needs: setup-cypress
 
     strategy:
+      fail-fast: true
       matrix:
         # Define values for browsers from
         browser: ["chrome"]
@@ -138,12 +139,15 @@ jobs:
           build: npm run build
           # 'test:ci' runs tests over Docker image for build context 
           command: npm run test:ci
-          parallel: true
+          record: false
+          parallel: false
           group: "${{ matrix.type }} tests on ${{ matrix.browser }}"
           browser: ${{ matrix.browser }}
           config: "video: true"
+          spec: |
+            cypress/tests/**/*.js
           # config: "\"video\": true, \"screenshotsFolder\": \"cypress/screenshots/${{ matrix.browser }}\", \"videosFolder\": \"cypress/videos/${{ matrix.browser }}\", \"video\": true"
-          # spec: cypress/tests/${{ matrix.type }}/*
+          # spec: cypress/tests/${{ matrix.type }}/*.js
         # env:
         # https://github.com/cypress-io/cypress-example-kitchensink/settings/secrets
             # screenshotsFolder: "cypress/screenshots/${{ matrix.browser }}"

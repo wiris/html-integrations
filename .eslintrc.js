@@ -130,6 +130,7 @@ module.exports = {
         ActiveXObject: 'readonly',
       },
     },
+    // This extension only adds specific rules for cypress that need to be combined with the airbnb ones
     {
       files: [
         'cypress/**/*.js',

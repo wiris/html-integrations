@@ -1,45 +1,35 @@
-function createSelection(field, start, end) {
-  if( field.createTextRange ) {
-      var selRange = field.createTextRange();
-      selRange.collapse(true);
-      selRange.moveStart('character', start);
-      selRange.moveEnd('character', end);
-      selRange.select();
-  } else if( field.setSelectionRange ) {
-      field.setSelectionRange(start, end);
-  } else if( field.selectionStart ) {
-      field.selectionStart = start;
-      field.selectionEnd = end;
+import { createSelection } from './utils';
+
+Cypress.Commands.add('getTextEditor', () => {
+  cy.get('div[contenteditable]');
+});
+
+Cypress.Commands.add('clickButtonToOpenModal', (chem = false) => {
+  if (!chem) {
+    cy
+      .get('#editorIcon')
+      .click();
+  } else {
+    cy
+      .get('#chemistryIcon')
+      .click();
   }
-  field.focus();
-}
-
-Cypress.Commands.add('clickMathType', () => {
   cy
-    .get('#editorIcon')
-    .click();
-
-  cy
-    // We wait for the Hand button to load before typing, as it is a good indicator of whether MathType has fully loaded.
+    // We wait for the toolbar to load before typing, as it is a good indicator of whether MathType has fully loaded.
     // This depends on the implementation of the modal and is not too desirable, but works well.
-    .get('.wrs_handContainer');
+    .get('.wrs_toolbar')
+    .should('be.visible');
 });
 
-Cypress.Commands.add('clickChemType', () => {
+Cypress.Commands.add('typeInTextEditor', (text) => {
   cy
-    .get('#chemistryIcon')
-    .click();
-});
-
-Cypress.Commands.add('typeInHTMLEditor', (text) => {
-  cy
-    .get('[contenteditable]')
+    .getTextEditor()
     .type(text);
 });
 
-Cypress.Commands.add('typeInMathType', (formula) => {
+Cypress.Commands.add('typeInModal', (formula) => {
   cy
-    .get('.wrs_focusElement')
+    .get('.wrs_focusElementContainer > input')
     .type(formula);
 });
 
@@ -58,12 +48,12 @@ Cypress.Commands.add('clickModalButton', (button) => {
     case 'confirmationClose':
       cy
         .get('#wrs_popup_accept_button')
-        .click();
+        .click({force: true});
       break;
     case 'confirmationCancel':
       cy
         .get('#wrs_popup_cancel_button')
-        .click();
+        .click({force:true});
       break;
     case 'xClose':
       cy
@@ -95,54 +85,101 @@ Cypress.Commands.add('clickModalButton', (button) => {
   }
 });
 
-Cypress.Commands.add('editMathFormula', (method = 'true', formulaId) => {
-  switch (method) {
-    case 'doubleClick':
-      cy
-        .get('.Wirisformula')
-        .eq(formulaId)
-        .dblclick();
-      break;
-    case 'button':
-      // let text = document.getElementByClassName(element);
-      // let selection = window.getSelection();
-      // let range = document.createRange();
-      // range.selectNodeContents(text);
-      // selection.removeAllRanges();
-      // selection.addRange(range);
-      cy
-        .get('.Wirisformula')
-        .eq(formulaId)
-        //.type('{selectAll}');
-        // .select();
+Cypress.Commands.add('insertFormulaFromScratch', (formula, chem = false, paste = false) => {
+  // Open the mathtype modal
+  cy
+    .clickButtonToOpenModal(chem);
 
-      // cy.get('.Wirisformula').then(($temp)=>{
-      //   const txt = $temp.text()
-        // cy.clickMathType();
-        // cy.get('wrs_focusElement').type(`${txt}`+'{enter}')
-      // });
+  // Type the formula that matxes the previous inserted text on the mathtype modal
+  cy
+    .typeInModal(formula);
 
-      // cy.clickMathType();
-      // cy
-      //   .get('.Wirisformula')
-      //   .eq(formulaId)
-      // .trigger('mousedown')
-      // .then(($el) => {
-      //   const el = $el[0]
-      //   const document = el.ownerDocument
-      //   const range = document.createRange()
-      //   range.selectNodeContents(el)
-      //   document.getSelection().removeAllRanges(range)
-      //   document.getSelection().addRange(range)
-      // })
-      // .trigger('mouseup')
-      // cy.document().trigger('selectionchange')
-      // cy.get('p').setSelection(' the fol')
+  // Insert the formula
+  cy
+    .clickModalButton('insert');
+});
 
-      break;
-    default:
-      throw new Error(`Method '${method}' is not recognizable`);
+Cypress.Commands.add('getFormula', (formulaId) => {
+  cy
+    .get('.Wirisformula')
+    .should('have.length.at.least', formulaId + 1)
+    .eq(formulaId);
+});
+
+Cypress.Commands.add('selectLatexFormula', (formulaId) => {
+  let block;
+  let startOffset;
+  let endOffset;
+
+  // Get the block, and offsets of the latex formula
+  let countFormula = 0;
+  const edit = Cypress.$('#editable');
+  const kids = edit[0].children;
+  for (let j = 0; j < kids.length; ++j) {
+    const elem = kids[j];
+    const html = elem.innerHTML;
+    let prevDolar = false;
+    let waitEndDolar = false;
+    for (let i = 0; i < html.length; i++) {
+      const caracter = html[i];
+      if (caracter === '$' && prevDolar === false && waitEndDolar === false) {
+        prevDolar = true;
+      } else if (caracter === '$' && prevDolar === true && waitEndDolar === false) {
+        prevDolar = false;
+        waitEndDolar = true;
+        if (countFormula === formulaId) startOffset = i + 1;
+      } else if (caracter === '$' && prevDolar === false && waitEndDolar === true) {
+        prevDolar = true;
+        if (countFormula === formulaId) endOffset = i;
+        else countFormula += 1;
+      } else if (caracter === '$' && prevDolar === true && waitEndDolar === true) {
+        prevDolar = false;
+        waitEndDolar = false;
+      }
+      if (startOffset && endOffset) {
+        block = j;
+        break;
+      }
+    }
+    if (startOffset && endOffset) break;
+  }
+
+  // Throw error if the latex formula identifier does not correspond to a latex formula on the test
+  if (!startOffset || !endOffset) {
+    throw new Error(`The latex formula number '${formulaId}' does not exist`);
+  }
+
+  // Select the latex formula
+  cy
+    .getTextEditor().children().eq(block)
+    .trigger('mousedown')
+    .then(($el) => {
+      createSelection($el, startOffset, endOffset);
+    })
+    .trigger('mouseup');
+  cy
+    .document()
+    .trigger('selectionchange');
+});
+
+Cypress.Commands.add('editFormula', { prevSubject: 'optional' }, (subject, formula, options = {
+  chem: false, latex: false, formulaId: 0,
+}) => {
+  // Select the latex formula and edit it
+  if (options.latex) {
+    cy
+      .selectLatexFormula(options.formulaId);
+    cy
+      .clickButtonToOpenModal(options.chem);
+    cy
+      .typeInModal(formula);
+    cy
+      .clickModalButton('insert');
+  } else {
+    throw new Error('Not implemented yet');
   }
 });
 
-Cypress.Commands.add('doubleClick', { prevSubject: 'optional' }, (subject) => {});
+Cypress.Commands.add('pressESCButton', () => {
+  cy.get('body').type('{esc}');
+});
