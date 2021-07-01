@@ -43,7 +43,7 @@
     "@wiris/mathtype-html-integration-devkit": "1.5.1"
   },
   "devDependencies": {
-    "babel-jest": "^26.1.0",
+    "babel-jest": "^27.0.6",
     "jest": "^26.1.0",
     "jest-css-modules-transform": "^4.0.1",
     "jest-html-reporter": "^3.1.3",
