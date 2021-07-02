@@ -11,3 +11,4 @@ packages/mathtype-froala3/wiris.js
 packages/mathtype-froala/wiris.js
 packages/mathtype-ckeditor4/plugin.js
 packages/mathtype-tinymce/editor_plugin.src.js
+packages/mathtype-html-integration-devkit/doc/templates/**
