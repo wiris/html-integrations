@@ -1,11 +1,9 @@
-MathType for TinyMCE5 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
+MathType for TinyMCE5
 ===
 
 Type and handwrite mathematical notation with MathType.
 
 Easily include quality math equations in your documents and digital content.
-
-![MathType for TinyMCE5 screenshot](http://www.wiris.com/system/files/attachments/1202/TinyMCE_editor_plugin.png)
 
 # Table of Contents
 

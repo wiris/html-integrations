@@ -10,12 +10,12 @@ A simple ReactJS App integrating WIRIS MathType on a generic editor, build with 
 ## How to run the demo
 
 ```sh
-$ npm install
-$ npm run deploy
+$ yarn install
+$ yarn start
 ```
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3007](http://localhost:3007) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
@@ -29,8 +29,8 @@ You will also see any lint errors in the console.
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm install @wiris/mathtype-generic
-    $ npm install @wiris/mathtype-html-integration-devkit
+    $ yarn add @wiris/mathtype-generic
+    $ yarn add @wiris/mathtype-html-integration-devkit
     ```
 
 2. Replace all the content in *src/index.js* by:
@@ -90,7 +90,7 @@ You will also see any lint errors in the console.
     }
 
     // Define the initial content to place on the editor.
-    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
 
     // Render the editor react component.
     ReactDOM.render(
@@ -106,12 +106,12 @@ You will also see any lint errors in the console.
 
     *Note that the **content** can be empty or anything you want to set as the initial editor content.*
 
-3. Finally, you are ready to run the development server through the specified command ```npm run start```
+3. Finally, you are ready to run the development server through the specified command ```yarn start```
 
 ## How to run the tests
 
 ```sh
-$ npm run test
+$ yarn test
 ```
 
 Launches the test runner in the interactive watch mode.<br />
