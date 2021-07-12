@@ -15,15 +15,15 @@ updates:
           include: "scope" # It'll include all the reviews and changes proposal
     labels:
           - "type:dependencies"
+    ignore:
+      - dependency-name: "@ckeditor/ckeditor5-core"
+      - dependency-name: "@ckeditor/ckeditor5-engine"
+      - dependency-name: "@ckeditor/ckeditor5-widget"
+      - dependency-name: "@ckeditor/ckeditor5-ui"
+      - dependency-name: "@ckeditor/ckeditor5-alignment"
+      - dependency-name: "@ckeditor/ckeditor5-basic-styles"
+      - dependency-name: "@ckeditor/ckeditor5-editor-classic"
+      - dependency-name: "@ckeditor/ckeditor5-essentials"
+      - dependency-name: "@ckeditor/ckeditor5-paragraph"
+      - dependency-name: "@ckeditor/ckeditor5-theme-lark"
 
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "stable"
-    labels:
-          - "type:dependencies"
-    commit-message:
-          prefix: "st:npm prod"
-          prefix-development: "st:npm dev"
-          include: "scope"
