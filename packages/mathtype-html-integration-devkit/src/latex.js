@@ -99,7 +99,8 @@ export default class Latex {
 
       // Populate LatexCache.
       if (mathml.indexOf('semantics') === -1 && mathml.indexOf('annotation') === -1) {
-        mathml = MathML.addAnnotation(mathml, latex, 'LaTeX');
+        const content = Util.htmlEntities(latex);
+        mathml = MathML.addAnnotation(mathml, content, 'LaTeX');
         output = mathml;
       } else {
         output = mathml;

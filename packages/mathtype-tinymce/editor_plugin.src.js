@@ -176,6 +176,7 @@ export const currentInstance = null;
         'mpadded[*]',
         'mphantom[*]',
         'mprescripts[*]',
+        'none[*]',
         'mroot[*]',
         'mrow[*]',
         'ms[*]',
@@ -284,9 +285,6 @@ export const currentInstance = null;
                   // This only is executed due to init parse.
                   image.removeAttribute('data-mce-src');
                   image.removeAttribute('data-mce-style');
-                  // Be careful. The next line clear the changes queue
-                  // because is only executed these lines on init.
-                  editor.undoManager.clear();
                 }).bind(this, editor));
               }
             }.bind(this, editor));
