@@ -24,7 +24,7 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "main": "core.src.js",
   "scripts": {
-    "prebuild-docs": "rm -rf doc/templates/mathtype-integration-jsdoc-theme && git clone git@github.com:wiris/mathtype-integration-jsdoc-theme doc/templates/mathtype-integration-jsdoc-theme",
+    "prebuild-docs": "rm -rf doc/templates/mathtype-integration-jsdoc-theme && git clone https://github.com/wiris/mathtype-integration-jsdoc-theme.git doc/templates/mathtype-integration-jsdoc-theme",
     "build-docs": "jsdoc -c doc/conf.json --verbose",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
