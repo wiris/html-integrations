@@ -1,0 +1,104 @@
+# This workflow tests that the documentation is:
+#  - Propertly created
+#  - Has no broken links
+#  - Is not empty
+#  - There are no broken images
+
+# This workflow also creates an artifact form the API documentation
+# and will upload it to the proper site on the wiris webpage
+name: Generate JsDocumentation
+
+on: 
+  - push
+  - workflow_dispatch # Since we want to call it from a general workflow too
+
+jobs:
+  Generate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Set up node
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      # Install html-integrations dependencies
+      - name: Install dependencies
+        run: |
+          npm i
+
+      # Go to the folder where the jsdoc logic is,
+      # install dependencies and generate the documentation with its specific command
+      - name: Build docs
+        run: |
+          cd packages/mathtype-html-integration-devkit
+          npm i
+          npm run build-docs
+
+      # Check that the documentation is not empty
+      - name: Check that the docs are not empty
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "packages/mathtype-html-integration-devkit/out/index.html"
+
+      # If the documentation is empty, stop the workflow execution with an error
+      - name: Throw error if docs are empty
+        if: steps.check_files.outputs.files_exists == 'false'
+        # Only runs if the file does not exist
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('Check file existence')
+
+      # Check the docs are propertly created, no broken links, not empty, etc
+      - name: Check html links
+        id: check_links
+        uses: modernweb-dev/check-html-links-action@v1
+        with:
+          doc-folder: 'packages/mathtype-html-integration-devkit/out/'
+
+      # Create a report that will contain the status of the documentation links
+      - name: Create html-links report
+        run: |
+          npm run lint-links-docs &> packages/mathtype-html-integration-devkit/out/report.txt
+
+      # Check if the report results say there're broken links
+      - name: Find broken links in report
+        id: check_errors
+        run: |
+          if grep -q ❌ "packages/mathtype-html-integration-devkit/out/report.txt"; then
+            echo '::set-output name=LINK_ERROR::true'
+          else
+            echo '::set-output name=LINK_ERROR::false'
+          fi
+      
+      # If the report states that there are borken links in the docs,
+      # stop the workflow by throwing an error
+      - name: Throw error if there are borken links
+        if: steps.check_errors.outputs.LINK_ERROR == 'true'
+        # Only runs if there're broken links
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('Check file existence')
+      
+      # Create a .zip file from the documentation
+      - name: Create docs zip
+        uses: papeloto/action-zip@v1
+        with:
+          files: packages/mathtype-html-integration-devkit/out/
+          dest: output/mathtype-devkit-API-docs.zip
+
+      # Upload the documentation files to github artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: API-docs
+          path: |
+            output/mathtype-devkit-API-docs.zip
+          if-no-files-found: error
