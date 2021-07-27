@@ -6,10 +6,12 @@ module.exports = {
   },
   plugins: [
     'import',
+    'jsdoc',
   ],
   extends: [
     'airbnb-base', // We extend our linting to follow the airbnb rules
     'plugin:import/recommended',
+    'plugin:jsdoc/recommended',
   ],
   parser: 'babel-eslint', // Parser that'll help linting react demos
 

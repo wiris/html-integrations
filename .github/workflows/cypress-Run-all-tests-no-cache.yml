@@ -5,7 +5,9 @@
 
 name: Run Cypress tests without cache
 
-on: push
+on: 
+  - push
+  - workflow_dispatch
 
 jobs:
 
