@@ -32,8 +32,7 @@
   ],
   "main": "src/plugin.js",
   "scripts": {
-    "compile": "node ../../scripts/services/compile src/plugin.js .",
-    "test": "jest"
+    "compile": "node ../../scripts/services/compile src/plugin.js ."
   },
   "dependencies": {
     "@ckeditor/ckeditor5-core": ">=23.0.0",
