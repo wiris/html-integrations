@@ -9,6 +9,7 @@ We've implemented a complete lint strategy for the JavaScript, HTML and CSS file
 - [JavaScript files](#javascript-files)
 - [CSS files](#css-files)
 - [HTML files](#html-files)
+- [Lint all files at once](#lint-all-files-at-once)
 
 ## JavaScript files
 
@@ -65,3 +66,10 @@ To validate specific `.html` files or folders of the project, add the `--route` 
 
 It is possible to automatically fix some of the errors, just add the `--fix` option in the desired command and run it.
 
+## Lint all files at once
+
+You can lint all type of files at once, running this command:
+
+```sh
+  $ npm run lint
+```

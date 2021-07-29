@@ -1,0 +1,16 @@
+{
+    "javadoc": true,
+    "url-ignore": [
+        "github.com\/",
+        ".html*#line",
+        "api.html#DeviceProperties",
+        "api.html#CoreProperties",
+        "api.html#Listener",
+        "api.html#EditionProperties",
+        "api.html#IntegrationEnvironment",
+        "api.html#ServiceProviderProperties",
+        "api.html#ReturnObject",
+        "api.html#CustomEditor",
+        "api.html#IntegrationModelProperties"
+    ]
+}

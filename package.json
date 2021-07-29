@@ -18,16 +18,16 @@
     "test:run": "docker run -it -v $PWD:/cypress --net=host -v /tmp/.X11-unix:/tmp/.X11-unix -w /cypress -e DISPLAY=$IP:0 --entrypoint=cypress cypress/included:7.5.0 run --project .",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress --entrypoint=cypress cypress/included:7.5.0 run  --project .",
     "build": "cd demos/html5/generic && npm install && npm start &",
+    "lint": "npm run lint-js && npm run lint-html && npm run lint-css",
     "lint-js": "eslint ${npm_config_route-.} --ext .js",
     "lint-html": "html-validate ${npm_config_route-.}",
     "lint-css": "stylelint \"${npm_config_route-**/*.css}\"",
-    "build-jsdoc-validation": "npx check-html-links packages/mathtype-html-integration-devkit/out/"
+    "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-eslint": "^10.1.0",
-    "check-html-links": "^0.2.3",
     "cypress": "^7.5.0",
     "cypress-fail-fast": "^3.0.0",
     "eslint": "^7.30.0",
@@ -39,6 +39,7 @@
     "html-validate": "^5.2.0",
     "jest": "^26.0.0",
     "lerna": "^4.0.0",
+    "link-checker": "^1.4.2",
     "shx": "^0.3.3",
     "stylelint": "^13.12.0",
     "stylelint-config-standard": "^21.0.0",
