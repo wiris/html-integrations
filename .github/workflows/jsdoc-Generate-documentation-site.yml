@@ -1,16 +1,18 @@
-# This is a workflow that uses jsdoc library to generate a static site from the comments on the library code.
+# Jobs: 
+# - "generate-docs"
 #
-# Once the static site is generated using the command 'npm run build-jsdoc' from the 'mathtype-html-integration-devkit'
-# package, it runs some validations to the generated files at 'packages/mathtype-html-integration-devkit/out/' folder.
+#   This is job uses jsdoc library to generate a static site from the comments on the library code.
 #
-# Validation consists on:
-#  - The main index.html file is not empty.
-#  - There are no broken links on the HTML files.
-#  - There are no broken images on the HTML files.
+#   Once the static site is generated using the command 'npm run build-jsdoc' from the 'mathtype-html-integration-devkit'
+#   package, it runs some validations to the generated files at 'packages/mathtype-html-integration-devkit/out/' folder.
 #
-# If validation passes the static site is published as an artifact. 
+#   Validation consists on:
+#    - The main index.html file is not empty.
+#    - There are no broken links on the HTML files.
+#
+#   If validation passes the static site is published as an artifact called 'mathtype-html-integration-devkit-docs.zip'. 
 
-name: Generate jsdoc API site
+name: Generate and validate the jsdoc site
 
 on: 
   - push
@@ -18,7 +20,7 @@ on:
 
 jobs:
   generate-docs:
-    name: Generate the jsdoc static site from source code
+    name: Generate and validate the jsdoc site
     runs-on: ubuntu-latest    
     steps:
       - name: Checkout
@@ -59,28 +61,29 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-              core.setFailed('jsdoc: generated and empty index file')
+              core.setFailed('jsdoc: main index file is empty')
 
       # 06. Check if there are broken links or images on the jsdoc site.
-      - name: Validate there are no broken links or images
-        id: check_links
-        uses: modernweb-dev/check-html-links-action@v1
-        with:
-          doc-folder: 'packages/mathtype-html-integration-devkit/out/'
+      # - name: Validate there are no broken links or images
+      #   id: check_links
+      #   uses: modernweb-dev/check-html-links-action@v1
+      #   with:
+      #     doc-folder: 'packages/mathtype-html-integration-devkit/out/'
 
       # 07. Create a report with any broken link and/or image found.
       - name: Generate the broken links report
         run: |
-          npm run build-jsdoc-validation &> packages/mathtype-html-integration-devkit/out/report.txt
+          npm run build-jsdoc-validation |& tee packages/mathtype-html-integration-devkit/out/report.txt 
+          cat packages/mathtype-html-integration-devkit/out/report.txt
 
       # 08. Look for any detected error on the broken links report.
       - name: Look for errors on the broken links report
         id: check_errors
         run: |
-          if grep -q ❌ "packages/mathtype-html-integration-devkit/out/report.txt"; then
-            echo '::set-output name=LINK_ERROR::true'
-          else
+          if grep -q "0 errors and" "packages/mathtype-html-integration-devkit/out/report.txt"; then
             echo '::set-output name=LINK_ERROR::false'
+          else
+            echo '::set-output name=LINK_ERROR::true'
           fi
       
       # 09. If there is any found error on the broken links report,
@@ -91,20 +94,13 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-              core.setFailed('Check file existence')
-      
-      # 10. Prepare the jsdoc site for publication as an artifact.
-      - name: Prepare the jsdoc generated site as an artifact
-        uses: papeloto/action-zip@v1
-        with:
-          files: packages/mathtype-html-integration-devkit/out/
-          dest: output/mathtype-html-integration-devkit-docs.zip
+              core.setFailed('jsdoc: broken links and/or images found')
 
-      # 11. Upload the jsdoc site to github artifacts
+      # 10. Upload the jsdoc site to github artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: API-docs
+          name: mathtype-html-integration-devkit-docs
           path: |
-            output/mathtype-html-integration-devkit-docs.zip
+            packages/mathtype-html-integration-devkit/out/
           if-no-files-found: error
