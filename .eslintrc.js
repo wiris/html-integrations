@@ -11,7 +11,6 @@ module.exports = {
   extends: [
     'airbnb-base', // We extend our linting to follow the airbnb rules
     'plugin:import/recommended',
-    'plugin:jsdoc/recommended',
   ],
   parser: 'babel-eslint', // Parser that'll help linting react demos
 
@@ -108,6 +107,7 @@ module.exports = {
 
   // Specific configuration for the packages folder
   overrides: [
+    // 01. Custom rules for all packages.
     {
       files: [
         'packages/**/*.js',
@@ -132,6 +132,7 @@ module.exports = {
         ActiveXObject: 'readonly',
       },
     },
+    // 02. Custom rules for Cypress Test implementation
     // This extension only adds specific rules for cypress that need to be combined with the airbnb ones
     {
       files: [
@@ -139,6 +140,15 @@ module.exports = {
       ],
       extends: [
         'plugin:cypress/recommended',
+      ],
+    },
+    // 03. Custom rules for the packages with jsDoc support.
+    {
+      files: [
+        'packages/mathtype-html-integration-devkit/src/*.js',
+      ],
+      extends: [
+        'plugin:jsdoc/recommended',
       ],
     },
   ],

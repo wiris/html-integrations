@@ -48,12 +48,12 @@ Cypress.Commands.add('clickModalButton', (button) => {
     case 'confirmationClose':
       cy
         .get('#wrs_popup_accept_button')
-        .click({force: true});
+        .click({ force: true });
       break;
     case 'confirmationCancel':
       cy
         .get('#wrs_popup_cancel_button')
-        .click({force:true});
+        .click({ force: true });
       break;
     case 'xClose':
       cy
@@ -85,6 +85,7 @@ Cypress.Commands.add('clickModalButton', (button) => {
   }
 });
 
+// eslint-disable-next-line no-unused-vars
 Cypress.Commands.add('insertFormulaFromScratch', (formula, chem = false, paste = false) => {
   // Open the mathtype modal
   cy
