@@ -21,7 +21,7 @@
     "lint-js": "eslint ${npm_config_route-.} --ext .js",
     "lint-html": "html-validate ${npm_config_route-.}",
     "lint-css": "stylelint \"${npm_config_route-**/*.css}\"",
-    "lint-links-docs": "npx check-html-links packages/mathtype-html-integration-devkit/out/"
+    "build-jsdoc-validation": "npx check-html-links packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

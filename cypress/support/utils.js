@@ -15,4 +15,5 @@ function createSelection(field, start, end) {
   document.getSelection().addRange(range);
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export { createSelection };

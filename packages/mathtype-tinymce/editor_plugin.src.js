@@ -223,7 +223,8 @@ export const currentInstance = null;
       integrationModelProperties.version = packageInfo.version;
       integrationModelProperties.isMoodle = (!!((typeof M === 'object' && M !== null))); // eslint-disable-line no-undef
       if (integrationModelProperties.isMoodle) {
-        integrationModelProperties.configurationService = M.cfg.wwwroot + '/filter/wiris/integration/configurationjs.php';  
+        // eslint-disable-next-line no-undef
+        integrationModelProperties.configurationService = M.cfg.wwwroot + '/filter/wiris/integration/configurationjs.php'; // eslint-disable-line prefer-template
       }
       if (typeof (editor.getParam('wiriscontextpath')) !== 'undefined') {
         integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);

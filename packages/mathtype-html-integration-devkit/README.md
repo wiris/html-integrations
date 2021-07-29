@@ -62,7 +62,7 @@ Run these commands:
 
 ```bash
 $ npm install
-$ npm run build-docs
+$ npm run build-jsdoc
 ```
 
 The source code of the documentation site is generated on the `/out` folder.
