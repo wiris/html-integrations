@@ -4,7 +4,7 @@ The following instructions allows to customizate MathType Web Integration servic
 
 ### Java
 To install the Java services follow the steps below:
-1. Download the [MathType Web Integration Services - Java](http://www.wiris.com/en/plugins/services/download) package.
+1. Download the [MathType Web Integration Services - Java](https://store.wiris.com/en/products/downloads/mathtype/integrations) package.
 2. Deploy the **pluginwiris_engine war** file.
 3. Add mathTypeParameters to CKEditor5 with the configuration below:
     ```js
@@ -31,7 +31,7 @@ To install the Java services follow the steps below:
 
 ### PHP
 To install the PHP services follow the steps below:
-1. Download the [MathType Web Integration Services - PHP](http://www.wiris.com/en/plugins/services/download) package.
+1. Download the [MathType Web Integration Services - PHP](https://store.wiris.com/en/products/downloads/mathtype/integrations) package.
 2. Copy the generic_wiris/integration folder into your project. For this example we are assuming that the services are located at DOCUMENT_ROOT/php-services/
 3. Add mathTypeParameters to CKEditor5 with the configuration below:
     ```js
@@ -58,7 +58,7 @@ To install the PHP services follow the steps below:
 
 ### .NET
 To install the PHP services follow the steps below:
-1. Download the [MathType Web Integration Services - Aspx](http://www.wiris.com/en/plugins/services/download) package.
+1. Download the [MathType Web Integration Services - Aspx](https://store.wiris.com/en/products/downloads/mathtype/integrations) package.
 2. Copy the generic_wiris/integration folder into your project. For this example we are assuming that the services are located at DOCUMENT_ROOT/aspx-services/
 3. Add mathTypeParameters to CKEditor5 with the configuration below:
     ```js
@@ -86,7 +86,7 @@ To install the PHP services follow the steps below:
 ### Ruby on Rails
 
 To install the Ruby on Rails services follow the steps below:
-1. Download the [MathType Web Integration Services - Ruby on Rails](http://www.wiris.com/en/plugins/services/download) package.
+1. Download the [MathType Web Integration Services - Ruby on Rails](https://store.wiris.com/en/products/downloads/mathtype/integrations) package.
 2. Instal the **wirispluginengine.gem** gem.
     ```
         gem install -l wirispluginengine.gem
