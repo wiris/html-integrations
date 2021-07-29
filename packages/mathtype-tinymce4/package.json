@@ -36,7 +36,7 @@
     "@wiris/mathtype-html-integration-devkit": "1.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.0",
+    "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
@@ -45,7 +45,7 @@
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "url-loader": "^4.1.1",
-    "webpack": "^5.44.0",
+    "webpack": "^5.46.0",
     "webpack-cli": "^4.6.0"
   }
 }
