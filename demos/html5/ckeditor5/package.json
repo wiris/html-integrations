@@ -4,7 +4,6 @@
   "description": "A simple html5 App integrating WIRIS MathType in a CKEditor5 rich text editor.",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
     "compile-package": "cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && filename=$( npm pack --quiet ) && cd ../../demos/html5/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/$filename",
     "compile-package-windows": "cd ../../../packages/mathtype-ckeditor5/ && npm run compile -- npm --dev && cd ../../ && node scripts/installCK5Windows.js && cd demos/html5/ckeditor5/",
     "start": "webpack-dev-server --open"
