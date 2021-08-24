@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 22nd of July 2021.
 
+## [Unreleased]
+
+### @wiris/mathtype-froala3
+
+- Fixes "Froala 3 on React does not pre-render formulas" KB-11921.
+- Update @wiris/mathtype-froala3 code example to fix pre-render issue.
+- Update README instructions
+
 ## 7.27.0 - 2021-07-22
 - Add Cypress to the project.
 - Remove Jest from the project.

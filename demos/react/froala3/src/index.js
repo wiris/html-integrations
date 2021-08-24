@@ -46,7 +46,6 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 // Define the toolbar & configuration options for the froala editor.
 const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
 const froalaConfig = {
-  // iframe: true,
   toolbarButtons: toolbar,
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
@@ -55,15 +54,14 @@ const froalaConfig = {
 
   htmlAllowedEmptyTags: ['mprescripts'],
   imageResize: false,
-  key: 'CA5D-16E3A2E3G1I4A8B8A9B1D2rxycF-7b1C3vyz==',
-  // heightMax: 310,
-  // useClasses: false,
-
-  // Execute on initialyzed editor.
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.
       Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, pluginVersion);        //eslint-disable-line
+      // Since Froala 3.1.1 version, initialization events need to be called manually for the React component.
+      // Parse the initial content set on the editor through html to render it
+      const contentRendered = WirisPlugin.Parser.initParse(this.html.get(true));
+      this.html.set(contentRendered);
     },
   },
 };
