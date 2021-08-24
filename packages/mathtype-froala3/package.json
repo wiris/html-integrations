@@ -1,7 +1,7 @@
 {
   "name": "@wiris/mathtype-froala3",
   "version": "7.27.0",
-  "description": "MathType Web for Froala3 editor",
+  "description": "MathType Web for Froala editor V3 & V4",
   "keywords": [
     "chem",
     "chemistry",
@@ -10,6 +10,7 @@
     "equation",
     "froala",
     "froala3",
+    "froala4",
     "latex",
     "math",
     "mathml",

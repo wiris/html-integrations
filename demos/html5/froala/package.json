@@ -1,7 +1,7 @@
 {
-  "name": "demo-html5-froala3",
-  "version": "1.0.3",
-  "description": "A simple html5 App integrating WIRIS MathType in a Froala3 rich text editor.",
+  "name": "demo-html5-froala",
+  "version": "1.0.4",
+  "description": "A simple html5 App integrating WIRIS MathType in a Froala4 rich text editor.",
   "main": "app.js",
   "scripts": {
     "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
@@ -12,7 +12,7 @@
   "dependencies": {
     "@wiris/mathtype-froala3": "^7.26.0",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "froala-editor": "^3.2.6",
+    "froala-editor": "^4.0.4",
     "jquery": "^3.6.0"
   },
   "devDependencies": {

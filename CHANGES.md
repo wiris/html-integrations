@@ -50,3 +50,6 @@ Last release of this project is was 22nd of July 2021.
     - Improve @wiris/mathtype-tinymce5 README information.
 
   See: https://github.com/wiris/html-integrations/issues/134#issuecomment-90544864
+- Telemetry: inform the right version of Froala on environment group.
+- Create html5 + Froala V4 demo.
+- Improve MathType Froala packages README.

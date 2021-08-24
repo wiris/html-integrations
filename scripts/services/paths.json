@@ -94,8 +94,8 @@
         "demo": true,
         "port": "8003"
     },
-    "html5Froala3": {
-        "path": "./demos/html5/froala3/",
+    "html5Froala": {
+        "path": "./demos/html5/froala/",
         "demo": true,
         "port": "8004"
     },
