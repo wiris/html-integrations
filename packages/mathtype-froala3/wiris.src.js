@@ -251,8 +251,8 @@ export class FroalaIntegration extends IntegrationModel {
     froalaIntegrationProperties.version = packageInfo.version;
     froalaIntegrationProperties.scriptName = 'wiris.js';
     froalaIntegrationProperties.environment = {};
-    froalaIntegrationProperties.environment.editor = 'Froala3';
-    froalaIntegrationProperties.environment.editorVersion = '3.x';
+    froalaIntegrationProperties.environment.editor = `Froala${FroalaEditor.VERSION[0]}`;
+    froalaIntegrationProperties.environment.editorVersion = `${FroalaEditor.VERSION[0]}.x`;
     froalaIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
     froalaIntegrationProperties.editorObject = editor;
     froalaIntegrationProperties.initOnImageMode = target.nodeName.toLowerCase() === 'img';

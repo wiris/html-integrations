@@ -28,7 +28,7 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 export class AppComponent {
 
   // Set App Title.
-  title = 'Angular froala3 demo';
+  title = 'Angular froala demo';
 
   // Initializate the editor content.
   public content: string = editorContent;
