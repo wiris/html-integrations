@@ -5,22 +5,27 @@ import './static/style.css';
 import * as Generic from '../../../../resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';
-document.getElementById('version_editor').innerHTML = 'Tinymce editor: ';
+document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
+document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Copy the editor content before initializing it.
 Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Set up the editor.
-tinymce.init({                                                                                          //eslint-disable-line
+tinymce.init({
   selector: '#editor',
   external_plugins: {
     tiny_mce_wiris: `${window.location.href}node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
   },
-  toolbar: 'undo redo | styleselect | bold italic | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+  // We recommend to set 'draggable_modal' to true to avoid overlapping issues
+  // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
+  // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
+  draggable_modal: true,
+  plugins: ['image', 'media'],
+  toolbar: 'undo redo | styleselect | bold italic | image media | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
 
   // language: 'fr_FR',
-  // // You could set a different language for MathType editor:
+  // You could set a different language for MathType editor:
   // mathTypeParameters: {
   //   editorParameters: { language: 'de' },
   // },

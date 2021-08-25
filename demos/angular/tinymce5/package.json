@@ -1,6 +1,6 @@
 {
   "name": "demo-angular-tinymce5",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple Angular App integrating WIRIS MathType in a TinyMCE rich text editor.",
   "scripts": {
     "start": "ng serve --host 0.0.0.0 --open",
@@ -13,8 +13,8 @@
   "dependencies": {
     "@tinymce/tinymce-angular": "^4.2.2",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "@wiris/mathtype-tinymce5": "^7.26.0",
-    "tinymce": "^5.7.1"
+    "@wiris/mathtype-tinymce5": "^7.27.0",
+    "tinymce": "^5.8.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1102.10",

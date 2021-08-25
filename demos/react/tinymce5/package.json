@@ -1,12 +1,12 @@
 {
   "name": "demo-react-tinymce5",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple ReactJS App integrating WIRIS MathType in a TinyMCE rich text editor.",
   "private": true,
   "dependencies": {
-    "@tinymce/tinymce-react": "^3.12.2",
-    "@wiris/mathtype-tinymce5": "^7.26.0",
-    "tinymce": "^5.7.1"
+    "@tinymce/tinymce-react": "^3.12.6",
+    "@wiris/mathtype-tinymce5": "^7.27.0",
+    "tinymce": "^5.8.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",

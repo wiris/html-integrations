@@ -1,6 +1,6 @@
-# TinyMCE integration in Angular
+# TinyMCE V5 integration in Angular
 
-A simple Angular App integrating WIRIS MathType on a TinyMCE 5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
+A simple Angular App integrating WIRIS MathType on a TinyMCE V5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
 
 ## Requirements
 
@@ -101,8 +101,6 @@ Opens [http://localhost:4006/](http://localhost:4006/) to view it in the browser
 
         // Define the initial options of the editor
         public options: Object = {
-            height: 500,
-            menubar: false,
             base_url: '/tinymce', // Root for resources
             suffix: '.min',        // Suffix to use when loading resources
             
@@ -110,17 +108,21 @@ Opens [http://localhost:4006/](http://localhost:4006/) to view it in the browser
             external_plugins: {
                 'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
             },
-            plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount '
-            ],
-            toolbar: [
-                ' bold italic |' +
-                'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry '
-            ],
             htmlAllowedTags:  ['.*'],
             htmlAllowedAttrs: ['.*'],
+
+            // We recommend to set 'draggable_modal' to true to avoid overlapping issues
+            // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
+            // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
+            draggable_modal: true,
+            plugins: ['image', 'media'],
+            toolbar: 'undo redo | styleselect | bold italic | image media | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+
+            // language: 'fr_FR',
+            // You could set a different language for MathType editor:
+            // mathTypeParameters: {
+            //   editorParameters: { language: 'de' },
+            // },
         };
     }
 

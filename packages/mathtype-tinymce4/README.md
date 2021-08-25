@@ -1,13 +1,10 @@
-MathType for TinyMCE4 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
-===
+# MathType for TinyMCE V4
 
 Type and handwrite mathematical notation with MathType.
 
 Easily include quality math equations in your documents and digital content.
 
-![MathType for TinyMCE 4 screenshot](http://www.wiris.com/system/files/attachments/1202/TinyMCE_editor_plugin.png)
-
-# Table of Contents
+## Table of Contents
 
 - [Install instructions](#install-instructions)
 - [Services](#services)
@@ -27,17 +24,22 @@ Easily include quality math equations in your documents and digital content.
    ```js
    tinymce.init({
      external_plugins: {
-       'tiny_mce_wiris' : 'http://localhost/project/npm-tinymce4/node_modules/@wiris/mathtype-tinymce4/plugin.min.js'
+       'tiny_mce_wiris': 'node_modules/@wiris/mathtype-tinymce4/plugin.min.js',
      }
    });
    ```
 
-   Please, note the URL must be absolute due to a TinyMCE4 issue. See [TinyMCE4 tracker](https://github.com/tinymce/tinymce/issues/3056) for further information.
+   
 3. Add MathType buttons to the TinyMCE4 toolbar:
 
    ```js
    tinymce.init({
-     toolbar: 'tiny_mce_wiris_formulaEditor,tiny_mce_wiris_formulaEditorChemistry',
+      toolbar: 'tiny_mce_wiris_formulaEditor,tiny_mce_wiris_formulaEditorChemistry',
+      // You could set a different language for MathType editor:
+      // language: 'fr_FR',
+      // mathTypeParameters: {
+      //   editorParameters: { language: 'fr' },
+      // },
    });
    ```
 

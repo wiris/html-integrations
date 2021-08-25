@@ -1,6 +1,6 @@
 {
   "name": "demo-html5-tinymce4",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple html5 App integrating WIRIS MathType in a TinyMCE4 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "*",
-    "@wiris/mathtype-tinymce4": "^7.26.0",
+    "@wiris/mathtype-tinymce4": "^7.27.0",
     "tinymce": "^4.9.11"
   },
   "devDependencies": {
