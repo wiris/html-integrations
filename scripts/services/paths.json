@@ -44,8 +44,8 @@
         "demo": true,
         "port": "3002"
     },
-    "reactFroala3": {
-        "path": "./demos/react/froala3/",
+    "reactFroala": {
+        "path": "./demos/react/froala/",
         "demo": true,
         "port": "3004"
     },
@@ -64,8 +64,8 @@
         "demo": true,
         "port": "4002"
     },
-    "angularFroala3": {
-        "path": "./demos/angular/froala3/",
+    "angularFroala": {
+        "path": "./demos/angular/froala/",
         "demo": true,
         "port": "4004"
     },

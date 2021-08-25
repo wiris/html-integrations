@@ -17,25 +17,28 @@ Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Initialize editor.
 new FroalaEditor('#editor', {                                                                                                 //eslint-disable-line
-  // toolbarButtons: ['undo', 'redo' , 'bold', '|','clear', 'insert']
-  toolbarButtons: ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'],
+  // Define the toolbar options for the froala editor.
+  toolbarButtons: ['undo', 'redo', 'bold', 'italic', '|', 'wirisEditor', 'wirisChemistry', 'insertImage'],
 
-  // Add [MW] buttons to Image Toolbar.
+  // Add [MW] buttons to the image editing popup Toolbar.
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
-  // Allowed tags.
+  // Allow all the tags to understand the mathml
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
 
-  // Allow these empty tags for the proper renderization of formulas
+  // List of tags that are not removed when they have no content inside
+  // so that formulas renderize propertly
   htmlAllowedEmptyTags: ['mprescripts', 'none'],
 
+  // Froala editor language
   // language: 'de',
+  // You could set a different language for MathType editor:
   // mathTypeParameters: {
-  //   editorParameters: { language: 'es' }, // MathType config, including language
+  //   editorParameters: { language: 'es' },
   // },
 
-  // Execute on initialyzed editor.
+  // Execute on initialized editor.
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.

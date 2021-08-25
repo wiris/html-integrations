@@ -1,10 +1,10 @@
 {
-  "name": "demo-react-froala3",
-  "version": "1.0.2",
+  "name": "demo-react-froala",
+  "version": "1.0.3",
   "description": "A simple ReactJS App integrating WIRIS MathType in a Froala rich text editor.",
   "dependencies": {
     "@wiris/mathtype-froala3": "^7.27.0",
-    "react-froala-wysiwyg": "^3.2.7"
+    "react-froala-wysiwyg": "^4.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",

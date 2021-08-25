@@ -15,24 +15,24 @@ We create and curate working code examples in order to test, validate, and showc
 There are demos for integrations on React, Angular, and plain HTML5.
 The demos exist for different versions of CKEditor, Froala, and TinyMCE, as well as a generic integration that shows how to integrate MathType on an editable `<div>` element.
 
-- HTML5
-    - [CKEditor 4](../../demos/html5/ckeditor4)
-    - [CKEditor 5](../../demos/html5/ckeditor5)
-    - [Froala 2](../../demos/html5/froala2)
-    - [Froala 3](../../demos/html5/froala3)
-    - [TinyMCE 4](../../demos/html5/tinymce4)
-    - [TinyMCE 5](../../demos/html5/tinymce5)
-    - [Generic](../../demos/html5/generic)
-- Angular
-    - [CKEditor 5](../../demos/angular/ckeditor5/README.md)
-    - [Froala 3](../../demos/angular/froala3/README.md)
-    - [TinyMCE 5](../../demos/angular/tinymce5/README.md)
-    - [Generic](../../demos/angular/generic/README.md)
-- React
-    - [CKEditor 5](../../demos/react/ckeditor5/README.md)
-    - [Froala 3](../../demos/react/froala3/README.md)
-    - [TinyMCE 5](../../demos/react/tinymce5/README.md)
-    - [Generic](../../demos/react/generic/README.md)
+| Framework                                                                                    | Editor and Version                                                                                                                                                              | Path                                                 |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| HTML5 | CKEditor V4 | [ckeditor4](../../demos/html5/ckeditor4) |
+| HTML5 | CKEditor V5 | [ckeditor5](../../demos/html5/ckeditor5) |
+| HTML5 | Froala V2 | [froala2](../../demos/html5/froala2) |
+| HTML5 | Froala V3 & V4 | [froala](../../demos/html5/froala) |
+| HTML5 | Generic integration | [generic](../../demos/html5/generic) |
+| HTML5 | TinyMCE V4 | [tinymce4](../../demos/html5/tinymce4) |
+| HTML5 | TinyMCE V5 | [tinymce5](../../demos/html5/tinymce5) |
+| Angular | CKEditor V5 | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
+| Angular | Froala V3 & V4 | [froala](../../demos/angular/froala/README.md) |
+| Angular | Generic integration | [generic](../../demos/angular/generic/README.md) |
+| Angular | TinyMCE V5 | [tinymce5](../../demos/angular/tinymce5/README.md) |
+| React | CKEditor V5 | [ckeditor5](../../demos/react/ckeditor5/README.md) |
+| React | Froala V3 & V4 | [froala](../../demos/react/froala/README.md) |
+| React | Generic integration | [generic](../../demos/react/generic/README.md) |
+| React | TinyMCE V5 | [tinymce5](../../demos/react/tinymce5/README.md) |
+
 
 ## Running a demo
 

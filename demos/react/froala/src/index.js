@@ -44,16 +44,28 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 
 // Initialize editor.
 // Define the toolbar & configuration options for the froala editor.
-const toolbar = ['undo', 'redo', 'bold', '|', 'wirisEditor', 'wirisChemistry', 'clear', 'insert'];
+const toolbar = ['undo', 'redo', 'bold', 'italic', '|', 'wirisEditor', 'wirisChemistry', 'insertImage'];
 const froalaConfig = {
   toolbarButtons: toolbar,
+  // Add [MW] buttons to the image editing popup Toolbar.
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
+  // Allow all the tags to understand the mathml
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
 
-  htmlAllowedEmptyTags: ['mprescripts'],
-  imageResize: false,
+  // List of tags that are not removed when they have no content inside
+  // so that formulas renderize propertly
+  htmlAllowedEmptyTags: ['mprescripts', 'none'],
+
+  // Froala editor language
+  // language: 'de',
+  // You could set a different language for MathType editor:
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'es' },
+  // },
+
+  // Execute on initialized editor.
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.

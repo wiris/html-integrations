@@ -25,13 +25,17 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 1. Run the following through the terminal
 
    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
-   Notice that you can specify the froala-editor and angular-froala-wysiwyg in case you don't want to use the latest version.
+   
+   Notice that you can specify the froala-editor and angular-froala-wysiwyg version,
+   as showed in the comment below, which lies between 3 and 4.
+   Yo can also not specify any version, in that case, the latest stable version will be installed.
 
    ```sh
    $ ng new $APP_NAME
    $ cd $APP_NAME
-   $ npm install --save angular-froala-wysiwyg
-   $ npm install --save froala-editor
+   $ npm install --save angular-froala-wysiwyg[@version]
+   $ npm install --save froala-editor[@version]
+   # for example npm install --save froala-editor@4.0.4
    $ npm install --save @wiris/mathtype-froala3
    ```
 
@@ -94,7 +98,7 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
    })
    export class AppComponent {
      // Set App Title.
-     title = "Angular froala3 demo";
+     title = "Angular froala demo";
 
      // Initialize the editor content.
      public content: string =
@@ -102,29 +106,39 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 
      // Set options for the editor.
      public options: Object = {
-       // The editor's content will be placed in an iframe and isolated from the rest of the page.
-       iframe: true,
-       charCounterCount: false,
-       toolbarInline: false,
-       toolbarButtons: [
-         "bold",
-         "italic",
-         "undo",
-         "redo",
-         "wirisEditor",
-         "wirisChemistry",
-       ],
-       htmlAllowedTags: [".*"],
-       htmlAllowedAttrs: [".*"],
-
-       // The edited content will have the external CSS properties converted to inline style.
-       useClasses: false,
-
-       // List of tags that are not removed when they have no content inside.
-       htmlAllowedEmptyTags: ["mprescripts"],
-
-       // Disables image resize
-       imageResize: false,
+      // Define the toolbar options for the froala editor.
+      toolbarButtons: [
+        'undo',
+        'redo',
+        'bold',
+        'italic',
+        '|',
+        'wirisEditor',
+        'wirisChemistry',
+        'insertImage'
+      ],
+      // Add [MW] uttons to the image editing popup Toolbar.
+      imageEditButtons: [
+        'wirisEditor',
+        'wirisChemistry',
+        'imageDisplay',
+        'imageAlign',
+        'imageInfo',
+        'imageRemove'
+      ],
+      // Allow all the tags to understand the mathml
+      htmlAllowedTags:  ['.*'],
+      htmlAllowedAttrs: ['.*'],
+      // List of tags that are not removed when they have no content inside
+      // so that formulas renderize propertly
+      htmlAllowedEmptyTags: ['mprescripts', 'none'],
+      // In case you are using a different Froala editor language than default,
+      // language: 'es',
+      // You can choose the language for the MathType editor, too:
+      // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
+      // mathTypeParameters: {
+      //   editorParameters: { language: 'es' },
+      // },
      };
    }
    ```

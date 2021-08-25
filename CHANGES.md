@@ -50,6 +50,23 @@ Last release of this project is was 22nd of July 2021.
     - Improve @wiris/mathtype-tinymce5 README information.
 
   See: https://github.com/wiris/html-integrations/issues/134#issuecomment-90544864
-- Telemetry: inform the right version of Froala on environment group.
-- Create html5 + Froala V4 demo.
-- Improve MathType Froala packages README.
+
+- Add support to the new major version of Froala, the number 4:
+
+  - Telemetry level
+    - Inform the right version of Froala on environment group.
+  - Demo level
+    - Rename **all** Froala3 demos to Froala
+    - Adapt the HTML5 + Froala demo to the lastest Froala version (4).
+    - Adapt the React + Froala demo to the lastest Froala version (4).
+    - Adapt the Angular + Froala demo to the lastest Froala version (4).
+    - Bump 'demo-html5-froala' to 1.0.4.
+    - Bump 'demo-angular-froala' to 1.0.4.
+    - Bump 'demo-react-froala' to 1.0.3.
+  - Package level
+    - Modify the MathType for Froala 3 plugin to support the latest Froala version (4).
+  - README level
+    - Improve MathType Froala packages and demos README.
+    - Modify project README in order to take into account the new changes on the Froala plugin and demos.
+    - Created ADR draft 004.
+    - Modify the docs/demos README in order to take into account the project improvements on Froala4.
