@@ -35,4 +35,18 @@ Last release of this project is was 22nd of July 2021.
 - Updated the CKEditor 5 HTML5 demo documentation to use local packages.
 
 ## [Unreleased]
-- ...
+
+- Fix overlapping issue on TinyMCE V5.
+
+  This issue has been applied at demo level. So there was no need
+  to update the TinyMCE integration's source code.
+
+  - Improve all TinyMCE V5 demos to avoid overlapping issues.
+    - Bump 'demo-html5-tinymce4' to 1.0.3.
+    - Bump 'demo-html5-tinymce5' to 1.0.3.
+    - Bump 'demo-angular-tinymce5' to 1.0.4.
+    - Bump 'demo-react-tinymce5' to 1.0.2.
+    - Bump TinyMCE editor to 5.8.2 on all TinyMCE V5 demos.
+    - Improve @wiris/mathtype-tinymce5 README information.
+
+  See: https://github.com/wiris/html-integrations/issues/134#issuecomment-90544864

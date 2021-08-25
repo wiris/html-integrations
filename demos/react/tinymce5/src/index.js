@@ -40,24 +40,27 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 
 // Define the toolbar & configuration options for the TinyMCE editor.
 const options = {
-  height: 500,
-  menubar: false,
-
   // Add wiris plugin
   external_plugins: {
     tiny_mce_wiris: `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
   },
-  plugins: [
-    'advlist autolink lists link image charmap print preview anchor',
-    'searchreplace visualblocks code fullscreen',
-    'insertdatetime media table paste code help wordcount ',
-  ],
-  toolbar: [
-    ' bold italic |'
-       + 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry ',
-  ],
+  // Necessary
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],
+
+  // We recommend to set 'draggable_modal' to true to avoid overlapping issues
+  // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
+  // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
+  draggable_modal: true,
+  plugins: ['image', 'media'],
+
+  toolbar: 'undo redo | styleselect | bold italic | image media | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+
+  // You could set a different language for MathType editor:
+  // language: 'fr_FR',
+  // mathTypeParameters: {
+  //   editorParameters: { language: 'fr' },
+  // },
 
   // Handle events.
   setup(editor) {
