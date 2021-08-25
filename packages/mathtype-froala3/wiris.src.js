@@ -26,23 +26,23 @@ export const currentInstance = null;
  */
 export class FroalaIntegration extends IntegrationModel {
   /**
-     * IntegrationModel constructor.
-     * @param {IntegrationModelProperties} froalaModelProperties
-     */
+   * IntegrationModel constructor.
+   * @param {IntegrationModelProperties} froalaModelProperties
+   */
   constructor(froalaModelProperties) {
     super(froalaModelProperties);
 
     /**
-         * Mode when Froala is instantiated on an image.
-         * @type {Boolean}
-         */
+     * Mode when Froala is instantiated on an image.
+     * @type {Boolean}
+     */
     this.initOnImageMode = froalaModelProperties.initOnImageMode;
   }
 
   /**
-     * Returns the language of the current Froala editor instance.
-     * When no language is set, ckeditor sets the toolbar to english.
-     */
+   * Returns the language of the current Froala editor instance.
+   * When no language is set, Froala sets the toolbar to english.
+   */
   getLanguage() {
     try {
       return this.editorParameters.language;
@@ -57,19 +57,22 @@ export class FroalaIntegration extends IntegrationModel {
   init() {
     // On focus in a Froala editor instance, is needed to update the
     // Current FroalaIntegration instance.
-    this.editorObject.events.on('focus', function (editorObject) { // eslint-disable-line no-unused-vars
+    this.editorObject.events.on('focus', function () {
       WirisPlugin.currentInstance = WirisPlugin.instances[this.editorObject.id];
     }.bind(this, this.editorObject));
 
-    // Update editor parameters.
-    // The integration could contain an object with editor parameters. These parameters
-    // have preference over the backend parameters so we need to update them.
+    /**
+     * Update editor parameters.
+     * The integration could contain an object with editor parameters.
+     * These parameters have preference over the backend parameters so we need to update them.
+     */
     const editor = this.editorObject;
     if ('wiriseditorparameters' in editor.opts) {
       Configuration.update('editorParameters', editor.opts.wiriseditorparameters);
     }
 
-    // As always. When the data of Froala is retrieved we need to Parse the content.
+    // When the data of Froala is retrieved we need to Parse the content.
+    // So we modify the Froala event 'html.get' to make it parse the content, whenever you retrieve it.
     editor.events.on('html.get', (e, editor, html) => Parser.endParse(e)); // eslint-disable-line no-unused-vars
 
     // Adding parse MathML to images after command event to prevent
@@ -90,12 +93,11 @@ export class FroalaIntegration extends IntegrationModel {
   }
 
   /**
-     * Encodes html entities in mathml properties ocurrences inside 'text'.
-     * @param {String} text - text that can contain mathml elements or not.
-     * @returns {String} - 'text' with all mathml properties html entity encoded.
-     */
-  // eslint-disable-next-line class-methods-use-this
-  parseMathMLProperties(text) {
+   * Encodes html entities in mathml properties ocurrences inside 'text'.
+   * @param {String} text - text that can contain mathml elements or not.
+   * @returns {String} - 'text' with all mathml properties html entity encoded.
+   */
+  parseMathMLProperties(text) { // eslint-disable-line class-methods-use-this
     const mathTagStart = `${Constants.xmlCharacters.tagOpener}math`;
     const mathTagEnd = `${Constants.xmlCharacters.tagOpener}/math${Constants.xmlCharacters.tagCloser}`;
 
@@ -121,10 +123,9 @@ export class FroalaIntegration extends IntegrationModel {
   /** @inheritdoc */
   callbackFunction() {
     super.callbackFunction();
-    // Parse content
 
-    // Events. Froala malforms data-uri in images. We need to
-    // rewrite them.
+    // Froala malforms data-uri in images.
+    // We need to rewrite them.
     if (Configuration.get('imageFormat') === 'svg') {
       this.editorObject.events.on('html.set', function () {
         const images = this.el.getElementsByClassName('Wirisformula');
@@ -146,9 +147,9 @@ export class FroalaIntegration extends IntegrationModel {
   }
 
   /**
-     * @inheritdoc
-     * @param {HTMLElement} element - DOM object target.
-     */
+   * @inheritdoc
+   * @param {HTMLElement} element - DOM object target.
+   */
   doubleClickHandler(element) {
     // If the editor is in readOnly mode, don't add the handler
     if (this.editorObject.edit.isDisabled()) {
@@ -182,15 +183,14 @@ export class FroalaIntegration extends IntegrationModel {
   }
 
   /**
-     * FIXME: This method is a temporal solution while Froala is working to fix
-     * the bug that cause a continuous focus when is used the plugin 'Init On Image'.
-     * Froala's ticket is Ticket #5322.
-     * Simulates a click in 'element'. Only executes additional code when
-     * initOnImageMode is enabled.
-     * @param {HTMLElement} element - DOM object target.
-     */
-  // eslint-disable-next-line class-methods-use-this
-  simulateClick(element) {
+   * FIXME: This method is a temporal solution while Froala is working to fix
+   * the bug that cause a continuous focus when is used the plugin 'Init On Image'.
+   * Froala's ticket is Ticket #5322.
+   * Simulates a click in 'element'. Only executes additional code when
+   * initOnImageMode is enabled.
+   * @param {HTMLElement} element - DOM object target.
+   */
+  simulateClick(element) { // eslint-disable-line class-methods-use-this
     const dispatchMouseEvent = function (target) {
       const e = document.createEvent('MouseEvents');
       e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1)); // eslint-disable-line prefer-spread, prefer-rest-params
@@ -203,8 +203,8 @@ export class FroalaIntegration extends IntegrationModel {
   }
 
   /**
-     * Hides the active Froala popups.
-     */
+   * Hides the active Froala popups.
+   */
   hidePopups() {
     this.editorObject.popups.hideAll();
   }
@@ -216,6 +216,7 @@ export class FroalaIntegration extends IntegrationModel {
     // has to be updated.
     this.editorObject.events.trigger('contentChanged');
     const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+
     // Delete temporal image when inserting a formula
     this.core.editionProperties.temporalImage = null;
     this.editorObject.placeholder.refresh();
@@ -225,10 +226,10 @@ export class FroalaIntegration extends IntegrationModel {
 
 (function (FroalaEditor) {
   /**
-     * This method creates an instance of FroalaIntegration object extending necessary methods
-     * to integrate the plugin into Froala editor.
-     * @param {Object} editor - Froala editor object.
-     */
+   * This method creates an instance of FroalaIntegration object extending necessary methods
+   * to integrate the plugin into Froala editor.
+   * @param {Object} editor - Froala editor object.
+   */
   function createIntegrationModel(editor) {
     // Select target: choose between iframe, div or image.
     let target;
@@ -290,7 +291,7 @@ export class FroalaIntegration extends IntegrationModel {
   FroalaEditor.DefineIconTemplate('wirisplugin', '<i class="icon icon-[NAME]"></i>');
   FroalaEditor.DefineIcon('wirisEditor', { NAME: 'mathtype-editor', template: 'wirisplugin' });
 
-  // Command for MathType.
+  // Register the command for MathType formulas.
   FroalaEditor.RegisterCommand('wirisEditor', {
     title: 'Insert a math equation - MathType',
     focus: true,
@@ -338,7 +339,7 @@ export class FroalaIntegration extends IntegrationModel {
   // Template for ChemType.
   FroalaEditor.DefineIcon('wirisChemistry', { NAME: 'mathtype-chemistry', template: 'wirisplugin' });
 
-  // Command for ChemType.
+  // Register the command for ChemType formulas.
   FroalaEditor.RegisterCommand('wirisChemistry', {
     title: 'Insert a chemistry formula - ChemType',
     focus: true,

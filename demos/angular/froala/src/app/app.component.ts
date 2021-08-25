@@ -28,31 +28,35 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 export class AppComponent {
 
   // Set App Title.
-  title = 'Angular froala demo';
+  title = 'Angular Froala demo';
 
   // Initializate the editor content.
   public content: string = editorContent;
 
   // Set options for the editor.
   public options: Object = {
-    // The editor's content will be placed in an iframe and isolated from the rest of the page.
-    iframe: true,
-    // language: 'en',
-    charCounterCount: false,
-		toolbarInline: false,
-		toolbarButtons: ['bold', 'italic', 'undo', 'redo', 'wirisEditor', 'wirisChemistry'],
+    // Define the toolbar options for the froala editor.
+    toolbarButtons: ['undo', 'redo', 'bold', 'italic', '|', 'wirisEditor', 'wirisChemistry', 'insertImage'],
+
+    // Add [MW] buttons to the image editing popup Toolbar.
+    imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
+
+    // Allow all the tags to understand the mathml
 		htmlAllowedTags:  ['.*'],
     htmlAllowedAttrs: ['.*'],
 
-    // The edited content will have the external CSS properties converted to inline style.
-    useClasses: false,
+    // List of tags that are not removed when they have no content inside
+    // so that formulas renderize propertly
+    htmlAllowedEmptyTags: ['mprescripts', 'none'],
 
-    // List of tags that are not removed when they have no content inside.
-    htmlAllowedEmptyTags: ['mprescripts'],
+    // Froala editor language
+    // language: 'de',
+    // You could set a different language for MathType editor:
+    // mathTypeParameters: {
+    //   editorParameters: { language: 'es' },
+    // },
 
-    // Disables image resize
-    imageResize : false,
-
+    // Execute on initialized editor.
     events: {
       initialized() {
         // Get and set the editor and wiris versions in this order.

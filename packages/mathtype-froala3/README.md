@@ -1,6 +1,6 @@
 # MathType for Froala Editor
 
-Type and handwrite mathematical notation with MathType in the [**Froala editor**] for **versions 3 and 4**.
+Type and handwrite mathematical notation with MathType in the **Froala editor** for **versions 3 and 4**.
 
 Easily include quality math equations in your documents and digital content.
 
@@ -16,43 +16,39 @@ Easily include quality math equations in your documents and digital content.
 
 ## Installation
 
-1. Install the npm module:
+1. Install the MathType for Froala npm module:
 
-   ```
+   ```sh
+   # This plugin works with the Froala V4 and V3:
+   # froala-editor@3.x.x to froala-editor@4.x.x
    npm install @wiris/mathtype-froala3
    ```
 2. Load the module into your project:
 
-   ```js
+   ```html
    <script src="node_modules/@wiris/mathtype-froala3/wiris.js"></script>
    ```
-3. Update Froala configuration:
-   * Add MathType and ChemType buttons to the toolbar and the image menu:
+3. Update Froala configuration options:
 
-     ```js
-     const FroalaEditor = new FroalaEditor('#placementid', {
-       toolbar = ['wirisEditor', 'wirisChemistry']
-       toolbarButtons: ['wirisEditor', 'wirisChemistry'],
-       toolbarButtonsMD: ['wirisEditor', 'wirisChemistry'],
-       toolbarButtonsSM: ['wirisEditor', 'wirisChemistry'],
-       toolbarButtonsXS: ['wirisEditor', 'wirisChemistry'],
-       imageEditButtons: ['wirisEditor', 'wirisChemistry'],
-     });
-     ```
-   * Allow all tags, in order to allow MathML:
-
-     ```js
-     const FroalaEditor = new FroalaEditor('#placementid', {
-       htmlAllowedTags:  ['.*'],
-       htmlAllowedAttrs: ['.*'],
-     });
-     ```
-   * Disable `useClasses`:
-
-     ```js
-     const FroalaEditor = new FroalaEditor('#placementid', {
-       useClasses: false,
-     });
+     ```js  
+         // From Froala 'Get started' section https://froala.com/wysiwyg-editor/docs/overview/
+         new FroalaEditor('.selector', {
+            // Add MathType and ChemType buttons to the toolbar and the image menu:
+            toolbar = ['wirisEditor', 'wirisChemistry'], 
+            imageEditButtons: ['wirisEditor', 'wirisChemistry'],
+            // Allow all tags, in order to allow MathML:
+            htmlAllowedTags:  ['.*'],
+            htmlAllowedAttrs: ['.*'],
+            // Allow empty tags on these next elements for proper formula rendering:
+            htmlAllowedEmptyTags: ['mprescripts', 'none'],
+            // In case you are using a different Froala editor language than default,
+            // language: 'es',
+            // You can choose the language for the MathType editor, too:
+            // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
+            // mathTypeParameters: {
+            //   editorParameters: { language: 'es' },
+            // },
+         }
      ```
 
      Notice the example assumes this directory structure:
@@ -87,6 +83,7 @@ To find out more information about MathType, please go to the following document
 * [Introductory tutorials](http://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials)
 * [Service customization](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table)
 * [Testing](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test)
+* [Froala integration documentation](https://froala.com/wysiwyg-editor/docs/migrate-from-v2/)
 
 ## Privacy policy
 

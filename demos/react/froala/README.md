@@ -1,6 +1,6 @@
 # Froala integration in ReactJS
 
-A simple ReactJS App integrating WIRIS MathType on a Froala 3 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
+A simple ReactJS App integrating WIRIS MathType on a Froala and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
 
 ## Requirements
 
@@ -27,11 +27,16 @@ You will also see any lint errors in the console.
 1. Run the following through the terminal
 
     Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+    
+    Notice that you can specify the react-froala-editor version,
+    as showed in the comment below, which lies between 3 and 4.
+    Yo can also not specify any version, in that case, the latest stable version will be installed.
 
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm install react-froala-wysiwyg --save
+    $ npm install react-froala-wysiwyg[@version] --save
+    # for example npm install react-froala-editor@4.0.4 --save
     $ npm install @wiris/mathtype-froala3 --save
     $ npm install jquery --save
 
@@ -69,19 +74,28 @@ You will also see any lint errors in the console.
     // Load generated scripts.
     document.head.appendChild(jsDemoImagesTransform);
 
-    // Define the toolbar content and the editor configuration.
+    // Define the toolbar & configuration options for the froala editor.
     const toolbar = ['wirisEditor', 'wirisChemistry'];
     const froalaConfig = {
-        imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageRemove'],
         toolbarButtons: toolbar,
+        // Add [MW] uttons to the image editing popup Toolbar.
+        imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
+        // Allow all the tags to understand the mathml
         htmlAllowedTags: ['.*'],
         htmlAllowedAttrs: ['.*'],
-        htmlAllowedEmptyTags: ['mprescripts'],
-        imageResize : false,
+        // List of tags that are not removed when they have no content inside
+        // so that formulas renderize propertly
+        htmlAllowedEmptyTags: ['mprescripts', 'none'],
+        // In case you are using a different Froala editor language than default,
+        // language: 'es',
+        // You can choose the language for the MathType editor, too:
+        // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
+        // mathTypeParameters: {
+        //   editorParameters: { language: 'es' },
+        // },
+        // Execute on initialized editor.
         events: {
             initialized() {
-            // Get and set the editor and wiris versions in this order.
-            Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, pluginVersion);        //eslint-disable-line
             // Since Froala 3.1.1 version, initialization events need to be called manually for the React component.
             // Parse the initial content set on the editor through html to render it
             const contentRendered = WirisPlugin.Parser.initParse(this.html.get(true));
@@ -91,7 +105,7 @@ You will also see any lint errors in the console.
     };
 
     // Set the initial content.
-    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
+    const content = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>'
 
 
     ReactDOM.render(<FroalaEditorComponent tag='div' config={ froalaConfig } model={ content } />, document.getElementById('root'));
