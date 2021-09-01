@@ -28,15 +28,18 @@ You will also see any lint errors in the console.
 
     Notice that **$APP_NAME** needs to be replaced by the name that you choose.
     
-    Notice that you can specify the react-froala-editor version,
-    as showed in the comment below, which lies between 3 and 4.
-    Yo can also not specify any version, in that case, the latest stable version will be installed.
+   > **Note:** you can set the `froala-editor` and `angular-froala-wysiwyg` versions,
+   as showed in the comment below, which lies between 3 and 4.
+   Yo can also not specify any version, in that case, the latest stable version will be installed.
 
     ```sh
     $ create-react-app $APP_NAME
     $ cd $APP_NAME
-    $ npm install react-froala-wysiwyg[@version] --save
-    # for example npm install react-froala-editor@4.0.4 --save
+    $ npm install react-froala-wysiwyg --save
+    # npm install react-froala-wysiwyg@3.2.7 --save
+    # Supports Froala V4 and V3
+    $ npm install --save @wiris/mathtype-froala3
+   
     $ npm install @wiris/mathtype-froala3 --save
     $ npm install jquery --save
 
@@ -143,4 +146,4 @@ To get more information about wiris MathType you can check on the [official docu
 
 ## License
 
-Copyright © 2010-2020 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).
+Copyright © 2010-2021 [WIRIS](http://www.wiris.com). Released under the [MIT License](../../../LICENSE).

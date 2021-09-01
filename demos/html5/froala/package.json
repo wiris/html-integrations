@@ -10,7 +10,7 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala3": "^7.26.0",
+    "@wiris/mathtype-froala3": "^7.27.0",
     "@wiris/mathtype-html-integration-devkit": "*",
     "froala-editor": "^4.0.4",
     "jquery": "^3.6.0"

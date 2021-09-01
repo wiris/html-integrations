@@ -1,4 +1,5 @@
 // Load styles.
+// eslint-disable-next-line import/no-unresolved
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';       //eslint-disable-line
 

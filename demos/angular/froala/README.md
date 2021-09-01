@@ -18,7 +18,7 @@ $ npm start
 
 Runs the app in the development mode.
 
-Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
+Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
 
 ## How to add MathType to Froala from scratch
 
@@ -26,16 +26,17 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 
    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
    
-   Notice that you can specify the froala-editor and angular-froala-wysiwyg version,
+   > **Note:** you can set the `froala-editor` and `angular-froala-wysiwyg` versions,
    as showed in the comment below, which lies between 3 and 4.
    Yo can also not specify any version, in that case, the latest stable version will be installed.
 
    ```sh
    $ ng new $APP_NAME
    $ cd $APP_NAME
-   $ npm install --save angular-froala-wysiwyg[@version]
-   $ npm install --save froala-editor[@version]
-   # for example npm install --save froala-editor@4.0.4
+   $ npm install --save angular-froala-wysiwyg
+   $ npm install --save froala-editor
+   # npm install --save froala-editor@3.2.7
+   # Supports Froala V4 and V3
    $ npm install --save @wiris/mathtype-froala3
    ```
 
@@ -148,7 +149,7 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 5. Open `src/app/app.component.html` and replace all with:
 
    ```html
-   <h1>Angular and Froala 3 demo</h1>
+   <h1>Angular and Froala demo</h1>
    <!-- Pass options and content to the component. -->
    <div id="editor" [froalaEditor]="options" [(froalaModel)]="content"></div>
    ```
