@@ -1,10 +1,8 @@
 # MathType for Froala Editor
 
-Type and handwrite mathematical notation with MathType in the **Froala editor** for **versions 3 and 4**.
+Type and handwrite mathematical notation with MathType in the **Froala editor**. This package is compatible with Froala editor versions 3 and 4.
 
 Easily include quality math equations in your documents and digital content.
-
-> If you're using Froala Version 2, use [@wiris/mathtype-froala](https://www.npmjs.com/package/@wiris/mathtype-froala) package instead. 
 
 ## Table of Contents
 
@@ -34,7 +32,7 @@ Easily include quality math equations in your documents and digital content.
          // From Froala 'Get started' section https://froala.com/wysiwyg-editor/docs/overview/
          new FroalaEditor('.selector', {
             // Add MathType and ChemType buttons to the toolbar and the image menu:
-            toolbar = ['wirisEditor', 'wirisChemistry'], 
+            toolbar: ['wirisEditor', 'wirisChemistry'], 
             imageEditButtons: ['wirisEditor', 'wirisChemistry'],
             // Allow all tags, in order to allow MathML:
             htmlAllowedTags:  ['.*'],
