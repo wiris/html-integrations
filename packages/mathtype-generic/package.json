@@ -34,7 +34,7 @@
     "@wiris/mathtype-html-integration-devkit": "1.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.4",
