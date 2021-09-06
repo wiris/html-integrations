@@ -3377,7 +3377,7 @@ cssstyle@^2.3.0:
   dependencies:
     cssom "~0.3.6"
 
-cypress-fail-fast@^3.0.0:
+cypress-fail-fast@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/cypress-fail-fast/-/cypress-fail-fast-3.1.1.tgz#7fd7e76278cbddb1ecea7ea8659d133bbaff3018"
   integrity sha512-UKW4IUZG85RoETEzx2uH0dD+j6QVUHkyWRwop8Uzug2g4K/IEid0SeS/kgua9pCxeKe2IRHBzcT0FnOBfhRBNA==
