@@ -160,13 +160,11 @@ export class FroalaIntegration extends IntegrationModel {
     // change between MT and CT.
     // Will be deleted when inserting the formula or canceling it
     this.core.editionProperties.temporalImage = element;
-    this.simulateClick(document);
     super.doubleClickHandler(element);
   }
 
   /** @inheritdoc */
   openExistingFormulaEditor() {
-    this.simulateClick(document);
     super.openExistingFormulaEditor();
   }
 
@@ -177,29 +175,8 @@ export class FroalaIntegration extends IntegrationModel {
     if (image !== null && typeof image !== 'undefined' && image.classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
       this.openExistingFormulaEditor();
     } else {
-      this.simulateClick(document);
       super.openNewFormulaEditor();
     }
-  }
-
-  /**
-   * FIXME: This method is a temporal solution while Froala is working to fix
-   * the bug that cause a continuous focus when is used the plugin 'Init On Image'.
-   * Froala's ticket is Ticket #5322.
-   * Simulates a click in 'element'. Only executes additional code when
-   * initOnImageMode is enabled.
-   * @param {HTMLElement} element - DOM object target.
-   */
-  simulateClick(element) { // eslint-disable-line class-methods-use-this
-    const dispatchMouseEvent = function (target) {
-      const e = document.createEvent('MouseEvents');
-      e.initEvent.apply(e, Array.prototype.slice.call(arguments, 1)); // eslint-disable-line prefer-spread, prefer-rest-params
-      target.dispatchEvent(e);
-    };
-    dispatchMouseEvent(element, 'mouseover', true, true);
-    dispatchMouseEvent(element, 'mousedown', true, true);
-    dispatchMouseEvent(element, 'click', true, true);
-    dispatchMouseEvent(element, 'mouseup', true, true);
   }
 
   /**
@@ -308,7 +285,6 @@ export class FroalaIntegration extends IntegrationModel {
       } else {
         currentFroalaIntegrationInstance.openNewFormulaEditor();
       }
-      currentFroalaIntegrationInstance.simulateClick(document);
     },
   });
 
@@ -356,7 +332,6 @@ export class FroalaIntegration extends IntegrationModel {
       } else {
         currentFroalaIntegrationInstance.openNewFormulaEditor();
       }
-      currentFroalaIntegrationInstance.simulateClick(document);
     },
   });
 
