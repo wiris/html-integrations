@@ -28,7 +28,7 @@ window.editor = null;
 ClassicEditor
   .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
-    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
+    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment', 'undo', 'redo'],
     // language: 'de',
     // mathTypeParameters: {
     //   editorParameters: { language: 'es' }, // MathType config, including language
