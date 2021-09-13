@@ -11,30 +11,30 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@tinymce/tinymce-angular": "^4.2.2",
+    "@tinymce/tinymce-angular": "^4.2.4",
     "@wiris/mathtype-html-integration-devkit": "*",
     "@wiris/mathtype-tinymce5": "^7.27.0",
-    "tinymce": "^5.8.2"
+    "tinymce": "^5.9.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.10",
-    "@angular/animations": "^11.2.11",
-    "@angular/cli": "^11.2.10",
-    "@angular/common": "^11.2.11",
-    "@angular/compiler": "^11.2.11",
-    "@angular/compiler-cli": "^11.2.11",
-    "@angular/core": "^11.2.11",
-    "@angular/forms": "^11.2.11",
-    "@angular/platform-browser": "^11.2.11",
-    "@angular/platform-browser-dynamic": "^11.2.11",
+    "@angular-devkit/build-angular": "^12.2.5",
+    "@angular/animations": "^12.2.0",
+    "@angular/cli": "^12.2.5",
+    "@angular/common": "^12.2.0",
+    "@angular/compiler": "^12.2.0",
+    "@angular/compiler-cli": "^12.2.0",
+    "@angular/core": "^12.2.0",
+    "@angular/forms": "^12.2.0",
+    "@angular/platform-browser": "^12.2.0",
+    "@angular/platform-browser-dynamic": "^12.2.0",
     "codelyzer": "^6.0.0",
     "lerna": "^4.0.0",
     "resources": "file:../../../resources",
     "rxjs": "^6.6.0",
     "ts-node": "^8.3.0",
-    "tslib": "^2.0.0",
+    "tslib": "^2.0.3",
     "tslint": "^6.1.0",
-    "typescript": ">=4.0.0 < 4.2.0",
-    "zone.js": "^0.11.3"
+    "typescript": "^4.3.5",
+    "zone.js": "^0.11.4"
   }
 }

@@ -73,10 +73,10 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
 
    ```json
    "styles": [
-       "styles.css",
-       "../node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-       "../node_modules/froala-editor/css/froala_style.min.css"
-   ]
+      "src/styles.css",
+      "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+      "./node_modules/froala-editor/css/froala_style.min.css"
+    ]
    ```
 
 4. Open `src/app/app.component.ts` and replace all with:
