@@ -6,7 +6,7 @@ import * as ClassicEditor from '../ckeditor';
 import * as Generic from 'resources/demos/angular-imports';
 
 // Load wiris plugin version.
-import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
+import packageInfo from '@wiris/mathtype-ckeditor5/package.json';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor';
@@ -52,4 +52,4 @@ export class AppComponent implements OnInit{
 }
 
 // Get and set the editor and wiris versions in this order.
-Generic.setEditorAndWirisVersion('5.0.0', pluginVersion);
+Generic.setEditorAndWirisVersion('5.0.0', packageInfo.version);
