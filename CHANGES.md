@@ -70,3 +70,10 @@ Last release of this project is was 22nd of July 2021.
     - Modify project README in order to take into account the new changes on the Froala plugin and demos.
     - Created ADR draft 004.
     - Modify the docs/demos README in order to take into account the project improvements on Froala4.
+
+- Update Angular version on angular demos
+  - Updated angular version to the 12 on CKEditor5, Froala and TinyMCE5 demos.
+  - Updated angular + Froala demo README.
+  - Bump 'demo-angular-tinymce5' to 1.0.5.
+  - Bump 'demo-angular-ckeditor5' to 1.0.4.
+  - Bump 'demo-angular-froala' to 1.0.5.
