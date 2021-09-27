@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
     "babel-eslint": "^10.1.0",
     "cypress": "^8.3.1",
     "cypress-fail-fast": "^3.0.0",
