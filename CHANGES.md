@@ -71,6 +71,8 @@ Last release of this project is was 22nd of July 2021.
     - Created ADR draft 004.
     - Modify the docs/demos README in order to take into account the project improvements on Froala4.
 
+- Solved console error when user clicks mathtype button (TypeWeeoe: illegal invocation)
+
 - Update Angular version on angular demos
   - Updated angular version to the 12 on CKEditor5, Froala and TinyMCE5 demos.
   - Updated angular + Froala demo README.
