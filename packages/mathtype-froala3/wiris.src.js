@@ -5,7 +5,6 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Constants from '@wiris/mathtype-html-integration-devkit/src/constants';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
-import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 import packageInfo from './package.json';
 
@@ -271,7 +270,7 @@ export class FroalaIntegration extends IntegrationModel {
 
   // Register the command for MathType formulas.
   FroalaEditor.RegisterCommand('wirisEditor', {
-    title: StringManager.get('insert_math'),
+    title: 'Insert a math equation - MathType',
     focus: true,
     undo: true,
     refreshAfterCallback: true,
@@ -318,7 +317,7 @@ export class FroalaIntegration extends IntegrationModel {
 
   // Register the command for ChemType formulas.
   FroalaEditor.RegisterCommand('wirisChemistry', {
-    title: StringManager.get('insert_chem'),
+    title: 'Insert a chemistry formula - ChemType',
     focus: true,
     undo: true,
     refreshAfterCallback: true,
