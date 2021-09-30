@@ -18,7 +18,6 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
-import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 // Local imports
 import { MathTypeCommand, ChemTypeCommand } from './commands';
@@ -134,7 +133,7 @@ export default class MathType extends Plugin {
       view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
 
       view.set({
-        label: StringManager.get('insert_math'),
+        label: 'Insert a math equation - MathType',
         icon: mathIcon,
         tooltip: true,
       });
@@ -157,7 +156,7 @@ export default class MathType extends Plugin {
       view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
 
       view.set({
-        label: StringManager.get('insert_chem'),
+        label: 'Insert a chemistry formula - ChemType',
         icon: chemIcon,
         tooltip: true,
       });
