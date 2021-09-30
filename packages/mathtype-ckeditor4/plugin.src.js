@@ -2,7 +2,6 @@ import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integr
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
-import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 import packageInfo from './package.json';
 
@@ -267,7 +266,7 @@ export class CKEditor4Integration extends IntegrationModel {
     init(editor) {
       editor.ui.addButton('ckeditor_wiris_formulaEditor', {
 
-        label: StringManager.get('insert_math'),
+        label: 'Insert a math equation - MathType',
         command: 'ckeditor_wiris_openFormulaEditor',
         icon: `${CKEDITOR.plugins.getPath('ckeditor_wiris')}./icons/formula.png`,
 
@@ -275,7 +274,7 @@ export class CKEditor4Integration extends IntegrationModel {
 
       editor.ui.addButton('ckeditor_wiris_formulaEditorChemistry', {
 
-        label: StringManager.get('insert_chem'),
+        label: 'Insert a chemistry formula - ChemType',
         command: 'ckeditor_wiris_openFormulaEditorChemistry',
         icon: `${CKEDITOR.plugins.getPath('ckeditor_wiris')}./icons/chem.png`,
 
