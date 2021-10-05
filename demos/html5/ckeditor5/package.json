@@ -13,12 +13,13 @@
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": ">=27.1.0",
     "@ckeditor/ckeditor5-basic-styles": ">=27.1.0",
+    "@ckeditor/ckeditor5-build-classic": ">=29.2.0",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.9",
     "@ckeditor/ckeditor5-editor-classic": ">=27.1.0",
     "@ckeditor/ckeditor5-essentials": ">=27.1.0",
     "@ckeditor/ckeditor5-paragraph": ">=27.1.0",
     "@ckeditor/ckeditor5-theme-lark": ">=27.1.0",
-    "@wiris/mathtype-ckeditor5": "^7.26.1",
+    "@wiris/mathtype-ckeditor5": "file:../../../packages/mathtype-ckeditor5/wiris-mathtype-ckeditor5-7.27.1.tgz",
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {

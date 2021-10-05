@@ -50,6 +50,19 @@ Last release of this project is was 30th of September 2021.
 **Affected packages:**
 
 - @wiris/mathtype-ckeditor5
+## [Unreleased]
+
+- Fix toolbar wiris buttons static label issue on CKEditor5.
+
+  This issue was because the label on the Wiris toolbar buttons was static, so when the editor had a different language defined than english, the buttons were still in english
+
+  - Add a dynamic treatment on the label buttons string on:
+    - CKEditor5.
+    - CKEditor4.
+    - Froala 3 & 4.
+
+  Since CKEditor5 has a very unique and different integration than the other ones, this will be the only one where the language currently changes to the defined on the editor.  
+
 ## 7.27.1 - 2021-09-30
 
 ### Fix overlapping issue on TinyMCE V5.

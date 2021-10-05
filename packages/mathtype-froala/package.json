@@ -1,49 +1,39 @@
 {
-  "name": "@wiris/mathtype-froala",
-  "version": "7.27.1",
-  "description": "MathType Web for Froala editor V2",
-  "keywords": [
-    "chem",
-    "chemistry",
-    "chemtype",
-    "editor",
-    "equation",
-    "froala",
-    "latex",
-    "math",
-    "mathml",
-    "maths",
-    "mathtype",
-    "wiris"
-  ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala",
-  "homepage": "https://www.wiris.com/",
-  "bugs": {
-    "email": "support@wiris.com"
-  },
-  "license": "MIT",
-  "author": "WIRIS Team (http://www.wiris.com)",
-  "main": "wiris.js",
-  "scripts": {
-    "build": "webpack --mode production",
-    "build-dev": "webpack --mode development",
-    "clean": "shx rm -f wiris.js",
-    "compile": "node ../../scripts/services/compile wiris.src.js .",
-    "prepack": "npm install && npm run build"
-  },
-  "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.6.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^5.2.4",
-    "raw-loader": "^4.0.2",
-    "shx": "^0.3.3",
-    "style-loader": "^3.3.0",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.50.0",
-    "webpack-cli": "^4.8.0"
-  }
+	"name": "@wiris/mathtype-froala",
+	"version": "7.27.1",
+	"description": "MathType Web for Froala editor V2",
+	"keywords": [
+		"chem",
+		"chemistry",
+		"chemtype",
+		"editor",
+		"equation",
+		"froala",
+		"latex",
+		"math",
+		"mathml",
+		"maths",
+		"mathtype",
+		"wiris"
+	],
+	"repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala",
+	"homepage": "https://www.wiris.com/",
+	"bugs": {
+		"email": "support@wiris.com"
+	},
+	"license": "MIT",
+	"author": "WIRIS Team (http://www.wiris.com)",
+	"main": "wiris.js",
+	"devDependencies": {
+		"@babel/core": "^7.15.0",
+		"@babel/preset-env": "^7.15.0",
+		"babel-loader": "^8.2.2",
+		"css-loader": "^5.2.4",
+		"raw-loader": "^4.0.2",
+		"shx": "^0.3.3",
+		"style-loader": "^3.3.0",
+		"url-loader": "^4.1.1",
+		"webpack": "^5.50.0",
+		"webpack-cli": "^4.8.0"
+	}
 }

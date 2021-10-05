@@ -6,6 +6,7 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
+// import '@ckeditor/ckeditor5-build-classic/build/translations/de';
 
 // Load styles.
 import './static/style.css';
@@ -28,7 +29,7 @@ window.editor = null;
 ClassicEditor
   .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
-    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
+    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment', 'undo', 'redo'],
     // language: 'de',
     // mathTypeParameters: {
     //   editorParameters: { language: 'es' }, // MathType config, including language
