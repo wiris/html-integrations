@@ -279,12 +279,14 @@ export default class ModalDialog {
    * will be shown if hasChanges returns true.
    */
   cancelAction() {
-    // Set temporal image to null to avoid
     // opening a existing formula editor when trying to open a new one
-    IntegrationModel.setTemporalImageToNull();
     if (typeof this.contentManager.hasChanges === 'undefined') {
+      // Set temporal image to null to prevent loading
+      // an existent formula when strarting one from scrath. Make focus come back too.
+      IntegrationModel.setActionsOnCancelButtons();
       this.close();
     } else if (!this.contentManager.hasChanges()) {
+      IntegrationModel.setActionsOnCancelButtons();
       this.close();
     } else {
       this.showPopUpMessage();

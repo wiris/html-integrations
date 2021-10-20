@@ -17,6 +17,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.0",
+    "chokidar": "^3.5.2",
     "css-loader": "^3.0.0",
     "html-loader": "^1.0.0",
     "lerna": "^4.0.0",
