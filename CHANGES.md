@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+## UNRELEASED
+
+  - Solved error when inserting a modified formula and the cancel button was pressed (#445).
+  - Remove `jest` completely from the project.
+  - Fix the `demo-html5-generic` dependencies.
+  - Update third-party libraries to fix vulnerabilites.
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
