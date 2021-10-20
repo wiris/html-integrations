@@ -1,3 +1,5 @@
+import IntegrationModel from './integrationmodel';
+
 /**
 
  */
@@ -137,6 +139,9 @@ export default class PopUpMessage {
    * For example to close the overlaid element.
    */
   closeAction() {
+    // Set temporal image to null to prevent loading
+    // an existent formula when strarting one from scrath. Make focus come back too.
+    IntegrationModel.setActionsOnCancelButtons();
     this.cancelAction();
     if (typeof this.callbacks.closeCallback !== 'undefined') {
       this.callbacks.closeCallback();

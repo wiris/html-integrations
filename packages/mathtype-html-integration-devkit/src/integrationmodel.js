@@ -514,7 +514,7 @@ export default class IntegrationModel {
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
   getSelectedItem(target, isIframe) {}
 
-  static setTemporalImageToNull() {
+  static setActionsOnCancelButtons() {
     // eslint-disable-next-line no-undef
     if (WirisPlugin.currentInstance) {
       WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
