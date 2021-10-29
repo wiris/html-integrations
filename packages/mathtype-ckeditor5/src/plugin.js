@@ -326,7 +326,9 @@ export default class MathType extends Plugin {
       /* Although we use the HtmlDataProcessor to obtain the attributes,
             we must create a new EmptyElement which is independent of the
             DataProcessor being used by this editor instance */
-      return viewWriter.createEmptyElement('img', imgElement.getAttributes());
+      return viewWriter.createEmptyElement('img', imgElement.getAttributes(), {
+        renderUnsafeAttributes: [ 'src' ]
+      } );
     }
 
     // Model -> Editing view
