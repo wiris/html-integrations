@@ -25,7 +25,7 @@
     "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.15.0",
     "babel-eslint": "^10.1.0",
     "cypress": "^8.3.1",
