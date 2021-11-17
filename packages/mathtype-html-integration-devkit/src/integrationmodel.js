@@ -388,6 +388,14 @@ export default class IntegrationModel {
   }
 
   /**
+   * Remove events to formulas in the DOM target.
+   */
+  removeEvents() {
+    const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
+    Util.removeElementEvents(eventTarget);
+  }
+
+  /**
    * Handles a double click on the target element. Opens an editor
    * to re-edit the double-clicked formula.
    * @param {HTMLElement} element - DOM object target.
