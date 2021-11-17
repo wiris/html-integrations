@@ -69,23 +69,27 @@ export default class Util {
    */
   static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
     if (doubleClickHandler) {
-      Util.addEvent(eventTarget, 'dblclick', (event) => {
+      this.callbackDblclick = (event) => {
         const realEvent = (event) || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         doubleClickHandler(element, realEvent);
-      });
+      };
+
+      Util.addEvent(eventTarget, 'dblclick', this.callbackDblclick);
     }
 
     if (mousedownHandler) {
-      Util.addEvent(eventTarget, 'mousedown', (event) => {
+      this.callbackMousedown = (event) => {
         const realEvent = (event) || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mousedownHandler(element, realEvent);
-      });
+      };
+
+      Util.addEvent(eventTarget, 'mousedown', this.callbackMousedown);
     }
 
     if (mouseupHandler) {
-      const callback = (event) => {
+      this.callbackMouseup = (event) => {
         const realEvent = (event) || window.event;
         const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mouseupHandler(element, realEvent);
@@ -94,9 +98,24 @@ export default class Util {
       // while the mouse is outside the editor text field.
       // This is a workaround: we trigger the event independently of where the mouse
       // is when we release its button.
-      Util.addEvent(document, 'mouseup', callback);
-      Util.addEvent(eventTarget, 'mouseup', callback);
+      Util.addEvent(document, 'mouseup', this.callbackMouseup);
+      Util.addEvent(eventTarget, 'mouseup', this.callbackMouseup);
     }
+  }
+
+  /**
+   * Remove all callback function, for a certain event target, to the following event types:
+   * - dblclick
+   * - mousedown
+   * - mouseup
+   * @param {EventTarget} eventTarget - event target.
+   * @static
+   */
+  static removeElementEvents(eventTarget) {
+    Util.removeEvent(eventTarget, 'dblclick', this.callbackDblclick);
+    Util.removeEvent(eventTarget, 'mousedown', this.callbackMousedown);
+    Util.removeEvent(document, 'mouseup', this.callbackMouseup);
+    Util.removeEvent(eventTarget, 'mouseup', this.callbackMouseup);
   }
 
   /**
