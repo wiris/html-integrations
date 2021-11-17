@@ -16,6 +16,7 @@ Last release of this project is was 30th of September 2021.
   - Fix the `demo-html5-generic` dependencies.
   - Update third-party libraries to fix vulnerabilites.
   - Added missing 'www' on wiris.net documentation links.
+  - Destroy events from CKEditor5Integration when CK5 is destroyed.
 
 ## 7.27.2 - 2021-11-26
 
