@@ -53,7 +53,7 @@ This npm module uses remotely hosted services to render MathML data. In case of 
 
 In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
 ```html
-<script src="https://wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
+<script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
 ```
 
 ## Documentation
