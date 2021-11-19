@@ -15,6 +15,8 @@ Last release of this project is was 30th of September 2021.
   - Remove `jest` completely from the project.
   - Fix the `demo-html5-generic` dependencies.
   - Update third-party libraries to fix vulnerabilites.
+  - Added missing 'www' on wiris.net documentation links.
+
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
