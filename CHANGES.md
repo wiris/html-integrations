@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+## [Unreleased]
+
+  Add Cypress Dashboard Support:
+  
+  - Add Cypress Dashboard credentials on the repository secrets.
+  - Update with the secrets information.
+  - Update testing README file with good practices and how to do's.
+
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
@@ -18,6 +26,7 @@ Last release of this project is was 30th of September 2021.
 **Affected packages:**
 
 - @wiris/mathtype-ckeditor5
+
 ## 7.27.1 - 2021-09-30
 
 ### Fix overlapping issue on TinyMCE V5.

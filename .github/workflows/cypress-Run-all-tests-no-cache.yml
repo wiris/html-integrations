@@ -70,14 +70,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
-
+     
       - name: Run tests by browser
         uses: cypress-io/github-action@v2
         timeout-minutes: 10
         with:
           # 'build' starts the defauld demo 
           build: npm run build
-          # 'test:ci' runs tests over Docker image for build context 
+          # 'test:ci' runs tests over Docker image for build context
           command: npm run test:ci
           record: false
           parallel: false
