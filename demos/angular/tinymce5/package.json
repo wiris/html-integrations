@@ -14,7 +14,7 @@
     "@tinymce/tinymce-angular": "^4.2.4",
     "@wiris/mathtype-html-integration-devkit": "*",
     "@wiris/mathtype-tinymce5": "^7.27.0",
-    "tinymce": "^5.9.2"
+    "tinymce": "^5.10.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.5",
