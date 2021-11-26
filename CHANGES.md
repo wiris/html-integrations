@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+## 7.27.2 - 2021-11-26
+
+## CKEditor5 filtering mechanism
+
+- Allowed unsafe "src" attribute on the <img> element to override CKEditor 5 filtering mechanism (by @oleq)
+
+**Affected packages:**
+
+- @wiris/mathtype-ckeditor5
 ## 7.27.1 - 2021-09-30
 
 ### Fix overlapping issue on TinyMCE V5.
