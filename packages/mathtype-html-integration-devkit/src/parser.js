@@ -423,7 +423,7 @@ export default class Parser {
       }
     }
     output += code.substring(endPosition, code.length);
-    // Sanitize output HTML to remove XSS inyections
+    // Sanitize output HTML to remove XSS injections
     output = DOMPurify.sanitize(output);
     return output;
   }
