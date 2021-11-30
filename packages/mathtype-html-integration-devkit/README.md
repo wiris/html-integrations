@@ -49,6 +49,10 @@ The following packages are dependencies of the project:
 
     **Note**: As a consequence of this dependency, if you want to integrate `mathtype-html-integration-devkit` in your own project, you will have to apply `raw-loader` to the MathType source files in your own `webpack.config.js`.
 
+- [`DOMPurify`](https://www.npmjs.com/package/dompurify)
+
+    Used to sanitize HTML and prevents XSS attacks. When HTML code is sent by the user, DOMPurify receive the input and delete the malicious code.
+
 
 ## Generate the package documentation site
 

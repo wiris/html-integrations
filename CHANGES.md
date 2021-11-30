@@ -18,6 +18,7 @@ Last release of this project is was 30th of September 2021.
   - Update third-party libraries to fix vulnerabilites.
   - Added missing 'www' on wiris.net documentation links.
   - Destroy events from CKEditor5Integration when CK5 is destroyed.
+  - Added ADR 005. Use HTML sanitizer to avoid XSS attacks.
 
 - Solve Parser not working on Generic Integrations (Issue - #450)
 
