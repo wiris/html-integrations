@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     const toolbarDiv = document.getElementById('toolbar');
 
     // Initialyze the editor.
-    wrsInitEditor(editableDiv, toolbarDiv);
+    (window as any).wrs_int_init(editableDiv, toolbarDiv);
 
     // Add listener on click button to launch updateContent function.
     document.getElementById('btn_update').addEventListener('click', (e) => {

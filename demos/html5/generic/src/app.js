@@ -1,5 +1,5 @@
 // Load scripts.
-import { wrsInitEditor, wrsGetTargetHtml } from '@wiris/mathtype-generic/wirisplugin-generic.src';
+import { wrsGetTargetHtml } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
 import * as Generic from '../../../../resources/demos/common';
 
@@ -25,7 +25,7 @@ const mathTypeParameters = {
 };
 
 // Initialyze the editor.
-wrsInitEditor(editableDiv, toolbarDiv, mathTypeParameters);
+window.wrs_int_init(editableDiv, toolbarDiv, mathTypeParameters);
 
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
