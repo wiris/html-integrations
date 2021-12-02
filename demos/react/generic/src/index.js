@@ -51,7 +51,7 @@ class Editor extends React.Component {
     const toolbarDiv = document.getElementById('toolbar');
 
     // Initialyze the editor.
-    wrsInitEditor(editableDiv, toolbarDiv);
+    window.wrs_int_init(editableDiv, toolbarDiv);
   }
 
   // eslint-disable-next-line class-methods-use-this
