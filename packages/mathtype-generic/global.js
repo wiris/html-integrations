@@ -12,6 +12,8 @@ import '@wiris/mathtype-html-integration-devkit/src/backwardslib';
 import '@wiris/mathtype-html-integration-devkit/src/polyfills';
 import GenericIntegration, { currentInstance } from './wirisplugin-generic.src';
 
+Configuration.set('parseModes', 'latex');
+
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {
   Core,
@@ -26,5 +28,3 @@ window.WirisPlugin = {
   GenericIntegration,
   Test,
 };
-
-Configuration.set('parseModes', 'latex');

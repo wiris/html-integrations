@@ -18,6 +18,11 @@ Last release of this project is was 30th of September 2021.
   - Added missing 'www' on wiris.net documentation links.
   - Destroy events from CKEditor5Integration when CK5 is destroyed.
 
+- Solve Parser not working on Generic Integrations (Issue - #450)
+
+  - Modify the generic package to use properly the parser functions.
+  - Modify the demo to initialyze the editor exposing it to the window, so it can have the necessary configurations to use the Parser class.
+
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
