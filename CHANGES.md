@@ -26,7 +26,6 @@ Last release of this project is was 30th of September 2021.
 **Affected packages:**
 
 - @wiris/mathtype-ckeditor5
-
 ## 7.27.1 - 2021-09-30
 
 ### Fix overlapping issue on TinyMCE V5.
