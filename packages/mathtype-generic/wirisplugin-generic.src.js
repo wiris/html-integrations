@@ -46,7 +46,7 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
  */
 export function wrsGetTargetHtml(target) {
   const html = target.innerHTML;
-  return Parser.endParse(html);
+  return WirisPlugin.Parser.endParse(html);
 }
 
 /**
