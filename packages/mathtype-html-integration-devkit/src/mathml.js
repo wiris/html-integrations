@@ -229,7 +229,7 @@ export default class MathML {
       const beginMathMLContent = mathml.indexOf('>') + 1;
       const endMathmlContent = mathml.lastIndexOf('</math>');
       const mathmlContent = mathml.substring(beginMathMLContent, endMathmlContent);
-      mathmlWithAnnotation = `${mathml.substring(0, beginMathMLContent)}<semantics>${mathmlContent}<annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
+      mathmlWithAnnotation = `${mathml.substring(0, beginMathMLContent)}<semantics><mrow>${mathmlContent}</mrow><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`; // eslint-disable-line max-len
     }
 
     return mathmlWithAnnotation;
