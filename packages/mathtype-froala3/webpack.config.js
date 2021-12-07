@@ -45,23 +45,17 @@ module.exports = {
                 // The following expresion, looks for all the svg files inside the devkit folder and subfolders
                 // /mathtype-html-integration-devkit\/?(?:[^\/]+\/?)*.svg$/
                 test: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-                use: [ 'raw-loader' ]
+                type: 'asset/source'
             },
             {
                 test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
                 exclude: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-                use: [
-                  {
-                    loader: 'url-loader',
-                    options: {
-                      limit: 8192
-                    }
-                  }
-                ]
+                type: 'asset'
             }
         ]
     },
     stats: {
         colors: true
-    }
+    },
+    mode: 'none'
 };

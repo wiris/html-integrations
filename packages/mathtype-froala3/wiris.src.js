@@ -1,5 +1,3 @@
-/* globals $ */
-
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
@@ -279,7 +277,7 @@ export class FroalaIntegration extends IntegrationModel {
       currentFroalaIntegrationInstance.hidePopups();
       currentFroalaIntegrationInstance.core.getCustomEditors().disable();
       const imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
-      if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
+      if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject[0].classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
         currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
         currentFroalaIntegrationInstance.openExistingFormulaEditor();
       } else {
@@ -294,19 +292,19 @@ export class FroalaIntegration extends IntegrationModel {
     // Value can be undefined.
     if (selectedImage) {
       if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) || (selectedImage[0]
-                && ($(selectedImage[0]).hasClass(Configuration.get('imageClassName')) || $(selectedImage[0]).contents().hasClass(Configuration.get('imageClassName'))))) { // Is a MathType image.
-        // Show MathType icons if previously were hiden.
+                && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage[0].contents().classList.contains(Configuration.get('imageClassName'))))) { // Is a MathType image.
+        // Show MathType icons if previously were hidden.
         $btn.removeClass('fr-hidden');
         // Disable resize box.
-        if (!$('#wrs_style').get(0)) { // eslint-disable-line no-undef
-          $('head').append('<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>');
+        if (!document.getElementById('wrs_style')) { // eslint-disable-line no-undef
+          document.getElementsByTagName('head')[0].append('<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>');
         }
       } else { // Is a non-MathType image.
         // Hide MathType icons.
         $btn.addClass('fr-hidden');
         // Enable resize box (if it was configured).
-        if ($('#wrs_style').get(0)) {
-          $('#wrs_style').get(0).remove();
+        if (document.getElementById('wrs_style')) {
+          document.getElementById('wrs_style').remove();
         }
       }
     }
@@ -326,7 +324,7 @@ export class FroalaIntegration extends IntegrationModel {
       currentFroalaIntegrationInstance.hidePopups();
       currentFroalaIntegrationInstance.core.getCustomEditors().enable('chemistry');
       const imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
-      if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject.hasClass(WirisPlugin.Configuration.get('imageClassName'))) {
+      if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject[0].classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
         currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
         currentFroalaIntegrationInstance.openExistingFormulaEditor();
       } else {
