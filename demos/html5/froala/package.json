@@ -12,8 +12,7 @@
   "dependencies": {
     "@wiris/mathtype-froala3": "^7.27.0",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "froala-editor": "^4.0.4",
-    "jquery": "^3.6.0"
+    "froala-editor": "^4.0.7"
   },
   "devDependencies": {
     "css-loader": "^3.0.0",
