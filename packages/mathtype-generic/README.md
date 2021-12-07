@@ -1,15 +1,13 @@
-MathType generic integration [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
-===
+## MathType Generic Integration
 
 Type and handwrite mathematical notation with MathType.
 
 Easily include quality math equations in your documents and digital content.
 
-![MathType generic integration screenshot](http://docs.wiris.com/_media/en/mathtype/mathtype_web/using_webpage.png?w=600&tok=e85cb3)
-
 # Table of contents
 
 - [Getting started](#getting-started)
+- [Known issues](#known-issues)
 - [Parsing data](#parsing-data)
   * [Setting data](#setting-data)
   * [Getting data](#getting-data)
@@ -108,7 +106,9 @@ Notice the example assumes this directory structure:
 └───node_modules
     └───@wiris/mathtype-generic
 ```
+## Known issues
 
+* The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486) 
 ## Parsing data
 
 By default, MathType stores equations and the formulas as **MathML**. However while editing, MathType converts all MathML into `img` tags rendered inside the editable HTML element.

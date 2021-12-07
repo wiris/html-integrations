@@ -11,6 +11,7 @@ Last release of this project is was 30th of September 2021.
 
 ## UNRELEASED
 
+  - doc: add limitation disclaimer about inline limitations on ChemType and Safari #486.
   - Solved error when inserting a modified formula and the cancel button was pressed (#445).
   - Remove `jest` completely from the project.
   - Fix the `demo-html5-generic` dependencies.
