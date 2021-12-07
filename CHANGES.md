@@ -23,6 +23,11 @@ Last release of this project is was 30th of September 2021.
   - Modify the generic package to use properly the parser functions.
   - Modify the demo to initialyze the editor exposing it to the window, so it can have the necessary configurations to use the Parser class.
 
+- Fix wrapping issue when converting Latex to MathML wothout the Wiris render script (KB-16387 - Issue #419)
+  
+  Latex formulas have a semantics tag that requires its inside mathml to be inside a `mrow` tag.
+  Added this tag on the Latex formula generation.
+
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
