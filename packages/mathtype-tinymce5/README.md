@@ -7,6 +7,7 @@ Easily include quality math equations in your documents and digital content.
 ## Table of Contents
 
 - [Install instructions](#install-instructions)
+- [Known issues](#known-issues)
 - [Services](#services)
 - [Documentation](#documentation)
 - [Displaying on Target Page](#displaying-on-target-page)
@@ -36,9 +37,6 @@ Easily include quality math equations in your documents and digital content.
    ```js
    tinymce.init({
     toolbar: 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
-    // Necessary
-    htmlAllowedTags: ['.*'],
-    htmlAllowedAttrs: ['.*'],
 
     // We recommend to set 'draggable_modal' to true to avoid overlapping issues
     // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
@@ -61,6 +59,10 @@ Easily include quality math equations in your documents and digital content.
     └───node_modules
         └───@wiris/mathtype-tinymce5
    ```
+
+## Known issues
+
+* The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486) 
 
 ## Services
 
