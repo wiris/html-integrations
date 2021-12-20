@@ -6,4 +6,5 @@
 - [Trying out the demos in development mode](demos/README.md)
 - [Linting](linting/README.md)
 - [Testing](testing/README.md)
+- [CI/CD](cicd/README.md)
 - [Packaging](packaging/README.md)
