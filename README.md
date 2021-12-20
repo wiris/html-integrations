@@ -84,7 +84,7 @@ The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) cove
 
 ## License
 
-Copyright © 2010-2021 [Wiris](http://www.wiris.com). Released under the [MIT License](LICENSE).
+Copyright © 2010-2022 [Wiris](http://www.wiris.com). Released under the [MIT License](LICENSE).
 
 [MathType by Wiris]: https://www.wiris.com/en/mathtype/
 [CKEditor]: https://ckeditor.com/
