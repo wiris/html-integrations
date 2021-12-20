@@ -44,7 +44,7 @@ For the MathType integration for Moodle and other LMS see [here](https://www.wir
 
 In order to manually try out each plugin, there's a set of developer demos on the [`demos`](demos) folder.
 
-Refer to the [documentation](docs/demos/README.md) for more information.
+Refer to the [documentation](docs/demos/) for more information.
 
 ## Releases
 
@@ -67,12 +67,12 @@ Visit the [MathType integrations release notes](https://docs.wiris.com/en/mathty
 
 ## Documentation and important links
 
-- [Documentation](docs/README.md)
-- [Trying out the demos](docs/demos/README.md)
-- [Integrating MathType in your website](docs/integration/README.md)
-- [Development guide](docs/development/README.md)
-- [Contributing guidelines](docs/contributing/README.md)
-- [Code of conduct](docs/code-of-conduct/README.md)
+- [Documentation](docs/)
+- [Trying out the demos](docs/demos/)
+- [Integrating MathType in your website](docs/integration/)
+- [Development guide](docs/development/)
+- [Contributing guidelines](docs/contributing/)
+- [Code of conduct](docs/code-of-conduct/)
 
 ## Technical support
 
