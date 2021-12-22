@@ -1,0 +1,71 @@
+# Publishes the MathType integrations front-end packages to npm
+#
+# Jobs:
+# - Publish
+#
+name: Publish
+
+# Controls when the action will run
+on:
+  # Ideally we would want this to run on every PR, but GitHub Actions doesn't offer a way to set default values for the
+  # input arguments of the execution.
+  # pull_request:
+  workflow_dispatch:
+    inputs:
+      publish_npm:
+        description: |
+          Whether to publish the frontend packages to npm.
+          Type `publish_npm` to do publish to npm, any other value otherwise.
+          WARNING: This action cannot be undone.
+        required: false
+        default: ""
+      versions:
+        description: |
+          Space-separated list of versions to publish, e.g.: "@wiris/mathtype-ckeditor5=7.27.0 @wiris/mathtype-html-integration-devkit=1.6.1"
+          Packages not mentioned in the list will stay at their current version and will not be published.
+        required: false
+        default: ""
+
+# Array of jobs to run in this workflow
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # - name: Merge master to stable
+      #   run: |
+      #     git checkout stable
+      #     git merge master
+
+      - name: Install expect
+        run: sudo apt-get install -y expect
+
+      # For safety reasons, by default all npm publishing actions in this pipeline will be done with a dummy private npm registry underneath.
+      # This will only be turned off when the publish_npm flag is set to "publish_npm".
+      - name: Set up a private npm registry and publish
+        run: |
+
+          # In case we want to just emulate the publishing, we set up Verdaccio
+          if [ ${{ github.event.inputs.publish_npm == 'publish_npm' }} ] ; then
+
+            # Add the token to publish to the npm registry
+            npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
+
+          else
+
+            # We use Verdaccio to run a local private npm server
+            npm install -g verdaccio
+
+            # Set npm to publish to local registry
+            cp resources/publish/.npmrc ~/.npmrc
+
+            # Run and block verdaccio until it is ready
+            (verdaccio --config resources/publish/config.yaml &) | grep -q "http address"
+
+          fi
+
+          # Call the Expect script that interacts with the Lerna TUI
+          ./scripts/publish.exp ${{ github.event.inputs.publish_npm == 'publish_npm' }} ${{ github.event.inputs.versions }}
