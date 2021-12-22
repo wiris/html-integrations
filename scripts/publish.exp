@@ -1,0 +1,64 @@
+#!/usr/bin/expect -f
+
+# Empty dictionary
+set versions [dict create]
+
+# The first argument is a boolean
+# false - do not actually publish or commit anything
+# true - do publish to npm and generate the corresponding commit and tags in git
+set publish [lindex $argv 0]
+set argv [lrange $argv 1 end]
+
+# For each argument provided to this script, of the form packageName=version, split into [packageName, version]
+# and then add an entry version[packageName] = version to the $version dictionary
+foreach {arg} $argv {
+    set tokens [split $arg "="]
+    dict append versions [lindex $tokens 0] [lindex $tokens 1]
+}
+
+# Start the process by calling lerna version
+if { $publish } {
+    # If actually publishing, only allow the permitted branches
+    spawn npx lerna version
+} else {
+    # Fake publishing allowed on any branch, and doesn't change the upstream repo
+    spawn npx lerna version --no-push --allow-branch *
+}
+
+# Are there packages to version?
+expect {
+
+    # Next package to version
+    "Select a new version for " {
+
+        # Read package name, e.g. "@wiris/mathtype-generic"
+        expect -re {@wiris/\S+}
+        set package "$expect_out(0,string)"
+
+        # Read the current version of the package, e.g. "7.20.0"
+        expect -re {\(currently [^\)]+}
+        set current_version [lindex [split "$expect_out(0,string)" " "] 1]
+
+        # Send arrow key up + return to select "Custom Version"
+        send -- "\033\[A\r"
+
+        # Set the version to the one defined in the dictionary $versions, or to the current one if none is given
+        expect "Enter a custom version"
+        send [expr {[dict exists $versions $package] ? "[dict get $versions $package]\r" : "$current_version\r"}]
+
+        # Keep looking for packages to version, or finish otherwise
+        exp_continue
+
+    }
+
+    # No more packages to version
+    "Are you sure you want to create these versions?" {
+        # Send "yes" to go ahead
+        # If we are actually publishing, this finishes the job
+        # If we are fake publishing, this is okay as we set --no-push and the npm registry is local
+        send "y\r"
+    }
+
+}
+
+expect eof
