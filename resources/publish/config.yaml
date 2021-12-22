@@ -1,0 +1,13 @@
+storage: ./storage
+auth:
+  htpasswd:
+    file: ./resources/publish/htpasswd
+packages:
+  "@*/*":
+    access: $all
+    publish: $all
+  "**":
+    access: $all
+    publish: $all
+logs:
+  - { type: stdout, format: pretty, level: http }
