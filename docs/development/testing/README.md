@@ -9,11 +9,13 @@ This project uses [Cypress][Cypress] to run integration and validation tests in 
 ## Table of contents
 
 - [Run all tests at once](#run-all-tests-at-once)
+    - [With the published packages](#with-the-published-packages)
+    - [With the local packages](#with-the-local-packages)
 - [Run all the tests for a specific demo](#run-all-the-tests-for-a-specific-demo)
 
 ## Before you begin
 
-Linux users will need to install `net-tools` to use Cypress. 
+Linux's users will need to install `net-tools` to use Cypress. 
 
 ```bash
 $ sudo apt install net-tools
@@ -29,16 +31,35 @@ $ xhost local:root
 
 > This has to be executed once after each reboot
 
-## Run all tests at once
+## Testing commands
 
-All tests can be executed with the `npm test` command from the root of the project.
+* `npm test`: To run the tests with the interactive mode.
+* `npm test:run`: To run all the tests available at once.
+* `npm test:ci`: Use this command to run the tests in the CI machine.
 
-All available tests will be run.
+## Run all tests at once 
+
+All tests can be executed with the `npm test:run` command from the root of the project.
+
+> note that you can also use `npm test` to run the tests on an interactive mode.
+
+The tests can run either with the published or local packages, depending on the `build` command you use.
+
+### With the published packages
 
 ```sh
 $ npm install
-$ npm run build
-$ npm test
+$ npm run build-generic-demo:public
+$ npm test:run
+```
+
+### With the local packages
+
+```sh
+$ npm install
+$ cp lerna.demos.json lerna.json
+$ npm run build-generic-demo:local
+$ npm test:run
 ```
 
 ## Run all the tests for a specific demo

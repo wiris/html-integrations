@@ -11,23 +11,33 @@
 # - Set up the Cypress Environment: `setup-cypress`.
 # - Runs all tests on the matrix: `run-all-tests-matrix`.
 
-name: Run Cypress tests with npm packages
+name: Run Cypress tests with npm or local packages
 
 on:
+  push:
+  pull_request:
+    types: [ opened, reopened]
   schedule:
     # runs every Monday at 1 a.m
-    - cron: "0 1 * * 1"
+    - cron: '0 1 * * 1'
       filters:
         branches:
           only:
             - stable
   workflow_dispatch:
     inputs:
-      # Sends data to Cy
+      # Sends data to Cypress Dashboard
       cypress-record:
         description: Send test data to Cypress Dashboard? Write 'Yes' to send data.
         required: true
-        default: "No"
+        default: 'No'
+      packages-code:
+        # This input requires its parameters to be written in single quotes.
+        description: |
+          List of where to take the package's code from, 'local' is the current only option.
+          * Note that if you write any different value than the accepted ones, or use double quotes, the workflow will fail.
+        required: true
+        default: "['local']"
 
 jobs:
   setup-cypress:
@@ -62,20 +72,65 @@ jobs:
           npx cypress version --component electron
           npx cypress version --component node
 
+  # This job will expose to the workflow a variable containing the data
+  # of where to take the packages code from (local or public)
+  # in order to use it as a part of the matrix strategy when running the tests
+  define-env:
+    runs-on: ubuntu-latest
+    needs: setup-cypress
+
+    name: Define run environment
+
+    steps:
+
+      # 01a. Decide whether to run the tests with local or publish packages, on push or pull request
+      - name: Set local environment to run tests for push and pull request
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        run: |
+          echo "TESTS_ENV=['local']" >> $GITHUB_ENV
+
+      # 01b. Decide whether to run the tests with local or publish packages, on workflow dispatch
+      - name: Set the environment to run the tests defined by the user
+        if: ${{ github.event.inputs.packages-code != '' }}
+        run: |
+          echo "TESTS_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+
+      # 01c. Decide whether to run the tests with local or publish packages, on schedule
+      - name: Schedule the tests to run with published packages monthly
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "TESTS_ENV=['local']" >> $GITHUB_ENV
+      
+      # 02. Export the previously defined environment variable to the job
+      - name: Export environment for test run
+        # Then, this job will be able to expose the variable to the workflow, and then, another job will be able to use it
+        id: export-matrix-env
+        run: |
+          echo "::set-output name=tests_env::${{env.TESTS_ENV}}"
+
+    # Export the variable that specifies where to take the package's code from,
+    # to be used in the matrix for the testing strategy.
+    # This variable will be visible for all the jobs on this workflow.
+    outputs:
+      tests-env: ${{ steps.export-matrix-env.outputs.tests_env }}
+
   run-all-tests-matrix:
     # Runs all tests.
     runs-on: ubuntu-latest
-    needs: setup-cypress
+    needs: define-env
+
     strategy:
       fail-fast: true
       matrix:
         # Define values for browsers from
-        browser: ["chrome"]
+        browser: ['chrome']
         # browser: ['chrome', 'edge', 'firefox', 'chromium']
-        type: ["all"]
+        type: ['all']
         # type: ['smoke','e2e', 'ui', 'validation']
+        env: ${{ fromJson(needs.define-env.outputs.tests-env) }} # where to take packages code from
         # env: ['local', 'public']
-    name: Run ${{ matrix.type }} tests on ${{ matrix.browser }}
+
+    name: Run ${{ matrix.type }} tests on ${{ matrix.browser }} with ${{ matrix.env }} packages
     steps:
       # 01. Checkout the repository.
       - name: Checkout
@@ -87,30 +142,42 @@ jobs:
         with:
           node-version: 16
 
-      # 03a. Decide whether to send data to Cypress Dashboard, or not, for workflow_dispatch and schedule.
+      # 03a. Decide whether to send data to Cypress Dashboard, or not, for workflow_dispatch, schedule and pull request.
       - name: Decide if we send data to Cypress 2
-        if: ${{ github.event.inputs.cypress-record == 'Yes' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.cypress-record == 'Yes' || github.event_name == 'schedule' || github.event_name == 'pull_request' }}
         run: |
           echo "CY_RECORD_KEY=${{ secrets.CYPRESS_RECORD_KEY }}" >> $GITHUB_ENV
           echo "CY_RECORD_FLAG=-- --record --key " >> $GITHUB_ENV
 
-      # 03a. Decide whether to send data to Cypress Dashboard, or not, for workflow_dispatch.
+      # 03b. Decide whether to send data to Cypress Dashboard, or not, for workflow_dispatch and push.
       - name: Decide if we send data to Cypress 1
         # We don't want to send the tests to Dashboard through workflow dispatch
-        if: ${{ github.event.inputs.cypress-record != 'Yes' }}
+        if: ${{ github.event.inputs.cypress-record != 'Yes' || github.event_name == 'push' }}
         # we set the environment variables dynamically to empty in order to avoid
         # recording the test execution to Cypress Dashboard.
         run: |
           echo "CY_RECORD_KEY=" >> $GITHUB_ENV
           echo "CY_RECORD_FLAG=" >> $GITHUB_ENV
 
-      # 04. Run the tests following the initial matrix: by browser and test type
-      - name: Run tests by browser
+      # 04. Install Lerna dependencies when running tests with local packages
+      - name: Install dependencies for local packages
+        # add demos to lerna.json file and install lerna dependencies on the project root
+        # It requires a step in order to ensure that the dependencies are properly installed
+        # and does not give issues with Lerna and cypress
+        if: ${{ matrix.env == 'local' }}
+        run: |
+          npm ci
+          cp lerna.demos.json lerna.json
+          npx lerna exec -- npm i
+
+      # 05. Run the tests following the initial matrix: by browser and test type
+      - name: Run ${{ matrix.type }} tests on $${{ matrix.browser }} with ${{ matrix.env }} packages
         uses: cypress-io/github-action@v2
         timeout-minutes: 10
         with:
           # 'build' starts the default demo
-          build: npm run build
+          # use the env matrix variable to know if the test should run with local or public packages
+          build: npm run build-generic-demo:${{ matrix.env }}
           # 'test:ci' runs tests over Docker image for build context
           # we also send the Cypress Dashboard record key dynamically
           command: npm run test:ci ${{ env.CY_RECORD_FLAG }} ${{ env.CY_RECORD_KEY }}
@@ -126,7 +193,7 @@ jobs:
           CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.GH_CICD_TOKEN }}
 
-      # 05a. Save videos and screenshots as test artifacts
+      # 06a. Save videos and screenshots as test artifacts
       # https://github.com/actions/upload-artifact
       - name: Upload screenshots
         uses: actions/upload-artifact@master
@@ -138,7 +205,7 @@ jobs:
           name: screenshots-${{ matrix.type }}-${{ matrix.browser }}
           path: cypress/screenshots
 
-      # 05b. Upload videos, since they are always be generated.
+      # 06b. Upload videos, since they are always generated.
       - name: Upload videos for all tests
         uses: actions/upload-artifact@master
         with:
