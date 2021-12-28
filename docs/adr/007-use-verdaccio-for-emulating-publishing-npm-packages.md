@@ -1,4 +1,4 @@
-# 005. Use Verdaccio for emulating publishing npm packages
+# 007. Use Verdaccio for emulating publishing npm packages
 
 Date: 21-dec-2021
 
