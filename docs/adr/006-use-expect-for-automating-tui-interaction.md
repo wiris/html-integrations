@@ -38,9 +38,7 @@ Shell scripting is a very powerful, but dangerous, solution.
 
 #### Expect
 
-CNPM stands for "Company npm" and is a private npm registry software.
-
-[Website][expect]
+[Expect][expect] is a tool for automating interactive applications such as telnet, ftp, passwd, fsck, rlogin, tip, etc...
 
 - Good, because it is built with this purpose in mind
 - Good, because the syntax is very readable and straightforward.
