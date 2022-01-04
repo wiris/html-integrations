@@ -35,11 +35,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Merge master to stable
-      #   run: |
-      #     git checkout stable
-      #     git merge master
-
       - name: Install expect
         run: sudo apt-get install -y expect
 
