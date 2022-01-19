@@ -64,6 +64,8 @@ To integrate MathType, please follow the steps below. Please, note you may adjus
      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
      genericIntegrationInstance.init();
      genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+     WirisPlugin.currentInstance = this.wiris_generic;
    </script>
    ```
 
@@ -94,6 +96,8 @@ After following these steps, you should have something like this:
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = this.wiris_generic;
     </script>
   </body>
 </html>
@@ -198,6 +202,8 @@ To install the Java services, please, follow the steps below:
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = this.wiris_generic;
     </script>
     ```
 
@@ -230,6 +236,8 @@ To install the PHP services, please, follow the steps below:
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = this.wiris_generic;
     </script>
     ```
 
@@ -262,6 +270,8 @@ To install the ASP .NET services, please, follow the steps below:
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = this.wiris_generic;
     </script>
     ```
 
@@ -298,6 +308,8 @@ To install the Ruby on Rails services, please, follow the steps below:
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = this.wiris_generic;
     </script>
     ```
 
