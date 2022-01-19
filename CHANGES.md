@@ -34,6 +34,9 @@ Last release of this project is was 30th of September 2021.
   - Update Webpack to V5 and remove jQuery, on mathtype-froala3 and its demos.
 
 - Accept non standard ports for host.
+
+- doc: Update Generic integration instructions with a missing step (#KB-19571)
+  - On `mathtype-generic` and `mathtype-html-integration-devkit` pacakges
 ## Unreleased
 
 - Start sending data to Cypress Dashboard with the published packages (KB-18683)
