@@ -35,6 +35,8 @@ To integrate MathType, please follow the steps below (you may adjust the example
         var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+        WirisPlugin.currentInstance = this.wiris_generic;
     </script>
     ```
     This is the main step of the integration, doing the following:
@@ -59,17 +61,19 @@ The complete HTML code of the previuos example is the following:
         </div>
     </body>
     <script>
-    /**
-     * @type {integrationModelProperties}
-     */
-    var genericIntegrationProperties = {};
-    genericIntegrationProperties.target = document.getElementById("example");
-    genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation");
+        /**
+         * @type {integrationModelProperties}
+         */
+        var genericIntegrationProperties = {};
+        genericIntegrationProperties.target = document.getElementById("example");
+        genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation");
 
-    // GenericIntegration instance.
-    var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
-    genericIntegrationInstance.init();
-    genericIntegrationInstance.listeners.fire('onTargetReady', {});
+        // GenericIntegration instance.
+        var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+        genericIntegrationInstance.init();
+        genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+        WirisPlugin.currentInstance = this.wiris_generic;
     </script>
 </html>
 ```
