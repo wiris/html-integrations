@@ -32,6 +32,8 @@ Last release of this project is was 30th of September 2021.
 
 - Fix Angular + Froala (v3 & v4) treting Wiris formulas as images.
   - Update Webpack to V5 and remove jQuery, on mathtype-froala3 and its demos.
+
+- Accept non standard ports for host.
 ## Unreleased
 
 - Start sending data to Cypress Dashboard with the published packages (KB-18683)
