@@ -43,7 +43,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         // eslint-disable-next-line no-prototype-builtins
         if (languageObject.hasOwnProperty('ui')) {
           return languageObject.ui;
-        } return super.getLanguage();
+        } return languageObject;
       }
       return languageObject;
     }
