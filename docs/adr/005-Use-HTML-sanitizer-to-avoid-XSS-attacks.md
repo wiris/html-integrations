@@ -4,7 +4,7 @@ Date: 29-no-2021
 
 ## Status
 
-ACCEPTED
+PROPOSED
 
 ## Summary
 
