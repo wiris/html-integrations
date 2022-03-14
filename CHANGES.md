@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Last release of this project is was 30th of September 2021.
 
 
-## UNRELEASED
+## 7.2x.x 2022-03-xx
 
   - doc: add limitation disclaimer about inline limitations on ChemType and Safari #486.
   - Solved error when inserting a modified formula and the cancel button was pressed (#445).
@@ -38,10 +38,10 @@ Last release of this project is was 30th of September 2021.
 
 - doc: Update Generic integration instructions with a missing step (#KB-19571)
   - On `mathtype-generic` and `mathtype-html-integration-devkit` pacakges
-## Unreleased
 
 - Start sending data to Cypress Dashboard with the published packages (KB-18683)
 - Fix toolbar wiris buttons static label issue on CKEditor5 (KB-13890).
+
 ## 7.27.2 - 2021-11-26
 
 ## CKEditor5 filtering mechanism
