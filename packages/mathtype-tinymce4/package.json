@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-tinymce4",
-  "version": "7.27.1",
+  "version": "7.28.0",
   "description": "MathType Web for TinyMCE4 editor",
   "keywords": [
     "chem",
@@ -33,7 +33,7 @@
     "prepack": "npm install && npm run compile -- npm"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.6.1"
+    "@wiris/mathtype-html-integration-devkit": "1.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
