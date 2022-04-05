@@ -1,0 +1,28 @@
+{
+  "name": "demo-html5-tinymce6",
+  "version": "1.0.0",
+  "description": "A simple html5 App integrating WIRIS MathType in a TinyMCE6 rich text editor.",
+  "main": "app.js",
+  "scripts": {
+    "compile-package": "cd ../../../packages/mathtype-tinymce6/ && npm run compile -- npm --dev",
+    "start": "webpack-dev-server --open"
+  },
+  "author": "WIRIS Team (https://www.wiris.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "*",
+    "@wiris/mathtype-tinymce6": "file:../../../packages/mathtype-tinymce6",
+    "tinymce": "^6.0.0"
+  },
+  "devDependencies": {
+    "css-loader": "^3.0.0",
+    "html-loader": "^1.1.0",
+    "lerna": "^4.0.0",
+    "raw-loader": "^4.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^3.0.0",
+    "webpack-dev-server": "^3.0.0"
+  }
+}

@@ -11,7 +11,13 @@ Last release of this project is was 30th of September 2021.
 
 ## UNRELEASED
 
-* Fix the redo & undo buttons not working on TinyMCE when interacting with MathType formulas. (KB-14441)
+  - Fix the redo & undo buttons not working on TinyMCE when interacting with MathType formulas. (KB-14441)
+  - Create TinyMCE V6 demos for:
+    - HTML5
+    - Angular
+    - React
+  - Add a dummy TinyMCE6 package.
+  - Update related documentation and files to include the new TinyMCE V6 demos and package.
 
 ## 7.28.0 2022-03-24
 
