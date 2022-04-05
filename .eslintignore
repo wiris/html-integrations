@@ -7,6 +7,7 @@ packages/mathtype-generic/wirisplugin-generic.js
 packages/mathtype-tinymce4/plugin.min.js
 packages/mathtype-tinymce4/plugin.min.moodle.js
 packages/mathtype-tinymce5/plugin.min.js
+packages/mathtype-tinymce6/plugin.min.js
 packages/mathtype-froala3/wiris.js
 packages/mathtype-froala/wiris.js
 packages/mathtype-ckeditor4/plugin.js

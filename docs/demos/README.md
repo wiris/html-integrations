@@ -45,6 +45,7 @@ This is the full list of available examples of MathType Integrations on this pro
 | HTML5     | Generic integration | [generic](../../demos/html5/generic)                   |
 | HTML5     | TinyMCE V4          | [tinymce4](../../demos/html5/tinymce4)                 |
 | HTML5     | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
+| HTML5     | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
 | Angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
 | Angular   | Froala V3 & V4      | [froala](../../demos/angular/froala/README.md)       |
 | Angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     |

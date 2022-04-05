@@ -1,0 +1,51 @@
+{
+  "name": "@wiris/mathtype-tinymce6",
+  "version": "7.27.1",
+  "description": "MathType Web for TinyMCE6 editor",
+  "keywords": [
+    "chem",
+    "chemistry",
+    "chemtype",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "mathml",
+    "maths",
+    "mathtype",
+    "tinymce",
+    "tinymce5",
+    "wiris"
+  ],
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-tinymce6",
+  "homepage": "https://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "main": "plugin.min.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
+    "clean": "shx rm -f plugin.min.js",
+    "compile": "node ../../scripts/services/compile editor_plugin.src.js .",
+    "prepack": "npm install && npm run compile -- npm"
+  },
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "1.6.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "raw-loader": "^4.0.2",
+    "shx": "^0.3.3",
+    "style-loader": "^3.3.0",
+    "terser-webpack-plugin": "^5.3.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.50.0",
+    "webpack-cli": "^4.8.0"
+  }
+}
