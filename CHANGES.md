@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+## UNRELEASED
+
+* Fix the redo & undo buttons not working on TinyMCE when interacting with MathType formulas. (KB-14441)
 
 ## 7.28.0 2022-03-24
 

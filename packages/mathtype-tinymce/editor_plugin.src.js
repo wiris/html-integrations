@@ -80,6 +80,29 @@ export class TinyMceIntegration extends IntegrationModel {
     return langParam || super.getLanguage();
   }
 
+  /** @inheritdoc */
+  insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+    // Due to insertFormula adds an image using pure JavaScript functions,
+    // it is needed notificate to the editorObject that placeholder status
+    // has to be updated.
+    const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+
+    // Add formula to undo & redo
+    this.editorObject.undoManager.add(obj);
+
+    // Delete temporal image when inserting a formula
+    this.core.editionProperties.temporalImage = null;
+    return obj;
+  }
+
+  updateFormula(mathml) {
+    const obj = super.updateFormula(mathml);
+
+    // Add modified formula to undo & redo
+    this.editorObject.undoManager.add(obj);
+    return obj;
+  }
+
   /**
      * Callback function called before 'onTargetLoad' is fired. All the logic here is to
      * avoid TinyMCE change MathType formulas.
