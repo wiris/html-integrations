@@ -193,6 +193,7 @@
 
 .wrs_content_container.wrs_modal_android {
   width: 100%;
+  height: 0%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -227,6 +228,7 @@
 
 .wrs_content_container.wrs_modal_ios {
   width: 100%;
+  height: 0%;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
