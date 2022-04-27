@@ -19,6 +19,7 @@ Last release of this project is was 30th of September 2021.
   - Add a dummy TinyMCE6 package.
   - Update related documentation and files to include the new TinyMCE V6 demos and package.
   - Fix MT/CT Editor mobile responsiveness
+  - Fix focus when cancel insertion mt editor
 
 ## 7.28.0 2022-03-24
 
