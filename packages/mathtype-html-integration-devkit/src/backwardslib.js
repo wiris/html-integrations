@@ -54,7 +54,7 @@ window.wrs_initParse = wrs_initParse;
 /**
  * Parses end HTML code. The end HTML code is HTML code with embedded images or LaTeX formulas created with MathType. <br>
  * By default this method converts the formula images and LaTeX strings in MathML. <br>
- * If image mode is enabled the images will not be converted into MathML. For further information see {@link https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode}.
+ * If image mode is enabled the images will not be converted into MathML. For further information see {@link https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-web-interface-features/full-mathml-mode---wirisplugins-js.html}.
  * @param {string} code - string to be parsed.
  * @param {Object} wirisProperties - extra attributes for the formula.
  * @param {string} language - language for the formula.
