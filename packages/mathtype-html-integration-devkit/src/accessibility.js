@@ -45,6 +45,8 @@ export default class Accessibility {
     if (MathML.containClass(mathML, 'wrs_chemistry')) {
       data.mode = 'chemistry';
     }
+    // Ignore accesibility styles
+    data.ignoreStyles = true;
     let accessibleText = '';
 
     if (Accessibility.cache.get(mathML)) {
