@@ -13,28 +13,28 @@ export class TinyMceIntegration extends IntegrationModel {
   constructor(integrationModelProperties) {
     super(integrationModelProperties);
     /**
-         * Indicates if the content of the TinyMCe editor has
-         * been parsed.
-         * @type {Boolean}
-         */
+     * Indicates if the content of the TinyMCe editor has
+     * been parsed.
+     * @type {Boolean}
+     */
     this.initParsed = integrationModelProperties.initParsed;
     /**
-         * Indicates if the TinyMCE is integrated in Moodle.
-         * @type {Boolean}
-         */
+     * Indicates if the TinyMCE is integrated in Moodle.
+     * @type {Boolean}
+     */
     this.isMoodle = integrationModelProperties.isMoodle;
     /**
-         * Indicates if the plugin is loaded as an external plugin by TinyMCE.
-         * @type {Boolean}
-         */
+     * Indicates if the plugin is loaded as an external plugin by TinyMCE.
+     * @type {Boolean}
+     */
     this.isExternal = integrationModelProperties.isExternal;
   }
 
   /**
-     * Returns the absolute path of the integration script. Depends on
-     * TinyMCE integration (Moodle or standard).
-     * @returns {Boolean} - Absolute path for the integration script.
-     */
+   * Returns the absolute path of the integration script. Depends on
+   * TinyMCE integration (Moodle or standard).
+   * @returns {Boolean} - Absolute path for the integration script.
+   */
   getPath() {
     if (this.isMoodle) {
       // return '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce/';
@@ -50,10 +50,10 @@ export class TinyMceIntegration extends IntegrationModel {
   }
 
   /**
-     * Returns the absolute path of plugin icons. A set of different
-     * icons is needed for TinyMCE and Moodle 2.5-
-     * @returns {String} - Absolute path of the icons folder.
-     */
+   * Returns the absolute path of plugin icons. A set of different
+   * icons is needed for TinyMCE and Moodle 2.5-
+   * @returns {String} - Absolute path of the icons folder.
+   */
   getIconsPath() {
     if (this.isMoodle && Configuration.get('versionPlatform') < 2013111800) {
       return `${this.getPath()}icons/tinymce3/`;
@@ -62,10 +62,10 @@ export class TinyMceIntegration extends IntegrationModel {
   }
 
   /**
-     * Returns the integration language. TinyMCE language is inherited.
-     * When no language is set, TinyMCE sets the toolbar to english.
-     * @returns {String} - Integration language.
-     */
+   * Returns the integration language. TinyMCE language is inherited.
+   * When no language is set, TinyMCE sets the toolbar to english.
+   * @returns {String} - Integration language.
+   */
   getLanguage() {
     const editorSettings = this.editorObject.settings;
     try {
@@ -97,6 +97,10 @@ export class TinyMceIntegration extends IntegrationModel {
 
   updateFormula(mathml) {
     const obj = super.updateFormula(mathml);
+
+    if (typeof this.editorObject.fire !== 'undefined') {
+      this.editorObject.fire('ExecCommand', { command: 'updateFormula', value: mathml });
+    }
 
     // Add modified formula to undo & redo
     this.editorObject.undoManager.add(obj);
@@ -149,17 +153,6 @@ export class TinyMceIntegration extends IntegrationModel {
       return true;
     };
   }
-
-  /**
-     * Fires the event ExecCommand and transform a MathML into an image formula.
-     * @param {string} mathml - MathML to generate the formula and can be caught with the event.
-     */
-  updateFormula(mathml) {
-    if (typeof this.editorObject.fire !== 'undefined') {
-      this.editorObject.fire('ExecCommand', { command: 'updateFormula', value: mathml });
-    }
-    super.updateFormula(mathml);
-  }
 }
 
 /**
@@ -167,6 +160,7 @@ export class TinyMceIntegration extends IntegrationModel {
  * @type {Object}
  */
 export const instances = {};
+
 /**
  * TinyMCE integration current instance. The current instance
  * is the instance related with the focused editor.
@@ -230,15 +224,15 @@ export const currentInstance = null;
       const callbackMethodArguments = {};
 
       /**
-             * Integration model properties
-             * @type {Object}
-             * @property {Object} target - Integration DOM target.
-             * @property {String} configurationService - Configuration integration service.
-             * @property {String} version - Plugin version.
-             * @property {String} scriptName - Integration script name.
-             * @property {Object} environment - Integration environment properties.
-             * @property {String} editor - Editor name.
-             */
+       * Integration model properties
+       * @type {Object}
+       * @property {Object} target - Integration DOM target.
+       * @property {String} configurationService - Configuration integration service.
+       * @property {String} version - Plugin version.
+       * @property {String} scriptName - Integration script name.
+       * @property {Object} environment - Integration environment properties.
+       * @property {String} editor - Editor name.
+       */
       const integrationModelProperties = {};
       integrationModelProperties.serviceProviderProperties = {};
       integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
