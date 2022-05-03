@@ -447,11 +447,11 @@ export default class ContentManager {
     }
     this.updateToolbar();
     this.onFocus();
-    
+
     if (this.deviceProperties.isIOS) {
       const zoom = document.documentElement.clientWidth / window.innerWidth;
 
-      if (zoom != 1) {
+      if (zoom !== 1) {
         // Open editor in Keyboard mode if user use iOS, Safari and page is zoomed.
         this.setKeyboardMode();
       }
