@@ -162,6 +162,10 @@ export default class CKEditor5Integration extends IntegrationModel {
             writer.remove(this.editorObject.editing.mapper.toModelRange(range));
           }
         }
+
+        // Set carret after the formula
+        const position = this.editorObject.model.createPositionAfter(modelElementNew);
+        writer.setSelection(position);
       } else {
         const img = core.editionProperties.temporalImage;
         const viewElement = this.editorObject.editing.view.domConverter.domToView(img).parent;
