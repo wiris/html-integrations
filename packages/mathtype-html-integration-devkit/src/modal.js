@@ -209,6 +209,8 @@ export default class ModalDialog {
 
     this.contentManager = null;
 
+    this.initMetaViewportContent = null;
+
     // Overlay popup.
     const popupStrings = {
       cancelString: StringManager.get('cancel'),
@@ -499,7 +501,7 @@ export default class ModalDialog {
     const { isMobile } = this.deviceProperties;
     if (isIOS || isAndroid || isMobile) {
       // Restore scale to 1.
-      this.restoreWebsiteScale();
+      this.setEditorViewport();
       this.lockWebsiteScroll();
       // Due to editor wait we need to wait until editor focus.
       setTimeout(() => { this.hideKeyboard(); }, 400);
@@ -554,6 +556,7 @@ export default class ModalDialog {
     this.addClass('wrs_closed');
     this.saveModalProperties();
     this.unlockWebsiteScroll();
+    this.resetInitialViewport();
     this.properties.open = false;
   }
 
@@ -561,13 +564,17 @@ export default class ModalDialog {
    * Sets the website scale to one.
    */
   // eslint-disable-next-line class-methods-use-this
-  restoreWebsiteScale() {
-    let viewportmeta = document.querySelector('meta[name=viewport]');
-    // Let the equal symbols in order to search and make meta's final content.
-    const contentAttrsToUpdate = ['initial-scale=', 'minimum-scale=', 'maximum-scale='];
-    const contentAttrsValuesToUpdate = ['1.0', '1.0', '1.0'];
-    const setMetaAttrFunc = (viewportelement, contentAttrs) => {
-      const contentAttr = viewportelement.getAttribute('content');
+  setEditorViewport() {
+    // Get meta viewport HTML element if exist
+    const viewportmeta = document.querySelector('meta[name=viewport]');
+
+    // content to lock zoom and set the scale of the webpage to 1.0
+    const contentAttrsToUpdate = ['width=', 'initial-scale=', 'minimum-scale=', 'maximum-scale='];
+    const contentAttrsValuesToUpdate = ['device-width', '1.0', '1.0', '1.0'];
+
+    // If web already have a viewport meta html element, we need to update the content.
+    if (viewportmeta) {
+      const contentAttr = viewportmeta.getAttribute('content');
       // If it exists, we need to maintain old values and put our values.
       if (contentAttr) {
         const attrArray = contentAttr.split(',');
@@ -576,8 +583,8 @@ export default class ModalDialog {
         for (let i = 0; i < attrArray.length; i += 1) {
           let isAttrToUpdate = false;
           let j = 0;
-          while (!isAttrToUpdate && j < contentAttrs.length) {
-            if (attrArray[i].indexOf(contentAttrs[j])) {
+          while (!isAttrToUpdate && j < contentAttrsToUpdate.length) {
+            if (attrArray[i].indexOf(contentAttrsToUpdate[j])) {
               isAttrToUpdate = true;
             }
             j += 1;
@@ -588,31 +595,41 @@ export default class ModalDialog {
           }
         }
 
-        for (let i = 0; i < contentAttrs.length; i += 1) {
-          const attr = contentAttrs[i] + contentAttrsValuesToUpdate[i];
+        for (let i = 0; i < contentAttrsToUpdate.length; i += 1) {
+          const attr = contentAttrsToUpdate[i] + contentAttrsValuesToUpdate[i];
           finalContentMeta += i === 0 ? attr : `,${attr}`;
         }
 
         for (let i = 0; i < oldAttrs.length; i += 1) {
           finalContentMeta += `,${oldAttrs[i]}`;
         }
-        viewportelement.setAttribute('content', finalContentMeta);
-        // It needs to set to empty because setAttribute refresh only when attribute is different.
-        viewportelement.setAttribute('content', '');
-        viewportelement.setAttribute('content', contentAttr);
+        viewportmeta.setAttribute('content', finalContentMeta);
+        // Save initial content from viewport meta to reset them when closing the editor
+        this.initMetaViewportContent = contentAttr;
       } else {
-        viewportelement.setAttribute('content', 'initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
-        viewportelement.removeAttribute('content');
+        viewportmeta.setAttribute('content', 'initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0');
       }
-    };
-
-    if (!viewportmeta) {
-      viewportmeta = document.createElement('meta');
-      document.getElementsByTagName('head')[0].appendChild(viewportmeta);
-      setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
-      viewportmeta.remove();
     } else {
-      setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
+      // If viewport meta HTML element doesn't exist, we create the element
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0';
+      document.getElementsByTagName('head')[0].appendChild(meta);
+    }
+  }
+
+  /**
+   * Reset the viewport meta HTML element
+   */
+  resetInitialViewport() {
+    const viewportmeta = document.querySelector('meta[name=viewport]');
+
+    // If before opening editor meta viewport exist we set initial content
+    if (this.initMetaViewportContent) {
+      viewportmeta.setAttribute('content', this.initMetaViewportContent);
+    } else {
+      // If doens't exist we remove meta viewport
+      viewportmeta.remove();
     }
   }
 
