@@ -35,7 +35,7 @@
     "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsdoc": "^36.1.0",
     "fs-extra": "^10.0.0",
-    "html-validate": "^6.0.2",
+    "html-validate": "^7.1.0",
     "lerna": "^4.0.0",
     "link-checker": "^1.4.2",
     "shx": "^0.3.3",
