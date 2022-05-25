@@ -61,11 +61,10 @@ In order to display mathematical formulas on the target page, i.e. the page wher
 To find out more information about MathType, please go to the following documentation:
 
 [comment]: <> (TODO: link to install instructions)
-* [MathType documentation](http://docs.wiris.com/en/mathtype/mathtype_web/start)
-* [Introductory tutorials](http://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials)
-* [Service customization](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table)
-* [Testing](http://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test)
-
+* [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
+* [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
+* [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
+* [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
 ## Privacy policy
 
-The [MathType Privacy Policy](http://www.wiris.com/mathtype/privacy-policy) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://wiris.com/en/privacy-policy) still applies to MathType users.
+The [MathType Privacy Policy](https://www.wiris.com/en/mathtype-privacy-policy/?utm_source=npmjs&utm_medium=referral) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://www.wiris.com/en/privacy-policy?utm_source=npmjs&utm_medium=referral) still applies to MathType users.

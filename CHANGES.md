@@ -14,6 +14,7 @@ Last release of this project is was 30th of September 2021.
   - fix: caret after the formula on first insertion
   - fix: chemEnabled & editorEnabled config
   - fix: open MT/CT Editor in Keyboard mode when using iOS
+  - fix: Update links with UTMs
 
 ## 7.28.1 2022-05-09
 

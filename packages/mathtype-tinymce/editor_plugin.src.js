@@ -485,8 +485,8 @@ export const currentInstance = null;
       return {
         longname: 'tiny_mce_wiris',
         author: 'Maths for More',
-        authorurl: 'http://www.wiris.com',
-        infourl: 'http://www.wiris.com',
+        authorurl: 'http://www.wiris.com/?utm_source=npmjs&utm_medium=referral',
+        infourl: 'http://www.wiris.com/?utm_source=npmjs&utm_medium=referral',
         version: packageInfo.version,
       };
     },

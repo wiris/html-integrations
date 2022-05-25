@@ -19,12 +19,12 @@
     "wiris"
   ],
   "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala3",
-  "homepage": "https://www.wiris.com/",
+  "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
   },
   "license": "MIT",
-  "author": "WIRIS Team (http://www.wiris.com)",
+  "author": "WIRIS Team (https://www.wiris.com/?utm_source=npmjs&utm_medium=referral)",
   "main": "wiris.js",
   "scripts": {
     "build": "webpack --mode production",
