@@ -1,4 +1,5 @@
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
+import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import formulaIcon from './icons/formula.png';
@@ -110,24 +111,28 @@ export default class GenericIntegration extends IntegrationModel {
       this.target.innerHTML = Parser.initParse(this.target.innerHTML);
     }
 
-    /* Creating toolbar buttons */
-    const formulaButton = document.createElement('img');
-    formulaButton.id = 'editorIcon';
-    formulaButton.src = formulaIcon;
-    formulaButton.style.cursor = 'pointer';
+    // Check if MathType is enabled
+    if (Configuration.get('editorEnabled')) {
+      /* Creating toolbar buttons */
+      const formulaButton = document.createElement('img');
+      formulaButton.id = 'editorIcon';
+      formulaButton.src = formulaIcon;
+      formulaButton.style.cursor = 'pointer';
 
-    Util.addEvent(formulaButton, 'click', () => {
-      this.core.getCustomEditors().disable();
-      this.openNewFormulaEditor();
-    });
+      Util.addEvent(formulaButton, 'click', () => {
+        this.core.getCustomEditors().disable();
+        this.openNewFormulaEditor();
+      });
 
-    this.toolbar.appendChild(formulaButton);
+      this.toolbar.appendChild(formulaButton);
+    }
 
     // Dynamic customEditors buttons.
     const customEditors = this.getCore().getCustomEditors();
     // Iterate from all custom editors.
     for (const customEditor in customEditors.editors) {
-      if (customEditors.editors[customEditor].confVariable) {
+      // Check if CustomEditor is enabled
+      if (Configuration.get(customEditors.editors[customEditor].confVariable)) {
         const customEditorButton = document.createElement('img');
         // TODO make this work and add promises polyfill
         // import('./icons/' + customEditors.editors[customEditor].icon).then(({default: customEditorIcon}) => {

@@ -407,18 +407,22 @@ export const currentInstance = null;
         commonEditor.addIcon(mathTypeIcon, mathTypeIconSvg);
         commonEditor.addIcon(chemTypeIcon, chemTypeIconSvg);
 
-        // The next two blocks create menu items to give the possibility
-        // of add MathType in the menubar.
-        commonEditor.addMenuItem('tiny_mce_wiris_formulaEditor', {
-          text: 'MathType',
-          icon: mathTypeIcon,
-          onAction: openFormulaEditorFunction,
-        });
+        // Check if MathType editor is enabled
+        if (Configuration.get('editorEnabled')) {
+          // The next two blocks create menu items to give the possibility
+          // of add MathType in the menubar.
+          commonEditor.addMenuItem('tiny_mce_wiris_formulaEditor', {
+            text: 'MathType',
+            icon: mathTypeIcon,
+            onAction: openFormulaEditorFunction,
+          });
+        }
 
         // Dynamic customEditors buttons.
         const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
         Object.keys(customEditors.editors).forEach((customEditor) => {
-          if (customEditors.editors[customEditor].confVariable) {
+          // Check if CustomEditor editor is enabled
+          if (Configuration.get(customEditors.editors[customEditor].confVariable)) {
             commonEditor.addMenuItem(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
               text: customEditors.editors[customEditor].title,
               icon: chemTypeIcon, // Parametrize when other custom editors are added.
@@ -434,22 +438,26 @@ export const currentInstance = null;
         commonEditor.addCommand('tiny_mce_wiris_openFormulaEditor', openFormulaEditorFunction);
       }
 
-      // MathType button.
-      // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
-      // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
-      commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
-        tooltip: 'Insert a math equation - MathType', // TinyMCE3
-        title: 'Insert a math equation - MathType',
-        cmd: 'tiny_mce_wiris_openFormulaEditor',
-        image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
-        onAction: openFormulaEditorFunction,
-        icon: mathTypeIcon,
-      });
+      // Check if MathType editor is enabled
+      if (Configuration.get('editorEnabled')) {
+        // MathType button.
+        // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
+        // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
+        commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
+          tooltip: 'Insert a math equation - MathType', // TinyMCE3
+          title: 'Insert a math equation - MathType',
+          cmd: 'tiny_mce_wiris_openFormulaEditor',
+          image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
+          onAction: openFormulaEditorFunction,
+          icon: mathTypeIcon,
+        });
+      }
 
       // Dynamic customEditors buttons.
       const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
       for (const customEditor in customEditors.editors) {
-        if (customEditors.editors[customEditor].confVariable) {
+        // Check if CustomEditor editor is enabled
+        if (Configuration.get(customEditors.editors[customEditor].confVariable)) {
           const cmd = `tiny_mce_wiris_openFormulaEditor${customEditors.editors[customEditor].name}`;
           // eslint-disable-next-line no-inner-declarations, no-loop-func
           function commandFunction() {

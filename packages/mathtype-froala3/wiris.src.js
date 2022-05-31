@@ -88,6 +88,20 @@ export class FroalaIntegration extends IntegrationModel {
     });
 
     super.init();
+
+    // Hide MathType toolbar button if is disabled by config.
+    if (!Configuration.get('editorEnabled')) {
+      FroalaEditor.ICONS.wirisEditor = null;
+      FroalaEditor.COMMANDS.wirisEditor = null;
+      document.getElementById('wirisEditor-1').classList.add('fr-hidden');
+    }
+
+    // Hide ChemType toolbar button if is disabled by config.
+    if (!Configuration.get('chemEnabled')) {
+      FroalaEditor.ICONS.wirisChemistry = null;
+      FroalaEditor.COMMANDS.wirisChemistry = null;
+      document.getElementById('wirisChemistry-1').classList.add('fr-hidden');
+    }
   }
 
   /**
