@@ -49,6 +49,16 @@ export class CKEditor4Integration extends IntegrationModel {
     if ('wiriseditorparameters' in editor.config) {
       Configuration.update('editorParameters', editor.config.wiriseditorparameters);
     }
+
+    // Hide MathType toolbar button if is disabled by config.
+    if (!Configuration.get('editorEnabled')) {
+      document.getElementsByClassName('cke_button__ckeditor_wiris_formulaeditor')[0].style.display = 'none';
+    }
+  
+    // Hide ChemType toolbar button if is disabled by config.
+    if (!Configuration.get('chemEnabled')) {
+      document.getElementsByClassName('cke_button__ckeditor_wiris_formulaeditorchemistry')[0].style.display = 'none';
+    }
   }
 
   /**

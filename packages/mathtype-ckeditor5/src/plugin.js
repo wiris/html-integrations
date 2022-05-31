@@ -133,51 +133,57 @@ export default class MathType extends Plugin {
   _addViews(integration) {
     const { editor } = this;
 
-    // Add button for the formula editor
-    editor.ui.componentFactory.add('MathType', (locale) => {
-      const view = new ButtonView(locale);
+    // Check if MathType editor is enabled
+    if (Configuration.get('editorEnabled')) {
+      // Add button for the formula editor
+      editor.ui.componentFactory.add('MathType', (locale) => {
+        const view = new ButtonView(locale);
 
-      // View is enabled iff command is enabled
-      view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
+        // View is enabled iff command is enabled
+        view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
 
-      view.set({
-        label: StringManager.get('insert_math'),
-        icon: mathIcon,
-        tooltip: true,
-      });
-
-      // Callback executed once the image is clicked.
-      view.on('execute', () => {
-        editor.execute('MathType', {
-          integration, // Pass integration as parameter
+        view.set({
+          label: StringManager.get('insert_math'),
+          icon: mathIcon,
+          tooltip: true,
         });
-      });
 
-      return view;
-    });
-
-    // Add button for the chemistry formula editor
-    editor.ui.componentFactory.add('ChemType', (locale) => {
-      const view = new ButtonView(locale);
-
-      // View is enabled iff command is enabled
-      view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
-
-      view.set({
-        label: StringManager.get('insert_chem'),
-        icon: chemIcon,
-        tooltip: true,
-      });
-
-      // Callback executed once the image is clicked.
-      view.on('execute', () => {
-        editor.execute('ChemType', {
-          integration, // Pass integration as parameter
+        // Callback executed once the image is clicked.
+        view.on('execute', () => {
+          editor.execute('MathType', {
+            integration, // Pass integration as parameter
+          });
         });
-      });
 
-      return view;
-    });
+        return view;
+      });
+    }
+
+    // Check if ChemType editor is enabled
+    if (Configuration.get('chemEnabled')) {
+      // Add button for the chemistry formula editor
+      editor.ui.componentFactory.add('ChemType', (locale) => {
+        const view = new ButtonView(locale);
+
+        // View is enabled iff command is enabled
+        view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
+
+        view.set({
+          label: StringManager.get('insert_chem'),
+          icon: chemIcon,
+          tooltip: true,
+        });
+
+        // Callback executed once the image is clicked.
+        view.on('execute', () => {
+          editor.execute('ChemType', {
+            integration, // Pass integration as parameter
+          });
+        });
+
+        return view;
+      });
+    }
 
     // Observer for the double click event
     editor.editing.view.addObserver(ClickObserver);
@@ -335,8 +341,8 @@ export default class MathType extends Plugin {
             we must create a new EmptyElement which is independent of the
             DataProcessor being used by this editor instance */
       return viewWriter.createEmptyElement('img', imgElement.getAttributes(), {
-        renderUnsafeAttributes: [ 'src' ]
-      } );
+        renderUnsafeAttributes: ['src'],
+      });
     }
 
     // Model -> Editing view
