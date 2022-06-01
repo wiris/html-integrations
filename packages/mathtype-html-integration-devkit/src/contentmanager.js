@@ -447,6 +447,28 @@ export default class ContentManager {
     }
     this.updateToolbar();
     this.onFocus();
+    
+    if (this.deviceProperties.isIOS) {
+      const zoom = document.documentElement.clientWidth / window.innerWidth;
+
+      if (zoom != 1) {
+        // Open editor in Keyboard mode if user use iOS, Safari and page is zoomed.
+        this.setKeyboardMode();
+      }
+    }
+  }
+
+  /**
+   * Change Editor in keyboard mode when is loaded
+   */
+  setKeyboardMode() {
+    const wrsEditor = document.getElementsByClassName('wrs_handOpen wrs_disablePalette')[0];
+    if (wrsEditor) {
+      wrsEditor.classList.remove('wrs_handOpen');
+      wrsEditor.classList.remove('wrs_disablePalette');
+    } else {
+      setTimeout(ContentManager.prototype.setKeyboardMode.bind(this), 100);
+    }
   }
 
   /**

@@ -11,6 +11,12 @@ Last release of this project is was 30th of September 2021.
 
 ## UNRELEASED
 
+  - fix: caret after the formula on first insertion
+  - fix: chemEnabled & editorEnabled config
+  - fix: open MT/CT Editor in Keyboard mode when using iOS
+
+## 7.28.1 2022-05-09
+
   - Fix the redo & undo buttons not working on TinyMCE when interacting with MathType formulas. (KB-14441)
   - Create TinyMCE V6 demos for:
     - HTML5
