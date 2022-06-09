@@ -1,7 +1,7 @@
 {
   "name": "@wiris/html-integrations",
   "private": true,
-  "homepage": "https://www.wiris.com/",
+  "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
   },
@@ -27,7 +27,7 @@
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "babel-eslint": "^10.1.0",
-    "cypress": "^9.3.1",
+    "cypress": "^10.0.3",
     "cypress-fail-fast": "^3.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
