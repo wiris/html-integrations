@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-froala3",
-  "version": "7.28.1",
+  "version": "7.29.0",
   "description": "MathType Web for Froala editor V3 & V4",
   "keywords": [
     "chem",
@@ -34,7 +34,7 @@
     "prepack": "npm install && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.7.1"
+    "@wiris/mathtype-html-integration-devkit": "1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
