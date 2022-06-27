@@ -24,25 +24,15 @@
     "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
-    "babel-eslint": "^10.1.0",
-    "cypress": "^9.3.1",
-    "cypress-fail-fast": "^3.0.0",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.24.0",
-    "eslint-plugin-jsdoc": "^36.1.0",
-    "fs-extra": "^10.0.0",
-    "html-validate": "^6.0.2",
-    "lerna": "^4.0.0",
-    "link-checker": "^1.4.2",
-    "shx": "^0.3.3",
-    "stylelint": "^13.12.0",
-    "stylelint-config-standard": "^21.0.0",
-    "wait-for-localhost": "^3.0.0"
+    "@nrwl/tao": "13.7.3",
+    "@nrwl/cli": "13.7.3",
+    "@nrwl/workspace": "13.7.3",
+    "@types/node": "16.11.7",
+    "typescript": "~4.5.2"
   },
   "license": "MIT",
-  "author": "WIRIS Team (https://www.wiris.com)"
+  "author": "WIRIS Team (https://www.wiris.com)",
+  "workspaces": [
+    "packages/**"
+  ]
 }
