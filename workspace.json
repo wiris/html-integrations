@@ -1,4 +1,13 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "devkit": "packages/devkit",
+    "generic": "packages/generic",
+    "ckeditor4": "packages/ckeditor4",
+    "ckeditor5": "packages/ckeditor5",
+    "froala": "packages/froala",
+    "tinymce4": "packages/tinymce4",
+    "tinymce5": "packages/tinymce5",
+    "tinymce6": "packages/tinymce6"
+  }
 }
