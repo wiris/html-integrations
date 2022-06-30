@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -63,5 +64,11 @@ module.exports = {
     },
     stats: {
         colors: true
-    }
+    },
+    plugins: [
+        new webpack.EnvironmentPlugin({
+            'SERVICE_PROVIDER_URI': 'https://www.wiris.net/demo/plugins/app',
+            'SERVICE_PROVIDER_SERVER': 'java',
+        }),
+    ],
 };

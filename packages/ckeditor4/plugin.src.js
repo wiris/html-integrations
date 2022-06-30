@@ -54,7 +54,7 @@ export class CKEditor4Integration extends IntegrationModel {
     if (!Configuration.get('editorEnabled')) {
       document.getElementsByClassName('cke_button__ckeditor_wiris_formulaeditor')[0].style.display = 'none';
     }
-  
+
     // Hide ChemType toolbar button if is disabled by config.
     if (!Configuration.get('chemEnabled')) {
       document.getElementsByClassName('cke_button__ckeditor_wiris_formulaeditorchemistry')[0].style.display = 'none';
@@ -341,9 +341,10 @@ export class CKEditor4Integration extends IntegrationModel {
         // In CKEditor always there is an iframe or a div container. To access, we use the property that
         // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
         ckeditorIntegrationModelProperties.target = editor.container.$.querySelector('*[class^=cke_wysiwyg]');
-        ckeditorIntegrationModelProperties.serviceProviderProperties = {};
-        ckeditorIntegrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
-        ckeditorIntegrationModelProperties.serviceProviderProperties.server = 'java';
+        ckeditorIntegrationModelProperties.serviceProviderProperties = {
+          URI: process.env.SERVICE_PROVIDER_URI,
+          server: process.env.SERVICE_PROVIDER_SERVER,
+        };
         ckeditorIntegrationModelProperties.version = packageInfo.version;
         ckeditorIntegrationModelProperties.scriptName = 'plugin.js';
         ckeditorIntegrationModelProperties.environment = {};

@@ -240,9 +240,10 @@ export const currentInstance = null;
              * @property {String} editor - Editor name.
              */
       const integrationModelProperties = {};
-      integrationModelProperties.serviceProviderProperties = {};
-      integrationModelProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
-      integrationModelProperties.serviceProviderProperties.server = 'java';
+      integrationModelProperties.serviceProviderProperties = {
+        URI: process.env.SERVICE_PROVIDER_URI,
+        server: process.env.SERVICE_PROVIDER_SERVER,
+      };
       integrationModelProperties.version = packageInfo.version;
       integrationModelProperties.isMoodle = (!!((typeof M === 'object' && M !== null))); // eslint-disable-line no-undef
       if (integrationModelProperties.isMoodle) {
