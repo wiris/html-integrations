@@ -24,8 +24,8 @@
     "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
-    "@nrwl/tao": "14.3.6",
     "@nrwl/cli": "14.3.6",
+    "@nrwl/tao": "14.3.6",
     "@nrwl/workspace": "14.3.6",
     "@types/node": "18.0.0",
     "typescript": "~4.5.2"
