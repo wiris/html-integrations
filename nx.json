@@ -16,6 +16,10 @@
           "lint",
           "test",
           "e2e"
+        ],
+        "runtimeCacheInputs": [
+          "echo $SERVICE_PROVIDER_URI",
+          "echo $SERVICE_PROVIDER_SERVER"
         ]
       }
     }
