@@ -1,3 +1,12 @@
 {
-  "root": "packages/tinymce5"
+  "root": "packages/tinymce5",
+  "targets": {
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+          "script": "build"
+      },
+      "outputs": ["packages/tinymce5/plugin.min.js"]
+    }
+  }
 }

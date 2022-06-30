@@ -1,3 +1,12 @@
 {
-  "root": "packages/ckeditor4"
+  "root": "packages/ckeditor4",
+  "targets": {
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+          "script": "build"
+      },
+      "outputs": ["packages/ckeditor4/plugin.js"]
+    }
+  }
 }
