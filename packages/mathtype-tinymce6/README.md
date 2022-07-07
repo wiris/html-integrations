@@ -20,6 +20,7 @@ Easily include quality math equations in your documents and digital content.
    ```bash
    npm install @wiris/mathtype-tinymce6
    ```
+   > MathType is fully compatible with TinyMCE 6 from version 6.1.0. 
 
 2. Add the plugin as an external plugin:
 

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+## [Unrelease]
+
+  - fix: stop setting data parameter on text nodes
+
 ## 7.29.0 2022-06-20
 
   - fix: caret after the formula on first insertion
