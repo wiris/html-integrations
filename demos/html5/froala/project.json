@@ -1,0 +1,13 @@
+{
+    "root": "demos/html5/froala",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/html5/froala/dist/demo.js"]
+      }
+    }
+  }
+  
