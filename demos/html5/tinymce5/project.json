@@ -1,0 +1,13 @@
+{
+    "root": "demos/html5/tinymce5",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/html5/tinymce5/dist/demo.js"]
+      }
+    }
+  }
+  

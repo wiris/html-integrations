@@ -1,0 +1,13 @@
+{
+    "root": "demos/react/generic",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/react/generic/dist/demo.js"]
+      }
+    }
+  }
+  
