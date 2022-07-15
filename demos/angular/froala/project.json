@@ -1,0 +1,13 @@
+{
+    "root": "demos/angular/froala",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/angular/froala/dist/demo.js"]
+      }
+    }
+  }
+  
