@@ -1,0 +1,13 @@
+{
+    "root": "demos/angular/generic",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/angular/generic/dist/demo.js"]
+      }
+    }
+  }
+  
