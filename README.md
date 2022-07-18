@@ -1,6 +1,6 @@
-# ![MathType logo](resources/img/mathtype_logo.png) MathType Web Integrations
+# ![MathType logo](docs/img/mathtype_logo.png) MathType Web Integrations
 
-![MathType plugin example](resources/img/wiris_plugin_example.png)
+![MathType plugin example](docs/img/wiris_plugin_example.png)
 
 **MathType Web** is the official open-source JavaScript library for [MathType by Wiris], the leading formula editor and equation writer for CMS, LMS, and web applications.
 

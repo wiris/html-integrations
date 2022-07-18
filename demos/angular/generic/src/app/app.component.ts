@@ -1,7 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-// Import common resources.
-import * as Generic from 'resources/demos/angular-imports';
+import * as Generic from 'resources/demos/common';
+
+// Generate scripts.
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated scripts.
+document.head.appendChild(jsDemoImagesTransform);
 
 // Create the initial editor content.
 const editorContent = '<p class="text"> Double click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';

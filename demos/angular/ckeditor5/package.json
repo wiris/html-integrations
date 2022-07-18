@@ -1,6 +1,6 @@
 {
   "name": "demo-angular-ckeditor5",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "A simple Angular App integrating WIRIS MathType in a CKEditor rich text editor.",
   "scripts": {
     "start": "ng serve --host 0.0.0.0 --open",
@@ -28,7 +28,7 @@
     "@angular/platform-browser-dynamic": "^12.2.0",
     "codelyzer": "^6.0.0",
     "lerna": "^4.0.0",
-    "resources": "file:../../../resources",
+    "resources": "file:../../../packages/res",
     "rxjs": "^6.6.0",
     "ts-node": "^8.3.0",
     "tslib": "^2.3.0",
