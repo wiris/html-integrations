@@ -8,8 +8,18 @@ import '@wiris/mathtype-generic/wirisplugin-generic';
 import { version as pluginVersion } from '@wiris/mathtype-generic/package.json';
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
-import * as Generic from 'resources/demos/react-imports';
+import * as Generic from 'resources/demos/common';
+import 'resources/demos/design.css';
+
 import reportWebVitals from './reportWebVitals';
+
+// Generate scripts.
+const jsDemoImagesTransform = document.createElement('script');
+jsDemoImagesTransform.type = 'text/javascript';
+jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+
+// Load generated scripts.
+document.head.appendChild(jsDemoImagesTransform);
 
 // Set the initial content.
 // eslint-disable-next-line max-len

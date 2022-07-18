@@ -1,11 +1,11 @@
 // Load scripts.
 import { wrsGetTargetHtml } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
-import * as Generic from '../../../../resources/demos/common';
+import * as Generic from 'resources/demos/common';
 
 // Load styles.
 import './static/style.css';
-import '../../../../resources/demos/design.css';
+import 'resources/demos/design.css';
 
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement('script');

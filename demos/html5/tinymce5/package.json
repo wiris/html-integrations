@@ -1,6 +1,7 @@
 {
   "name": "demo-html5-tinymce5",
-  "version": "1.0.3",
+  "version": "1.1.0",
+  "private": true,
   "description": "A simple html5 App integrating WIRIS MathType in a TinyMCE5 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -23,6 +24,7 @@
     "url-loader": "^4.1.0",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.0.0",
-    "webpack-dev-server": "^3.0.0"
+    "webpack-dev-server": "^3.0.0",
+    "resources": "file:../../../packages/res"
   }
 }

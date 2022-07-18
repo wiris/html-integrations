@@ -9,7 +9,7 @@ import CKEditor from '@ckeditor/ckeditor5-react'; // eslint-disable-line no-unus
 // import CKEditor custom build'.
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
-import * as Generic from 'resources/demos/react-imports';
+import * as Generic from 'resources/demos/imports';
 
 // Import the wiris plugin version.
 import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
