@@ -1,6 +1,8 @@
 # Resources folder
 Resource folder containing files and functions common among more than one demo. It may also contain other files that are commonly used in different places in the project
 
+The main goal of this package is to mantain the demos inside the mono-repo project independent of each other and the folders in this repository.
+
 ## File manifest
 
 ```bash
@@ -10,16 +12,11 @@ resources
 │   ├── common_file-2
 |   ├── ...
 |   └── common_file-m
-├── img
-│   ├── img-1
-│   ├── img-2
-|   ├── ...
-|   └── img-m
+├── webpack
 ├── ...
 ├── package.json
 └── README.md
 ```
 
 * The folder srtucture accepts new folders with other files that can be used anywhere in the project.
-* The package.json file is necessary to dotate the folder the capacity of being a package and being imported in any file.
-* The files named *common_file-m* are the ones used in the demos project. They are script, css and html files.
+* The webpack file is necessary specify the loaders needed to import specific type of files.

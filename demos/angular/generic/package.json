@@ -1,6 +1,6 @@
 {
   "name": "demo-angular-generic",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A simple Angular App integrating WIRIS MathType in a Generic integration.",
   "scripts": {
     "start": "ng serve --host localhost --open",
@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^11.2.11",
     "codelyzer": "^6.0.0",
     "lerna": "^4.0.0",
-    "resources": "file:../../../resources",
+    "resources": "file:../../../packages/res",
     "rxjs": "^6.6.0",
     "ts-node": "^8.3.0",
     "tslib": "^2.0.0",
