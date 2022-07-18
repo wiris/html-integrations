@@ -144,7 +144,7 @@ export default class Latex {
         end += mathTagEnd.length;
       }
 
-      mathml = content.substring(start, end);
+      mathml = Util.htmlSanitize(content.substring(start, end));
 
       startAnnotation = mathml.indexOf(openTarget);
       if (startAnnotation !== -1) {

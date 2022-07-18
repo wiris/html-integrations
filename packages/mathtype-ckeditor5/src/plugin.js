@@ -256,6 +256,11 @@ export default class MathType extends Plugin {
       // And obtain the complete formula
       formula = `<math${mathAttributes}>${formula}</math>`;
 
+      // Skip if mathml contains a XSS injection
+      if (Util.containsXSS(formula)) {
+        return;
+      }
+
       /* Model node that contains what's going to actually be inserted. This can be either:
             - A <mathml> element with a formula attribute set to the given formula, or
             - If the original <math> had a LaTeX annotation, then the annotation surrounded by "$$...$$" */
@@ -324,7 +329,9 @@ export default class MathType extends Plugin {
 
       const mathUIElement = createViewImage(modelItem, { writer: viewWriter }); // eslint-disable-line no-use-before-define
 
-      viewWriter.insert(viewWriter.createPositionAt(widgetElement, 0), mathUIElement);
+      if (mathUIElement) {
+        viewWriter.insert(viewWriter.createPositionAt(widgetElement, 0), mathUIElement);
+      }
 
       return toWidget(widgetElement, viewWriter);
     }
@@ -339,9 +346,13 @@ export default class MathType extends Plugin {
       /* Although we use the HtmlDataProcessor to obtain the attributes,
             we must create a new EmptyElement which is independent of the
             DataProcessor being used by this editor instance */
-      return viewWriter.createEmptyElement('img', imgElement.getAttributes(), {
-        renderUnsafeAttributes: ['src'],
-      });
+      if (imgElement) {
+        return viewWriter.createEmptyElement('img', imgElement.getAttributes(), {
+          renderUnsafeAttributes: ['src'],
+        });
+      }
+
+      return null;
     }
 
     // Model -> Editing view
