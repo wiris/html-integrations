@@ -19,6 +19,7 @@ Last release of this project is was 30th of September 2021.
 
 ## 7.30.0 2022-07-20
 
+  - fix: add dompurify dependenci and sanitize mathml to prevent XSS
   - fix: stop setting data parameter on text nodes
   - feat: create plugin for TinyMCE 6
 
