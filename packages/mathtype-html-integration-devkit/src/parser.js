@@ -200,7 +200,7 @@ export default class Parser {
           if (mathmlStart !== -1) {
             mathmlStart += mathmlStartToken.length;
             const mathmlEnd = imgCode.indexOf('"', mathmlStart);
-            const mathml = MathML.safeXmlDecode(imgCode.substring(mathmlStart, mathmlEnd));
+            const mathml = Util.htmlSanitize(MathML.safeXmlDecode(imgCode.substring(mathmlStart, mathmlEnd)));
             let latexStartPosition = mathml.indexOf(token);
 
             if (latexStartPosition !== -1) {
@@ -261,7 +261,7 @@ export default class Parser {
           // latex formulas that contains '<'.
           const latex = code.substring(startPosition + 2, endPosition);
           const decodedLatex = Util.htmlEntitiesDecode(latex);
-          let mathml = Latex.getMathMLFromLatex(decodedLatex, true);
+          let mathml = Util.htmlSanitize(Latex.getMathMLFromLatex(decodedLatex, true));
           if (!Configuration.get('saveHandTraces')) {
             // Remove hand traces.
             mathml = MathML.removeAnnotation(mathml, 'application/json');
@@ -421,7 +421,7 @@ export default class Parser {
         output += Util.createObjectCode(imgCode);
       }
     }
-    output += code.substring(endPosition, code.length)
+    output += code.substring(endPosition, code.length);
     return output;
   }
 
@@ -460,7 +460,7 @@ export default class Parser {
       }
 
       if (!MathML.isMathmlInAttribute(content, start) && imageMathmlAtrribute === -1) {
-        let mathml = content.substring(start, end);
+        let mathml = Util.htmlSanitize(content.substring(start, end));
         mathml = (characters.id === Constants.safeXmlCharacters.id)
           ? MathML.safeXmlDecode(mathml)
           : MathML.mathMLEntities(mathml);

@@ -1,4 +1,5 @@
 /* eslint-disable no-bitwise */
+import DOMPurify from 'dompurify';
 import MathML from './mathml';
 import Configuration from './configuration';
 import Latex from './latex';
@@ -390,6 +391,26 @@ export default class Util {
       .join('&gt;')
       .split('"')
       .join('&quot;');
+  }
+
+  /**
+   * Sanitize HTML to prevent XSS injections.
+   * @param {string} html - html to be sanitize.
+   * @returns {string} html sanitized.
+   * @static
+   */
+  static htmlSanitize(html) {
+    return DOMPurify.sanitize(html);
+  }
+
+  /**
+   * Check if HTML contains XSS injections.
+   * @param {string} html - html to be sanitize.
+   * @returns {string} html sanitized.
+   * @static
+   */
+  static containsXSS(html) {
+    return !(DOMPurify.sanitize(html) === html);
   }
 
   /**
