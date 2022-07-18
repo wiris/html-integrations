@@ -2,7 +2,7 @@
 import './static/style.css';
 
 // Load the file that contains common imports between demos.
-import * as Generic from '../../../../resources/demos/imports';
+import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Tinymce';

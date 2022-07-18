@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // Import common resources.
-import * as Generic from 'resources/demos/angular-imports';
+import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';

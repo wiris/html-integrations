@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import * as ClassicEditor from '../ckeditor';
 
 // Import common resources.
-import * as Generic from 'resources/demos/angular-imports';
+import * as Generic from 'resources/demos/imports';
 
 // Load wiris plugin version.
 import packageInfo from '@wiris/mathtype-ckeditor5/package.json';

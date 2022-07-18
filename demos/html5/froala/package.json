@@ -1,6 +1,7 @@
 {
   "name": "demo-html5-froala",
-  "version": "1.0.4",
+  "version": "1.1.0",
+  "private": true,
   "description": "A simple html5 App integrating WIRIS MathType in a Froala4 rich text editor.",
   "main": "app.js",
   "scripts": {
@@ -24,6 +25,7 @@
     "wait-for-localhost": "^3.3.0",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.0.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "resources": "file:../../../packages/res"
   }
 }

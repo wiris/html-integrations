@@ -1,6 +1,6 @@
 {
   "name": "demo-react-generic",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A simple ReactJS App integrating WIRIS MathType in a Generic integration.",
   "private": true,
   "dependencies": {
@@ -14,7 +14,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-scripts": "^4.0.0",
-    "resources": "file:../../../resources"
+    "resources": "file:../../../packages/res"
   },
   "scripts": {
     "start": "cross-env PORT=3007 react-scripts start",
