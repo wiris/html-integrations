@@ -21,8 +21,9 @@ on:
         default: ""
       versions:
         description: |
-          Space-separated list of versions to publish, e.g.: "@wiris/mathtype-ckeditor5=7.27.0 @wiris/mathtype-html-integration-devkit=1.6.1"
+          Space-separated list of versions to publish, e.g.: "ckeditor5=7.27.0 devkit=1.6.1"
           Packages not mentioned in the list will stay at their current version and will not be published.
+          Packages will be published in the order they are given.
         required: false
         default: ""
 
@@ -31,36 +32,19 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
+    # By default all npm publishing actions in this pipeline will not be executed.
+    # They will only be executed when the publish_npm flag is set to "publish_npm".
+    if: github.event.inputs.publish_npm == 'publish_npm'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install expect
-        run: sudo apt-get install -y expect
-
-      # For safety reasons, by default all npm publishing actions in this pipeline will be done with a dummy private npm registry underneath.
-      # This will only be turned off when the publish_npm flag is set to "publish_npm".
       - name: Set up a private npm registry and publish
         run: |
 
-          # In case we want to just emulate the publishing, we set up Verdaccio
-          if [ ${{ github.event.inputs.publish_npm == 'publish_npm' }} ] ; then
+          # Add the token to publish to the npm registry
+          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
 
-            # Add the token to publish to the npm registry
-            npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
-
-          else
-
-            # We use Verdaccio to run a local private npm server
-            npm install -g verdaccio
-
-            # Set npm to publish to local registry
-            cp resources/publish/.npmrc ~/.npmrc
-
-            # Run and block verdaccio until it is ready
-            (verdaccio --config resources/publish/config.yaml &) | grep -q "http address"
-
-          fi
-
-          # Call the Expect script that interacts with the Lerna TUI
-          ./scripts/publish.exp ${{ github.event.inputs.publish_npm == 'publish_npm' }} ${{ github.event.inputs.versions }}
+          # Call the script that interacts with the yarn CLI
+          ./scripts/publish.mjs ${{ github.event.inputs.versions }}
