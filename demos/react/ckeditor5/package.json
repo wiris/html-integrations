@@ -27,8 +27,10 @@
     "web-vitals": "^1.0.0"
   },
   "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-ckeditor5 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "cross-env PORT=3002 react-scripts start",
+    "prestart": "yarn && yarn link @wiris/mathtype-ckeditor5 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "cross-env PORT=3002 react-scripts start",
-    "compile-package": "cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - && npm install ../../../packages/mathtype-ckeditor5/$filename",
     "test": "react-scripts test"
   },
   "author": "WIRIS Team (http://www.wiris.com)",

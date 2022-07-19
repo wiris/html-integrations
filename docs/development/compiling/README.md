@@ -19,28 +19,38 @@ In order to offer cross-browser compatibility and the latest features, most of t
 When running the following command described in the [Bootstrapping](../../README.md#Bootstrapping) section:
 
 ```sh
-$ npm start
+$ yarn
 ```
 
 the monorepo will bootstrap all the packages in the monorepo and also compile all the plugins for you.
 
 ## Compiling individual packages
 
-To compile a single packages, move to its folder and run:
+To compile a single packages, run:
 
 ```sh
-$ npm run build
+$ yarn build <PACKAGE>
 ```
 
 You can also build the packages in development mode:
 
 ```sh
-$ npm run build-dev
+$ yarn build-dev <PACKAGE>
 ```
+
+Where PACKAGE can be:
+
+* ckeditor4
+* ckeditor5
+* froala
+* generic
+* tinymce4
+* tinymce5
+* tinymce6
 
 ## Pointing to your own back-end
 
-If your website hosts its own MathType Web services, instead of using the wiris.net services, then you must pass a flag indicating which technology your server uses (ASPX, Java, Ruby, or PHP):
+If your website hosts its own MathType Web services, instead of using the wiris.net services, then you must pass a flag indicating which technology your server uses (ASPX, Java, Ruby, or PHP), run the following command in the desired package folder:
 
 ```sh
 $ npm run compile -- [tech] [--dev]
@@ -58,14 +68,14 @@ In case of using a custom back-end, the compiled package will be stored in `html
 
 ## Cleaning up
 
-To delete files generated during the compilation process, move to the root of the repo and run:
+To delete files generated during the compilation process, run:
 
 ```sh
-$ npm run clean
+$ yarn clean
 ```
 
 To also clean all of the `node_modules` folders, run instead:
 
 ```sh
-$ npm run clean-all
+$ yarn clean-all
 ```

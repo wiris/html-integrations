@@ -5,35 +5,32 @@
 By default, these demos download the latest version of the MathType plugins from npm.
 This document explains what to do if you are modifying the source code of the plugins in this repo, and want to try that out instead.
 
-> **Note**: The React demos require an extra step beforehand.
->
-> Go to the desired demo folder and run `yarn`, e.g.:
->
-> ```sh
-> demos/react/ckeditor5$ yarn
-> ```
->
-> All other demos (HTML5 and Angular) do not require this step.
+To work with Nx and Yarn, and try out the packages with the local changes instead of the published packages, you will execute the commands from the project root.
 
-To work with Lerna and try out the packages, with your local changes instead of the published packages, you need to copy the contents from `lerna.demos.json` to `lerna.json` in the root of the repo:
+Assuming that you already executed the `yarn` command, you'll have to build the desired package and start the demo:
 
-```sh
-$ cp lerna.demos.json lerna.json
+```js
+$ nx build <PACKAGE>
+$ nx start <FRAMEWORK>-<EDITOR>
 ```
 
-Then, bootstrap the packages again:
+| FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                                               |
+|-----------|---------------------|--------------------------------------------------------------------|
+| html5     | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
+| html5     | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
+| html5     | Froala V4           | [froala](../../demos/html5/froala)                     |
+| html5     | Generic integration | [generic](../../demos/html5/generic)                   |
+| html5     | TinyMCE V4          | [tinymce4](../../demos/html5/tinymce4)                 |
+| html5     | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
+| html5     | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
+| angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
+| angular   | Froala V4           | [froala](../../demos/angular/froala/README.md)       |
+| angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     |
+| angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)   |
+| react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)     |
+| react     | Froala V4           | [froala](../../demos/react/froala/README.md)           |
+| react     | Generic integration | [generic](../../demos/react/generic/README.md)         |
+| react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
 
-```sh
-$ npm install
-$ npm start
-```
 
-Then, just move to the desired demo folder and run:
-
-```sh
-$ npm run start
-```
-
->**Note**: The CKEditor 5 demo for HTML5 might raise an error.
->
-> In such case, run `npm run compile-package` before running `npm start` (or `npm run compile-package-windows` if you're using Windows).
+For each time you apply a change to the desired package and want to see those changes in your demo, you'll have to `re-run` the previous two commands.
