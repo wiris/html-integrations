@@ -16,7 +16,7 @@ import $ from 'jquery';
 import * as Generic from 'resources/demos/imports';
 
 // Import the wiris plugin version.
-import { version as pluginVersion } from '@wiris/mathtype-froala3/package.json';
+import { version as pluginVersion } from '@wiris/mathtype-froala/package.json';
 import reportWebVitals from './reportWebVitals';
 
 // This needs to be included before the '@wiris/mathtype-froala3' is loaded synchronously.
@@ -24,7 +24,7 @@ window.$ = $;
 window.FroalaEditor = require('froala-editor');
 
 // Load scripts synchronously.
-require('@wiris/mathtype-froala3');
+require('@wiris/mathtype-froala');
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';

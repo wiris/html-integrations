@@ -7,6 +7,13 @@
             "script": "start"
         },
         "outputs": ["demos/react/ckeditor5/dist/demo.js"]
+      },
+      "start-react": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start-react"
+        },
+        "outputs": ["demos/react/ckeditor5/dist/demo.js"]
       }
     }
   }

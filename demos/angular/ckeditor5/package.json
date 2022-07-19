@@ -3,8 +3,10 @@
   "version": "1.1.0",
   "description": "A simple Angular App integrating WIRIS MathType in a CKEditor rich text editor.",
   "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-ckeditor5 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "ng serve --host 0.0.0.0 --open",
+    "prestart": "yarn && yarn link @wiris/mathtype-ckeditor5 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "ng serve --host 0.0.0.0 --open",
-    "compile-package": "cd ../../../packages/mathtype-ckeditor5/ && filename=$( npm pack --quiet ) && cd - && npm install ../../../packages/mathtype-ckeditor5/$filename",
     "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",

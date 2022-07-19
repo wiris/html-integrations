@@ -5,13 +5,15 @@
   "description": "A simple html5 App integrating WIRIS MathType in a Froala4 rich text editor.",
   "main": "app.js",
   "scripts": {
-    "compile-package": "cd ../../../packages/mathtype-froala3/ && npm run compile -- npm --dev",
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-froala && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "webpack-dev-server --open",
+    "prestart": "yarn && yarn link @wiris/mathtype-froala && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "webpack-dev-server --open"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "@wiris/mathtype-froala3": "^7.27.0",
+    "@wiris/mathtype-froala": "^7.27.0",
     "@wiris/mathtype-html-integration-devkit": "*",
     "froala-editor": "^4.0.7"
   },
