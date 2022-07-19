@@ -18,8 +18,10 @@
     "web-vitals": "^1.0.0"
   },
   "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce5 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "cross-env PORT=3006 react-scripts start",
+    "prestart": "yarn && yarn link @wiris/mathtype-tinymce5 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "cross-env PORT=3006 react-scripts start",
-    "compile-package": "cd ../../../packages/mathtype-tinymce5/ && npm run compile -- npm --dev",
     "test": "react-scripts test"
   },
   "author": "Carla Lara",

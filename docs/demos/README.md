@@ -27,36 +27,31 @@ We create and curate a collection of working code examples in order to test, val
 
 ## Running a demo
 
-To run a demo, move to the folder containing the demo you want to try out, and then run `npm install` and `npm start`:
+To run a demo, from the project root, run:
 
-```sh
-$ cd demos/{technology}/{folder}
-$ npm install
-$ npm start
+```js
+$ nx start-remote <FRAMEWORK>-<EDITOR>
 ```
 This is the full list of available examples of MathType Integrations on this project:
 
-| Framework | Editor and Version  | Editor folder                                                               |
+| FRAMEWORK | Editor and Version  | EDITOR                                                               |
 |-----------|---------------------|--------------------------------------------------------------------|
-| HTML5     | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
-| HTML5     | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
-| HTML5     | Froala V2           | [froala2](../../demos/html5/froala2)                   |
-| HTML5     | Froala V3 & V4      | [froala](../../demos/html5/froala)                     |
-| HTML5     | Generic integration | [generic](../../demos/html5/generic)                   |
-| HTML5     | TinyMCE V4          | [tinymce4](../../demos/html5/tinymce4)                 |
-| HTML5     | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
-| HTML5     | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
-| Angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
-| Angular   | Froala V3 & V4      | [froala](../../demos/angular/froala/README.md)       |
-| Angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     |
-| Angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)   |
-| React     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)     |
-| React     | Froala V3 & V4      | [froala](../../demos/react/froala/README.md)           |
-| React     | Generic integration | [generic](../../demos/react/generic/README.md)         |
-| React     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
+| html      | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
+| html      | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
+| html      | Froala V4           | [froala](../../demos/html5/froala)                     |
+| html      | Generic integration | [generic](../../demos/html5/generic)                   |
+| html      | TinyMCE V4          | [tinymce4](../../demos/html5/tinymce4)                 |
+| html      | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
+| html      | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
+| angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
+| angular   | Froala V4           | [froala](../../demos/angular/froala/README.md)       |
+| angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     |
+| angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)   |
+| react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)     |
+| react     | Froala V4           | [froala](../../demos/react/froala/README.md)           |
+| react     | Generic integration | [generic](../../demos/react/generic/README.md)         |
+| react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
 
-
-> **Note**: React demos require using `yarn` instead of `npm install` due to the way their dependencies are resolved.
 
 ## Running a demo using the local source code
 

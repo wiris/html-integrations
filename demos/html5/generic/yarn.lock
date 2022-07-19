@@ -7447,7 +7447,7 @@ resolve@^1.10.0, resolve@^1.14.2:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-"resources@file:../../../resources":
+"resources@file:../../../packages/res":
   version "1.0.0"
   dependencies:
     html-loader "^1.1.0"

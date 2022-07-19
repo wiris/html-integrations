@@ -15,7 +15,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 
 ## Requirements
 
-Using this project requires having [Git] and [npm] installed.
+Using this project requires having [Git] and [yarn](https://yarnpkg.com/) installed.
 You can follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install npm and [this guide](https://www.atlassian.com/git/tutorials/install-git) to install git.
 
 [Git]: https://git-scm.com/
@@ -26,7 +26,7 @@ You can follow [this guide](https://docs.npmjs.com/downloading-and-installing-no
 This repository has a [monorepo](https://en.wikipedia.org/wiki/Monorepo) structure.
 This means that the source code of multiple npm packages is stored in a single git repository.
 Some of these packages depend on each other, so storing them together allows for a faster development cycle.
-In order to manage multiple packages, we use [Lerna] as a cornerstone of the project structure.
+In order to manage multiple packages, we use [Nx](https://nx.dev/) as a cornerstone of the project structure.
 You don't need to install Lerna on your own, as it will be installed locally by npm.
 
 The main functionality of Lerna is bootstrapping.
@@ -42,7 +42,7 @@ The most important files and folders are:
     All the usual npm commands work inside.
 - `demos`. A growing set of demos to help developers integrate these plugins on different scenarios.
 - `scripts`. Scripts used for different development tasks.
-- `resources`. Resources files that are needed in the demos folder, such as images, etc.
+- `resources`. Resources files that are needed for the publish workflow.
 
 [Lerna]: https://lerna.js.org/
 
@@ -56,23 +56,15 @@ On Linux or macOS, you can clone this repo as usual:
 $ git clone https://github.com/wiris/html-integrations
 ```
 
-On Windows, you will need to have administrator privileges or to activate [developer mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development) in your account.
-Then, use the `core.symlinks` option when cloning the repository:
-
-```sh
-$ git clone --config core.symlinks=true https://github.com/wiris/html-integrations
-```
-
 ### Bootstrapping
 
-After cloning this repo, run the following commands:
+After cloning this repo, run the following command:
 
 ```sh
-$ npm install
-$ npm start
+$ yarn
 ```
 
-This will bootstrap the packages using Lerna.
+This will bootstrap the packages using `Yarn` and `Nx`.
 
 ## Next steps
 

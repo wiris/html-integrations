@@ -8,7 +8,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import $ from 'jquery';
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
-import * as Generic from 'res/demos/imports';
+import * as Generic from 'resources/demos/imports';
 
 // Import the wiris plugin version.
 import { version as pluginVersion } from '@wiris/mathtype-tinymce5/package.json';

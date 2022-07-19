@@ -17,8 +17,10 @@
     "resources": "file:../../../packages/res"
   },
   "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-generic && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "cross-env PORT=3007 react-scripts start",
+    "prestart": "yarn && yarn link @wiris/mathtype-generic && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "cross-env PORT=3007 react-scripts start",
-    "compile-package": "cd ../../../packages/mathtype-generic/ && npm run compile -- npm --dev",
     "test": "react-scripts test"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
