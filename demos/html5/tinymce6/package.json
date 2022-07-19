@@ -5,7 +5,9 @@
   "description": "A simple html5 App integrating WIRIS MathType in a TinyMCE6 rich text editor.",
   "main": "app.js",
   "scripts": {
-    "compile-package": "cd ../../../packages/mathtype-tinymce6/ && npm run compile -- npm --dev",
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce6 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "webpack-dev-server --open",
+    "prestart": "yarn && yarn link @wiris/mathtype-tinymce6 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "webpack-dev-server --open"
   },
   "author": "WIRIS Team (https://www.wiris.com)",

@@ -6,8 +6,7 @@
     "email": "support@wiris.com"
   },
   "scripts": {
-    "start": "lerna bootstrap",
-    "poststart": "lerna run compile -- npm",
+    "postinstall": "for d in packages/*/ ; do (cd $d && yarn link); done",
     "premoodle": "npm run clean && shx rm -rf output && lerna bootstrap",
     "postmoodle": "shx cp output/moodle-tinymce4/plugin.min.moodle.js packages/mathtype-tinymce4/plugin.min.moodle.js",
     "moodle": "lerna run compile -- moodle",
@@ -33,6 +32,7 @@
   "license": "MIT",
   "author": "WIRIS Team (https://www.wiris.com)",
   "workspaces": [
-    "packages/**"
+    "packages/**",
+    "demos/*/ckeditor5"
   ]
 }

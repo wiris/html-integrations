@@ -7,6 +7,13 @@
             "script": "start"
         },
         "outputs": ["demos/angular/generic/dist/demo.js"]
+      },
+      "start-remote": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start-remote"
+        },
+        "outputs": ["demos/angular/generic/dist/demo.js"]
       }
     }
   }

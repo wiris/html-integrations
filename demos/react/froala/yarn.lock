@@ -2060,10 +2060,10 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@wiris/mathtype-froala3@^7.27.0":
+"@wiris/mathtype-froala@^7.27.0":
   version "7.29.0"
-  resolved "https://registry.yarnpkg.com/@wiris/mathtype-froala3/-/mathtype-froala3-7.29.0.tgz#81243f6509afa66d7ba16a97d5469690c86c8a8f"
-  integrity sha512-ZljeEZpUm/+gqIjuSz6oOmdO6LJWaREDoRgSW79LbCG6e/GU9T2ybxg0ElwadOQYFRtTgzlocXhJoa1wfM0q5Q==
+  resolved "https://registry.yarnpkg.com/@wiris/mathtype-froala/-/mathtype-froala-7.29.0.tgz#ede8944567664e33b274eb49c3e481818ae861f4"
+  integrity sha512-ZgUXWP5ccHXsS1mS/cvLCiMi8y38Xxj+oWNcgcQ8dZiV8I2LGnjebatMJ+YsDRge/ALrWGRMoNOUYNW7S9LXGQ==
   dependencies:
     "@wiris/mathtype-html-integration-devkit" "1.8.0"
 
