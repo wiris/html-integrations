@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-## [Unrelease]
+## 7.30.0 2022-07-20
 
   - fix: stop setting data parameter on text nodes
+  - feat: create plugin for TinyMCE 6
 
 ## 7.29.0 2022-06-20
 
