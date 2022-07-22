@@ -14,7 +14,14 @@
             "script": "start-remote"
         },
         "outputs": ["demos/angular/ckeditor5/dist/demo.js"]
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/angular/ckeditor5/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
       }
     }
   }
-  

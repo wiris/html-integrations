@@ -7,6 +7,22 @@
           "script": "build"
       },
       "outputs": ["packages/tinymce6/plugin.min.js"]
+    },
+    "test": {
+      "executor": "@nrwl/cypress:cypress",
+      "dependsOn": ["build"],
+      "options": {
+        "baseUrl": "http://localhost:8008",
+        "cypressConfig": "./cypress.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/tinymce6/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

@@ -7,6 +7,22 @@
           "script": "build"
       },
       "outputs": ["packages/generic/wirisplugin-generic.js"]
+    },
+    "test": {
+      "executor": "@nrwl/cypress:cypress",
+      "dependsOn": ["build"],
+      "options": {
+        "baseUrl": "http://localhost:8007",
+        "cypressConfig": "./cypress.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/generic/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

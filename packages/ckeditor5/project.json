@@ -1,3 +1,20 @@
 {
-  "root": "packages/ckeditor5"
+  "root": "packages/ckeditor5",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "baseUrl": "http://localhost:8002",
+        "cypressConfig": "./cypress.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/ckeditor5/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  }
 }
