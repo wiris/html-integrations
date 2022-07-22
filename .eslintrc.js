@@ -7,6 +7,7 @@ module.exports = {
   plugins: [
     'import',
     'jsdoc',
+    '@nrwl/nx',
   ],
   extends: [
     'airbnb-base', // We extend our linting to follow the airbnb rules
