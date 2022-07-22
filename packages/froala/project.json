@@ -7,6 +7,22 @@
           "script": "build"
       },
       "outputs": ["packages/froala/wiris.js"]
+    },
+    "test": {
+      "executor": "@nrwl/cypress:cypress",
+      "dependsOn": ["build"],
+      "options": {
+        "baseUrl": "http://localhost:8004",
+        "cypressConfig": "./cypress.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/froala/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
     }
   }
 }
