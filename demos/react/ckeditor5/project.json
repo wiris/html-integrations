@@ -14,7 +14,14 @@
             "script": "start-react"
         },
         "outputs": ["demos/react/ckeditor5/dist/demo.js"]
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/react/ckeditor5/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
       }
     }
   }
-  

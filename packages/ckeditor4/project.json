@@ -7,6 +7,22 @@
           "script": "build"
       },
       "outputs": ["packages/ckeditor4/plugin.js"]
+    },
+    "test": {
+      "executor": "@nrwl/cypress:cypress",
+      "dependsOn": ["build"],
+      "options": {
+        "baseUrl": "http://localhost:8001",
+        "cypressConfig": "./cypress.json"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": ["packages/ckeditor4/**/*.{ts,tsx,js,jsx}"]
+      },
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

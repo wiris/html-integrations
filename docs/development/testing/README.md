@@ -31,16 +31,24 @@ $ xhost local:root
 
 ## Run all tests at once
 
-All tests can be executed with the `npm test` command from the root of the project.
+Before running the tests you will need to build all package and start all demos.
 
-All available tests will be run.
+All tests can be run with the commands:
 
 ```sh
-$ npm install
-$ npm run build
-$ npm test
+$ nx run-many --target=build --all --parallel
+$ nx run-many --target=start --all --parallel
+$ nx run-many --target=test --all --parallel
 ```
 
 ## Run all the tests for a specific demo
 
-// TODO
+You can run all tests for a specific demo with the `nx test <package>` command.
+
+Before running the tests you will need to build the package and start a demo. For example to run all tests on the `ckeditor5` demo run:
+
+```
+$ nx build ckeditor5
+$ nx start html-ckeditor5
+$ nx test ckeditor5
+```

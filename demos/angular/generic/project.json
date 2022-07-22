@@ -14,7 +14,14 @@
             "script": "start-remote"
         },
         "outputs": ["demos/angular/generic/dist/demo.js"]
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/angular/generic/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
       }
     }
   }
-  

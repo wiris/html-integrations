@@ -13,6 +13,21 @@ We've implemented a complete lint strategy for the JavaScript, HTML and CSS file
 
 ## JavaScript files
 
+To validate all the `.js` files of all packages, run:
+
+```sh
+  $ nx run-many --target=lint --all --parallel
+```
+
+To validate specific package `.js`:
+
+```sh
+  $ nx lint <package>
+  # Example:
+  $ nx lint ckeditor5
+```
+
+
 To validate all the `.js` files of the project, run:
 
 ```sh
@@ -22,7 +37,7 @@ To validate all the `.js` files of the project, run:
 To validate specific `.js` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
-  $ npm run lint-js --route=path
+  $ npm run lint-js --route=<path>
   # Example:
   $ npm run lint-js --route=demos
 ```
