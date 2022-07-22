@@ -236,8 +236,8 @@ export class FroalaIntegration extends IntegrationModel {
     const froalaIntegrationProperties = {};
     froalaIntegrationProperties.target = target;
     froalaIntegrationProperties.serviceProviderProperties = {
-        URI: process.env.SERVICE_PROVIDER_URI,
-        server: process.env.SERVICE_PROVIDER_SERVER,
+      URI: process.env.SERVICE_PROVIDER_URI,
+      server: process.env.SERVICE_PROVIDER_SERVER,
     };
     froalaIntegrationProperties.version = packageInfo.version;
     froalaIntegrationProperties.scriptName = 'wiris.js';
