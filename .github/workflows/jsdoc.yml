@@ -1,27 +1,27 @@
-# Jobs: 
+# Jobs:
 # - "generate-docs"
 #
 #   This is job uses jsdoc library to generate a static site from the comments on the library code.
 #
-#   Once the static site is generated using the command 'npm run build-jsdoc' from the 'mathtype-html-integration-devkit'
-#   package, it runs some validations to the generated files at 'packages/mathtype-html-integration-devkit/out/' folder.
+#   Once the static site is generated using the command 'yarn run build-jsdoc' from the 'mathtype-html-integration-devkit'
+#   package, it runs some validations to the generated files at 'packages/devkit/out/' folder.
 #
 #   Validation consists on:
 #    - The main index.html file is not empty.
 #    - There are no broken links on the HTML files.
 #
-#   If validation passes the static site is published as an artifact called 'mathtype-html-integration-devkit-docs.zip'. 
+#   If validation passes the static site is published as an artifact called 'mathtype-html-integration-devkit-docs.zip'.
 
 name: Generate and validate the jsdoc site
 
-on: 
+on:
   - push
   - workflow_dispatch
 
 jobs:
   generate-docs:
     name: Generate and validate the jsdoc site
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -36,22 +36,22 @@ jobs:
       # 02. Install html-integrations dependencies
       - name: Install dependencies
         run: |
-          npm ci
+          yarn install --frozen-lockfile
 
       # 03. Install mathtype-html-integration-devkit dependencies
       #     and run the jsdoc command to generate the static site.
       - name: Install depedencies and generate the jsdoc site
         run: |
-          cd packages/mathtype-html-integration-devkit
-          npm install
-          npm run build-jsdoc
+          cd packages/devkit
+          yarn install
+          yarn run build-jsdoc
 
       # 04. Check if the generated documentation is empty.
       - name: Validate main index file is not empty
         id: check_files
         uses: andstor/file-existence-action@v1
         with:
-          files: "packages/mathtype-html-integration-devkit/out/index.html"
+          files: "packages/devkit/out/index.html"
 
       # 05. If the main index.html file is empty, raise an error to stop
       #     the workflow execution.
@@ -68,24 +68,24 @@ jobs:
       #   id: check_links
       #   uses: modernweb-dev/check-html-links-action@v1
       #   with:
-      #     doc-folder: 'packages/mathtype-html-integration-devkit/out/'
+      #     doc-folder: 'packages/devkit/out/'
 
       # 07. Create a report with any broken link and/or image found.
       - name: Generate the broken links report
         run: |
-          npm run build-jsdoc-validation |& tee packages/mathtype-html-integration-devkit/out/report.txt 
-          cat packages/mathtype-html-integration-devkit/out/report.txt
+          yarn run build-jsdoc-validation |& tee packages/devkit/out/report.txt
+          cat packages/devkit/out/report.txt
 
       # 08. Look for any detected error on the broken links report.
       - name: Look for errors on the broken links report
         id: check_errors
         run: |
-          if grep -q "0 errors and" "packages/mathtype-html-integration-devkit/out/report.txt"; then
+          if grep -q "0 errors and" "packages/devkit/out/report.txt"; then
             echo '::set-output name=LINK_ERROR::false'
           else
             echo '::set-output name=LINK_ERROR::true'
           fi
-      
+
       # 09. If there is any found error on the broken links report,
       # stop the workflow by throwing an error
       - name: Errors if there are broken links or images on the jsdoc site
@@ -102,5 +102,5 @@ jobs:
         with:
           name: mathtype-html-integration-devkit-docs
           path: |
-            packages/mathtype-html-integration-devkit/out/
+            packages/devkit/out/
           if-no-files-found: error
