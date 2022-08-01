@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### [Unrelease]
+
+  - fix: change webpack demo host to localhost
+
 ## 7.31.1 2022-08-18
 
   - docs: add deprecation warning message on froala and tinymce4 package
