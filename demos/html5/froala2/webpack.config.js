@@ -12,7 +12,7 @@ module.exports = {
     writeToDisk: true,
     contentBase: path.join(__dirname, ''),
     port: 8003,
-    host: '0.0.0.0'
+    host: 'localhost'
   },
   resolve: {
     modules: ['node_modules'],
