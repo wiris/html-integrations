@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "bdavs.expect",
     "dbaeumer.vscode-eslint",
     "html-validate.vscode-html-validate",
     "stylelint.vscode-stylelint",
