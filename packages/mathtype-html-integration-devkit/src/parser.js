@@ -29,7 +29,11 @@ export default class Parser {
     const imgObject = creator.createElement('img');
     imgObject.align = 'middle';
     imgObject.style.maxWidth = 'none';
-    const data = wirisProperties || {};
+    let data = wirisProperties || {};
+
+    // Take into account the backend config
+    const wirisEditorProperties = Configuration.get("editorParameters");
+    data = { ...wirisEditorProperties, ...data };
 
     data.mml = Util.htmlSanitize(mathml);
     data.lang = language;
