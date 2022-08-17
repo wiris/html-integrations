@@ -12,6 +12,7 @@ Last release of this project is was 30th of September 2021.
 ## UNRELEASED
 
   - feat: Refactor demos for the mono-reposiroty with `yarn` and `nx`. (#KB-25399)
+  - feat: Remove Tinymce4 from the project to deprecate it.
 
 ## 7.30.0 2022-07-20
 

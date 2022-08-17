@@ -109,13 +109,12 @@ const executeTests = () => new Promise((resolve) => {
       [
         // Run the tests by package
         sequenceExecution(testFolders.devkit),
-        // sequenceExecution(testFolders.html5Froala3),
         // sequenceExecution(testFolders.html5CKEditor5),
         // sequenceExecution(testFolders.html5CKEditor4),
         // sequenceExecution(testFolders.html5Generic),
-        // sequenceExecution(testFolders.html5Froala2),
-        // sequenceExecution(testFolders.html5TinyMCE4),
-        // sequenceExecution(testFolders.html5TinyMCE5)
+        // sequenceExecution(testFolders.html5Froala),
+        // sequenceExecution(testFolders.html5TinyMCE5),
+        // sequenceExecution(testFolders.html5TinyMCE6)
       ],
     ),
   );
