@@ -19,7 +19,7 @@ cd my-app
 ~~~
 npm install --save @tinymce/tinymce-angular
 npm install --save tinymce
-npm install --save @wiris/mathtype-tinymce4
+npm install --save @wiris/mathtype-tinymce5
 ~~~
 
 2. Open src/app/app.module.ts and add the next.
