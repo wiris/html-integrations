@@ -1,46 +1,36 @@
 {
     "devkit": {
-        "path": "./packages/mathtype-html-integration-devkit/",
+        "path": "./packages/devkit/",
         "demo": false,
         "port": ""
     },
     "mathCKEditor4": {
-        "path": "./packages/mathtype-ckeditor4/",
+        "path": "./packages/ckeditor4/",
         "demo": false,
         "port": ""
     },
     "mathCKEditor5": {
-        "path": "./packages/mathtype-ckeditor5/",
+        "path": "./packages/ckeditor5/",
         "demo": false,
         "port": ""
     },
-    "mathFroala2": {
-        "path": "./packages/mathtype-froala2/",
-        "demo": false,
-        "port": ""
-    },
-    "mathFroala3": {
-        "path": "./packages/mathtype-froala3/",
+    "mathFroala": {
+        "path": "./packages/froala/",
         "demo": false,
         "port": ""
     },
     "mathGeneric": {
-        "path": "./packages/mathtype-generic/",
-        "demo": false,
-        "port": ""
-    },
-    "mathTinyMCE4": {
-        "path": "./packages/mathtype-tinymce4/",
+        "path": "./packages/generic/",
         "demo": false,
         "port": ""
     },
     "mathTinyMCE5": {
-        "path": "./packages/mathtype-tinymce5/",
+        "path": "./packages/tinymce5/",
         "demo": false,
         "port": ""
     },
     "mathTinyMCE6": {
-        "path": "./packages/mathtype-tinymce6/",
+        "path": "./packages/tinymce6/",
         "demo": false,
         "port": ""
     },
@@ -94,11 +84,6 @@
         "demo": true,
         "port": "8002"
     },
-    "html5Froala2": {
-        "path": "./demos/html5/froala2/",
-        "demo": true,
-        "port": "8003"
-    },
     "html5Froala": {
         "path": "./demos/html5/froala/",
         "demo": true,
@@ -108,11 +93,6 @@
         "path": "./demos/html5/generic/",
         "demo": true,
         "port": "8007"
-    },
-    "html5TinyMCE4": {
-        "path": "./demos/html5/tinymce4/",
-        "demo": true,
-        "port": "8005"
     },
     "html5TinyMCE5": {
         "path": "./demos/html5/tinymce5/",

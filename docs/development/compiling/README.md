@@ -44,7 +44,6 @@ Where PACKAGE can be:
 * ckeditor5
 * froala
 * generic
-* tinymce4
 * tinymce5
 * tinymce6
 

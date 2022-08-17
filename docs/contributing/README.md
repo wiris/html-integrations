@@ -90,7 +90,7 @@ The commit message `header` should be structured as follows:
   │       │             └─> Summary in present tense. Not capitalized. No period at the end.
   │       │
   │       └─> Commit Scope: ckeditor4|ckeditor5|froala|froala3||generic|
-  │                         devkit|tinymce|tinymce4|tinymce5|
+  │                         devkit|tinymce|tinymce5|
   │                         demo|packaging|changelog|dev-infra|none
   │
   └─> Commit Type: build|ci|docs|feat|fix|perf|refactor|test
@@ -124,11 +124,10 @@ For brevity, `<scope>` will take one of these next values depending on the affec
 | `ckeditor4` | `mathtype-ckeditor4`               |
 | `ckeditor5` | `mathtype-ckeditor5`               |
 | `froala`    | `mathtype-froala`                  |
-| `froala3`   | `mathtype-froala3`                 |
 | `generic`   | `mathtype-generic`                 |
 | `tinymce`   | `mathtype-tinymce`                 |
-| `tinymce4`  | `mathtype-tinymce4`                |
 | `tinymce5`  | `mathtype-tinymce5`                |
+| `tinymce6`  | `mathtype-tinymce6`                |
 
 
 There are usually a few exceptions to the above rules:
