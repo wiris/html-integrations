@@ -1,3 +1,4 @@
+> ⚠️ **Package will no longer support Froala 2**: `mathtype-froala` will be compatible with Froala 3 and higher versions on our next major release (v8.0.0).
 # MathType for Froala Version 2
 
 Type and handwrite mathematical notation with MathType.

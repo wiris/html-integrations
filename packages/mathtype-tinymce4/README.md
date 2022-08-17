@@ -1,3 +1,4 @@
+> ⚠️ **Package no longer supported:** MathType for TinyMCE 4 will be deprecated on our next major release (v8.0.0).
 # MathType for TinyMCE V4
 
 Type and handwrite mathematical notation with MathType.

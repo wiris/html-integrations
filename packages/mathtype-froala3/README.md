@@ -1,3 +1,4 @@
+> ⚠️ **Package will be renamed:** `mathtype-froala3` will be renamed to `mathtype-froala` on our next major release (v8.0.0).
 # MathType for Froala Editor
 
 Type and handwrite mathematical notation with MathType in the **Froala editor**. This package is compatible with Froala editor versions 3 and 4.
