@@ -4,8 +4,6 @@ webpack.config.js
 **/e2e/
 output/**
 packages/generic/wirisplugin-generic.js
-packages/tinymce4/plugin.min.js
-packages/tinymce4/plugin.min.moodle.js
 packages/tinymce5/plugin.min.js
 packages/tinymce6/plugin.min.js
 packages/froala3/wiris.js

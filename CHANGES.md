@@ -13,6 +13,7 @@ Last release of this project is was 30th of September 2021.
 
   - fix: change webpack demo host to localhost
   - feat: Refactor demos for the mono-reposiroty with `yarn` and `nx`. (#KB-25399)
+  - feat: Remove Tinymce4 from the project to deprecate it.
 
 ## 7.31.1 2022-08-18
 
