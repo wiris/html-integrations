@@ -29,8 +29,7 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "clean": "shx rm -f plugin.min.js",
-    "compile": "node ../../scripts/services/compile editor_plugin.src.js .",
-    "prepack": "npm install && npm run compile -- npm"
+    "prepack": "npm install && npm run build"
   },
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "1.8.1"
