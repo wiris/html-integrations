@@ -29,7 +29,6 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "clean": "shx rm -f plugin.js",
-    "compile": "node ../../scripts/services/compile plugin.src.js .",
     "prepack": "npm install && npm run build"
   },
   "dependencies": {

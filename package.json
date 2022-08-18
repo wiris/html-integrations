@@ -7,11 +7,6 @@
   },
   "scripts": {
     "postinstall": "for d in packages/*/ ; do (cd $d && yarn link); done",
-    "premoodle": "npm run clean && shx rm -rf output && lerna bootstrap",
-    "postmoodle": "shx cp output/moodle-tinymce4/plugin.min.moodle.js packages/mathtype-tinymce4/plugin.min.moodle.js",
-    "moodle": "lerna run compile -- moodle",
-    "clean": "shx rm -rf output && lerna run clean",
-    "clean-all": "npm run clean && shx rm -rf node_modules 'packages/*/node_modules' 'demos/**/*/node_modules'",
     "test-old": "node scripts/services/executeTests.js",
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
