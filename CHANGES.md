@@ -11,7 +11,7 @@ Last release of this project is was 30th of September 2021.
 
 ## [Unreleased]
 
-  - feat: Added .gitattributes and .editorconfig file to the monorepo root and the plugins packages root.
+  - feat: Added .gitattributes and .editorconfig file to the monorepo root.
 
 ## 7.30.0 2022-07-20
 
