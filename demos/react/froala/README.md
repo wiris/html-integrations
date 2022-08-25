@@ -38,9 +38,9 @@ You will also see any lint errors in the console.
     $ npm install react-froala-wysiwyg --save
     # npm install react-froala-wysiwyg@3.2.7 --save
     # Supports Froala V4 and V3
-    $ npm install --save @wiris/mathtype-froala3
+    $ npm install --save @wiris/mathtype-froala
    
-    $ npm install @wiris/mathtype-froala3 --save
+    $ npm install @wiris/mathtype-froala --save
     $ npm install jquery --save
 
     ```
@@ -68,7 +68,7 @@ You will also see any lint errors in the console.
     window.FroalaEditor = require('froala-editor');
 
     // Load wiris mathtype-froala plugin.
-    require('@wiris/mathtype-froala3');
+    require('@wiris/mathtype-froala');
 
     // Load WIRISplugins.js dynamically.
     const jsDemoImagesTransform = document.createElement('script');

@@ -18,18 +18,18 @@ $ nx start <FRAMEWORK>-<EDITOR>
 |-----------|---------------------|--------------------------------------------------------------------|
 | html5     | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
 | html5     | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
-| html5     | Froala V4           | [froala](../../demos/html5/froala)                     |
+| html5     | Froala              | [froala](../../demos/html5/froala)                     |
 | html5     | Generic integration | [generic](../../demos/html5/generic)                   |
 | html5     | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
 | html5     | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
 | angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md)   |
-| angular   | Froala V4           | [froala](../../demos/angular/froala/README.md)         |
+| angular   | Froala              | [froala](../../demos/angular/froala/README.md)         |
 | angular   | Generic integration | [generic](../../demos/angular/generic/README.md)       |
 | angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)     |
 | react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)     |
-| react     | Froala V4           | [froala](../../demos/react/froala/README.md)           |
+| react     | Froala              | [froala](../../demos/react/froala/README.md)           |
 | react     | Generic integration | [generic](../../demos/react/generic/README.md)         |
 | react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
 
 
-For each time you apply a change to the desired package and want to see those changes in your demo, you'll have to `re-run` the previous two commands.
+For each time you apply a change to the desired package and want to see those changes in your demo, you'll have to re-run the previous two commands.

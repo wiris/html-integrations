@@ -27,9 +27,8 @@ This repository has a [monorepo](https://en.wikipedia.org/wiki/Monorepo) structu
 This means that the source code of multiple npm packages is stored in a single git repository.
 Some of these packages depend on each other, so storing them together allows for a faster development cycle.
 In order to manage multiple packages, we use [Nx](https://nx.dev/) as a cornerstone of the project structure.
-You don't need to install Lerna on your own, as it will be installed locally by npm.
 
-The main functionality of Lerna is bootstrapping.
+The main functionality of Nx is bootstrapping.
 Bootstrapping consists of linking to the local source code of the dependencies instead of downloading them from npm.
 This allows us to make live changes to some dependency and see how it affects another package without having to publish the dependency to npm.
 
@@ -43,8 +42,6 @@ The most important files and folders are:
 - `demos`. A growing set of demos to help developers integrate these plugins on different scenarios.
 - `scripts`. Scripts used for different development tasks.
 - `resources`. Resources files that are needed for the publish workflow.
-
-[Lerna]: https://lerna.js.org/
 
 ## First steps
 

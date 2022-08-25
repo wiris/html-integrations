@@ -5,31 +5,31 @@
 Install dependencies:
 
 ```bash
-$ npm install
+$ yarn install
 ```
 
 Compile using npm packages:
 
 ```bash
-$ npm run build
+$ yarn run build
 ```
 
-Compile using local packages using 'lerna':
+Compile using local packages:
 
 ```bash
-$ npm run build-dev
+$ yarn run build-dev
 ```
 
 Lint:
 
 ```bash
-$ npm run lint
+$ yarn run lint
 ```
 
 Test:
 
 ```bash
-$ npm run test
+$ yarn run test
 ```
 
 ## Dependencies
@@ -65,8 +65,8 @@ The `jsdoc` theme for this site is [mathtype-integration-jsdoc-theme](https://gi
 Run these commands:
 
 ```bash
-$ npm install
-$ npm run build-jsdoc
+$ yarn install
+$ yarn run build-jsdoc
 ```
 
 The source code of the documentation site is generated on the `/out` folder.

@@ -4,7 +4,7 @@ The following instructions show how to configure a generic integration to use cu
 
 ### Java
 To install the Java services follow the steps below:
-1. Download the [MathType Web Integration Services - Java](https://store.wiris.com/en/products/downloads/mathtype/integrations#froala3?utm_source=npmjs&utm_medium=referral) package.
+1. Download the [MathType Web Integration Services - Java](https://store.wiris.com/en/products/downloads/mathtype/integrations#froala?utm_source=npmjs&utm_medium=referral) package.
 2. Deploy the **pluginwiris_engine war** file.
 3. Add the following to genericIntegrationProperties before creating the new instance of genericIntegration class:
     ```js
