@@ -125,7 +125,6 @@ For brevity, `<scope>` will take one of these next values depending on the affec
 | `ckeditor5` | `mathtype-ckeditor5`               |
 | `froala`    | `mathtype-froala`                  |
 | `generic`   | `mathtype-generic`                 |
-| `tinymce`   | `mathtype-tinymce`                 |
 | `tinymce5`  | `mathtype-tinymce5`                |
 | `tinymce6`  | `mathtype-tinymce6`                |
 
