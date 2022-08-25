@@ -20,7 +20,6 @@
   "devDependencies": {
     "css-loader": "^3.0.0",
     "html-loader": "^1.1.0",
-    "lerna": "^4.0.0",
     "raw-loader": "^4.0.0",
     "style-loader": "^1.0.0",
     "url-loader": "^4.1.0",

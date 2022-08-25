@@ -37,7 +37,7 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
    $ npm install --save froala-editor
    # npm install --save froala-editor@3.2.7
    # Supports Froala V4 and V3
-   $ npm install --save @wiris/mathtype-froala3
+   $ npm install --save @wiris/mathtype-froala
    ```
 
 2. Open the `src/app/app.module.ts` file and add:
@@ -50,7 +50,7 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
    // Expose FroalaEditor instance to window.
    declare const require: any;
    (window as any).FroalaEditor = require("froala-editor");
-   require("@wiris/mathtype-froala3"); // Import WIRIS Mathtype formula editor.
+   require("@wiris/mathtype-froala"); // Import WIRIS Mathtype formula editor.
 
    // Import Angular plugin.
    import {

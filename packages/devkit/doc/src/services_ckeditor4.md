@@ -1,4 +1,4 @@
-The following instructions allows to customizate MathType Web Integration services TinyMCE 4.
+The following instructions allows to customizate MathType Web Integration services CKEditor 4.
 
 ## Install instructions
 

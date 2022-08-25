@@ -16,30 +16,30 @@ We've implemented a complete lint strategy for the JavaScript, HTML and CSS file
 To validate all the `.js` files of all packages, run:
 
 ```sh
-  $ nx run-many --target=lint --all --parallel
+$ nx run-many --target=lint --all --parallel
 ```
 
 To validate specific package `.js`:
 
 ```sh
-  $ nx lint <package>
-  # Example:
-  $ nx lint ckeditor5
+$ nx lint <package>
+# Example:
+$ nx lint ckeditor5
 ```
 
 
 To validate all the `.js` files of the project, run:
 
 ```sh
-  $ npm run lint-js
+$ yarn run lint-js
 ```
 
 To validate specific `.js` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
-  $ npm run lint-js --route=<path>
-  # Example:
-  $ npm run lint-js --route=demos
+$ yarn run lint-js --route=<path>
+# Example:
+$ yarn run lint-js --route=demos
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
@@ -49,15 +49,15 @@ To validate specific `.js` files or folders of the project, add the `--route` op
 To validate all the `.css` files of the project, run:
 
 ```sh
-    $ npm run lint-css
+$ yarn run lint-css
 ```
 
 To validate specific `.css` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
-  $ npm run lint-css --route=path
-  # Example:
-  $ npm run lint-css --route=demos/**/*.css
+$ yarn run lint-css --route=path
+# Example:
+$ yarn run lint-css --route=demos/**/*.css
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
@@ -66,15 +66,15 @@ To validate specific `.css` files or folders of the project, add the `--route` o
 ## HTML files
 
 ```sh
-    $ npm run lint-html
+$ yarn run lint-html
 ```
 
 To validate specific `.html` files or folders of the project, add the `--route` option to the previous commands:
 
 ```sh
-  $ npm run lint-html --route=path
-  # Example:
-  $ npm run lint-html --route=demos
+$ yarn run lint-html --route=path
+# Example:
+$ yarn run lint-html --route=demos
 ```
 
 > Where **path** is the folder or the specific file you want to lint.
@@ -86,5 +86,5 @@ It is possible to automatically fix some of the errors, just add the `--fix` opt
 You can lint all type of files at once, running this command:
 
 ```sh
-  $ npm run lint
+$ yarn run lint
 ```

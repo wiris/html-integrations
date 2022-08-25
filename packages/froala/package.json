@@ -18,7 +18,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala3",
+  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-froala",
   "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"

@@ -2,4 +2,3 @@ packages/mathtype-html-integration-devkit/doc/templates/**/*.css
 output/**/*.css
 **/node_modules
 packages/mathtype-froala/icons/css/wirisplugin.css
-packages/mathtype-froala3/icons/css/wirisplugin.css

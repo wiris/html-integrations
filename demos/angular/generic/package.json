@@ -28,7 +28,6 @@
     "@angular/platform-browser": "^11.2.11",
     "@angular/platform-browser-dynamic": "^11.2.11",
     "codelyzer": "^6.0.0",
-    "lerna": "^4.0.0",
     "resources": "file:../../../packages/res",
     "rxjs": "^6.6.0",
     "ts-node": "^8.3.0",

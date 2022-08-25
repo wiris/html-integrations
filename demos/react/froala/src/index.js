@@ -19,7 +19,7 @@ import * as Generic from 'resources/demos/imports';
 import { version as pluginVersion } from '@wiris/mathtype-froala/package.json';
 import reportWebVitals from './reportWebVitals';
 
-// This needs to be included before the '@wiris/mathtype-froala3' is loaded synchronously.
+// This needs to be included before the '@wiris/mathtype-froala' is loaded synchronously.
 window.$ = $;
 window.FroalaEditor = require('froala-editor');
 
