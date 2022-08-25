@@ -51,9 +51,11 @@ Where PACKAGE can be:
 
 If your website hosts its own MathType Web services, instead of using the wiris.net services, then you must pass a flag indicating which technology your server uses (ASPX, Java, Ruby, or PHP), run the following command in the desired package folder:
 
+
 ```sh
-$ npm run compile -- [tech] [--dev]
+$ SERVICE_PROVIDER_URL=[url] SERVICE_PROVIDER_SERVER=[tech] yarn build
 ```
+
 Where `[tech]` is one of:
 
 - `aspx`
@@ -61,9 +63,9 @@ Where `[tech]` is one of:
 - `php`
 - `ruby`
 
-The `--dev` optional flag builds the package in development mode.
+and `[url]` is the relative address to the main endpoint of the MathType Web services that you are hosting (e.g. `integration` if your PHP services are in the `integration/` directory).
 
-In case of using a custom back-end, the compiled package will be stored in `html-integrations/output/[tech]-[editor]`.
+You can use `build-dev` instead of `build` to build the package in development mode.
 
 ## Cleaning up
 
@@ -71,10 +73,4 @@ To delete files generated during the compilation process, run:
 
 ```sh
 $ yarn clean
-```
-
-To also clean all of the `node_modules` folders, run instead:
-
-```sh
-$ yarn clean-all
 ```

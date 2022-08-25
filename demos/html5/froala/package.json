@@ -2,7 +2,7 @@
   "name": "demo-html5-froala",
   "version": "1.1.0",
   "private": true,
-  "description": "A simple html5 App integrating WIRIS MathType in a Froala4 rich text editor.",
+  "description": "A simple html5 App integrating WIRIS MathType in a Froala rich text editor.",
   "main": "app.js",
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-froala && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
@@ -20,7 +20,6 @@
   "devDependencies": {
     "css-loader": "^3.0.0",
     "html-loader": "^1.0.0",
-    "lerna": "^4.0.0",
     "raw-loader": "^4.0.2",
     "style-loader": "^1.0.0",
     "url-loader": "^4.1.1",

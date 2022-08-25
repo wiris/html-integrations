@@ -38,16 +38,16 @@ This is the full list of available examples of MathType Integrations on this pro
 |-----------|---------------------|--------------------------------------------------------------------|
 | html      | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
 | html      | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
-| html      | Froala V4           | [froala](../../demos/html5/froala)                     |
+| html      | Froala              | [froala](../../demos/html5/froala)                     |
 | html      | Generic integration | [generic](../../demos/html5/generic)                   |
 | html      | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
 | html      | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
 | angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md)   |
-| angular   | Froala V4           | [froala](../../demos/angular/froala/README.md)         |
+| angular   | Froala              | [froala](../../demos/angular/froala/README.md)         |
 | angular   | Generic integration | [generic](../../demos/angular/generic/README.md)       |
 | angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)     |
 | react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)     |
-| react     | Froala V4           | [froala](../../demos/react/froala/README.md)           |
+| react     | Froala              | [froala](../../demos/react/froala/README.md)           |
 | react     | Generic integration | [generic](../../demos/react/generic/README.md)         |
 | react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
 
