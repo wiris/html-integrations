@@ -59,6 +59,16 @@ export class FroalaIntegration extends IntegrationModel {
       WirisPlugin.currentInstance = WirisPlugin.instances[this.editorObject.id];
     }.bind(this, this.editorObject));
 
+    // Prevent froala from putting the image toolbar over the formulas
+    this.editorObject.$el.on('click', 'img', () => {
+      const imgObject = this.editorObject.image.get();
+      if (imgObject[0].classList.contains('Wirisformula')) {
+        const imgHeight = imgObject[0].height;
+        const imgToolbar = document.getElementsByClassName('fr-popup fr-desktop');
+        imgToolbar[0].style.marginTop = `${imgHeight}px`;
+      }
+    });
+
     /**
      * Update editor parameters.
      * The integration could contain an object with editor parameters.
@@ -309,7 +319,7 @@ export class FroalaIntegration extends IntegrationModel {
       if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) || (selectedImage[0]
                 && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage[0].contents().classList.contains(Configuration.get('imageClassName'))))) { // Is a MathType image.
         // Show MathType icons if previously were hidden.
-        $btn.removeClass('fr-hidden');
+        $btn.addClass('fr-hidden');
         // Disable resize box.
         if (!document.getElementById('wrs_style')) { // eslint-disable-line no-undef
           document.getElementsByTagName('head')[0].append('<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>');
