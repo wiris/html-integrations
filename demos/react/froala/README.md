@@ -81,8 +81,6 @@ You will also see any lint errors in the console.
     const toolbar = ['wirisEditor', 'wirisChemistry'];
     const froalaConfig = {
         toolbarButtons: toolbar,
-        // Add [MW] uttons to the image editing popup Toolbar.
-        imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
         // Allow all the tags to understand the mathml
         htmlAllowedTags: ['.*'],
         htmlAllowedAttrs: ['.*'],
