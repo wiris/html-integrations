@@ -13,7 +13,7 @@ module.exports = {
     'airbnb-base', // We extend our linting to follow the airbnb rules
     'plugin:import/recommended',
   ],
-  parser: 'babel-eslint', // Parser that'll help linting react demos
+  parser: '@babel/eslint-parser', // Parser that'll help linting react demos
 
   // Variables we use taking into account that our code will run with another one,
   // for example, the tinymce integration will use the tinymce variable created for the code of the editor but not us.
