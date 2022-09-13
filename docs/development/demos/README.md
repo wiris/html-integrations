@@ -5,7 +5,7 @@
 By default, these demos download the latest version of the MathType plugins from npm.
 This document explains what to do if you are modifying the source code of the plugins in this repo, and want to try that out instead.
 
-To work with Nx and Yarn, and try out the packages with the local changes instead of the published packages, you will execute the commands from the project root.
+All the commands can be executed either from the root of the project, or from the demo path. We recommend running them on the project root to avoid complexity.
 
 Assuming that you already executed the `yarn` command, you'll have to build the desired package and start the demo:
 
@@ -16,12 +16,12 @@ $ nx start <FRAMEWORK>-<EDITOR>
 
 | FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                                               |
 |-----------|---------------------|--------------------------------------------------------------------|
-| html5     | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
-| html5     | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
-| html5     | Froala              | [froala](../../demos/html5/froala)                     |
-| html5     | Generic integration | [generic](../../demos/html5/generic)                   |
-| html5     | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
-| html5     | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
+| html      | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
+| html      | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
+| html      | Froala              | [froala](../../demos/html5/froala)                     |
+| html      | Generic integration | [generic](../../demos/html5/generic)                   |
+| html      | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
+| html      | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
 | angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md)   |
 | angular   | Froala              | [froala](../../demos/angular/froala/README.md)         |
 | angular   | Generic integration | [generic](../../demos/angular/generic/README.md)       |
@@ -32,4 +32,4 @@ $ nx start <FRAMEWORK>-<EDITOR>
 | react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)       |
 
 
-For each time you apply a change to the desired package and want to see those changes in your demo, you'll have to re-run the previous two commands.
+Each time you apply a change to a package and want to see the changes in your demo, you'll have to re-run the previous two commands.
