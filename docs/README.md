@@ -7,6 +7,7 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 ## Table of contents
 
 - [Requirements](#requirements)
+  - [For Windows users](#for-windows-users)
 - [Structure](#structure)
 - [First steps](#first-steps)
   - [Cloning the repository](#cloning-the-repository)
@@ -15,11 +16,19 @@ Mono-repository for the [MathType](http://www.wiris.com/en/mathtype) Web plugins
 
 ## Requirements
 
-Using this project requires having [Git] and [yarn](https://yarnpkg.com/) installed.
-You can follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install npm and [this guide](https://www.atlassian.com/git/tutorials/install-git) to install git.
+Using this project requires having [git], [Nx](https://nx.dev/) and [yarn](https://yarnpkg.com/) installed:
+* Follow [this guide](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) to install yarn.
+* Follow [this guide](https://www.atlassian.com/git/tutorials/install-git) to install git.
+* Run the following command, in your project directory, to install Nx: `yarn global add nx`.
 
 [Git]: https://git-scm.com/
 [npm]: https://www.npmjs.com/
+
+### For Windows users
+
+This project runs shell commands not compatible among different OS. 
+
+To prevent that, you need to run the commands in the `git bash` instead of the windows one.
 
 ## Structure
 
@@ -47,7 +56,7 @@ The most important files and folders are:
 
 ### Cloning the repository
 
-On Linux or macOS, you can clone this repo as usual:
+You can clone this repo as follows:
 
 ```sh
 $ git clone https://github.com/wiris/html-integrations
@@ -55,7 +64,7 @@ $ git clone https://github.com/wiris/html-integrations
 
 ### Bootstrapping
 
-After cloning this repo, run the following command:
+After cloning the repo, run the following command on the project root:
 
 ```sh
 $ yarn
