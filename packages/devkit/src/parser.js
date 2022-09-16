@@ -464,7 +464,7 @@ export default class Parser {
       }
 
       if (!MathML.isMathmlInAttribute(content, start) && imageMathmlAtrribute === -1) {
-        let mathml = Util.htmlSanitize(content.substring(start, end));
+        let mathml = content.substring(start, end);
         mathml = (characters.id === Constants.safeXmlCharacters.id)
           ? MathML.safeXmlDecode(mathml)
           : MathML.mathMLEntities(mathml);
