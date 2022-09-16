@@ -11,7 +11,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@wiris/mathtype-generic": "^7.26.0",
+    "@wiris/mathtype-generic": "^7.31.0",
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {
