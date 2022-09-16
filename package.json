@@ -6,15 +6,9 @@
     "email": "support@wiris.com"
   },
   "scripts": {
-    "start": "lerna bootstrap",
-    "poststart": "lerna run compile -- npm",
-    "premoodle": "npm run clean && shx rm -rf output && lerna bootstrap",
-    "postmoodle": "shx cp output/moodle-tinymce4/plugin.min.moodle.js packages/mathtype-tinymce4/plugin.min.moodle.js",
-    "moodle": "lerna run compile -- moodle",
-    "clean": "shx rm -rf output && lerna run clean",
-    "clean-all": "npm run clean && shx rm -rf node_modules 'packages/*/node_modules' 'demos/**/*/node_modules'",
+    "postinstall": "rm -rf ~/.config/yarn/link/* && for d in packages/*/ ; do (cd $d && yarn link); done",
     "test-old": "node scripts/services/executeTests.js",
-    "test": "docker run -it -v $PWD:/cypress --net=host -v /tmp/.X11-unix:/tmp/.X11-unix -w /cypress -e DISPLAY=$IP:0 --entrypoint=cypress cypress/included:7.5.0 open --project .",
+    "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
     "build": "cd demos/html5/generic && npm install && npm start &",
     "lint": "npm run lint-js && npm run lint-html && npm run lint-css",
@@ -24,25 +18,28 @@
     "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "@nrwl/cli": "^14.4.2",
+    "@nrwl/cypress": "^14.4.2",
+    "@nrwl/eslint-plugin-nx": "^14.4.2",
+    "@nrwl/linter": "^14.4.2",
+    "@nrwl/tao": "^14.7.5",
+    "@nrwl/workspace": "^14.4.2",
+    "@types/node": "18.0.0",
     "babel-eslint": "^10.1.0",
     "cypress": "^9.3.1",
-    "cypress-fail-fast": "^3.0.0",
+    "cypress-fail-fast": "^5.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.24.0",
     "eslint-plugin-jsdoc": "^36.1.0",
-    "fs-extra": "^10.0.0",
     "html-validate": "^6.0.2",
-    "lerna": "^4.0.0",
-    "link-checker": "^1.4.2",
-    "shx": "^0.3.3",
-    "stylelint": "^13.12.0",
-    "stylelint-config-standard": "^21.0.0",
-    "wait-for-localhost": "^3.0.0"
+    "typescript": "~4.5.2"
   },
   "license": "MIT",
-  "author": "WIRIS Team (https://www.wiris.com)"
+  "author": "WIRIS Team (https://www.wiris.com)",
+  "workspaces": [
+    "packages/**",
+    "demos/*/ckeditor5"
+  ]
 }
