@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-### [Unrelease]
+### 8.0.0 2022-09-22
 
   - fix: change webpack demo host to localhost
   - feat: Refactor demos for the mono-reposiroty with `yarn` and `nx`. (#KB-25399)
