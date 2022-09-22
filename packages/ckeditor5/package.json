@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-ckeditor5",
-  "version": "7.31.0",
+  "version": "8.0.0",
   "description": "MathType Web for CKEditor5 editor",
   "keywords": [
     "chem",
@@ -39,6 +39,6 @@
     "@ckeditor/ckeditor5-engine": ">=23.0.0",
     "@ckeditor/ckeditor5-ui": ">=23.0.0",
     "@ckeditor/ckeditor5-widget": ">=23.0.0",
-    "@wiris/mathtype-html-integration-devkit": "1.8.1"
+    "@wiris/mathtype-html-integration-devkit": "1.9.0"
   }
 }
