@@ -10,7 +10,6 @@ All the commands can be executed either from the root of the project, or from th
 Assuming that you already executed the `yarn` command, you'll have to build the desired package and start the demo:
 
 ```js
-$ nx build <PACKAGE>
 $ nx start <FRAMEWORK>-<EDITOR>
 ```
 
@@ -33,3 +32,22 @@ $ nx start <FRAMEWORK>-<EDITOR>
 
 
 Each time you apply a change to a package and want to see the changes in your demo, you'll have to re-run the previous two commands.
+
+## Hot reload
+
+In order to apply the changes made in the source code on this repo automatically to the started demo, you will need to activate the Hot reload feature:
+
+1. Run the demo with local packages with the command:
+
+```js
+$ nx start <FRAMEWORK>-<EDITOR>
+```
+
+2. Open a second terminal.
+3. Use the command:
+
+```js
+$ nx start <EDITOR>
+```
+
+This feature only works with demos that use the `HTML` Framework.

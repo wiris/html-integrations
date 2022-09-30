@@ -1,74 +1,96 @@
 const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = {
+module.exports = (config, context) => {
+  return {
     entry: {
-        app: './global.js'
+      app: path.resolve(__dirname, './global.js'),
     },
     output: {
         path: path.resolve(__dirname, ''),
         filename: './wiris.js'
     },
+    devServer: {
+      devMiddleware: {
+        writeToDisk: true,
+      },
+      static: {
+        directory: path.join(__dirname, "./")
+      },
+      onListening: !config.devServer ? '' : config.devServer.onListening,
+      hot: true,
+      port: 9004,
+      host: '0.0.0.0'
+    },
     // Set watch to true for dev purposes.
     watch: false,
     optimization: {
-        minimize: true,
-        minimizer: [new TerserPlugin({
-            // These options prevent Terser from generating a LICENSE.txt file
-            terserOptions: {
-                format: {
-                    comments: false,
-                },
-            },
-            extractComments: false,
-        })],
+      minimize: true,
+      minimizer: [new TerserPlugin({
+        // These options prevent Terser from generating a LICENSE.txt file
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      })],
     },
+    mode: 'none',
     module: {
-        rules: [
-            {
-                // Rule to translate ES5 javascript files to ES6.
-                test: /\.js$/,
-                exclude: /node_modules\/(?!(@wiris\/mathtype-html-integration-devkit)\/).*/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/env']
-                    }
-                }
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
-            {
-                // For the modal close, minimize, maximize icons
-                // The following expresion, looks for all the svg files inside the devkit folder and subfolders
-                // /mathtype-html-integration-devkit\/?(?:[^\/]+\/?)*.svg$/
-                test: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-                use: [ 'raw-loader' ]
-            },
-            {
-                test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
-                exclude: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-                use: [
-                  {
-                    loader: 'url-loader',
-                    options: {
-                      limit: 8192
-                    }
-                  }
-                ]
+      rules: [
+        {
+          // Rule to translate ES5 javascript files to ES6.
+          test: /\.js$/,
+          exclude: /node_modules\/(?!(@wiris\/mathtype-html-integration-devkit)\/).*/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/env']
             }
-        ]
+          }
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader']
+        },
+        {
+          // For the modal close, minimize, maximize icons
+          // The following expresion, looks for all the svg files inside the devkit folder and subfolders
+          // /mathtype-html-integration-devkit\/?(?:[^\/]+\/?)*.svg$/
+          test: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
+          use: [ 'raw-loader' ]
+        },
+        {
+          test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
+          exclude: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
+          use: [
+            {
+              loader: 'url-loader',
+              options: {
+                limit: 8192
+              }
+            }
+          ]
+        }
+      ]
     },
     stats: {
-        colors: true
+      colors: true
     },
     plugins: [
-        new webpack.EnvironmentPlugin({
-            'SERVICE_PROVIDER_URI': 'https://www.wiris.net/demo/plugins/app',
-            'SERVICE_PROVIDER_SERVER': 'java',
-        }),
+      new webpack.EnvironmentPlugin({
+        'SERVICE_PROVIDER_URI': 'https://www.wiris.net/demo/plugins/app',
+        'SERVICE_PROVIDER_SERVER': 'java',
+      }),
+      new CleanWebpackPlugin({
+        root: process.cwd(),
+        verbose: true,
+        dry: false,
+        cleanOnceBeforeBuildPatterns: ["app.*"]
+      }),
     ],
+  }
 };
