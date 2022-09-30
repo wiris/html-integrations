@@ -14,7 +14,7 @@
     "@ckeditor/ckeditor5-link": ">=27.1.0",
     "@ckeditor/ckeditor5-list": ">=27.1.0",
     "@ckeditor/ckeditor5-paragraph": ">=27.1.0",
-    "@ckeditor/ckeditor5-react": "^2.0.0",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
     "@wiris/mathtype-ckeditor5": "^7.26.0",
     "ckeditor5": ">=27.1.0"
   },
