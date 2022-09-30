@@ -1,12 +1,26 @@
 {
   "root": "packages/froala",
+  "sourceRoot": "package/froala/src",
   "targets": {
     "build": {
-      "executor": "nx:run-script",
+      "executor": "@nrwl/web:webpack",
+      "dependsOn": [],
+      "outputs": ["{options.outputPath}"],
+        "options": {
+          "main": "demos/packages/froala/global.js",
+          "outputPath": "dist",
+          "tsConfig": "tsconfig.app.json",
+          "generateIndexHtml": false,
+          "index": " ",
+          "webpackConfig": "packages/froala/webpack.config.js"
+        }
+    },
+    "start": {
+      "executor": "@nrwl/web:dev-server",
       "options": {
-          "script": "build"
-      },
-      "outputs": ["packages/froala/wiris.js"]
+        "buildTarget": "froala:build",
+        "webpackConfig": "packages/froala/webpack.config.js"
+      }
     },
     "test": {
       "executor": "@nrwl/cypress:cypress",

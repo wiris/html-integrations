@@ -36,7 +36,6 @@ Before running the tests you will need to build all package and start all demos.
 All tests can be run with the commands:
 
 ```sh
-$ nx run-many --target=build --all --parallel
 $ nx run-many --target=start --all --parallel
 $ nx run-many --target=test --all --parallel
 ```
@@ -48,7 +47,6 @@ You can run all tests for a specific demo with the `nx test <package>` command.
 Before running the tests you will need to build the package and start a demo. For example to run all tests on the `ckeditor5` demo run:
 
 ```
-$ nx build ckeditor5
 $ nx start html-ckeditor5
 $ nx test ckeditor5
 ```

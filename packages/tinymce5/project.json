@@ -1,12 +1,26 @@
 {
   "root": "packages/tinymce5",
+  "sourceRoot": "package/tinymce5/src",
   "targets": {
     "build": {
-      "executor": "nx:run-script",
+      "executor": "@nrwl/web:webpack",
+      "dependsOn": [],
+      "outputs": ["{options.outputPath}"],
+        "options": {
+          "main": "demos/packages/tinymce5/global.js",
+          "outputPath": "dist",
+          "tsConfig": "tsconfig.app.json",
+          "generateIndexHtml": false,
+          "index": " ",
+          "webpackConfig": "packages/tinymce5/webpack.config.js"
+        }
+    },
+    "start": {
+      "executor": "@nrwl/web:dev-server",
       "options": {
-          "script": "build"
-      },
-      "outputs": ["packages/tinymce5/plugin.min.js"]
+        "buildTarget": "tinymce5:build",
+        "webpackConfig": "packages/tinymce5/webpack.config.js"
+      }
     },
     "test": {
       "executor": "@nrwl/cypress:cypress",

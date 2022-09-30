@@ -63,3 +63,6 @@ terraform.rc
 *.tfstate
 *.tfstate.*
 *.log
+
+app.*.json
+app.*.js
