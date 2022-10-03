@@ -357,7 +357,11 @@ export const currentInstance = null;
       }
 
       const onSave = function (editor, params) { // eslint-disable-line no-shadow
-        params.content = Parser.endParse(params.content, editor.getParam('language'));
+        if (integrationModelProperties.isMoodle) {
+          params.content = Parser.endParseSaveMode(params.content, editor.getParam('language'));
+        } else {
+          params.content = Parser.endParse(params.content, editor.getParam('language'));
+        }
       };
 
       if ('onSaveContent' in editor) {
