@@ -55,3 +55,11 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Terraform files
+.terraformrc
+terraform.rc
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.log
