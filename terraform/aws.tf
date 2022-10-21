@@ -62,3 +62,12 @@ module "static_website" {
     aws.nvirginia = aws.nvirginia
   }
 }
+
+output "aws_iam_access_key" {
+  value = module.static_website.aws_iam_access_key
+}
+
+output "aws_iam_secret_access_key" {
+  value = module.static_website.aws_iam_secret_access_key
+  sensitive = true
+}
