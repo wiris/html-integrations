@@ -74,33 +74,33 @@
         "demo": true,
         "port": "4006"
     },
-    "html5CKEditor4": {
-        "path": "./demos/html5/ckeditor4/",
+    "htmlCKEditor4": {
+        "path": "./demos/html/ckeditor4/",
         "demo": true,
         "port": "8001"
     },
-    "html5CKEditor5": {
-        "path": "./demos/html5/ckeditor5/",
+    "htmlCKEditor5": {
+        "path": "./demos/html/ckeditor5/",
         "demo": true,
         "port": "8002"
     },
-    "html5Froala": {
-        "path": "./demos/html5/froala/",
+    "htmlFroala": {
+        "path": "./demos/html/froala/",
         "demo": true,
         "port": "8004"
     },
-    "html5Generic": {
-        "path": "./demos/html5/generic/",
+    "htmlGeneric": {
+        "path": "./demos/html/generic/",
         "demo": true,
         "port": "8007"
     },
-    "html5TinyMCE5": {
-        "path": "./demos/html5/tinymce5/",
+    "htmlTinyMCE5": {
+        "path": "./demos/html/tinymce5/",
         "demo": true,
         "port": "8006"
     },
-    "html5TinyMCE6": {
-        "path": "./demos/html5/tinymce6/",
+    "htmlTinyMCE6": {
+        "path": "./demos/html/tinymce6/",
         "demo": true,
         "port": "8008"
     }

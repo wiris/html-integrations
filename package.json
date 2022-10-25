@@ -10,7 +10,7 @@
     "test-old": "node scripts/services/executeTests.js",
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
-    "build": "cd demos/html5/generic && npm install && npm start &",
+    "build": "cd demos/html/generic && npm install && npm start &",
     "lint": "npm run lint-js && npm run lint-html && npm run lint-css",
     "lint-js": "eslint ${npm_config_route-.} --ext .js",
     "lint-html": "html-validate ${npm_config_route-.}",
@@ -40,6 +40,6 @@
   "author": "WIRIS Team (https://www.wiris.com)",
   "workspaces": [
     "packages/**",
-    "demos/*/ckeditor5"
+    "demos/**"
   ]
 }

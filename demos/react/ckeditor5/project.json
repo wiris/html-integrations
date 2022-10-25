@@ -8,10 +8,17 @@
         },
         "outputs": ["demos/react/ckeditor5/dist/demo.js"]
       },
-      "start-react": {
+      "start-remote": {
         "executor": "nx:run-script",
         "options": {
-            "script": "start-react"
+            "script": "start-remote"
+        },
+        "outputs": ["demos/react/ckeditor5/dist/demo.js"]
+      },
+      "build": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "build"
         },
         "outputs": ["demos/react/ckeditor5/dist/demo.js"]
       },

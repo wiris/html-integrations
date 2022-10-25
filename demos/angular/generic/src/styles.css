@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('../node_modules/resources/demos/design.css');
+@import url('~resources/demos/design.css');
 
 body {
   background-color: #e4e6e7;

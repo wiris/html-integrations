@@ -1,0 +1,33 @@
+{
+  "name": "demo-html-tinymce6",
+  "version": "1.1.0",
+  "private": true,
+  "description": "A simple html App integrating WIRIS MathType in a TinyMCE6 rich text editor.",
+  "main": "app.js",
+  "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce6 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "start-remote": "webpack-dev-server --open",
+    "prestart": "yarn && yarn link @wiris/mathtype-tinymce6 && yarn link @wiris/mathtype-html-integration-devkit",
+    "start": "webpack-dev-server --open",
+    "build": "webpack"
+  },
+  "author": "WIRIS Team (https://www.wiris.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "*",
+    "@wiris/mathtype-tinymce6": "*",
+    "tinymce": "^6.0.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^6.0.0",
+    "css-loader": "^3.0.0",
+    "html-loader": "^1.1.0",
+    "raw-loader": "^4.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.0.0",
+    "webpack-cli": "^3.0.0",
+    "webpack-dev-server": "^3.0.0",
+    "resources": "file:../../../packages/res"
+  }
+}

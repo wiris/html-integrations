@@ -1,0 +1,34 @@
+{
+    "root": "demos/html/froala",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/html/froala/dist/demo.js"]
+      },
+      "start-remote": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start-remote"
+        },
+        "outputs": ["demos/html/froala/dist/demo.js"]
+      },
+      "build": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "build"
+        },
+        "outputs": ["demos/html/froala/dist/demo.js"]
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/html/froala/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
+      }
+    }
+  }
