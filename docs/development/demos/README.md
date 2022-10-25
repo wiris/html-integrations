@@ -16,12 +16,12 @@ $ nx start <FRAMEWORK>-<EDITOR>
 
 | FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                                               |
 |-----------|---------------------|--------------------------------------------------------------------|
-| html      | CKEditor V4         | [ckeditor4](../../demos/html5/ckeditor4)               |
-| html      | CKEditor V5         | [ckeditor5](../../demos/html5/ckeditor5)               |
-| html      | Froala              | [froala](../../demos/html5/froala)                     |
-| html      | Generic integration | [generic](../../demos/html5/generic)                   |
-| html      | TinyMCE V5          | [tinymce5](../../demos/html5/tinymce5)                 |
-| html      | TinyMCE V6          | [tinymce6](../../demos/html5/tinymce6)                 |
+| html      | CKEditor V4         | [ckeditor4](../../demos/html/ckeditor4)               |
+| html      | CKEditor V5         | [ckeditor5](../../demos/html/ckeditor5)               |
+| html      | Froala              | [froala](../../demos/html/froala)                     |
+| html      | Generic integration | [generic](../../demos/html/generic)                   |
+| html      | TinyMCE V5          | [tinymce5](../../demos/html/tinymce5)                 |
+| html      | TinyMCE V6          | [tinymce6](../../demos/html/tinymce6)                 |
 | angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md)   |
 | angular   | Froala              | [froala](../../demos/angular/froala/README.md)         |
 | angular   | Generic integration | [generic](../../demos/angular/generic/README.md)       |

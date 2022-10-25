@@ -7,6 +7,7 @@
     "start-remote": "ng serve --host 0.0.0.0 --open",
     "prestart": "yarn && yarn link @wiris/mathtype-tinymce5 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "ng serve --host 0.0.0.0 --open",
+    "build": "ng build --prod --base-href ''",
     "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
@@ -15,7 +16,7 @@
   "dependencies": {
     "@tinymce/tinymce-angular": "^4.2.4",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "@wiris/mathtype-tinymce5": "^7.27.0",
+    "@wiris/mathtype-tinymce5": "*",
     "path-browserify": "^1.0.1",
     "tinymce": "^5.9.2"
   },

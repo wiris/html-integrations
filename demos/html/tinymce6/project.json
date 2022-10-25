@@ -1,0 +1,34 @@
+{
+    "root": "demos/html/tinymce6",
+    "targets": {
+      "start": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start"
+        },
+        "outputs": ["demos/html/tinymce6/dist/demo.js"]
+      },
+      "start-remote": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "start-remote"
+        },
+        "outputs": ["demos/html/tinymce6/dist/demo.js"]
+      },
+      "build": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "build"
+        },
+        "outputs": ["demos/html/tinymce6/dist/demo.js"]
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/html/tinymce6/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
+      }
+    }
+  }

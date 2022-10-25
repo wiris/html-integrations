@@ -17,7 +17,7 @@ const pack = () => new Promise((resolve, reject) => {
 
 const installMathtype = (path) => new Promise((resolve, reject) => {
   exec(
-    `cd demos/html5/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/${path}`,
+    `cd demos/html/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/${path}`,
     (err, stdout, stderr) => {
       if (err) {
         reject(err);

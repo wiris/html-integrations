@@ -7,13 +7,14 @@
     "start-remote": "ng serve --host 0.0.0.0 --open",
     "prestart": "yarn && yarn link @wiris/mathtype-froala && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "ng serve --host 0.0.0.0 --open",
+    "build": "ng build --prod --base-href ''",
     "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@wiris/mathtype-froala": "^7.27.0",
+    "@wiris/mathtype-froala": "*",
     "@wiris/mathtype-html-integration-devkit": "*",
     "angular-froala-wysiwyg": "^4.0.7"
   },

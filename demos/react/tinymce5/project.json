@@ -15,6 +15,13 @@
         },
         "outputs": ["demos/react/tinymce5/dist/demo.js"]
       },
+      "build": {
+        "executor": "nx:run-script",
+        "options": {
+            "script": "build"
+        },
+        "outputs": ["demos/react/tinymce5/dist/demo.js"]
+      },
       "lint": {
         "executor": "@nrwl/linter:eslint",
         "options": {

@@ -69,7 +69,7 @@ You can configure project options in the [../cypress.json](../cypress.json) file
 The current values we've set by default for all environments are:
 
 ```json
-    // By default, point to the demos/html5/generic App.
+    // By default, point to the demos/html/generic App.
     "baseUrl": "http://localhost:8007",
     // Override default 'integration' value to 'tests'
     "integrationFolder": "cypress/tests",

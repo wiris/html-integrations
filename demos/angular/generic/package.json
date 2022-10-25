@@ -7,13 +7,14 @@
     "start-remote": "ng serve --host 0.0.0.0 --open",
     "prestart": "yarn && yarn link @wiris/mathtype-generic && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "ng serve --host 0.0.0.0 --open",
+    "build": "ng build --prod --base-href ''",
     "lint": "ng lint"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@wiris/mathtype-generic": "^7.26.0",
+    "@wiris/mathtype-generic": "*",
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {

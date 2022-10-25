@@ -36,12 +36,12 @@ export class AppComponent {
 
   // Set options for the editor.
   public options: Object = {
-    base_url: '/tinymce', // Root for resources
+    base_url: `${window.location.href}tinymce`, // Root for resources
     suffix: '.min',        // Suffix to use when loading resources
 
     // Add wiris plugin
     external_plugins: {
-      'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
+      'tiny_mce_wiris' : `${window.location.href}node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
     },
     htmlAllowedTags:  ['.*'],
     htmlAllowedAttrs: ['.*'],

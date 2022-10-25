@@ -35,7 +35,7 @@ MathType is a formula editor and equation writer. It allows to type and handwrit
 
 We develop and maintain MathType Web plugins for [CKEditor], [Froala], and [TinyMCE].
 
-We also offer a generic integration for a plain HTML5 editable `div`.
+We also offer a generic integration for a plain HTML editable `div`.
 You can adapt this integration to use MathType in the web editor of your choice.
 
 For the MathType integration for Moodle and other LMS see [here](https://www.wiris.com/es/soluciones/educacion/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations).
