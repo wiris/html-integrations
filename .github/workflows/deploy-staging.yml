@@ -1,0 +1,137 @@
+# Deploys the demos in a staging environment
+#
+# Jobs:
+# - Prepare: determines the names of the branches that the current commit is HEAD of
+# - Deploy staging: compiles and copies all the demos to the corresponding branch folder in S3
+#
+name: Deploy staging
+
+# Controls when the action will run
+on:
+  push
+
+# Array of jobs to run in this workflow
+jobs:
+
+  prepare:
+    name: Prepare the workflow
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.get_branches.outputs.branches }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Get branch names
+        id: get_branches
+        run: |
+          BRANCHES_ARRAY=$(git branch --points-at HEAD | tr -d "* " | jq -R -s -c 'split("\n")[:-1]')
+          echo "::set-output name=branches::${BRANCHES_ARRAY}"
+          echo "${BRANCHES_ARRAY}"
+
+  clean-staging:
+    name: Clean the previous staging environments
+    runs-on: ubuntu-latest
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJson(needs.prepare.outputs.branches) }}
+    steps:
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Clean previous deployment of this branch
+        run: aws s3 rm s3://wiris-integrations-staging-html/${{ matrix.branch }} --recursive
+
+  deploy-staging:
+    name: Deploy the staging environment
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - clean-staging
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJson(needs.prepare.outputs.branches) }}
+        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6"]
+        framework: ["html", "angular", "react"]
+        exclude:
+          - framework: angular
+            editor: ckeditor4
+          - framework: angular
+            editor: tinymce6
+          - framework: react
+            editor: ckeditor4
+          - framework: react
+            editor: tinymce6
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Build the demos
+        run: |
+          yarn
+          yarn nx build ${{ matrix.editor }}
+          yarn nx build ${{ matrix.framework }}-${{ matrix.editor }}
+
+      - name: Deploy the demos to S3 bucket
+        run: |
+          case "${{ matrix.framework }}" in
+            html)
+              aws s3 cp demos/html/${{ matrix.editor }}/index.html s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/index.html
+              aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
+              # CKEditor 4 fetches the icons in runtime, so we need to upload them as well
+              if [ "${{ matrix.editor }}" = "ckeditor4" ]
+              then
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png
+              fi
+              ;;
+            angular)
+              aws s3 cp demos/angular/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/angular/${{ matrix.editor }} --recursive
+              ;;
+            react)
+              aws s3 cp demos/react/${{ matrix.editor }}/build s3://wiris-integrations-staging-html/${{ matrix.branch }}/react/${{ matrix.editor }} --recursive
+              ;;
+          esac
+
+  invalidate-cache:
+    name: Invalidate the CloudFront cache
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - clean-staging
+      - deploy-staging
+    steps:
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Invalidate the CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items!=null] | [?contains(Aliases.Items, 'integrations.wiris.kitchen')].Id | [0]" --output text) --paths '/*'
