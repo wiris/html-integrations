@@ -125,6 +125,8 @@ export default class ModalDialog {
     this.closeDiv.setAttribute('style', generalStyle);
     this.closeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
     this.closeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+    // To identifiy the element in automated testing
+    this.closeDiv.setAttribute('data-testid', 'mtcteditor-close-button');
 
     attributes = {};
     attributes.class = 'wrs_modal_stack_button';
@@ -138,6 +140,8 @@ export default class ModalDialog {
     this.stackDiv.setAttribute('style', generalStyle);
     this.stackDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
     this.stackDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+    // To identifiy the element in automated testing
+    this.stackDiv.setAttribute('data-testid', 'mtcteditor-fullscreen-disable-button');
 
     attributes = {};
     attributes.class = 'wrs_modal_maximize_button';
@@ -151,6 +155,8 @@ export default class ModalDialog {
     this.maximizeDiv.setAttribute('style', generalStyle);
     this.maximizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
     this.maximizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+    // To identifiy the element in automated testing
+    this.maximizeDiv.setAttribute('data-testid', 'mtcteditor-fullscreen-enable-button');
 
     attributes = {};
     attributes.class = 'wrs_modal_minimize_button';
@@ -164,6 +170,8 @@ export default class ModalDialog {
     this.minimizeDiv.setAttribute('style', generalStyle);
     this.minimizeDiv.setAttribute('onmouseover', `this.style = "${hoverStyle}";`);
     this.minimizeDiv.setAttribute('onmouseout', `this.style = "${generalStyle}";`);
+    // To identifiy the element in automated testing
+    this.minimizeDiv.setAttribute('data-testid', 'mtcteditor-minimize-button');
 
     attributes = {};
     attributes.class = 'wrs_modal_dialogContainer';
@@ -198,6 +206,8 @@ export default class ModalDialog {
         id: this.getElementId('wrs_modal_button_accept'),
         class: 'wrs_modal_button_accept',
         innerHTML: StringManager.get('accept'),
+        // To identifiy the element in automated testing
+        'data-testid': 'mtcteditor-insert-button',
       },
       this.submitAction.bind(this),
     );
@@ -207,6 +217,8 @@ export default class ModalDialog {
         id: this.getElementId('wrs_modal_button_cancel'),
         class: 'wrs_modal_button_cancel',
         innerHTML: StringManager.get('cancel'),
+        // To identifiy the element in automated testing
+        'data-testid': 'mtcteditor-cancel-button',
       },
       this.cancelAction.bind(this),
     );
@@ -353,6 +365,7 @@ export default class ModalDialog {
         this.element.id = properties.id;
         this.element.className = properties.class;
         this.element.innerHTML = properties.innerHTML;
+        this.element.dataset.testid = properties['data-testid'];
         Util.addEvent(this.element, 'click', callback);
       }
 
@@ -453,9 +466,13 @@ export default class ModalDialog {
     this.resizerBR = document.createElement('div');
     this.resizerBR.className = 'wrs_bottom_right_resizer';
     this.resizerBR.innerHTML = '◢';
+    // To identifiy the element in automated testing
+    this.resizerBR.dataset.testid = 'mtcteditor-resize-button-right';
     // This is a definition of Resize Button Top-Left.
     this.resizerTL = document.createElement('div');
     this.resizerTL.className = 'wrs_bottom_left_resizer';
+    // To identifiy the element in automated testing
+    this.resizerTL.dataset.testid = 'mtcteditor-resize-button-left';
     // Append resize buttons to modal.
     this.container.appendChild(this.resizerBR);
     this.titleBar.appendChild(this.resizerTL);

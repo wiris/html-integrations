@@ -64,6 +64,8 @@ export default class PopUpMessage {
       class: 'wrs_button_accept',
       innerHTML: popupMessageAttributes.strings.submitString,
       id: 'wrs_popup_accept_button',
+      // To identifiy the element in automated testing
+      'data-testid': 'mtcteditor-cd-close-button',
     };
 
     /**
@@ -77,6 +79,8 @@ export default class PopUpMessage {
       class: 'wrs_button_cancel',
       innerHTML: popupMessageAttributes.strings.cancelString,
       id: 'wrs_popup_cancel_button',
+      // To identifiy the element in automated testing
+      'data-testid': 'mtcteditor-cd-cancel-button',
     };
 
     /**
@@ -103,6 +107,9 @@ export default class PopUpMessage {
     element.setAttribute('class', parameters.class);
     element.innerHTML = parameters.innerHTML;
     element.addEventListener('click', callback);
+    if (parameters['data-testid']) {
+      element.setAttribute('data-testid', parameters['data-testid']);
+    }
 
     return element;
   }
