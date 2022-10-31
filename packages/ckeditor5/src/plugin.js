@@ -143,7 +143,7 @@ export default class MathType extends Plugin {
         view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
 
         view.set({
-          label: StringManager.get('insert_math'),
+          label: StringManager.get('insert_math', editor.config.get('language')),
           icon: mathIcon,
           tooltip: true,
         });
@@ -169,7 +169,7 @@ export default class MathType extends Plugin {
         view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
 
         view.set({
-          label: StringManager.get('insert_chem'),
+          label: StringManager.get('insert_chem', editor.config.get('language')),
           icon: chemIcon,
           tooltip: true,
         });

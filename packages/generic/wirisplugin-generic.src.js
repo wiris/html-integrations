@@ -1,5 +1,6 @@
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
+import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import formulaIcon from './icons/formula.png';
@@ -118,6 +119,7 @@ export default class GenericIntegration extends IntegrationModel {
       const formulaButton = document.createElement('img');
       formulaButton.id = 'editorIcon';
       formulaButton.src = formulaIcon;
+      formulaButton.title = StringManager.get('insert_math', this.editorParameters.language);
       formulaButton.style.cursor = 'pointer';
 
       Util.addEvent(formulaButton, 'click', () => {
@@ -142,6 +144,7 @@ export default class GenericIntegration extends IntegrationModel {
         // Horrible hard-coded temporary fix
         if (customEditor === 'chemistry') {
           customEditorButton.src = chemIcon;
+          customEditorButton.title = StringManager.get('insert_chem', this.editorParameters.language);
         }
         customEditorButton.id = `${customEditor}Icon`;
         customEditorButton.style.cursor = 'pointer';
