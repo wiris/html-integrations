@@ -3,6 +3,7 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
+import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 import packageInfo from './package.json';
 
@@ -69,12 +70,12 @@ export class TinyMceIntegration extends IntegrationModel {
   getLanguage() {
     const editorSettings = this.editorObject;
     try {
-      return editorSettings.mathTypeParameters.editorParameters.language;
+      return editorSettings.getParam('mathTypeParameters').editorParameters.language;
     } catch (e) { console.error(); }
     // Get the deprecated wirisformulaeditorlang
-    if (editorSettings.wirisformulaeditorlang) {
+    if (editorSettings.getParam('wirisformulaeditorlang')) {
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
-      return editorSettings.wirisformulaeditorlang;
+      return editorSettings.getParam('wirisformulaeditorlang');
     }
     const langParam = this.editorObject.getParam('language');
     return langParam || super.getLanguage();
@@ -359,9 +360,13 @@ export const currentInstance = null;
         }
       });
 
+      // Get editor language code
+      let lang_code = editor.getParam('language');
+      lang_code = (lang_code.split("-")[0]).split("_")[0];
+
       // MathType button.
       commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
-        tooltip: 'Insert a math equation - MathType',
+        tooltip: StringManager.get('insert_math', lang_code),
         image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
         onAction: openFormulaEditorFunction,
         icon: mathTypeIcon,
@@ -378,7 +383,7 @@ export const currentInstance = null;
           }
           editor.addCommand(cmd, commandFunction);
           commonEditor.addButton(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
-            tooltip: customEditors.editors[customEditor].tooltip,
+            tooltip: StringManager.get('insert_chem', lang_code),
             onAction: commandFunction,
             image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
             icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.

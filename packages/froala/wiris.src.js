@@ -3,6 +3,7 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Constants from '@wiris/mathtype-html-integration-devkit/src/constants';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
+import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 import packageInfo from './package.json';
 
@@ -94,6 +95,9 @@ export class FroalaIntegration extends IntegrationModel {
       FroalaEditor.ICONS.wirisEditor = null;
       FroalaEditor.COMMANDS.wirisEditor = null;
       document.getElementById('wirisEditor-1').classList.add('fr-hidden');
+    } else {
+      // Translate the button title
+      document.getElementById('wirisEditor-1').title = StringManager.get('insert_math', editor.opts.language);
     }
 
     // Hide ChemType toolbar button if is disabled by config.
@@ -101,6 +105,9 @@ export class FroalaIntegration extends IntegrationModel {
       FroalaEditor.ICONS.wirisChemistry = null;
       FroalaEditor.COMMANDS.wirisChemistry = null;
       document.getElementById('wirisChemistry-1').classList.add('fr-hidden');
+    } else {
+      // Translate the button title
+      document.getElementById('wirisChemistry-1').title = StringManager.get('insert_chem', editor.opts.language);
     }
   }
 

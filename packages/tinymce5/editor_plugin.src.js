@@ -3,6 +3,7 @@ import Configuration from '@wiris/mathtype-html-integration-devkit/src/configura
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Listeners from '@wiris/mathtype-html-integration-devkit/src/listeners';
+import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
 
 import packageInfo from './package.json';
 
@@ -443,14 +444,22 @@ export const currentInstance = null;
         commonEditor.addCommand('tiny_mce_wiris_openFormulaEditor', openFormulaEditorFunction);
       }
 
+      // Get editor language code
+      let lang_code;
+      if (editor.getParam('language')) {
+        lang_code = editor.getParam('language');
+        lang_code = (lang_code.split("-")[0]).split("_")[0];
+      } else lang_code = 'en';
+      
+
       // Check if MathType editor is enabled
       if (Configuration.get('editorEnabled')) {
         // MathType button.
         // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
         // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
         commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
-          tooltip: 'Insert a math equation - MathType', // TinyMCE3
-          title: 'Insert a math equation - MathType',
+          tooltip: StringManager.get('insert_math', lang_code), // TinyMCE3
+          title: StringManager.get('insert_math', lang_code),
           cmd: 'tiny_mce_wiris_openFormulaEditor',
           image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
           onAction: openFormulaEditorFunction,
@@ -474,8 +483,8 @@ export const currentInstance = null;
           // Cmd Parameter is needed in TinyMCE4 and onAction parameter is needed in TinyMCE5.
           // For more details see TinyMCE migration page: https://www.tiny.cloud/docs-preview/migration-from-4.x/
           commonEditor.addButton(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
-            title: customEditors.editors[customEditor].tooltip, // TinyMCE3
-            tooltip: customEditors.editors[customEditor].tooltip,
+            title: StringManager.get('insert_chem', lang_code), // TinyMCE3
+            tooltip: StringManager.get('insert_chem', lang_code),
             onAction: commandFunction,
             cmd,
             image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,

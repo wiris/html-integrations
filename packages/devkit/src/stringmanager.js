@@ -11,10 +11,18 @@ export default class StringManager {
    * Returns the associated value of certain string key. If the associated value
    * doesn't exits returns the original key.
    * @param {string} key - string key
+   * @param {string} lang - DEFAULT = null. Specify the language to translate the string
    * @returns {string} correspondent value. If doesn't exists original key.
    */
-  static get(key) {
-    let { language } = this;
+  static get(key, lang) {
+
+    // Default language definition
+    let {language} = this;
+
+    // If parameter language, use it
+    if (lang) {
+      language = lang;
+    }
 
     // Cut down on strings. e.g. en_US -> en
     if (language && language.length > 2) {
