@@ -118,6 +118,15 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
         'wirisChemistry',
         'insertImage'
       ],
+      // Add [MW] uttons to the image editing popup Toolbar.
+      imageEditButtons: [
+        'wirisEditor',
+        'wirisChemistry',
+        'imageDisplay',
+        'imageAlign',
+        'imageInfo',
+        'imageRemove'
+      ],
       // Allow all the tags to understand the mathml
       htmlAllowedTags:  ['.*'],
       htmlAllowedAttrs: ['.*'],
