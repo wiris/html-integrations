@@ -32,8 +32,9 @@ Easily include quality math equations in your documents and digital content.
      ```js  
          // From Froala 'Get started' section https://froala.com/wysiwyg-editor/docs/overview/
          new FroalaEditor('.selector', {
-            // Add MathType and ChemType buttons to the toolbar:
+            // Add MathType and ChemType buttons to the toolbar and the image menu:
             toolbar: ['wirisEditor', 'wirisChemistry'], 
+            imageEditButtons: ['wirisEditor', 'wirisChemistry'],
             // Allow all tags, in order to allow MathML:
             htmlAllowedTags:  ['.*'],
             htmlAllowedAttrs: ['.*'],
