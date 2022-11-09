@@ -254,12 +254,7 @@ export default class MathType extends Plugin {
       let formula = processor.toData(viewDocumentFragment) || '';
 
       // And obtain the complete formula
-      formula = `<math${mathAttributes}>${formula}</math>`;
-
-      // Skip if mathml contains a XSS injection
-      if (Util.containsXSS(formula)) {
-        return;
-      }
+      formula = Util.htmlSanitize(`<math${mathAttributes}>${formula}</math>`);
 
       /* Model node that contains what's going to actually be inserted. This can be either:
             - A <mathml> element with a formula attribute set to the given formula, or

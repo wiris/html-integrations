@@ -404,16 +404,6 @@ export default class Util {
   }
 
   /**
-   * Check if HTML contains XSS injections.
-   * @param {string} html - html to be sanitize.
-   * @returns {string} html sanitized.
-   * @static
-   */
-  static containsXSS(html) {
-    return !(DOMPurify.sanitize(html) === html);
-  }
-
-  /**
    * Parses a text and replaces all the HTML entities by their characters.
    * @param {string} input - text to be parsed
    * @returns {string} the input text with all their entities replaced by characters.
