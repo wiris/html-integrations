@@ -535,6 +535,9 @@ export default class Core {
       }
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
+
+    this.integrationModel.telemeter.telemeter.log("debug", "This is a log message", {});
+
   }
 
   /**

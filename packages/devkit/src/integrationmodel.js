@@ -5,6 +5,7 @@ import Listeners from './listeners';
 import Util from './util';
 import Configuration from './configuration';
 import ServiceProvider from './serviceprovider';
+import Telemeter from './telemeter';
 
 /**
  * @typedef {Object} IntegrationModelProperties
@@ -209,6 +210,20 @@ export default class IntegrationModel {
     this.core.init();
     // TODO: Move to Core constructor.
     this.core.setEnvironment(this.environment);
+
+    // Initialize telemeter
+    this.telemeter = new Telemeter();
+    this.telemeter.init({
+      solution: "MathType for CKEditor",
+      hosts: [],
+      config: {
+        test: true, // True to use the staging Telemetry endpoint instead of the production one.
+        debug: false, // True to show more information about Telemeter's execution and use dev-tools.
+        dry_run: false, // True to skip sending data to the Telemetry endpoint (for example for unit tests).
+        api_key: "1caaff6e-ef1f-41ba-b459-911b558c2b23", // to auth against Telemetry. Data team is the responsible of providing it.
+      }
+    })
+
   }
 
   /**
