@@ -5,7 +5,6 @@ import Configuration from './configuration';
 import Listeners from './listeners';
 import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
-import TelemetryService from './telemetry';
 import IntegrationModel from './integrationmodel';
 
 import closeIcon from '../styles/icons/general/close_icon.svg';  //eslint-disable-line
@@ -477,24 +476,6 @@ export default class ModalDialog {
    * if exists. By default the modal object opens in stack mode.
    */
   open() {
-    // TODO Change the call to telemetry to use events.
-    try {
-      TelemetryService.send([{
-        timestamp: new Date().toJSON(),
-        topic: '0',
-        level: 'info',
-        message: 'HELO telemetry.wiris.net',
-      }])
-        .then((response) => { // eslint-disable-line no-unused-vars
-          // TODO: manage retries for codes
-          // DEBUG
-          // console.log('modal.open TelemetryService.send - response:', response);
-        });
-    } catch (error) {
-      // DEBUG
-      // console.log('modal.open TelemetryService.send - error:', error);
-    }
-
     // Removing close class.
     this.removeClass('wrs_closed');
     // Hiding keyboard for mobile devices.
