@@ -58,6 +58,9 @@ const froalaConfig = {
   // so that formulas renderize propertly
   htmlAllowedEmptyTags: ['mprescripts', 'none'],
 
+  // Remove "Powered by Froala" water mark
+  attribution: false,
+
   // Froala editor language
   // language: 'de',
   // You could set a different language for MathType editor:
