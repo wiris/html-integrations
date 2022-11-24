@@ -53,7 +53,7 @@ If your website hosts its own MathType Web services, instead of using the wiris.
 
 
 ```sh
-$ SERVICE_PROVIDER_URL=[url] SERVICE_PROVIDER_SERVER=[tech] yarn build
+$ SERVICE_PROVIDER_URI=[url] SERVICE_PROVIDER_SERVER=[tech] yarn build
 ```
 
 Where `[tech]` is one of:
