@@ -2395,13 +2395,12 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@html-validate/stylish@^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@html-validate/stylish/-/stylish-2.0.1.tgz#a21dac99e7bbf7d25a564b8560d9d2a17aa84dd4"
-  integrity sha512-iRLjgQnNq66rcsTukun6KwMhPEoUV2R3atPbTSapnEvD1aETjD+pfS+1yYrmaPeJFgXHzfsSYjAuyUVq7EID/Q==
+"@html-validate/stylish@^3.0.0":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@html-validate/stylish/-/stylish-3.0.1.tgz#9d0304c6fd91e4b19467b8b7d6f3f112fc7831ff"
+  integrity sha512-jQNDrSnWvJEPSlqC1tFqcbmVuJy2x61UwqFsXHxYT2sgCXFW4AVhsoIcHkECCmUHtQ8hpHU6yOBGA+rMLZhS7A==
   dependencies:
     kleur "^4.0.0"
-    text-table "^0.2.0"
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
@@ -3362,10 +3361,10 @@
     semver "7.3.4"
     semver-intersect "1.4.0"
 
-"@sidvind/better-ajv-errors@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@sidvind/better-ajv-errors/-/better-ajv-errors-1.1.1.tgz#310d4f38fb0bb631b464bebf036fa5b5ff50b400"
-  integrity sha512-CXnmMcV4QoyWuFA0zlDk0AWMHftaMFAIFWz68AH4EXOO2iUEq0gsonJEhY3OjM08xHYobqqDeCAPPEsL5E+8QA==
+"@sidvind/better-ajv-errors@^2.0.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@sidvind/better-ajv-errors/-/better-ajv-errors-2.1.0.tgz#54f4216d2200d60e90ec25c6a27c1ea3afdc6cdf"
+  integrity sha512-JuIb009FhHuL9priFBho2kv7QmZOydj0LgYvj+h1t0mMCmhM/YmQNRlJR5wVtBZya6wrVFK5Hi5TIbv5BKEx7w==
   dependencies:
     "@babel/code-frame" "^7.16.0"
     chalk "^4.1.0"
@@ -9884,14 +9883,14 @@ html-minifier-terser@^5.0.1, html-minifier-terser@^5.1.1:
     relateurl "^0.2.7"
     terser "^4.6.3"
 
-html-validate@^6.0.2:
-  version "6.11.1"
-  resolved "https://registry.yarnpkg.com/html-validate/-/html-validate-6.11.1.tgz#1b0e6d714a7ac30c16fa1374c2903236b2fc7c4d"
-  integrity sha512-SyEEVN/7atyRSFmvTJgGH8yDZtvA7FH+gR4Uir5m9Cq1cME6udnfMaSVteafWqLVB7II+YLdfCSmdynrTs52Cw==
+html-validate@^7.10.0:
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/html-validate/-/html-validate-7.10.0.tgz#45953bc9abf84a3a91f76a820ebb98c2cebcc578"
+  integrity sha512-u+g03pnu3s/LaJP/O8T42v+zlgACtL4T0u9DHQLkNTd9LyzUEjir+YqDSGuKX+QsVld8ORDK/ZQ/8FQGLx1/Vw==
   dependencies:
     "@babel/code-frame" "^7.10.0"
-    "@html-validate/stylish" "^2.0.0"
-    "@sidvind/better-ajv-errors" "^1.1.1"
+    "@html-validate/stylish" "^3.0.0"
+    "@sidvind/better-ajv-errors" "^2.0.0"
     acorn-walk "^8.0.0"
     ajv "^8.0.0"
     deepmerge "^4.2.0"
