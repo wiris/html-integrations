@@ -32,10 +32,6 @@ module.exports = (config, context) => {
             from: `${path.dirname(require.resolve(`ckeditor4`))}`,
             to: path.resolve(__dirname, "dist/ckeditor4"),
           },
-          { // For CKEditor to be able to fetch the icons at runtime
-            from: `${path.dirname(require.resolve(`@wiris/mathtype-ckeditor4`))}`,
-            to: path.resolve(__dirname, "node_modules/@wiris/mathtype-ckeditor4"),
-          },
         ],
       }),
     ],
