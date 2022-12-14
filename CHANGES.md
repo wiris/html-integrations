@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### 8.0.1 2022-12-14
+
+  - Create staging environment
+  - Vite compatibility
+  - Webpack 5 with hot reload
+  - Fix drag and drop issue with ckeditor5 and chemtype
+
 ### 8.0.0 2022-09-22
 
   - fix: change webpack demo host to localhost
