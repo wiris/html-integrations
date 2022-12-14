@@ -30,7 +30,7 @@ jobs:
 
       - name: Delete this branch's demos in the S3 bucket
         run: |
-          aws s3 rm s3://wiris-integrations-staging-html/${{ matrix.branch }} --recursive
+          aws s3 rm s3://wiris-integrations-staging-html/${{ github.event.ref }} --recursive
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items!=null] | [?contains(Aliases.Items, 'integrations.wiris.kitchen')].Id | [0]" --output text) --paths '/*'
