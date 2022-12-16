@@ -68,5 +68,9 @@ module.exports = (config, context) => {
     stats: {
       colors: true,
     },
-  }
+    experiments: {
+      topLevelAwait: true,
+      asyncWebAssembly: true
+    },
+  };
 };
