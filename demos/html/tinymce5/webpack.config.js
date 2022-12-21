@@ -24,7 +24,6 @@ module.exports = (config, context) => {
       host: '0.0.0.0'
     },
     watch: false,
-    watch: false,
     plugins: [
       new CopyPlugin({
         patterns: [
@@ -67,10 +66,19 @@ module.exports = (config, context) => {
           exclude: /node_modules/,
           loader: 'html-loader',
         },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
       ],
     },
     stats: {
       colors: true,
     },
+    experiments: {
+      topLevelAwait: true,
+      asyncWebAssembly: true
+    },
   }
-};
+}

@@ -5,6 +5,7 @@ import Configuration from './configuration';
 import Listeners from './listeners';
 import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
+import Telemeter from './telemeter';
 import IntegrationModel from './integrationmodel';
 
 import closeIcon from '../styles/icons/general/close_icon.svg';  //eslint-disable-line
@@ -273,6 +274,12 @@ export default class ModalDialog {
     if (typeof this.contentManager.submitAction !== 'undefined') {
       this.contentManager.submitAction();
     }
+
+    Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+      toolbar: this.contentManager.toolbar,
+      trigger: "mtct_insert",
+    });
+
     this.close();
   }
 
@@ -287,9 +294,21 @@ export default class ModalDialog {
       // Set temporal image to null to prevent loading
       // an existent formula when strarting one from scrath. Make focus come back too.
       IntegrationModel.setActionsOnCancelButtons();
+
+      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        toolbar: this.contentManager.toolbar,
+        trigger: "mtct_close",
+      });
+
       this.close();
     } else if (!this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
+
+      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        toolbar: this.contentManager.toolbar,
+        trigger: "mtct_close",
+      });
+
       this.close();
     } else {
       this.showPopUpMessage();
