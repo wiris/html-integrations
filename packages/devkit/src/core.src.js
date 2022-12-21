@@ -12,6 +12,7 @@ import Listeners from './listeners';
 import Image from './image';
 import ServiceProvider from './serviceprovider';
 import ModalDialog from './modal';
+import Telemeter from './telemeter';
 import './polyfills';
 import '../styles/styles.css';
 
@@ -118,6 +119,7 @@ export default class Core {
     this.editionProperties.temporalImage = null;
     this.editionProperties.latexRange = null;
     this.editionProperties.range = null;
+    this.editionProperties.editionStartTime = null;
 
     /**
      * The {@link IntegrationModel} instance.
@@ -437,6 +439,7 @@ export default class Core {
    * @param {Window} windowTarget - The window target.
    */
   insertElementOnSelection(element, focusElement, windowTarget) {
+    let mathmlOrigin = null;
     if (this.editionProperties.isNewElement) {
       if (element) {
         if (focusElement.type === 'textarea') {
@@ -524,6 +527,7 @@ export default class Core {
         item.startPosition,
         item.endPosition);
     } else {
+      mathmlOrigin = this.editionProperties.temporalImage.dataset.mathml;
       if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
         // There are editors (e.g: CKEditor) that put attributes in images.
         // We don't allow that behaviour in our images.
@@ -536,8 +540,15 @@ export default class Core {
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
 
-    this.integrationModel.telemeter.telemeter.log("debug", "This is a log message", {});
-
+    const mathml = element?.dataset.mathml;
+    Telemeter.telemeter.track("INSERTED_FORMULA", {
+      mathml_origin: mathmlOrigin,
+      mathml: mathml,
+      elapsed_time: Date.now() - this.editionProperties.editionStartTime,
+      editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
+      toolbar: this.modalDialog.contentManager.toolbar,
+      size: mathml?.length,
+    });
   }
 
   /**
@@ -546,6 +557,10 @@ export default class Core {
    * @param {Boolean} isIframe - True if the target HTMLElement is an iframe. False otherwise.
    */
   openModalDialog(target, isIframe) {
+
+    // Count the time since the editor is open
+    this.editionProperties.editionStartTime = Date.now();
+
     // Textarea elements don't have normal document ranges. It only accepts latex edit.
     this.editMode = 'images';
 

@@ -212,9 +212,11 @@ export default class IntegrationModel {
     this.core.setEnvironment(this.environment);
 
     // Initialize telemeter
-    this.telemeter = new Telemeter();
-    this.telemeter.init({
-      solution: "MathType for CKEditor",
+    Telemeter.init({
+      solution: {
+        name: "MathType for CKEditor",
+        version: "8.0.0",
+      },
       hosts: [],
       config: {
         test: true, // True to use the staging Telemetry endpoint instead of the production one.
@@ -302,6 +304,11 @@ export default class IntegrationModel {
   openNewFormulaEditor() {
     this.core.editionProperties.isNewElement = true;
     this.core.openModalDialog(this.target, this.isIframe);
+
+    Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+      toolbar: this.core.modalDialog.contentManager.toolbar,
+      trigger: "button",
+    });
   }
 
   /**
@@ -311,6 +318,11 @@ export default class IntegrationModel {
   openExistingFormulaEditor() {
     this.core.editionProperties.isNewElement = false;
     this.core.openModalDialog(this.target, this.isIframe);
+
+    Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+      toolbar: this.core.modalDialog.contentManager.toolbar,
+      trigger: "formula",
+    });
   }
 
   /**
