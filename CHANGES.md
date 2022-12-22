@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### UNRELEASED
+
+  - Fix: Generic demos on staging are now in english. #KB-31349
+
 ### 8.0.1 2022-12-14
 
   - Create staging environment

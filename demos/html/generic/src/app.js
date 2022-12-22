@@ -21,7 +21,7 @@ Generic.copyContentFromxToy('editable', 'transform_content');
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
 const mathTypeParameters = {
-  editorParameters: { language: 'es' }, // MathType config, including language
+  editorParameters: { language: 'en' }, // MathType config, including language
 };
 
 // Initialyze the editor.

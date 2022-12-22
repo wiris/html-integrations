@@ -33,9 +33,12 @@ export class AppComponent implements OnInit {
     // Load the toolbar and the editable area into const variables to work easy with them
     const editableDiv = document.getElementById('htmlEditor');
     const toolbarDiv = document.getElementById('toolbar');
+    const mathTypeParameters = {
+      editorParameters: { language: 'en' }, // MathType config, including language
+    };
 
     // Initialyze the editor.
-    (window as any).wrs_int_init(editableDiv, toolbarDiv);
+    (window as any).wrs_int_init(editableDiv, toolbarDiv, mathTypeParameters);
 
     // Add listener on click button to launch updateContent function.
     document.getElementById('btn_update').addEventListener('click', (e) => {
