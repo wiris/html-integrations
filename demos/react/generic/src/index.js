@@ -59,9 +59,12 @@ class Editor extends React.Component {
     // Load the toolbar and the editable area into const variables to work easy with them.
     const editableDiv = document.getElementById('htmlEditor');
     const toolbarDiv = document.getElementById('toolbar');
+    const mathTypeParameters = {
+      editorParameters: { language: 'en' }, // MathType config, including language
+    };
 
     // Initialyze the editor.
-    window.wrs_int_init(editableDiv, toolbarDiv);
+    window.wrs_int_init(editableDiv, toolbarDiv, mathTypeParameters);
   }
 
   // eslint-disable-next-line class-methods-use-this
