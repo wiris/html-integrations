@@ -15,7 +15,7 @@ export default class Telemeter {
    * @param {Object} telemeterAttributes.config - Configuration parameters.
    */
   static init(telemeterAttributes) {
-    init()
+    init(telemeterAttributes.url)
       .then(() => {
         if (this.telemeter) {
           let local_telemeter = this.telemeter;

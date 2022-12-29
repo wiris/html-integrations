@@ -1,6 +1,3 @@
-// Load scripts.
-import '@wiris/mathtype-ckeditor4/plugin';
-
 // Load styles.
 import './static/style.css';
 

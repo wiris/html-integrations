@@ -211,21 +211,204 @@ export default class IntegrationModel {
     // TODO: Move to Core constructor.
     this.core.setEnvironment(this.environment);
 
+    // Store editor name for telemetry purposes.
+    let editorName = this.environment.editor;
+    editorName = editorName.slice(0, -1); // Remove version number from editors
+    if (editorName.includes("TinyMCE")) editorName = "TinyMCE"; // Remove version from Tinymce editor.
+    if (editorName.includes("Generic")) editorName = "Generic"; // Remove version from Generic editor.
+    let solutionTelemeter = editorName;
+
+    // Set url from where to look for the .wasm file.
+    let url = `${window.location.href}node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm`;
+
+    // If moodle, add information to hosts and solution.
+    let isMoodle = (!!((typeof M === 'object' && M !== null))),
+      lms;
+    
+    if (isMoodle) {
+      solutionTelemeter = 'Moodle';
+      url = undefined;
+      lms = {
+        nam: 'moodle',
+        fam: 'lms',
+        ver: Configuration.get('versionMoodle')
+      }   
+    }
+
+    // Get the OS and its version.
+    let OSData = this.getOS();
+
+    // Get the broswer and its version.
+    let broswerData = this.getBrowser();
+
+    // Create list of hosts to send to telemetry.
+    let hosts = [
+      {
+        nam: broswerData.detectedBrowser,
+        fam: "browser",
+        ver: broswerData.versionBrowser,
+      },
+      {
+        nam: editorName.toLowerCase(),
+        fam: "html-editor",
+        ver: this.environment.editorVersion,
+      },
+      {
+        nam: OSData.detectedOS,
+        fam: "os",
+        ver: OSData.versionOS,
+      },
+      lms,
+    ];
+
+    // Filter hosts to remove empty arrays
+    hosts = hosts.filter(function( element ) {
+      return element !== undefined;
+   });
+
     // Initialize telemeter
     Telemeter.init({
       solution: {
-        name: "MathType for CKEditor",
-        version: "8.0.0",
+        name: "MathType for " + solutionTelemeter,
+        version: this.version,
       },
-      hosts: [],
+      hosts: hosts,
       config: {
         test: true, // True to use the staging Telemetry endpoint instead of the production one.
         debug: false, // True to show more information about Telemeter's execution and use dev-tools.
         dry_run: false, // True to skip sending data to the Telemetry endpoint (for example for unit tests).
         api_key: "1caaff6e-ef1f-41ba-b459-911b558c2b23", // to auth against Telemetry. Data team is the responsible of providing it.
-      }
+      },
+      url: url,
     })
 
+  }
+
+  /**
+   * Returns the Browser name and its version.
+   * @return {array} - detectedBrowser = Operating System name.
+   *                   versionBrowser = Operating System version.
+   */
+  getBrowser() {
+    // default value for OS just in case nothing is detected
+    let detectedBrowser = "unknown",
+      versionBrowser = "unknown";
+
+    let userAgent = window.navigator.userAgent;
+
+    if(/Brave/.test(userAgent)) {
+      detectedBrowser = "brave";
+      if (userAgent.indexOf("Brave/")) {
+        let start = userAgent.indexOf("Brave") + 6;
+        let end = userAgent.substring(start).indexOf(' ');
+        end = (end === -1) ? userAgent.lastIndexOf("") : end;
+        versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      }
+    } else if (userAgent.indexOf('Edg/') !== -1) {
+      detectedBrowser = "edge_chromium";
+      let start = userAgent.indexOf("Edg/") + 4;
+      versionBrowser = (userAgent.substring(start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    } else if (/Edg/.test(userAgent)) {
+      detectedBrowser = "edge";
+      let start = userAgent.indexOf("Edg") + 3;
+      start = start + userAgent.substring(start).indexOf('/');
+      let end = userAgent.substring(start).indexOf(' ');
+      end = (end === -1) ? userAgent.lastIndexOf("") : end;
+      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    } else if (/Firefox/.test(userAgent) || /FxiOS/.test(userAgent)) {
+      detectedBrowser = "firefox";
+      let start = userAgent.indexOf("Firefox");
+      start = (start === -1) ? userAgent.indexOf("FxiOS") : start;
+      start = start + userAgent.substring(start).indexOf('/') + 1;
+      let end = userAgent.substring(start).indexOf(' ');
+      end = (end === -1) ? userAgent.lastIndexOf("") : end;
+      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+    } else if (/OPR/.test(userAgent)) {
+      detectedBrowser = "opera";
+      let start = userAgent.indexOf("OPR/") + 4;
+      let end = userAgent.substring(start).indexOf(' ');
+      end = (end === -1) ? userAgent.lastIndexOf("") : end;
+      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    } else if (/Chrome/.test(userAgent) || /CriOS/.test(userAgent)) {
+      detectedBrowser = "chrome";
+      let start = userAgent.indexOf("Chrome");
+      start = (start === -1) ? userAgent.indexOf("CriOS") : start;
+      start = start + userAgent.substring(start).indexOf('/') + 1;
+      let end = userAgent.substring(start).indexOf(' ');
+      end = (end === -1) ? userAgent.lastIndexOf("") : end;
+      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+    } else if (/Safari/.test(userAgent)) {
+      detectedBrowser = "safari";
+      let start = userAgent.indexOf("Version/");
+      start = start + userAgent.substring(start).indexOf('/') + 1;
+      let end = userAgent.substring(start).indexOf(' ');
+      end = (end === -1) ? userAgent.lastIndexOf("") : end;
+      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+    }
+
+    return { detectedBrowser, versionBrowser };
+  }
+
+  /**
+   * Returns the operating system and its version.
+   * @return {array} - detectedOS = Operating System name.
+   *                   versionOS = Operating System version.
+   */
+  getOS() {
+    
+    // default value for OS just in case nothing is detected
+    let detectedOS = "unknown",
+      versionOS = "unknown";
+
+    // Retrieve properties to easily detect the OS
+    let userAgent = window.navigator.userAgent,
+      platform = window.navigator.platform,
+      macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+      windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+      iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+
+    // Find OS and their respective versions
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      detectedOS = 'macos';
+      if (userAgent.indexOf("OS X") !== -1) {
+        let start = userAgent.indexOf("OS X") + 5;
+        let end = userAgent.substring(start).indexOf(' ');
+        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      }
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      detectedOS = 'ios';
+      if (userAgent.indexOf("OS ") !== -1) {
+        let start = userAgent.indexOf("OS ") + 3;
+        let end = userAgent.substring(start).indexOf(')');
+        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      }
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      detectedOS = 'windows';
+      let start = userAgent.indexOf("Windows");
+      let end = userAgent.substring(start).indexOf(';');
+      if (end === -1) {
+        end = userAgent.substring(start).indexOf(')');
+      }
+      versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    } else if (/Android/.test(userAgent)) {
+      detectedOS = 'android';
+      let start = userAgent.indexOf("Android");
+      let end = userAgent.substring(start).indexOf(';');
+      if (end === -1) {
+        end = userAgent.substring(start).indexOf(')');
+      }
+      versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    }else if (/CrOS/.test(userAgent)) {
+        detectedOS = 'chromeos';
+        let start = userAgent.indexOf("CrOS ") + 5;
+        start = start + userAgent.substring(start).indexOf(' ');
+        let end = userAgent.substring(start).indexOf(')');
+        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+    } else if (detectedOS === "unknown" && /Linux/.test(platform)) {
+      detectedOS = 'linux';
+    }
+
+    return { detectedOS, versionOS };
   }
 
   /**
