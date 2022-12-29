@@ -1,6 +1,3 @@
-// Load scripts.
-import '@wiris/mathtype-froala/wiris';
-
 // Load styles.
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import './static/style.css';

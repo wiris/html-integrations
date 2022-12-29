@@ -27,6 +27,8 @@ import CKEditor5Integration from './integration';
 import mathIcon from '../theme/icons/formula.svg';
 import chemIcon from '../theme/icons/chem.svg';
 
+import packageInfo from '../package.json';
+
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
 
 export default class MathType extends Plugin {
@@ -81,6 +83,7 @@ export default class MathType extends Plugin {
     integrationProperties.environment = {};
     integrationProperties.environment.editor = 'CKEditor5';
     integrationProperties.environment.editorVersion = '5.x';
+    integrationProperties.version = packageInfo.version;
     integrationProperties.editorObject = editor;
     integrationProperties.serviceProviderProperties = {};
     integrationProperties.serviceProviderProperties.URI = 'https://www.wiris.net/demo/plugins/app';
