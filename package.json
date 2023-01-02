@@ -18,7 +18,7 @@
     "build-jsdoc-validation": "link-checker packages/mathtype-html-integration-devkit/out/"
   },
   "devDependencies": {
-    "@nrwl/cli": "^14.4.2",
+    "@nrwl/cli": "^15.4.2",
     "@nrwl/cypress": "^14.4.2",
     "@nrwl/eslint-plugin-nx": "^14.4.2",
     "@nrwl/linter": "^14.4.2",
