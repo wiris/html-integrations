@@ -119,7 +119,7 @@ export default class GenericIntegration extends IntegrationModel {
       const formulaButton = document.createElement('img');
       formulaButton.id = 'editorIcon';
       formulaButton.src = formulaIcon;
-      formulaButton.title = StringManager.get('insert_math', this.editorParameters.language);
+      formulaButton.title = StringManager.get('insert_math', this.getLanguage());
       formulaButton.style.cursor = 'pointer';
 
       Util.addEvent(formulaButton, 'click', () => {
@@ -144,7 +144,7 @@ export default class GenericIntegration extends IntegrationModel {
         // Horrible hard-coded temporary fix
         if (customEditor === 'chemistry') {
           customEditorButton.src = chemIcon;
-          customEditorButton.title = StringManager.get('insert_chem', this.editorParameters.language);
+          customEditorButton.title = StringManager.get('insert_chem', this.getLanguage());
         }
         customEditorButton.id = `${customEditor}Icon`;
         customEditorButton.style.cursor = 'pointer';
