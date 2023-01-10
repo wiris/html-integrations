@@ -400,7 +400,13 @@ export default class Util {
    * @static
    */
   static htmlSanitize(html) {
-    return DOMPurify.sanitize(html);
+    let annotationRegex = /\<annotation.+\<\/annotation\>/
+    // Get all the annotation content including the tags.
+    let annotation = html.match(annotationRegex);
+    // Sanitize html code without removing the <semantics> and <annotation> tags.
+    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation']});
+    // Readd old annotation content.
+    return html.replace(annotationRegex, annotation);
   }
 
   /**
