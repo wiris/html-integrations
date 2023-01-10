@@ -232,7 +232,10 @@ export default class IntegrationModel {
         nam: 'moodle',
         fam: 'lms',
         ver: Configuration.get('versionMoodle')
-      }   
+      }
+      if (!editorName.includes('TinyMCE')) {
+        editorName = 'Atto';
+      }
     }
 
     // Get the OS and its version.
