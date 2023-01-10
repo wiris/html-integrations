@@ -312,6 +312,11 @@ export default class ModalDialog {
       this.close();
     } else {
       this.showPopUpMessage();
+
+      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        toolbar: this.contentManager.toolbar,
+        trigger: "mtct_close",
+      });
     }
   }
 

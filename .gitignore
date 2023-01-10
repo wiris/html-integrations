@@ -69,3 +69,4 @@ app.*.js
 
 # Telemeter fingerprint
 *.wasm
+!packages/devkit/*.wasm

@@ -15,22 +15,18 @@ export default class Telemeter {
    * @param {Object} telemeterAttributes.config - Configuration parameters.
    */
   static init(telemeterAttributes) {
-    init(telemeterAttributes.url)
-      .then(() => {
-        if (this.telemeter) {
-          let local_telemeter = this.telemeter;
-          this.telemeter = undefined;
-          local_telemeter.finish();
-        }
-
-        this.telemeter = new TelemeterWASM(
-          telemeterAttributes.solution,
-          telemeterAttributes.hosts,
-          telemeterAttributes.config);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    if (!this.telemeter){
+      init(telemeterAttributes.url)
+        .then(() => {
+          this.telemeter = new TelemeterWASM(
+            telemeterAttributes.solution,
+            telemeterAttributes.hosts,
+            telemeterAttributes.config);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
   }
 
   /**
