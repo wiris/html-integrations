@@ -17,6 +17,7 @@ Last release of this project is was 30th of September 2021.
 
   - Fix: Generic demos on staging are now in english. #KB-31349
   - Fix: tinymce folder names confuse nx. #KB-31663
+  - Fix: exclude semantics and annotation tags from dompurify. #KB-31876
 
 ### 8.0.1 2022-12-14
 
