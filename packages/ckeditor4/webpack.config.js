@@ -19,7 +19,7 @@ module.exports = (config, context) => {
       static: {
         directory: path.join(__dirname, "./")
       },
-      onListening: !config.devServer ? '' : config.devServer.onListening,
+      onListening: (config && config.devServer) ? config.devServer.onListening : '',
       hot: true,
       port: 9001,
       host: '0.0.0.0'
