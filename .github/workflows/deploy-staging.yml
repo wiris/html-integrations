@@ -92,6 +92,7 @@ jobs:
 
       - name: Build the demos
         run: |
+          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
           yarn
           yarn nx build ${{ matrix.editor }}
           yarn nx build ${{ matrix.framework }}-${{ matrix.editor }}
@@ -100,6 +101,7 @@ jobs:
         run: |
           case "${{ matrix.framework }}" in
             html)
+              aws s3 cp demos/${{ matrix.framework }}/${{ matrix.editor }}/node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm s3://wiris-integrations-staging-html/${{ matrix.branch }}/${{ matrix.framework }}/${{ matrix.editor }}/node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm
               aws s3 cp demos/html/${{ matrix.editor }}/index.html s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/index.html
               aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
               # CKEditor 4 fetches the icons in runtime, so we need to upload them as well
@@ -107,12 +109,20 @@ jobs:
               then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/plugin.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/plugin.js
+              fi
+              # Froala fetches the Wiris plugin in runtime, so we need to upload it as well
+              if [ "${{ matrix.editor }}" = "froala" ]
+              then
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-froala/wiris.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-froala/wiris.js
               fi
               ;;
             angular)
+              aws s3 cp node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm s3://wiris-integrations-staging-html/${{ matrix.branch }}/${{ matrix.framework }}/${{ matrix.editor }}/node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm
               aws s3 cp demos/angular/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/angular/${{ matrix.editor }} --recursive
               ;;
             react)
+              aws s3 cp node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm s3://wiris-integrations-staging-html/${{ matrix.branch }}/${{ matrix.framework }}/${{ matrix.editor }}/node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm
               aws s3 cp demos/react/${{ matrix.editor }}/build s3://wiris-integrations-staging-html/${{ matrix.branch }}/react/${{ matrix.editor }} --recursive
               ;;
           esac

@@ -275,10 +275,14 @@ export default class ModalDialog {
       this.contentManager.submitAction();
     }
 
-    Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-      toolbar: this.contentManager.toolbar,
-      trigger: "mtct_insert",
-    });
+    try {
+      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        toolbar: this.contentManager.toolbar,
+        trigger: "mtct_insert",
+      });
+    } catch (err) {
+      console.error(err);
+    }
 
     this.close();
   }
@@ -295,28 +299,40 @@ export default class ModalDialog {
       // an existent formula when strarting one from scrath. Make focus come back too.
       IntegrationModel.setActionsOnCancelButtons();
 
-      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-        toolbar: this.contentManager.toolbar,
-        trigger: "mtct_close",
-      });
+      try {
+        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: this.contentManager.toolbar,
+          trigger: "mtct_close",
+        });
+      } catch (err) {
+        console.error(err);
+      }
 
       this.close();
     } else if (!this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
 
-      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-        toolbar: this.contentManager.toolbar,
-        trigger: "mtct_close",
-      });
+      try {
+        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: this.contentManager.toolbar,
+          trigger: "mtct_close",
+        });
+      } catch (err) {
+        console.error(err);
+      }
 
       this.close();
     } else {
       this.showPopUpMessage();
 
-      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-        toolbar: this.contentManager.toolbar,
-        trigger: "mtct_close",
-      });
+      try {
+        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: this.contentManager.toolbar,
+          trigger: "mtct_close",
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 

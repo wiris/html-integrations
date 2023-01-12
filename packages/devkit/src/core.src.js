@@ -541,14 +541,18 @@ export default class Core {
     }
 
     const mathml = element?.dataset.mathml;
-    Telemeter.telemeter.track("INSERTED_FORMULA", {
-      mathml_origin: mathmlOrigin,
-      mathml: mathml,
-      elapsed_time: Date.now() - this.editionProperties.editionStartTime,
-      editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
-      toolbar: this.modalDialog.contentManager.toolbar,
-      size: mathml?.length,
-    });
+    try {
+      Telemeter.telemeter.track("INSERTED_FORMULA", {
+        mathml_origin: mathmlOrigin,
+        mathml: mathml,
+        elapsed_time: Date.now() - this.editionProperties.editionStartTime,
+        editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
+        toolbar: this.modalDialog.contentManager.toolbar,
+        size: mathml?.length,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
