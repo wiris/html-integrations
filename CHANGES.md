@@ -16,6 +16,7 @@ Last release of this project is was 30th of September 2021.
 ### 8.1.1 2023-01-11
 
   - Fix: Generic demos on staging are now in english. #KB-31349
+  - Fix: tinymce folder names confuse nx. #KB-31663
 
 ### 8.0.1 2022-12-14
 

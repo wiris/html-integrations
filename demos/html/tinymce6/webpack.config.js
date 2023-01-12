@@ -30,7 +30,7 @@ module.exports = (config, context) => {
         patterns: [
           {
             from: `${path.dirname(require.resolve(`tinymce`))}`,
-            to: path.resolve(__dirname, "dist/tinymce"),
+            to: path.resolve(__dirname, "dist/tinymce6"),
           },
           {
             from: `${path.dirname(require.resolve(`@wiris/mathtype-tinymce6`))}/plugin.min.js`,
