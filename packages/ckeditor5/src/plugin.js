@@ -105,7 +105,7 @@ export default class MathType extends Plugin {
       integration.checkElement();
 
       this.listenTo(editor.editing.view.document, 'click', (evt, data) => {
-        // Is double click
+        // Is Double-click
         if (data.domEvent.detail === 2) {
           integration.doubleClickHandler(data.domTarget, data.domEvent);
           evt.stop();
@@ -188,7 +188,7 @@ export default class MathType extends Plugin {
       });
     }
 
-    // Observer for the double click event
+    // Observer for the Double-click event
     editor.editing.view.addObserver(ClickObserver);
   }
 

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 // ***********************************************************
 // Test case: INT-STD-016
-// Title:     User edits a formula by double click and inserts it.
+// Title:     User edits a formula by Double-click and inserts it.
 // Document:  https://docs.google.com/document/d/1bIZOmDigkvhMCpAcTf81nz3Wp252aZpyPol9AxY0OXY/edit
 // Context:   E2E / Insertion
 // Issue:     KB-13069
@@ -21,7 +21,7 @@ it('should be able to edit an existing formula', { retries: 3 }, function () {
   // Insert a new MathType formula from scratch on the editor
   cy.insertFormulaFromScratch(this.formulas['formula-general']);
 
-  // Double click the previous inserted formula to start editing it
+  // Double-click the previous inserted formula to start editing it
   cy
     .getFormula(0)
     .dblclick();

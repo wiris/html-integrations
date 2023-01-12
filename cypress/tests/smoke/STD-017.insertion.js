@@ -22,7 +22,7 @@ it('should be able to edit and existing formula and cancel the edition', functio
   // Insert a new MathType formula from scratch on the editor
   cy.insertFormulaFromScratch(this.formulas['formula-general']);
 
-  // Double click the previous inserted formula to start editing it
+  // Double-click the previous inserted formula to start editing it
   cy
     .getFormula(0)
     .dblclick();

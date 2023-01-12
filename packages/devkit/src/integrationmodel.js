@@ -491,10 +491,14 @@ export default class IntegrationModel {
     this.core.editionProperties.isNewElement = true;
     this.core.openModalDialog(this.target, this.isIframe);
 
-    Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-      toolbar: this.core.modalDialog.contentManager.toolbar,
-      trigger: "button",
-    });
+    try {
+      Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+        toolbar: this.core.modalDialog.contentManager.toolbar,
+        trigger: "button",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
@@ -505,10 +509,14 @@ export default class IntegrationModel {
     this.core.editionProperties.isNewElement = false;
     this.core.openModalDialog(this.target, this.isIframe);
 
-    Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-      toolbar: this.core.modalDialog.contentManager.toolbar,
-      trigger: "formula",
-    });
+    try {
+      Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+        toolbar: this.core.modalDialog.contentManager.getToolbar(),
+        trigger: "formula",
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
@@ -577,7 +585,7 @@ export default class IntegrationModel {
 
   /**
    * Add events to formulas in the DOM target. The events added are the following:
-   * - doubleClickHandler: handles double click event on formulas by opening an editor
+   * - doubleClickHandler: handles Double-click event on formulas by opening an editor
    * to edit them.
    * - mouseDownHandler: handles mouse down event on formulas by saving the size of the formula
    * in case the the formula is resized.
@@ -609,7 +617,7 @@ export default class IntegrationModel {
   }
 
   /**
-   * Handles a double click on the target element. Opens an editor
+   * Handles a Double-click on the target element. Opens an editor
    * to re-edit the double-clicked formula.
    * @param {HTMLElement} element - DOM object target.
    */

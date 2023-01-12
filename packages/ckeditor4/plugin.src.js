@@ -226,7 +226,7 @@ export class CKEditor4Integration extends IntegrationModel {
   doubleClickHandler(element, event) {
     if (element.nodeName.toLowerCase() === 'img') {
       if (Util.containsClass(element, Configuration.get('imageClassName'))) {
-        // Some plugins (image2, image) open a dialog on double click. On formulas
+        // Some plugins (image2, image) open a dialog on Double-click. On formulas
         // doubleclick event ends here.
         if (typeof event.stopPropagation !== 'undefined') { // old I.E compatibility.
           event.stopPropagation();
