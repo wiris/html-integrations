@@ -679,7 +679,9 @@ export default class Core {
       defaultEditorAttributes[key] = value;
     }
     // Custom editor parameters.
-    const editorAttributes = {};
+    const editorAttributes = {
+      language: this.language, // Default language value
+    };
     // Editor parameters in backend, usually configuration.ini.
     const serverEditorParameters = Configuration.get('editorParameters');
     // Editor parameters through JavaScript configuration.
@@ -687,7 +689,10 @@ export default class Core {
     Object.assign(editorAttributes, defaultEditorAttributes, serverEditorParameters);
     Object.assign(editorAttributes, defaultEditorAttributes, cliendEditorParameters);
 
-    editorAttributes.language = this.language;
+    // Now, update backwards: if user has set a custom language, pass that back to core properties
+    this.language = editorAttributes.language;
+    StringManager.language = this.language;
+
     editorAttributes.rtl = this.integrationModel.rtl;
 
     const contentManagerAttributes = {};
