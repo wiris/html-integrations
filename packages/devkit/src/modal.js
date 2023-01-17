@@ -118,6 +118,7 @@ export default class ModalDialog {
     attributes.style = {};
     this.closeDiv = Util.createElement('a', attributes);
     this.closeDiv.setAttribute('role', 'button');
+    this.closeDiv.setAttribute('tabindex', 3);
     // Apply styles and events after the creation as createElement doesn't process them correctly
     let generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeIcon)})`;
     let hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(closeHoverIcon)})`;
@@ -131,6 +132,7 @@ export default class ModalDialog {
     attributes.title = StringManager.get('exit_fullscreen');
     this.stackDiv = Util.createElement('a', attributes);
     this.stackDiv.setAttribute('role', 'button');
+    this.stackDiv.setAttribute('tabindex', 2);
     generalStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsIcon)})`;
     hoverStyle = `background-size: 10px; background-image: url(data:image/svg+xml;base64,${window.btoa(minsHoverIcon)})`;
     this.stackDiv.setAttribute('style', generalStyle);
@@ -143,6 +145,7 @@ export default class ModalDialog {
     attributes.title = StringManager.get('fullscreen');
     this.maximizeDiv = Util.createElement('a', attributes);
     this.maximizeDiv.setAttribute('role', 'button');
+    this.maximizeDiv.setAttribute('tabindex', 2);
     generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsIcon)})`;
     hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsHoverIcon)})`;
     this.maximizeDiv.setAttribute('style', generalStyle);
@@ -155,6 +158,7 @@ export default class ModalDialog {
     attributes.title = StringManager.get('minimize');
     this.minimizeDiv = Util.createElement('a', attributes);
     this.minimizeDiv.setAttribute('role', 'button');
+    this.minimizeDiv.setAttribute('tabindex', 1);
     generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute('style', generalStyle);
@@ -959,6 +963,29 @@ export default class ModalDialog {
     this.stackDiv.addEventListener('click', this.stack.bind(this), true);
     this.minimizeDiv.addEventListener('click', this.minimize.bind(this), true);
     this.closeDiv.addEventListener('click', this.cancelAction.bind(this));
+    this.maximizeDiv.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) { // Handle enter and space.
+        e.target.click();
+      }
+    }, true);
+    this.stackDiv.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) { // Handle enter and space.
+        e.target.click();
+        e.preventDefault();
+      }
+    }, true);
+    this.minimizeDiv.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) { // Handle enter and space.
+        e.target.click();
+        e.preventDefault();
+      }
+    }, true);
+    this.closeDiv.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) { // Handle enter and space.
+        e.target.click();
+        e.preventDefault();
+      }
+    });
     this.title.addEventListener('click', this.reExpand.bind(this));
 
     // Overlay events (close).

@@ -570,22 +570,35 @@ export default class ContentManager {
           this.editor.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
+        } else if (document.querySelector('[title="Manual"]') === document.activeElement) {
+          // Focus is on minimize button (_).
+          this.modalDialogInstance.closeDiv.focus();
+          keyboardEvent.stopPropagation();
+          keyboardEvent.preventDefault();
         } else {
-          const element = document.querySelector('[title="Manual"]');
-          if (document.activeElement === element) {
-            // Focus is on editor help.
-            this.modalDialogInstance.cancelButton.focus();
+          if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
+            // Focus on cancel button.
+            if (!(this.modalDialogInstance.properties.state === 'minimized')) {
+              this.modalDialogInstance.cancelButton.focus();
+              keyboardEvent.stopPropagation();
+              keyboardEvent.preventDefault();
+            }
+          }
+        }     
+      } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
+        if (document.activeElement === this.modalDialogInstance.cancelButton) {
+          // Focus is on X button.
+          this.modalDialogInstance.minimizeDiv.focus();
+          keyboardEvent.stopPropagation();
+          keyboardEvent.preventDefault();
+        } else if (document.activeElement === this.modalDialogInstance.closeDiv) {
+          // Focus on help button.
+          if (!(this.modalDialogInstance.properties.state === 'minimized')) {
+            const element = document.querySelector('[title="Manual"]');
+            element.focus();
             keyboardEvent.stopPropagation();
             keyboardEvent.preventDefault();
           }
-        }
-      } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
-        if (document.activeElement === this.modalDialogInstance.cancelButton) {
-          // Focus is on cancel button.
-          const element = document.querySelector('[title="Manual"]');
-          element.focus();
-          keyboardEvent.stopPropagation();
-          keyboardEvent.preventDefault();
         } else {
           // There should be only one element with class name 'wrs_formulaDisplay'.
           const element = document.getElementsByClassName('wrs_formulaDisplay')[0];
