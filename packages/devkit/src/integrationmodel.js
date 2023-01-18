@@ -211,6 +211,32 @@ export default class IntegrationModel {
     // TODO: Move to Core constructor.
     this.core.setEnvironment(this.environment);
 
+    // No internet conection modal.
+    let attributes = {};
+    attributes.class = attributes.id = "wrs_modal_offline";
+    this.offlineModal = Util.createElement('div', attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_content_offline";
+    this.offlineModalContent = Util.createElement('div', attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_offline_close";
+    this.offlineModalClose = Util.createElement('span', attributes);
+    this.offlineModalClose.innerHTML = '&times;';
+
+    this.offlineModalMessage = Util.createElement('p', {});
+    this.offlineModalMessage.innerHTML = 'Warning: MathType can not work offline.';
+
+    //Append offline modal elements
+    this.offlineModalContent.appendChild(this.offlineModalClose);
+    this.offlineModalContent.appendChild(this.offlineModalMessage);
+    this.offlineModal.appendChild(this.offlineModalContent);
+    document.body.appendChild(this.offlineModal);
+
+    let modal = document.getElementById("wrs_modal_offline");
+    this.offlineModalClose.addEventListener('click', function() {modal.style.display = "none";});
+
     // Store editor name for telemetry purposes.
     let editorName = this.environment.editor;
     editorName = editorName.slice(0, -1); // Remove version number from editors
@@ -492,9 +518,14 @@ export default class IntegrationModel {
    * actions from integration part before the formula is edited.
    */
   openNewFormulaEditor() {
-    this.core.editionProperties.dbclick = false;
-    this.core.editionProperties.isNewElement = true;
-    this.core.openModalDialog(this.target, this.isIframe);
+    if (window.navigator.onLine) {
+      this.core.editionProperties.dbclick = false;
+      this.core.editionProperties.isNewElement = true;
+      this.core.openModalDialog(this.target, this.isIframe);
+    } else {
+      let modal = document.getElementById("wrs_modal_offline");
+      modal.style.display = "block";
+    }
   }
 
   /**
@@ -502,8 +533,13 @@ export default class IntegrationModel {
    * actions from integration part before the formula is edited.
    */
   openExistingFormulaEditor() {
-    this.core.editionProperties.isNewElement = false;
-    this.core.openModalDialog(this.target, this.isIframe);
+    if (window.navigator.onLine) {
+      this.core.editionProperties.isNewElement = false;
+      this.core.openModalDialog(this.target, this.isIframe);
+    } else {
+      let modal = document.getElementById("wrs_modal_offline");
+      modal.style.display = "block";
+    }
   }
 
   /**

@@ -14,6 +14,7 @@ Last release of this project is was 30th of September 2021.
   - Fix: detect if device is mobile. #KB-33529
   - Fix: don't add an extra whitespace between `<math` and `xmlns`. #KB-32826
   - Feat: Add close/open global events. #KB-32324
+  - Feat: Show a friendly message when going offline. KB-12739
 
 ### 8.2.6 2023-03-17
 
