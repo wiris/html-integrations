@@ -110,7 +110,7 @@ export default class ModalDialog {
     attributes.class = 'wrs_modal_title';
     attributes.id = this.getElementId(attributes.class);
     this.title = Util.createElement('div', attributes);
-    this.title.innerHTML = '';
+    this.title.innerHTML = 'offline';
 
     attributes = {};
     attributes.class = 'wrs_modal_close_button';
