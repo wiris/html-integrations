@@ -218,20 +218,19 @@ export default class IntegrationModel {
     if (editorName.includes("Generic")) editorName = "Generic"; // Remove version from Generic editor.
     let solutionTelemeter = editorName;
 
-    // Set url from where to look for the .wasm file.
-    let url = `${window.location.href}node_modules/@wiris/mathtype-html-integration-devkit/282832d592f11e2b464c.wasm`;
-
     // If moodle, add information to hosts and solution.
     let isMoodle = (!!((typeof M === 'object' && M !== null))),
       lms;
     
     if (isMoodle) {
       solutionTelemeter = 'Moodle';
-      url = undefined;
       lms = {
         nam: 'moodle',
         fam: 'lms',
-        ver: Configuration.get('versionMoodle')
+        ver: Configuration.get('versionMoodle'),
+        // category: Configuration.get('categoryMoodle'),
+        // id: Configuration.get('courseMoodleId'),
+        // name: Configuration.get('courseMoodleName')
       }
       if (!editorName.includes('TinyMCE')) {
         editorName = 'Atto';
@@ -282,7 +281,7 @@ export default class IntegrationModel {
         dry_run: false, // True to skip sending data to the Telemetry endpoint (for example for unit tests).
         api_key: "1caaff6e-ef1f-41ba-b459-911b558c2b23", // to auth against Telemetry. Data team is the responsible of providing it.
       },
-      url: url,
+      url: undefined,
     })
 
   }
