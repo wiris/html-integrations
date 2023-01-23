@@ -266,7 +266,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
         editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
         toolbar: this.core.modalDialog.contentManager.toolbar,
-        size: mathml?.length,
+        size: mathml.length,
       });
     } catch (err) {
       console.error(err);

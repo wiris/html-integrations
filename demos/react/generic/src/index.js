@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 // Import wiris dependencies.
-import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
 import { version as pluginVersion } from '@wiris/mathtype-generic/package.json';
 

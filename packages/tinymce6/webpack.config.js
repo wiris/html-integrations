@@ -10,7 +10,8 @@ module.exports = (config, context) => {
     },
     output: {
       path: path.resolve(__dirname, ''),
-      filename: './plugin.min.js'
+      filename: './plugin.min.js',
+      globalObject: 'this',
     },
     devServer: {
       devMiddleware: {
@@ -53,6 +54,10 @@ module.exports = (config, context) => {
             }
           },
           {
+            test: /\.wasm$/,
+            type: "asset/inline",
+          },
+          {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
           },
@@ -76,6 +81,10 @@ module.exports = (config, context) => {
     },
     stats: {
       colors: true
+    },
+    experiments: { 
+      topLevelAwait: true, 
+      asyncWebAssembly: true 
     },
     plugins: [
       new webpack.EnvironmentPlugin({
