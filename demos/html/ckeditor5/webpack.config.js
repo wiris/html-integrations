@@ -3,6 +3,7 @@ const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
 module.exports = (config, context) => {
   return {
+    mode: 'development',
     entry: {
       app: path.resolve(__dirname, 'src/app.js'),
     },
@@ -31,6 +32,11 @@ module.exports = (config, context) => {
         {
           test: /\.svg$/,
           use: [ 'raw-loader' ]
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ['babel-loader']
         },
         {
           test: /\.css$/,
