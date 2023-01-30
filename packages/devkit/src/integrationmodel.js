@@ -522,11 +522,8 @@ export default class IntegrationModel {
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
   getSelectedItem(target, isIframe) {}
 
-  static setActionsOnCancelButtons() {
-    // eslint-disable-next-line no-undef
-    if (WirisPlugin.currentInstance) {
-      WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
-    }
+  // Set temporal image to null and make focus come back.
+  static setActionsOnCancelButtons() {    
 
     // Make focus come back on the previous place it was when click cancel button
     const currentInstance = WirisPlugin.currentInstance;
@@ -537,6 +534,14 @@ export default class IntegrationModel {
       const { range } = currentInstance.core.editionProperties;
       currentInstance.core.editionProperties.range = null;
       editorSelection.addRange(range);
+      if (range.startOffset !== range.endOffset) {
+        currentInstance.core.placeCaretAfterNode(currentInstance.core.editionProperties.temporalImage);
+      }
+    }
+
+    // eslint-disable-next-line no-undef
+    if (WirisPlugin.currentInstance) {
+      WirisPlugin.currentInstance.core.editionProperties.temporalImage = null; // eslint-disable-line
     }
   }
 }

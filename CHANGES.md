@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-### [Unreleased]
+### Unreleased
 
-  - fix (froala): Remove Unlicensed message. #KB-25900
+  - Fix: "Cancel"+"Cancel" AND "Cancel"+"Close" does not focus the HTML Editor. #KB-24317
+  - Fix: TinyMCE Dialog cancellation "Cancel" button focuses the HTML Editor instead of the MT/CT Editor. #KB-24314
+  - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
+  - Fix (froala): Remove Unlicensed message. #KB-25900
 
 ### 8.1.1 2023-01-11
 
