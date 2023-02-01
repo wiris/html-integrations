@@ -527,7 +527,8 @@ export default class Core {
         item.startPosition,
         item.endPosition);
     } else {
-      mathmlOrigin = this.editionProperties.temporalImage.dataset.mathml;
+      console.log('else')
+      mathmlOrigin = this.editionProperties.temporalImage?.dataset.mathml;
       if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
         // There are editors (e.g: CKEditor) that put attributes in images.
         // We don't allow that behaviour in our images.
@@ -540,7 +541,7 @@ export default class Core {
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
 
-    const mathml = element.dataset.mathml;
+    const mathml = element?.dataset?.mathml;
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         mathml_origin: mathmlOrigin,
@@ -548,7 +549,7 @@ export default class Core {
         elapsed_time: Date.now() - this.editionProperties.editionStartTime,
         editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
         toolbar: this.modalDialog.contentManager.toolbar,
-        size: mathml.length,
+        size: mathml?.length,
       });
     } catch (err) {
       console.error(err);
