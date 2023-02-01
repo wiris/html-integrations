@@ -540,7 +540,7 @@ export default class Core {
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
 
-    const mathml = element.dataset.mathml;
+    const mathml = element?.dataset.mathml;
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         mathml_origin: mathmlOrigin,
@@ -548,7 +548,7 @@ export default class Core {
         elapsed_time: Date.now() - this.editionProperties.editionStartTime,
         editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
         toolbar: this.modalDialog.contentManager.toolbar,
-        size: mathml.length,
+        size: mathml?.length,
       });
     } catch (err) {
       console.error(err);
