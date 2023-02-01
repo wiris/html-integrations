@@ -527,7 +527,7 @@ export default class Core {
         item.startPosition,
         item.endPosition);
     } else {
-      mathmlOrigin = this.editionProperties.temporalImage.dataset.mathml;
+      mathmlOrigin = this.editionProperties.temporalImage?.dataset.mathml;
       if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
         // There are editors (e.g: CKEditor) that put attributes in images.
         // We don't allow that behaviour in our images.
@@ -539,16 +539,28 @@ export default class Core {
       }
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
+    
+    // Build the telemeter payload separated to delete null/undefined entries.
+    const mathml = element?.dataset?.mathml;
+    let payload = {
+      mathml_origin: mathmlOrigin,
+      mathml: mathml,
+      elapsed_time: Date.now() - this.editionProperties.editionStartTime,
+      editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
+      toolbar: this.modalDialog.contentManager.toolbar,
+      size: mathml?.length,
+    };
 
-    const mathml = element.dataset.mathml;
+    if (!payload.editor_origin) {
+      delete payload.editor_origin;
+    } 
+    if (!payload.mathml_origin) {
+      delete payload.mathml_origin;
+    }
+    
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
-        mathml_origin: mathmlOrigin,
-        mathml: mathml,
-        elapsed_time: Date.now() - this.editionProperties.editionStartTime,
-        editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
-        toolbar: this.modalDialog.contentManager.toolbar,
-        size: mathml.length,
+        ...payload,
       });
     } catch (err) {
       console.error(err);

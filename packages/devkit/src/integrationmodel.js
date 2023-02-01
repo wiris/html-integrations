@@ -260,13 +260,17 @@ export default class IntegrationModel {
         fam: "os",
         ver: OSData.versionOS,
       },
+      {
+        nam: window.location.hostname,
+        fam: "domain",
+      },
       lms,
     ];
 
     // Filter hosts to remove empty arrays
     hosts = hosts.filter(function( element ) {
       return element !== undefined;
-   });
+    });
 
     // Initialize telemeter
     Telemeter.init({
@@ -489,15 +493,6 @@ export default class IntegrationModel {
   openNewFormulaEditor() {
     this.core.editionProperties.isNewElement = true;
     this.core.openModalDialog(this.target, this.isIframe);
-
-    try {
-      Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-        toolbar: this.core.modalDialog.contentManager.toolbar,
-        trigger: "button",
-      });
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   /**
@@ -507,15 +502,6 @@ export default class IntegrationModel {
   openExistingFormulaEditor() {
     this.core.editionProperties.isNewElement = false;
     this.core.openModalDialog(this.target, this.isIframe);
-
-    try {
-      Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-        toolbar: this.core.modalDialog.contentManager.getToolbar(),
-        trigger: "formula",
-      });
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   /**
@@ -597,6 +583,8 @@ export default class IntegrationModel {
       eventTarget,
       (element, event) => {
         this.doubleClickHandler(element, event);
+        // Avoid creating the doublick listener more than once for each element.
+        event.stopImmediatePropagation();
       },
       (element, event) => {
         this.mousedownHandler(element, event);

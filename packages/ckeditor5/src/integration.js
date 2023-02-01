@@ -244,7 +244,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
       });
     } else {
-      mathmlOrigin = this.core.editionProperties.temporalImage.dataset.mathml;
+      mathmlOrigin = this.core.editionProperties.temporalImage?.dataset.mathml;
       try {
         returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
           this.editorObject.editing.mapper.toViewElement(
@@ -258,15 +258,27 @@ export default class CKEditor5Integration extends IntegrationModel {
         }
       }
     }
+
+    // Build the telemeter payload separated to delete null/undefined entries.
+    let payload = {
+      mathml_origin: mathmlOrigin,
+      mathml: mathml,
+      elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
+      editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
+      toolbar: this.core.modalDialog.contentManager.toolbar,
+      size: mathml?.length,
+    };
+
+    if (!payload.editor_origin) {
+      delete payload.editor_origin;
+    } 
+    if (!payload.mathml_origin) {
+      delete payload.mathml_origin;
+    }
     
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
-        mathml_origin: mathmlOrigin,
-        mathml: mathml,
-        elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
-        editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
-        toolbar: this.core.modalDialog.contentManager.toolbar,
-        size: mathml.length,
+        ...payload,
       });
     } catch (err) {
       console.error(err);

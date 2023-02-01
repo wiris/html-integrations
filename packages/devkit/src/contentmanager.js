@@ -3,6 +3,7 @@ import EditorListener from './editorlistener';
 import Listeners from './listeners';
 import MathML from './mathml';
 import Util from './util';
+import Telemeter from './telemeter';
 
 export default class ContentManager {
   /**
@@ -445,7 +446,7 @@ export default class ContentManager {
     } else {
       this.setMathML(this.mathML);
     }
-    this.updateToolbar();
+    let toolbar = this.updateToolbar();
     this.onFocus();
 
     if (this.deviceProperties.isIOS) {
@@ -455,6 +456,16 @@ export default class ContentManager {
         // Open editor in Keyboard mode if user use iOS, Safari and page is zoomed.
         this.setKeyboardMode();
       }
+    }
+
+    let trigger = this.isNewElement ? 'button' : 'formula';
+    try {
+      Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+        toolbar: toolbar,
+        trigger: trigger,
+      });
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -478,8 +489,10 @@ export default class ContentManager {
   updateToolbar() {
     this.updateTitle(this.modalDialogInstance);
     const customEditor = this.customEditors.getActiveEditor();
+
+    let toolbar;
     if (customEditor) {
-      const toolbar = customEditor.toolbar
+      toolbar = customEditor.toolbar
         ? customEditor.toolbar
         : _wrs_int_wirisProperties.toolbar;
 
@@ -487,12 +500,14 @@ export default class ContentManager {
         this.setToolbar(toolbar);
       }
     } else {
-      const toolbar = this.getToolbar();
+      toolbar = this.getToolbar();
       if (this.toolbar == null || this.toolbar !== toolbar) {
         this.setToolbar(toolbar);
         this.customEditors.disable();
       }
     }
+
+    return toolbar;
   }
 
   /**
