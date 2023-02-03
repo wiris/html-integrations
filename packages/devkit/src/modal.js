@@ -7,6 +7,7 @@ import StringManager from './stringmanager';
 import ContentManager from './contentmanager';
 import Telemeter from './telemeter';
 import IntegrationModel from './integrationmodel';
+import Core from './core.src';
 
 import closeIcon from '../styles/icons/general/close_icon.svg';  //eslint-disable-line
 import closeHoverIcon from '../styles/icons/hover/close_icon_h.svg';  //eslint-disable-line
@@ -580,6 +581,8 @@ export default class ModalDialog {
     this.saveModalProperties();
     this.unlockWebsiteScroll();
     this.properties.open = false;
+
+    Core.globalListeners.fire('onModalClose', {});
   }
 
   /**

@@ -15,6 +15,7 @@ Last release of this project is was 30th of September 2021.
   - Fix: TinyMCE Dialog cancellation "Cancel" button focuses the HTML Editor instead of the MT/CT Editor. #KB-24314
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
   - Fix (froala): Remove Unlicensed message. #KB-25900
+  - Feat: Add close/open global events. #KB-32324
 
 ### 8.1.1 2023-01-11
 
