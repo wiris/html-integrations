@@ -491,6 +491,7 @@ export default class IntegrationModel {
    * actions from integration part before the formula is edited.
    */
   openNewFormulaEditor() {
+    this.core.editionProperties.dbclick = false;
     this.core.editionProperties.isNewElement = true;
     this.core.openModalDialog(this.target, this.isIframe);
   }
@@ -609,6 +610,7 @@ export default class IntegrationModel {
    * @param {HTMLElement} element - DOM object target.
    */
   doubleClickHandler(element) {
+    this.core.editionProperties.dbclick = true;
     if (element.nodeName.toLowerCase() === 'img') {
       this.core.getCustomEditors().disable();
       const customEditorAttributeName = Configuration.get('imageCustomEditorName');

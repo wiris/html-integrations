@@ -741,6 +741,7 @@ export default class Core {
       // When an instance of ContentManager is created we need to wait until
       // the ContentManager is ready by listening 'onLoad' event.
       const listener = Listeners.newListener('onLoad', () => {
+        this.contentManager.dbclick = this.editionProperties.dbclick;
         this.contentManager.isNewElement = this.editionProperties.isNewElement;
         if (this.editionProperties.temporalImage != null) {
           const mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));
@@ -752,6 +753,7 @@ export default class Core {
       this.modalDialog.setContentManager(this.contentManager);
       this.contentManager.setModalDialogInstance(this.modalDialog);
     } else {
+      this.contentManager.dbclick = this.editionProperties.dbclick;
       this.contentManager.isNewElement = this.editionProperties.isNewElement;
       if (this.editionProperties.temporalImage != null) {
         const mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));

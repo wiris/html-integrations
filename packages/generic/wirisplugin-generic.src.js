@@ -170,6 +170,7 @@ export default class GenericIntegration extends IntegrationModel {
 
   /** @inheritdoc */
   openNewFormulaEditor() {
+    this.core.editionProperties.dbclick = false;
     // If it exists a temporal image saved, open the existing formula editor
     const image = this.core.editionProperties.temporalImage;
     if (image !== null && typeof image !== 'undefined') {

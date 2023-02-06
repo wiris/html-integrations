@@ -189,6 +189,7 @@ export class FroalaIntegration extends IntegrationModel {
 
   /** @inheritdoc */
   openNewFormulaEditor() {
+    this.core.editionProperties.dbclick = false;
     // If it exists a temporal image saved, open the existing formula editor
     const image = this.core.editionProperties.temporalImage;
     if (image !== null && typeof image !== 'undefined' && image.classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
@@ -299,6 +300,7 @@ export class FroalaIntegration extends IntegrationModel {
       currentFroalaIntegrationInstance.hidePopups();
       currentFroalaIntegrationInstance.core.getCustomEditors().disable();
       const imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
+      currentFroalaIntegrationInstance.core.editionProperties.dbclick = false;
       if (typeof imageObject !== 'undefined' && imageObject !== null && imageObject[0].classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
         currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
         currentFroalaIntegrationInstance.openExistingFormulaEditor();

@@ -94,6 +94,7 @@ export default class CKEditor5Integration extends IntegrationModel {
      * @param {MouseEvent} event - event which trigger the handler.
      */
   doubleClickHandler(element, event) {
+    this.core.editionProperties.dbclick = true;
     if (this.editorObject.isReadOnly === false) {
       if (element.nodeName.toLowerCase() === 'img') {
         if (Util.containsClass(element, Configuration.get('imageClassName'))) {

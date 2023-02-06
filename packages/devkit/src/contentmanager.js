@@ -100,6 +100,12 @@ export default class ContentManager {
     this.toolbar = null;
 
     /**
+     * Custom editor toolbar.
+     * @type {String}
+     */
+    this.dbclick = null;
+
+    /**
      * Instance of the {@link ModalDialog} class associated with the current
      * {@link ContentManager} instance.
      * @type {ModalDialog}
@@ -458,7 +464,7 @@ export default class ContentManager {
       }
     }
 
-    let trigger = this.isNewElement ? 'button' : 'formula';
+    let trigger = this.toolbar ? 'formula' : 'button';
     try {
       Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
         toolbar: toolbar,

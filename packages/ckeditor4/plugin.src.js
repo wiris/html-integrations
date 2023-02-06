@@ -239,6 +239,7 @@ export class CKEditor4Integration extends IntegrationModel {
           this.core.getCustomEditors().enable(customEditorAttr);
         }
         this.core.editionProperties.temporalImage = element;
+        this.core.editionProperties.dbclick = true;
         this.openExistingFormulaEditor();
       }
     }

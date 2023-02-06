@@ -36,6 +36,7 @@ export class MathTypeCommand extends Command {
      * Checks whether we are editing an existing formula or a new one and opens the editor.
      */
   openEditor() {
+    this.integration.core.editionProperties.dbclick = false;
     const image = this._getSelectedImage();
     if (typeof image !== 'undefined' && image !== null && image.classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
       this.integration.core.editionProperties.temporalImage = image;
