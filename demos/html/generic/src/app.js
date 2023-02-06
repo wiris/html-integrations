@@ -20,16 +20,13 @@ Generic.copyContentFromxToy('editable', 'transform_content');
 
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
-const mathTypeParameters = {
-  editorParameters: { language: 'en' }, // MathType config, including language
-};
 
 // Initialyze the editor.
-window.wrs_int_init(editableDiv, toolbarDiv, mathTypeParameters);
+window.wrs_int_init(editableDiv, toolbarDiv);
 
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
-    const versionWiris = WirisPlugin.currentInstance.version;             //eslint-disable-line
+    const versionWiris = WirisPlugin.currentInstance.version; //eslint-disable-line
     document.getElementById('version_wiris').innerHTML += versionWiris;
   }
 };
