@@ -267,8 +267,9 @@ export default class IntegrationModel {
       lms,
     ];
 
-    // Filter hosts to remove empty arrays
+    // Filter hosts to remove empty objects and empty keys.
     hosts = hosts.filter(function( element ) {
+      if (element) Object.keys(element).forEach(key => element[key] === "unknown" ? delete element[key] : {});
       return element !== undefined;
     });
 

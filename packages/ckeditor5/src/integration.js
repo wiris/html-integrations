@@ -270,12 +270,8 @@ export default class CKEditor5Integration extends IntegrationModel {
       size: mathml?.length,
     };
 
-    if (!payload.editor_origin) {
-      delete payload.editor_origin;
-    } 
-    if (!payload.mathml_origin) {
-      delete payload.mathml_origin;
-    }
+    // Remove null keys.
+    Object.keys(payload).forEach(key => payload[key] === null ? delete payload[key] : {});
     
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
