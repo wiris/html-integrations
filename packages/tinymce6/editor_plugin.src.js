@@ -44,7 +44,7 @@ export class TinyMceIntegration extends IntegrationModel {
       const baseURL = tinymce.baseURL.substr(0, pos + search.length);
       return `${baseURL}/plugins/tiny_mce_wiris/tinymce/`;
     } if (this.isExternal) {
-      const externalUrl = this.editorObject.getParam('external_plugins').tiny_mce_wiris;
+      const externalUrl = this.editorObject.options.get('external_plugins').tiny_mce_wiris;
       return externalUrl.substring(0, externalUrl.lastIndexOf('/') + 1);
     }
     return `${tinymce.baseURL}/plugins/tiny_mce_wiris/`;
@@ -70,14 +70,14 @@ export class TinyMceIntegration extends IntegrationModel {
   getLanguage() {
     const editorSettings = this.editorObject;
     try {
-      return editorSettings.getParam('mathTypeParameters').editorParameters.language;
+      return editorSettings.options.get('mathTypeParameters').editorParameters.language;
     } catch (e) { console.error(); }
     // Get the deprecated wirisformulaeditorlang
-    if (editorSettings.getParam('wirisformulaeditorlang')) {
+    if (editorSettings.options.get('wirisformulaeditorlang')) {
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
-      return editorSettings.getParam('wirisformulaeditorlang');
+      return editorSettings.options.get('wirisformulaeditorlang');
     }
-    const langParam = this.editorObject.getParam('language');
+    const langParam = this.editorObject.options.get('language');
     return langParam || super.getLanguage();
   }
 
@@ -185,15 +185,22 @@ export const currentInstance = null;
         // eslint-disable-next-line no-undef
         integrationModelProperties.configurationService = M.cfg.wwwroot + '/filter/wiris/integration/configurationjs.php'; // eslint-disable-line prefer-template
       }
-      if (typeof (editor.getParam('wiriscontextpath')) !== 'undefined') {
-        integrationModelProperties.configurationService = Util.concatenateUrl(editor.getParam('wiriscontextpath'), integrationModelProperties.configurationService);
-        `${editor.getParam('wiriscontextpath')}/${integrationModelProperties.configurationService}`; // eslint-disable-line no-unused-expressions
-        console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters on instead.', editor.opts.wiriscontextpath);
+      if (typeof (editor.options.get('wiriscontextpath')) !== 'undefined') {
+        integrationModelProperties.configurationService = Util.concatenateUrl(editor.options.get('wiriscontextpath'), integrationModelProperties.configurationService);
+        `${editor.options.get('wiriscontextpath')}/${integrationModelProperties.configurationService}`; // eslint-disable-line no-unused-expressions
+        console.warn('Deprecated property wiriscontextpath. Use mathTypeParameters instead.', editor.opts.wiriscontextpath);
       }
 
       // Overriding MathType integration parameters.
-      if (typeof (editor.getParam('mathTypeParameters')) !== 'undefined') {
-        integrationModelProperties.integrationParameters = editor.getParam('mathTypeParameters');
+
+      // Register our custom parameters inside TinyMCE's options
+      editor.options.register('mathTypeParameters', {
+        processor: 'object',
+        default: {},
+      });
+
+      if (editor.options.isRegistered('mathTypeParameters')) {
+        integrationModelProperties.integrationParameters = editor.options.get('mathTypeParameters');
       }
 
       integrationModelProperties.scriptName = 'plugin.min.js';
@@ -209,9 +216,9 @@ export const currentInstance = null;
       // However, as TinyMCE is not initialized at this point the HTML target is not created.
       // Here we create the target as null and onInit object the target is updated.
       integrationModelProperties.target = null;
-      const isExternalPlugin = typeof (editor.getParam('external_plugins')) !== 'undefined' && 'tiny_mce_wiris' in editor.getParam('external_plugins');
+      const isExternalPlugin = typeof (editor.options.get('external_plugins')) !== 'undefined' && 'tiny_mce_wiris' in editor.options.get('external_plugins');
       integrationModelProperties.isExternal = isExternalPlugin;
-      integrationModelProperties.rtl = (editor.getParam('directionality') === 'rtl');
+      integrationModelProperties.rtl = (editor.options.get('directionality') === 'rtl');
 
       // GenericIntegration instance.
       const tinyMceIntegrationInstance = new TinyMceIntegration(integrationModelProperties);
@@ -228,8 +235,8 @@ export const currentInstance = null;
         }
         integrationInstance.setEditorObject(editor);
         integrationInstance.listeners.fire('onTargetReady', {});
-        if ('wiriseditorparameters' in editor) {
-          Configuration.update('editorParameters', editor.wiriseditorparameters);
+        if (editor.options.isRegistered('mathTypeParameters')) {
+          Configuration.update('editorParameters', editor.options.get('mathTypeParameters'));
         }
 
         // Prevent TinyMCE attributes insertion.
@@ -259,7 +266,7 @@ export const currentInstance = null;
         const content = editor.getContent();
         // We set content in html because other tiny plugins need data-mce
         // and this is not possible with raw format.
-        editor.setContent(Parser.initParse(content, editor.getParam('language')), { format: 'html' });
+        editor.setContent(Parser.initParse(content, editor.options.get('language')), { format: 'html' });
         // This clean undoQueue for prevent onChange and Dirty state.
         editor.undoManager.clear();
         // Init parsing OK. If a setContent method is called
@@ -288,7 +295,7 @@ export const currentInstance = null;
       }
 
       const onSave = function (editor, params) { // eslint-disable-line no-shadow
-        params.content = Parser.endParse(params.content, editor.getParam('language'));
+        params.content = Parser.endParse(params.content, editor.options.get('language'));
       };
 
       if ('onSaveContent' in editor) {
@@ -310,13 +317,13 @@ export const currentInstance = null;
       if ('onBeforeSetContent' in editor) {
         editor.onBeforeSetContent.add((e, params) => {
           if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParse(params.content, editor.getParam('language'));
+            params.content = Parser.initParse(params.content, editor.options.get('language'));
           }
         });
       } else {
         editor.on('beforeSetContent', (params) => {
           if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParse(params.content, editor.getParam('language'));
+            params.content = Parser.initParse(params.content, editor.options.get('language'));
           }
         });
       }
@@ -361,7 +368,7 @@ export const currentInstance = null;
       });
 
       // Get editor language code
-      let lang_code = editor.getParam('language');
+      let lang_code = editor.options.get('language');
       lang_code = (lang_code.split("-")[0]).split("_")[0];
 
       // MathType button.
