@@ -91,8 +91,6 @@ export class TinyMceIntegration extends IntegrationModel {
     // Add formula to undo & redo
     this.editorObject.undoManager.add(obj);
 
-    // Delete temporal image when inserting a formula
-    this.core.editionProperties.temporalImage = null;
     return obj;
   }
 

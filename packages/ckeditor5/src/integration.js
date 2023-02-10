@@ -2,6 +2,7 @@ import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integr
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
 
 /**
@@ -262,16 +263,18 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     // Build the telemeter payload separated to delete null/undefined entries.
     let payload = {
-      mathml_origin: mathmlOrigin,
-      mathml: mathml,
+      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
+      mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
       editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
       toolbar: this.core.modalDialog.contentManager.toolbar,
       size: mathml?.length,
     };
 
-    // Remove null keys.
-    Object.keys(payload).forEach(key => payload[key] === null ? delete payload[key] : {});
+    // Remove desired null keys.
+    Object.keys(payload).forEach(key => {
+      if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+    });
     
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
@@ -284,6 +287,9 @@ export default class CKEditor5Integration extends IntegrationModel {
     /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.
         We probably should add it here as well, but we should look further into how */
     // this.editorObject.fire('change');
+
+    // Remove temporal image of inserted formula
+    this.core.editionProperties.temporalImage = null;
 
     return returnObject;
   }

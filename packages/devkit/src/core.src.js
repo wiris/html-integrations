@@ -543,16 +543,18 @@ export default class Core {
     // Build the telemeter payload separated to delete null/undefined entries.
     const mathml = element?.dataset?.mathml;
     let payload = {
-      mathml_origin: mathmlOrigin,
-      mathml: mathml,
+      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
+      mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.editionProperties.editionStartTime,
       editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
       toolbar: this.modalDialog.contentManager.toolbar,
       size: mathml?.length,
     };
 
-    // Remove null keys.
-    Object.keys(payload).forEach(key => payload[key] === null ? delete payload[key] : {});
+    // Remove the desired null keys.
+    Object.keys(payload).forEach(key => {
+      if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+    });
     
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {

@@ -214,8 +214,6 @@ export class FroalaIntegration extends IntegrationModel {
     this.editorObject.events.trigger('contentChanged');
     const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
-    // Delete temporal image when inserting a formula
-    this.core.editionProperties.temporalImage = null;
     this.editorObject.placeholder.refresh();
     return obj;
   }

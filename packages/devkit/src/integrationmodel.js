@@ -554,7 +554,12 @@ export default class IntegrationModel {
    * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    return this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+    const obj =  this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+
+    // Delete temporal image when inserted
+    this.core.editionProperties.temporalImage = null;
+    
+    return obj;
   }
 
   /**

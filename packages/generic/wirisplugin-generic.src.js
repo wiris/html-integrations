@@ -181,10 +181,6 @@ export default class GenericIntegration extends IntegrationModel {
   }
 
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
-
-    // Delete temporal image when inserting a formula
-    this.core.editionProperties.temporalImage = null;
-    return obj;
+    return super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
   }
 }

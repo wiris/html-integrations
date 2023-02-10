@@ -464,7 +464,7 @@ export default class ContentManager {
       }
     }
 
-    let trigger = this.toolbar ? 'formula' : 'button';
+    let trigger = this.dbclick ? 'formula' : 'button';
     try {
       Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
         toolbar: toolbar,
