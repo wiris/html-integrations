@@ -17,7 +17,7 @@
     "@ckeditor/ckeditor5-paragraph": ">=27.1.0",
     "@ckeditor/ckeditor5-react": "^2.0.0",
     "@wiris/mathtype-ckeditor5": "*",
-    "ckeditor5": ">=27.1.0"
+    "ckeditor5": ">=36.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",
