@@ -196,7 +196,11 @@ export default class MathML {
 
     // Trivial case: class attribute value equal to editor name. Then
     // class attribute is removed.
-    if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
+    // First try to remove it with a space before if there is one
+    // Otherwise without the space
+    if (mathml.indexOf(` class="wrs_${customEditor}"`) !== -1) {
+      return mathml.replace(` class="wrs_${customEditor}"`, '');
+    } else if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
       return mathml.replace(`class="wrs_${customEditor}"`, '');
     }
 
