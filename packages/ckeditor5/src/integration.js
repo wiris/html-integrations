@@ -2,8 +2,10 @@ import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integr
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
+import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
+import { off } from 'process';
 
 /**
  * This class represents the MathType integration for CKEditor5.
@@ -211,7 +213,12 @@ export default class CKEditor5Integration extends IntegrationModel {
     const range = this.editorObject.model.createRangeIn(element);
     const descendants = Array.from(range.getItems());
     for (const node of descendants) {
-      if (node.is('textProxy') && node.data === viewElement.data.replace(String.fromCharCode(160), ' ')) {
+      let viewElementData = viewElement.data;
+      if (viewElement.nodeType === 3) {
+        // Remove invisible white spaces
+        viewElementData = viewElementData.replaceAll(String.fromCharCode(8288), '')
+      }
+      if (node.is('textProxy') && node.data === viewElementData.replace(String.fromCharCode(160), ' ')) {
         return node.textNode;
       }
     }
@@ -234,13 +241,44 @@ export default class CKEditor5Integration extends IntegrationModel {
         const startNode = this.findText(latexRange.startContainer);
         const endNode = this.findText(latexRange.endContainer);
 
-        const startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
-        const endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
-
-        const range = writer.createRange(
+        let startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
+        let endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
+        
+        let range = writer.createRange(
           startPosition,
           endPosition,
         );
+
+        
+
+        // When Latex is next to image/formula.
+        if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
+          // Get the position of the latex to be replaced.
+          let latexEdited = '$$' +(Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml))) + '$$';
+          let data = latexRange.startContainer.data;
+
+          // Remove invisible characters.
+          data = data.replaceAll(String.fromCharCode(8288), '')
+
+          // Get to the start of the latex we are editing.
+          let offset = data.indexOf(latexEdited);
+          let dataOffset = data.substring(offset);
+          let second$ = dataOffset.substring(2).indexOf("$$") + 4;
+          let substring = dataOffset.substr(0, second$);
+          data = data.replace(substring, '');
+          
+          if (!data) {
+            startPosition = writer.createPositionBefore(startNode);
+            range = startNode;
+          } else {
+            startPosition = startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + offset);
+            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);      
+            range = writer.createRange(
+              startPosition,
+              endPosition,
+            );
+          }
+        } 
 
         writer.remove(range);
         writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
