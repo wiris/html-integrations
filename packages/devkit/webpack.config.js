@@ -7,7 +7,8 @@ module.exports = {
     },
     output: {
       path: path.resolve(__dirname, ''),
-      filename: 'core.js'
+      filename: 'core.js',
+      globalObject: 'this',
     },
     // Set watch to true for dev purposes.
     watch: false,
@@ -41,6 +42,10 @@ module.exports = {
           use: ['style-loader', 'css-loader']
         },
         {
+          test: /\.wasm$/,
+          type: "asset/inline",
+        },
+        {
           // For the modal close, minimize, maximize icons
           test: /styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
           use: [ 'raw-loader' ]
@@ -58,6 +63,10 @@ module.exports = {
           ]
         }
       ]
+    },
+    experiments: { 
+      topLevelAwait: true, 
+      asyncWebAssembly: true 
     },
     stats: {
       colors: true
