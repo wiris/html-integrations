@@ -79,6 +79,10 @@ jobs:
           - framework: react
             editor: tinymce6
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -91,6 +95,7 @@ jobs:
           aws-region: eu-west-2
 
       - name: Build the demos
+        
         run: |
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
           yarn
