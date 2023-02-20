@@ -281,10 +281,10 @@ export default class IntegrationModel {
       },
       hosts: hosts,
       config: {
-        test: true, // True to use the staging Telemetry endpoint instead of the production one.
+        test: false, // True to use the staging Telemetry endpoint instead of the production one.
         debug: false, // True to show more information about Telemeter's execution and use dev-tools.
         dry_run: false, // True to skip sending data to the Telemetry endpoint (for example for unit tests).
-        api_key: "1caaff6e-ef1f-41ba-b459-911b558c2b23", // to auth against Telemetry. Data team is the responsible of providing it.
+        api_key: "eda2ce9b-0e8a-46f2-acdd-c228a615314e", // to auth against Telemetry. Data team is the responsible of providing it.
       },
       url: undefined,
     })
