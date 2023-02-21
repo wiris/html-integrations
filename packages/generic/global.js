@@ -11,6 +11,7 @@ import Test from '@wiris/mathtype-html-integration-devkit/src/test';
 import '@wiris/mathtype-html-integration-devkit/src/backwardslib';
 import '@wiris/mathtype-html-integration-devkit/src/polyfills';
 import GenericIntegration, { currentInstance } from './wirisplugin-generic.src';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 
 Configuration.set('parseModes', 'latex');
 
@@ -20,6 +21,7 @@ window.WirisPlugin = {
   Parser,
   Image,
   Util,
+  MathML,
   Configuration,
   Listeners,
   IntegrationModel,
