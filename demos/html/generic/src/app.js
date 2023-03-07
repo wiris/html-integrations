@@ -28,6 +28,7 @@ document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     const versionWiris = WirisPlugin.currentInstance.version; //eslint-disable-line
     document.getElementById('version_wiris').innerHTML += versionWiris;
+    editableDiv.innerHTML = Generic.editorContentImg;
   }
 };
 
