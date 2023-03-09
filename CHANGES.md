@@ -12,6 +12,8 @@ Last release of this project is was 30th of September 2021.
 ### Unreleased
 
   - Fix: detect if device is mobile. #KB-33529
+  - Fix: don't add an extra whitespace between `<math` and `xmlns`. #KB-32826
+  - Feat: Add close/open global events. #KB-32324
 
 ### 8.2.6 2023-03-17
 
@@ -20,7 +22,6 @@ Last release of this project is was 30th of September 2021.
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
   - Fix (froala): Remove Unlicensed message. #KB-25900
   - Refactor (generic): Remove editor language conf from generic demo. #KB-32550
-  - Fix: don't add an extra whitespace between `<math` and `xmlns`. #KB-32826
 
 ### 8.1.1 2023-01-11
 

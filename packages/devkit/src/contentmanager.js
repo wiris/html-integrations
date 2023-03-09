@@ -1,4 +1,5 @@
 import Configuration from './configuration';
+import Core from './core.src';
 import EditorListener from './editorlistener';
 import Listeners from './listeners';
 import MathML from './mathml';
@@ -481,6 +482,8 @@ export default class ContentManager {
     } catch (err) {
       console.error(err);
     }
+
+    Core.globalListeners.fire('onModalOpen', {});
   }
 
   /**
