@@ -4,6 +4,7 @@ module.exports = (config, context) => {
   return {
     entry: './src/app.ts',
     mode: 'development',
+    devtool: 'inline-source-map',
     module: {
         rules: [
             {
