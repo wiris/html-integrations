@@ -22,7 +22,8 @@ interface formulaData {
   width: string,
 }
 
-const EDITOR_SERVICES_ROOT: string = 'https://www.wiris.net/demo/plugins/app/';
+import * as Services from './services';
+import * as Properties from './properties';
 
 /**
  * Initial function called when loading the script.
@@ -66,11 +67,11 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
     const mml = mathElement.outerHTML;
 
     // Transform mml to img.
-    const response = await showImage(mml);
+    const response = await Services.showImage(mml, Properties.lang, Properties.EDITOR_SERVICES_ROOT);
     const data = await response.json();
 
     // Set img properties.
-    let img = await setImageProperties(data.result, mml);
+    const img = await setImageProperties(data.result, mml);
     // const fragment = document.createRange().createContextualFragment(data.result.content);
 
     // Replace the MathML for the generated formula image.
@@ -104,113 +105,13 @@ export async function setImageProperties (data: formulaData, mml: string) {
   }
 
   // Set the alt text.
-  const response = await mathml2accessible(mml);
+  const response = await Services.mathml2accessible(mml, Properties.lang, Properties.EDITOR_SERVICES_ROOT);
   const accessibility = await response.json();
   if (accessibility !== null) {
     img.alt = accessibility.result.text;
   }
 
   return img;
-}
-
-/**
- * Returns the alt text of the MathML passed as parameter.
- * @param mml MathML to be transformed into alt text.
- * @returns {Promise<Response>} The mathml2accessible service response.
- */
-export async function mathml2accessible(mml : string) : Promise<Response> {
-  // Set the needed params to retrieve the alt text.
-  const params = {
-    'service': 'mathml2accessible',
-    'mml': mml,
-    'metrics': 'true',
-    'centerbaseline': 'false',
-    'lang': getBrowserLang(),
-    'ignoreStyles': 'true',
-  }
-
-  return callService(params, 'service', 'POST')
-}
-
-/**
- * Calls the ednpoint servicename and returns its response.
- * @param {object} params - Object of parameters to pass as the body request.
- * @param {string} servicename - Name of the service to be called.
- * @returns {Promise<Response>} The request response.
- */
-export async function callService(params: object, servicename : string, methodType: string) : Promise<Response> {
-  try {
-    const url = new URL(servicename, EDITOR_SERVICES_ROOT);
-    const response = await fetch(url.toString(), {
-        method: methodType,
-        headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-        },
-        body: new URLSearchParams({
-          ...params,
-        }),
-    });
-    return response;
-  } catch(e) {
-    // TODO manage network errors
-    throw e;
-  }
-}
-
-
-
-/**
- * Calls the showImage service with the given MathML and returns the received Response object.
- * @param {string} mml MathML to render
- * @return {Promise<Response>} the Response object to the petition made to showImage
- */
-export async function showImage(mml: string): Promise<Response> {
-  const params = {
-    'mml': mml, // TODO No fa falta el encodeURL perquè és un POST i el econding el fa automàtic.
-    'metrics': 'true',
-    'centerbaseline': 'false',
-    'lang': getBrowserLang(),
-  }
-
-  return callService(params, 'showimage', 'POST');
-};
-
-/**
- * Calls the latex2mathml service with the given LaTeX and returns the received Response object.
- * @param {string} latex LaTeX to render
- * @return {Promise<Response>} the Response object to the petition made to service
- */
-async function latexToMathml(latex: string): Promise<Response> {
-  const params = {
-    'service': 'latex2mathml',
-    'latex': latex,
-  }
-
-  return callService(params, 'service', 'POST');
-  // try {
-  //   const url = new URL('service', EDITOR_SERVICES_ROOT);
-  //   const response = await fetch(url.toString(), {
-  //     method: 'POST',
-  //     body: new URLSearchParams({
-  //       'service': 'latex2mathml',
-  //       'latex': latex,
-  //     }),
-  //   });
-  //   return response;
-  // } catch(e) {
-  //   // TODO manage network errors
-  //   throw e;
-  // }
-}
-
-/**
- * Return the user's browser language.
- * @returns {string} Encoded Language string.
- */
-function getBrowserLang(): string {
-  // TODO contemplate case in which the lang parameter is not declared in the html tag
-  // e.g. also consider taking the user's settings
-  return document.getElementsByTagName('html')[0].lang;
 }
 
 /**
@@ -234,7 +135,7 @@ async function replaceLatexInTextNode(node: Node) {
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
       // Convert LaTeX to mathml.
-      const response = await latexToMathml(latex);
+      const response = await Services.latexToMathml(latex, Properties.EDITOR_SERVICES_ROOT);
       const data = await response.json();
       // Insert mathml node.
       const fragment = document.createRange().createContextualFragment(data.result.text);
