@@ -18,9 +18,6 @@
         "@wiris/mathtype-html-integration-devkit": "^1.10.1",
         "babel-loader": "^9.1.2",
         "lite-server": "^2.5.4",
-        "ts-loader": "^9.4.2",
-        "webpack": "^5.50.0",
-        "webpack-cli": "^3.0.0",
-        "webpack-dev-server": "^3.0.0"
+        "ts-loader": "^9.4.2"
     }
 }
