@@ -14,6 +14,14 @@ interface LatexPosition {
   end: number,
 }
 
+// Data obtained when rendering image. Data needed to set the formula image parameters.
+interface formulaData {
+  content: string,
+  baseline: string,
+  height: string,
+  width: string,
+}
+
 const EDITOR_SERVICES_ROOT: string = 'https://www.wiris.net/demo/plugins/app/';
 
 /**
@@ -56,12 +64,100 @@ async function render(root: HTMLElement) {
 export async function renderMathML(root: HTMLElement): Promise<void> {
   for(const mathElement of [...root.getElementsByTagName('math')]) {
     const mml = mathElement.outerHTML;
+
+    // Transform mml to img.
     const response = await showImage(mml);
     const data = await response.json();
-    const fragment = document.createRange().createContextualFragment(data.result.content);
-    mathElement.parentNode?.replaceChild(fragment, mathElement);
+
+    // Set img properties.
+    let img = await setImageProperties(data.result, mml);
+    // const fragment = document.createRange().createContextualFragment(data.result.content);
+
+    // Replace the MathML for the generated formula image.
+    mathElement.parentNode?.replaceChild(img, mathElement);
   }
 };
+
+/**
+ * Returns an image formula containing all MathType properties.
+ * @param {data} data - Object containing image values.
+ * @param {string} mml - The mml of the formula image it's beeing created.
+ * @returns {HTMLImageElement} - Formula image.
+ */
+export async function setImageProperties (data: formulaData, mml: string) {
+  // Create imag element.
+  let img = document.createElement("img");
+
+  // Set image src. Encode the result svg.
+  img.src = `data:image/svg+xml;charset=utf8,${encodeURIComponent(data.content)}`;
+
+  // Set other image properties.
+  img.setAttribute("data-mathml", mml);
+  img.setAttribute("class","Wirisformula");
+  img.setAttribute("role","math");
+
+  // If the render returns dimensions properties, set them to the image.
+  if (+data.height > 0) {
+    img.style.verticalAlign = "-" + (+data.height - +data.baseline) + "px";
+    img.height = +data.height;
+    img.width = +data.width;
+  }
+
+  // Set the alt text.
+  const response = await mathml2accessible(mml);
+  const accessibility = await response.json();
+  if (accessibility !== null) {
+    img.alt = accessibility.result.text;
+  }
+
+  return img;
+}
+
+/**
+ * Returns the alt text of the MathML passed as parameter.
+ * @param mml MathML to be transformed into alt text.
+ * @returns {Promise<Response>} The mathml2accessible service response.
+ */
+export async function mathml2accessible(mml : string) : Promise<Response> {
+  // Set the needed params to retrieve the alt text.
+  const params = {
+    'service': 'mathml2accessible',
+    'mml': mml,
+    'metrics': 'true',
+    'centerbaseline': 'false',
+    'lang': getBrowserLang(),
+    'ignoreStyles': 'true',
+  }
+
+  return callService(params, 'service', 'POST')
+}
+
+/**
+ * Calls the ednpoint servicename and returns its response.
+ * @param {object} params - Object of parameters to pass as the body request.
+ * @param {string} servicename - Name of the service to be called.
+ * @returns {Promise<Response>} The request response.
+ */
+export async function callService(params: object, servicename : string, methodType: string) : Promise<Response> {
+  try {
+    const url = new URL(servicename, EDITOR_SERVICES_ROOT);
+    const response = await fetch(url.toString(), {
+        method: methodType,
+        headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+        },
+        body: new URLSearchParams({
+          ...params,
+        }),
+    });
+    return response;
+  } catch(e) {
+    // TODO manage network errors
+    throw e;
+  }
+}
+
+
 
 /**
  * Calls the showImage service with the given MathML and returns the received Response object.
@@ -69,25 +165,14 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
  * @return {Promise<Response>} the Response object to the petition made to showImage
  */
 export async function showImage(mml: string): Promise<Response> {
-  try {
-    const url = new URL('showimage', EDITOR_SERVICES_ROOT);
-    const response = await fetch(url.toString(), {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
-      body: new URLSearchParams({
-        'mml': mml, // TODO No fa falta el encodeURL perquè és un POST i el econding el fa automàtic.
-        'metrics': 'true',
-        'centerbaseline': 'false',
-        'lang': getBrowserLang(),
-      }),
-    });
-    return response;
-  } catch(e) {
-    // TODO manage network errors
-    throw e;
+  const params = {
+    'mml': mml, // TODO No fa falta el encodeURL perquè és un POST i el econding el fa automàtic.
+    'metrics': 'true',
+    'centerbaseline': 'false',
+    'lang': getBrowserLang(),
   }
+
+  return callService(params, 'showimage', 'POST');
 };
 
 /**
@@ -96,20 +181,26 @@ export async function showImage(mml: string): Promise<Response> {
  * @return {Promise<Response>} the Response object to the petition made to service
  */
 async function latexToMathml(latex: string): Promise<Response> {
-  try {
-    const url = new URL('service', EDITOR_SERVICES_ROOT);
-    const response = await fetch(url.toString(), {
-      method: 'POST',
-      body: new URLSearchParams({
-        'service': 'latex2mathml',
-        'latex': latex,
-      }),
-    });
-    return response;
-  } catch(e) {
-    // TODO manage network errors
-    throw e;
+  const params = {
+    'service': 'latex2mathml',
+    'latex': latex,
   }
+
+  return callService(params, 'service', 'POST');
+  // try {
+  //   const url = new URL('service', EDITOR_SERVICES_ROOT);
+  //   const response = await fetch(url.toString(), {
+  //     method: 'POST',
+  //     body: new URLSearchParams({
+  //       'service': 'latex2mathml',
+  //       'latex': latex,
+  //     }),
+  //   });
+  //   return response;
+  // } catch(e) {
+  //   // TODO manage network errors
+  //   throw e;
+  // }
 }
 
 /**
