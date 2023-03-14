@@ -5,8 +5,6 @@ Type and handwrite mathematical notation with MathType.
 
 Easily include quality math equations in your documents and digital content.
 
-![MathType for CKEditor 4 screenshot](http://www.wiris.com/system/files/attachments/1202/CKEditor_editor_plugin.png)
-
 # Table of Contents
 
 - [Install instructions](#install-instructions)
