@@ -1,4 +1,4 @@
-import init, { Telemeter as TelemeterWASM } from "@wiris/telemeter-wasm";
+import init, { Telemeter as TelemeterWASM } from "../telemeter-wasm";
 
 /**
  * @classdesc

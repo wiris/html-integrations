@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-html-integration-devkit",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "Allows to integrate Mathtype Web into any JavaScript HTML WYSIWYG rich text editor.",
   "keywords": [
     "chem",
@@ -44,8 +44,7 @@
     "terser-webpack-plugin": "^5.3.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0",
-    "@wiris/telemeter-wasm": "file:./telemeter-wasm"
+    "webpack-cli": "^5.0.0"
   },
   "dependencies": {
     "dompurify": "^2.3.9",
