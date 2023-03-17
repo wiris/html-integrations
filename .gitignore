@@ -66,7 +66,3 @@ terraform.rc
 
 app.*.json
 app.*.js
-
-# Telemeter fingerprint
-*.wasm
-!packages/devkit/**/*.wasm
