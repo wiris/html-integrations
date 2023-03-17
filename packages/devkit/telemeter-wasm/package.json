@@ -1,0 +1,16 @@
+{
+  "name": "@wiris/telemeter-wasm",
+  "collaborators": [
+    "WIRIS <info@wiris.com>"
+  ],
+  "description": "Client for Telemetry",
+  "version": "1.0.3",
+  "files": [
+    "telemeter_wasm_bg.wasm",
+    "telemeter_wasm.js",
+    "telemeter_wasm.d.ts"
+  ],
+  "module": "telemeter_wasm.js",
+  "types": "telemeter_wasm.d.ts",
+  "sideEffects": false
+}

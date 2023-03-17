@@ -4396,10 +4396,8 @@
   resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-2.0.1.tgz#34bdc31727a1889198855913db2f270ace6d7bf8"
   integrity sha512-0G7tNyS+yW8TdgHwZKlDWYXFA6OJQnoLCQvYKkQP0Q2X205PSQ6RNUj0M+1OB/9gRQaUZ/ccYfaxd0nhaWKfjw==
 
-"@wiris/telemeter-wasm@^1.0.2":
+"@wiris/telemeter-wasm@file:./packages/devkit/telemeter-wasm":
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@wiris/telemeter-wasm/-/telemeter-wasm-1.0.3.tgz#3d71c2dc4370a5557bc4489cd7fb16e8e2022cb1"
-  integrity sha512-YkT9loqwz9bh52ZOCf/GARIAjxhngxLY/L5tetwT6bpQAvCb8kDLk0G2k2UU++296kPtsGdgq3xpMnTghJE00Q==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
