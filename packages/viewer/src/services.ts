@@ -1,8 +1,41 @@
-// TODO: methodType to be a enum with 2 options: POST & GET
-
-enum Direction {
+enum MethodType {
   Post = "POST",
   Get = "GET",
+}
+
+/**
+ * Calls the endpoint servicename and returns its response.
+ * @param {object} query - Object of parameters to pass as the body request or search parameters.
+ * @param {string} serviceName - Name of the service to be called.
+ * @param {string} serverURL - Url of the server where we want to call the service.
+ * @returns {Promise<Response>} The request response.
+ */
+export async function callService(query: object, serviceName: string, method: MethodType, serverURL: string) : Promise<Response> {
+  try {
+    const url = new URL(serviceName, serverURL);
+    const init: RequestInit = {
+      method,
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      },
+    };
+
+    if (method === MethodType.Get) {
+      // Add the query as search params
+      for (const [key, value] of Object.entries(query)) {
+        url.searchParams.set(key, value);
+      }
+    } else {
+      // Add the query as the body of the request
+      init.body = new URLSearchParams({...query});
+    }
+
+    return await fetch(url.toString(), init);
+
+  } catch(e) {
+    // TODO manage network errors
+    throw e;
+  }
 }
 
 /**
@@ -23,37 +56,9 @@ export async function mathml2accessible(mml: string, lang: string, url: string) 
     'ignoreStyles': 'true',
   }
 
-  return callService(params, 'service', Direction.Post, url)
+  return callService(params, 'service', MethodType.Post, url)
 }
-  
-/**
- * Calls the ednpoint servicename and returns its response.
- * @param {object} params - Object of parameters to pass as the body request.
- * @param {string} servicename - Name of the service to be called.
- * @param {string} serverURL - Url of the server where we want to call the service.
- * @returns {Promise<Response>} The request response.
- */
-export async function callService(params: object, servicename : string, methodType: Direction, serverURL: string) : Promise<Response> {
-  try {
-    const url = new URL(servicename, serverURL);
-    const response = await fetch(url.toString(), {
-        method: methodType,
-        headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-        },
-        body: new URLSearchParams({
-          ...params,
-        }),
-    });
-    return response;
-  } catch(e) {
-    // TODO manage network errors
-    throw e;
-  }
-}
-  
-  
-  
+
 /**
  * Calls the showImage service with the given MathML and returns the received Response object.
  * @param {string} mml MathML to render
@@ -63,15 +68,14 @@ export async function callService(params: object, servicename : string, methodTy
  */
 export async function showImage(mml: string, lang: string, url: string): Promise<Response> {
   const params = {
-    'mml': mml, // TODO No fa falta el encodeURL perquè és un POST i el econding el fa automàtic.
+    'mml': mml,
     'metrics': 'true',
     'centerbaseline': 'false',
     'lang':lang,
   }
 
-  return callService(params, 'showimage', Direction.Post, url);
+  return callService(params, 'showimage', MethodType.Post, url);
 };
-
 
 /**
  * Calls the latex2mathml service with the given LaTeX and returns the received Response object.
@@ -85,5 +89,20 @@ export async function latexToMathml(latex: string, url: string): Promise<Respons
     'latex': latex,
   }
 
-  return callService(params, 'service', Direction.Post, url);
+  return callService(params, 'service', MethodType.Post, url);
 }
+
+/**
+ * Returns the configuration from the backend.
+ * @returns {Promise<Response>} The configurationjson service response.
+ */
+export async function configurationJson(variablekeys: string, url: string) : Promise<Response> {
+  const params = {
+    variablekeys,
+  }
+
+  //
+
+  return callService(params, 'configurationjson', MethodType.Get, url);
+}
+

@@ -6,32 +6,31 @@ module.exports = (config, context) => {
     mode: 'development',
     devtool: 'inline-source-map',
     module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: ['babel-loader']
-            },
-        ],
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: ['babel-loader']
+        },
+      ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, 'dist'),
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'dist'),
     },
     devServer: {
-        // static: {
-        //     directory: path.join(__dirname, './'),
-        // },
-        port: 8001,
-        open: true,
+      static:  './',
+      hot: true,
+      port: 8001,
+      open: true,
     },
   }
 };

@@ -4,9 +4,8 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "lite-server",
-        "start-webpack": "npx webpack && webpack serve"
+        "build": "webpack",
+        "serve": "webpack serve"
     },
     "keywords": [
         "typescript",
@@ -15,9 +14,14 @@
     "author": "Integrations",
     "license": "ISC",
     "dependencies": {
-        "@wiris/mathtype-html-integration-devkit": "^1.10.1",
+        "@wiris/mathtype-html-integration-devkit": "^1.10.1"
+    },
+    "devDependencies": {
         "babel-loader": "^9.1.2",
         "lite-server": "^2.5.4",
-        "ts-loader": "^9.4.2"
+        "ts-loader": "^9.4.2",
+        "webpack": "^5.75.0",
+        "webpack-cli": "^4.0.0",
+        "webpack-dev-server": "^4.12.0"
     }
 }

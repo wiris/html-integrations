@@ -15,7 +15,7 @@ interface LatexPosition {
 }
 
 // Data obtained when rendering image. Data needed to set the formula image parameters.
-interface formulaData {
+interface FormulaData {
   content: string,
   baseline: string,
   height: string,
@@ -28,16 +28,58 @@ import * as Properties from './properties';
 /**
  * Initial function called when loading the script.
  *
- * This function accesses the global `window`.
+ * This function accesses the global `document`.
  */
 async function main(): Promise<void> {
-  document.addEventListener("DOMContentLoaded", () => {
-    render(document.documentElement);
+  console.log('test');
+  document.addEventListener("DOMContentLoaded", async () => {
+
+    // Check with the backend if we should use the browser cache:
+    const wirispluginperformanceResponse = await Services.configurationJson('wirispluginperformance', Properties.EDITOR_SERVICES_ROOT);
+    const wirispluginperformanceJson = await wirispluginperformanceResponse.json();
+    const wirispluginperformanceString = wirispluginperformanceJson.status === 'ok' ? wirispluginperformanceJson.result.wirispluginperformance : 'false';
+    const wirispluginperformance = wirispluginperformanceString === 'true';
+
+    render(document.documentElement, wirispluginperformance);
   });
+}
+
+async function replaceAsync(str, regex, asyncFn) {
+  const promises = [];
+  str.replace(regex, (match, ...args) => {
+      const promise = asyncFn(match, ...args);
+      promises.push(promise);
+  });
+  const data = await Promise.all(promises);
+  return str.replace(regex, () => data.shift());
+}
+
+
+
+async function renderLatexRegex(root: HTMLElement) {
+  const iterator = document.createNodeIterator(root, NodeFilter.SHOW_ALL);
+  let node;
+  while (node = iterator.nextNode()) {
+
+    // Not a text node, don't replace
+    if (node.nodeType !== 3) {
+      continue;
+    }
+
+    node.textContent = await replaceAsync(node.textContent, /(\$\$)(.*?)\1/gm, async (match) => {
+      const latex2mathmlResponse = await Services.latexToMathml(match, Properties.EDITOR_SERVICES_ROOT);
+      const latex2mathmlJson = await latex2mathmlResponse.json();
+      const latex2mathmlString = latex2mathmlJson.result.text;
+      return latex2mathmlString;
+    });
+
+  }
+
 }
 
 /**
  * Parse the DOM looking for LaTeX nodes and replaces them with the corresponding rendered images.
+* @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 async function renderLatex(root: HTMLElement) {
   const latexNodes = findLatexTextNodes(root);
@@ -51,24 +93,34 @@ async function renderLatex(root: HTMLElement) {
  * Parse the DOM looking for LaTeX and <math> elements.
  * Replaces them with the corresponding rendered images within the given element.
  * @param {HTMLElement} root - DOM fragment to be rendered.
+ * @param {bool} wirispluginperformance - Whether to use the browser cache.
  */
-async function render(root: HTMLElement) {
-  await renderLatex(root);
-  await renderMathML(root);
+async function render(root: HTMLElement, wirispluginperformance: boolean) {
+  await renderLatex(root); // TODO i'm tryin renderLatexRegex instead of renderLatex right now
+  await renderMathML(root, wirispluginperformance);
 }
 
 
 /**
 * Parse the DOM looking for <math> elements and replace them with the corresponding rendered images within the given element.
 * @param {HTMLElement} root - Any DOM element that can contain MathML.
+* @param {bool} wirispluginperformance - Whether to use the browser cache.
 */
-export async function renderMathML(root: HTMLElement): Promise<void> {
+export async function renderMathML(root: HTMLElement, wirispluginperformance: boolean): Promise<void> {
   for(const mathElement of [...root.getElementsByTagName('math')]) {
     const mml = mathElement.outerHTML;
 
-    // Transform mml to img.
-    const response = await Services.showImage(mml, Properties.lang, Properties.EDITOR_SERVICES_ROOT);
-    const data = await response.json();
+    let response, data;
+
+    if (wirispluginperformance) {
+      // Transform mml to img.
+      response = await Services.showImage(mml, Properties.lang, Properties.EDITOR_SERVICES_ROOT);
+      data = await response.json();
+    } else {
+
+      // TODO call createImage instead of showImage
+
+    }
 
     // Set img properties.
     const img = await setImageProperties(data.result, mml);
@@ -81,11 +133,11 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
 
 /**
  * Returns an image formula containing all MathType properties.
- * @param {data} data - Object containing image values.
+ * @param {FormulaData} data - Object containing image values.
  * @param {string} mml - The mml of the formula image it's beeing created.
  * @returns {HTMLImageElement} - Formula image.
  */
-export async function setImageProperties (data: formulaData, mml: string) {
+export async function setImageProperties(data: FormulaData, mml: string) {
   // Create imag element.
   let img = document.createElement("img");
 
@@ -115,9 +167,8 @@ export async function setImageProperties (data: formulaData, mml: string) {
 }
 
 /**
- *  Replace LaTeX instances inside 'node' for mathml.
- *  @param pos current position inside the text in textnode
- *  @param node textnode
+ * Replace LaTeX instances inside 'node' for mathml.
+ * @param node textnode
  */
 async function replaceLatexInTextNode(node: Node) {
   const textContent: string = node.textContent || '';
