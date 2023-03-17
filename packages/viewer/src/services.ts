@@ -3,6 +3,9 @@ enum MethodType {
   Get = "GET",
 }
 
+// Thrown when a service returns a JSON with a non-ok status value in its JSON body
+export class StatusError extends Error {}
+
 /**
  * Calls the endpoint servicename and returns its response.
  * @param {object} query - Object of parameters to pass as the body request or search parameters.
@@ -10,7 +13,7 @@ enum MethodType {
  * @param {string} serverURL - Url of the server where we want to call the service.
  * @returns {Promise<Response>} The request response.
  */
-export async function callService(query: object, serviceName: string, method: MethodType, serverURL: string) : Promise<Response> {
+export async function callService(query: object, serviceName: string, method: MethodType, serverURL: string) : Promise<any> {
   try {
     const url = new URL(serviceName, serverURL);
     const init: RequestInit = {
@@ -30,10 +33,16 @@ export async function callService(query: object, serviceName: string, method: Me
       init.body = new URLSearchParams({...query});
     }
 
-    return await fetch(url.toString(), init);
+    const response = await fetch(url.toString(), init);
+    const { status, result } = await response.json();
 
+    if (status !== 'ok') {
+      throw new StatusError('Service responded with a non-ok status');
+    }
+
+    return result;
   } catch(e) {
-    // TODO manage network errors
+    // TODO manage network and status non-ok errors
     throw e;
   }
 }
@@ -45,7 +54,7 @@ export async function callService(query: object, serviceName: string, method: Me
  * @param {string} url - Url of the server where we want to call the service.
  * @returns {Promise<Response>} The mathml2accessible service response.
  */
-export async function mathml2accessible(mml: string, lang: string, url: string) : Promise<Response> {
+export async function mathml2accessible(mml: string, lang: string, url: string) : Promise<any> {
   // Set the needed params to retrieve the alt text.
   const params = {
     'service': 'mathml2accessible',
@@ -66,7 +75,7 @@ export async function mathml2accessible(mml: string, lang: string, url: string) 
  * @param {string} url - Url of the server where we want to call the service.
  * @return {Promise<Response>} the Response object to the petition made to showImage
  */
-export async function showImage(mml: string, lang: string, url: string): Promise<Response> {
+export async function showImage(mml: string, lang: string, url: string): Promise<any> {
   const params = {
     'mml': mml,
     'metrics': 'true',
@@ -83,7 +92,7 @@ export async function showImage(mml: string, lang: string, url: string): Promise
  * @param {string} url - Url of the server where we want to call the service.
  * @return {Promise<Response>} the Response object to the petition made to service
  */
-export async function latexToMathml(latex: string, url: string): Promise<Response> {
+export async function latexToMathml(latex: string, url: string): Promise<any> {
   const params = {
     'service': 'latex2mathml',
     'latex': latex,
@@ -94,15 +103,13 @@ export async function latexToMathml(latex: string, url: string): Promise<Respons
 
 /**
  * Returns the configuration from the backend.
+ * @param {string[]} variablekeys List of the key names of the variables to fetch
  * @returns {Promise<Response>} The configurationjson service response.
  */
-export async function configurationJson(variablekeys: string, url: string) : Promise<Response> {
+export async function configurationJson(variablekeys: string[], url: string) : Promise<any> {
   const params = {
-    variablekeys,
+    'variablekeys': variablekeys.join(','),
   }
-
-  //
 
   return callService(params, 'configurationjson', MethodType.Get, url);
 }
-
