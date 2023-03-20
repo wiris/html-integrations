@@ -330,6 +330,14 @@ export default class ContentManager {
   }
 
   /**
+   * Returns true if device is Mobile. Otherwise, false.
+   * @returns {Boolean}
+   */
+  static isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  }
+
+  /**
    * Returns true if editor is loaded. Otherwise, false.
    * @returns {Boolean}
    */
@@ -605,7 +613,7 @@ export default class ContentManager {
               keyboardEvent.preventDefault();
             }
           }
-        }     
+        }
       } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
         if (document.activeElement === this.modalDialogInstance.cancelButton) {
           // Focus is on X button.

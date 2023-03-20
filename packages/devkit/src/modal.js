@@ -58,7 +58,7 @@ export default class ModalDialog {
     // TODO: Detect isMobile without using editor metrics.
     const isLandscape = (landscape && this.attributes.height > deviceHeight);
     const isPortrait = portrait && this.attributes.width > deviceWidth;
-    const isMobile = isLandscape || isPortrait;
+    const isMobile =  ContentManager.isMobile();
 
     // Obtain number of current instance.
     this.instanceId = document.getElementsByClassName('wrs_modal_dialogContainer').length;
