@@ -8,6 +8,9 @@ import * as Generic from 'resources/demos/imports';
 document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
 document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
+// Insert the initial content in the editor
+document.getElementById('editor').innerHTML = Generic.editorContentMathML;
+
 // Copy the editor content before initializing it.
 Generic.copyContentFromxToy('editor', 'transform_content');
 
