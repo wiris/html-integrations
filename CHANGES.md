@@ -11,6 +11,10 @@ Last release of this project is was 30th of September 2021.
 
 ### Unreleased
 
+  - Fix: detect if device is mobile. #KB-33529
+
+### 8.2.6 2023-03-17
+
   - Fix: "Cancel"+"Cancel" AND "Cancel"+"Close" does not focus the HTML Editor. #KB-24317
   - Fix: TinyMCE Dialog cancellation "Cancel" button focuses the HTML Editor instead of the MT/CT Editor. #KB-24314
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
