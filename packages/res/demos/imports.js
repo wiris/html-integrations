@@ -16,5 +16,3 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
-
-// document.getElementById('editor').innerHTML = editorContentMathML;
