@@ -16,8 +16,8 @@ import packageInfo from '@wiris/mathtype-ckeditor5/package.json';
 import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for CKeditor';
-document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
+document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor';
+document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Insert the initial content in the editor
 document.getElementById('editor').innerHTML = Generic.editorContentMathML;
@@ -28,7 +28,7 @@ document.getElementById('editor').innerHTML = Generic.editorContentMathML;
 
 window.editor = null;
 
-// Create the CKeditor5.
+// Create the CKEditor 5.
 ClassicEditor
   .create(document.querySelector('#editor'), {
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],

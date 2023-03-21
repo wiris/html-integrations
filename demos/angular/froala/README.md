@@ -50,7 +50,7 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
    // Expose FroalaEditor instance to window.
    declare const require: any;
    (window as any).FroalaEditor = require("froala-editor");
-   require("@wiris/mathtype-froala"); // Import WIRIS Mathtype formula editor.
+   require("@wiris/mathtype-froala"); // Import WIRIS MathType formula editor.
 
    // Import Angular plugin.
    import {

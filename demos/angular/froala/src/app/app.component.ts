@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
+document.getElementById('header_title_name').innerHTML = 'MathType for Froala';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // Create the initial editor content.

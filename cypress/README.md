@@ -49,7 +49,7 @@ A canonical representation of the HTML source code of this app would look like t
 This next diagram represents a common E2E interaction with the MathType for the Web UI elements of the canonical MathType Integration sample app: adding a mathematical formula from scratch using the MathType editor.
 
 
-![Minimal Mathtype integration snapshot](mathtype-web-app.png)
+![Minimal MathType integration snapshot](mathtype-web-app.png)
 
 
 ### MathType Modal Window
