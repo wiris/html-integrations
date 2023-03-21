@@ -12,7 +12,8 @@ document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 document.getElementById('editor').innerHTML = Generic.editorContentMathML;
 
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editor', 'transform_content');
+// Currently disabled by decision of QA.
+// Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Set up the editor.
 tinymce.init({

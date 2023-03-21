@@ -30,7 +30,8 @@ document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 const content = Generic.editorContentImg;
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = content;
+// Currently disabled by decision of QA.
+// document.getElementById('transform_content').innerHTML = content;
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', (e) => {

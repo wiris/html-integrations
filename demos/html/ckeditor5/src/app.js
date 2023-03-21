@@ -23,7 +23,8 @@ document.getElementById('version_editor').innerHTML = 'CKeditor editor: ';
 document.getElementById('editor').innerHTML = Generic.editorContentMathML;
 
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editor', 'transform_content');
+// Currently disabled by decision of QA.
+// Generic.copyContentFromxToy('editor', 'transform_content');
 
 window.editor = null;
 

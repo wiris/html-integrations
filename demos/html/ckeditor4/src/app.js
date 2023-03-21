@@ -9,7 +9,7 @@ document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor'
 document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editor', 'transform_content');
+// document.getElementById('transform_content').innerHTML = Generic.editorContentImg;
 
 // Add wiris plugin.
 CKEDITOR.plugins.addExternal('ckeditor_wiris', `${window.location.href}node_modules/@wiris/mathtype-ckeditor4/`, 'plugin.js'); //eslint-disable-line

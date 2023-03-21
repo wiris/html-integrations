@@ -25,7 +25,8 @@ document.head.appendChild(jsDemoImagesTransform);
 const content = Generic.editorContentImg;
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = content;
+// Currently disabled by decision of QA.
+// document.getElementById('transform_content').innerHTML = content;
 
 document.getElementById('version_wiris').innerHTML += pluginVersion;
 
