@@ -29,12 +29,24 @@ export abstract class Properties {
     return document.getElementsByTagName('html')[0].lang;
   }
 
-  private static getURLParams() {
+  /* private */ public static getURLParams() {
     const pluginName = "WIRISplugins.js";
+    let script:any = false;
     let scripts:any = document.getElementsByTagName("script");
     for (let i = 0; i < scripts.length; ++i) {
-      scripts = scripts[i].src.includes(pluginName) ? scripts[i] : scripts;
+      script = scripts[i].src.includes(pluginName) ? scripts[i] : script ;
     }
-    const urlParams = new URLSearchParams(scripts);
+    if (script) {
+      console.log(script);
+      const x = script.src.lastIndexOf(pluginName);
+      script = script.src.substring(x + 16);
+      console.log(script);
+      const urlParams = new URLSearchParams(script);
+      for (const p of urlParams) {
+        console.log(p);
+      }
+      console.log(urlParams.getAll("viewer"))
+    }
+    
   }
 }

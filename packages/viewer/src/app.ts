@@ -51,6 +51,7 @@ async function getBackendConfig(): Promise<BackendConfig> {
  */
 async function main(): Promise<void> {
   document.addEventListener("DOMContentLoaded", async () => {
+    Properties.getURLParams();
     render(document.body, await getBackendConfig());
   });
 }
