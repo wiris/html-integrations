@@ -5,10 +5,11 @@ import './static/style.css';
 import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor';
+document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor';
 document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Copy the editor content before initializing it.
+// Currently disabled by decision of QA.
 // document.getElementById('transform_content').innerHTML = Generic.editorContentImg;
 
 // Add wiris plugin.

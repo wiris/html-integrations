@@ -12,7 +12,7 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 // 2.3 Import a Froala Editor language file.
 import 'froala-editor/js/languages/it.js';
 
-// 2.5. Import WIRIS Mathtype formula editor.
+// 2.5. Import WIRIS MathType formula editor.
 // Expose FroalaEditor instance to window.
 declare const require: any;
 (window as any).FroalaEditor = require('froala-editor');
@@ -26,7 +26,7 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
     AppComponent
   ],
   imports: [
-    FroalaEditorModule.forRoot(), 
+    FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     BrowserModule
   ],

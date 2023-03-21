@@ -22,7 +22,7 @@ window.tinymce = require('tinymce');
 require('@wiris/mathtype-tinymce5');
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for TinyMCE';
+document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE';
 document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Set the initial content.

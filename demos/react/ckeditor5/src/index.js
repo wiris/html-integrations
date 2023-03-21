@@ -17,7 +17,7 @@ import * as ClassicEditor from './ckeditor';
 import reportWebVitals from './reportWebVitals';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor';
+document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor';
 document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Set the initial content.

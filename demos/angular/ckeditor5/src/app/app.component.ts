@@ -9,7 +9,7 @@ import * as Generic from 'resources/demos/imports';
 import packageInfo from '@wiris/mathtype-ckeditor5/package.json';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'Mathtype for CKEditor';
+document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor';
 document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Create the initial editor content.

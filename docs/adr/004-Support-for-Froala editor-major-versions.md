@@ -62,5 +62,5 @@ It becomes easier to maintain different major versions when they share the same 
 
 Due to the problem originated by npm policies and our previous naming conventions, its name can confuse the users since it's non-self-explanatory. We expect that this problem gets solved by a proper documentation.
 
-We also changed our demos to support just the latest major version for each Mathtype Froala package, this means that, by changing the Froala version, you can try out any of the major versions included on the used Mathtype plugin for the specific demo, so it gets easier to maintain fewer demos on the project.
+We also changed our demos to support just the latest major version for each MathType Froala package, this means that, by changing the Froala version, you can try out any of the major versions included on the used MathType plugin for the specific demo, so it gets easier to maintain fewer demos on the project.
 
