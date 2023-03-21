@@ -16,7 +16,8 @@ document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 const editorContent = Generic.editorContentMathML;
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = editorContent;
+// Currently disabled by decision of QA.
+// document.getElementById('transform_content').innerHTML = editorContent;
 
 
 @Component({

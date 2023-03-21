@@ -16,7 +16,8 @@ jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins
 document.head.appendChild(jsDemoImagesTransform);
 
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editable', 'transform_content');
+// Currently disabled by decision of QA.
+// Generic.copyContentFromxToy('editable', 'transform_content');
 
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');

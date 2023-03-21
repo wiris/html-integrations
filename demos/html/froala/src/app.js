@@ -10,7 +10,8 @@ document.getElementById('header_title_name').innerHTML = 'Mathtype for Froala';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // Copy the editor content before initializing it.
-Generic.copyContentFromxToy('editor', 'transform_content');
+// Currently disabled by decision of QA.
+// Generic.copyContentFromxToy('editor', 'transform_content');
 
 // Initialize editor.
 new FroalaEditor('#editor', {                                                                                                 //eslint-disable-line

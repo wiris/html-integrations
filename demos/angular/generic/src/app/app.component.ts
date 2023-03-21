@@ -14,7 +14,8 @@ document.head.appendChild(jsDemoImagesTransform);
 const editorContent = Generic.editorContentImg;
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = editorContent;
+// Currently disabled by decision of QA.
+// document.getElementById('transform_content').innerHTML = editorContent;
 
 import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 

@@ -34,7 +34,8 @@ document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 const content = Generic.editorContentImg;
 
 // Copy the editor content before initializing it.
-document.getElementById('transform_content').innerHTML = content;
+// Currently disabled by decision of QA.
+// document.getElementById('transform_content').innerHTML = content;
 
 // Add listener on click button to launch updateFunction.
 document.getElementById('btn_update').addEventListener('click', (e) => {
