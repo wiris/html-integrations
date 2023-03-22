@@ -23,7 +23,7 @@ module.exports = (config, context) => {
       extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-      filename: 'index.js',
+      filename: 'WIRISplugins.js',
       path: path.resolve(__dirname, 'dist'),
     },
     devServer: {

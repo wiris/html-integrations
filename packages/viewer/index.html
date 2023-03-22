@@ -3,10 +3,16 @@
 
     <head>
         <title> Testing Viewer MathML </title>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <!-- <script src="node_modules/@wiris/mathtype-html-integration-devkit/"></script> -->
         <!-- <script>var exports = {};</script> -->
-        <script src="dist/index.js" defer></script>
-        <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
+        <script src="dist/WIRISplugins.js" defer></script>
+        <script>
+            window.document.addEventListener('viewerLoaded', () => {
+                window.viewer.Properties.viewer = 'image';
+            });
+        </script>
+        <!-- <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script> -->
     </head>
     <body>
         <div id="editor">

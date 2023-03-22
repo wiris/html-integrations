@@ -1,4 +1,4 @@
-import * as Services from './services';
+import { latexToMathml } from './services';
 import { Properties } from './properties';
 
 interface LatexPosition {
@@ -8,7 +8,7 @@ interface LatexPosition {
 
 /**
  * Parse the DOM looking for LaTeX nodes and replaces them with the corresponding rendered images.
-* @param {HTMLElement} root - Any DOM element that can contain MathML.
+ * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 export async function renderLatex(root: HTMLElement) {
   const latexNodes = findLatexTextNodes(root);
@@ -38,7 +38,7 @@ async function replaceLatexInTextNode(node: Node) {
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
       // Convert LaTeX to mathml.
-      const response = await Services.latexToMathml(latex, Properties.EDITOR_SERVICES_ROOT);
+      const response = await latexToMathml(latex, Properties.editorServicesRoot);
       // Insert mathml node.
       const fragment = document.createRange().createContextualFragment(response.text);
       node.parentNode?.insertBefore(fragment, node);
