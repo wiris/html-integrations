@@ -60,6 +60,8 @@ export class AppComponent {
     //   editorParameters: { language: 'de' },
     // },
 
+    height: 300,
+
     // Handle events.
     setup(editor) {
       // Launch on init event.

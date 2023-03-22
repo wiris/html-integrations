@@ -8,6 +8,7 @@ body {
   margin: 0 auto !important;
   max-width: 750px !important;
   width: 100% !important;
+  min-height: 300px;
 }
 
 .tox:hover {
