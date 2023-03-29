@@ -32,6 +32,8 @@ const defaultValues: Config = {
 
 export abstract class Properties {
 
+  static render: () => Promise<void> = async () => {};
+
   // Flag for the static parameters that access the backend.
   private static backendObtained: boolean = false;
 
@@ -99,6 +101,7 @@ export abstract class Properties {
 
   static set editorServicesRoot(editorServicesRoot: string) {
     this.config.editorServicesRoot = editorServicesRoot;
+    this.render();
   }
 
   /**
@@ -120,6 +123,7 @@ export abstract class Properties {
 
   static set lang(lang: string) {
     this.config.lang = lang;
+    this.render();
   }
 
   /**
@@ -135,6 +139,7 @@ export abstract class Properties {
 
   static set viewer(viewer: Viewer) {
     this.config.viewer = viewer;
+    this.render();
   }
 
   /**
@@ -150,6 +155,7 @@ export abstract class Properties {
 
   static set dpi(dpi: number) {
     this.config.dpi = dpi;
+    this.render();
   }
 
   /**
@@ -165,6 +171,7 @@ export abstract class Properties {
 
   static set zoom(zoom: number) {
     this.config.zoom = zoom;
+    this.render();
   }
 
   /**
@@ -181,6 +188,7 @@ export abstract class Properties {
 
   static set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
+    this.render();
   }
 
   /**
@@ -197,5 +205,6 @@ export abstract class Properties {
 
   static set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
   }
 }

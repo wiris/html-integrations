@@ -28,6 +28,8 @@ async function main(w: Window): Promise<void> {
     Properties,
   };
 
+  Properties.render = () => render(w.document.body);
+
   // Render formulas once the DOM content is loaded
   w.document.addEventListener('DOMContentLoaded', async () => {
     render(w.document.body);
