@@ -34,6 +34,7 @@ async function replaceLatexInTextNode(node: Node) {
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
+      node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
@@ -41,7 +42,9 @@ async function replaceLatexInTextNode(node: Node) {
       const response = await latexToMathml(latex, Properties.editorServicesRoot);
       // Insert mathml node.
       const fragment = document.createRange().createContextualFragment(response.text);
+
       node.parentNode?.insertBefore(fragment, node);
+      node.nodeValue = node.nodeValue.substring(nextLatexPosition.start, nextLatexPosition.end);
 
       pos = nextLatexPosition.end + '$$'.length;
     } else {
@@ -49,6 +52,7 @@ async function replaceLatexInTextNode(node: Node) {
       const text = textContent.substring(pos);
       const textNode = document.createTextNode(text);
       node.parentNode?.insertBefore(textNode, node);
+      node.nodeValue = '';
       pos = textContent.length;
     }
   }

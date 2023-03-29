@@ -9,15 +9,24 @@
         <script src="dist/WIRISplugins.js" defer></script>
         <script>
             window.document.addEventListener('viewerLoaded', () => {
+              setTimeout(() => {
                 window.viewer.Properties.viewer = 'image';
+              }, 1000);
+              setTimeout(() => {
+                // window.document.body.innerHTML += '<math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mi>x</mi></msqrt></math>';
+                // window.document.body.innerHTML += `$$x = y$$`;
+
+              }, 3000);
             });
         </script>
         <!-- <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script> -->
     </head>
     <body>
         <div id="editor">
-          <p>aaaaa $$z=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$ xxxxx <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mi>x</mi></msqrt></math> $$o=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$ zzzzz</p>
-          <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>
+          <!-- <p>aaaaa $$z=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$ xxxxx <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mi>x</mi></msqrt></math> $$o=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$ zzzzz</p>
+          <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math> -->
+          <!-- <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><mi>x</mi></msqrt></math> -->
+          aaaa$$z=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$aaaa$$z=\frac{-c\pm\sqrt{b^2-4ac}}{2a}$$aaaa
         </div>
     </body>
 </html>

@@ -37,6 +37,28 @@ async function main(w: Window): Promise<void> {
 
   // Dispatch an event notifying that the viewer has been loaded
   w.document.dispatchEvent(new Event('viewerLoaded'));
+
+  // TODO: Feature configurable (additional resources and time cost).
+  const callback = (mutationList, observer) => {
+    for (const mutation of mutationList) {
+      // console.log(JSON.stringify(mutation.addedNodes))
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === Node.ELEMENT_NODE && node.tagName.toLowerCase() === 'math') {
+          renderMathML(node.parentNode);
+        } else if (node.nodeType === Node.TEXT_NODE) {
+          renderLatex(node.parentNode);
+        }
+        // } else if (node.nodeType ==)
+        // if (JSON.stringify((node as HTMLElement).tagName === 'math')) {
+        //   render(w.document.body);
+        // }
+        console.log(JSON.stringify((node as HTMLElement).tagName || node.data));
+      }
+    }
+    console.log('---');
+  };
+  const observer = new MutationObserver(callback);
+  observer.observe(w.document.body, { childList: true, subtree: true });
 }
 
 /**
