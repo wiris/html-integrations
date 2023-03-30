@@ -135,29 +135,29 @@ export class TinyMceIntegration extends IntegrationModel {
     super.updateFormula(mathml);
   }
 
-    /**
+  /**
    * Set Moodle configuration on plugin.
    * @param {string} editor - Editor instance.
    * @param {string} pluginName - TinyMCE 6 plugin name.
    */
-    registerMoodleOption (editor, pluginName) {
-      const registerOption = editor.options.register;
-  
-      registerOption(`${pluginName}:filterEnabled`, {
-        processor: 'boolean',
-        'default': false,
-      });
-  
-      registerOption(`${pluginName}:editorEnabled`, {
-        processor: 'boolean',
-        'default': false,
-      });
-  
-      registerOption(`${pluginName}:chemistryEnabled`, {
-        processor: 'boolean',
-        'default': false,
-      });
-    }
+  registerMoodleOption (editor, pluginName) {
+    const registerOption = editor.options.register;
+
+    registerOption(`${pluginName}:filterEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+
+    registerOption(`${pluginName}:editorEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+
+    registerOption(`${pluginName}:chemistryEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+  }
 }
 
 /**
