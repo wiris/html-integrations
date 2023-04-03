@@ -8,9 +8,6 @@ import * as Generic from 'resources/demos/imports';
 document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE';
 document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
-// Insert the initial content in the editor
-document.getElementById('editor').innerHTML = Generic.editorContentMathML;
-
 // Copy the editor content before initializing it.
 // Currently disabled by decision of QA.
 // Generic.copyContentFromxToy('editor', 'transform_content');
@@ -40,6 +37,9 @@ tinymce.init({
     editor.on('init', () => {
       // Get and set the editor and wiris versions in this order.
       Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, WirisPlugin.currentInstance.version);   //eslint-disable-line
+
+      // Insert the initial content in the editor
+      editor.setContent(Generic.editorContentMathML);
     });
   },
 });
