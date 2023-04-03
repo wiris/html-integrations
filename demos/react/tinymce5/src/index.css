@@ -15,6 +15,10 @@ body {
   box-shadow: 0 0 10px #7af78f;
 }
 
+.tox-silver-sink {
+  display: none;
+}
+
 #editor_ifr {
   min-height: 200px;
 }
