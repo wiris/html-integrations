@@ -1,5 +1,6 @@
 import Util from './util';
 import Listeners from './listeners';
+import Configuration from './configuration';
 
 /**
  * @typedef {Object} ServiceProviderProperties
@@ -185,13 +186,21 @@ export default class ServiceProvider {
         httpRequest.open('POST', currentPath + url, false);
       }
 
+      let header = Configuration.get('customHeaders');
+      if (header) {
+        header = header.toString()
+        header.split(",")
+          .map(element => element.trim().split('='))
+          .forEach(([key, val]) => httpRequest.setRequestHeader(key, val));
+      }
+
       if (typeof postVariables !== 'undefined' && postVariables) {
         httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
         httpRequest.send(Util.httpBuildQuery(postVariables));
       } else {
         httpRequest.send(null);
       }
-
+   
       return httpRequest.responseText;
     }
     return '';

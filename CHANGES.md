@@ -16,6 +16,7 @@ Last release of this project is was 30th of September 2021.
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
   - Fix (froala): Remove Unlicensed message. #KB-25900
   - Refactor (generic): Remove editor language conf from generic demo. #KB-32550
+  - Feat: Add custom headers to API requests. #KB-34463
 
 ### 8.1.1 2023-01-11
 
