@@ -38,7 +38,6 @@ export class TinyMceIntegration extends IntegrationModel {
    */
   getPath() {
     if (this.isMoodle) {
-      // return '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce/';
       const search = 'lib/editor/tinymce';
       const pos = tinymce.baseURL.indexOf(search);
       const baseURL = tinymce.baseURL.substr(0, pos + search.length);
@@ -51,14 +50,10 @@ export class TinyMceIntegration extends IntegrationModel {
   }
 
   /**
-   * Returns the absolute path of plugin icons. A set of different
-   * icons is needed for TinyMCE and Moodle 2.5-
+   * Returns the absolute path of plugin icons.
    * @returns {String} - Absolute path of the icons folder.
    */
   getIconsPath() {
-    if (this.isMoodle && Configuration.get('versionPlatform') < 2013111800) {
-      return `${this.getPath()}icons/tinymce3/`;
-    }
     return `${this.getPath()}icons/`;
   }
 
@@ -139,6 +134,30 @@ export class TinyMceIntegration extends IntegrationModel {
     }
     super.updateFormula(mathml);
   }
+
+  /**
+   * Set Moodle configuration on plugin.
+   * @param {string} editor - Editor instance.
+   * @param {string} pluginName - TinyMCE 6 plugin name.
+   */
+  registerMoodleOption (editor, pluginName) {
+    const registerOption = editor.options.register;
+
+    registerOption(`${pluginName}:filterEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+
+    registerOption(`${pluginName}:editorEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+
+    registerOption(`${pluginName}:chemistryEnabled`, {
+      processor: 'boolean',
+      'default': false,
+    });
+  }
 }
 
 /**
@@ -160,7 +179,10 @@ export const currentInstance = null;
   with the TinyMCE instance and using the `external_plugins` option.
 */
 (function () {
-  tinymce.PluginManager.add('tiny_mce_wiris', (editor, url) => ({ // eslint-disable-line no-unused-vars
+  const isMoodle = !!((typeof M === 'object' && M !== null)); // eslint-disable-line no-undef;
+  const pluginName = isMoodle ? 'tiny_wiris/plugin' : 'tiny_mce_wiris';
+
+  tinymce.PluginManager.add(pluginName, (editor, url) => ({ // eslint-disable-line no-unused-vars
     init(editor) {
       const callbackMethodArguments = {};
 
@@ -180,7 +202,7 @@ export const currentInstance = null;
         server: process.env.SERVICE_PROVIDER_SERVER,
       };
       integrationModelProperties.version = packageInfo.version;
-      integrationModelProperties.isMoodle = (!!((typeof M === 'object' && M !== null))); // eslint-disable-line no-undef
+      integrationModelProperties.isMoodle = isMoodle; // eslint-disable-line no-undef
       if (integrationModelProperties.isMoodle) {
         // eslint-disable-next-line no-undef
         integrationModelProperties.configurationService = M.cfg.wwwroot + '/filter/wiris/integration/configurationjs.php'; // eslint-disable-line prefer-template
@@ -220,11 +242,35 @@ export const currentInstance = null;
       integrationModelProperties.isExternal = isExternalPlugin;
       integrationModelProperties.rtl = (editor.options.get('directionality') === 'rtl');
 
+      // Set Moodle configurations for Telemetry purposes.
+      const registerOption = editor.options.register;
+      registerOption(`${pluginName}:moodleCourseCategory`, {
+        processor: 'integer',
+        'default': undefined
+      });
+      registerOption(`${pluginName}:moodleCourseName`, {
+        processor: 'string',
+        'default': undefined
+      });
+      registerOption(`${pluginName}:moodleVersion`, {
+        processor: 'integer',
+        'default': undefined
+      });
+
+      integrationModelProperties.environment.moodleVersion = editor.options.get(`${pluginName}:moodleVersion`);
+      integrationModelProperties.environment.moodleCourseCategory = editor.options.get(`${pluginName}:moodleCourseCategory`);
+      integrationModelProperties.environment.moodleCourseName = editor.options.get(`${pluginName}:moodleCourseName`);
+
       // GenericIntegration instance.
       const tinyMceIntegrationInstance = new TinyMceIntegration(integrationModelProperties);
       tinyMceIntegrationInstance.init();
       WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id] = tinyMceIntegrationInstance;
       WirisPlugin.currentInstance = tinyMceIntegrationInstance;
+
+      // Set Moodle configuration parameters to the plugin
+      if (isMoodle) {
+        tinyMceIntegrationInstance.registerMoodleOption(editor, pluginName);
+      }
 
       const onInit = function (editor) { // eslint-disable-line no-shadow
         const integrationInstance = WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id];
@@ -295,7 +341,11 @@ export const currentInstance = null;
       }
 
       const onSave = function (editor, params) { // eslint-disable-line no-shadow
-        params.content = Parser.endParse(params.content, editor.options.get('language'));
+        if (integrationModelProperties.isMoodle) {
+          params.content = Parser.endParseSaveMode(params.content, editor.getParam('language'));
+        } else {
+          params.content = Parser.endParse(params.content, editor.getParam('language'));
+        }
       };
 
       if ('onSaveContent' in editor) {
@@ -316,14 +366,18 @@ export const currentInstance = null;
 
       if ('onBeforeSetContent' in editor) {
         editor.onBeforeSetContent.add((e, params) => {
-          if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParse(params.content, editor.options.get('language'));
+          if (integrationModelProperties.isMoodle) {
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam('language'));
+          } else if (WirisPlugin.instances[editor.id].initParsed) {
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam('language'));
           }
         });
       } else {
         editor.on('beforeSetContent', (params) => {
-          if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParse(params.content, editor.options.get('language'));
+          if (integrationModelProperties.isMoodle) {
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam('language'));
+          } else if (WirisPlugin.instances[editor.id].initParsed) {
+            params.content = Parser.initParse(params.content, editor.getParam('language'));
           }
         });
       }
@@ -344,57 +398,65 @@ export const currentInstance = null;
       commonEditor.addIcon(mathTypeIcon, mathTypeIconSvg);
       commonEditor.addIcon(chemTypeIcon, chemTypeIconSvg);
 
-      // The next two blocks create menu items to give the possibility
-      // of add MathType in the menubar.
-      commonEditor.addMenuItem('tiny_mce_wiris_formulaEditor', {
-        text: 'MathType',
-        icon: mathTypeIcon,
-        onAction: openFormulaEditorFunction,
-      });
-
-      // Dynamic customEditors buttons.
-      const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
-      Object.keys(customEditors.editors).forEach((customEditor) => {
-        if (customEditors.editors[customEditor].confVariable) {
-          commonEditor.addMenuItem(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
-            text: customEditors.editors[customEditor].title,
-            icon: chemTypeIcon, // Parametrize when other custom editors are added.
-            onAction: () => {
-              customEditors.enable(customEditor);
-              WirisPlugin.instances[editor.id].openNewFormulaEditor();
-            },
-          });
-        }
-      });
-
       // Get editor language code
       let lang_code = editor.options.get('language');
       lang_code = (lang_code.split("-")[0]).split("_")[0];
 
-      // MathType button.
-      commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
-        tooltip: StringManager.get('insert_math', lang_code),
-        image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
-        onAction: openFormulaEditorFunction,
-        icon: mathTypeIcon,
-      });
+      // Check If MathType/ChemType are enabled on Moodle
+      const editorEnabled = !isMoodle || (isMoodle && editor.options.get(`${pluginName}:editorEnabled`) && editor.options.get(`${pluginName}:filterEnabled`));
+      const chemEnabled = !isMoodle || (isMoodle && editor.options.get(`${pluginName}:chemistryEnabled`) && editor.options.get(`${pluginName}:filterEnabled`));
 
-      // Dynamic customEditors buttons.
-      for (const customEditor in customEditors.editors) {
-        if (customEditors.editors[customEditor].confVariable) {
-          const cmd = `tiny_mce_wiris_openFormulaEditor${customEditors.editors[customEditor].name}`;
-          // eslint-disable-next-line no-inner-declarations, no-loop-func
-          function commandFunction() {
-            customEditors.enable(customEditor);
-            WirisPlugin.instances[editor.id].openNewFormulaEditor(); // eslint-disable-line no-undef
+      if (editorEnabled) {
+        // The next two blocks create menu items to give the possibility
+        // of add MathType in the menubar.
+        commonEditor.addMenuItem('tiny_mce_wiris_formulaEditor', {
+          text: 'MathType',
+          icon: mathTypeIcon,
+          onAction: openFormulaEditorFunction,
+        });
+
+        // MathType button.
+        commonEditor.addButton('tiny_mce_wiris_formulaEditor', {
+          tooltip: StringManager.get('insert_math', lang_code),
+          image: `${WirisPlugin.instances[editor.id].getIconsPath()}formula.png`,
+          onAction: openFormulaEditorFunction,
+          icon: mathTypeIcon,
+        });
+      }
+
+      if (chemEnabled) {
+        // Dynamic customEditors buttons.
+        const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
+        Object.keys(customEditors.editors).forEach((customEditor) => {
+          if (customEditors.editors[customEditor].confVariable) {
+            commonEditor.addMenuItem(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
+              text: customEditors.editors[customEditor].title,
+              icon: chemTypeIcon, // Parametrize when other custom editors are added.
+              onAction: () => {
+                customEditors.enable(customEditor);
+                WirisPlugin.instances[editor.id].openNewFormulaEditor();
+              },
+            });
           }
-          editor.addCommand(cmd, commandFunction);
-          commonEditor.addButton(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
-            tooltip: StringManager.get('insert_chem', lang_code),
-            onAction: commandFunction,
-            image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
-            icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
-          });
+        });
+
+        // Dynamic customEditors buttons.
+        for (const customEditor in customEditors.editors) {
+          if (customEditors.editors[customEditor].confVariable) {
+            const cmd = `tiny_mce_wiris_openFormulaEditor${customEditors.editors[customEditor].name}`;
+            // eslint-disable-next-line no-inner-declarations, no-loop-func
+            function commandFunction() {
+              customEditors.enable(customEditor);
+              WirisPlugin.instances[editor.id].openNewFormulaEditor(); // eslint-disable-line no-undef
+            }
+            editor.addCommand(cmd, commandFunction);
+            commonEditor.addButton(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
+              tooltip: StringManager.get('insert_chem', lang_code),
+              onAction: commandFunction,
+              image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
+              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
+            });
+          }
         }
       }
     },
