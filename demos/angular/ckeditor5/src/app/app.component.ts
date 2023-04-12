@@ -9,7 +9,7 @@ import * as Generic from 'resources/demos/imports';
 import packageInfo from '@wiris/mathtype-ckeditor5/package.json';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor';
+document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor 5 on Angular';
 document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
 
 // Create the initial editor content.
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit{
     htmlAllowedAttrs: ['.*'],
   }
 
-  title = 'ckeditor5';
+  title = 'Demo CKEditor 5 on Angular';
 }
 
 // Get and set the editor and wiris versions in this order.

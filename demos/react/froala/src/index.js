@@ -27,7 +27,7 @@ window.FroalaEditor = require('froala-editor');
 require('@wiris/mathtype-froala');
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'MathType for Froala';
+document.getElementById('header_title_name').innerHTML = 'MathType for Froala on React';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // // Set the initial content.
