@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'MathType for Froala';
+document.getElementById('header_title_name').innerHTML = 'MathType for Froala on Angular';
 document.getElementById('version_editor').innerHTML = 'Froala editor: ';
 
 // Create the initial editor content.
@@ -29,7 +29,7 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 export class AppComponent {
 
   // Set App Title.
-  title = 'Angular Froala demo';
+  title = 'Demo Froala on Angular';
 
   // Initializate the editor content.
   public content: string = editorContent;

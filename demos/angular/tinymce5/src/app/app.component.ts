@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE';
+document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE 5 on Angular';
 document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
 
 // Create the initial editor content.
@@ -30,7 +30,7 @@ document.getElementById('btn_update').addEventListener('click', (e) => {
 export class AppComponent {
 
   //Set app title.
-  title = 'Angular + TinyMCE 5 demo';
+  title = 'Demo TinyMCE 5 on Angular';
 
   // Initializate the editor content.
   public content: string = editorContent;
