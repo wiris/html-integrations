@@ -6,6 +6,7 @@ import Util from './util';
 import Configuration from './configuration';
 import ServiceProvider from './serviceprovider';
 import Telemeter from './telemeter';
+import warnIcon from '../styles/icons/general/warn_icon.svg';  //eslint-disable-line
 
 /**
  * @typedef {Object} IntegrationModelProperties
@@ -225,12 +226,32 @@ export default class IntegrationModel {
     this.offlineModalClose = Util.createElement('span', attributes);
     this.offlineModalClose.innerHTML = '&times;';
 
-    this.offlineModalMessage = Util.createElement('p', {});
-    this.offlineModalMessage.innerHTML = 'Warning: MathType can not work offline.';
+    attributes = {};
+    attributes.class = "wrs_modal_offline_warn";
+    this.offlineModalWarn = Util.createElement('span', attributes);
+    let generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
+    this.offlineModalWarn.setAttribute('style', generalStyle);
+
+    attributes = {};
+    attributes.class = "wrs_modal_offline_text_container";
+    this.offlineModalMessage = Util.createElement('div', attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_offline_text_warn";
+    this.offlineModalMessage1 = Util.createElement('p', attributes);
+    this.offlineModalMessage1.innerHTML = 'You are not online!';
+
+    attributes = {};
+    attributes.class = "wrs_modal_offline_text";
+    this.offlineModalMessage2 = Util.createElement('p', attributes);
+    this.offlineModalMessage2.innerHTML = `Thank you for using MathType. We have detected you are disconnected from the network. We remind you that you'll need to be connected to use MathType. <br /><br />Please refresh the page if this message continues appearing.`;
 
     //Append offline modal elements
     this.offlineModalContent.appendChild(this.offlineModalClose);
+    this.offlineModalMessage.appendChild(this.offlineModalMessage1);
+    this.offlineModalMessage.appendChild(this.offlineModalMessage2);
     this.offlineModalContent.appendChild(this.offlineModalMessage);
+    this.offlineModalContent.appendChild(this.offlineModalWarn);
     this.offlineModal.appendChild(this.offlineModalContent);
     document.body.appendChild(this.offlineModal);
 

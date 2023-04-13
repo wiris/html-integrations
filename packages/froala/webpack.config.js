@@ -64,13 +64,13 @@ module.exports = (config, context) => {
         {
           // For the modal close, minimize, maximize icons
           // The following expresion, looks for all the svg files inside the devkit folder and subfolders
-          // /mathtype-html-integration-devkit\/?(?:[^\/]+\/?)*.svg$/
-          test: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
+          // /devkit\/?(?:[^\/]+\/?)*.svg$/
+          test: /devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
           use: [ 'raw-loader' ]
         },
         {
           test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
-          exclude: /mathtype-html-integration-devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
+          exclude: /devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
           use: [
             {
               loader: 'url-loader',

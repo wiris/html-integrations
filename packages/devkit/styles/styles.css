@@ -564,7 +564,7 @@
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 2; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 150px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -572,23 +572,72 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  margin: auto;
 }
 
 /* Modal Content */
 .wrs_modal_content_offline {
-  background-color: #fefefe;
   margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+  padding: 16px;
+  background: #FFF7ED;
+  border-radius: 6px;
+  width: 517px;
+  height: 100px;
+  position: relative;
 }
 
 /* The Close Button */
 .wrs_modal_offline_close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
+  color: #C2410C;
+  font-size: 24px;
   font-weight: bold;
+  left: 95.7%;
+  right: 2.08%;
+  top: 7.6%;
+  bottom: 75%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  position: absolute;
+}
+
+/* The Warn Icon */
+.wrs_modal_offline_warn {
+  position: absolute;
+  left: 2.08%;
+  right: 94%;
+  top: 11.6%;
+  bottom: 75%;
+  font-size: 24px;
+  color: #FB923C;
+  background-repeat: no-repeat;
+}
+
+.wrs_modal_offline_text_container {
+  position: absolute;
+  left: 6.8%;
+  right: 6.08%;
+  top: 10.4%;
+  bottom: 2%;
+}
+
+.wrs_modal_offline_text {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #C2410C;
+}
+
+.wrs_modal_offline_text_warn {
+  height: 25px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+  color: #C2410C;
 }
 
 .wrs_modal_offline_close:hover,
