@@ -28,6 +28,7 @@ Last release of this project is was 30th of September 2021.
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
   - Fix (froala): Remove Unlicensed message. #KB-25900
   - Refactor (generic): Remove editor language conf from generic demo. #KB-32550
+  - Fix (ckeditor4): Copypasted/Dragdropped formula from a window to another is not editable. #KB-24226
 
 ### 8.1.1 2023-01-11
 
