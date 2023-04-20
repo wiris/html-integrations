@@ -268,7 +268,7 @@ export default class IntegrationModel {
     // If moodle, add information to hosts and solution.
     let isMoodle = (!!((typeof M === 'object' && M !== null))),
       lms;
-    
+
     if (isMoodle) {
       solutionTelemeter = 'Moodle';
       lms = {
@@ -409,7 +409,7 @@ export default class IntegrationModel {
    *                   versionOS = Operating System version.
    */
   getOS() {
-    
+
     // default value for OS just in case nothing is detected
     let detectedOS = "unknown",
       versionOS = "unknown";
@@ -615,7 +615,7 @@ export default class IntegrationModel {
 
     // Delete temporal image when inserted
     this.core.editionProperties.temporalImage = null;
-    
+
     return obj;
   }
 
@@ -665,6 +665,14 @@ export default class IntegrationModel {
   removeEvents() {
     const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
     Util.removeElementEvents(eventTarget);
+  }
+
+  /**
+   * Remove events and set this.editorObject to null in order to prevent memory leaks.
+   */
+  destroy() {
+    this.removeEvents();
+    this.editorObject = null;
   }
 
   /**
@@ -796,7 +804,7 @@ export default class IntegrationModel {
   getSelectedItem(target, isIframe) {}
 
   // Set temporal image to null and make focus come back.
-  static setActionsOnCancelButtons() {    
+  static setActionsOnCancelButtons() {
 
     // Make focus come back on the previous place it was when click cancel button
     const currentInstance = WirisPlugin.currentInstance;
