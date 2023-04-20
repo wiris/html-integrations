@@ -369,6 +369,11 @@ export class CKEditor4Integration extends IntegrationModel {
         WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;
         WirisPlugin.currentInstance = ckeditorIntegrationInstance;
       });
+
+      // Parse the editor content after copy & paste / drag & drop
+      editor.on('afterPaste', function (event) {
+        editor.setData(Parser.initParse(editor.getData()));
+      });
     },
   });
 }());
