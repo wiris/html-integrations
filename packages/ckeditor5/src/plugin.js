@@ -412,11 +412,11 @@ export default class MathType extends Plugin {
     const { get } = editor.data;
 
     /**
-         * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
-         */
+     * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
+     */
     editor.data.get = (options) => {
       const output = get.bind(editor.data)(options);
-      return Parser.endParse(output);
+      return Parser.endParse(MathML.mathMLEntities(output));
     };
   }
 
