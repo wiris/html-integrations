@@ -5,7 +5,6 @@ import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
-import { off } from 'process';
 
 /**
  * This class represents the MathType integration for CKEditor5.
