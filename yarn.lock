@@ -4396,6 +4396,20 @@
   resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-2.0.1.tgz#34bdc31727a1889198855913db2f270ace6d7bf8"
   integrity sha512-0G7tNyS+yW8TdgHwZKlDWYXFA6OJQnoLCQvYKkQP0Q2X205PSQ6RNUj0M+1OB/9gRQaUZ/ccYfaxd0nhaWKfjw==
 
+"@wiris/mathtype-html-integration-devkit@1.12.0":
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/@wiris/mathtype-html-integration-devkit/-/mathtype-html-integration-devkit-1.12.0.tgz#3d48a1cdca9824ccf8fbe6b59a019e3e2caca9bd"
+  integrity sha512-4luvDzpnoV3lJzA4tgss8/jxw3EDhxr8zJQt61HP66CMS9LPLdh+wrZdJtG65PcsZTlVal63k4YtEbez5DrlTQ==
+  dependencies:
+    dompurify "^2.3.9"
+    raw-loader "^4.0.2"
+    uuid "^8.3.2"
+
+"@wiris/mathtype-html-integration-devkit@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@wiris/mathtype-html-integration-devkit/-/mathtype-html-integration-devkit-1.2.0.tgz#86c4f189f7ab1f42db5765a9d86eda3c5eb0e4e8"
+  integrity sha512-cf8fu7QuqHAglc5vLbz/gNthG8druiFfVP2YrzVq9ry13iZGP41swkxcSkPqjVVyaXoq4db4DKgBIRON35uTsA==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"

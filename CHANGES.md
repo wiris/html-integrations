@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-### Unreleased
+### 8.3.0 2023-05-02
 
   - Fix: detect if device is mobile. #KB-33529
   - Fix: don't add an extra whitespace between `<math` and `xmlns`. #KB-32826
   - Feat: Add close/open global events. #KB-32324
   - Feat: Show a friendly message when going offline. KB-12739
+  - Feat: Add custom headers to API requests. #KB-34463
+  - Feat: Changes in the Staging demos for testing automation. #KB-32689
+  - Fix: Insert button on LaTeX for CKEditor5. #KB-25868
+  - Fix: Fix editor to work on small width. #KB-33529
+  - Fix: Make Advanced options usable. #KB-32247
 
 ### 8.2.6 2023-03-17
 
@@ -23,7 +28,6 @@ Last release of this project is was 30th of September 2021.
   - Fix: Confirmation dialog closure does not place the caret next to the formula. #KB-26844
   - Fix (froala): Remove Unlicensed message. #KB-25900
   - Refactor (generic): Remove editor language conf from generic demo. #KB-32550
-  - Feat: Add custom headers to API requests. #KB-34463
 
 ### 8.1.1 2023-01-11
 
