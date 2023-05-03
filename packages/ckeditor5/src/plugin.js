@@ -366,10 +366,10 @@ export default class MathType extends Plugin {
     });
 
     /**
-         * Makes a copy of the given view node.
-         * @param {module:engine/view/node~Node} sourceNode Node to copy.
-         * @returns {module:engine/view/node~Node} Copy of the node.
-         */
+     * Makes a copy of the given view node.
+     * @param {module:engine/view/node~Node} sourceNode Node to copy.
+     * @returns {module:engine/view/node~Node} Copy of the node.
+     */
     function clone(viewWriter, sourceNode) {
       if (sourceNode.is('text')) {
         return viewWriter.createText(sourceNode.data);
