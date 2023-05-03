@@ -24,7 +24,7 @@
     "url-loader": "^4.1.1",
     "wait-for-localhost": "^3.3.0",
     "webpack": "^5.50.0",
-    "webpack-cli": "^3.0.0",
+    "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^3.11.2",
     "resources": "file:../../../packages/res"
   }
