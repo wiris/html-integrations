@@ -311,16 +311,14 @@ export default class Parser {
     return code;
   }
 
+
   /**
-   * Returns the result to call showimage service with the formula md5 as parameter.
-   *  The result could be:
-   * - {'status' : warning'} : The image associated to the MathML md5 is not in cache.
-   * - {'status' : 'ok' ...} : The image associated to the MathML md5 is in cache.
+   * Auxiliar function that builds the data object to send to the showimage endpoint
    * @param {Object[]} data - object containing showimage service parameters.
    * @param {string} language - string containing the language of the formula.
-   * @returns {Object} JSON object containing showimage response.
+   * @returns {Object} JSON object with the data to send to showimage.
    */
-  static createShowImageSrc(data, language) {
+  static createShowImageSrcData(data, language) {
     const dataMd5 = {};
     const renderParams = ['mml', 'color', 'centerbaseline', 'zoom', 'dpi', 'fontSize', 'fontFamily', 'defaultStretchy', 'backgroundColor', 'format'];
     renderParams.forEach((param) => {
@@ -342,6 +340,20 @@ export default class Parser {
     dataObject.lang = (typeof language === 'undefined') ? 'en' : language;
     dataObject.version = Configuration.get('version');
 
+    return dataObject;
+  }
+
+  /**
+   * Returns the result to call showimage service with the formula md5 as parameter.
+   *  The result could be:
+   * - {'status' : warning'} : The image associated to the MathML md5 is not in cache.
+   * - {'status' : 'ok' ...} : The image associated to the MathML md5 is in cache.
+   * @param {Object[]} data - object containing showimage service parameters.
+   * @param {string} language - string containing the language of the formula.
+   * @returns {Object} JSON object containing showimage response.
+   */
+  static createShowImageSrc(data, language) {
+    const dataObject = this.createShowImageSrcData(data, language);
     const result = ServiceProvider.getService('showimage', Util.httpBuildQuery(dataObject), true);
     return result;
   }
