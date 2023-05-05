@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> Testing Viewer MathML </title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <script src="dist/WIRISplugins.js?viewer=image" defer></script>
+  <script>
+    window.document.addEventListener('viewerLoaded', () => {
+      // window.viewer.Properties can be modified here
+      // Changes are reflected live
+    });
+  </script>
+</head>
+<body>
+  <p>
+    <math>
+      <mn>2</mn>
+      <mo>+</mo>
+      <mn>2</mn>
+      <mo>=</mo>
+      <mn>4</mn>
+    </math>
+  </p>
+  <p>
+    $$4 - 2 = 2$$
+  </p>
+</body>
+</html>
