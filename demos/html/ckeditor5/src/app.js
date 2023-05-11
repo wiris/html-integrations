@@ -34,11 +34,12 @@ ClassicEditor
     plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment],
     toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'],
     // language: 'de',
-    // mathTypeParameters: {
-    //   editorParameters: { language: 'es' }, // MathType config, including language
-    // },
+    mathTypeParameters: {
+      editorParameters: { toolbar: "<toolbar ref='general'><tab ref='symbols' empty='true'><section rows='3'><item ref='&gt;' extra='false'/><item ref='&lt;' extra='false'/></section></tab></toolbar>" }, // MathType config, including language
+    },
   })
   .then((editor) => {
+    alert('Remove last commit on merge');
     window.editor = editor;
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
