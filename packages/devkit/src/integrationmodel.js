@@ -274,10 +274,9 @@ export default class IntegrationModel {
       lms = {
         nam: 'moodle',
         fam: 'lms',
-        ver: Configuration.get('versionMoodle'),
-        // category: Configuration.get('categoryMoodle'),
-        // id: Configuration.get('courseMoodleId'),
-        // name: Configuration.get('courseMoodleName')
+        ver: this.environment.moodleVersion,
+        category: this.environment.moodleCourseCategory,
+        course: this.environment.moodleCourseName,
       }
       if (!editorName.includes('TinyMCE')) {
         editorName = 'Atto';

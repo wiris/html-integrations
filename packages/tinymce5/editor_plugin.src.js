@@ -269,6 +269,9 @@ export const currentInstance = null;
       }
       integrationModelProperties.environment.editor = `TinyMCE ${editorVersion}.x`;
       integrationModelProperties.environment.editorVersion = `${tinymce.majorVersion}.${tinymce.minorVersion}`;
+      integrationModelProperties.environment.moodleCourseCategory = editor.getParam('moodleCourseCategory');
+      integrationModelProperties.environment.moodleCourseName = editor.getParam('moodleCourseName');
+      integrationModelProperties.environment.moodleVersion = editor.getParam('moodleVersion');
 
       integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
       integrationModelProperties.editorObject = editor;
