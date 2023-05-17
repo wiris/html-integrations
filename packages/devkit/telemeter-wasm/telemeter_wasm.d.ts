@@ -6,10 +6,10 @@ export function main_js(): void;
 /**
 */
 export enum Level {
-  Error,
-  Warn,
-  Info,
-  Debug,
+  Error = 0,
+  Warn = 1,
+  Info = 2,
+  Debug = 3,
 }
 /**
 */
@@ -94,4 +94,4 @@ export function initSync(module: SyncInitInput): InitOutput;
 *
 * @returns {Promise<InitOutput>}
 */
-export default function init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
+export default function __wbg_init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;

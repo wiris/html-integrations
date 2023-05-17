@@ -4,7 +4,7 @@
     "WIRIS <info@wiris.com>"
   ],
   "description": "Client for Telemetry",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "files": [
     "telemeter_wasm_bg.wasm",
     "telemeter_wasm.js",
@@ -12,5 +12,7 @@
   ],
   "module": "telemeter_wasm.js",
   "types": "telemeter_wasm.d.ts",
-  "sideEffects": false
+  "sideEffects": [
+    "./snippets/*"
+  ]
 }
