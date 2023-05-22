@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "webpack",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "prepack": "npm install && npm run build"
   },
   "keywords": [
     "typescript",
