@@ -21,7 +21,7 @@ on:
         default: ""
       versions:
         description: |
-          Space-separated list of versions to publish, e.g.: "ckeditor5=7.27.0 devkit=1.6.1"
+          Space-separated list of versions to publish, e.g.: "ckeditor5=7.27.0 devkit=1.6.1 viewer=1.1.0"
           Packages not mentioned in the list will stay at their current version and will not be published.
           Packages will be published in the order they are given.
         required: false
