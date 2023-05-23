@@ -30,7 +30,7 @@
     "prepack": "npm install && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.12.0"
+    "@wiris/mathtype-html-integration-devkit": "1.12.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
