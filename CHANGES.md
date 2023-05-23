@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### Unreleased
+
+  - Fix: add keydown event on window to prevent end of propagation. #KB-21649
+
 ### 8.3.1 2023-05-23
 
   - Fix (ckeditor5): Hand copied&pasted formulas not opening in hand mode. #KB-32892
