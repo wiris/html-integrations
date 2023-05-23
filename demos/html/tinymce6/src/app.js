@@ -43,6 +43,9 @@ tinymce.init({
     editor.on('init', () => {
       // Get and set the editor and wiris versions in this order.
       Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, WirisPlugin.currentInstance.version);   //eslint-disable-line
+
+      // Insert the initial content in the editor.
+      editor.setContent(Generic.editorContentMathML);
     });
   },
 });
