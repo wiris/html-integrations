@@ -791,6 +791,24 @@ export default class Util {
         const position = range.startOffset;
 
         if (node.childNodes[position]) {
+
+          // In case that a formula is detected but not selected,
+          // we create an empty span where we could insert the new formula.
+          if (range.startOffset === range.endOffset) {
+            if (position !== 0 && node.childNodes[position - 1].localName === 'span' && node.childNodes[position].classList.contains('Wirisformula')) {
+              node.childNodes[position - 1].remove();
+              return Util.getSelectedItem(target, isIframe, forceGetSelection);
+            }
+            else if (node.childNodes[position].classList.contains('Wirisformula')) {
+              if ((position > 0 && node.childNodes[position - 1].classList.contains('Wirisformula')) || position === 0 ) {
+                var emptySpan = document.createElement('span');
+                node.insertBefore(emptySpan, node.childNodes[position]);
+                return {
+                  node: node.childNodes[position],
+                }
+              }
+            } 
+          }
           return {
             node: node.childNodes[position],
           };
