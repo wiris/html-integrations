@@ -2,7 +2,6 @@ import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integr
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
-import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
 
@@ -158,7 +157,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         const viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
         const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
 
-        writer.insert(modelElementNew, modelPosition);
+        this.editorObject.model.insertObject(modelElementNew, modelPosition);
 
         // Remove selection
         if (!viewSelection.isCollapsed) {
@@ -180,7 +179,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
         // If the given MathML is empty, don't insert a new formula.
         if (mathml) {
-          writer.insert(modelElementNew, position);
+          this.editorObject.model.insertObject(modelElementNew, position);
         }
         writer.remove(modelElementOld);
       }
@@ -242,13 +241,13 @@ export default class CKEditor5Integration extends IntegrationModel {
 
         let startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
         let endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
-        
+
         let range = writer.createRange(
           startPosition,
           endPosition,
         );
 
-        
+
 
         // When Latex is next to image/formula.
         if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
@@ -265,19 +264,19 @@ export default class CKEditor5Integration extends IntegrationModel {
           let second$ = dataOffset.substring(2).indexOf("$$") + 4;
           let substring = dataOffset.substr(0, second$);
           data = data.replace(substring, '');
-          
+
           if (!data) {
             startPosition = writer.createPositionBefore(startNode);
             range = startNode;
           } else {
             startPosition = startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + offset);
-            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);      
+            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);
             range = writer.createRange(
               startPosition,
               endPosition,
             );
           }
-        } 
+        }
 
         writer.remove(range);
         writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
@@ -312,7 +311,7 @@ export default class CKEditor5Integration extends IntegrationModel {
     Object.keys(payload).forEach(key => {
       if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
     });
-    
+
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         ...payload,
