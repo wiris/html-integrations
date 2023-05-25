@@ -199,9 +199,7 @@ export default class MathType extends Plugin {
     const { schema } = this.editor.model;
 
     schema.register('mathml', {
-      allowWhere: '$text',
-      isObject: true,
-      isInline: true,
+      inheritAllFrom: '$inlineObject',
       allowAttributes: ['formula'],
     });
   }
