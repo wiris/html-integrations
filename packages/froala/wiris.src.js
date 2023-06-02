@@ -314,7 +314,7 @@ export class FroalaIntegration extends IntegrationModel {
     // Value can be undefined.
     if (selectedImage) {
       if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) || (selectedImage[0]
-                && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage[0].contents().classList.contains(Configuration.get('imageClassName'))))) { // Is a MathType image.
+                && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage.hasClass(Configuration.get('imageClassName'))))) { // Is a MathType image.
         // Show MathType icons if previously were hidden.
         $btn.removeClass('fr-hidden');
         // Disable resize box.
