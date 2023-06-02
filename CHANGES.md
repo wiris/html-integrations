@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### Unreleased
+
+  - Fix (froala): Console error when uploading an image with the MathType plugin enabled. #KB-36131
+
 ### 8.4.0 2023-06-15
 
   - Fix: add keydown event on window to prevent end of propagation. #KB-21649
