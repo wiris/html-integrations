@@ -30,7 +30,7 @@
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "clean": "shx rm -f wiris.js",
-    "prepack": "npm install && npm run build"
+    "prepack": "yarn && npm run build"
   },
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "1.12.1"
