@@ -337,7 +337,7 @@ export default class MathType extends Plugin {
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      const mathString = modelItem.getAttribute('formula');
+      const mathString = modelItem.getAttribute('formula').replace('ref="<"', 'ref="&lt;"');
       const imgHtml = Parser.initParse(mathString, editor.config.get('language'));
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
@@ -410,8 +410,8 @@ export default class MathType extends Plugin {
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */
     editor.data.get = (options) => {
-      const output = get.bind(editor.data)(options);
-      return Parser.endParse(MathML.mathMLEntities(output));
+      let output = get.bind(editor.data)(options);
+      return Parser.endParse(output);
     };
   }
 
