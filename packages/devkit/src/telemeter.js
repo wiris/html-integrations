@@ -15,7 +15,8 @@ export default class Telemeter {
    * @param {Object} telemeterAttributes.config - Configuration parameters.
    */
   static init(telemeterAttributes) {
-    if (!this.telemeter){
+    if (!this.telemeter && !this.waitingForInit){
+      this.waitingForInit = true;
       init(telemeterAttributes.url)
         .then(() => {
           this.telemeter = new TelemeterWASM(
@@ -26,6 +27,7 @@ export default class Telemeter {
         .catch((error) => {
           console.log(error);
         })
+        .finally(() => this.waitingForInit = false);
     }
   }
 
