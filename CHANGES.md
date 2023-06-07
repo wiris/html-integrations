@@ -11,6 +11,7 @@ Last release of this project is was 30th of September 2021.
 
 ### Unreleased
 
+  - Fix: Prevent initialize multiple telemetes. #KB-35935
   - Fix (froala): Console error when uploading an image with the MathType plugin enabled. #KB-36131
   - Fix (devkit): Strange behavior when the caret is placed at the beginning of the HTML Editor. #KB-21754
 
