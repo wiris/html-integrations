@@ -1,0 +1,41 @@
+{
+    "root": "demos/html/viewer",
+    "sourceRoot": "demos/html/viewer",
+    "targets": {
+      "prestart": {
+        "executor": "nx:run-script",
+        "options": {
+          "script": "prestart"
+        }
+      },
+      "prestart-remote": {
+        "executor": "nx:run-script",
+        "options": {
+          "script": "prestart-remote"
+        }
+      },
+      "start": {
+        "executor": "@nrwl/web:file-server",
+        "dependsOn": ["prestart"],
+        "options": {
+          "buildTarget": "viewer:build",
+          "staticFilePath": "."
+        }
+      },
+      "start-remote": {
+        "executor": "@nrwl/web:file-server",
+        "dependsOn": ["prestart-remote"],
+        "options": {
+          "buildTarget": "viewer:build"
+        }
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "./.eslintrc.js",
+          "lintFilePatterns": ["demos/html/viewer/**/*.{ts,tsx,js,jsx}"]
+        },
+        "outputs": ["{options.outputFile}"]
+      }
+    }
+  }
