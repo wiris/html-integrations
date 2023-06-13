@@ -1,0 +1,21 @@
+{
+  "name": "demo-html-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-viewer && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "prestart": "yarn && yarn link @wiris/mathtype-viewer && yarn link @wiris/mathtype-html-integration-devkit",
+    "start": "yarn serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@wiris/mathtype-html-integration-devkit": "*",
+    "@wiris/mathtype-viewer": "*"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Demo Viewer on HTML</title>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <script src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image" defer></script>
+  <script>
+    window.content = `<p>MathML formula:
+  <math>
+    <mn>2</mn>
+    <mo>+</mo>
+    <mn>2</mn>
+    <mo>=</mo>
+    <mn>4</mn>
+  </math>
+</p>
+<p>LaTeX formula:
+  $$4 - 2 = 2$$
+</p>`;
+
+    window.document.addEventListener('viewerLoaded', () => {
+      // window.viewer.Properties can be modified here
+      // Changes are reflected live
+    });
+
+    function resetContent() {
+      document.getElementsByTagName('main')[0].innerHTML = content;
+      document.getElementById('content').value = content;
+    }
+
+    document.addEventListener("DOMContentLoaded", resetContent);
+
+    // Show the version number of the viewer
+    fetch('node_modules/@wiris/mathtype-viewer/package.json')
+      .then(response => response.json())
+      .then(({ version }) => document.getElementById('version').innerText = version);
+</script>
+</head>
+<body style="font-family: sans-serif;">
+  <div style="overflow: auto;">
+    <div style="float:left;">
+      <main></main>
+    </div>
+    <div style="float: right; border: 1px solid darkgrey; padding: 10px; margin: 10px; border-radius: 5px; box-shadow: lightgray 0 0 5px 5px;">
+      MathType Viewer version: <output id="version"></output>
+      <form>
+        <label for="wiriseditormathmlattribute">wiriseditormathmlattribute:</label>
+        <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" oninput="resetContent(); window.viewer.Properties.wiriseditormathmlattribute = event.target.value;"
+          type="text" value="data-mathml"/>
+        <br/>
+
+        <label for="wirispluginperformance">wirispluginperformance:</label>
+        <input name="wirispluginperformance" id="wirispluginperformance" oninput="resetContent(); window.viewer.Properties.wirispluginperformance = event.target.value;"
+          type="checkbox" checked/>
+        <br/>
+
+        <label for="editorServicesRoot">editorServicesRoot:</label>
+        <input name="editorServicesRoot" id="editorServicesRoot" oninput="resetContent(); window.viewer.Properties.editorServicesRoot = event.target.value;"
+          type="text" value="https://www.wiris.net/demo/plugins/app/"/>
+        <br/>
+
+        <label for="viewer">Viewer:</label>
+        <select name="viewer" id="viewer" onchange="resetContent(); window.viewer.Properties.viewer = event.target.value;">
+          <option value="none">none</option>
+          <option value="image" selected>image</option>
+          <option value="mathml">mathml</option>
+          <option value="latex">latex</option>
+        </select>
+        <br/>
+
+        <label for="element">Element:</label>
+        <input name="element" id="element" oninput="resetContent(); window.viewer.Properties.element = event.target.value;"
+          type="text" value="main"/>
+        <br/>
+
+        <label for="lang">Language:</label>
+        <input name="lang" id="lang" oninput="resetContent(); window.viewer.Properties.lang = event.target.value;"
+          type="text" value="en"/>
+        <br/>
+
+        <label for="dpi">DPI:</label>
+        <input name="dpi" id="dpi" onchange="resetContent(); window.viewer.Properties.dpi = +event.target.value;" oninput="document.getElementById('dpiOutput').innerText = event.target.value"
+          type="range" min="0" max="100" value="96"/>
+        <output id="dpiOutput">96</output>
+        <br/>
+
+        <label for="zoom">Zoom:</label>
+        <input name="zoom" id="zoom" onchange="resetContent(); window.viewer.Properties.zoom = +event.target.value;" oninput="document.getElementById('zoomOutput').innerText = event.target.value"
+          type="range" min="0" max="10" step="0.01" value="1"/>
+        <output id="zoomOutput">1</output>
+        <br/>
+
+        <label for="content">Content:</label>
+        <textarea name="content" id="content" cols="50" rows="20" oninput="window.content = event.target.value; resetContent();"></textarea>
+        <br/>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
