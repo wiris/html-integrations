@@ -9,9 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-### Unreleased
+### 8.4.0 2023-06-15
 
   - Fix: add keydown event on window to prevent end of propagation. #KB-21649
+  - Fix: Close MT Handwriting mode pressing ESC. #KB-21649
+  - Fix: Handwritten CT formulas open in handwriting mode when double-click. #KB-34309
+  - Fix: Custom toolbar conflict with less than character. #KB-36262
+  - Fix: Webpack dependency issues. #KB-33828
+  - Feat: New Viewer
 
 ### 8.3.1 2023-05-23
 
