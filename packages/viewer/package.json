@@ -1,6 +1,6 @@
 {
-  "name": "@wiris/viewer-mathml",
-  "version": "1.0.0",
+  "name": "@wiris/mathtype-viewer",
+  "version": "1.0.1",
   "description": "",
   "main": "app.js",
   "scripts": {
