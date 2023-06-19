@@ -1,7 +1,7 @@
 import { configurationJson, StatusError } from './services';
 
 // Helper types for Config below
-type Viewer = 'image' | 'none';
+type Viewer = 'none' | 'image' | 'mathml' | 'latex';
 type Wirispluginperformance = 'true' | 'false';
 
 /**
