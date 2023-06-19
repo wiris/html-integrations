@@ -1,42 +1,51 @@
 {
-  "root": "packages/tinymce5",
+  "name": "tinymce5",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "package/tinymce5/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "dependsOn": [],
-      "outputs": ["{options.outputPath}"],
-        "options": {
-          "main": "demos/packages/tinymce5/global.js",
-          "outputPath": "dist",
-          "tsConfig": "tsconfig.app.json",
-          "generateIndexHtml": false,
-          "index": " ",
-          "webpackConfig": "packages/tinymce5/webpack.config.js"
-        }
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "main": "demos/packages/tinymce5/global.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": " ",
+        "webpackConfig": "packages/tinymce5/webpack.config.js"
+      }
     },
     "start": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/web:dev-server",
       "options": {
         "buildTarget": "tinymce5:build",
         "webpackConfig": "packages/tinymce5/webpack.config.js"
       }
     },
     "test": {
-      "executor": "@nrwl/cypress:cypress",
-      "dependsOn": ["build"],
+      "executor": "@nx/cypress:cypress",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "baseUrl": "http://localhost:8006",
         "cypressConfig": "./cypress.json"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["packages/tinymce5/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/tinymce5/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }

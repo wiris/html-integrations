@@ -1,20 +1,25 @@
 {
-  "root": "packages/ckeditor5",
+  "name": "ckeditor5",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "targets": {
     "test": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "options": {
         "baseUrl": "http://localhost:8002",
         "cypressConfig": "./cypress.json"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["packages/ckeditor5/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/ckeditor5/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }

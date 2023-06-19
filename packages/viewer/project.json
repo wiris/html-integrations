@@ -1,5 +1,6 @@
 {
-  "root": "packages/viewer",
+  "name": "viewer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/viewer/src",
   "targets": {
     "build": {
@@ -8,15 +9,21 @@
         "script": "build",
         "outputPath": "packages/viewer/dist"
       },
-      "outputs": ["{options.outputPath}"]
+      "outputs": [
+        "{options.outputPath}"
+      ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["demos/html/viewer/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "demos/html/viewer/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }
