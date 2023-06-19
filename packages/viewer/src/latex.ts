@@ -13,7 +13,7 @@ interface LatexPosition {
  */
 export async function renderLatex(properties: Properties, root: HTMLElement) {
 
-  if (properties.viewer !== 'image') {
+  if (properties.viewer !== 'image' && properties.viewer !== 'latex') {
     return;
   }
 

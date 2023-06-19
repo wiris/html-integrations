@@ -18,7 +18,7 @@ interface FormulaData {
  */
 export async function renderMathML(properties: Properties, root: HTMLElement): Promise<void> {
 
-  if (properties.viewer !== 'image') {
+  if (properties.viewer !== 'image' && properties.viewer !== 'mathml') {
     return;
   }
 
