@@ -393,6 +393,10 @@ export default class ContentManager {
   onFocus() {
     if (typeof this.editor !== 'undefined' && this.editor != null) {
       this.editor.focus();
+
+      // On WordPress integration, the focus gets lost right after setting it.
+      // To fix this, we enforce another focus some miliseconds afther this behaviour.
+      setTimeout(() => {this.editor.focus()}, 100);
     }
   }
 
