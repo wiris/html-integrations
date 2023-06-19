@@ -67,7 +67,7 @@ jobs:
       fail-fast: false
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
-        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6"]
+        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "viewer"]
         framework: ["html", "angular", "react"]
         exclude:
           - framework: angular
@@ -78,6 +78,10 @@ jobs:
             editor: ckeditor4
           - framework: react
             editor: tinymce6
+          - framework: angular
+            editor: viewer
+          - framework: react
+            editor: viewer
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -114,34 +118,36 @@ jobs:
         run: |
           case "${{ matrix.framework }}" in
             html)
+
+              # First, copy the entry point index.html
               aws s3 cp demos/html/${{ matrix.editor }}/index.html s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/index.html
-              aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
-              # CKEditor 4 fetches the icons in runtime, so we need to upload them as well
-              if [ "${{ matrix.editor }}" = "ckeditor4" ]
-              then
+
+              # Then, for every specific editor copy all the resources that are loaded at runtime
+
+              # For all demos except the viewer, copy dist
+              if [ "${{ matrix.editor }}" != "viewer" ]; then
+                aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
+              fi
+              if [ "${{ matrix.editor }}" = "ckeditor4" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/plugin.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/plugin.js
               fi
-              # Froala fetches the Wiris plugin in runtime, so we need to upload it as well
-              if [ "${{ matrix.editor }}" = "froala" ]
-              then
+              if [ "${{ matrix.editor }}" = "froala" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-froala/wiris.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-froala/wiris.js
               fi
-              # Generic fetches the Wiris plugin in runtime, so we need to upload it as well
-              if [ "${{ matrix.editor }}" = "generic" ]
-              then
+              if [ "${{ matrix.editor }}" = "generic" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-generic/wirisplugin-generic.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-generic/wirisplugin-generic.js
               fi
-              # Tinymce5 fetches the Wiris plugin in runtime, so we need to upload it as well
-              if [ "${{ matrix.editor }}" = "tinymce5" ]
-              then
+              if [ "${{ matrix.editor }}" = "tinymce5" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js
               fi
-              # Tinymce6 fetches the Wiris plugin in runtime, so we need to upload it as well
-              if [ "${{ matrix.editor }}" = "tinymce6" ]
-              then
+              if [ "${{ matrix.editor }}" = "tinymce6" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js
+              fi
+              if [ "${{ matrix.editor }}" = "viewer" ]; then
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/package.json s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/package.json
               fi
               ;;
             angular)
