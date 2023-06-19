@@ -1,55 +1,68 @@
 {
-    "root": "demos/html/froala",
-    "sourceRoot": "demos/html/froala/src",
-    "targets": {
-      "prestart": {
-        "executor": "nx:run-script",
-        "options": {
-          "script": "prestart"
-        }
-      },
-      "prestart-remote": {
-        "executor": "nx:run-script",
-        "options": {
-          "script": "prestart-remote"
-        }
-      },
-      "build": {
-        "executor": "@nrwl/web:webpack",
-        "dependsOn": ["prestart"],
-        "outputs": ["{options.outputPath}"],
-        "options": {
-          "main": "demos/html/froala/src/app.js",
-          "outputPath": "dist",
-          "tsConfig": "tsconfig.app.json",
-          "generateIndexHtml": false,
-          "index": "demos/html/froala/index.html",
-          "webpackConfig": "demos/html/froala/webpack.config.js"
-        }
-      },
-      "start": {
-        "executor": "@nrwl/web:dev-server",
-        "dependsOn": ["prestart"],
-        "options": {
-          "buildTarget": "html-froala:build",
-          "webpackConfig": "demos/html/froala/webpack.config.js"
-        }
-      },
-      "start-remote": {
-        "executor": "@nrwl/web:dev-server",
-        "dependsOn": ["prestart-remote"],
-        "options": {
-          "buildTarget": "html-froala:build",
-          "webpackConfig": "demos/html/froala/webpack.config.js"
-        }
-      },
-      "lint": {
-        "executor": "@nrwl/linter:eslint",
-        "options": {
-          "eslintConfig": "./.eslintrc.js",
-          "lintFilePatterns": ["demos/html/froala/**/*.{ts,tsx,js,jsx}"]
-        },
-        "outputs": ["{options.outputFile}"]
+  "name": "html-froala",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "demos/html/froala/src",
+  "targets": {
+    "prestart": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "prestart"
       }
+    },
+    "prestart-remote": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "prestart-remote"
+      }
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "dependsOn": [
+        "prestart"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "main": "demos/html/froala/src/app.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": "demos/html/froala/index.html",
+        "webpackConfig": "demos/html/froala/webpack.config.js"
+      }
+    },
+    "start": {
+      "executor": "@nx/web:dev-server",
+      "dependsOn": [
+        "prestart"
+      ],
+      "options": {
+        "buildTarget": "html-froala:build",
+        "webpackConfig": "demos/html/froala/webpack.config.js"
+      }
+    },
+    "start-remote": {
+      "executor": "@nx/web:dev-server",
+      "dependsOn": [
+        "prestart-remote"
+      ],
+      "options": {
+        "buildTarget": "html-froala:build",
+        "webpackConfig": "demos/html/froala/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": [
+          "demos/html/froala/**/*.{ts,tsx,js,jsx}"
+        ]
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
+}

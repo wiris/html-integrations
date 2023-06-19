@@ -1,5 +1,6 @@
 {
-  "root": "demos/html/generic",
+  "name": "html-generic",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "demos/html/generic/src",
   "targets": {
     "prestart": {
@@ -15,9 +16,13 @@
       }
     },
     "build": {
-      "executor": "@nrwl/web:webpack",
-      "dependsOn": ["prestart"],
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nx/webpack:webpack",
+      "dependsOn": [
+        "prestart"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "main": "demos/html/generic/src/app.js",
         "outputPath": "dist",
@@ -28,28 +33,36 @@
       }
     },
     "start": {
-      "executor": "@nrwl/web:dev-server",
-      "dependsOn": ["prestart"],
+      "executor": "@nx/web:dev-server",
+      "dependsOn": [
+        "prestart"
+      ],
       "options": {
         "buildTarget": "html-generic:build",
         "webpackConfig": "demos/html/generic/webpack.config.js"
       }
     },
     "start-remote": {
-      "executor": "@nrwl/web:dev-server",
-      "dependsOn": ["prestart-remote"],
+      "executor": "@nx/web:dev-server",
+      "dependsOn": [
+        "prestart-remote"
+      ],
       "options": {
         "buildTarget": "html-generic:build",
         "webpackConfig": "demos/html/generic/webpack.config.js"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["demos/html/generic/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "demos/html/generic/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }

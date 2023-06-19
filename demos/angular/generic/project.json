@@ -1,34 +1,45 @@
 {
-    "root": "demos/angular/generic",
-    "targets": {
-      "start": {
-        "executor": "nx:run-script",
-        "options": {
-            "script": "start"
-        },
-        "outputs": ["demos/angular/generic/dist/demo.js"]
+  "name": "angular-generic",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "targets": {
+    "start": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start"
       },
-      "start-remote": {
-        "executor": "nx:run-script",
-        "options": {
-            "script": "start-remote"
-        },
-        "outputs": ["demos/angular/generic/dist/demo.js"]
+      "outputs": [
+        "{projectRoot}/dist/demo.js"
+      ]
+    },
+    "start-remote": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start-remote"
       },
-      "build": {
-        "executor": "nx:run-script",
-        "options": {
-            "script": "build"
-        },
-        "outputs": ["demos/angular/generic/dist/demo.js"]
+      "outputs": [
+        "{projectRoot}/dist/demo.js"
+      ]
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
       },
-      "lint": {
-        "executor": "@nrwl/linter:eslint",
-        "options": {
-          "eslintConfig": "./.eslintrc.js",
-          "lintFilePatterns": ["demos/angular/generic/**/*.{ts,tsx,js,jsx}"]
-        },
-        "outputs": ["{options.outputFile}"]
-      }
+      "outputs": [
+        "{projectRoot}/dist/demo.js"
+      ]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "eslintConfig": "./.eslintrc.js",
+        "lintFilePatterns": [
+          "demos/angular/generic/**/*.{ts,tsx,js,jsx}"
+        ]
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
+}

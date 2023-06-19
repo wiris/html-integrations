@@ -1,42 +1,51 @@
 {
-  "root": "packages/generic",
+  "name": "generic",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "package/generic/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "dependsOn": [],
-      "outputs": ["{options.outputPath}"],
-        "options": {
-          "main": "demos/packages/generic/global.js",
-          "outputPath": "dist",
-          "tsConfig": "tsconfig.app.json",
-          "generateIndexHtml": false,
-          "index": " ",
-          "webpackConfig": "packages/generic/webpack.config.js"
-        }
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "main": "demos/packages/generic/global.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": " ",
+        "webpackConfig": "packages/generic/webpack.config.js"
+      }
     },
     "start": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/web:dev-server",
       "options": {
         "buildTarget": "generic:build",
         "webpackConfig": "packages/generic/webpack.config.js"
       }
     },
     "test": {
-      "executor": "@nrwl/cypress:cypress",
-      "dependsOn": ["build"],
+      "executor": "@nx/cypress:cypress",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "baseUrl": "http://localhost:8007",
         "cypressConfig": "./cypress.json"
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["packages/generic/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/generic/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }
