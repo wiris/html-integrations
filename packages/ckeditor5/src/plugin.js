@@ -24,8 +24,8 @@ import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringman
 import { MathTypeCommand, ChemTypeCommand } from './commands';
 import CKEditor5Integration from './integration';
 
-import mathIcon from '../theme/icons/formula.svg';
-import chemIcon from '../theme/icons/chem.svg';
+import mathIcon from '../theme/icons/ckeditor5-formula.svg';
+import chemIcon from '../theme/icons/ckeditor5-chem.svg';
 
 import packageInfo from '../package.json';
 
@@ -144,7 +144,6 @@ export default class MathType extends Plugin {
 
         // View is enabled iff command is enabled
         view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
-
         view.set({
           label: StringManager.get('insert_math', integration.getLanguage()),
           icon: mathIcon,
