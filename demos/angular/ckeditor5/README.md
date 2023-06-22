@@ -22,51 +22,24 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType to CKEditor from scratch
+## How to add MathType to CKEditor
 
-1. Run the following through the terminal
-
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+1. Install MathType for CKEditor5 dependency.
 
     ```sh
-    $ ng new $APP_NAME
-    $ cd $APP_NAME
-    $ npm install --save @ckeditor/ckeditor5-angular
     $ npm install --save @wiris/mathtype-ckeditor5
     ```
 
-2. Open the *src/app/app.module.ts* file and add:
+2. Open *src/app/app.component.ts* and add the following lines:
 
     ```ts
-    // Import CKEditor module for angular
-    import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-    ```
-    ...
-    ```ts
-    @NgModule({
-        ...
-        imports: [... CKEditorModule ... ],
-        ...
-    })
-    ```
-
-3. Open *src/app/app.component.ts* and replace all with:
-
-    ```ts
-    import { Component } from '@angular/core';
     
-    // Load the custom classic editor build.
+    // Load the custom classic editor build with MathType included.
     import * as ClassicEditor from '../ckeditor';
     
-    @Component({
-        selector: 'app-root',
-        templateUrl: './app.component.html'
-    })
+    ...
 
     export class AppComponent {
-    
-        // Define the initial content. It can be empty or undefined.
-        public content: string = '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
         
         public Editor = ClassicEditor;
         
@@ -76,21 +49,17 @@ You will also see any lint errors in the console.
             htmlAllowedTags:  ['.*'],
             htmlAllowedAttrs: ['.*'],
         }
-        
-        title = 'CKEditor5';
     }
     ```
 
-    *Notice that the content can be empty or set as you prefer in the component*
-
-4. Open *src/app/app.component.html* and replace all with:
+3. Open *src/app/app.component.html* and replace all with:
 
     ```html
     <h1>Classic editor</h1>
-    <ckeditor [config]="options" [editor]="Editor" [data]="content"></ckeditor>
+    <ckeditor [config]="options" [editor]="Editor"></ckeditor>
     ```
 
-5. Create a custom build to integrate wiris plugins and more. <br>
+4. Create a custom build to integrate wiris plugins and more. <br>
     a. Follow this [GUIDE](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/custom-builds.html) on how to create a custom Classic editor build. <br>
     b. The wiris dependency you will need to install when following the guide is:
         ```
@@ -99,7 +68,7 @@ You will also see any lint errors in the console.
     c. You can also add as many plugins as your project will need which are not on the default ClassicEditor build (We also added  the align plugin). <br>
     d. We recommend you to just clone the branch and copy the compiled file with the editor and the new configurations placed on **build/ckeditor.js** on your project src folder. If you decide to do it by other ways, you will have to change the way the custom build is imported on your app.component.ts file.
 
-6. Finally, you are ready to run the development server through the specified command ```ng serve```
+5. Finally, you are ready to run the development server through the specified command ```ng serve```
 
 ## How to run the tests
 
