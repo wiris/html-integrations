@@ -69,9 +69,10 @@ export class TinyMceIntegration extends IntegrationModel {
      */
   getLanguage() {
     const editorSettings = this.editorObject.settings;
+    // Try to get editorParameters.language, fail silently otherwise
     try {
       return editorSettings.mathTypeParameters.editorParameters.language;
-    } catch (e) { console.error(); }
+    } catch (e) {}
     // Get the deprecated wirisformulaeditorlang
     if (editorSettings.wirisformulaeditorlang) {
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
@@ -451,7 +452,7 @@ export const currentInstance = null;
         lang_code = editor.getParam('language');
         lang_code = (lang_code.split("-")[0]).split("_")[0];
       } else lang_code = 'en';
-      
+
 
       // Check if MathType editor is enabled
       if (Configuration.get('editorEnabled')) {

@@ -36,9 +36,10 @@ export default class CKEditor5Integration extends IntegrationModel {
      */
   getLanguage() {
     // Returns the CKEDitor instance language taking into account that the language can be an object.
+    // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) { console.error(); }
+    } catch (e) {}
     const languageObject = this.editorObject.config.get('language');
     if (languageObject != null) {
       if (typeof (languageObject) === 'object') {

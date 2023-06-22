@@ -43,9 +43,10 @@ export class FroalaIntegration extends IntegrationModel {
    * When no language is set, Froala sets the toolbar to english.
    */
   getLanguage() {
+    // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) { console.error(); }
+    } catch (e) {}
     if (this.editorObject.opts.language != null) {
       return this.editorObject.opts.language;
     }

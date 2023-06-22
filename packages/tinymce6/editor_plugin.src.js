@@ -64,9 +64,10 @@ export class TinyMceIntegration extends IntegrationModel {
    */
   getLanguage() {
     const editorSettings = this.editorObject;
+    // Try to get editorParameters.language, fail silently otherwise
     try {
       return editorSettings.options.get('mathTypeParameters').editorParameters.language;
-    } catch (e) { console.error(); }
+    } catch (e) {}
     // Get the deprecated wirisformulaeditorlang
     if (editorSettings.options.get('wirisformulaeditorlang')) {
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
@@ -423,7 +424,7 @@ export const currentInstance = null;
           icon: mathTypeIcon,
         });
       }
-      
+
       if (chemEnabled) {
         // Dynamic customEditors buttons.
         const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
