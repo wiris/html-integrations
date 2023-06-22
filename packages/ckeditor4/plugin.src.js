@@ -69,9 +69,10 @@ export class CKEditor4Integration extends IntegrationModel {
      * @override
      */
   getLanguage() {
+    // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) { console.error(); }
+    } catch (e) {}
     // Returns the CKEDitor instance language.
     if (this.editorObject.langCode != null) {
       return this.editorObject.langCode;
