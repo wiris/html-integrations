@@ -395,7 +395,7 @@ export default class ContentManager {
       this.editor.focus();
 
       // On WordPress integration, the focus gets lost right after setting it.
-      // To fix this, we enforce another focus some miliseconds afther this behaviour.
+      // To fix this, we enforce another focus some milliseconds after this behaviour.
       setTimeout(() => {this.editor.focus()}, 100);
     }
   }
