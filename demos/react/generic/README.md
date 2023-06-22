@@ -20,15 +20,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType with a Generic integration from scratch
+## How to add MathType with a Generic integration
 
-1. Run the following through the terminal
-
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+1. Install MathType dependency.
 
     ```sh
-    $ create-react-app $APP_NAME
-    $ cd $APP_NAME
     $ npm install @wiris/mathtype-generic
     $ npm install @wiris/mathtype-html-integration-devkit
     ```
@@ -36,12 +32,6 @@ You will also see any lint errors in the console.
 2. Replace all the content in *src/index.js* by:
 
     ```js
-    // Default create-react-app imports
-    import React from 'react';
-    import ReactDOM from 'react-dom';
-    import './index.css';
-    import reportWebVitals from './reportWebVitals';
-
     // Import and load functions from wiris mathype-generic plugin.
     import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
     import '@wiris/mathtype-generic/wirisplugin-generic';
@@ -89,22 +79,12 @@ You will also see any lint errors in the console.
         }
     }
 
-    // Define the initial content to place on the editor.
-    const content = '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-
     // Render the editor react component.
     ReactDOM.render(
         <Editor />,
         document.getElementById('root')
     );
-
-    // If you want your app to work offline and load faster, you can change
-    // unregister() to register() below. Note this comes with some pitfalls.
-    // Learn more about service workers: https://bit.ly/CRA-PWA
-    reportWebVitals();
     ```
-
-    *Note that the **content** can be empty or anything you want to set as the initial editor content.*
 
 3. Finally, you are ready to run the development server through the specified command ```npm run start```
 

@@ -20,36 +20,21 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType to CKEditor from scratch
+## How to add MathType to CKEditor
 
-1. Run the following through the terminal
-
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+1. Install MathType for CKEditor5 dependency.
 
     ```sh
-    $ create-react-app $APP_NAME
-    $ cd $APP_NAME
-    $ npm install --save @ckeditor/ckeditor5-react
     $ npm install @wiris/mathtype-ckeditor5
     ```
 
-2. Replace all the content in *src/index.js* by:
+2. Add the following lines in *src/index.js*:
 
     ```js
-    // Default create-react-app imports
-    import React from 'react';
-    import ReactDOM from 'react-dom';
-    import './index.css';
-    import reportWebVitals from './reportWebVitals';
-
-    // Import CKEditor 5 WYSIWYG editor component for React.
-    import CKEditor from '@ckeditor/ckeditor5-react';
-
     // Import CKEditor custom build.
     import * as ClassicEditor from './ckeditor';
 
-    // Set the initial content of the editor.
-    const content = '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
+    ...
 
     // Define the toolbar icons to be shown
     const toolbar = ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'];
@@ -66,9 +51,7 @@ You will also see any lint errors in the console.
         useClasses: false
     };
 
-    /* Create a component to be rendered later.
-    This is important to remove complexity from the reactDom.render
-    and to be able to add other functionality. */
+    /* Create a component to be rendered later. */
     class Editor extends React.Component {
         render() {
             return (
@@ -79,13 +62,8 @@ You will also see any lint errors in the console.
 
     ReactDOM.render(<Editor />, document.getElementById('root'));
 
-    // If you want your app to work offline and load faster, you can change
-    // unregister() to register() below. Note this comes with some pitfalls.
-    // Learn more about service workers: https://bit.ly/CRA-PWA
-    reportWebVitals();
+    ...
     ```
-
-    *Note that the **content** can be empty or anything you want to set as the initial editor content.*
 
 3. Create a custom build to integrate wiris plugins and more. <br>
     a. Follow this [GUIDE](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/development/custom-builds.html) on how to create a custom Classic editor build and the steps and advice we give you below. <br>

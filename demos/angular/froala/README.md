@@ -20,70 +20,26 @@ Runs the app in the development mode.
 
 Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
 
-## How to add MathType to Froala from scratch
+## How to add MathType to Froala
 
-1. Run the following through the terminal
-
-   Notice that **$APP_NAME** needs to be replaced by the name that you choose.
-   
-   > **Note:** you can set the `froala-editor` and `angular-froala-wysiwyg` versions,
-   as showed in the comment below, which lies between 3 and 4.
-   Yo can also not specify any version, in that case, the latest stable version will be installed.
+1. Install MathType for Froala dependency.
 
    ```sh
-   $ ng new $APP_NAME
-   $ cd $APP_NAME
-   $ npm install --save angular-froala-wysiwyg
-   $ npm install --save froala-editor
-   # npm install --save froala-editor@3.2.7
-   # Supports Froala V4 and V3
    $ npm install --save @wiris/mathtype-froala
    ```
 
 2. Open the `src/app/app.module.ts` file and add:
 
    ```ts
-   // From Froala instructions.
-   // Import all Froala Editor plugins.
-   import "froala-editor/js/plugins.pkgd.min.js";
-
    // Expose FroalaEditor instance to window.
    declare const require: any;
    (window as any).FroalaEditor = require("froala-editor");
    require("@wiris/mathtype-froala"); // Import WIRIS MathType formula editor.
-
-   // Import Angular plugin.
-   import {
-     FroalaEditorModule,
-     FroalaViewModule,
-   } from "angular-froala-wysiwyg";
    ```
 
-   ...
+3. Open `src/app/app.component.ts` and add the following content:
 
    ```ts
-   @NgModule({
-       ...
-       imports: [... FroalaEditorModule.forRoot(), FroalaViewModule.forRoot() ... ],
-       ...
-   })
-   ```
-
-3. Open `.angular.json` file and add:
-
-   ```json
-   "styles": [
-      "src/styles.css",
-      "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-      "./node_modules/froala-editor/css/froala_style.min.css"
-    ]
-   ```
-
-4. Open `src/app/app.component.ts` and replace all with:
-
-   ```ts
-   import { Component } from "@angular/core";
-
    // Load WIRISplugins.js dynamically
    const jsDemoImagesTransform = document.createElement("script");
    jsDemoImagesTransform.type = "text/javascript";
@@ -92,31 +48,14 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
    // Load generated scripts.
    document.head.appendChild(jsDemoImagesTransform);
 
-   @Component({
-     selector: "app-root",
-     templateUrl: "./app.component.html",
-     styleUrls: ["./app.component.css"],
-   })
+   ...
+
    export class AppComponent {
-     // Set App Title.
-     title = "Angular froala demo";
-
-     // Initialize the editor content.
-     public content: string =
-       '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align: center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-
      // Set options for the editor.
      public options: Object = {
-      // Define the toolbar options for the froala editor.
       toolbarButtons: [
-        'undo',
-        'redo',
-        'bold',
-        'italic',
-        '|',
         'wirisEditor',
-        'wirisChemistry',
-        'insertImage'
+        'wirisChemistry'
       ],
       // Add [MW] uttons to the image editing popup Toolbar.
       imageEditButtons: [
@@ -133,9 +72,7 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
       // List of tags that are not removed when they have no content inside
       // so that formulas renderize propertly
       htmlAllowedEmptyTags: ['mprescripts', 'none'],
-      // In case you are using a different Froala editor language than default,
-      // language: 'es',
-      // You can choose the language for the MathType editor, too:
+      // You can choose the language for the MathType editor:
       // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
       // mathTypeParameters: {
       //   editorParameters: { language: 'es' },
@@ -144,17 +81,15 @@ Open [http://localhost:4004/](http://localhost:4004/) to view it in the browser.
    }
    ```
 
-> _Notice that the content can be empty or set as you prefer in the component_.
-
-5. Open `src/app/app.component.html` and replace all with:
+4. Open `src/app/app.component.html` and replace all with:
 
    ```html
    <h1>Angular and Froala demo</h1>
    <!-- Pass options and content to the component. -->
-   <div id="editor" [froalaEditor]="options" [(froalaModel)]="content"></div>
+   <div id="editor" [froalaEditor]="options"></div>
    ```
 
-6. Finally, you are ready to run the development server through the specified command `ng serve`
+5. Finally, you are ready to run the development server through the specified command `ng serve`
 
 ## How to run the tests
 

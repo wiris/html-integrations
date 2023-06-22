@@ -20,16 +20,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-## How to add MathType to TinyMCE from scratch
+## How to add MathType to TinyMCE
 
-1. Run the following through the terminal
-
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+1. Install MathType for TinyMCE dependency.
 
     ```sh
-    $ create-react-app $APP_NAME
-    $ cd $APP_NAME
-    $ npm install --save @tinymce/tinymce-react
     $ npm install tinymce
     $ npm install @wiris/mathtype-tinymce5
     $ npm install jquery --save
@@ -38,15 +33,6 @@ You will also see any lint errors in the console.
 2. Replace all the content in *src/index.js* by:
 
     ```js
-    // Default create-react-app imports
-    import React from 'react';
-    import ReactDOM from 'react-dom';
-    import './index.css';
-    import reportWebVitals from './reportWebVitals';
-
-    // Import the react editor TinyMCE component.
-    import { Editor } from '@tinymce/tinymce-react';
-
     // Add jquery.
     import $ from 'jquery';
 
@@ -62,9 +48,6 @@ You will also see any lint errors in the console.
 
     // Load wiris plugin synchronously.
     require('@wiris/mathtype-tinymce5');
-
-    // Set the initial editor content
-    const content = '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
 
     // Init the editor and define its options
     const options = {
@@ -94,17 +77,14 @@ You will also see any lint errors in the console.
     class EditorTiny extends React.Component {
         render() {
             return (
-                <Editor init ={ options } initialValue = { content } />
+                <Editor init ={ options } />
             );
         }
     }
 
     ReactDOM.render(<EditorTiny />, document.getElementById('root'));
 
-    // If you want your app to work offline and load faster, you can change
-    // unregister() to register() below. Note this comes with some pitfalls.
-    // Learn more about service workers: https://bit.ly/CRA-PWA
-    reportWebVitals();
+    ...
     ```
 
 3. Add the following script on the head of the *public/index.html*

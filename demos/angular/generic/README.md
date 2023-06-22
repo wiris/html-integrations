@@ -21,31 +21,23 @@ Runs the app in the development mode.
 Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 
 
-## How to add MathType to TinyMCE from scratch
+## How to add MathType to TinyMCE
 
-1. Run the following through the terminal
-
-    Notice that **$APP_NAME** needs to be replaced by the name that you choose.
+1. Install MathType dependency.
 
     ```sh
-    $ ng new $APP_NAME
-    $ cd $APP_NAME
     $ npm install @wiris/mathtype-generic --save
     ```
 
 2. Add the following import on `src/app/app.module.ts`:
 
     ```ts
-    ...
-    // Import wiris generic plugin
     import '@wiris/mathtype-generic/wirisplugin-generic';
     ```
 
-3. Open `src/app/app.component.ts` and replace all with:
+3. Open `src/app/app.component.ts` and add the following content:
     
     ```ts
-    import { Component, OnInit } from '@angular/core';
- 
     // Load WIRISplugins.js dynamically
     const jsDemoImagesTransform = document.createElement('script');
     jsDemoImagesTransform.type = 'text/javascript';
@@ -56,39 +48,29 @@ Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
     // Import wiris plugin
     import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
     
-    @Component({
-        selector: 'app-root',
-        templateUrl: './app.component.html',
-        styleUrls: ['./app.component.css']
-    })
-    
+    ...
+
     export class AppComponent implements OnInit {
     
         ngOnInit() {
-            // Set the initial editor content
-            document.getElementById('htmlEditor').innerHTML = '<p class="text"> Double-click on the following formula to edit it.</p><p style="text-align:center;"><math><mi>z</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&PlusMinus;</mo><msqrt><msup><mi>b</mi><mn>3</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></p>';
-            
-            // Load the toolbar and the editable area into const variables to work easy with them
+            // Load the toolbar and the editable area into const variables.
             const editableDiv = document.getElementById('htmlEditor');
             const toolbarDiv = document.getElementById('toolbar');
             
             // Initialize the editor.
             wrsInitEditor(editableDiv, toolbarDiv);
         }
-        
-        title = 'Demo for Angular and Generic';
     }
     ```
-> *Notice that the content can be empty or set as you prefer in the component*.
 
-1. Open `src/app/app.component.html` and replace all with:
+4. Open `src/app/app.component.html` and add:
 
     ```html
     <div id="toolbar"></div>
     <div id="htmlEditor" contenteditable="true">Try me!</div>
     ```
 
-2. Finally, you are ready to run the development server through the command: ```ng serve```
+5. Finally, you are ready to run the development server through the command: ```ng serve```
 
 ## How to run the tests
 
