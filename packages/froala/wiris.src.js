@@ -4,6 +4,7 @@ import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
 import Constants from '@wiris/mathtype-html-integration-devkit/src/constants';
 import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
+import Image from '@wiris/mathtype-html-integration-devkit/src/image';
 
 import packageInfo from './package.json';
 
@@ -144,20 +145,22 @@ export class FroalaIntegration extends IntegrationModel {
   callbackFunction() {
     super.callbackFunction();
 
-    // Froala malforms data-uri in images.
-    // We need to rewrite them.
-    if (Configuration.get('imageFormat') === 'svg') {
-      this.editorObject.events.on('html.set', function () {
-        const images = this.el.getElementsByClassName('Wirisformula');
-        for (let i = 0; i < images.length; i++) {
-          if (images[i].src.substr(0, 10) === 'data:image') {
-            const firstPart = images[i].src.substr(0, 33);
-            const secondPart = images[i].src.substr(33, images[i].src.length);
-            images[i].src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
-          }
+    this.editorObject.events.on('html.set', function () {
+      const images = this.el.getElementsByClassName('Wirisformula');
+      for (let i = 0; i < images.length; i++) {
+        // Froala removes the styles of images upon inserting them
+        // We need to add the alignment back
+        Image.fixAfterResize(images[i]);
+
+        // Froala malforms data-uri in images.
+        // We need to rewrite them.
+        if (Configuration.get('imageFormat') === 'svg' && images[i].src.substr(0, 10) === 'data:image') {
+          const firstPart = images[i].src.substr(0, 33);
+          const secondPart = images[i].src.substr(33, images[i].src.length);
+          images[i].src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
         }
-      });
-    }
+      }
+    });
 
     // Froala editor can be instantiated in images.
     if (this.target.tagName.toLowerCase() !== 'img') {
