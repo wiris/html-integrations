@@ -138,18 +138,46 @@ export default class Image {
     img.removeAttribute('height');
     // In order to avoid resize with max-width css property.
     img.style.maxWidth = 'none';
-    if (img.src.indexOf('data:image') !== -1) {
-      if (Configuration.get('imageFormat') === 'svg') {
-        // ...data:image/svg+xml;charset=utf8, = 32.
-        const svg = decodeURIComponent(img.src.substring(32, img.src.length));
-        Image.setImgSize(img, svg, true);
+
+    const processImg = (img) => {
+      if (img.src.indexOf('data:image') !== -1) {
+        if (img.src.indexOf('data:image/svg+xml') !== -1) {
+
+          // Image is in base64
+          if (img.src.indexOf('data:image/svg+xml;base64,') !== -1) {
+            // 'data:image/svg+xml;base64,'.length === 26
+            const base64String = img.getAttribute('src').substring(26);
+            const svgString = window.atob(base64String);
+            const encodedSvgString = encodeURIComponent(svgString);
+            img.setAttribute('src', `data:image/svg+xml;charset=utf8,${encodedSvgString}`);
+          }
+
+          // 'data:image/svg+xml;charset=utf8,'.length === 32.
+          const svg = decodeURIComponent(img.src.substring(32, img.src.length));
+          Image.setImgSize(img, svg, true);
+        } else {
+          // 'data:image/png;base64,' === 22.
+          const base64 = img.src.substring(22, img.src.length);
+          Image.setImgSize(img, base64, true);
+        }
       } else {
-        // ...data:image/png;base64, == 22.
-        const base64 = img.src.substring(22, img.src.length);
-        Image.setImgSize(img, base64, true);
+        Image.setImgSize(img, img.src);
       }
+    };
+
+    // If the image doesn't contain a blob, just process it normally
+    if (img.src.indexOf('blob:') === -1) {
+      processImg(img);
+    // if it does contain a blob, then read that, replace the src with the decoded content, and process it
     } else {
-      Image.setImgSize(img, img.src);
+      let reader = new FileReader();
+      reader.onload = function() {
+        img.setAttribute('src', reader.result);
+        processImg(img);
+      };
+      fetch(img.src).then(r => r.blob()).then(blob => {
+        reader.readAsDataURL(blob);
+      });
     }
   }
 
