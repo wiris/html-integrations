@@ -14,8 +14,8 @@ A simple Vue App integrating WIRIS MathType on a CKEditor 5 and step-by-step inf
 ## How to run the demo
 
 ```sh
-$ npm install
-$ npm run dev
+$ yarn
+$ nx start vue-ckeditor5
 ```
 
 *More information on the different ways to run a demo [here](../../README.md)*

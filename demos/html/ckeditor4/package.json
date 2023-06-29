@@ -13,7 +13,7 @@
   "dependencies": {
     "@wiris/mathtype-ckeditor4": "*",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "ckeditor4": "^4.16.0"
+    "ckeditor4": "4.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
