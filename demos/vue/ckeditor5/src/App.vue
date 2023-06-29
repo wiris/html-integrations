@@ -62,7 +62,9 @@
     name: '#editor',
     data() {
       return {
-        editor: ClassicEditor,
+        editor: ClassicEditor as {
+          create: any;
+        },
         editorData: content,
         editorConfig,
         onEditorReady: updateContent,
