@@ -5,13 +5,3 @@ body {
 .fr-wrapper {
   min-height: 200px;
 }
-
-/* Hide License message */
-div.fr-wrapper>div>a {
-  /* display: none !important; */
-  /* position: fixed; */
-  /* z-index: -99999 !important; */
-  font-size: 0px !important;
-  padding: 0px !important;
-  height: 0px !important;
-}

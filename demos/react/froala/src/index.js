@@ -51,6 +51,8 @@ const froalaConfig = {
   // Add [MW] buttons to the image editing popup Toolbar.
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
+  key: process.env.REACT_APP_FROALA_API_KEY || '',
+
   // Allow all the tags to understand the mathml
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],

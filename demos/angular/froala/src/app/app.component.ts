@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 // Import common resources.
 import * as Generic from 'resources/demos/imports';
+import { environment } from 'src/environments/environment';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for Froala on Angular';
@@ -46,6 +47,8 @@ export class AppComponent {
 		htmlAllowedTags:  ['.*'],
     htmlAllowedAttrs: ['.*'],
 
+    key: environment.froalaKey,
+
     // List of tags that are not removed when they have no content inside
     // so that formulas renderize propertly
     htmlAllowedEmptyTags: ['mprescripts', 'none'],
@@ -67,8 +70,7 @@ export class AppComponent {
         Generic.setEditorAndWirisVersion((window as any).FroalaEditor.VERSION, (window as any).WirisPlugin.currentInstance.version);        //eslint-disable-line
 
         // Set initial content
-      this.html.set(editorContent);
-
+        this.html.set(editorContent);
       },
     },
   };

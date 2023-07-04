@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = (config, context) => {
   return {
@@ -33,6 +34,12 @@ module.exports = (config, context) => {
             to: path.resolve(__dirname, "dist/froala-editor"),
           },
         ],
+      }),
+      // Add the DefinePlugin to define process.env variable
+      new webpack.DefinePlugin({
+        'process.env': {
+          FROALA_API_KEY: JSON.stringify(process.env.FROALA_API_KEY)
+        },
       }),
     ],
     mode: 'none',
