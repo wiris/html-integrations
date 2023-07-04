@@ -116,3 +116,76 @@ The following table contains a specification of each of the properties.
 | lang                       | The language for the alt text.                                                                                                                                                                                                                                                                                                            | Frontend |                                                  | en                                      |
 | dpi                        | Resolution in dots per inch of the generated image. This feature scales the formula with a factor of dpi/96.                                                                                                                                                                                                                              | Frontend | Positive integer                                 | 96                                      |
 | zoom                       | The scale of the generated image.                                                                                                                                                                                                                                                                                                         | Frontend | Positive floating point number                   | 1                                       |
+
+
+## API
+
+The viewer exposes an API to the global window object with utilities related to rendering formulas.
+This API is obsolete and will eventually be removed or replaced by a newer API.
+
+All of the following methods are exposed inside of `window.com.wiris.js.JsPluginViewer` whenever the script is included in the page.
+
+- `parseSafeMathMLElement`.
+  Render all the formulas written in SafeMathML inside the given element.
+
+  This method is deprecated.
+  There is currently no replacement for rendering SafeMathML formulas.
+  Please consider using {@link renderLatex} or {@link renderMathML}.
+
+  Parameters:
+  - {`HTMLElement`} `element` - Element wherein to render SafeMathML formulas.
+  - `asynchronously` - Currently ignored, only included for retrocompatibility purposes.
+  - `callbackFunc` - Currently ignored, only included for retrocompatibility purposes.
+
+  Return: `void`.
+
+- `parseDocument`.
+  Render all the formulas in the document.
+
+  This method is deprecated.
+  Please consider using `renderMathML`.
+
+  Parameters:
+  - `asynchronously` - Currently ignored, only included for retrocompatibility purposes.
+  - `callbackFunc` - Currently ignored, only included for retrocompatibility purposes.
+  - `safeXml` - Currently ignored, only included for retrocompatibility purposes.
+
+  Return: `Promise<void>`.
+
+- `parseElement`.
+  Render all the formulas inside the given element.
+
+  This method is deprecated.
+  Please consider using `renderMathML`.
+
+  Parameters:
+  - {`HTMLElement`} `element` - Element wherein to render formulas.
+  - `asynchronously` - Currently ignored, only included for retrocompatibility purposes.
+  - `callbackFunc` - Currently ignored, only included for retrocompatibility purposes.
+
+  Return: `Promise<void>`.
+
+- `parseLatexDocument`.
+  Convert all the LaTeX formulas in the document to MathML.t
+
+  This method is deprecated.
+  Please consider using `renderLatex`.
+
+  Parameters:
+  - `asynchronously` - Currently ignored, only included for retrocompatibility purposes.
+  - `callbackFunc` - Currently ignored, only included for retrocompatibility purposes.
+
+  Return: `Promise<void>`.
+
+- `parseLatexElement`.
+  Convert all the LaTeX formulas inside the given element to MathML.
+
+  This method is deprecated.
+  Please consider using `renderLatex`.
+
+  Parameters:
+  - {`HTMLElement`} `element` - Element wherein to convert formulas.
+  - `asynchronously` - Currently ignored, only included for retrocompatibility purposes.
+  - `callbackFunc` - Currently ignored, only included for retrocompatibility purposes.
+
+  Return: `Promise<void>`.

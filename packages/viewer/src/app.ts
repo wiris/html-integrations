@@ -1,6 +1,7 @@
 import { Properties } from './properties';
 import { renderLatex } from './latex';
 import { renderMathML } from './mathml';
+import { bypassEncapsulation } from './retro';
 
 // This should be the only code executed outside of a function
 // and the only code containing browser globals (e.g. window)
@@ -69,6 +70,9 @@ async function main(w: Window): Promise<void> {
     // `DOMContentLoaded` has already fired
     start();
   }
+
+  // Expose the old Viewer API as a global
+  bypassEncapsulation(properties, w);
 
   // Dispatch an event notifying that the viewer has been loaded
   document.dispatchEvent(new Event('viewerLoaded'));
