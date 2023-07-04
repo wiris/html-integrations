@@ -21,6 +21,8 @@ new FroalaEditor('#editor', {                                                   
   // Add [MW] buttons to the image editing popup Toolbar.
   imageEditButtons: ['wirisEditor', 'wirisChemistry', 'imageDisplay', 'imageAlign', 'imageInfo', 'imageRemove'],
 
+  key: process.env.FROALA_API_KEY || '',
+
   // Allow all the tags to understand the mathml
   htmlAllowedTags: ['.*'],
   htmlAllowedAttrs: ['.*'],

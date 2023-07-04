@@ -87,6 +87,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Create environment.prod.ts file
+        run: node scripts/createEnvFile.js
+        if: ${{ matrix.framework == 'angular' && matrix.editor == 'froala' }}
+        env:
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -95,7 +101,9 @@ jobs:
           aws-region: eu-west-2
 
       - name: Build the demos
-        
+        env:
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+          REACT_APP_FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
         run: |
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
           yarn

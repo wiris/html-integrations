@@ -66,3 +66,5 @@ terraform.rc
 
 app.*.json
 app.*.js
+
+**/environments/environment.prod.ts
