@@ -48,7 +48,10 @@ export class Properties {
   // Get URL properties (retrocompatibility).
   config: Config = defaultValues;
 
-  // Constructors cannot be async so we make them private and force instantiation through the async generate() method below.
+  /**
+   * Do not use this method. Instead, use {@link Properties.generate}.
+   * Constructors cannot be async so we make it private and force instantiation through an alternative static method.
+   */
   private new() {}
 
   /**
