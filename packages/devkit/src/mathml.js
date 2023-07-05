@@ -73,7 +73,7 @@ export default class MathML {
     input = input.split(ampersand).join(Constants.xmlCharacters.ampersand);
     input = input.split(quote).join(Constants.xmlCharacters.quote);
 
-    // We are replacing $ by & when its part of an entity for retrocompatibility.
+    // We are replacing $ by & when its part of an entity for retro-compatibility.
     // Now, the standard is replace § by &.
     let returnValue = '';
     let currentEntity = null;
@@ -276,35 +276,33 @@ export default class MathML {
 
   /**
    * Removes semantics tag to mathml.
+   * When using Hand to create formulas, it adds the mrow tag due to the semantics one, this one is also removed.
    * @param {string} mathml - MathML string.
    * @returns {string} - 'mathml' without semantics tag.
    */
   static removeSemantics(mathml) {
     const mathTagEnd = '</math>';
     const openSemantics = '<semantics>';
-    const openAnnotation = '<annotation';
+    const openAnnotationRegex = /<annotation(.*)/g;
+    const openSemanticsMrow = '<semantics><mrow>';
+    const openAnnotationMrowRegex = /<\/mrow><annotation(.*)/g;
 
-    let mathmlWithoutSemantics = mathml;
-    const startSemantics = mathml.indexOf(openSemantics);
-    if (startSemantics !== -1) {
-      const startAnnotation = mathml.indexOf(openAnnotation, startSemantics + openSemantics.length);
-      if (startAnnotation !== -1) {
-        mathmlWithoutSemantics = mathml.substring(0, startSemantics)
-        + mathml.substring(startSemantics + openSemantics.length, startAnnotation) + mathTagEnd;
-      }
-    }
-
-    return mathmlWithoutSemantics;
+    // Remove the semantics and mrow
+    return mathml.replaceAll(openSemanticsMrow, '')
+      .replaceAll(openSemantics, '')
+      .replaceAll(openAnnotationMrowRegex, '') // Regex to remove all after the mrow + annotation tag.
+      .replaceAll(openAnnotationRegex, '') // Regex to remove all after the annotation tag.
+      .concat(mathTagEnd);
   }
 
   /**
-   * Transforms all xml mathml ocurrences that contain semantics to the same
-   * xml mathml ocurrences without semantics.
-   * @param {string} text - string that can contain xml mathml ocurrences.
+   * Transforms all xml mathml occurrences that contain semantics to the same
+   * xml mathml occurrences without semantics.
+   * @param {string} text - string that can contain xml mathml occurrences.
    * @param {Constants} [characters] - Constant object containing xmlCharacters
    * or safeXmlCharacters relation.
    * xmlCharacters by default.
-   * @returns {string} - 'text' with all xml mathml ocurrences without annotation tag.
+   * @returns {string} - 'text' with all xml mathml occurrences without annotation tag.
    */
   static removeSemanticsOcurrences(text, characters = Constants.xmlCharacters) {
     const mathTagStart = `${characters.tagOpener}math`;
