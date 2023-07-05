@@ -41,20 +41,22 @@ const defaultValues: Config = {
 /**
  * This class will handle the parameters defined by the user.
  */
-export abstract class Properties {
+export class Properties {
 
-  static render: () => Promise<void> = async () => {};
-
-  // Flag for the static parameters that access the backend.
-  private static backendObtained: boolean = false;
-
-  private static waitForBackend() {
-    while (!this.backendObtained);
-  }
+  render: () => Promise<void> = async () => {};
 
   // Get URL properties (retrocompatibility).
-  static config: Config = defaultValues;
-  static {
+  config: Config = defaultValues;
+
+  // Constructors cannot be async so we make them private and force instantiation through the async generate() method below.
+  private new() {}
+
+  /**
+   * Creates and sets up a new instance of class Properties
+   */
+  static async generate(): Promise<Properties> {
+
+    const instance = new Properties();
 
     // Get URL parameters from <script>
     const pluginName = 'WIRISplugins.js';
@@ -67,69 +69,58 @@ export abstract class Properties {
       const urlParams = new URLSearchParams(params);
 
       if (urlParams.get('dpi') !== null && urlParams.get('dpi') !== undefined) {
-        this.config.dpi = +urlParams.get('dpi');
+        instance.config.dpi = +urlParams.get('dpi');
       }
       if (urlParams.get('element') !== null && urlParams.get('element') !== undefined) {
-        this.config.element = urlParams.get('element');
+        instance.config.element = urlParams.get('element');
       }
       if (urlParams.get('lang') !== null && urlParams.get('lang') !== undefined) {
-        this.config.lang = urlParams.get('lang');
+        instance.config.lang = urlParams.get('lang');
       }
       if (urlParams.get('viewer') !== null && urlParams.get('viewer') !== undefined) {
-        this.config.viewer = (urlParams.get('viewer') as Viewer);
+        instance.config.viewer = (urlParams.get('viewer') as Viewer);
       }
       if (urlParams.get('zoom') !== null && urlParams.get('zoom') !== undefined) {
-        this.config.zoom = +urlParams.get('zoom');
+        instance.config.zoom = +urlParams.get('zoom');
       }
 
     }
 
     // Get backend parameters calling the configurationjson service
-    (async () => {
-      try {
-        this.config.backendConfig = await configurationJson(
-          ['wirispluginperformance', 'wiriseditormathmlattribute'],
-          Properties.editorServicesRoot,
-          Properties.editorServicesExtension,
-        );
-      } catch(e) {
-        if (e instanceof StatusError) {
-          // Do nothing; leave default values.
-          console.error(e);
-        } else {
-          throw e;
-        }
-      } finally {
-        // Stop looking for the backend (even if the request fails)
-        this.backendObtained = true;
+    try {
+      instance.config.backendConfig = await configurationJson(
+        ['wirispluginperformance', 'wiriseditormathmlattribute'],
+        instance.editorServicesRoot,
+        instance.editorServicesExtension,
+      );
+    } catch(e) {
+      if (e instanceof StatusError) {
+        // Do nothing; leave default values.
+        console.error(e);
+      } else {
+        throw e;
       }
-    })();
+    }
 
+    return instance;
   }
 
-  /**
-   * Set the config values manually.
-   */
-  static init(config: Config) {
-    Properties.config = {...defaultValues, ...config};
-  }
-
-  static get editorServicesRoot(): string {
+  get editorServicesRoot(): string {
     return this.config.editorServicesRoot ||
       defaultValues.editorServicesRoot;
   }
 
-  static set editorServicesRoot(editorServicesRoot: string) {
+  set editorServicesRoot(editorServicesRoot: string) {
     this.config.editorServicesRoot = editorServicesRoot;
     this.render();
   }
 
-  static get editorServicesExtension(): string {
+  get editorServicesExtension(): string {
     return this.config.editorServicesExtension ||
       defaultValues.editorServicesExtension;
   }
 
-  static set editorServicesExtension(editorServicesExtension: string) {
+  set editorServicesExtension(editorServicesExtension: string) {
     this.config.editorServicesExtension = editorServicesExtension;
     this.render();
   }
@@ -143,7 +134,7 @@ export abstract class Properties {
    * - English, by default.
    * @returns {string} Encoded language string.
    */
-  static get lang(): string {
+  get lang(): string {
     const configLang = (this.config.lang === 'inherit') ? null : this.config.lang;
     return configLang ||
       document.getElementsByTagName('html')[0].lang ||
@@ -151,7 +142,7 @@ export abstract class Properties {
       defaultValues.lang;
   }
 
-  static set lang(lang: string) {
+  set lang(lang: string) {
     this.config.lang = lang;
     this.render();
   }
@@ -162,12 +153,12 @@ export abstract class Properties {
    * - The viewer parameter set in the <script> (WIRISplugin.js?viewer=...)
    * - none, by default.
    */
-  static get viewer(): Viewer {
+  get viewer(): Viewer {
     return this.config.viewer ||
       defaultValues.viewer;
   }
 
-  static set viewer(viewer: Viewer) {
+  set viewer(viewer: Viewer) {
     this.config.viewer = viewer;
     this.render();
   }
@@ -178,12 +169,12 @@ export abstract class Properties {
    * - The dpi parameter set in the <script> (WIRISplugin.js?dpi=...)
    * - 96, by default.
    */
-  static get dpi(): number {
+  get dpi(): number {
     return this.config.dpi ||
       defaultValues.dpi;
   }
 
-  static set dpi(dpi: number) {
+  set dpi(dpi: number) {
     this.config.dpi = dpi;
     this.render();
   }
@@ -194,12 +185,12 @@ export abstract class Properties {
    * - The zoom parameter set in the <script> (WIRISplugin.js?zoom=...)
    * - 1, by default.
    */
-  static get zoom(): number {
+  get zoom(): number {
     return this.config.zoom ||
       defaultValues.zoom;
   }
 
-  static set zoom(zoom: number) {
+  set zoom(zoom: number) {
     this.config.zoom = zoom;
     this.render();
   }
@@ -210,12 +201,12 @@ export abstract class Properties {
    * - The zoom parameter set in the <script> (WIRISplugin.js?element=...)
    * - 'body', by default.
    */
-  static get element(): string {
+  get element(): string {
     return this.config.element ||
       defaultValues.element;
   }
 
-  static set element(element: string) {
+  set element(element: string) {
     this.config.element = element;
     this.render();
   }
@@ -226,13 +217,12 @@ export abstract class Properties {
    * - The backend configuration of the parameter.
    * - true, by default.
    */
-  static get wirispluginperformance(): Wirispluginperformance {
-    this.waitForBackend();
+  get wirispluginperformance(): Wirispluginperformance {
     return this.config.backendConfig.wirispluginperformance ||
       defaultValues.backendConfig.wirispluginperformance;
   }
 
-  static set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
+  set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
     this.render();
   }
@@ -243,13 +233,12 @@ export abstract class Properties {
    * - The backend configuration of the parameter.
    * - data-mathml, by default.
    */
-  static get wiriseditormathmlattribute(): string {
-    this.waitForBackend();
+  get wiriseditormathmlattribute(): string {
     return this.config.backendConfig.wiriseditormathmlattribute ||
       defaultValues.backendConfig.wiriseditormathmlattribute;
   }
 
-  static set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
+  set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
     this.render();
   }
