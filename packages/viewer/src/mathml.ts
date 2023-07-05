@@ -13,11 +13,12 @@ interface FormulaData {
 
 /**
  * Parse the DOM looking for <math> elements and replace them with the corresponding rendered images within the given element.
+ * @param {Properties} properties - Properties of the viewer.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
-export async function renderMathML(root: HTMLElement): Promise<void> {
+export async function renderMathML(properties: Properties, root: HTMLElement): Promise<void> {
 
-  if (Properties.viewer !== 'image') {
+  if (properties.viewer !== 'image') {
     return;
   }
 
@@ -26,12 +27,12 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
 
     let result;
 
-    if (Properties.wirispluginperformance === 'true') {
+    if (properties.wirispluginperformance === 'true') {
       // Transform mml to img.
-      result = await showImage(mml, Properties.lang, Properties.editorServicesRoot, Properties.editorServicesExtension);
+      result = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
     } else {
       // createimage returns the URL to showimage of the corresponding image
-      let url = await createImage(mml, Properties.lang, Properties.editorServicesRoot, Properties.editorServicesExtension);
+      let url = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
       // This line is necessary due to a bug in how the services interoperate.
       // TODO fix the causing bug
       url = url.replace('pluginsapp', 'plugins/app');
@@ -39,7 +40,7 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
     }
 
     // Set img properties.
-    const img = await setImageProperties(result, mml, Properties.wiriseditormathmlattribute);
+    const img = await setImageProperties(properties, result, mml);
     // const fragment = document.createRange().createContextualFragment(data.result.content);
 
     // Replace the MathML for the generated formula image.
@@ -49,12 +50,12 @@ export async function renderMathML(root: HTMLElement): Promise<void> {
 
 /**
  * Returns an image formula containing all MathType properties.
+ * @param {Properties} properties - Properties of the viewer.
  * @param {FormulaData} data - Object containing image values.
  * @param {string} mml - The MathML of the formula image beeing created.
- * @param {string} wiriseditormathmlattribute - The name of the HTML attribute to store the MathML in.
  * @returns {Promise<HTMLImageElement>} - Formula image.
  */
-async function setImageProperties(data: FormulaData, mml: string, wiriseditormathmlattribute: string): Promise<HTMLImageElement> {
+async function setImageProperties(properties: Properties, data: FormulaData, mml: string): Promise<HTMLImageElement> {
 
   // Create imag element.
   let img = document.createElement('img');
@@ -63,7 +64,7 @@ async function setImageProperties(data: FormulaData, mml: string, wiriseditormat
   img.src = `data:image/svg+xml;charset=utf8,${encodeURIComponent(data.content)}`;
 
   // Set other image properties.
-  img.setAttribute(wiriseditormathmlattribute, mml);
+  img.setAttribute(properties.wiriseditormathmlattribute, mml);
   img.setAttribute('class', 'Wirisformula');
   img.setAttribute('role', 'math');
 
@@ -75,7 +76,7 @@ async function setImageProperties(data: FormulaData, mml: string, wiriseditormat
   }
 
   // Set the alt text.
-  const { text } = await mathml2accessible(mml, Properties.lang, Properties.editorServicesRoot, Properties.editorServicesExtension);
+  const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
   img.alt = text;
 
   return img;

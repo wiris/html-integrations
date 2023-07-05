@@ -12,9 +12,12 @@ main(window);
  * @param {Window} w - The window instance of the browser.
  */
 async function main(w: Window): Promise<void> {
+
+  const properties: Properties = await Properties.generate();
+
   // Expose the globals to the browser
   (w as any).viewer = {
-    Properties,
+    properties,
   };
 
   const document = w.document;
@@ -25,11 +28,11 @@ async function main(w: Window): Promise<void> {
    * @param {Document} document - The DOM document in which to search for the rendering root.
    * @param {MutationObserver} observer - Mutation observer to activate or reactivate every time the rendering root changes.
    */
-  Properties.render = async () => {
-    const element: HTMLElement = document.querySelector(Properties.element);
+  properties.render = async () => {
+    const element: HTMLElement = document.querySelector(properties.element);
     if (element) {
-      await renderLatex(element);
-      await renderMathML(element);
+      await renderLatex(properties, element);
+      await renderMathML(properties, element);
     }
   };
 
@@ -37,14 +40,14 @@ async function main(w: Window): Promise<void> {
   // Renders formulas and sets observer
   const start = async () => {
     // First render
-    Properties.render();
+    properties.render();
 
     // Callback called every time there is a mutation in the watched DOM element
     new MutationObserver(async (mutationList, observer) => {
       for (const mutation of mutationList) {
         for (const node of mutation.addedNodes) {
           if (node instanceof HTMLElement) {
-            await Properties.render();
+            await properties.render();
           }
         }
       }
@@ -69,5 +72,4 @@ async function main(w: Window): Promise<void> {
 
   // Dispatch an event notifying that the viewer has been loaded
   document.dispatchEvent(new Event('viewerLoaded'));
-
 }

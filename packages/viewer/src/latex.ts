@@ -8,26 +8,28 @@ interface LatexPosition {
 
 /**
  * Parse the DOM looking for LaTeX nodes and replaces them with the corresponding rendered images.
+ * @param {Properties} properties - Properties of the viewer.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
-export async function renderLatex(root: HTMLElement) {
+export async function renderLatex(properties: Properties, root: HTMLElement) {
 
-  if (Properties.viewer !== 'image') {
+  if (properties.viewer !== 'image') {
     return;
   }
 
   const latexNodes = findLatexTextNodes(root);
 
   for (const latexNode of latexNodes) {
-    await replaceLatexInTextNode(latexNode);
+    await replaceLatexInTextNode(properties, latexNode);
   }
 }
 
 /**
  * Replace LaTeX instances with MathML inside a given node.
+ * @param {Properties} properties - Properties of the viewer.
  * @param {Node} node - Text node in which to search and replace LaTeX instances.
  */
-async function replaceLatexInTextNode(node: Node) {
+async function replaceLatexInTextNode(properties: Properties, node: Node) {
   const textContent: string = node.textContent || '';
   let pos: number = 0;
 
@@ -44,7 +46,7 @@ async function replaceLatexInTextNode(node: Node) {
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
       // Convert LaTeX to mathml.
-      const response = await latexToMathml(latex, Properties.editorServicesRoot, Properties.editorServicesExtension);
+      const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
       // Insert mathml node.
       const fragment = document.createRange().createContextualFragment(response.text);
 
@@ -95,7 +97,7 @@ function findLatexTextNodes(root: any): Node[] {
  * @
  */
 function getNextLatexPos(pos: number, text: string): LatexPosition {
-	const firstLatexTags = text.indexOf('$$', pos);
-	const secondLatexTags = firstLatexTags == -1 ? -1 : text.indexOf('$$', firstLatexTags + '$$'.length);
-	return firstLatexTags != -1 && secondLatexTags != -1 ? {'start': firstLatexTags, 'end': secondLatexTags} : null;
+  const firstLatexTags = text.indexOf('$$', pos);
+  const secondLatexTags = firstLatexTags == -1 ? -1 : text.indexOf('$$', firstLatexTags + '$$'.length);
+  return firstLatexTags != -1 && secondLatexTags != -1 ? {'start': firstLatexTags, 'end': secondLatexTags} : null;
 }
