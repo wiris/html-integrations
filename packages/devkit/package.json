@@ -28,7 +28,8 @@
     "build-jsdoc": "jsdoc -c doc/conf.json --verbose",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
-    "clean": "shx rm -f core.js"
+    "clean": "shx rm -f core.js",
+    "test": "jest test/"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
