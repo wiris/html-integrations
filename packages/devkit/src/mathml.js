@@ -281,18 +281,16 @@ export default class MathML {
    * @returns {string} - 'mathml' without semantics tag.
    */
   static removeSemantics(mathml) {
-    const mathTagEnd = '</math>';
-    const openSemantics = '<semantics>';
-    const openAnnotationRegex = /<annotation(.*)/g;
-    const openSemanticsMrow = '<semantics><mrow>';
-    const openAnnotationMrowRegex = /<\/mrow><annotation(.*)/g;
+    // If `mrow` is found right before the `semantics` starting tag, it's removed as well 
+    const semanticsStartingTagRegex = /<semantics>\s*(<mrow>)?/g;
 
-    // Remove the semantics and mrow
-    return mathml.replaceAll(openSemanticsMrow, '')
-      .replaceAll(openSemantics, '')
-      .replaceAll(openAnnotationMrowRegex, '') // Regex to remove all after the mrow + annotation tag.
-      .replaceAll(openAnnotationRegex, '') // Regex to remove all after the annotation tag.
-      .concat(mathTagEnd);
+    // If `mrow` is found right after the `annotation` ending tag, it's removed as well
+    // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
+    const semanticsEndingTagRegex = /(<\/mrow>)?\s*<annotation[\W\w]*<\/semantics>/g;
+
+    return mathml
+    .replace(semanticsStartingTagRegex, '')
+    .replace(semanticsEndingTagRegex, '');
   }
 
   /**
