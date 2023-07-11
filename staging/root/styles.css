@@ -1,0 +1,15 @@
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  margin: 5px;
+}
+
+section {
+  background-color: #7eff83;;
+  border: 1px solid #7eff83;;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 5px;
+}

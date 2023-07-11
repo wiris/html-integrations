@@ -32,5 +32,18 @@ jobs:
         run: |
           aws s3 rm s3://wiris-integrations-staging-html/${{ github.event.ref }} --recursive
 
+      - name: Remove branch from the list of branches
+        run: |
+          BRANCHES=branches
+          # Copy list of branches from S3 to local
+          aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" "${BRANCHES}"
+          # Check if branch name is in the file
+          if grep -q -F "${{ matrix.branch }}" "${BRANCHES}"; then
+            # Update local list of branches
+            sed -i '/^${{ github.event.ref }}$/d' "${BRANCHES}"
+            # Upload updated file
+            aws s3 cp "${BRANCHES}" "s3://wiris-integrations-staging-html/${BRANCHES}"
+          fi
+
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items!=null] | [?contains(Aliases.Items, 'integrations.wiris.kitchen')].Id | [0]" --output text) --paths '/*'
