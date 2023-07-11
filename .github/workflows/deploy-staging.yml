@@ -57,12 +57,68 @@ jobs:
       - name: Clean previous deployment of this branch
         run: aws s3 rm s3://wiris-integrations-staging-html/${{ matrix.branch }} --recursive
 
+  deploy-staging-common:
+    name: Deploy the staging environment (common elements)
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - clean-staging
+    strategy:
+      fail-fast: true
+      matrix:
+        branch: ${{ fromJson(needs.prepare.outputs.branches) }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Upload the common files
+        run: |
+          # Replace token %BRANCH% with branch name in staging/branch
+          find staging/branch -type f -exec sed -i 's/%BRANCH%/${{ matrix.branch }}/g' {} \;
+          aws s3 cp staging/branch s3://wiris-integrations-staging-html/${{ matrix.branch }} --recursive
+          aws s3 cp staging/root s3://wiris-integrations-staging-html/ --recursive
+
+      - name: Add branch to the list of branches
+        run: |
+          BRANCHES=branches
+
+          # Check if the remote list of branches exists
+          aws s3api head-object --bucket wiris-integrations-staging-html --key branches || NOT_EXIST=true
+          if [ $NOT_EXIST ]; then
+            # Create empty list of branches
+            touch "${BRANCHES}"
+          else
+            # Copy list of branches from S3 to local
+            aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" "${BRANCHES}"
+          fi
+
+          # Check if branch name is already in the file
+          if ! grep -q -F "${{ matrix.branch }}" "${BRANCHES}"; then
+            # Update local list of branches
+            echo ${{ matrix.branch }} >> "${BRANCHES}"
+            # Upload updated file
+            aws s3 cp "${BRANCHES}" "s3://wiris-integrations-staging-html/${BRANCHES}"
+          fi
+
   deploy-staging:
     name: Deploy the staging environment
     runs-on: ubuntu-latest
     needs:
       - prepare
       - clean-staging
+      - deploy-staging-common
     strategy:
       fail-fast: false
       matrix:
@@ -164,6 +220,7 @@ jobs:
     needs:
       - prepare
       - clean-staging
+      - deploy-staging-common
       - deploy-staging
     steps:
 

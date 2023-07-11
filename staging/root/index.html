@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  <title>All demos</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script type="module">
+    // Scan the branches file and generate links to each of them
+    const response = await fetch('branches');
+    const branchesString = await response.text();
+    const branches = branchesString
+      .split(/\r?\n|\r|\n/g)
+      .filter(line => line !== '');
+    branches.sort();
+    for (const branch of branches) {
+      const element = document.createElement('li');
+      element.innerHTML = `<a href="${branch}">${branch}</a>`;
+      document.getElementById('list').appendChild(element);
+    }
+  </script>
+</head>
+<body>
+  <h1>All demos</h1>
+  <nav>
+    <section>
+      <h2>Branches</h2>
+      <ul id="list"></ul>
+    </section>
+  </nav>
+</body>
+</html>
