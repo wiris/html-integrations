@@ -34,7 +34,7 @@ jobs:
         id: get_branches
         run: |
           BRANCHES_ARRAY=$(git branch --points-at HEAD | tr -d "* " | jq -R -s -c 'split("\n")[:-1]')
-          echo "::set-output name=branches::${BRANCHES_ARRAY}"
+          echo "branches=${BRANCHES_ARRAY}" >> $GITHUB_OUTPUT
           echo "${BRANCHES_ARRAY}"
 
   clean-staging:
