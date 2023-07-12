@@ -12,5 +12,7 @@
   ],
   "module": "telemeter_wasm.js",
   "types": "telemeter_wasm.d.ts",
-  "sideEffects": false
+  "sideEffects": [
+    "./snippets/*"
+  ]
 }
