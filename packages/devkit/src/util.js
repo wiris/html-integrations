@@ -799,7 +799,7 @@ export default class Util {
               node.childNodes[position - 1].remove();
               return Util.getSelectedItem(target, isIframe, forceGetSelection);
             }
-            else if (node.childNodes[position].classList.contains('Wirisformula')) {
+            else if (node.childNodes[position].classList?.contains('Wirisformula')) {
               if ((position > 0 && node.childNodes[position - 1].classList.contains('Wirisformula')) || position === 0 ) {
                 var emptySpan = document.createElement('span');
                 node.insertBefore(emptySpan, node.childNodes[position]);
@@ -807,7 +807,7 @@ export default class Util {
                   node: node.childNodes[position],
                 }
               }
-            } 
+            }
           }
           return {
             node: node.childNodes[position],
