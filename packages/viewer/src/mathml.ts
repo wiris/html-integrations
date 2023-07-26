@@ -1,5 +1,6 @@
 import { Properties } from "./properties";
 import { showImage, createImage, mathml2accessible, processJsonResponse } from './services';
+import { htmlEntitiesToXmlEntities } from './utils';
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -23,7 +24,7 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
   }
 
   for(const mathElement of [...root.getElementsByTagName('math')]) {
-    const mml = mathElement.outerHTML;
+    const mml = htmlEntitiesToXmlEntities(mathElement.outerHTML);
 
     let result;
 
