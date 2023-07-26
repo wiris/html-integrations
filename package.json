@@ -6,6 +6,7 @@
     "email": "support@wiris.com"
   },
   "scripts": {
+    "preinstall": "node packages/res/git-data.mjs",
     "postinstall": "rm -rf ~/.config/yarn/link/* && for d in packages/*/ ; do (cd $d && yarn link); done",
     "test-old": "node scripts/services/executeTests.js",
     "test": "nx run-many --target=test --all --parallel",

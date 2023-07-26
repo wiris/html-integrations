@@ -1,3 +1,5 @@
+var git = require('../git-data.json');
+
 /**
  * Copies the content of an element x as the content of an element y.
  * @param {String} x Identifier of the element to take its content.
@@ -9,13 +11,15 @@ export function copyContentFromxToy(x, y) {
 }
 
 /**
- * Sets the editor and the wiris plugins version on the front end page.
+ * Sets the editor, the wiris plugins version, the GitHub branch and commit on the front end page.
  * @param {*} editorVersion Version of the current editor.
  * @param {*} wirisVersion Version of the wiris plugin used.
  */
 export function setEditorAndWirisVersion(editorVersion, wirisVersion) {
-  document.getElementById('version_wiris').innerHTML += wirisVersion;
+  document.getElementById('version_wiris').innerHTML += wirisVersion; 
   document.getElementById('version_editor').innerHTML += editorVersion;
+  document.getElementById('git_branch').innerHTML += 'Branch: ' + git.branch;
+  document.getElementById('git_commit').innerHTML += 'Commit hash: ' + git.hash;
 }
 
 /**
