@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for Froala on Angular';
-document.getElementById('version_editor').innerHTML = 'Froala editor: ';
+document.getElementById('version_editor').innerHTML = 'Froala: ';
 
 // Create the initial editor content.
 const editorContent = Generic.editorContentImg;

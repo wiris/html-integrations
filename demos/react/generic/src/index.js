@@ -28,7 +28,7 @@ const content = Generic.editorContentImg;
 // Currently disabled by decision of QA.
 // document.getElementById('transform_content').innerHTML = content;
 
-document.getElementById('version_wiris').innerHTML += pluginVersion;
+Generic.setEditorAndWirisVersion(0, pluginVersion);
 
 // Add listener on click button to launch updateContent function.
 document.getElementById('btn_update').addEventListener('click', (e) => {

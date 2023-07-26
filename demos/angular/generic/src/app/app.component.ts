@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     });
 
     // Get an det the wiris editor plugin version
-    document.getElementById('version_wiris').innerHTML += (window as any).WirisPlugin.currentInstance.version;
+    Generic.setEditorAndWirisVersion(0, (window as any).WirisPlugin.currentInstance.version);
   }
 
   // Set app title.

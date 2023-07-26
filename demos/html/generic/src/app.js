@@ -28,7 +28,7 @@ window.wrs_int_init(editableDiv, toolbarDiv);
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
     const versionWiris = WirisPlugin.currentInstance.version; //eslint-disable-line
-    document.getElementById('version_wiris').innerHTML += versionWiris;
+    Generic.setEditorAndWirisVersion(0, versionWiris);
     editableDiv.innerHTML = Generic.editorContentImg;
   }
 };

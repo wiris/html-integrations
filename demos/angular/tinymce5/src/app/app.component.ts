@@ -5,7 +5,7 @@ import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE 5 on Angular';
-document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
+document.getElementById('version_editor').innerHTML = 'TinyMCE: ';
 
 // Create the initial editor content.
 const editorContent = Generic.editorContentMathML;

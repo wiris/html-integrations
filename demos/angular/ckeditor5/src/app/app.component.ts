@@ -10,7 +10,7 @@ import packageInfo from '@wiris/mathtype-ckeditor5/package.json';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor 5 on Angular';
-document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
+document.getElementById('version_editor').innerHTML = 'CKEditor: ';
 
 // Create the initial editor content.
 const editorContent = Generic.editorContentMathML;
