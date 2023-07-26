@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Write data in json file.
-fs.writeFile(__dirname + '/git-data.json', jsonData, (err) => {
+fs.writeFile(path.join(__dirname, 'git-data.json'), jsonData, (err) => {
           
     // In case of a error throw err.
     if (err) throw err;

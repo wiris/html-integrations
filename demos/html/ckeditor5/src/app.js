@@ -17,7 +17,7 @@ import * as Generic from 'resources/demos/imports';
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor 5 on HTML';
-document.getElementById('version_editor').innerHTML = 'CKEditor editor: ';
+document.getElementById('version_editor').innerHTML = 'CKEditor: ';
 
 // Insert the initial content in the editor
 document.getElementById('editor').innerHTML = Generic.editorContentMathML;

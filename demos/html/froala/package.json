@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-froala && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
-    "prestart": "yarn && yarn link @wiris/mathtype-froala && yarn link @wiris/mathtype-html-integration-devkit && cd ../../ && yarn install --force"
+    "prestart": "yarn && yarn link @wiris/mathtype-froala && yarn link @wiris/mathtype-html-integration-devkit"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",

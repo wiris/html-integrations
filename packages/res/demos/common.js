@@ -15,9 +15,9 @@ export function copyContentFromxToy(x, y) {
  * @param {*} editorVersion Version of the current editor.
  * @param {*} wirisVersion Version of the wiris plugin used.
  */
-export function setEditorAndWirisVersion(editorVersion, wirisVersion) {
-  document.getElementById('version_wiris').innerHTML += wirisVersion; 
-  document.getElementById('version_editor').innerHTML += editorVersion;
+export function setEditorAndWirisVersion(editorVersion = 0, wirisVersion = 0) {
+  if (wirisVersion !== 0) document.getElementById('version_wiris').innerHTML += wirisVersion; 
+  if (editorVersion !== 0) document.getElementById('version_editor').innerHTML += editorVersion;
   document.getElementById('git_branch').innerHTML += 'Branch: ' + git.branch;
   document.getElementById('git_commit').innerHTML += 'Commit hash: ' + git.hash;
 }

@@ -23,7 +23,7 @@ require('@wiris/mathtype-tinymce5');
 
 // Apply specific demo names to all the objects.
 document.getElementById('header_title_name').innerHTML = 'MathType for TinyMCE 5 on React';
-document.getElementById('version_editor').innerHTML = 'TinyMCE editor: ';
+document.getElementById('version_editor').innerHTML = 'TinyMCE: ';
 
 // Set the initial content.
 // eslint-disable-next-line max-len
