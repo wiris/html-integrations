@@ -68,3 +68,4 @@ app.*.json
 app.*.js
 
 **/environments/environment.prod.ts
+**/git-data.json
