@@ -15,6 +15,7 @@ Last release of this project is was 30th of September 2021.
   - Fix (froala): Console error when uploading an image with the MathType plugin enabled. #KB-36131
   - Fix (devkit): Strange behavior when the caret is placed at the beginning of the HTML Editor. #KB-21754
   - Fix: The default formulas were opened with CT Modal. #KB-36421
+  - Feat: Add WordPress integration. #KB-36573
 
 ### 8.4.0 2023-06-15
 

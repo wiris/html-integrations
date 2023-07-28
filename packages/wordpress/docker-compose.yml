@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+  wordpress:
+    container_name: wiris-wordpress
+    image: wordpress:php8.0-apache
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: wordpress
+    links:
+      - mysql:mysql
+    volumes:
+      - $WORDPRESS_WWWROOT/wordpress:/var/www/html
+      - ./src/tiny_mce_wiris.php:/var/www/html/wp-content/plugins/tiny_mce_wiris.php
+      - ./build/plugin.js:/var/www/html/wp-includes/js/tinymce/plugins/tiny_mce_wiris/plugin.js
+      - ./build/plugin.min.js:/var/www/html/wp-includes/js/tinymce/plugins/tiny_mce_wiris/plugin.min.js
+      - ./src/icons:/var/www/html/wp-includes/js/tinymce/plugins/tiny_mce_wiris/icons
+      - ./resources/functions.php:/var/www/html/wp-content/themes/twentytwentytwo/functions.php
+  mysql:
+    image: mysql:8.0.13
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ~/docker/mysql-data:/var/lib/mysql

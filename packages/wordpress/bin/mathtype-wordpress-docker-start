@@ -1,0 +1,10 @@
+#!/bin/bash
+echo 'Creating docker'
+docker compose up -d
+
+echo 'Waiting a bit'
+sleep 1s
+
+echo 'Restoring DB'
+# Execute the command inside the container
+docker exec -i wordpress-mysql-1 sh -c 'exec mysql -uroot -p"root" -h 127.0.0.1' < resources/database/backup.sql
