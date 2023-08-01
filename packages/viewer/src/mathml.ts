@@ -1,6 +1,6 @@
 import { Properties } from "./properties";
 import { showImage, createImage, mathml2accessible, processJsonResponse } from './services';
-import { htmlEntitiesToXmlEntities } from './utils';
+import { htmlEntitiesToXmlEntities, corruptMathML } from './utils';
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -76,9 +76,11 @@ async function setImageProperties(properties: Properties, data: FormulaData, mml
     img.width = +data.width;
   }
 
-  // Set the alt text.
-  const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
-  img.alt = text;
+  // Set the alt text whenever there's a translation for the characters and MathML on the mml.
+  if (!corruptMathML.some(corruptMathML => mml.includes(corruptMathML))) {
+    const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+    img.alt = text;
+  }
 
   return img;
 
