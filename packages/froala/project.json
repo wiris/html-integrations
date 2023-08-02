@@ -19,7 +19,7 @@
       }
     },
     "start": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "froala:build",
         "webpackConfig": "packages/froala/webpack.config.js"

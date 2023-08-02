@@ -33,7 +33,7 @@
       }
     },
     "start": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "dependsOn": [
         "prestart"
       ],
@@ -43,7 +43,7 @@
       }
     },
     "start-remote": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "dependsOn": [
         "prestart-remote"
       ],
