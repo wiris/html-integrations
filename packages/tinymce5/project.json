@@ -19,7 +19,7 @@
       }
     },
     "start": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "tinymce5:build",
         "webpackConfig": "packages/tinymce5/webpack.config.js"

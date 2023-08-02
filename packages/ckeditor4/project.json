@@ -19,7 +19,7 @@
       }
     },
     "start": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "ckeditor4:build",
         "webpackConfig": "packages/ckeditor4/webpack.config.js"
