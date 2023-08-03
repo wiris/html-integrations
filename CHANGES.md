@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
-### Unreleased
+### 8.5.0 2023-08-03
 
   - Fix: Prevent initialize multiple telemetes. #KB-35935
   - Fix (froala): Console error when uploading an image with the MathType plugin enabled. #KB-36131
