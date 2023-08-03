@@ -1,12 +1,12 @@
 {
   "name": "@wiris/mathtype-viewer",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "build": "webpack",
     "serve": "webpack serve",
-    "prepack": "npm install && npm run build"
+    "prepack": "yarn && npm run build"
   },
   "keywords": [
     "typescript",
