@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Copy custom wiris files inside of WordPress distribution
+cp -r /wiris/* /var/www/html
+
+# Run apache2-foreground normally and pass all arguments on
+apache2-foreground "$@"
