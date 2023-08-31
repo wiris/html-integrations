@@ -63,8 +63,8 @@ export interface InitOutput {
   readonly telemeter_finish: (a: number) => number;
   readonly telemeter_debug: (a: number, b: number) => void;
   readonly main_js: () => void;
-  readonly __wbindgen_export_0: (a: number) => number;
-  readonly __wbindgen_export_1: (a: number, b: number, c: number) => number;
+  readonly __wbindgen_export_0: (a: number, b: number) => number;
+  readonly __wbindgen_export_1: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
   readonly __wbindgen_export_3: (a: number, b: number, c: number) => void;
   readonly __wbindgen_export_4: (a: number, b: number) => void;
