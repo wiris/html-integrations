@@ -409,6 +409,8 @@ export default class MathType extends Plugin {
      */
     editor.data.get = (options) => {
       let output = get.bind(editor.data)(options);
+      // Ckeditor retrieves editor data and removes the image information on the formulas
+      // We transform all the retrieved data to images and then we Parse the data.
       let imageFormula = Parser.initParse(output);
       return Parser.endParse(imageFormula);
     };
