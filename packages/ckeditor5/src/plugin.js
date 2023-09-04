@@ -409,7 +409,8 @@ export default class MathType extends Plugin {
      */
     editor.data.get = (options) => {
       let output = get.bind(editor.data)(options);
-      return Parser.endParse(output);
+      let imageFormula = Parser.initParse(output);
+      return Parser.endParse(imageFormula);
     };
   }
 
