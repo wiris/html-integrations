@@ -47,6 +47,5 @@
   "workspaces": [
     "packages/**",
     "demos/**"
-  ],
-  "dependencies": {}
+  ]
 }
