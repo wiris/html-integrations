@@ -44,22 +44,23 @@ async function main(w: Window): Promise<void> {
     properties.render();
 
     // Callback called every time there is a mutation in the watched DOM element
-    new MutationObserver(async (mutationList, observer) => {
-      for (const mutation of mutationList) {
-        for (const node of mutation.addedNodes) {
-          if (node instanceof HTMLElement) {
-            await properties.render();
-          }
-        }
-      }
-    })
-    // We need to watch over the whole document, in case the Properties.element is inserted
-    // e.g. we set Properties.element = '#renderArea' and then we append <div id="renderArea">$$2+2=4$$</div> to the document
-    .observe(document, {
-      attributes: true, // In case an attribute is changed in a <math> node, for instance
-      childList: true, // In case a new <math> or $$latex$$ node is added, for instance
-      subtree: true, // In case a <math> node is added as a descendant of the observed element, for instance
-    });
+    // Feature temporarily disabled due to KB-37834
+    // new MutationObserver(async (mutationList, observer) => {
+    //   for (const mutation of mutationList) {
+    //     for (const node of mutation.addedNodes) {
+    //       if (node instanceof HTMLElement) {
+    //         await properties.render();
+    //       }
+    //     }
+    //   }
+    // })
+    // // We need to watch over the whole document, in case the Properties.element is inserted
+    // // e.g. we set Properties.element = '#renderArea' and then we append <div id="renderArea">$$2+2=4$$</div> to the document
+    // .observe(document, {
+    //   attributes: true, // In case an attribute is changed in a <math> node, for instance
+    //   childList: true, // In case a new <math> or $$latex$$ node is added, for instance
+    //   subtree: true, // In case a <math> node is added as a descendant of the observed element, for instance
+    // });
   };
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event#checking_whether_loading_is_already_complete
