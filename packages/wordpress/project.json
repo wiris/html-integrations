@@ -1,5 +1,6 @@
 {
-  "root": "packages/wordpress",
+  "name": "wordpress",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "package/wordpress/src",
   "targets": {
     "build": {
@@ -29,7 +30,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/cypress:cypress",
+      "executor": "@nx/cypress:cypress",
       "dependsOn": ["build"],
       "options": {
         "baseUrl": "http://localhost:8080",
@@ -37,12 +38,16 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["packages/wordpress/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "packages/wordpress/**/*.{ts,tsx,js,jsx}"
+        ]
       },
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     }
   }
 }
