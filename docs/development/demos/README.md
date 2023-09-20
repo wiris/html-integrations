@@ -7,11 +7,21 @@ This document explains what to do if you are modifying the source code of the pl
 
 All the commands can be executed either from the root of the project, or from the demo path. We recommend running them on the project root to avoid complexity.
 
+## Requirements
+
+* [**yarn**](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (*currently: v1.22.19*)
+* [**nx**](https://nx.dev/getting-started/installation#installing-nx-globally) (*latest*) - Optional
+    
+## Build and start a demo in development mode
+
 Assuming that you already executed the `yarn` command, you'll have to build the desired package and start the demo:
 
 ```js
+$ nx build <EDITOR>
 $ nx start <FRAMEWORK>-<EDITOR>
 ```
+
+> In case you haven't installed `nx`, you'll have to add `yarn` at the beggining of each one of the previous commands.
 
 | FRAMEWORK | Editor and Version  | EDITOR/PACKAGE                                                               |
 |-----------|---------------------|--------------------------------------------------------------------|

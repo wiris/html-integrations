@@ -36,7 +36,7 @@ To integrate MathType, please follow the steps below (you may adjust the example
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
     This is the main step of the integration, doing the following:
@@ -73,7 +73,7 @@ The complete HTML code of the previuos example is the following:
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
 </html>
 ```
