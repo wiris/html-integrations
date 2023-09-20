@@ -9,34 +9,42 @@ In order to offer cross-browser compatibility and the latest features, most of t
 
 ## Table of contents
 
-- [Compiling all packages](#compiling-all-packages)
-- [Compiling individual packages](#compiling-individual-packages)
-- [Pointing to your own back-end](#pointing-to-your-own-back-end)
-- [Cleaning up](#cleaning-up)
+- [Bootstrap dependencies](#bootstrap-dependencies)
+- [Compile individual packages](#compile-individual-packages)
+- [Point to your own back-end](#point-to-your-own-back-end)
+- [Clean up](#clean-up)
 
-## Compiling all packages
+## Requirements
 
-When running the following command described in the [Bootstrapping](../../README.md#Bootstrapping) section:
+* [**yarn**](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (*currently: v1.22.19*)
+* [**nx**](https://nx.dev/getting-started/installation#installing-nx-globally) (*latest*) - Optional
+
+## Bootstrap dependencies
+
+First run the following command described in the [Bootstrapping](../../README.md#Bootstrapping) section:
 
 ```sh
 $ yarn
 ```
 
-the monorepo will bootstrap all the packages in the monorepo and also compile all the plugins for you.
+the monorepo will bootstrap all the packages in the monorepo and the npm dependencies.
 
-## Compiling individual packages
+## Compile individual packages
 
 To compile a single packages, run:
 
 ```sh
-$ yarn build <PACKAGE>
+$ nx build <PACKAGE>
 ```
 
 You can also build the packages in development mode:
 
 ```sh
-$ yarn build-dev <PACKAGE>
+$ nx build-dev <PACKAGE>
 ```
+
+
+> In case you haven't installed `nx`, you'll have to add `yarn` at the beggining of each one of the previous commands.
 
 Where PACKAGE can be:
 
@@ -47,7 +55,7 @@ Where PACKAGE can be:
 * tinymce5
 * tinymce6
 
-## Pointing to your own back-end
+## Point to your own back-end
 
 If your website hosts its own MathType Web services, instead of using the wiris.net services, then you must pass a flag indicating which technology your server uses (ASPX, Java, Ruby, or PHP), run the following command in the desired package folder:
 
@@ -58,16 +66,14 @@ $ SERVICE_PROVIDER_URI=[url] SERVICE_PROVIDER_SERVER=[tech] yarn build
 
 Where `[tech]` is one of:
 
-- `aspx`
 - `java`
 - `php`
-- `ruby`
 
 and `[url]` is the relative address to the main endpoint of the MathType Web services that you are hosting (e.g. `integration` if your PHP services are in the `integration/` directory).
 
 You can use `build-dev` instead of `build` to build the package in development mode.
 
-## Cleaning up
+## Clean up
 
 To delete files generated during the compilation process, run:
 

@@ -6,18 +6,19 @@ Easily include quality math equations in your documents and digital content.
 
 # Table of contents
 
-- [Getting started](#getting-started)
-- [Known issues](#known-issues)
-- [Parsing data](#parsing-data)
-  * [Setting data](#setting-data)
-  * [Getting data](#getting-data)
-- [Services](#services)
-  * [Install instructions](#install-instructions)
-    * [Java](#java)
-    * [PHP](#php)
-- [Displaying on Target Page](#displaying-on-target-page)
-- [Documentation](#documentation)
-- [Privacy policy](#privacy-policy)
+- [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+  - [Known issues](#known-issues)
+  - [Parsing data](#parsing-data)
+    - [Setting data](#setting-data)
+    - [Getting data](#getting-data)
+  - [Services](#services)
+    - [Install instructions](#install-instructions)
+      - [Java](#java)
+      - [PHP](#php)
+  - [Displaying on Target Page](#displaying-on-target-page)
+  - [Documentation](#documentation)
+  - [Privacy policy](#privacy-policy)
 
 ## Getting started
 
@@ -88,6 +89,8 @@ To integrate MathType, please follow the steps below. Please, note you may adjus
     // Initialyze the editor.
     // optionally, add MathType Properties
     window.wrs_int_init(htmlEditorDiv, toolbarDiv/*, mathTypeParameters*/);
+
+    WirisPlugin.currentInstance = genericIntegrationInstance;
    </script>
    ```
 
@@ -97,6 +100,33 @@ To integrate MathType, please follow the steps below. Please, note you may adjus
    * Initializes the integration into the editable HTML element, assigning listeners to some events of the HTML element. This allows, for instance, to open a formula just by double-clicking it. You may change **target** and **toolbar** parameters depending on the structure of your HTML editor.
    * The **target** property must contain the editable HTML element. This is a mandatory parameter.
    * The **toolbar** property must contain the HTML element representing the toolbar. This parameter is optional.
+
+After following these steps, you should have something like this:
+
+```html
+<html>
+  <head>
+    <script src="node_modules/@wiris/mathtype-generic/wirisplugin-generic.js"></script>
+  </head>
+  <body>
+    <div id="toolbar"></div>
+    <div id="htmlEditor" contenteditable="true">Try me!</div>
+
+    <script>
+      var genericIntegrationProperties = {};
+      genericIntegrationProperties.target = document.getElementById('htmlEditor');
+      genericIntegrationProperties.toolbar = document.getElementById('toolbar');
+
+      // GenericIntegration instance.
+      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+      genericIntegrationInstance.init();
+      genericIntegrationInstance.listeners.fire('onTargetReady', {});
+
+      WirisPlugin.currentInstance = genericIntegrationInstance;
+    </script>
+  </body>
+</html>
+```
 
 Notice the example assumes this directory structure:
 
@@ -198,7 +228,7 @@ To install the Java services, please, follow the steps below:
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-      WirisPlugin.currentInstance = this.wiris_generic;
+      WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
 
@@ -232,7 +262,7 @@ To install the PHP services, please, follow the steps below:
       genericIntegrationInstance.init();
       genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-      WirisPlugin.currentInstance = this.wiris_generic;
+      WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
 

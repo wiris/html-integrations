@@ -29,7 +29,7 @@ To install the Java services follow the steps below:
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
 
@@ -60,7 +60,7 @@ To install the PHP services follow the steps below:
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
 
@@ -91,7 +91,7 @@ To install the .NET services follow the steps below:
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
 
@@ -125,6 +125,6 @@ To install the Ruby on Rails services follow the steps below:
         genericIntegrationInstance.init();
         genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
-        WirisPlugin.currentInstance = this.wiris_generic;
+        WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
     ```
