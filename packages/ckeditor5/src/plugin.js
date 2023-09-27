@@ -401,8 +401,8 @@ export default class MathType extends Plugin {
       viewToModelPositionOutsideModelElement(editor.model, (viewElement) => viewElement.hasClass('ck-math-widget')),
     );
 
-    // Keep a reference to the original get function
-    const { get } = editor.data;
+    // Keep a reference to the original get and set function.
+    const { get, set } = editor.data;
 
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
@@ -414,6 +414,31 @@ export default class MathType extends Plugin {
       let imageFormula = Parser.initParse(output);
       return Parser.endParse(imageFormula);
     };
+
+    /**
+    * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
+    */
+    editor.data.set = (data) => {
+      // Retrieve the data to be set on the CKEditor.
+      let modifiedData = data;
+      // Regex to find all mathml formulas.
+      const regexp = /<math(.*?)<\/math>/gm;
+
+      // Get all MathML formulas and store them in an array.
+      let formulas = [...data.matchAll(regexp)];
+
+      // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
+      formulas.forEach((formula) => {
+        let mathml = formula[0];
+        if (mathml.includes('encoding="LaTeX"')) { // LaTeX found.
+          let latex = '$$$' + Latex.getLatexFromMathML(mathml) + '$$$'; // We add $$$ instead of $$ because the replace function ignores one $.
+          modifiedData = modifiedData.replace(mathml, latex);
+        }
+      });
+      
+      // Run the setData code from CKEditor5 with the modified string.
+      set.bind(editor.data)(modifiedData); 
+    };  
   }
 
   /**
