@@ -119,7 +119,6 @@ export class FroalaIntegration extends IntegrationModel {
    * @returns {String} - 'text' with all mathml properties html entity encoded.
    */
   parseMathMLProperties(text) { // eslint-disable-line class-methods-use-this
-    console.log('A')
     const mathTagStart = `${Constants.xmlCharacters.tagOpener}math`;
     const mathTagEnd = `${Constants.xmlCharacters.tagOpener}/math${Constants.xmlCharacters.tagCloser}`;
 
