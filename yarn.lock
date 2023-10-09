@@ -19210,9 +19210,9 @@ tinymce@^5.5.1, tinymce@^5.7.1, tinymce@^5.8.2, tinymce@^5.9.2:
   integrity sha512-9UUjaO0R7FxcFo0oxnd1lMs7H+D0Eh+dDVo5hKbVe1a+VB0nit97vOqlinj+YwgoBDt6/DSCUoWqAYlLI8BLYA==
 
 tinymce@^6.0.0:
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.6.1.tgz#02aacf662c546047225f66444301a0b488b6fe26"
-  integrity sha512-n1ub/Jq6c5o2mju6A1HPFoR5/X7eH8720yDzLchg4MbKKJg6tthTGr+lBPHzQyrImwbfo7LVgx28mN5InzVMmw==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.7.0.tgz#0ec245502cdefbfa0ff9042b423ac9a01e781423"
+  integrity sha512-Wf2RSobIXQ7XNw3/v4z1lPGiH3Pjsmc/6/7fG28aIS6uVWj/7IhvOPuwfJJDeOx0o0D3nSnoLHgR2KU8JAdE+w==
 
 tmp@^0.0.33:
   version "0.0.33"

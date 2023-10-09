@@ -13,6 +13,7 @@ module.exports = (config, context) => {
       filename: './plugin.min.js',
       globalObject: 'this',
     },
+    devtool: "source-map",
     devServer: {
       devMiddleware: {
         writeToDisk: true,
@@ -28,7 +29,7 @@ module.exports = (config, context) => {
     // Set watch to true for dev purposes.
     watch: false,
     optimization: {
-      minimize: true,
+      minimize: false,
       minimizer: [new TerserPlugin({
         // These options prevent Terser from generating a LICENSE.txt file
         terserOptions: {
@@ -82,9 +83,9 @@ module.exports = (config, context) => {
     stats: {
       colors: true
     },
-    experiments: { 
-      topLevelAwait: true, 
-      asyncWebAssembly: true 
+    experiments: {
+      topLevelAwait: true,
+      asyncWebAssembly: true
     },
     plugins: [
       new webpack.EnvironmentPlugin({
