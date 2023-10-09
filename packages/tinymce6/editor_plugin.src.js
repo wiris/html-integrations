@@ -136,6 +136,19 @@ export class TinyMceIntegration extends IntegrationModel {
     super.updateFormula(mathml);
   }
 
+  /** @inheritdoc */
+  insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+    // Due to insertFormula adds an image using pure JavaScript functions,
+    // it is needed notificate to the editorObject that placeholder status
+    // has to be updated.
+    const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+
+    // Add formula to undo & redo
+    this.editorObject.undoManager.add(obj);
+
+    return obj;
+  }
+
   /**
    * Set Moodle configuration on plugin.
    * @param {string} editor - Editor instance.
