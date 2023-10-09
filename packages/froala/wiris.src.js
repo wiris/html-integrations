@@ -219,6 +219,7 @@ export class FroalaIntegration extends IntegrationModel {
     const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
     this.editorObject.placeholder.refresh();
+    this.editorObject.undo.saveStep();
     return obj;
   }
 }
