@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 30th of September 2021.
 
+### 8.6.0 2023-10-10
+
+  - Feat: Add branch name and commit hash to demo page
+  - Docs: Improve the Docs article of the integrations installation
+  - Chore: Rescope @nrwl to @nx
+  - Feat: Add browsing pages to staging
+  - Chore: Update MathType external integrations
+  - Fix: Vulnerability in getmathml service
+  - Fix: Blackboard + Anthology issues with our last Editor version
+  - Fix: Demos not taking local devkit
+  - Fix: CKEditor 5 Hand formulas MathML not being filtered
+  - Fix: CKEditor 5 LaTeX formulas cannot be edited
+  - Chore: Update telemeter for html-integrations
+
 ### 8.5.0 2023-08-03
 
   - Fix: Prevent initialize multiple telemetes. #KB-35935
