@@ -146,9 +146,12 @@ export default class CKEditor5Integration extends IntegrationModel {
     // This returns the value returned by the callback function (writer => {...})
     return this.editorObject.model.change((writer) => {
       const core = this.getCore();
+      const selection = this.editorObject.model.document.selection;
 
-      const modelElementNew = writer.createElement('mathml', { formula: mathml });
-      modelElementNew.data = mathml;
+      const modelElementNew = writer.createElement('mathml', {
+        formula: mathml,
+        ...Object.fromEntries(selection.getAttributes()), // To keep the format, such as style and font
+      });
 
       // Obtain the DOM <span><img ... /></span> object corresponding to the formula
       if (core.editionProperties.isNewElement) {
