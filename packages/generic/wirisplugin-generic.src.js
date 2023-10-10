@@ -1,7 +1,9 @@
 import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
 import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
 import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
+import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 import formulaIcon from './icons/formula.png';
 import chemIcon from './icons/chem.png';
@@ -83,6 +85,94 @@ export default class GenericIntegration extends IntegrationModel {
     this.toolbar = integrationModelProperties.toolbar;
     if (typeof integrationModelProperties.configurationService !== 'undefined') {
       this.configurationService = integrationModelProperties.configurationService;
+    }
+  }
+
+  /**
+   * Object containing all the Telemeter functions.
+   */
+  telemeter = {
+    /**
+     * 
+     * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
+     * @param {string} trigger 'button' when the modal is opened by clicking the MathType or ChemType button from the toolbar
+     *                         'formula' when the modal is opened by double-click on the formula
+     */
+    wrsOpenedEditorModal(toolbar, trigger) {
+      // Check that the manual string inputs contain the values we want, if not throw error.
+      if (/^(button|formula)$/.test(trigger) && /^(general|chemistry)$/.test(toolbar)) {
+        try {
+          Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+            toolbar: toolbar,
+            trigger: trigger,
+          });
+        } catch (err) {trigger
+          console.error(err);
+        }
+      } else {
+        console.error('Invalid trigger or toolbar value for open editor modal');
+      }
+    },
+
+    /**
+     * 
+     * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
+     * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
+     */
+    wrsClosedEditorModal(toolbar, trigger) {
+      // Check that the manual string inputs contain the values we want, if not throw error.
+      if (/^(mtct_insert|mtct_close)$/.test(trigger) && /^(general|chemistry)$/.test(toolbar)) {
+        // Call Telemetry service
+        try {
+          Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+            toolbar: toolbar,
+            trigger: trigger,
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        console.error('Invalid trigger or toolbar value for close editor modal');
+      }
+    },
+
+    /**
+     * 
+     * @param {string} mathml_origin If editing a formula, the original mathml that's going to be edited. Otherwise null
+     * @param {string} mathml The mathml that's going to be inserted
+     * @param {number} time The time passed since the MT/CT modal opened until the calling of this function
+     * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
+     */
+    wrsInsertedFormula(mathml_origin, mathml, time, toolbar) {
+      const validToolbar = /^(general|chemistry)$/.test(toolbar);
+      const validDate = !isNaN(new Date(time));
+      // Check that the manual string inputs contain the values we want, if not throw error.
+      if (validToolbar && validDate) {
+        // Build the telemeter payload separated to delete null/undefined entries.
+        let payload = {
+          mathml_origin: mathml_origin ? MathML.safeXmlDecode(mathml_origin) : mathml_origin,
+          mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
+          elapsed_time: time,
+          editor_origin: null,
+          toolbar: toolbar,
+          size: mathml?.length,
+        };
+
+        // Remove desired null keys.
+        Object.keys(payload).forEach(key => {
+          if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+        });
+
+        try {
+          Telemeter.telemeter.track("INSERTED_FORMULA", {
+            ...payload,
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        console.error('Invalid toolbar or time input for insert formula');
+      }
     }
   }
 
