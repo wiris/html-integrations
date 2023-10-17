@@ -12,6 +12,7 @@ Last release of this project is was 30th of September 2021.
 ### Unreleased
 
   - fix(ck5): setData understanding math LaTeX. #KB-39004
+  - fix: DomPurify replacing undesired characters. KB-39549
 
 ### 8.6.0 2023-10-10
 
