@@ -335,7 +335,7 @@ export default class MathType extends Plugin {
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      const mathString = modelItem.getAttribute('formula').replace('ref="<"', 'ref="&lt;"');
+      const mathString = modelItem.getAttribute('formula').replace('"<"', '"&lt;"').replace('">"', '"&gt;"');
       const imgHtml = Parser.initParse(mathString, editor.config.get('language'));
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
