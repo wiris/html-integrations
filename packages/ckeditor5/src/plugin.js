@@ -257,6 +257,12 @@ export default class MathType extends Plugin {
       // And obtain the complete formula
       formula = Util.htmlSanitize(`<math${mathAttributes}>${formula}</math>`);
 
+      // Replaces the < & > characters to its HTMLEntity to avoid render issues.
+      formula = formula.replace('"<"', '"&lt;"')
+        .replace('">"', '"&gt;"')
+        .replace('><<', '>&lt;<');
+
+
       /* Model node that contains what's going to actually be inserted. This can be either:
             - A <mathml> element with a formula attribute set to the given formula, or
             - If the original <math> had a LaTeX annotation, then the annotation surrounded by "$$...$$" */
