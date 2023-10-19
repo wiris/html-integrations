@@ -15,4 +15,103 @@ on:
           Type `publish_aws` to do publish to S3, any other value otherwise.
         required: false
         default: ""
+      version:
+        description: |
+          Version number, e.g.: "8.5.0"
+        required: false
+        default: ""
 
+# Array of jobs to run in this workflow
+jobs:
+  publish-wordpres:
+    runs-on: ubuntu-latest
+
+    if: github.event.inputs.publish_aws == 'publish_aws'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies and create compiled files
+      - name: Build the JavaScript
+        run: |
+          yarn install
+          npx nx build wordpress
+      - name: Create Icons folder inside the build one
+        run: |
+          cp -a packages/wordpress/src/icons/ packages/wordpress/build/icons/
+          echo ${{ github.event.inputs.version }} > VERSION
+
+      # Create a zip file with the files needed to integrate
+      # Mathtype for WordPress
+      - name: Zip integration
+        uses: vimtor/action-zip@v1
+        with:
+          files: packages/wordpress/build/ VERSION
+          dest: mathtype-tinymce-wordpress_${{ github.event.inputs.version }}.zip
+      - uses: vimtor/action-zip@v1
+        with:
+          files: packages/wordpress/src/tiny_mce_wiris.php
+          dest: wordpress-wiris_${{ github.event.inputs.version }}.zip
+
+      - name: Write the manifest of MathType for WordPress
+        run: |
+          cat << EOF > manifest.json
+            {
+              "items": [
+                {
+                  "tech": ["javascript"],
+                  "editor": "tinymce5",
+                  "version": "${{ github.event.inputs.version }}",
+                  "date": "$(date -u +"%FT%T.000Z")",
+                  "published": true,
+                  "url": "https://downloads.wiris.com/integrations/wordpress/${{ github.event.inputs.version }}/mathtype-tinymce-wordpress_${{ github.event.inputs.version }}.zip",
+                  "storename": "MT_WP"
+                },
+                {
+                  "tech": ["php"],
+                  "editor": "tinymce5",
+                  "version": "${{ github.event.inputs.version }}",
+                  "date": "$(date -u +"%FT%T.000Z")",
+                  "published": true,
+                  "url": "https://downloads.wiris.com/integrations/wordpress/${{ github.event.inputs.version }}/wordpress-wiris_${{ github.event.inputs.version }}.zip",
+                  "storename": "MT_WP_TINY"
+                }
+              ]
+            }
+          EOF
+
+      - name: Upload artifacts to S3 rebost staging
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.REBOST_STG_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.REBOST_STG_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.STG_AWS_DEFAULT_REGION }}
+          AWS_DEFAULT_OUTPUT: json
+          S3_BUCKET: wiris-rebost-staging
+          S3_PATH: publish/integrations/wordpress
+        run: |
+          aws s3 cp --recursive --exclude "*" --include "*.zip" --exclude "**/*.zip" --include "manifest.json" . s3://${S3_BUCKET}/${S3_PATH}/${{ github.event.inputs.version }}/
+
+      - name: Upload artifacts to S3 downloads staging
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DOWNLOADS_STG_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DOWNLOADS_STG_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.STG_AWS_DEFAULT_REGION }}
+          AWS_DEFAULT_OUTPUT: json
+          S3_BUCKET: wiris-downloads-staging
+          S3_PATH: integrations/wordpress
+        run: |
+          aws s3 cp --recursive --exclude "*" --include "*.zip" --exclude "**/*.zip" . s3://${S3_BUCKET}/${S3_PATH}/${{ github.event.inputs.version }}/
+
+      - name: Trigger Store staging links update
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.STORE_STG_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.STORE_STG_AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.STG_AWS_DEFAULT_REGION }}
+          S3_BUCKET: wiris-store-staging-pipeline
+        run: |
+          mv manifest.json deploy
+          aws deploy push --application-name store-downloads --s3-location s3://${S3_BUCKET}/wordpress.zip --source deploy
