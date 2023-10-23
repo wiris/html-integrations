@@ -69,7 +69,7 @@ jobs:
                   "date": "$(date -u +"%FT%T.000Z")",
                   "published": true,
                   "url": "https://downloads.wiris.com/integrations/wordpress/${{ github.event.inputs.version }}/mathtype-tinymce-wordpress_${{ github.event.inputs.version }}.zip",
-                  "storename": "MT_WP"
+                  "storename": "MT_WP_TINY"
                 },
                 {
                   "tech": ["php"],
@@ -78,7 +78,7 @@ jobs:
                   "date": "$(date -u +"%FT%T.000Z")",
                   "published": true,
                   "url": "https://downloads.wiris.com/integrations/wordpress/${{ github.event.inputs.version }}/wordpress-wiris_${{ github.event.inputs.version }}.zip",
-                  "storename": "MT_WP_TINY"
+                  "storename": "MT_WP"
                 }
               ]
             }
