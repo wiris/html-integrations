@@ -49,8 +49,16 @@ yarn build
 ```
 
 to compile the package.
-The output will be found in `dist/`.
+The output will be found in `viewer/dist`.
 
+If you want to compile the package in development mode
+Then run
+
+```sh
+yarn build-dev
+```
+
+The output will be found in `viewer/dist`.
 
 ## Documentation
 
