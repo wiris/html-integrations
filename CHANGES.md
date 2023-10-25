@@ -27,6 +27,7 @@ Last release of this project is was 22nd of November 2023.
 	- fix: Re-do action not working in TinyMCE 6 and Froala. #KB-39819
 	- fix: Error displayed when adding to the website the contents edited with an HTML editor if some text was added before some LaTeX code.
 	- fix: Drag & drop an inserted formula with brackets would change the brackets to parentheses. #KB-39549
+  - fix: Froala + Generic not setting GUI parameters. #KB-40561
 
 ### 8.6.0 2023-10-10
 
