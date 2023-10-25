@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development",
     "serve": "webpack serve",
     "prepack": "yarn && npm run build"
   },
