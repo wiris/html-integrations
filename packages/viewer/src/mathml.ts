@@ -1,6 +1,7 @@
 import { Properties } from "./properties";
 import { showImage, createImage, mathml2accessible, processJsonResponse } from './services';
 import { htmlEntitiesToXmlEntities, corruptMathML } from './utils';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -13,6 +14,43 @@ interface FormulaData {
 }
 
 /**
+ * Look for safe MathML «math» formulas.
+ * @param {HTMLElement} root - Any DOM element that can contain MathML.
+ */
+function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
+  const nodeIterator: NodeIterator = document.createNodeIterator(
+    root,
+    NodeFilter.SHOW_TEXT,
+    node => /«math(.*?)«\/math»/g.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+  );
+  const safeNodes : Node[] = [];
+
+  let currentNode: Node | null;
+  while (currentNode = nodeIterator.nextNode()) {
+    safeNodes.push(currentNode);
+  }
+
+  return safeNodes;
+}
+
+/**
+ * Parse the DOM looking for «math» formulas and replace them with the corresponding rendered images within the given element.
+ * @param {HTMLElement} root - Any DOM element that can contain MathML.
+ */
+function decodeSafeMathML(root: HTMLElement) {
+  const safeNodes = findSafeMathMLTextNodes(root);
+
+  for (const safeNode of safeNodes) {
+    const mathml = MathML.safeXmlDecode(safeNode.textContent);
+    // Insert mathml node.
+    const fragment = document.createRange().createContextualFragment(mathml);
+
+    safeNode.parentNode?.insertBefore(fragment, safeNode);
+    safeNode.parentNode?.removeChild(safeNode);
+  }
+}
+
+/**
  * Parse the DOM looking for <math> elements and replace them with the corresponding rendered images within the given element.
  * @param {Properties} properties - Properties of the viewer.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
@@ -22,6 +60,8 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
   if (properties.viewer !== 'image' && properties.viewer !== 'mathml') {
     return;
   }
+
+  decodeSafeMathML(root);
 
   for(const mathElement of [...root.getElementsByTagName('math')]) {
     const mml = htmlEntitiesToXmlEntities(mathElement.outerHTML);
