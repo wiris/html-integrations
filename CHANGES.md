@@ -7,12 +7,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project is was 30th of September 2021.
+Last release of this project is was 26th of October 2023.
 
-### Unreleased
+### 8.7.0 2023-10-26
 
   - fix(ck5): setData understanding math LaTeX. #KB-39004
   - fix: DomPurify replacing undesired characters. KB-39549
+  - feat: Exposed the telemetry methods in the generic integration. #KB-39815	
+	- fix: Font and some font properties of the text changed after a formula inserted through the web editor. #KB-39019
+	- fix: Re-do action not working in TinyMCE 6 and Froala. #KB-39819
+	- fix: Error displayed when adding to the website the contents edited with an HTML editor if some text was added before some LaTeX code.
+	- fix: Drag & drop an inserted formula with brackets would change the brackets to parentheses. #KB-39549
 
 ### 8.6.0 2023-10-10
 
