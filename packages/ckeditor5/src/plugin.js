@@ -415,6 +415,13 @@ export default class MathType extends Plugin {
      */
     editor.data.get = (options) => {
       let output = get.bind(editor.data)(options);
+      
+      // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
+      // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
+      output = output.replace('"<"', '"&lt;"')
+        .replace('">"', '"&gt;"')
+        .replace('><<', '>&lt;<');
+
       // Ckeditor retrieves editor data and removes the image information on the formulas
       // We transform all the retrieved data to images and then we Parse the data.
       let imageFormula = Parser.initParse(output);
