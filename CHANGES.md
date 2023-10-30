@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 26th of October 2023.
 
-### Unreleased
+### 8.7.1 2023-10-30
 
   - fix(ck5): getData returning null when using formulas with '<' and '>'. #KB-40736
 
