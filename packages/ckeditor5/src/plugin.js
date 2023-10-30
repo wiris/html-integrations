@@ -258,9 +258,9 @@ export default class MathType extends Plugin {
       formula = Util.htmlSanitize(`<math${mathAttributes}>${formula}</math>`);
 
       // Replaces the < & > characters to its HTMLEntity to avoid render issues.
-      formula = formula.replace('"<"', '"&lt;"')
-        .replace('">"', '"&gt;"')
-        .replace('><<', '>&lt;<');
+      formula = formula.replaceAll('"<"', '"&lt;"')
+        .replaceAll('">"', '"&gt;"')
+        .replaceAll('><<', '>&lt;<');
 
 
       /* Model node that contains what's going to actually be inserted. This can be either:
@@ -341,7 +341,7 @@ export default class MathType extends Plugin {
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      const mathString = modelItem.getAttribute('formula').replace('ref="<"', 'ref="&lt;"');
+      const mathString = modelItem.getAttribute('formula').replaceAll('ref="<"', 'ref="&lt;"');
       const imgHtml = Parser.initParse(mathString, editor.config.get('language'));
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
@@ -418,9 +418,9 @@ export default class MathType extends Plugin {
       
       // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
       // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
-      output = output.replace('"<"', '"&lt;"')
-        .replace('">"', '"&gt;"')
-        .replace('><<', '>&lt;<');
+      output = output.replaceAll('"<"', '"&lt;"')
+        .replaceAll('">"', '"&gt;"')
+        .replaceAll('><<', '>&lt;<');
 
       // Ckeditor retrieves editor data and removes the image information on the formulas
       // We transform all the retrieved data to images and then we Parse the data.
