@@ -3,6 +3,15 @@ import { renderLatex } from './latex';
 import { renderMathML } from './mathml';
 import { bypassEncapsulation } from './retro';
 
+declare global {
+  interface Window {
+    viewer: {
+      properties: Properties,
+      isLoaded: boolean
+    };
+  }
+}
+
 // This should be the only code executed outside of a function
 // and the only code containing browser globals (e.g. window)
 // TODO try to set up the linter to check these two constraints
@@ -17,9 +26,12 @@ async function main(w: Window): Promise<void> {
   const properties: Properties = await Properties.generate();
 
   // Expose the globals to the browser
-  (w as any).viewer = {
-    properties,
-  };
+  if (!w.viewer) {
+    w.viewer = {
+      properties,
+      isLoaded: false,
+    };
+  }
 
   const document = w.document;
 
@@ -40,6 +52,11 @@ async function main(w: Window): Promise<void> {
   // Initial function to call once document is loaded
   // Renders formulas and sets observer
   const start = async () => {
+    // Check if the viewer is alredy loaded
+    if (w.viewer.isLoaded) return;
+
+    w.viewer.isLoaded = true;
+
     // First render
     properties.render();
 
