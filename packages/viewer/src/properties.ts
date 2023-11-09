@@ -66,7 +66,6 @@ export class Properties {
     const script: HTMLScriptElement = document.querySelector(`script[src*="${pluginName}"]`);
 
     if (!!script) {
-
       const pluginNamePosition: number = script.src.lastIndexOf(pluginName);
       const params: string = script.src.substring(pluginNamePosition + pluginName.length);
       const urlParams = new URLSearchParams(params);
@@ -86,8 +85,9 @@ export class Properties {
       if (urlParams.get('zoom') !== null && urlParams.get('zoom') !== undefined) {
         instance.config.zoom = +urlParams.get('zoom');
       }
-
     }
+
+    instance.checkServices();
 
     // Get backend parameters calling the configurationjson service
     try {
@@ -106,6 +106,24 @@ export class Properties {
     }
 
     return instance;
+  }
+
+  /**
+   * Check if is inside Integrations Services
+   * @deprecated This will be removed once the viewer uncouple from the integration services.
+   */
+  private checkServices(): void {
+    const path = ((document.currentScript as HTMLScriptElement).src);
+
+    if (path.includes('pluginwiris_engine')) {
+      // If the path includes pluginwiris_engine use Java Integrations Services
+      this.config.editorServicesRoot = path;
+      this.config.editorServicesExtension = '';
+    } else if (path.includes('integration/WIRISplugins')) {
+      // If the path includes 'integration/WIRISplugins' use PHP Integrations Services
+      this.config.editorServicesRoot = path;
+      this.config.editorServicesExtension = '.php';
+    }
   }
 
   get editorServicesRoot(): string {
