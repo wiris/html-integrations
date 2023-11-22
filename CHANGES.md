@@ -7,7 +7,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project is was 26th of October 2023.
+Last release of this project is was 22nd of November 2023.
+
+### 8.7.3 2023-11-22
+
+  - fix(tinymce): non blur chemtype svg icon 
+  - fix: viewer detect if services exist
 
 ### 8.7.1 2023-10-30
 

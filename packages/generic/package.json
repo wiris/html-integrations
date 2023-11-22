@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-generic",
-  "version": "8.7.0",
+  "version": "8.7.2",
   "description": "MathType Web for a generic HTML editor",
   "keywords": [
     "chem",
@@ -30,7 +30,7 @@
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.14.1"
+    "@wiris/mathtype-html-integration-devkit": "1.14.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
