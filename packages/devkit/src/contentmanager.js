@@ -504,6 +504,48 @@ export default class ContentManager {
   }
 
   /**
+   * Sets the editor to be used in Hand mode.
+   * 
+   * This method relies completely on the classes used on different HTML elements within the editor itself, meaning
+   * any change on those classes will make this code stop working properly.
+   * 
+   * On top of that, some of those classes are changed on runtime (for example, the one that makes some buttons change). 
+   * This forces us to use some delayed code (this is, a timeout) to make sure everything exists when we need it.
+   * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
+   */
+  setHandMode(forced) {
+    const inHandMode = document.querySelector('.wrs_editor.wrs_handOpen') !== null;
+
+    // "Open hand mode" button takes a little bit to be available, that's why the inner logic is run 
+    // after a delay.
+    setTimeout(() => {
+      // If in "forced mode" Before we show the hand mode, we hide the "keyboard button" so the user can't go to that mode
+      if (forced) {
+        // This selector gets the hand <-> keyboard mode switch, but since we don't need neither of them in this case, we can't just
+        // hide it for good.
+        const openKeyboardMode = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]");
+
+        if (openKeyboardMode) {
+          openKeyboardMode.style.visibility = 'hidden';
+        }
+      }
+
+      if (inHandMode) {
+        return;
+      }
+
+      // This complex selector is necessary because the classes used for the hand button aren't consistent, so basically
+      // we ensure we are selecting the correct button by making sure it is not the keyboard button (which shares most of the classes)
+      const openHandButton = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated:not(.wrs_handOpen.wrs_disablePalette) .wrs_handWrapper input[type=button]");
+
+      if (openHandButton) {
+        openHandButton.click();
+      }
+
+    }, 600); // Depending on the user's machine, this timeout may not be enough.
+  }
+
+  /**
    * Sets the correct toolbar depending if exist other custom toolbars
    * at the same time (e.g: Chemistry).
    */
