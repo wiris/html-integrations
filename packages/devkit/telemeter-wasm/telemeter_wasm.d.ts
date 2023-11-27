@@ -6,7 +6,7 @@ export function main_js(): void;
 /**
 */
 export enum Level {
-  Error = 0,
+  Err = 0,
   Warn = 1,
   Info = 2,
   Debug = 3,
@@ -44,7 +44,7 @@ export class Telemeter {
 */
   finish(): Promise<any>;
 /**
-* @param {boolean | undefined} new_debug_status
+* @param {boolean | undefined} [new_debug_status]
 */
   debug(new_debug_status?: boolean): void;
 }
@@ -53,8 +53,6 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly fuzzyhash: (a: number, b: number) => number;
-  readonly fuzzyhash_compare: (a: number, b: number) => number;
   readonly __wbg_telemeter_free: (a: number) => void;
   readonly telemeter_new: (a: number, b: number, c: number, d: number) => void;
   readonly telemeter_identify: (a: number, b: number, c: number) => number;
