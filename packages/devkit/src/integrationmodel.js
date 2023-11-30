@@ -12,7 +12,8 @@ import warnIcon from '../styles/icons/general/warn_icon.svg';  //eslint-disable-
  * @typedef {Object} IntegrationModelProperties
  * @property {string} configurationService - Configuration service path.
  * This parameter is needed to determine all services paths.
- * @property {HTMLElement} integrationModelProperties.target - HTML target.
+ * @property {HTMLElement} 
+ * .target - HTML target.
  * @property {string} integrationModelProperties.scriptName - Integration script name.
  * Usually the name of the integration script.
  * @property {Object} integrationModelProperties.environment - integration environment properties.
@@ -256,7 +257,7 @@ export default class IntegrationModel {
     document.body.appendChild(this.offlineModal);
 
     let modal = document.getElementById("wrs_modal_offline");
-    this.offlineModalClose.addEventListener('click', function() {modal.style.display = "none";});
+    this.offlineModalClose.addEventListener('click', function () { modal.style.display = "none"; });
 
     // Store editor name for telemetry purposes.
     let editorName = this.environment.editor;
@@ -314,7 +315,7 @@ export default class IntegrationModel {
     ];
 
     // Filter hosts to remove empty objects and empty keys.
-    hosts = hosts.filter(function( element ) {
+    hosts = hosts.filter(function (element) {
       if (element) Object.keys(element).forEach(key => element[key] === "unknown" ? delete element[key] : {});
       return element !== undefined;
     });
@@ -349,25 +350,25 @@ export default class IntegrationModel {
 
     let userAgent = window.navigator.userAgent;
 
-    if(/Brave/.test(userAgent)) {
+    if (/Brave/.test(userAgent)) {
       detectedBrowser = "brave";
       if (userAgent.indexOf("Brave/")) {
         let start = userAgent.indexOf("Brave") + 6;
         let end = userAgent.substring(start).indexOf(' ');
         end = (end === -1) ? userAgent.lastIndexOf("") : end;
-        versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+        versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
       }
     } else if (userAgent.indexOf('Edg/') !== -1) {
       detectedBrowser = "edge_chromium";
       let start = userAgent.indexOf("Edg/") + 4;
-      versionBrowser = (userAgent.substring(start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      versionBrowser = (userAgent.substring(start).replace('_', '.')).replace(/[^\d.-]/g, '');
     } else if (/Edg/.test(userAgent)) {
       detectedBrowser = "edge";
       let start = userAgent.indexOf("Edg") + 3;
       start = start + userAgent.substring(start).indexOf('/');
       let end = userAgent.substring(start).indexOf(' ');
       end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
     } else if (/Firefox/.test(userAgent) || /FxiOS/.test(userAgent)) {
       detectedBrowser = "firefox";
       let start = userAgent.indexOf("Firefox");
@@ -375,13 +376,13 @@ export default class IntegrationModel {
       start = start + userAgent.substring(start).indexOf('/') + 1;
       let end = userAgent.substring(start).indexOf(' ');
       end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
     } else if (/OPR/.test(userAgent)) {
       detectedBrowser = "opera";
       let start = userAgent.indexOf("OPR/") + 4;
       let end = userAgent.substring(start).indexOf(' ');
       end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
     } else if (/Chrome/.test(userAgent) || /CriOS/.test(userAgent)) {
       detectedBrowser = "chrome";
       let start = userAgent.indexOf("Chrome");
@@ -389,14 +390,14 @@ export default class IntegrationModel {
       start = start + userAgent.substring(start).indexOf('/') + 1;
       let end = userAgent.substring(start).indexOf(' ');
       end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
     } else if (/Safari/.test(userAgent)) {
       detectedBrowser = "safari";
       let start = userAgent.indexOf("Version/");
       start = start + userAgent.substring(start).indexOf('/') + 1;
       let end = userAgent.substring(start).indexOf(' ');
       end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace( '_', '.' ));
+      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
     }
 
     return { detectedBrowser, versionBrowser };
@@ -426,14 +427,14 @@ export default class IntegrationModel {
       if (userAgent.indexOf("OS X") !== -1) {
         let start = userAgent.indexOf("OS X") + 5;
         let end = userAgent.substring(start).indexOf(' ');
-        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+        versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
       }
     } else if (iosPlatforms.indexOf(platform) !== -1) {
       detectedOS = 'ios';
       if (userAgent.indexOf("OS ") !== -1) {
         let start = userAgent.indexOf("OS ") + 3;
         let end = userAgent.substring(start).indexOf(')');
-        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+        versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
       }
     } else if (windowsPlatforms.indexOf(platform) !== -1) {
       detectedOS = 'windows';
@@ -442,7 +443,7 @@ export default class IntegrationModel {
       if (end === -1) {
         end = userAgent.substring(start).indexOf(')');
       }
-      versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
     } else if (/Android/.test(userAgent)) {
       detectedOS = 'android';
       let start = userAgent.indexOf("Android");
@@ -450,13 +451,13 @@ export default class IntegrationModel {
       if (end === -1) {
         end = userAgent.substring(start).indexOf(')');
       }
-      versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
-    }else if (/CrOS/.test(userAgent)) {
-        detectedOS = 'chromeos';
-        let start = userAgent.indexOf("CrOS ") + 5;
-        start = start + userAgent.substring(start).indexOf(' ');
-        let end = userAgent.substring(start).indexOf(')');
-        versionOS = (userAgent.substring(start, end + start).replace( '_', '.' )).replace(/[^\d.-]/g, '');
+      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+    } else if (/CrOS/.test(userAgent)) {
+      detectedOS = 'chromeos';
+      let start = userAgent.indexOf("CrOS ") + 5;
+      start = start + userAgent.substring(start).indexOf(' ');
+      let end = userAgent.substring(start).indexOf(')');
+      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
     } else if (detectedOS === "unknown" && /Linux/.test(platform)) {
       detectedOS = 'linux';
     }
@@ -610,7 +611,7 @@ export default class IntegrationModel {
    * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    const obj =  this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+    const obj = this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
     // Delete temporal image when inserted
     this.core.editionProperties.temporalImage = null;
@@ -781,7 +782,7 @@ export default class IntegrationModel {
    */
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  getMathmlFromTextNode(textNode, caretPosition) {}
+  getMathmlFromTextNode(textNode, caretPosition) { }
 
   /**
    * Wrapper
@@ -791,7 +792,7 @@ export default class IntegrationModel {
    * @param {string} mathml valid mathml.
    */
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  fillNonLatexNode(event, window, mathml) {}
+  fillNonLatexNode(event, window, mathml) { }
 
   /**
     Wrapper.
@@ -800,7 +801,7 @@ export default class IntegrationModel {
    * @param {boolean} iframe
    */
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  getSelectedItem(target, isIframe) {}
+  getSelectedItem(target, isIframe) { }
 
   // Set temporal image to null and make focus come back.
   static setActionsOnCancelButtons() {

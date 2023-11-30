@@ -106,7 +106,8 @@ export default class GenericIntegration extends IntegrationModel {
             toolbar: toolbar,
             trigger: trigger,
           });
-        } catch (err) {trigger
+        } catch (err) {
+          trigger
           console.error(err);
         }
       } else {
@@ -185,7 +186,7 @@ export default class GenericIntegration extends IntegrationModel {
     // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) {}
+    } catch (e) { }
     if (typeof _wrs_int_langCode !== 'undefined') { // eslint-disable-line camelcase
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
       return _wrs_int_langCode; // eslint-disable-line camelcase, no-undef

@@ -44,12 +44,12 @@ export default class ContentManager {
     }
 
     /**
-* Environment properties. This object contains data about the integration platform.
-* @type {Object}
-* @property {String} editor - Editor name. Usually the HTML editor.
-* @property {String} mode - Save mode. Xml by default.
-* @property {String} version - Plugin version.
-  */
+    * Environment properties. This object contains data about the integration platform.
+    * @type {Object}
+    * @property {String} editor - Editor name. Usually the HTML editor.
+    * @property {String} mode - Save mode. Xml by default.
+    * @property {String} version - Plugin version.
+    */
     this.environment = {};
     if ('environment' in contentManagerAttributes) {
       this.environment = contentManagerAttributes.environment;
@@ -326,8 +326,8 @@ export default class ContentManager {
       'iPhone',
       'iPod',
     ].includes(navigator.platform)
-    // iPad on iOS 13 detection
-    || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+      // iPad on iOS 13 detection
+      || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   }
 
   /**
@@ -396,7 +396,7 @@ export default class ContentManager {
 
       // On WordPress integration, the focus gets lost right after setting it.
       // To fix this, we enforce another focus some milliseconds after this behaviour.
-      setTimeout(() => {this.editor.focus()}, 100);
+      setTimeout(() => { this.editor.focus() }, 100);
     }
   }
 
