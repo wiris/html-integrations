@@ -532,9 +532,9 @@ export default class ContentManager {
     // "Open hand mode" button takes a little bit to be available, that's why the inner logic is run 
     // after a delay.
     setTimeout(() => {
-      // If in "forced mode" Before we show the hand mode, we hide the "keyboard button" so the user can't go to that mode
+      // If in "forced mode", before we show the hand mode, we hide the "keyboard button" so the user can't go to that mode
       if (forced) {
-        // This selector gets the hand <-> keyboard mode switch, but since we don't need neither of them in this case, we can't just
+        // This selector gets the hand <-> keyboard mode switch, but since we don't need neither of them in this case, we cant just
         // hide it for good.
         const openKeyboardMode = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]");
 
@@ -548,7 +548,7 @@ export default class ContentManager {
       }
 
       // This complex selector is necessary because the classes used for the hand button aren't consistent, so basically
-      // we ensure we are selecting the correct button by making sure it is not the keyboard button (which shares most of the classes)
+      // we ensure we are selecting the correct button by discarding it is not the keyboard button
       const openHandButton = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated:not(.wrs_handOpen.wrs_disablePalette) .wrs_handWrapper input[type=button]");
 
       if (openHandButton) {
