@@ -170,6 +170,8 @@ export default class IntegrationModel {
         }
       });
     }
+
+    this.editorOptions = integrationModelProperties.editorOptions || {};
   }
 
   /**
@@ -204,6 +206,7 @@ export default class IntegrationModel {
 
     const coreProperties = {};
     coreProperties.serviceProviderProperties = this.serviceProviderProperties;
+
     this.setCore(new Core(coreProperties));
     this.core.addListener(listener);
     this.core.language = this.language;
@@ -542,7 +545,7 @@ export default class IntegrationModel {
     if (window.navigator.onLine) {
       this.core.editionProperties.dbclick = false;
       this.core.editionProperties.isNewElement = true;
-      this.core.openModalDialog(this.target, this.isIframe);
+      this.core.openModalDialog(this.target, this.isIframe, this.editorOptions);
     } else {
       let modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";
@@ -556,7 +559,7 @@ export default class IntegrationModel {
   openExistingFormulaEditor() {
     if (window.navigator.onLine) {
       this.core.editionProperties.isNewElement = false;
-      this.core.openModalDialog(this.target, this.isIframe);
+      this.core.openModalDialog(this.target, this.isIframe, this.editorOptions);
     } else {
       let modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";

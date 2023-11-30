@@ -22,6 +22,7 @@ export default class ContentManager {
    * create a new instance.
    */
   constructor(contentManagerAttributes) {
+
     /**
      * An object containing MathType editor parameters. See
      * http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters for further information.
@@ -136,6 +137,13 @@ export default class ContentManager {
      * @type {IntegrationModel}
      */
     this.integrationModel = null;
+
+
+    /**
+     * TODO
+     * @type {Object}
+     */
+    this.options = contentManagerAttributes.options || {};
   }
 
   /**
@@ -488,6 +496,11 @@ export default class ContentManager {
     }
 
     Core.globalListeners.fire('onModalOpen', {});
+
+    if (this.options.forcedHandMode) {
+      this.setHandMode();
+    }
+
   }
 
   /**
@@ -513,7 +526,7 @@ export default class ContentManager {
    * This forces us to use some delayed code (this is, a timeout) to make sure everything exists when we need it.
    * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
    */
-  setHandMode(forced) {
+  setHandMode(forced = true) {
     const inHandMode = document.querySelector('.wrs_editor.wrs_handOpen') !== null;
 
     // "Open hand mode" button takes a little bit to be available, that's why the inner logic is run 
