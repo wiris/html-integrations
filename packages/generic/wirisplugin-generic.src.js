@@ -23,7 +23,7 @@ export const currentInstance = null;
  * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
  * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
-export function wrsInitEditor(target, toolbar, mathtypeProperties) {
+export function wrsInitEditor(target, toolbar, mathtypeProperties = undefined, editorOptions = {}) {
   /**
      * @type {integrationModelProperties}
      */
@@ -35,7 +35,7 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
   }
 
   // GenericIntegration instance.
-  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties); // eslint-disable-line no-use-before-define
+  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties, editorOptions); // eslint-disable-line no-use-before-define
   genericIntegrationInstance.init();
   genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
@@ -66,7 +66,7 @@ export default class GenericIntegration extends IntegrationModel {
      * @constructs
      * @param {IntegrationModelProperties} integrationModelProperties
      */
-  constructor(integrationModelProperties) {
+  constructor(integrationModelProperties, editorOptions = {}) {
     if (typeof (integrationModelProperties.serviceProviderProperties) === 'undefined') {
       integrationModelProperties.serviceProviderProperties = {
         URI: process.env.SERVICE_PROVIDER_URI,
@@ -78,6 +78,7 @@ export default class GenericIntegration extends IntegrationModel {
     integrationModelProperties.environment = {};
     integrationModelProperties.environment.editor = 'GenericHTML';
     integrationModelProperties.environment.editorVersion = '1.0.0';
+    integrationModelProperties.editorOptions = editorOptions;
 
     super(integrationModelProperties);
 
