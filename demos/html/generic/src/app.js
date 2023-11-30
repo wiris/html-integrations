@@ -22,7 +22,7 @@ document.head.appendChild(jsDemoImagesTransform);
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
 
-// Initialyze the editor.
+// Initialize the editor.
 window.wrs_int_init(editableDiv, toolbarDiv);
 
 document.onreadystatechange = function () {

@@ -539,7 +539,7 @@ export default class Core {
       }
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
-    
+
     // Build the telemeter payload separated to delete null/undefined entries.
     const mathml = element?.dataset?.mathml;
     let payload = {
@@ -555,7 +555,7 @@ export default class Core {
     Object.keys(payload).forEach(key => {
       if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
     });
-    
+
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         ...payload,
@@ -717,9 +717,9 @@ export default class Core {
     // Editor parameters in backend, usually configuration.ini.
     const serverEditorParameters = Configuration.get('editorParameters');
     // Editor parameters through JavaScript configuration.
-    const cliendEditorParameters = this.integrationModel.editorParameters;
+    const clientEditorParameters = this.integrationModel.editorParameters;
     Object.assign(editorAttributes, defaultEditorAttributes, serverEditorParameters);
-    Object.assign(editorAttributes, defaultEditorAttributes, cliendEditorParameters);
+    Object.assign(editorAttributes, defaultEditorAttributes, clientEditorParameters);
 
     // Now, update backwards: if user has set a custom language, pass that back to core properties
     this.language = editorAttributes.language;
