@@ -140,7 +140,7 @@ export default class ContentManager {
 
 
     /**
-     * TODO
+     * Options object containing any configuration values to be used by the content manager. 
      * @type {Object}
      */
     this.options = contentManagerAttributes.options || {};
