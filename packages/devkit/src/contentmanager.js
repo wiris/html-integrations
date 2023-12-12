@@ -31,6 +31,7 @@ export default class ContentManager {
     this.editorAttributes = {};
     if ('editorAttributes' in contentManagerAttributes) {
       this.editorAttributes = contentManagerAttributes.editorAttributes;
+      this.editorAttributes.customHeaders = this.editorAttributes.editorParameters.customHeaders || {}
     } else {
       throw new Error('ContentManager constructor error: editorAttributes property missed.');
     }
@@ -45,12 +46,12 @@ export default class ContentManager {
     }
 
     /**
-    * Environment properties. This object contains data about the integration platform.
-    * @type {Object}
-    * @property {String} editor - Editor name. Usually the HTML editor.
-    * @property {String} mode - Save mode. Xml by default.
-    * @property {String} version - Plugin version.
-    */
+     * Environment properties. This object contains data about the integration platform.
+     * @type {Object}
+     * @property {String} editor - Editor name. Usually the HTML editor.
+     * @property {String} mode - Save mode. Xml by default.
+     * @property {String} version - Plugin version.
+     */
     this.environment = {};
     if ('environment' in contentManagerAttributes) {
       this.environment = contentManagerAttributes.environment;
@@ -230,6 +231,7 @@ export default class ContentManager {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     let editorUrl = Configuration.get('editorUrl');
+
     // We create an object url for parse url string and work more efficiently.
     const anchorElement = document.createElement('a');
 
@@ -655,6 +657,15 @@ export default class ContentManager {
   setToolbar(toolbar) {
     this.toolbar = toolbar;
     this.editor.setParams({ toolbar: this.toolbar });
+  }
+
+  /**
+   * Sets the custom headers added on editor requests.
+   * @returns {Object} headers - key value headers.
+   */
+  setCustomHeaders(headers) {
+    let headersObj = typeof headers === 'string' ? Util.convertStringToObject(headers) : headers;
+    this.editor.setParams({ customHeaders: headersObj });
   }
 
   /**
