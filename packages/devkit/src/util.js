@@ -202,6 +202,26 @@ export default class Util {
   }
 
   /**
+   * Convert a string representation of key-value pairs to an object.
+   * @param {string} keyValueString - String with key-value pairs in the format key1='value1', key2='value2'
+   * @returns {Object} - Object containing the key-value pairs
+   */
+  static convertStringToObject(keyValueString) {
+    if (!keyValueString) {
+      return {};
+    }
+
+    return keyValueString.split(',')
+      .map(pair => pair.trim().split('='))
+      .reduce((resultObject, [key, value]) => {
+        if (key && value) {
+          resultObject[key] = value;
+        }
+        return resultObject;
+      }, {});
+  }
+
+  /**
    * Cross-browser solution for creating new elements.
    * @param {string} tagName - tag name of the wished element.
    * @param {Object} attributes - an object where each key is a wished

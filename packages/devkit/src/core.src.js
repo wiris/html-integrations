@@ -237,6 +237,16 @@ export default class Core {
     }
   }
 
+
+  /**
+   * Sets the custom headers added on editor requests if contentManager isn't undefined.
+   * @returns {Object} headers - key value headers.
+   */
+  setHeaders(headers) {
+    this?.contentManager?.setCustomHeaders(headers);
+    Configuration.set('customHeaders', headers);
+  }
+
   /**
    * Returns the current {@link ModalDialog} instance.
    * @returns {ModalDialog} The current {@link ModalDialog} instance.
@@ -539,7 +549,7 @@ export default class Core {
       }
       this.placeCaretAfterNode(this.editionProperties.temporalImage);
     }
-    
+
     // Build the telemeter payload separated to delete null/undefined entries.
     const mathml = element?.dataset?.mathml;
     let payload = {
@@ -555,7 +565,7 @@ export default class Core {
     Object.keys(payload).forEach(key => {
       if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
     });
-    
+
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         ...payload,
@@ -726,6 +736,9 @@ export default class Core {
     StringManager.language = this.language;
 
     editorAttributes.rtl = this.integrationModel.rtl;
+
+    const customHeaders = Configuration.get('customHeaders');
+    editorAttributes.customHeaders = typeof customHeaders === 'string' ? Util.convertStringToObject(customHeaders) : customHeaders;
 
     const contentManagerAttributes = {};
     contentManagerAttributes.editorAttributes = editorAttributes;
