@@ -237,6 +237,16 @@ export default class Core {
     }
   }
 
+
+  /**
+   * Sets the custom headers added on editor requests if contentManager isn't undefined.
+   * @returns {Object} headers - key value headers.
+   */
+  setHeaders(headers) {
+    this?.contentManager?.setCustomHeaders(headers);
+    Configuration.set('customHeaders', headers);
+  }
+
   /**
    * Returns the current {@link ModalDialog} instance.
    * @returns {ModalDialog} The current {@link ModalDialog} instance.
@@ -728,6 +738,9 @@ export default class Core {
     StringManager.language = this.language;
 
     editorAttributes.rtl = this.integrationModel.rtl;
+
+    const customHeaders = Configuration.get('customHeaders');
+    editorAttributes.customHeaders = typeof customHeaders === 'string' ? Util.convertStringToObject(customHeaders) : customHeaders;
 
     const contentManagerAttributes = {};
     contentManagerAttributes.editorAttributes = editorAttributes;

@@ -200,7 +200,7 @@ export default class ServiceProvider {
       } else {
         httpRequest.send(null);
       }
-   
+
       return httpRequest.responseText;
     }
     return '';
