@@ -15,6 +15,10 @@ Last release of this project is was 20th of December 2023.
   - feat: Add method that allows the integration forcing the hand mode.
   - feat(viewer): decode safe mathml
 
+## Unreleased
+
+  - fix(viewer): Formulas containing '&' symbol are not rendered. #KB-42230
+
 ### 8.7.3 2023-11-22
 
   - fix(tinymce): non blur chemtype svg icon 
