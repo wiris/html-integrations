@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project is was 20th of December 2023.
 
+### Unreleased
+
+  - fix: MathType breaking editour source plugin. #KB-42401
+
 ### 8.8.0 2023-12-20
 
   - fix: Froala + Generic not setting GUI parameters.
