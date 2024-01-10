@@ -438,7 +438,11 @@ export default class MathType extends Plugin {
       const regexp = /<math(.*?)<\/math>/gm;
 
       // Get all MathML formulas and store them in an array.
-      let formulas = [...data.matchAll(regexp)];
+      // Using the conditional operator on data.main because the data patameter has different types depeding on:
+      //    editor.data.set can be used directly or by the source editing plugin.
+      //    With the source editor plugin, data is an object with the key `main` wich contains the source code string.
+      //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
+      let formulas = Object.values(data)[0] ? [...Object.values(data)[0].matchAll(regexp)] : [...data.matchAll(regexp)];
 
       // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
       formulas.forEach((formula) => {
