@@ -1,4 +1,5 @@
 import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
+import { Properties } from './properties';
 
 enum MethodType {
   Post = "POST",
@@ -49,11 +50,17 @@ export async function processJsonResponse(response: Promise<Response>): Promise<
 export async function callService(query: object, serviceName: string, method: MethodType, serverURL: string, extension: string) : Promise<any> {
   try {
     const url = new URL(serviceName + extension, serverURL);
+
+    const properties = Properties.getInstance();
+    const headers = {
+      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
+      ...properties.config.backendConfig.wiriscustomheaders
+    }
+
+    // const test = Properties.
     const init: RequestInit = {
       method,
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
+      headers
     };
 
     if (method === MethodType.Get) {
