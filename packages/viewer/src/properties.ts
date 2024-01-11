@@ -1,4 +1,5 @@
 import { configurationJson, StatusError } from './services';
+import Util from '@wiris/mathtype-html-integration-devkit/src/util';
 
 // Helper types for Config below
 type Viewer = 'none' | 'image' | 'mathml' | 'latex';
@@ -13,6 +14,7 @@ export type Config = {
   backendConfig?: {
     wirispluginperformance?: Wirispluginperformance,
     wiriseditormathmlattribute?: string,
+    wiriscustomheaders?: object,
   },
   dpi?: number,
   element?: string,
@@ -29,7 +31,8 @@ const defaultValues: Config = {
   editorServicesExtension: '',
   backendConfig: {
     wirispluginperformance: 'true',
-    wiriseditormathmlattribute: 'data-mathml'
+    wiriseditormathmlattribute: 'data-mathml',
+    wiriscustomheaders: {},
   },
   dpi: 96,
   element: 'body',
@@ -43,6 +46,8 @@ const defaultValues: Config = {
  */
 export class Properties {
 
+  private static instance: Properties | null = null;
+
   render: () => Promise<void> = async () => {};
 
   // Get URL properties (retrocompatibility).
@@ -54,13 +59,18 @@ export class Properties {
    */
   private new() {}
 
+  static getInstance(): Properties {
+    if (!Properties.instance) {
+      Properties.instance = new Properties();
+      Properties.instance.initialize();
+    }
+    return Properties.instance;
+  }
+
   /**
    * Creates and sets up a new instance of class Properties
    */
-  static async generate(): Promise<Properties> {
-
-    const instance = new Properties();
-
+  private async initialize(): Promise<void> {
     // Get URL parameters from <script>
     const pluginName = 'WIRISplugins.js';
     const script: HTMLScriptElement = document.querySelector(`script[src*="${pluginName}"]`);
@@ -71,31 +81,34 @@ export class Properties {
       const urlParams = new URLSearchParams(params);
 
       if (urlParams.get('dpi') !== null && urlParams.get('dpi') !== undefined) {
-        instance.config.dpi = +urlParams.get('dpi');
+        Properties.instance.config.dpi = +urlParams.get('dpi');
       }
       if (urlParams.get('element') !== null && urlParams.get('element') !== undefined) {
-        instance.config.element = urlParams.get('element');
+        Properties.instance.config.element = urlParams.get('element');
       }
       if (urlParams.get('lang') !== null && urlParams.get('lang') !== undefined) {
-        instance.config.lang = urlParams.get('lang');
+        Properties.instance.config.lang = urlParams.get('lang');
       }
       if (urlParams.get('viewer') !== null && urlParams.get('viewer') !== undefined) {
-        instance.config.viewer = (urlParams.get('viewer') as Viewer);
+        Properties.instance.config.viewer = (urlParams.get('viewer') as Viewer);
       }
       if (urlParams.get('zoom') !== null && urlParams.get('zoom') !== undefined) {
-        instance.config.zoom = +urlParams.get('zoom');
+        Properties.instance.config.zoom = +urlParams.get('zoom');
       }
     }
 
-    instance.checkServices();
+    Properties.instance.checkServices();
 
     // Get backend parameters calling the configurationjson service
     try {
-      instance.config.backendConfig = await configurationJson(
-        ['wirispluginperformance', 'wiriseditormathmlattribute'],
-        instance.editorServicesRoot,
-        instance.editorServicesExtension,
+      Properties.instance.config.backendConfig = await configurationJson(
+        ['wirispluginperformance', 'wiriseditormathmlattribute', 'wiriscustomheaders'],
+        Properties.instance.editorServicesRoot,
+        Properties.instance.editorServicesExtension
       );
+
+      // [TODO]
+      Properties.instance.config.backendConfig.wiriscustomheaders = Util.convertStringToObject(Properties.instance.config.backendConfig.wiriscustomheaders);
     } catch(e) {
       if (e instanceof StatusError) {
         // Do nothing; leave default values.
@@ -104,8 +117,6 @@ export class Properties {
         throw e;
       }
     }
-
-    return instance;
   }
 
   /**
