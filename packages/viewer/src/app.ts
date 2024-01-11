@@ -25,7 +25,7 @@ main(window);
  */
 async function main(w: Window): Promise<void> {
 
-  const properties: Properties = await Properties.generate();
+  const properties: Properties = await Properties.getInstance();
 
   // Expose the globals to the browser
   if (!w.viewer) {

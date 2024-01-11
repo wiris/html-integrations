@@ -31,7 +31,6 @@ export default class ContentManager {
     this.editorAttributes = {};
     if ('editorAttributes' in contentManagerAttributes) {
       this.editorAttributes = contentManagerAttributes.editorAttributes;
-      this.editorAttributes.customHeaders = this.editorAttributes.editorParameters.customHeaders || {}
     } else {
       throw new Error('ContentManager constructor error: editorAttributes property missed.');
     }
