@@ -442,21 +442,21 @@ export default class ContentManager {
 
   /**
    * Sets an empty MathML as {@link ContentManager.editor} content.
+   * This will open the MT/CT editor with the hand mode. 
+   * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
-    // As second argument we pass.
-    if (this.deviceProperties.isAndroid || this.deviceProperties.isIOS) {
-      // We need to set a empty annotation in order to maintain editor in Hand mode.
-      // Adding dir rtl in case of it's activated.
-      if (this.editor.getEditorModel().isRTL()) {
-        this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
-      } else {
-        this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
-      }
-    } else if (this.editor.getEditorModel().isRTL()) {
-      this.setMathML('<math dir="rtl"/>', true);
+    const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
+    const isRTL = this.editor.getEditorModel().isRTL();
+
+    if (isMobile || this.options.forcedHandMode) {
+      // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
+      this.setMathML(mathML, true);
     } else {
-      this.setMathML('<math/>', true);
+      // For non-mobile devices or not forced hand mode, set the empty MathML without an annotation.
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}/>`;
+      this.setMathML(mathML, true);
     }
   }
 
@@ -498,7 +498,7 @@ export default class ContentManager {
     Core.globalListeners.fire('onModalOpen', {});
 
     if (this.options.forcedHandMode) {
-      this.setHandMode();
+      this.hideHandModeButton();
     }
 
   }
@@ -517,7 +517,7 @@ export default class ContentManager {
   }
 
   /**
-   * Sets the editor to be used in Hand mode.
+   * Hides the hand <-> keyboard mode switch.
    * 
    * This method relies completely on the classes used on different HTML elements within the editor itself, meaning
    * any change on those classes will make this code stop working properly.
@@ -526,35 +526,25 @@ export default class ContentManager {
    * This forces us to use some delayed code (this is, a timeout) to make sure everything exists when we need it.
    * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
    */
-  setHandMode(forced = true) {
+  hideHandModeButton(forced = true) {
     const inHandMode = document.querySelector('.wrs_editor.wrs_handOpen') !== null;
 
     // "Open hand mode" button takes a little bit to be available, that's why the inner logic is run 
     // after a delay.
     setTimeout(() => {
-      // If in "forced mode", before we show the hand mode, we hide the "keyboard button" so the user can't go to that mode
-      if (forced) {
-        // This selector gets the hand <-> keyboard mode switch, but since we don't need neither of them in this case, we cant just
-        // hide it for good.
-        const openKeyboardMode = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]");
+      // This selector gets the hand <-> keyboard mode switch
+      const handModeButtonSelector = "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
+      const handModeButton = document.querySelector(handModeButtonSelector);
 
-        if (openKeyboardMode) {
-          openKeyboardMode.style.visibility = 'hidden';
-        }
+      // If in "forced mode", we hide the "keyboard button" so the user can't can't change between hand and keyboard modes.
+      if (forced && handModeButton) {
+        handModeButton.style.visibility = 'hidden';
+        return;
       }
 
       if (inHandMode) {
         return;
       }
-
-      // This complex selector is necessary because the classes used for the hand button aren't consistent, so basically
-      // we ensure we are selecting the correct button by discarding it is not the keyboard button
-      const openHandButton = document.querySelector("div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated:not(.wrs_handOpen.wrs_disablePalette) .wrs_handWrapper input[type=button]");
-
-      if (openHandButton) {
-        openHandButton.click();
-      }
-
     }, 600); // Depending on the user's machine, this timeout may not be enough.
   }
 
