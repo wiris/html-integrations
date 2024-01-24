@@ -499,6 +499,11 @@ export default class ContentManager {
 
     if (this.options.forcedHandMode) {
       this.hideHandModeButton();
+
+      // In case we have a keyboard written formula, we still want it to be opened with handMode.
+      if (this.mathML && !(this.mathML).includes("<annotation encoding=\"application/json\">") && !this.isNewElement) {
+        this.openHandOnKeyboardMathML(this.mathML, this.editor);
+      }
     }
 
   }
@@ -527,25 +532,68 @@ export default class ContentManager {
    * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
    */
   hideHandModeButton(forced = true) {
-    const inHandMode = document.querySelector('.wrs_editor.wrs_handOpen') !== null;
+    if (this.handSwitchHidden) {
+      return; // hand <-> keyboard button already hidden.
+    }
 
-    // "Open hand mode" button takes a little bit to be available, that's why the inner logic is run 
-    // after a delay.
-    setTimeout(() => {
-      // This selector gets the hand <-> keyboard mode switch
-      const handModeButtonSelector = "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
-      const handModeButton = document.querySelector(handModeButtonSelector);
+    // "Open hand mode" button takes a little bit to be available.
+    // This selector gets the hand <-> keyboard mode switch
+    const handModeButtonSelector = "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
 
-      // If in "forced mode", we hide the "keyboard button" so the user can't can't change between hand and keyboard modes.
-      if (forced && handModeButton) {
-        handModeButton.style.visibility = 'hidden';
-        return;
-      }
+    // If in "forced mode", we hide the "keyboard button" so the user can't can't change between hand and keyboard modes.
+    // We use an observer to ensure that the button it hidden as soon as it appears.
+    if (forced) {
+      const mutationInstance = new MutationObserver(mutations => {
+        const handModeButton = document.querySelector(handModeButtonSelector);
+        if (handModeButton) {
+          handModeButton.hidden = true;
+          this.handSwitchHidden = true;
+          mutationInstance.disconnect();
+        }
+      });
+      mutationInstance.observe(document.body, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+    }
+  }
 
-      if (inHandMode) {
-        return;
-      }
-    }, 600); // Depending on the user's machine, this timeout may not be enough.
+  /**
+   * It will open any formula written in Keyboard mode with the hand mode with the default hand trace.
+   * 
+   * @param {String} mathml The original KeyBoard MathML
+   * @param {Object} editor The editor object.
+   */
+  async openHandOnKeyboardMathML(mathml, editor){
+    // First, as an editor requirement, we need to update the editor object with the current MathML formula.
+    // Once the MathML formula is updated to the one we want to open with handMode, we will be able to proceed.
+    await new Promise(resolve => {
+      editor.setMathMLWithCallback(mathml, resolve);
+    });
+
+    // We wait until the hand editor object exists.
+    await this.waitForHand(editor);
+
+    // Logic to get the hand traces and open the formula in hand mode. 
+    // This logic comes from the editor.
+    const handEditor = editor.hand;
+    editor.handTemporalMathML = editor.getMathML();
+    const handCoordinates = editor.editorModel.getHandStrokes();
+    handEditor.setStrokes(handCoordinates);    
+    handEditor.fitStrokes(true);
+    editor.openHand();
+  }
+
+  /**
+   * Waits until the hand editor object exists.
+   * @param {Obect} editor The editor object. 
+   */
+  async waitForHand(editor) {
+    while (!editor.hand) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
   }
 
   /**
