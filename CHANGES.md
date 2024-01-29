@@ -7,11 +7,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project is was 20th of December 2023.
+Last release of this project was 29th of January 2024.
 
-### Unreleased
+### 8.8.1 2024-01-29
 
   - fix: MathType breaking editour source plugin. #KB-42401
+  - fix: Keep base64 images in base64 after fixing their size
+  - fix: Forced hand not working on keboard formulas
+  - feat: Make the editor init in hand mode when it's forced by options.
+  - docs: Fix some minor markdown issues.
+  - fix(viewer): Formulas with '&' symbol not rendereting
+  - fix(viewer): hash all parameters before sending get showimage request
+  - fix: MT breaking CK5 editor source plugin
 
 ### 8.8.0 2023-12-20
 
