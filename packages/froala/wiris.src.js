@@ -186,7 +186,9 @@ export class FroalaIntegration extends IntegrationModel {
     // Save a image to a temporal register to detect when we want to
     // change between MT and CT.
     // Will be deleted when inserting the formula or canceling it
-    this.core.editionProperties.temporalImage = element;
+    // When double clicking a word, Froala assigns the whole div that contains that word to `element`.
+    // We only really want temporalImage to be an img element, not divs:
+    this.core.editionProperties.temporalImage = element.tagName.toLowerCase() === 'img' ? element : null;
     super.doubleClickHandler(element);
   }
 
