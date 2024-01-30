@@ -81,9 +81,9 @@ jobs:
         id: check_errors
         run: |
           if grep -q "0 errors and" "packages/devkit/out/report.txt"; then
-            echo '::set-output name=LINK_ERROR::false'
+            echo 'LINK_ERROR=false' >> $GITHUB_OUTPUT
           else
-            echo '::set-output name=LINK_ERROR::true'
+            echo 'LINK_ERROR=true' >> $GITHUB_OUTPUT
           fi
 
       # 09. If there is any found error on the broken links report,
