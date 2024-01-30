@@ -76,9 +76,9 @@ export default class MathType extends Plugin {
     const { editor } = this;
 
     /**
-         * Integration model constructor attributes.
-         * @type {integrationModelProperties}
-         */
+     * Integration model constructor attributes.
+     * @type {integrationModelProperties}
+     */
     const integrationProperties = {};
     integrationProperties.environment = {};
     integrationProperties.environment.editor = 'CKEditor5';
@@ -415,7 +415,7 @@ export default class MathType extends Plugin {
      */
     editor.data.get = (options) => {
       let output = get.bind(editor.data)(options);
-      
+
       // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
       // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
       output = output.replaceAll('"<"', '"&lt;"')
@@ -452,10 +452,10 @@ export default class MathType extends Plugin {
           modifiedData = modifiedData.replace(mathml, latex);
         }
       });
-      
+
       // Run the setData code from CKEditor5 with the modified string.
-      set.bind(editor.data)(modifiedData); 
-    };  
+      set.bind(editor.data)(modifiedData);
+    };
   }
 
   /**
