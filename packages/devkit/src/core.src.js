@@ -570,7 +570,7 @@ export default class Core {
    * @param {HTMLElement} target - The target HTMLElement where formulas should be inserted.
    * @param {Boolean} isIframe - True if the target HTMLElement is an iframe. False otherwise.
    */
-  openModalDialog(target, isIframe, editorOptions = {}) {
+  openModalDialog(target, isIframe) {
 
     // Count the time since the editor is open
     this.editionProperties.editionStartTime = Date.now();
@@ -732,7 +732,6 @@ export default class Core {
     contentManagerAttributes.language = this.language;
     contentManagerAttributes.customEditors = this.customEditors;
     contentManagerAttributes.environment = this.environment;
-    contentManagerAttributes.options = editorOptions || {};
 
     if (this.modalDialog == null) {
       this.modalDialog = new ModalDialog(editorAttributes);

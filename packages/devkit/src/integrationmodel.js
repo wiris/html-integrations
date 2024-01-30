@@ -138,6 +138,8 @@ export default class IntegrationModel {
       this.managesLanguage = integrationModelProperties.managesLanguage;
     }
 
+    this.forcedHandMode = integrationModelProperties.forcedHandMode ?? false;
+
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
      * the image is resized.
@@ -169,8 +171,6 @@ export default class IntegrationModel {
         }
       });
     }
-
-    this.editorOptions = integrationModelProperties.editorOptions || {};
   }
 
   /**
@@ -544,7 +544,7 @@ export default class IntegrationModel {
     if (window.navigator.onLine) {
       this.core.editionProperties.dbclick = false;
       this.core.editionProperties.isNewElement = true;
-      this.core.openModalDialog(this.target, this.isIframe, this.editorOptions);
+      this.core.openModalDialog(this.target, this.isIframe);
     } else {
       let modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";
@@ -558,7 +558,7 @@ export default class IntegrationModel {
   openExistingFormulaEditor() {
     if (window.navigator.onLine) {
       this.core.editionProperties.isNewElement = false;
-      this.core.openModalDialog(this.target, this.isIframe, this.editorOptions);
+      this.core.openModalDialog(this.target, this.isIframe);
     } else {
       let modal = document.getElementById("wrs_modal_offline");
       modal.style.display = "block";
