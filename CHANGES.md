@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 29th of January 2024.
 
+### Unreleased
+
+  - feat: move handmode config to  integrationmodal
+
 ### 8.8.1 2024-01-29
 
   - fix: MathType breaking editour source plugin. #KB-42401
@@ -25,10 +29,6 @@ Last release of this project was 29th of January 2024.
   - fix: Froala + Generic not setting GUI parameters.
   - feat: Add method that allows the integration forcing the hand mode.
   - feat(viewer): decode safe mathml
-
-## Unreleased
-
-  - fix(viewer): Formulas containing '&' symbol are not rendered. #KB-42230
 
 ### 8.7.3 2023-11-22
 

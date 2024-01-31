@@ -47,10 +47,7 @@ export default class IntegrationModel {
      * Service parameters
      * @type {ServiceProviderProperties}
      */
-    this.serviceProviderProperties = {};
-    if ('serviceProviderProperties' in integrationModelProperties) {
-      this.serviceProviderProperties = integrationModelProperties.serviceProviderProperties;
-    }
+    this.serviceProviderProperties = integrationModelProperties.serviceProviderProperties ?? {};
 
     /**
      * Configuration service path. The integration service is needed by Core class to
@@ -91,19 +88,13 @@ export default class IntegrationModel {
     /**
      * Object containing the arguments needed by the callback function.
      */
-    this.callbackMethodArguments = {};
-    if ('callbackMethodArguments' in integrationModelProperties) {
-      this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments;
-    }
+    this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments ?? {};
 
     /**
      * Contains information about the integration environment:
      * like the name of the editor, the version, etc.
      */
-    this.environment = {};
-    if ('environment' in integrationModelProperties) {
-      this.environment = integrationModelProperties.environment;
-    }
+    this.environment = integrationModelProperties.environment ?? {};
 
     /**
      * Indicates if the DOM target is - or not - and iframe.
@@ -117,28 +108,22 @@ export default class IntegrationModel {
      * Instance of the integration editor object. Usually the entry point to access the API
      * of a HTML editor.
      */
-    this.editorObject = null;
-    if ('editorObject' in integrationModelProperties) {
-      this.editorObject = integrationModelProperties.editorObject;
-    }
+    this.editorObject = integrationModelProperties.editorObject ?? null;
 
     /**
      * Specifies if the direction of the text is RTL. false by default.
      */
-    this.rtl = false;
-    if ('rtl' in integrationModelProperties) {
-      this.rtl = integrationModelProperties.rtl;
-    }
+    this.rtl = integrationModelProperties.rtl ?? false;
 
     /**
      * Specifies if the integration model exposes the locale strings. false by default.
      */
-    this.managesLanguage = false;
-    if ('managesLanguage' in integrationModelProperties) {
-      this.managesLanguage = integrationModelProperties.managesLanguage;
-    }
+    this.managesLanguage = integrationModelProperties.managesLanguage ?? false;
 
-    this.forcedHandMode = integrationModelProperties.forcedHandMode ?? false;
+    /**
+     * Specify if editor will open in hand mode only
+     */
+    this.forcedHandMode = integrationModelProperties?.integrationParameters.forcedHandMode ?? false;
 
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
