@@ -404,7 +404,7 @@ export default class Util {
     // Get all the annotation content including the tags.
     let annotation = html.match(annotationRegex);
     // Sanitize html code without removing the <semantics> and <annotation> tags.
-    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation'], ALLOWED_ATTR: ['mathvariant', 'class', 'linebreak', 'open', 'close']});
+    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation'], ADD_ATTR: ['linebreak']});
     // Readd old annotation content.
     return html.replace(annotationRegex, annotation);
   }
