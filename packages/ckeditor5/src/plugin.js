@@ -146,7 +146,7 @@ export default class MathType extends Plugin {
         view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
 
         view.set({
-          label: StringManager.get('insert_math', editor.config.get('language')),
+          label: StringManager.get('insert_math', integration.getLanguage()),
           icon: mathIcon,
           tooltip: true,
         });
@@ -172,7 +172,7 @@ export default class MathType extends Plugin {
         view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
 
         view.set({
-          label: StringManager.get('insert_chem', editor.config.get('language')),
+          label: StringManager.get('insert_chem', integration.getLanguage()),
           icon: chemIcon,
           tooltip: true,
         });
@@ -267,7 +267,7 @@ export default class MathType extends Plugin {
             - A <mathml> element with a formula attribute set to the given formula, or
             - If the original <math> had a LaTeX annotation, then the annotation surrounded by "$$...$$" */
       const modelNode = isLatex
-        ? writer.createText(Parser.initParse(formula, editor.config.get('language')))
+        ? writer.createText(Parser.initParse(formula, integration.getLanguage()))
         : writer.createElement('mathml', { formula });
 
       // Find allowed parent for element that we are going to insert.
@@ -342,7 +342,7 @@ export default class MathType extends Plugin {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
       const mathString = modelItem.getAttribute('formula').replaceAll('ref="<"', 'ref="&lt;"');
-      const imgHtml = Parser.initParse(mathString, editor.config.get('language'));
+      const imgHtml = Parser.initParse(mathString, integration.getLanguage());
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
