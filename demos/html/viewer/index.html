@@ -6,18 +6,19 @@
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
   <script src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image" defer></script>
   <script>
-    window.content = `<p>MathML formula:
-  <math>
-    <mn>2</mn>
-    <mo>+</mo>
-    <mn>2</mn>
-    <mo>=</mo>
-    <mn>4</mn>
-  </math>
-</p>
-<p>LaTeX formula:
-  $$4 - 2 = 2$$
-</p>`;
+    window.content = `
+      <p>MathML formula:
+        <math>
+          <mn>2</mn>
+          <mo>+</mo>
+          <mn>2</mn>
+          <mo>=</mo>
+          <mn>4</mn>
+        </math>
+      </p>
+      <p>LaTeX formula:
+        $$4 - 2 = 2$$
+      </p>`;
 
     window.document.addEventListener('viewerLoaded', () => {
       // window.viewer.Properties can be modified here

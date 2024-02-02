@@ -25,16 +25,6 @@ async function main(w: Window): Promise<void> {
 
   const properties: Properties = await Properties.generate();
 
-  // Expose the globals to the browser
-  if (!w.viewer) {
-    w.viewer = {
-      properties,
-      isLoaded: false,
-    };
-  }
-
-  const document = w.document;
-
   /**
    * Parse the DOM looking for LaTeX and <math> elements.
    * Replaces them with the corresponding rendered images within the given element.
@@ -48,6 +38,19 @@ async function main(w: Window): Promise<void> {
       await renderMathML(properties, element);
     }
   };
+
+  // Expose the globals to the browser
+  if (!w.viewer) {
+    w.viewer = {
+      properties,
+      isLoaded: false,
+    };
+  } else {
+    w.viewer.properties = properties;
+    w.viewer.isLoaded = false;
+  }
+
+  const document = w.document;
 
   // Initial function to call once document is loaded
   // Renders formulas and sets observer
