@@ -413,9 +413,9 @@ export default class MathType extends Plugin {
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */
-    editor.data.get = (options) => {
-      let output = get.bind(editor.data)(options);
-      
+    editor.data.get = (...args) => {
+      let output = get.bind(editor.data)(...args);
+
       // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
       // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
       output = output.replaceAll('"<"', '"&lt;"')
@@ -431,7 +431,7 @@ export default class MathType extends Plugin {
     /**
     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
     */
-    editor.data.set = (data) => {
+    editor.data.set = (data, ...args) => {
       // Retrieve the data to be set on the CKEditor.
       let modifiedData = data;
       // Regex to find all mathml formulas.
@@ -452,10 +452,10 @@ export default class MathType extends Plugin {
           modifiedData = modifiedData.replace(mathml, latex);
         }
       });
-      
+
       // Run the setData code from CKEditor5 with the modified string.
-      set.bind(editor.data)(modifiedData); 
-    };  
+      set.bind(editor.data)(modifiedData, ...args);
+    };
   }
 
   /**
