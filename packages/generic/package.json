@@ -36,7 +36,7 @@
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "babel-loader": "^8.2.2",
-    "css-loader": "^5.2.4",
+    "css-loader": "^5.2.6",
     "raw-loader": "^4.0.2",
     "shx": "^0.3.3",
     "style-loader": "^3.3.0",
