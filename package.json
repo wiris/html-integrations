@@ -26,7 +26,7 @@
     "@nx/linter": "16.5.1",
     "@nx/web": "16.5.1",
     "@nx/webpack": "16.5.1",
-    "@nx/workspace": "16.5.1",
+    "@nx/workspace": "18.0.1",
     "@types/node": "18.0.0",
     "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^4.0.0",
