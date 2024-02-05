@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 29th of January 2024.
 
+### Unreleased
+
+  - fix: Avoid re-decoding formulas when rendering. #KB-43787
+
 ### 8.8.1 2024-01-29
 
   - fix: MathType breaking editour source plugin. #KB-42401
