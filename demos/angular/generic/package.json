@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^11.2.11",
     "codelyzer": "^6.0.0",
     "resources": "file:../../../packages/res",
-    "rxjs": "^6.6.0",
+    "rxjs": "^7.8.1",
     "ts-node": "^8.3.0",
     "tslib": "^2.0.0",
     "tslint": "^6.1.0",
