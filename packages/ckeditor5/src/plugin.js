@@ -55,7 +55,7 @@ export default class MathType extends Plugin {
     this._addSchema();
 
     // Add the downcast and upcast converters
-    this._addConverters();
+    this._addConverters(integration);
 
     // Expose the WirisPlugin variable to the window
     this._exposeWiris();
@@ -207,7 +207,7 @@ export default class MathType extends Plugin {
   /**
      * Add the downcast and upcast converters
      */
-  _addConverters() {
+  _addConverters(integration) {
     const { editor } = this;
 
     // Editing view -> Model
