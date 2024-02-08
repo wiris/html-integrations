@@ -113,7 +113,7 @@ export async function showImage(mml: string, lang: string, url: string, extensio
   }
 
   // Try to obtain the image via GET
-  const getParams = Parser.createShowImageSrcData(params);
+  const getParams = Parser.createShowImageSrcData(params, params.lang);
   const getResponse = callService(getParams, 'showimage', MethodType.Get, url, extension);
   try {
     return await processJsonResponse(getResponse);

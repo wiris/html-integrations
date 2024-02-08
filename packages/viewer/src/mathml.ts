@@ -11,6 +11,7 @@ interface FormulaData {
   baseline: string,
   height: string,
   width: string,
+  alt?: string,
 }
 
 /**
@@ -118,8 +119,11 @@ async function setImageProperties(properties: Properties, data: FormulaData, mml
 
   // Set the alt text whenever there's a translation for the characters and MathML on the mml.
   if (!corruptMathML.some(corruptMathML => mml.includes(corruptMathML))) {
-    const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
-    img.alt = text;
+    if (!data.alt) {
+      const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+      data.alt = text;
+    }
+    img.alt = data.alt;
   }
 
   return img;
