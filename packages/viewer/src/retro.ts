@@ -87,7 +87,8 @@ class JsPluginViewer {
    * @deprecated Please consider using {@link renderMathML}.
    */
   async parseElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
-    return renderMathML(JsPluginViewer.properties, element);
+    await renderLatex(JsPluginViewer.properties, element);
+    return await renderMathML(JsPluginViewer.properties, element);
   }
 
   /**

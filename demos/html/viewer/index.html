@@ -4,98 +4,107 @@
   <title>Demo Viewer on HTML</title>
   <meta charset="utf-8">
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <link rel="stylesheet" href="src/static/style.css">
   <script src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image" defer></script>
   <script>
-    window.content = `<p>MathML formula:
-  <math>
-    <mn>2</mn>
-    <mo>+</mo>
-    <mn>2</mn>
-    <mo>=</mo>
-    <mn>4</mn>
-  </math>
-</p>
-<p>LaTeX formula:
-  $$4 - 2 = 2$$
-</p>`;
-
-    window.document.addEventListener('viewerLoaded', () => {
-      // window.viewer.Properties can be modified here
-      // Changes are reflected live
+    document.addEventListener("DOMContentLoaded", function onDomLoad() {
+      document.getElementById('content').value = document.getElementsByTagName('main')[0].innerHTML;
     });
 
-    function resetContent() {
-      document.getElementsByTagName('main')[0].innerHTML = content;
-      document.getElementById('content').value = content;
-    }
+    function handleSubmit(event) {
+      event.preventDefault();
 
-    document.addEventListener("DOMContentLoaded", resetContent);
+      // Accessing form data using the event object
+      const formData = new FormData(event.target);
+
+      const config = {
+        backendConfig: {
+          wiriseditormathmlattribute: wiriseditormathmlattribute.value,
+          wirispluginperformance: wirispluginperformance.value === 'on',
+        },
+        dpi: dpi.value,
+        editorServicesExtension: '',
+        editorServicesRoot: editorServicesRoot.value,
+        element: element.value,
+        lang: lang.value,
+        viewer: viewer.value,
+        zoom: zoom.value,
+      }
+
+      window.viewer.properties.config = config;
+
+      document.getElementsByTagName('main')[0].innerHTML = document.getElementById('content').value;
+      com.wiris.js.JsPluginViewer.parseElement(document.getElementsByTagName('main')[0]);
+    }
 
     // Show the version number of the viewer
     fetch('node_modules/@wiris/mathtype-viewer/package.json')
       .then(response => response.json())
       .then(({ version }) => document.getElementById('version').innerText = version);
-</script>
+  </script>
 </head>
-<body style="font-family: sans-serif;">
-  <div style="overflow: auto;">
-    <div style="float:left;">
-      <main></main>
-    </div>
-    <div style="float: right; border: 1px solid darkgrey; padding: 10px; margin: 10px; border-radius: 5px; box-shadow: lightgray 0 0 5px 5px;">
-      MathType Viewer version: <output id="version"></output>
-      <form>
-        <label for="wiriseditormathmlattribute">wiriseditormathmlattribute:</label>
-        <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" oninput="resetContent(); window.viewer.properties.config.wiriseditormathmlattribute = event.target.value;"
-          type="text" value="data-mathml"/>
-        <br/>
-
-        <label for="wirispluginperformance">wirispluginperformance:</label>
-        <input name="wirispluginperformance" id="wirispluginperformance" oninput="resetContent(); window.viewer.properties.config.wirispluginperformance = event.target.value;"
-          type="checkbox" checked/>
-        <br/>
-
-        <label for="editorServicesRoot">editorServicesRoot:</label>
-        <input name="editorServicesRoot" id="editorServicesRoot" oninput="resetContent(); window.viewer.properties.config.editorServicesRoot = event.target.value;"
-          type="text" value="https://www.wiris.net/demo/plugins/app/"/>
-        <br/>
-
-        <label for="viewer">Viewer:</label>
-        <select name="viewer" id="viewer" onchange="resetContent(); window.viewer.properties.config.viewer = event.target.value;">
-          <option value="none">none</option>
-          <option value="image" selected>image</option>
-          <option value="mathml">mathml</option>
-          <option value="latex">latex</option>
-        </select>
-        <br/>
-
-        <label for="element">Element:</label>
-        <input name="element" id="element" oninput="resetContent(); window.viewer.properties.config.element = event.target.value;"
-          type="text" value="main"/>
-        <br/>
-
-        <label for="lang">Language:</label>
-        <input name="lang" id="lang" oninput="resetContent(); window.viewer.properties.config.lang = event.target.value;"
-          type="text" value="en"/>
-        <br/>
-
-        <label for="dpi">DPI:</label>
-        <input name="dpi" id="dpi" onchange="resetContent(); window.viewer.properties.config.dpi = +event.target.value;" oninput="document.getElementById('dpiOutput').innerText = event.target.value"
-          type="range" min="0" max="100" value="96"/>
-        <output id="dpiOutput">96</output>
-        <br/>
-
-        <label for="zoom">Zoom:</label>
-        <input name="zoom" id="zoom" onchange="resetContent(); window.viewer.properties.config.zoom = +event.target.value;" oninput="document.getElementById('zoomOutput').innerText = event.target.value"
-          type="range" min="0" max="10" step="0.01" value="1"/>
-        <output id="zoomOutput">1</output>
-        <br/>
-
-        <label for="content">Content:</label>
-        <textarea name="content" id="content" cols="50" rows="20" oninput="window.content = event.target.value; resetContent();"></textarea>
-        <br/>
-      </form>
-    </div>
+<body>
+  <div class="mathml-container">
+    <main>
+      <p>
+        <b>MathML formula:</b>
+        <math><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></math>
+      </p>
+      <p><b>LaTeX formula:</b> $$4 - 2 = 2$$</p>
+    </main>
   </div>
+  <form onsubmit="handleSubmit(event)">
+    <h3 class="title">MathType Viewer version: <output id="version"></output></h3>
+    <div class="form-container">
+      <div class="column">
+        <label>
+          wiriseditormathmlattribute:
+          <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" type="text" value="data-mathml"/>
+        </label>
+        <label class="checkbox-container">
+          <input name="wirispluginperformance" id="wirispluginperformance" type="checkbox" checked/>
+          wirispluginperformance
+        </label>
+        <label>
+          editorServicesRoot:
+          <input name="editorServicesRoot" id="editorServicesRoot" type="text" value="https://www.wiris.net/demo/plugins/app/"/>
+        </label>
+        <div class="checkbox-container">
+          <label for="dpi">DPI:</label>
+          <input name="dpi" id="dpi" type="range" min="0" max="100" value="96"/>
+          <output id="dpiOutput">96</output>
+        </div>
+      </div>
+      <div class="column">
+        <label>
+          Viewer:
+          <select name="viewer" id="viewer">
+            <option value="none">none</option>
+            <option value="image" selected>image</option>
+            <option value="mathml">mathml</option>
+            <option value="latex">latex</option>
+          </select>
+        </label>
+        <label>
+          Element:
+          <input name="element" id="element" type="text" value="main"/>
+        </label>
+        <label>
+          Language:
+          <input name="lang" id="lang" type="text" value="en"/>
+        </label>
+        <div class="checkbox-container">
+          <label for="zoom">Zoom:</label>
+          <input name="zoom" id="zoom" type="range" min="0" max="10" step="0.01" value="1"/>
+          <output id="zoomOutput">1</output>
+        </div>
+      </div>
+    </div>
+    <label>
+      Content:
+      <textarea name="content" id="content" cols="50" rows="20"></textarea>
+    </label>
+    <button type="submit">Submit</button>
+  </form>
 </body>
 </html>

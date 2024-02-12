@@ -31,6 +31,9 @@ async function main(w: Window): Promise<void> {
       properties,
       isLoaded: false,
     };
+  } else {
+    w.viewer.properties = properties;
+    w.viewer.isLoaded = false;
   }
 
   const document = w.document;
