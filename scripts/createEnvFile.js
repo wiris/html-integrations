@@ -2,7 +2,7 @@
  * Create environment.prod.ts file for the Angular + Froala demo.
  *
  * This script is run on the deploy-staging workflow in order to
- * set the  Froala Key from GitHub secret on staging demo.
+ * set the Froala Key from GitHub secret on staging demo.
  */
 
 const fs = require('fs');

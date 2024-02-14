@@ -12,6 +12,20 @@ All the commands can be executed either from the root of the project, or from th
 * [**yarn**](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (*currently: v1.22.19*)
 * [**nx**](https://nx.dev/getting-started/installation#installing-nx-globally) (*latest*) - Optional
 
+## Set up environment variables
+
+The following editors require a license key:
+
+* **CKEditor4**: Mandatory
+* **Froala**: Optional
+
+For that reason, you'll need to create an `env` file with those keys or add them to your existing `.env` file. Follow the example below:
+
+```bash
+CKEDITOR4_API_KEY=XXXXXX
+froala_API_KEY=XXXXXX
+```
+
 ## Build and start a demo in development mode
 
 Assuming that you already executed the `yarn` command, you'll have to build the desired package and start the demo:
