@@ -162,6 +162,7 @@ jobs:
 
       - name: Build the demos
         env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           REACT_APP_FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
         run: |
