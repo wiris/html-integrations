@@ -123,7 +123,7 @@ export default class IntegrationModel {
     /**
      * Specify if editor will open in hand mode only
      */
-    this.forcedHandMode = integrationModelProperties?.integrationParameters.forcedHandMode ?? false;
+    this.forcedHandMode = integrationModelProperties?.integrationParameters?.forcedHandMode ?? false;
 
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
