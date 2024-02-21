@@ -252,15 +252,6 @@ export default class GenericIntegration extends IntegrationModel {
     }
   }
 
-  /**
-     * @inheritdoc
-     * @param {HTMLElement} element - DOM object target.
-     */
-  doubleClickHandler(element) {
-    this.core.editionProperties.temporalImage = element;
-    super.doubleClickHandler(element);
-  }
-
   /** @inheritdoc */
   openNewFormulaEditor() {
     this.core.editionProperties.dbclick = false;
