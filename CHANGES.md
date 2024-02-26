@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 5th of February 2024.
 
+### Unreleased
+  - fix: Error when open a plain text with MT/CT editor. #KB-44250
+
 ### 8.8.2 2024-02-05
 
   - fix: Avoid re-decoding formulas when rendering. #KB-43787

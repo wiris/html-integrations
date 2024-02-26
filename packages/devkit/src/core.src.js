@@ -419,6 +419,8 @@ export default class Core {
    * @param {Node} node - The Node element.
    */
   placeCaretAfterNode(node) {
+    if (node === null) return;
+
     this.integrationModel.getSelection();
     const nodeDocument = node.ownerDocument;
     if (typeof nodeDocument.getSelection !== 'undefined' && !!node.parentElement) {
