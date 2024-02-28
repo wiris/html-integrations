@@ -16,6 +16,7 @@
     "@wiris/mathtype-viewer": "*"
   },
   "devDependencies": {
-    "serve": "^14.2.0"
+    "serve": "^14.2.0",
+    "resources": "file:../../../packages/res"
   }
 }
