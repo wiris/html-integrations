@@ -3,12 +3,11 @@ import './static/style.css';
 
 document.addEventListener("DOMContentLoaded", function onDomLoad() {
     document.getElementById('content').value = document.getElementsByTagName('main')[0].innerHTML;
-    document.getElementById('git_commit').innerText = git.hash;
-    
-  });
+    document.getElementById('git_commit').innerText = git.hash;    
+});
 
-  // Show the version number of the viewer
-  fetch('node_modules/@wiris/mathtype-viewer/package.json')
+// Show the version number of the viewer
+fetch('node_modules/@wiris/mathtype-viewer/package.json')
     .then(response => response.json())
     .then(({ version }) => document.getElementById('version').innerText = version);
 
