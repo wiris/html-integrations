@@ -2,12 +2,14 @@ import { Properties } from './properties';
 import { renderLatex } from './latex';
 import { renderMathML } from './mathml';
 import { bypassEncapsulation } from './retro';
+import packageInformation from '../../../node_modules/@wiris/mathtype-viewer/package.json'
 
 declare global {
   interface Window {
     viewer: {
       properties: Properties,
-      isLoaded: boolean
+      isLoaded: boolean,
+      version: string
     };
   }
 }
@@ -30,10 +32,12 @@ async function main(w: Window): Promise<void> {
     w.viewer = {
       properties,
       isLoaded: false,
+      version: packageInformation.version
     };
   } else {
     w.viewer.properties = properties;
     w.viewer.isLoaded = false;
+    w.viewer.version = packageInformation.version;
   }
 
   const document = w.document;

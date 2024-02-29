@@ -11,6 +11,7 @@ Last release of this project was 5th of February 2024.
 
 ### Unreleased
   - fix: Error when open a plain text with MT/CT editor. #KB-44250
+  - feat: Add version text on html-viewer window property. #KB-43186
 
 ### 8.8.2 2024-02-05
 
