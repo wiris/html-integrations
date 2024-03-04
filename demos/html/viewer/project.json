@@ -16,13 +16,13 @@
       }
     },
     "start": {
-      "executor": "@nx/web:file-server",
+      "executor": "@nx/webpack:dev-server",
       "dependsOn": [
         "prestart"
       ],
       "options": {
-        "buildTarget": "viewer:build",
-        "staticFilePath": "demos/html/viewer"
+        "buildTarget": "html-viewer:build",
+        "webpackConfig": "demos/html/viewer/webpack.config.js"
       }
     },
     "start-remote": {
@@ -35,11 +35,19 @@
       }
     },
     "build": {
+      "executor": "@nx/webpack:webpack",
       "dependsOn": [
         "viewer:build",
         "prestart"
       ],
-      "executor": "nx:noop"
+      "options": {
+        "main": "demos/html/viewer/src/app.js",
+        "outputPath": "dist",
+        "tsConfig": "tsconfig.app.json",
+        "generateIndexHtml": false,
+        "index": "demos/html/viewer/index.html",
+        "webpackConfig": "demos/html/viewer/webpack.config.js"
+      }
     },
     "lint": {
       "executor": "@nx/linter:eslint",

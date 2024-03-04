@@ -4,44 +4,7 @@
   <title>Demo Viewer on HTML</title>
   <meta charset="utf-8">
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-  <link rel="stylesheet" href="src/static/style.css">
   <script src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image" defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function onDomLoad() {
-      document.getElementById('content').value = document.getElementsByTagName('main')[0].innerHTML;
-    });
-
-    function handleSubmit(event) {
-      event.preventDefault();
-
-      // Accessing form data using the event object
-      const formData = new FormData(event.target);
-
-      const config = {
-        backendConfig: {
-          wiriseditormathmlattribute: wiriseditormathmlattribute.value,
-          wirispluginperformance: wirispluginperformance.value === 'on',
-        },
-        dpi: dpi.value,
-        editorServicesExtension: '',
-        editorServicesRoot: editorServicesRoot.value,
-        element: element.value,
-        lang: lang.value,
-        viewer: viewer.value,
-        zoom: zoom.value,
-      }
-
-      window.viewer.properties.config = config;
-
-      document.getElementsByTagName('main')[0].innerHTML = document.getElementById('content').value;
-      com.wiris.js.JsPluginViewer.parseElement(document.getElementsByTagName('main')[0]);
-    }
-
-    // Show the version number of the viewer
-    fetch('node_modules/@wiris/mathtype-viewer/package.json')
-      .then(response => response.json())
-      .then(({ version }) => document.getElementById('version').innerText = version);
-  </script>
 </head>
 <body>
   <div class="mathml-container">
@@ -53,8 +16,9 @@
       <p><b>LaTeX formula:</b> $$4 - 2 = 2$$</p>
     </main>
   </div>
-  <form onsubmit="handleSubmit(event)">
+  <form id="viewer_form">
     <h3 class="title">MathType Viewer version: <output id="version"></output></h3>
+    <h4>Commit hash: <output id="git_commit"></output></h4>
     <div class="form-container">
       <div class="column">
         <label>
@@ -106,5 +70,6 @@
     </label>
     <button type="submit">Submit</button>
   </form>
+  <script src="./dist/demo.js"></script> 
 </body>
 </html>
