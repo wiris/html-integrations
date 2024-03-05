@@ -11,6 +11,7 @@ Last release of this project was 18th of March 2024.
 
 ### Unreleased
   - fix(ck5): Add some DOMPurify exception in order to avoid error when inserting some formula. #KB-44372
+  - fix: Avoid TypeError when the selected node don't have some properties. #KB-44268
 
 ### 8.8.3 2024-03-18
 
@@ -30,9 +31,6 @@ Last release of this project was 18th of March 2024.
 ### 8.8.2 2024-02-05
 
   - fix: Avoid re-decoding formulas when rendering. #KB-43787
-
-### Unreleased
-
   - feat: move handmode config to  integrationmodal
 
 ### 8.8.1 2024-01-29
