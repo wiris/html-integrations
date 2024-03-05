@@ -413,49 +413,54 @@ export default class MathType extends Plugin {
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */
-    editor.data.get = (...args) => {
-      let output = get.bind(editor.data)(...args);
+    editor.data.on('get',
+      (e) => {
+        let output = e.return;
 
-      // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
-      // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
-      output = output.replaceAll('"<"', '"&lt;"')
-        .replaceAll('">"', '"&gt;"')
-        .replaceAll('><<', '>&lt;<');
+        // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
+        // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
+        output = output.replaceAll('"<"', '"&lt;"')
+          .replaceAll('">"', '"&gt;"')
+          .replaceAll('><<', '>&lt;<');
 
-      // Ckeditor retrieves editor data and removes the image information on the formulas
-      // We transform all the retrieved data to images and then we Parse the data.
-      let imageFormula = Parser.initParse(output);
-      return Parser.endParse(imageFormula);
-    };
+        // Ckeditor retrieves editor data and removes the image information on the formulas
+        // We transform all the retrieved data to images and then we Parse the data.
+        let imageFormula = Parser.initParse(output);
+        e.return = Parser.endParse(imageFormula);
+      },
+      { priority: 'low' }
+    );
 
     /**
     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
     */
-    editor.data.set = (data, ...args) => {
-      // Retrieve the data to be set on the CKEditor.
-      let modifiedData = data;
-      // Regex to find all mathml formulas.
-      const regexp = /<math(.*?)<\/math>/gm;
+    editor.data.on('set',
+      (e, args) => {
+        // Retrieve the data to be set on the CKEditor.
+        let modifiedData = args[0];
+        // Regex to find all mathml formulas.
+        const regexp = /<math(.*?)<\/math>/gm;
 
-      // Get all MathML formulas and store them in an array.
-      // Using the conditional operator on data.main because the data patameter has different types depeding on:
-      //    editor.data.set can be used directly or by the source editing plugin.
-      //    With the source editor plugin, data is an object with the key `main` wich contains the source code string.
-      //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-      let formulas = Object.values(data)[0] ? [...Object.values(data)[0].matchAll(regexp)] : [...data.matchAll(regexp)];
+        // Get all MathML formulas and store them in an array.
+        // Using the conditional operator on data.main because the data patameter has different types depeding on:
+        //    editor.data.set can be used directly or by the source editing plugin.
+        //    With the source editor plugin, data is an object with the key `main` wich contains the source code string.
+        //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
+        let formulas = Object.values(data)[0] ? [...Object.values(data)[0].matchAll(regexp)] : [...data.matchAll(regexp)];
 
-      // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
-      formulas.forEach((formula) => {
-        let mathml = formula[0];
-        if (mathml.includes('encoding="LaTeX"')) { // LaTeX found.
-          let latex = '$$$' + Latex.getLatexFromMathML(mathml) + '$$$'; // We add $$$ instead of $$ because the replace function ignores one $.
-          modifiedData = modifiedData.replace(mathml, latex);
-        }
-      });
+        // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
+        formulas.forEach((formula) => {
+          let mathml = formula[0];
+          if (mathml.includes('encoding="LaTeX"')) { // LaTeX found.
+            let latex = '$$$' + Latex.getLatexFromMathML(mathml) + '$$$'; // We add $$$ instead of $$ because the replace function ignores one $.
+            modifiedData = modifiedData.replace(mathml, latex);
+          }
+        });
 
-      // Run the setData code from CKEditor5 with the modified string.
-      set.bind(editor.data)(modifiedData, ...args);
-    };
+        args[0] = modifiedData
+      },
+      { priority: 'high' }
+    );
   }
 
   /**
