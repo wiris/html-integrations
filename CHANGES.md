@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Last release of this project was 5th of February 2024.
+### Unreleased
+  - fix: Avoid TypeError when the selected node don't have some properties.
 
 ### 8.8.2 2024-02-05
 
