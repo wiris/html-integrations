@@ -2087,12 +2087,19 @@
     "@ckeditor/ckeditor5-watchdog" "^23.0.0"
     tslib "^2.0.0"
 
-"@ckeditor/ckeditor5-autoformat@38.1.1", "@ckeditor/ckeditor5-autoformat@^38.0.0":
+"@ckeditor/ckeditor5-autoformat@38.1.1":
   version "38.1.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-38.1.1.tgz#896bebd05d66e99c2179ee1c4e759046a15f616c"
   integrity sha512-Ppxxp0qprhENktpKv3lkVFchS9iZt0GbCVLPg8ffTb5dCAQgeXyC/TdR1b3zpbdjgSyai07OYgU59oTNUOwtog==
   dependencies:
     ckeditor5 "38.1.1"
+
+"@ckeditor/ckeditor5-autoformat@^41.2.0":
+  version "41.2.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-41.2.0.tgz#85d416533bc8239793bcc5601e5c02c9184a639a"
+  integrity sha512-YMh1VHFnE5ReVzeovBvlminMcykVycVsIoEtUgBXiJ1LJ+wN+6ONL01YRgiXTyyrScNxWwXLU9fMKha+4K4KLQ==
+  dependencies:
+    ckeditor5 "41.2.0"
 
 "@ckeditor/ckeditor5-basic-styles@38.1.1", "@ckeditor/ckeditor5-basic-styles@^38.0.0":
   version "38.1.1"
