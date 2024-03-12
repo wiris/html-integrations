@@ -78,7 +78,6 @@ export default class GenericIntegration extends IntegrationModel {
     integrationModelProperties.environment = {};
     integrationModelProperties.environment.editor = 'GenericHTML';
     integrationModelProperties.environment.editorVersion = '1.0.0';
-    integrationModelProperties.editorOptions = editorOptions;
 
     super(integrationModelProperties);
 
