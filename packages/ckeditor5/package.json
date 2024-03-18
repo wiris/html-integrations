@@ -39,6 +39,6 @@
     "@ckeditor/ckeditor5-engine": "^38.0.0",
     "@ckeditor/ckeditor5-ui": "^38.0.0",
     "@ckeditor/ckeditor5-widget": "^38.0.0",
-    "@wiris/mathtype-html-integration-devkit": "1.16.1"
+    "@wiris/mathtype-html-integration-devkit": "1.16.2"
   }
 }

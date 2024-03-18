@@ -7,12 +7,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 5th of February 2024.
+Last release of this project was 18th of March 2024.
 
-### Unreleased
-  - fix: Error when open a plain text with MT/CT editor. #KB-44250
+### 8.8.3 2024-03-18
+
+  - feat: Create CKEditor5 Vue demo. #KB-36629
+  - fix(viewer): Update demo to apply changes. #KB-40530
+  - fix: Set forceHandMode to be an integrationParameter. #KB-42181
+  - fix(froala): Inline toolbar not allowing to add more thant 1 formula. #KB-42503
+  - fix(viewer): Allow formulas wothout accessible text to render. #KB-42660
   - feat: Add version text on html-viewer window property. #KB-43186
+  - fix: Update DOMPurify. #KB-43669
+  - fix(viewer): Take into account language when using cache. #KB-43670
+  - fix(ck5): Make integration understand language object. #KB-43679
+  - feat(ck4): Add license key. #KB-43835
   - fix: Error when double-click a plain text and open MT/CT editor. #KB-44249
+  - fix: Error when open a plain text with MT/CT editor. #KB-44250
 
 ### 8.8.2 2024-02-05
 
