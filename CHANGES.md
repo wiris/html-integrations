@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 18th of March 2024.
 
+### Unreleased
+  - fix(ck4): Place correct formular position after inserting an equation.  
+
 ### 8.8.3 2024-03-18
 
   - feat: Create CKEditor5 Vue demo. #KB-36629
