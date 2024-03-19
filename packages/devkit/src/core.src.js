@@ -468,7 +468,6 @@ export default class Core {
             }
           }
         } else {
-          const editorSelection = this.integrationModel.getSelection();
           let range = null;
           // In IE is needed keep the range due to after focus the modal window
           // it can't be retrieved the last selection.
@@ -476,6 +475,7 @@ export default class Core {
             ({ range } = this.editionProperties);
             this.editionProperties.range = null;
           } else {
+            const editorSelection = this.integrationModel.getSelection();
             range = editorSelection.getRangeAt(0);
           }
 
