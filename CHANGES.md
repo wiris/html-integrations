@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Last release of this project was 18th of March 2024.
 
 ### Unreleased
-  - fix(ck4): Place correct formular position after inserting an equation.  
+  - fix(ck4): Place formula in the correct position after inserting italics (or bold or underlined) text in a new line.  
 
 ### 8.8.3 2024-03-18
 
