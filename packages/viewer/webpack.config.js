@@ -3,8 +3,7 @@ const path = require('path');
 module.exports = (config, context) => {
   return {
     entry: './src/app.ts',
-    mode: 'development',
-    devtool: 'inline-source-map',
+    mode: 'none',
     module: {
       rules: [
         {
@@ -34,6 +33,9 @@ module.exports = (config, context) => {
       hot: true,
       port: 8001,
       open: true,
+    },
+    optimization: {
+      minimize: true, // enabling this reduces file size and readability
     },
   }
 };

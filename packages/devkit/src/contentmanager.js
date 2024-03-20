@@ -22,6 +22,7 @@ export default class ContentManager {
    * create a new instance.
    */
   constructor(contentManagerAttributes) {
+
     /**
      * An object containing MathType editor parameters. See
      * http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters for further information.
@@ -327,8 +328,8 @@ export default class ContentManager {
       'iPhone',
       'iPod',
     ].includes(navigator.platform)
-    // iPad on iOS 13 detection
-    || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+      // iPad on iOS 13 detection
+      || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
   }
 
   /**
@@ -397,7 +398,7 @@ export default class ContentManager {
 
       // On WordPress integration, the focus gets lost right after setting it.
       // To fix this, we enforce another focus some milliseconds after this behaviour.
-      setTimeout(() => {this.editor.focus()}, 100);
+      setTimeout(() => { this.editor.focus() }, 100);
     }
   }
 
@@ -435,21 +436,21 @@ export default class ContentManager {
 
   /**
    * Sets an empty MathML as {@link ContentManager.editor} content.
+   * This will open the MT/CT editor with the hand mode.
+   * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
-    // As second argument we pass.
-    if (this.deviceProperties.isAndroid || this.deviceProperties.isIOS) {
-      // We need to set a empty annotation in order to maintain editor in Hand mode.
-      // Adding dir rtl in case of it's activated.
-      if (this.editor.getEditorModel().isRTL()) {
-        this.setMathML('<math dir="rtl"><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
-      } else {
-        this.setMathML('<math><semantics><annotation encoding="application/json">[]</annotation></semantics></math>', true);
-      }
-    } else if (this.editor.getEditorModel().isRTL()) {
-      this.setMathML('<math dir="rtl"/>', true);
+    const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
+    const isRTL = this.editor.getEditorModel().isRTL();
+
+    if (isMobile || this.integrationModel.forcedHandMode) {
+      // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
+      this.setMathML(mathML, true);
     } else {
-      this.setMathML('<math/>', true);
+      // For non-mobile devices or not forced hand mode, set the empty MathML without an annotation.
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}/>`;
+      this.setMathML(mathML, true);
     }
   }
 
@@ -489,6 +490,16 @@ export default class ContentManager {
     }
 
     Core.globalListeners.fire('onModalOpen', {});
+
+    if (this.integrationModel.forcedHandMode) {
+      this.hideHandModeButton();
+
+      // In case we have a keyboard written formula, we still want it to be opened with handMode.
+      if (this.mathML && !(this.mathML).includes("<annotation encoding=\"application/json\">") && !this.isNewElement) {
+        this.openHandOnKeyboardMathML(this.mathML, this.editor);
+      }
+    }
+
   }
 
   /**
@@ -501,6 +512,81 @@ export default class ContentManager {
       wrsEditor.classList.remove('wrs_disablePalette');
     } else {
       setTimeout(ContentManager.prototype.setKeyboardMode.bind(this), 100);
+    }
+  }
+
+  /**
+   * Hides the hand <-> keyboard mode switch.
+   *
+   * This method relies completely on the classes used on different HTML elements within the editor itself, meaning
+   * any change on those classes will make this code stop working properly.
+   *
+   * On top of that, some of those classes are changed on runtime (for example, the one that makes some buttons change).
+   * This forces us to use some delayed code (this is, a timeout) to make sure everything exists when we need it.
+   * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
+   */
+  hideHandModeButton(forced = true) {
+    if (this.handSwitchHidden) {
+      return; // hand <-> keyboard button already hidden.
+    }
+
+    // "Open hand mode" button takes a little bit to be available.
+    // This selector gets the hand <-> keyboard mode switch
+    const handModeButtonSelector = "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
+
+    // If in "forced mode", we hide the "keyboard button" so the user can't can't change between hand and keyboard modes.
+    // We use an observer to ensure that the button it hidden as soon as it appears.
+    if (forced) {
+      const mutationInstance = new MutationObserver(mutations => {
+        const handModeButton = document.querySelector(handModeButtonSelector);
+        if (handModeButton) {
+          handModeButton.hidden = true;
+          this.handSwitchHidden = true;
+          mutationInstance.disconnect();
+        }
+      });
+      mutationInstance.observe(document.body, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+    }
+  }
+
+  /**
+   * It will open any formula written in Keyboard mode with the hand mode with the default hand trace.
+   *
+   * @param {String} mathml The original KeyBoard MathML
+   * @param {Object} editor The editor object.
+   */
+  async openHandOnKeyboardMathML(mathml, editor){
+    // First, as an editor requirement, we need to update the editor object with the current MathML formula.
+    // Once the MathML formula is updated to the one we want to open with handMode, we will be able to proceed.
+    await new Promise(resolve => {
+      editor.setMathMLWithCallback(mathml, resolve);
+    });
+
+    // We wait until the hand editor object exists.
+    await this.waitForHand(editor);
+
+    // Logic to get the hand traces and open the formula in hand mode.
+    // This logic comes from the editor.
+    const handEditor = editor.hand;
+    editor.handTemporalMathML = editor.getMathML();
+    const handCoordinates = editor.editorModel.getHandStrokes();
+    handEditor.setStrokes(handCoordinates);
+    handEditor.fitStrokes(true);
+    editor.openHand();
+  }
+
+  /**
+   * Waits until the hand editor object exists.
+   * @param {Obect} editor The editor object.
+   */
+  async waitForHand(editor) {
+    while (!editor.hand) {
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
   }
 

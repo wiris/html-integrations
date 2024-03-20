@@ -26,6 +26,8 @@ CKEDITOR.replace('editor', { //eslint-disable-line
     { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
     { name: 'others' },
   ],
+
+  licenseKey: process.env.CKEDITOR4_API_KEY || '',
   // language: 'de',
   // mathTypeParameters: {
   //   editorParameters: { language: 'es' }, // MathType config, including language

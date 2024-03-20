@@ -7,7 +7,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project is was 22nd of November 2023.
+Last release of this project was 18th of March 2024.
+
+### 8.8.3 2024-03-18
+
+  - feat: Create CKEditor5 Vue demo. #KB-36629
+  - fix(viewer): Update demo to apply changes. #KB-40530
+  - fix: Set forceHandMode to be an integrationParameter. #KB-42181
+  - fix(froala): Inline toolbar not allowing to add more thant 1 formula. #KB-42503
+  - fix(viewer): Allow formulas wothout accessible text to render. #KB-42660
+  - feat: Add version text on html-viewer window property. #KB-43186
+  - fix: Update DOMPurify. #KB-43669
+  - fix(viewer): Take into account language when using cache. #KB-43670
+  - fix(ck5): Make integration understand language object. #KB-43679
+  - feat(ck4): Add license key. #KB-43835
+  - fix: Error when double-click a plain text and open MT/CT editor. #KB-44249
+  - fix: Error when open a plain text with MT/CT editor. #KB-44250
+
+### 8.8.2 2024-02-05
+
+  - fix: Avoid re-decoding formulas when rendering. #KB-43787
+
+### Unreleased
+
+  - feat: move handmode config to  integrationmodal
+
+### 8.8.1 2024-01-29
+
+  - fix: MathType breaking editour source plugin. #KB-42401
+  - fix: Keep base64 images in base64 after fixing their size
+  - fix: Forced hand not working on keboard formulas
+  - feat: Make the editor init in hand mode when it's forced by options.
+  - docs: Fix some minor markdown issues.
+  - fix(viewer): Formulas with '&' symbol not rendereting
+  - fix(viewer): hash all parameters before sending get showimage request
+  - fix: MT breaking CK5 editor source plugin
+
+### 8.8.0 2023-12-20
+
+  - fix: Froala + Generic not setting GUI parameters.
+  - feat: Add method that allows the integration forcing the hand mode.
+  - feat(viewer): decode safe mathml
 
 ### 8.7.3 2023-11-22
 
@@ -27,6 +67,7 @@ Last release of this project is was 22nd of November 2023.
 	- fix: Re-do action not working in TinyMCE 6 and Froala. #KB-39819
 	- fix: Error displayed when adding to the website the contents edited with an HTML editor if some text was added before some LaTeX code.
 	- fix: Drag & drop an inserted formula with brackets would change the brackets to parentheses. #KB-39549
+  - fix: Froala + Generic not setting GUI parameters. #KB-40561
 
 ### 8.6.0 2023-10-10
 

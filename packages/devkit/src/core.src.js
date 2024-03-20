@@ -429,6 +429,8 @@ export default class Core {
    * @param {Node} node - The Node element.
    */
   placeCaretAfterNode(node) {
+    if (node === null) return;
+
     this.integrationModel.getSelection();
     const nodeDocument = node.ownerDocument;
     if (typeof nodeDocument.getSelection !== 'undefined' && !!node.parentElement) {
@@ -727,9 +729,9 @@ export default class Core {
     // Editor parameters in backend, usually configuration.ini.
     const serverEditorParameters = Configuration.get('editorParameters');
     // Editor parameters through JavaScript configuration.
-    const cliendEditorParameters = this.integrationModel.editorParameters;
+    const clientEditorParameters = this.integrationModel.editorParameters;
     Object.assign(editorAttributes, defaultEditorAttributes, serverEditorParameters);
-    Object.assign(editorAttributes, defaultEditorAttributes, cliendEditorParameters);
+    Object.assign(editorAttributes, defaultEditorAttributes, clientEditorParameters);
 
     // Now, update backwards: if user has set a custom language, pass that back to core properties
     this.language = editorAttributes.language;

@@ -1,0 +1,28 @@
+{
+  "name": "vue-ckeditor5",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "demos/vue/ckeditor5/src",
+  "targets": {
+    "start": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start"
+      },
+      "outputs": ["demos/vue/ckeditor5/dist/demo.js"]
+    },
+    "start-remote": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "start-remote"
+      },
+      "outputs": ["demos/vue/ckeditor5/dist/demo.js"]
+    },
+    "build": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build"
+      },
+      "outputs": ["demos/vue/ckeditor5/dist/demo.js"]
+    }
+  }
+}

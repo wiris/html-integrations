@@ -21,12 +21,12 @@ function decodeEntities(text: string): string {
 export function htmlEntitiesToXmlEntities(text: string): string {
   text = decodeEntities(text);
 
-  // Replaces the < & > characters to its HTMLEntity to avoid render issues.
-  text = text.split('"<"').join('"&lt;"')
-    .split('">"')
-    .join('"&gt;"')
-    .split('><<')
-    .join('>&lt;<');
+  // Replaces the '<', '&', '>', and '"' characters to its HTMLEntity to avoid render issues.
+  text = text.split('&').join('&amp;')
+    .split('"<"').join('"&lt;"')
+    .split('">"').join('"&gt;"')
+    .split('><<').join('>&lt;<');
+
 
   let result = '';
   for (let i = 0; i < text.length; i++) {

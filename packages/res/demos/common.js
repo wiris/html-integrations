@@ -1,4 +1,4 @@
-var git = require('../git-data.json');
+import git from "../git-data.json";
 
 /**
  * Copies the content of an element x as the content of an element y.
@@ -16,7 +16,7 @@ export function copyContentFromxToy(x, y) {
  * @param {*} wirisVersion Version of the wiris plugin used.
  */
 export function setEditorAndWirisVersion(editorVersion = 0, wirisVersion = 0) {
-  if (wirisVersion !== 0) document.getElementById('version_wiris').innerHTML += wirisVersion; 
+  if (wirisVersion !== 0) document.getElementById('version_wiris').innerHTML += wirisVersion;
   if (editorVersion !== 0) document.getElementById('version_editor').innerHTML += editorVersion;
   document.getElementById('git_branch').innerHTML += 'Branch: ' + git.branch;
   document.getElementById('git_commit').innerHTML += 'Commit hash: ' + git.hash;

@@ -17,6 +17,7 @@ We create and curate a collection of working code examples in order to test, val
 - HTML
 - React
 - Angular
+- Vue
 
 **Editors**
 

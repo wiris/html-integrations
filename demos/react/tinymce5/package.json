@@ -20,9 +20,9 @@
   },
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce5 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
-    "start-remote": "cross-env PORT=3006 react-scripts start",
+    "start-remote": "cross-env PORT=3006 --openssl-legacy-provider start",
     "prestart": "yarn && yarn link @wiris/mathtype-tinymce5 && yarn link @wiris/mathtype-html-integration-devkit",
-    "start": "cross-env PORT=3006 react-scripts start",
+    "start": "cross-env PORT=3006 --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },

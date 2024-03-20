@@ -13,6 +13,16 @@
         "{options.outputPath}"
       ]
     },
+    "build-dev": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "build-dev",
+        "outputPath": "packages/viewer/dist"
+      },
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {

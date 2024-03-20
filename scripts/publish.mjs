@@ -17,6 +17,10 @@ import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+// Set up the Git user identity
+execSync(`git config --global user.email "cicd@wiris.com"`, { stdio: 'inherit' });
+execSync(`git config --global user.name "wiris-ci-bot"`, { stdio: 'inherit' });
+
 // For each "shortPackageName=version" argument provided, get the
 // shortPackageName, fullPackageName, and version
 const data = argv

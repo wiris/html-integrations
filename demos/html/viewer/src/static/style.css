@@ -1,0 +1,81 @@
+body {
+  font-family: sans-serif;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 130px;
+}
+
+main {
+  margin-left: 1em;
+}
+
+input[type=checkbox] {
+  height: 25px;
+  width: 25px;
+  text-align: center;
+  padding: 10px;
+}
+
+button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  margin-top: 1em;
+  padding: 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form {
+  float: right;
+  border: 1px solid darkgrey;
+  padding: 2em;
+  margin: 1em;
+  border-radius: 5px;
+  max-width: 650px;
+  box-shadow: lightgray 0 0 5px 5px;
+}
+
+h3 {
+  margin: 0;
+}
+
+.title {
+  margin: 0;
+  margin-bottom: 2em;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2em;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.column {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-gap: 0.5em;
+}
+
+.mathml-container {
+  float: left;
+}

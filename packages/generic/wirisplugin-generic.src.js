@@ -25,8 +25,8 @@ export const currentInstance = null;
  */
 export function wrsInitEditor(target, toolbar, mathtypeProperties) {
   /**
-     * @type {integrationModelProperties}
-     */
+   * @type {integrationModelProperties}
+   */
   const genericIntegrationProperties = {};
   genericIntegrationProperties.target = target;
   genericIntegrationProperties.toolbar = toolbar;
@@ -93,7 +93,7 @@ export default class GenericIntegration extends IntegrationModel {
    */
   telemeter = {
     /**
-     * 
+     *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'button' when the modal is opened by clicking the MathType or ChemType button from the toolbar
      *                         'formula' when the modal is opened by double-click on the formula
@@ -106,7 +106,8 @@ export default class GenericIntegration extends IntegrationModel {
             toolbar: toolbar,
             trigger: trigger,
           });
-        } catch (err) {trigger
+        } catch (err) {
+          trigger
           console.error(err);
         }
       } else {
@@ -115,7 +116,7 @@ export default class GenericIntegration extends IntegrationModel {
     },
 
     /**
-     * 
+     *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
      */
@@ -137,7 +138,7 @@ export default class GenericIntegration extends IntegrationModel {
     },
 
     /**
-     * 
+     *
      * @param {string} mathml_origin If editing a formula, the original mathml that's going to be edited. Otherwise null
      * @param {string} mathml The mathml that's going to be inserted
      * @param {number} time The time passed since the MT/CT modal opened until the calling of this function
@@ -185,7 +186,7 @@ export default class GenericIntegration extends IntegrationModel {
     // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) {}
+    } catch (e) { }
     if (typeof _wrs_int_langCode !== 'undefined') { // eslint-disable-line camelcase
       console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
       return _wrs_int_langCode; // eslint-disable-line camelcase, no-undef
@@ -248,15 +249,6 @@ export default class GenericIntegration extends IntegrationModel {
         this.toolbar.appendChild(customEditorButton);
       }
     }
-  }
-
-  /**
-     * @inheritdoc
-     * @param {HTMLElement} element - DOM object target.
-     */
-  doubleClickHandler(element) {
-    this.core.editionProperties.temporalImage = element;
-    super.doubleClickHandler(element);
   }
 
   /** @inheritdoc */
