@@ -27,7 +27,7 @@ export type Config = {
  * Fallback values for the configurations that are not set.
  */
 const defaultValues: Config = {
-  editorServicesRoot: 'https://www.wiris.net/demo/plugins/app/',
+  editorServicesRoot: 'http://localhost:8080/pluginwiris_engine/app/',
   editorServicesExtension: '',
   backendConfig: {
     wirispluginperformance: 'true',
