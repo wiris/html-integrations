@@ -88,8 +88,8 @@ module.exports = (config, context) => {
     },
     plugins: [
       new webpack.EnvironmentPlugin({
-        'SERVICE_PROVIDER_URI': 'https://www.wiris.net/demo/plugins/app',
-        'SERVICE_PROVIDER_SERVER': 'java',
+        'SERVICE_PROVIDER_URI': 'http://localhost:8081/plugin/3.50/tinymce6-demo/tinymce6/plugins/tiny_mce_wiris/integration/',
+        'SERVICE_PROVIDER_SERVER': 'php',
       }),
       new CleanWebpackPlugin({
         root: process.cwd(),

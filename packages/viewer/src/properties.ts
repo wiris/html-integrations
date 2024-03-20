@@ -27,8 +27,8 @@ export type Config = {
  * Fallback values for the configurations that are not set.
  */
 const defaultValues: Config = {
-  editorServicesRoot: 'https://www.wiris.net/demo/plugins/app/',
-  editorServicesExtension: '',
+  editorServicesRoot: 'http://localhost:8081/plugin/3.50/tinymce6-demo/tinymce6/plugins/tiny_mce_wiris/integration/',
+  editorServicesExtension: '.php',
   backendConfig: {
     wirispluginperformance: 'true',
     wiriseditormathmlattribute: 'data-mathml',
