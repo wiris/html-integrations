@@ -13,6 +13,7 @@ Last release of this project was 18th of March 2024.
   - fix(ck5): Add some DOMPurify exception in order to avoid error when inserting some formula. #KB-44372
   - fix: Avoid TypeError when the selected node don't have some properties. #KB-44268
   - fix(ck4): Place formula in the correct position after inserting italics (or bold or underlined) text in a new line. #KB-43453
+  - feat: Upgrade DOMPurify library to avoid deletion of some MathML tags by error. #KB-44328
 
 ### 8.8.3 2024-03-18
 
