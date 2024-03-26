@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 18th of March 2024.
 
+### Unreleased
+  - fix(ck5): Add some DOMPurify exception in order to avoid error when inserting some formula. #KB-44372
+
 ### 8.8.3 2024-03-18
 
   - feat: Create CKEditor5 Vue demo. #KB-36629
