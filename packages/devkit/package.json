@@ -48,7 +48,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "dompurify": "^3.0.10",
+    "dompurify": "^2.3.9",
     "raw-loader": "^4.0.2",
     "uuid": "^8.3.2"
   }
