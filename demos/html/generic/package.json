@@ -19,7 +19,7 @@
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.0",
     "chokidar": "^3.5.2",
-    "css-loader": "^3.0.0",
+    "css-loader": "^5.2.6",
     "html-loader": "^1.0.0",
     "raw-loader": "^4.0.0",
     "style-loader": "^1.0.0",
