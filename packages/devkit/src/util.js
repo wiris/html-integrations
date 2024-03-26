@@ -403,8 +403,8 @@ export default class Util {
     let annotationRegex = /\<annotation.+\<\/annotation\>/
     // Get all the annotation content including the tags.
     let annotation = html.match(annotationRegex);
-    // Sanitize html code without removing the <semantics> and <annotation> tags.
-    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation'], ADD_ATTR: ['linebreak', 'indentalign']});
+    // Sanitize html code without removing our supported MathML tags and attributes.
+    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation', 'mstack', 'msline', 'msrow'], ADD_ATTR: ['linebreak', 'charalign', 'stackalign']});
     // Readd old annotation content.
     return html.replace(annotationRegex, annotation);
   }
