@@ -408,6 +408,17 @@ export const currentInstance = null;
         // PLUGINS-1070: We set this variable out of condition to parse content after.
         WirisPlugin.instances[editor.id].initParsed = true;
       };
+      
+      // Change the destroy behavior to also destroy the MathType instance.
+      const destroy = editor.destroy;
+      
+      editor.destroy = function () {
+        WirisPlugin.instances[editor.id].listeners.fire('onDestroy', {});
+        
+        // Destroy the Mathtype instance.
+        WirisPlugin.instances[editor.id].destroy();
+        destroy.call(editor);
+      };
 
       if ("onInit" in editor) {
         editor.onInit.add(onInit);

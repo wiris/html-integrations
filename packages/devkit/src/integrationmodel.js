@@ -726,17 +726,30 @@ export default class IntegrationModel {
    * Remove events to formulas in the DOM target.
    */
   removeEvents() {
-    const eventTarget = this.isIframe
-      ? this.target.contentWindow.document
-      : this.target;
+    const eventTarget = this.isIframe && this.target.contentWindow?.document ? this.target.contentWindow.document : this.target;
+
+    if (!eventTarget) {
+      return;
+    }
+
     Util.removeElementEvents(eventTarget);
   }
 
   /**
-   * Remove events and set this.editorObject to null in order to prevent memory leaks.
+   * Remove events, modals and set this.editorObject to null in order to prevent memory leaks.
    */
   destroy() {
     this.removeEvents();
+    // Destroy modal dialog if exists.
+    if (this.core.modalDialog) {
+      this.core.modalDialog.destroy();
+    }
+
+    // Remove offline modal dialog if exists.
+    if (this.offlineModal) {
+      this.offlineModal.remove();
+    }
+
     this.editorObject = null;
   }
 
