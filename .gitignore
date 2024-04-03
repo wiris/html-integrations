@@ -71,3 +71,6 @@ app.*.js
 **/environments/environment.prod.ts
 **/git-data.json
 .env
+
+# Ignores all .hot-update.js files
+**.hot-update.js

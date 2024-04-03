@@ -67,6 +67,10 @@ export class CKEditor4Integration extends IntegrationModel {
         "cke_button__ckeditor_wiris_formulaeditorchemistry",
       )[0].style.display = "none";
     }
+    // Change the destroy behavior to also destroy the Mathtype instance.
+    editor.on('destroy', () => {
+      this.destroy();
+    });
   }
 
   /**

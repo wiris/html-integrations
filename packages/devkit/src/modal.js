@@ -612,6 +612,19 @@ export default class ModalDialog {
 
     Core.globalListeners.fire("onModalClose", {});
   }
+  /**
+    * Closes modal window and destroys the object.
+    */
+  destroy() {
+    // Close modal window.
+    this.close();
+    // Remove listeners and destroy the object.
+    this.removeListeners();
+    this.overlay.remove();
+    this.container.remove();
+    // Reset properties to allow open again.
+    this.properties.created = false;
+  }
 
   /**
    * Sets the website scale to one.

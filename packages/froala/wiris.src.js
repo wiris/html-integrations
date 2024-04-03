@@ -66,6 +66,12 @@ export class FroalaIntegration extends IntegrationModel {
       }.bind(this, this.editorObject),
     );
 
+    // Change the destroy behavior to also destroy the Mathtype instance.
+    this.editorObject.events.on('destroy', () => {
+      // Destroy the MathType plugin.
+      this.destroy();
+    });
+
     /**
      * Update editor parameters.
      * The integration could contain an object with editor parameters.
@@ -390,17 +396,10 @@ export class FroalaIntegration extends IntegrationModel {
     const selectedImage = this.image.get();
     // Value can be undefined.
     if (selectedImage) {
-      if (
-        ($btn.parent()[0].hasAttribute("class") &&
-          $btn.parent()[0].getAttribute("class").indexOf("fr-buttons") ===
-            -1) ||
-        (selectedImage[0] &&
-          (selectedImage[0].classList.contains(
-            Configuration.get("imageClassName"),
-          ) ||
-            selectedImage.hasClass(Configuration.get("imageClassName"))))
-      ) {
-        // Is a MathType image.
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) ||
+      (selectedImage[0] && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) ||
+      // Is a MathType image.
+      selectedImage.hasClass(Configuration.get('imageClassName'))))) {
         // Show MathType icons if previously were hidden.
         $btn.removeClass("fr-hidden");
         // Disable resize box.
