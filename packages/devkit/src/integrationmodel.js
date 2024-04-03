@@ -659,6 +659,14 @@ export default class IntegrationModel {
    */
   destroy() {
     this.removeEvents();
+    // Destroy modal dialog if exists.
+    if (this.core.modalDialog) {
+      this.core.modalDialog.destroy();
+    }
+    // Remove offline modal dialog if exists.
+    if (this.offlineModal) {
+      this.offlineModal.remove();
+    }
     this.editorObject = null;
   }
 
