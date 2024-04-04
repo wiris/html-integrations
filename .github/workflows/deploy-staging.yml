@@ -180,10 +180,9 @@ jobs:
 
               # Then, for every specific editor copy all the resources that are loaded at runtime
 
-              # For all demos except the viewer, copy dist
-              if [ "${{ matrix.editor }}" != "viewer" ]; then
-                aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
-              fi
+              # For all demos copy dist
+              aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
+              
               if [ "${{ matrix.editor }}" = "ckeditor4" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png
