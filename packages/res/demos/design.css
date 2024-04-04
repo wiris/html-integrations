@@ -86,6 +86,30 @@
   color: #fff;
 }
 
+#btn_destroyEditor {
+  background-color: #fff;
+  border: 2px solid #e26969;
+  color: #000;
+  margin: 15px;
+}
+
+#btn_destroyEditor:hover {
+  background-color: #e26969;
+  color: #fff;
+}
+
+#btn_newEditor {
+  background-color: #fff;
+  border: 2px solid #e2aa69;
+  color: #000;
+  margin: 15px;
+}
+
+#btn_newEditor:hover {
+  background-color: #e2aa69;
+  color: #fff;
+}
+
 .btn_update-distances {
   border: none;
   border-radius: 5px;

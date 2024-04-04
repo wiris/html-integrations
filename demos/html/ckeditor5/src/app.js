@@ -30,33 +30,76 @@ document.getElementById('editor').innerHTML = Generic.editorContentMathML;
 window.editor = null;
 
 // Create the CKEditor 5.
-ClassicEditor
-  .create(document.querySelector('#editor'), {
-    plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
-    toolbar: ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right', 'sourceEditing'],
+createEditor();
+
+document.getElementById("btn_update").addEventListener("click", (e) => {
+  e.preventDefault();
+  Generic.updateContent(window.editor.getData(), "transform_content");
+});
+
+// Add listener on click button to launch destroyFunction.
+document.getElementById("btn_destroyEditor").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (window.editor) {
+    destroyEditor();
+  }
+});
+
+// Add listener on click button to launch createFunction.
+document.getElementById("btn_newEditor").addEventListener("click", (e) => {
+  e.preventDefault();
+  // Reload the page.
+  location.reload();
+
+});
+
+// Function Initiate Editor.
+function createEditor() {
+  ClassicEditor.create(document.querySelector("#editor"), {
+    plugins: [
+      Essentials,
+      Paragraph,
+      Bold,
+      Italic,
+      MathType,
+      Alignment,
+      SourceEditing,
+    ],
+    toolbar: [
+      "bold",
+      "italic",
+      "MathType",
+      "ChemType",
+      "alignment:left",
+      "alignment:center",
+      "alignment:right",
+      "sourceEditing",
+    ],
     // language: 'de',
     // mathTypeParameters: {
     //   editorParameters: { language: 'es' }, // MathType config, including language
     // },
   })
-  .then((editor) => {
-    window.editor = editor;
-    // Add listener on click button to launch updateContent function.
-    // document.getElementById('btn_update').addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   Generic.updateContent(editor.getData(), 'transform_content');
-    // });
+    .then((editor) => {
+      window.editor = editor;
+      // Add listener on click button to launch updateContent function.
+      // document.getElementById('btn_update').addEventListener('click', (e) => {
+      //   e.preventDefault();
+      //   Generic.updateContent(editor.getData(), 'transform_content');
+      // });
 
-    // Get and set the editor and wiris versions in this order.
-    Generic.setEditorAndWirisVersion('5.0.0', packageInfo.version);
-    editor.editing.view.focus();
-    // updateFunction();
-  })
-  .catch((error) => {
-    console.error(error.stack); //eslint-disable-line
-  });
+      // Get and set the editor and wiris versions in this order.
+      Generic.setEditorAndWirisVersion('5.0.0', packageInfo.version);
+      editor.editing.view.focus();
+      // updateFunction();
+    })
+    .catch((error) => {
+      console.error(error.stack); //eslint-disable-line
+    });
+}
 
-document.getElementById('btn_update').addEventListener('click', (e) => {
-  e.preventDefault();
-  Generic.updateContent(window.editor.getData(), 'transform_content');
-});
+// Function to destroy the editor.
+function destroyEditor() {
+  // Destroy the CKEditor5 editor.
+  window.editor.destroy();
+}
