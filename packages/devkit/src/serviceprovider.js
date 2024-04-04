@@ -188,10 +188,10 @@ export default class ServiceProvider {
 
       let header = Configuration.get('customHeaders');
       if (header) {
-        header = header.toString()
-        header.split(",")
-          .map(element => element.trim().split('='))
-          .forEach(([key, val]) => httpRequest.setRequestHeader(key, val));
+        if (typeof header === 'string') {
+          header = Util.convertStringToObject(header);
+        }
+        Object.entries(header).forEach(([key, val]) => httpRequest.setRequestHeader(key, val));
       }
 
       if (typeof postVariables !== 'undefined' && postVariables) {

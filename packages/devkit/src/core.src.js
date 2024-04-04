@@ -243,8 +243,8 @@ export default class Core {
    * @returns {Object} headers - key value headers.
    */
   setHeaders(headers) {
-    this?.contentManager?.setCustomHeaders(headers);
-    Configuration.set('customHeaders', headers);
+    const headerObject = this?.contentManager?.setCustomHeaders(headers) || headers;
+    Configuration.set('customHeaders', headerObject);
   }
 
   /**
@@ -740,6 +740,8 @@ export default class Core {
     editorAttributes.rtl = this.integrationModel.rtl;
 
     const customHeaders = Configuration.get('customHeaders');
+    // This is not being used in the code, we are keeping it just in case it's needed.
+    // We check if it is a string since we have a setter that will make the customHeaders an object. And we do the conversion for the case when we get the headers from the backend.
     editorAttributes.customHeaders = typeof customHeaders === 'string' ? Util.convertStringToObject(customHeaders) : customHeaders;
 
     const contentManagerAttributes = {};

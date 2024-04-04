@@ -663,8 +663,18 @@ export default class ContentManager {
    * @returns {Object} headers - key value headers.
    */
   setCustomHeaders(headers) {
-    let headersObj = typeof headers === 'string' ? Util.convertStringToObject(headers) : headers;
+    let headersObj = {};
+
+    // We control that we only get String or Object as the input.
+    if (typeof headers === "object") {
+      headersObj = headers;
+    }
+    else if (typeof headers === 'string') {
+      headersObj = Util.convertStringToObject(headers);
+    }
+
     this.editor.setParams({ customHeaders: headersObj });
+    return headersObj;
   }
 
   /**

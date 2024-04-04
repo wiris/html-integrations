@@ -107,7 +107,7 @@ export class Properties {
         Properties.instance.editorServicesExtension
       );
 
-      // [TODO]
+      // We'll always get a string from the wiriscustomheaders backend parameter. It needs to be converted to an object. 
       Properties.instance.config.backendConfig.wiriscustomheaders = Util.convertStringToObject(Properties.instance.config.backendConfig.wiriscustomheaders);
     } catch(e) {
       if (e instanceof StatusError) {
