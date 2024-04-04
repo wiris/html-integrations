@@ -341,6 +341,15 @@ export const currentInstance = null;
         WirisPlugin.instances[editor.id].initParsed = true;
       };
 
+      // Change the destroy behavior to also destroy the Mathtype instance.
+      const destroy = editor.destroy;
+      editor.destroy = function () {
+        WirisPlugin.instances[editor.id].listeners.fire('onDestroy', {});
+          // Destroy the Mathtype instance.
+          WirisPlugin.instances[editor.id].destroy();
+        destroy.call(editor);
+      };
+
       if ('onInit' in editor) {
         editor.onInit.add(onInit);
       } else {
