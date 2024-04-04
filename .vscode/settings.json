@@ -1,5 +1,7 @@
 {
     "conventionalCommits.scopes": [
-        "devkit"
+        "devkit",
+        "packages",
+        "demo"
     ]
 }
