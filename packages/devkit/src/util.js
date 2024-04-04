@@ -207,7 +207,7 @@ export default class Util {
    * @returns {Object} - Object containing the key-value pairs
    */
   static convertStringToObject(keyValueString) {
-    if (!keyValueString) {
+    if (!keyValueString || typeof keyValueString !== 'string') {
       return {};
     }
 

@@ -57,7 +57,6 @@ export async function callService(query: object, serviceName: string, method: Me
       ...properties.config.backendConfig.wiriscustomheaders
     }
 
-    // const test = Properties.
     const init: RequestInit = {
       method,
       headers

@@ -12,8 +12,7 @@ import warnIcon from '../styles/icons/general/warn_icon.svg';  //eslint-disable-
  * @typedef {Object} IntegrationModelProperties
  * @property {string} configurationService - Configuration service path.
  * This parameter is needed to determine all services paths.
- * @property {HTMLElement} 
- * .target - HTML target.
+ * @property {HTMLElement} integrationModelProperties.target - HTML target.
  * @property {string} integrationModelProperties.scriptName - Integration script name.
  * Usually the name of the integration script.
  * @property {Object} integrationModelProperties.environment - integration environment properties.
