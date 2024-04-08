@@ -13,37 +13,28 @@
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.js"
-      ]
+      ],
+      "cache": true
     },
     "test": {
       "inputs": [
         "default",
         "^production"
-      ]
+      ],
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
     }
   },
   "extends": "@nx/workspace/presets/core.json",
-  "npmScope": "wiris",
-  "affected": {
-    "defaultBase": "main"
-  },
-  "cli": {
-    "defaultCollection": "@nx/workspace"
-  },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "lint",
-          "test",
-          "e2e"
-        ],
         "runtimeCacheInputs": [
           "echo $SERVICE_PROVIDER_URI",
           "echo $SERVICE_PROVIDER_SERVER"
-        ],
-        "accessToken": "MmY2Mjc3ZWYtOTlhZC00Mjg4LWE4MjQtYjU0MGJkYzdlNjk1fHJlYWQtd3JpdGU="
+        ]
       }
     }
   },
@@ -59,5 +50,7 @@
       "default",
       "!{projectRoot}/.eslintrc.js"
     ]
-  }
+  },
+  "nxCloudAccessToken": "MmY2Mjc3ZWYtOTlhZC00Mjg4LWE4MjQtYjU0MGJkYzdlNjk1fHJlYWQtd3JpdGU=",
+  "defaultBase": "main"
 }

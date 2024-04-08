@@ -5,7 +5,7 @@
   "homepage": "./",
   "dependencies": {
     "@wiris/mathtype-froala": "*",
-    "react-froala-wysiwyg": "^4.0.0"
+    "react-froala-wysiwyg": "~4.1.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",

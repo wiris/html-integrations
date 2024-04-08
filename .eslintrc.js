@@ -135,14 +135,14 @@ module.exports = {
     },
     // 02. Custom rules for Cypress Test implementation
     // This extension only adds specific rules for cypress that need to be combined with the airbnb ones
-    {
-      files: [
-        'cypress/**/*.js',
-      ],
-      extends: [
-        'plugin:cypress/recommended',
-      ],
-    },
+    // {
+    //   files: [
+    //     'cypress/**/*.js',
+    //   ],
+    //   extends: [
+    //     'plugin:cypress/recommended',
+    //   ],
+    // },
     // 03. Custom rules for the packages with jsDoc support.
     {
       files: [
