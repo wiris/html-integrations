@@ -19,7 +19,7 @@
     "@wiris/mathtype-html-integration-devkit": "*"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^12.2.5",
+    "@angular-devkit/build-angular": "^17.3.3",
     "@angular/animations": "^12.2.0",
     "@angular/cli": "^12.2.5",
     "@angular/common": "^12.2.0",
