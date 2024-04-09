@@ -15,11 +15,10 @@ document.getElementById('viewer_form').addEventListener('submit', (e) => {
     event.preventDefault();
     // Accessing form data using the event object
     const formData = new FormData(event.target);
-
     const config = {
         backendConfig: {
         wiriseditormathmlattribute: wiriseditormathmlattribute.value,
-        wirispluginperformance: wirispluginperformance.value === 'on',
+        wirispluginperformance: (wirispluginperformance.checked) ? 'true' : 'false',
         },
         dpi: dpi.value,
         editorServicesExtension: '',

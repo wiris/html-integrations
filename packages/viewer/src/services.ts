@@ -147,8 +147,20 @@ export async function createImage(mml: string, lang: string, url: string, extens
     'lang': lang,
   }
 
-  const response = callService(params, 'createimage', MethodType.Get, url, extension);
-  return (await response).text();
+  // Send createimage request
+  const response = callService(params, 'createimage', MethodType.Post, url, extension);
+
+  // createimage returns the URL to showimage of the corresponding image
+  let showImageUrl = await (await response).text();
+
+  // This line is necessary due to a bug in how the services interoperate.
+  // TODO fix the causing bug
+  showImageUrl = showImageUrl.replace('pluginsapp', 'plugins/app');
+
+  // POST request to get the corresponding image
+  const showImageResponse = callService(params, 'showimage', MethodType.Post, showImageUrl, extension);
+
+  return processJsonResponse(showImageResponse);
 };
 
 /**
