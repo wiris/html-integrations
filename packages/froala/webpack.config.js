@@ -66,19 +66,12 @@ module.exports = (config, context) => {
           // The following expresion, looks for all the svg files inside the devkit folder and subfolders
           // /devkit\/?(?:[^\/]+\/?)*.svg$/
           test: /devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-          use: [ 'raw-loader' ]
+          type: 'asset/source',
         },
         {
           test: /\.(png|ttf|otf|eot|svg|woff(2)?)(.*)?$/,
           exclude: /devkit\/styles\/icons\/[^\/]+\/[^\/]+\.svg$/,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 8192
-              }
-            }
-          ]
+          type: 'asset/inline',
         }
       ]
     },

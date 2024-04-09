@@ -7,14 +7,12 @@ module.exports = {
     rules: [
       {
         test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
+        type: 'asset/inline',
+      },
+      {
+        test: /\.html$/i,
+        exclude: /node_modules/,
+        loader: 'html-loader',
       },
     ],
   },

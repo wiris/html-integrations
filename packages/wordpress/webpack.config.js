@@ -28,19 +28,12 @@ var config = {
             },
             {
                 test: /\.(png|jpg|gif)$/i,
-                use: [
-                    {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 8192
-                    }
-                    }
-                ]
+                type: 'asset/inline',
             },
             {
                 // For the modal close, minimize, maximize icons
                 test: /\.svg$/,
-                use: [ 'raw-loader' ]
+                type: 'asset/source',
             },
         ]
     },

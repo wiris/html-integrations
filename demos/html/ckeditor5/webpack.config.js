@@ -31,7 +31,7 @@ module.exports = (config, context) => {
       rules: [
         {
           test: /\.svg$/,
-          use: [ 'raw-loader' ]
+          type: 'asset/source',
         },
         {
           test: /\.js$/,

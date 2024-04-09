@@ -1,13 +1,12 @@
 // Import styles.
 import './design.css';
-import indexString from './index.html?raw'
+import indexString from './index.html?raw';
 
 // Export generic functions.
 // eslint-disable-next-line import/extensions
 export * from './common.js';
 
 // Display html content.
-// We force the use of html-loader, for angular and react applications
 document.body.innerHTML = indexString;
 
 // Generate scripts.
