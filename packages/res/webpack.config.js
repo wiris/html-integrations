@@ -13,6 +13,10 @@ module.exports = {
         test: /\.html$/i,
         exclude: /node_modules/,
         loader: 'html-loader',
+        options: {
+          minimize: true,
+          removeComments: true,
+      }
       },
     ],
   },
