@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Last release of this project was 5th of February 2024.
 ### Unreleased
   - feat: Add new 'Commit hash' field to html-viewer demo. #KB-44411
+  - fix(viewer): Render the formula that is not been cached.
 
 ### 8.8.2 2024-02-05
 
