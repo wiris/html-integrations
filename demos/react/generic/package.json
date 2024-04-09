@@ -11,7 +11,6 @@
   "devDependencies": {
     "cross-env": "^7.0.0",
     "web-vitals": "^1.0.0",
-    "raw-loader": "^4.0.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-scripts": "^4.0.0",
