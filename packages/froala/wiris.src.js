@@ -123,8 +123,6 @@ export class FroalaIntegration extends IntegrationModel {
     }
   }
 
-
-
   /**
    * Encodes html entities in mathml properties occurrences inside 'text'.
    * @param {String} text - text that can contain mathml elements or not.
@@ -326,8 +324,7 @@ export class FroalaIntegration extends IntegrationModel {
     const selectedImage = this.image.get();
     // Value can be undefined.
     if (selectedImage) {
-      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) || (selectedImage[0]
-        && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage.hasClass(Configuration.get('imageClassName'))))) { // Is a MathType image.
+      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) || (selectedImage[0] && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) || selectedImage.hasClass(Configuration.get('imageClassName'))))) { // Is a MathType image.
         // Show MathType icons if previously were hidden.
         $btn.removeClass('fr-hidden');
         // Disable resize box.

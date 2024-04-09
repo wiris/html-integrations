@@ -655,7 +655,7 @@ export default class IntegrationModel {
       return;
     }
     Util.removeElementEvents(eventTarget);
-    }
+  }
 
   /**
    * Remove events, modals and set this.editorObject to null in order to prevent memory leaks.

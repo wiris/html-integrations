@@ -611,7 +611,7 @@ export default class ModalDialog {
     this.removeListeners();
     this.overlay.remove();
     this.container.remove();
-    // Reset propertie to allow open again.
+    // Reset properties to allow open again.
     this.properties.created = false;
   }
 
