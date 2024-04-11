@@ -183,10 +183,6 @@ export class FroalaIntegration extends IntegrationModel {
       return;
     }
 
-    // Save a image to a temporal register to detect when we want to
-    // change between MT and CT.
-    // Will be deleted when inserting the formula or canceling it
-    this.core.editionProperties.temporalImage = element;
     super.doubleClickHandler(element);
   }
 

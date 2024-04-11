@@ -23,10 +23,10 @@ export const currentInstance = null;
  * @param {HTMLElement} target - DOM target, in this integration the editable iframe.
  * @param {HTMLElement} toolbar - DOM element where icons will be inserted.
  */
-export function wrsInitEditor(target, toolbar, mathtypeProperties = undefined, editorOptions = {}) {
+export function wrsInitEditor(target, toolbar, mathtypeProperties) {
   /**
-     * @type {integrationModelProperties}
-     */
+   * @type {integrationModelProperties}
+   */
   const genericIntegrationProperties = {};
   genericIntegrationProperties.target = target;
   genericIntegrationProperties.toolbar = toolbar;
@@ -35,7 +35,7 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties = undefined, e
   }
 
   // GenericIntegration instance.
-  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties, editorOptions); // eslint-disable-line no-use-before-define
+  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties); // eslint-disable-line no-use-before-define
   genericIntegrationInstance.init();
   genericIntegrationInstance.listeners.fire('onTargetReady', {});
 
@@ -66,7 +66,7 @@ export default class GenericIntegration extends IntegrationModel {
      * @constructs
      * @param {IntegrationModelProperties} integrationModelProperties
      */
-  constructor(integrationModelProperties, editorOptions = {}) {
+  constructor(integrationModelProperties) {
     if (typeof (integrationModelProperties.serviceProviderProperties) === 'undefined') {
       integrationModelProperties.serviceProviderProperties = {
         URI: process.env.SERVICE_PROVIDER_URI,
@@ -78,7 +78,6 @@ export default class GenericIntegration extends IntegrationModel {
     integrationModelProperties.environment = {};
     integrationModelProperties.environment.editor = 'GenericHTML';
     integrationModelProperties.environment.editorVersion = '1.0.0';
-    integrationModelProperties.editorOptions = editorOptions;
 
     super(integrationModelProperties);
 
@@ -94,7 +93,7 @@ export default class GenericIntegration extends IntegrationModel {
    */
   telemeter = {
     /**
-     * 
+     *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'button' when the modal is opened by clicking the MathType or ChemType button from the toolbar
      *                         'formula' when the modal is opened by double-click on the formula
@@ -117,7 +116,7 @@ export default class GenericIntegration extends IntegrationModel {
     },
 
     /**
-     * 
+     *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
      */
@@ -139,7 +138,7 @@ export default class GenericIntegration extends IntegrationModel {
     },
 
     /**
-     * 
+     *
      * @param {string} mathml_origin If editing a formula, the original mathml that's going to be edited. Otherwise null
      * @param {string} mathml The mathml that's going to be inserted
      * @param {number} time The time passed since the MT/CT modal opened until the calling of this function
@@ -250,15 +249,6 @@ export default class GenericIntegration extends IntegrationModel {
         this.toolbar.appendChild(customEditorButton);
       }
     }
-  }
-
-  /**
-     * @inheritdoc
-     * @param {HTMLElement} element - DOM object target.
-     */
-  doubleClickHandler(element) {
-    this.core.editionProperties.temporalImage = element;
-    super.doubleClickHandler(element);
   }
 
   /** @inheritdoc */

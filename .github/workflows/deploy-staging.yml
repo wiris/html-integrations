@@ -73,9 +73,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -124,7 +121,7 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
         editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "viewer"]
-        framework: ["html", "angular", "react"]
+        framework: ["html", "angular", "react", "vue"]
         exclude:
           - framework: angular
             editor: ckeditor4
@@ -138,14 +135,23 @@ jobs:
             editor: viewer
           - framework: react
             editor: viewer
+          - framework: vue
+            editor: viewer
+          - framework: vue
+            editor: tinymce6
+          - framework: vue
+            editor: tinymce5
+          - framework: vue
+            editor: generic
+          - framework: vue
+            editor: froala
+          - framework: vue
+            editor: ckeditor4
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Create environment.prod.ts file
         run: node scripts/createEnvFile.js
@@ -162,9 +168,12 @@ jobs:
 
       - name: Build the demos
         env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           REACT_APP_FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+          NODE_OPTIONS: "--openssl-legacy-provider"
         run: |
+          unset NODE_OPTIONS
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
           yarn
           yarn nx build ${{ matrix.editor }}
@@ -211,6 +220,8 @@ jobs:
             react)
               aws s3 cp demos/react/${{ matrix.editor }}/build s3://wiris-integrations-staging-html/${{ matrix.branch }}/react/${{ matrix.editor }} --recursive
               ;;
+            vue)
+              aws s3 cp demos/vue/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/vue/${{ matrix.editor }} --recursive
           esac
 
   invalidate-cache:

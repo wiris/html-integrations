@@ -137,13 +137,6 @@ export default class ContentManager {
      * @type {IntegrationModel}
      */
     this.integrationModel = null;
-
-
-    /**
-     * Options object containing any configuration values to be used by the content manager. 
-     * @type {Object}
-     */
-    this.options = contentManagerAttributes.options || {};
   }
 
   /**
@@ -442,14 +435,14 @@ export default class ContentManager {
 
   /**
    * Sets an empty MathML as {@link ContentManager.editor} content.
-   * This will open the MT/CT editor with the hand mode. 
+   * This will open the MT/CT editor with the hand mode.
    * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
     const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
     const isRTL = this.editor.getEditorModel().isRTL();
 
-    if (isMobile || this.options.forcedHandMode) {
+    if (isMobile || this.integrationModel.forcedHandMode) {
       // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
       const mathML = `<math${isRTL ? ' dir="rtl"' : ''}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
       this.setMathML(mathML, true);
@@ -497,7 +490,7 @@ export default class ContentManager {
 
     Core.globalListeners.fire('onModalOpen', {});
 
-    if (this.options.forcedHandMode) {
+    if (this.integrationModel.forcedHandMode) {
       this.hideHandModeButton();
 
       // In case we have a keyboard written formula, we still want it to be opened with handMode.
@@ -523,11 +516,11 @@ export default class ContentManager {
 
   /**
    * Hides the hand <-> keyboard mode switch.
-   * 
+   *
    * This method relies completely on the classes used on different HTML elements within the editor itself, meaning
    * any change on those classes will make this code stop working properly.
-   * 
-   * On top of that, some of those classes are changed on runtime (for example, the one that makes some buttons change). 
+   *
+   * On top of that, some of those classes are changed on runtime (for example, the one that makes some buttons change).
    * This forces us to use some delayed code (this is, a timeout) to make sure everything exists when we need it.
    * @param {*} forced (boolean) Forces the user to stay in Hand mode by hiding the keyboard mode button.
    */
@@ -562,7 +555,7 @@ export default class ContentManager {
 
   /**
    * It will open any formula written in Keyboard mode with the hand mode with the default hand trace.
-   * 
+   *
    * @param {String} mathml The original KeyBoard MathML
    * @param {Object} editor The editor object.
    */
@@ -576,19 +569,19 @@ export default class ContentManager {
     // We wait until the hand editor object exists.
     await this.waitForHand(editor);
 
-    // Logic to get the hand traces and open the formula in hand mode. 
+    // Logic to get the hand traces and open the formula in hand mode.
     // This logic comes from the editor.
     const handEditor = editor.hand;
     editor.handTemporalMathML = editor.getMathML();
     const handCoordinates = editor.editorModel.getHandStrokes();
-    handEditor.setStrokes(handCoordinates);    
+    handEditor.setStrokes(handCoordinates);
     handEditor.fitStrokes(true);
     editor.openHand();
   }
 
   /**
    * Waits until the hand editor object exists.
-   * @param {Obect} editor The editor object. 
+   * @param {Obect} editor The editor object.
    */
   async waitForHand(editor) {
     while (!editor.hand) {

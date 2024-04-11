@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-viewer",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "Integrations",
   "license": "ISC",
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.16.1"
+    "@wiris/mathtype-html-integration-devkit": "1.16.2"
   },
   "devDependencies": {
     "babel-loader": "^9.1.2",

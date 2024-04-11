@@ -24,8 +24,8 @@ import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringman
 import { MathTypeCommand, ChemTypeCommand } from './commands';
 import CKEditor5Integration from './integration';
 
-import mathIcon from '../theme/icons/formula.svg';
-import chemIcon from '../theme/icons/chem.svg';
+import mathIcon from '../theme/icons/ckeditor5-formula.svg';
+import chemIcon from '../theme/icons/ckeditor5-chem.svg';
 
 import packageInfo from '../package.json';
 
@@ -55,7 +55,7 @@ export default class MathType extends Plugin {
     this._addSchema();
 
     // Add the downcast and upcast converters
-    this._addConverters();
+    this._addConverters(integration);
 
     // Expose the WirisPlugin variable to the window
     this._exposeWiris();
@@ -76,9 +76,9 @@ export default class MathType extends Plugin {
     const { editor } = this;
 
     /**
-         * Integration model constructor attributes.
-         * @type {integrationModelProperties}
-         */
+     * Integration model constructor attributes.
+     * @type {integrationModelProperties}
+     */
     const integrationProperties = {};
     integrationProperties.environment = {};
     integrationProperties.environment.editor = 'CKEditor5';
@@ -144,9 +144,8 @@ export default class MathType extends Plugin {
 
         // View is enabled iff command is enabled
         view.bind('isEnabled').to(editor.commands.get('MathType'), 'isEnabled');
-
         view.set({
-          label: StringManager.get('insert_math', editor.config.get('language')),
+          label: StringManager.get('insert_math', integration.getLanguage()),
           icon: mathIcon,
           tooltip: true,
         });
@@ -172,7 +171,7 @@ export default class MathType extends Plugin {
         view.bind('isEnabled').to(editor.commands.get('ChemType'), 'isEnabled');
 
         view.set({
-          label: StringManager.get('insert_chem', editor.config.get('language')),
+          label: StringManager.get('insert_chem', integration.getLanguage()),
           icon: chemIcon,
           tooltip: true,
         });
@@ -207,7 +206,7 @@ export default class MathType extends Plugin {
   /**
      * Add the downcast and upcast converters
      */
-  _addConverters() {
+  _addConverters(integration) {
     const { editor } = this;
 
     // Editing view -> Model
@@ -267,7 +266,7 @@ export default class MathType extends Plugin {
             - A <mathml> element with a formula attribute set to the given formula, or
             - If the original <math> had a LaTeX annotation, then the annotation surrounded by "$$...$$" */
       const modelNode = isLatex
-        ? writer.createText(Parser.initParse(formula, editor.config.get('language')))
+        ? writer.createText(Parser.initParse(formula, integration.getLanguage()))
         : writer.createElement('mathml', { formula });
 
       // Find allowed parent for element that we are going to insert.
@@ -342,7 +341,7 @@ export default class MathType extends Plugin {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
       const mathString = modelItem.getAttribute('formula').replaceAll('ref="<"', 'ref="&lt;"');
-      const imgHtml = Parser.initParse(mathString, editor.config.get('language'));
+      const imgHtml = Parser.initParse(mathString, integration.getLanguage());
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
@@ -415,7 +414,7 @@ export default class MathType extends Plugin {
      */
     editor.data.get = (options) => {
       let output = get.bind(editor.data)(options);
-      
+
       // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
       // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
       output = output.replaceAll('"<"', '"&lt;"')
@@ -452,10 +451,10 @@ export default class MathType extends Plugin {
           modifiedData = modifiedData.replace(mathml, latex);
         }
       });
-      
+
       // Run the setData code from CKEditor5 with the modified string.
-      set.bind(editor.data)(modifiedData); 
-    };  
+      set.bind(editor.data)(modifiedData);
+    };
   }
 
   /**

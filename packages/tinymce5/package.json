@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-tinymce5",
-  "version": "8.8.2",
+  "version": "8.8.3",
   "description": "MathType Web for TinyMCE5 editor",
   "keywords": [
     "chem",
@@ -32,7 +32,7 @@
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.16.1"
+    "@wiris/mathtype-html-integration-devkit": "1.16.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
