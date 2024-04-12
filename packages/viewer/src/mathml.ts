@@ -3,7 +3,6 @@ import {
   showImage,
   createImage,
   mathml2accessible,
-  processJsonResponse,
 } from "./services";
 import { htmlEntitiesToXmlEntities, corruptMathML } from "./utils";
 import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
@@ -98,7 +97,6 @@ export async function renderMathML(
 
     // Set img properties.
     const img = await setImageProperties(properties, result, mml);
-    // const fragment = document.createRange().createContextualFragment(data.result.content);
 
     // Replace the MathML for the generated formula image.
     mathElement.parentNode?.replaceChild(img, mathElement);
