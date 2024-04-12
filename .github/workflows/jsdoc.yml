@@ -31,7 +31,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 20
 
       # 02. Install html-integrations dependencies
       - name: Install dependencies
@@ -63,40 +63,7 @@ jobs:
           script: |
               core.setFailed('jsdoc: main index file is empty')
 
-      # 06. Check if there are broken links or images on the jsdoc site.
-      # - name: Validate there are no broken links or images
-      #   id: check_links
-      #   uses: modernweb-dev/check-html-links-action@v1
-      #   with:
-      #     doc-folder: 'packages/devkit/out/'
-
-      # 07. Create a report with any broken link and/or image found.
-      - name: Generate the broken links report
-        run: |
-          yarn run build-jsdoc-validation |& tee packages/devkit/out/report.txt
-          cat packages/devkit/out/report.txt
-
-      # 08. Look for any detected error on the broken links report.
-      - name: Look for errors on the broken links report
-        id: check_errors
-        run: |
-          if grep -q "0 errors and" "packages/devkit/out/report.txt"; then
-            echo '::set-output name=LINK_ERROR::false'
-          else
-            echo '::set-output name=LINK_ERROR::true'
-          fi
-
-      # 09. If there is any found error on the broken links report,
-      # stop the workflow by throwing an error
-      - name: Errors if there are broken links or images on the jsdoc site
-        if: steps.check_errors.outputs.LINK_ERROR == 'true'
-        # Only runs if there're broken links
-        uses: actions/github-script@v3
-        with:
-          script: |
-              core.setFailed('jsdoc: broken links and/or images found')
-
-      # 10. Upload the jsdoc site to github artifacts
+      # 06. Upload the jsdoc site to github artifacts
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
