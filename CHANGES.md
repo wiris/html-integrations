@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this project was 17th of April 2024.
 
+### Unreleased
+  - fix(viewer): Render the formula that is not been cached. #KB-44942
+
 ### 8.9.0 2024-04-17
 
   - fix(ck5): Add some DOMPurify exception in order to avoid error when inserting some formula. #KB-44372

@@ -69,16 +69,11 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
 
     let result;
 
+    // Transform mml to img.
     if (properties.wirispluginperformance === 'true') {
-      // Transform mml to img.
       result = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
     } else {
-      // createimage returns the URL to showimage of the corresponding image
-      let url = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
-      // This line is necessary due to a bug in how the services interoperate.
-      // TODO fix the causing bug
-      url = url.replace('pluginsapp', 'plugins/app');
-      result = await processJsonResponse(fetch(url));
+      result = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
     }
 
     // Set img properties.

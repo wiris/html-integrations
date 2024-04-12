@@ -153,9 +153,10 @@ export async function createImage(mml: string, lang: string, url: string, extens
     'lang': lang,
   }
 
-  const response = callService(params, 'createimage', MethodType.Get, url, extension);
-  return (await response).text();
-};
+  // POST request to get the corresponding image
+  const response = callService(params, 'showimage', MethodType.Post, url, extension);
+  return processJsonResponse(response);
+  };
 
 /**
  * Calls the latex2mathml service with the given LaTeX and returns the received Response object.
