@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-tinymce5",
-  "version": "8.8.3",
+  "version": "8.9.0",
   "description": "MathType Web for TinyMCE5 editor",
   "keywords": [
     "chem",
