@@ -7,14 +7,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 18th of March 2024.
+Last release of this project was 17th of April 2024.
 
-### Unreleased
+### 8.9.0 2024-04-17
+
   - fix(ck5): Add some DOMPurify exception in order to avoid error when inserting some formula. #KB-44372
   - fix: Avoid TypeError when the selected node don't have some properties. #KB-44268
   - fix(ck4): Place formula in the correct position after inserting italics (or bold or underlined) text in a new line. #KB-43453
   - feat: Upgrade DOMPurify library to avoid deletion of some MathML tags by error. #KB-44328
   - feat: Add new 'Commit hash' field to html-viewer demo. #KB-44411
+  - docs: Add known issues section. #KB-46073
 
 ### 8.8.3 2024-03-18
 

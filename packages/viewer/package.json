@@ -16,7 +16,7 @@
   "author": "Integrations",
   "license": "ISC",
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.16.2"
+    "@wiris/mathtype-html-integration-devkit": "1.17.0"
   },
   "devDependencies": {
     "babel-loader": "^9.1.2",
