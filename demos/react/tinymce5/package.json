@@ -7,7 +7,7 @@
   "dependencies": {
     "@tinymce/tinymce-react": "^3.12.6",
     "@wiris/mathtype-tinymce5": "*",
-    "tinymce": "^5.8.2"
+    "tinymce": "^7.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.0",
