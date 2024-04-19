@@ -149,19 +149,29 @@ export class FroalaIntegration extends IntegrationModel {
   callbackFunction() {
     super.callbackFunction();
 
+    // Froala editor uses a clean up process to remove unwanted tags and attributes. We need to avoid this process for Wiris formulas. If we don't do this a loading pup-up will appear with the message "Uploading" that can be exited clicking away and also if the froala version is greater than 4.2.0 the formula will paste 2 times and make every paste behave like this.
+    this.editorObject.events.on('paste.beforeCleanup', function (clipboard_html) {
+      //* The regex pattern matches an image tag with the class attribute containing the 'Wirisformula' class.
+      const regex = /<img[^>]*class\s*=\s*["'].*?\bWirisformula\b.*?["'][^>]*>/g;
+      // If a Wiris formula is detected, return false to avoid the clean up process.
+      if (clipboard_html.match(regex)) {
+        return false;
+      }
+    });
+
     this.editorObject.events.on('html.set', function () {
       const images = this.el.getElementsByClassName('Wirisformula');
-      for (let i = 0; i < images.length; i++) {
+      for (const image of images) {
         // Froala removes the styles of images upon inserting them
         // We need to add the alignment back
-        Image.fixAfterResize(images[i]);
+        Image.fixAfterResize(image);
 
         // Froala malforms data-uri in images.
         // We need to rewrite them.
-        if (Configuration.get('imageFormat') === 'svg' && images[i].src.substr(0, 10) === 'data:image') {
-          const firstPart = images[i].src.substr(0, 33);
-          const secondPart = images[i].src.substr(33, images[i].src.length);
-          images[i].src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
+        if (Configuration.get('imageFormat') === 'svg' && image.src.substr(0, 10) === 'data:image') {
+          const firstPart = image.src.substr(0, 33);
+          const secondPart = image.src.substr(33, image.src.length);
+          image.src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
         }
       }
     });
