@@ -13,7 +13,7 @@
   "dependencies": {
     "@wiris/mathtype-froala": "*",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "froala-editor": "~4.1.4"
+    "froala-editor": "^4.2.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^12.0.2",
