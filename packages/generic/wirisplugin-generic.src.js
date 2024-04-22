@@ -41,6 +41,15 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
 
   WirisPlugin.currentInstance = genericIntegrationInstance;
 }
+/**
+ * Destroys the current instance of the editor and the toolbar.
+ * @param instance - The current instance of the editor.
+ * @returns {void}
+ */
+export function wrsDestroyEditor(instance) {
+  instance.toolbar.innerHTML = '';
+  instance.destroy();
+}
 
 /**
  * Gets the html content of the Generic editor and parses it to transform the latex

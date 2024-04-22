@@ -1,5 +1,5 @@
 // Load scripts.
-import { wrsGetTargetHtml } from '@wiris/mathtype-generic/wirisplugin-generic.src';
+import { wrsGetTargetHtml, wrsDestroyEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
 import '@wiris/mathtype-generic/wirisplugin-generic';
 import * as Generic from 'resources/demos/common';
 
@@ -22,8 +22,8 @@ document.head.appendChild(jsDemoImagesTransform);
 const editableDiv = document.getElementById('editable');
 const toolbarDiv = document.getElementById('toolbar');
 
-// Initialize the editor.
-window.wrs_int_init(editableDiv, toolbarDiv);
+// Create and initialize editor.
+createEditor();
 
 document.onreadystatechange = function () {
   if (document.readyState === 'interactive') {
@@ -37,5 +37,37 @@ document.onreadystatechange = function () {
 document.getElementById('btn_update').addEventListener('click', (e) => {
   e.preventDefault();
   const innerHTMLEditor = wrsGetTargetHtml(editableDiv);
-  Generic.updateContent(innerHTMLEditor, 'transform_content');      //eslint-disable-line
+  Generic.updateContent(innerHTMLEditor, 'transform_content');
 });
+
+// Add listener on click button to launch destroyFunction.
+document.getElementById('btn_destroyEditor').addEventListener('click', (e) => {
+  e.preventDefault();
+  if ( WirisPlugin.currentInstance) {
+    destroyEditor();
+  }
+});
+
+// Add listener on click button to launch createFunction.
+document.getElementById('btn_newEditor').addEventListener('click', (e) => {
+  e.preventDefault();
+  // Ensure that the editor is destroyed.
+  if (WirisPlugin.currentInstance) {
+    destroyEditor();
+  }
+  // Create a new editor.
+  createEditor();
+});
+
+
+// Function to create a new editor.
+function createEditor() {
+  // Initialize the editor.
+  window.wrs_int_init(editableDiv, toolbarDiv);
+}
+
+// Function to destroy the editor.
+function destroyEditor() {
+  // Destroy the generic editor.
+  wrsDestroyEditor(WirisPlugin.currentInstance);
+}
