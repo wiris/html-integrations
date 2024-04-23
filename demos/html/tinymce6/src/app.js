@@ -84,5 +84,5 @@ function createEditor() {
 // Function to destroy the editor.
 function destroyEditor() {
   // Destroy the TinyMCE6 editor.
-  tinymce.remove();
+  tinymce.activeEditor.destroy(); // eslint-disable-line no-undef
 }

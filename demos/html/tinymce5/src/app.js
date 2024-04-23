@@ -80,5 +80,5 @@ function createEditor() {
 // Function to destroy the editor.
 function destroyEditor() {
   // Destroy the TinyMCE5 editor.
-  tinymce.remove();
+  tinymce.activeEditor.destroy();
 }
