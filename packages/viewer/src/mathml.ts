@@ -76,22 +76,21 @@ export async function renderMathML(
   for (const mathElement of [...root.getElementsByTagName("math")]) {
     const mml = htmlEntitiesToXmlEntities(mathElement.outerHTML);
     try {
-      let result;
+      let imgSource;
 
       // Transform mml to img.
       if (properties.wirispluginperformance === 'true') {
-        result = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+        imgSource = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
       } else {
-        result = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+        imgSource = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
       }
 
       // Set img properties.
-      const img = await setImageProperties(properties, result, mml);
-
+      const img = await setImageProperties(properties, imgSource, mml);
       // Replace the MathML for the generated formula image.
       mathElement.parentNode?.replaceChild(img, mathElement);
     } catch {
-      console.log(`Cannot render ${mml}: invalid MathML format.`);
+      console.error(`Cannot render ${mml}: invalid MathML format.`);
       continue;
     }
   }
