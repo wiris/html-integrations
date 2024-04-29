@@ -7,10 +7,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 17th of April 2024.
+Last release of this project was 29th of April 2024.
 
-### Unreleased
+### 8.9.1 2024-04-29
   - fix(viewer): Render the formula that is not been cached. #KB-44942
+  - fix(froala): Editor bug with Wiris formulas paste behavior. #KB-46612
+  - fix(ck5): Editor is called before mathtype. #KB-46221
+  - fix: Updated dependencies, set minimum node version to 18 and raised ck5 version cap to 27.0.0 #KB-45473
 
 ### 8.9.0 2024-04-17
 
