@@ -512,13 +512,15 @@ export default class ContentManager {
     }
 
     let trigger = this.dbclick ? "formula" : "button";
+
+    // Call Telemetry service to track the event.
     try {
       Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
         toolbar: toolbar,
         trigger: trigger,
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error tracking OPENED_MTCT_EDITOR", error);
     }
 
     Core.globalListeners.fire("onModalOpen", {});

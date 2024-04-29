@@ -112,15 +112,17 @@ export default class GenericIntegration extends IntegrationModel {
         /^(button|formula)$/.test(trigger) &&
         /^(general|chemistry)$/.test(toolbar)
       ) {
+
+        // Call Telemetry service to track the event.
         try {
           Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
             toolbar: toolbar,
             trigger: trigger,
           });
-        } catch (err) {
-          trigger;
-          console.error(err);
+        } catch (error) {
+          console.error("Error tracking OPENED_MTCT_EDITOR", error);
         }
+
       } else {
         console.error("Invalid trigger or toolbar value for open editor modal");
       }
@@ -131,21 +133,23 @@ export default class GenericIntegration extends IntegrationModel {
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
      */
-    wrsClosedEditorModal(toolbar, trigger) {
+    async wrsClosedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
       if (
         /^(mtct_insert|mtct_close)$/.test(trigger) &&
         /^(general|chemistry)$/.test(toolbar)
       ) {
-        // Call Telemetry service
+        // Call Telemetry service to track the event.
         try {
-          Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-            toolbar: toolbar,
-            trigger: trigger,
+          await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+            toolbar: this.contentManager.toolbar,
+            trigger: "mtct_close",
           });
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error("Error tracking CLOSED_MTCT_EDITOR", error);
         }
+        this.close();
+
       } else {
         console.error(
           "Invalid trigger or toolbar value for close editor modal",
@@ -183,13 +187,15 @@ export default class GenericIntegration extends IntegrationModel {
             !payload[key] ? delete payload[key] : {};
         });
 
+        // Call Telemetry service to track the event.
         try {
           Telemeter.telemeter.track("INSERTED_FORMULA", {
             ...payload,
           });
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error("Error tracking OPENED_MTCT_EDITOR", error);
         }
+
       } else {
         console.error("Invalid toolbar or time input for insert formula");
       }

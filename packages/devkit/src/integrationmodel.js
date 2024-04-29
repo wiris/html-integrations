@@ -710,7 +710,7 @@ export default class IntegrationModel {
       eventTarget,
       (element, event) => {
         this.doubleClickHandler(element, event);
-        // Avoid creating the doublick listener more than once for each element.
+        // Avoid creating the double click listener more than once for each element.
         event.stopImmediatePropagation();
       },
       (element, event) => {

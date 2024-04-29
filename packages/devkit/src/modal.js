@@ -309,20 +309,20 @@ export default class ModalDialog {
    * object. No logic about the content should be placed here,
    * contentElement.submitAction is the responsible of the content logic.
    */
-  submitAction() {
+  async submitAction() {
     if (typeof this.contentManager.submitAction !== "undefined") {
       this.contentManager.submitAction();
     }
 
+    // Call Telemetry service to track the event.
     try {
-      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+      await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
         toolbar: this.contentManager.toolbar,
-        trigger: "mtct_insert",
+        trigger: "mtct_close",
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error tracking CLOSED_MTCT_EDITOR", error);
     }
-
     this.close();
   }
 
@@ -331,47 +331,31 @@ export default class ModalDialog {
    * contentElement has implemented hasChanges method, a confirm popup
    * will be shown if hasChanges returns true.
    */
-  cancelAction() {
-    // opening a existing formula editor when trying to open a new one
-    if (typeof this.contentManager.hasChanges === "undefined") {
-      // Set temporal image to null to prevent loading
-      // an existent formula when strarting one from scrath. Make focus come back too.
+  async cancelAction() {
+    // opening an existing formula editor when trying to open a new one
+    if (typeof this.contentManager.hasChanges === "undefined" || !this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
-
+      // Call Telemetry service to track the event.
       try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
           toolbar: this.contentManager.toolbar,
           trigger: "mtct_close",
         });
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Error tracking CLOSED_MTCT_EDITOR", error);
       }
-
-      this.close();
-    } else if (!this.contentManager.hasChanges()) {
-      IntegrationModel.setActionsOnCancelButtons();
-
-      try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: this.contentManager.toolbar,
-          trigger: "mtct_close",
-        });
-      } catch (err) {
-        console.error(err);
-      }
-
       this.close();
     } else {
-      this.showPopUpMessage();
-
+      // Call Telemetry service to track the event.
       try {
         Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
           toolbar: this.contentManager.toolbar,
           trigger: "mtct_close",
         });
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Error tracking CLOSED_MTCT_EDITOR", error);
       }
+      this.showPopUpMessage();
     }
   }
 

@@ -606,16 +606,17 @@ export default class Core {
       if (key === "mathml_origin" || key === "editor_origin")
         !payload[key] ? delete payload[key] : {};
     });
-
-    try {
+    
+   // Call Telemetry service to track the event.
+   try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
-        ...payload,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+       ...payload,
+     });
+   } catch (error) {
+     console.error("Error tracking INSERTED_FORMULA", error);
+   }
   }
-
+  
   /**
    * Opens a modal dialog containing MathType editor..
    * @param {HTMLElement} target - The target HTMLElement where formulas should be inserted.
