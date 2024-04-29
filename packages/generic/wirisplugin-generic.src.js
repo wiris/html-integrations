@@ -136,26 +136,21 @@ export default class GenericIntegration extends IntegrationModel {
      */
     async wrsClosedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
-      if (
-        /^(mtct_insert|mtct_close)$/.test(trigger) &&
-        /^(general|chemistry)$/.test(toolbar)
-      ) {
-        // Call Telemetry service to track the event.
-        try {
-          await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-            toolbar: this.contentManager.toolbar,
-            trigger: "mtct_close",
-          });
-        } catch (error) {
-          console.error("Error tracking CLOSED_MTCT_EDITOR", error);
-        }
-        this.close();
-
-      } else {
-        console.error(
-          "Invalid trigger or toolbar value for close editor modal",
-        );
+      if (!/^(mtct_insert|mtct_close)$/.test(trigger) || !/^(general|chemistry)$/.test(toolbar)) {
+        console.error("Invalid trigger or toolbar value for close editor modal");
+        return;
       }
+
+      try {
+        await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: this.contentManager.toolbar,
+          trigger: "mtct_close",
+        });
+      } catch (error) {
+        console.error("Error tracking CLOSED_MTCT_EDITOR", error);
+      }
+
+      this.close();
     },
 
     /**
