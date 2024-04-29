@@ -465,11 +465,11 @@ export default class MathType extends Plugin {
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */
-    editor.data.get = (options) => {
-      let output = get.bind(editor.data)(options);
+    editor.data.on('get', (e) => {
+      let output = e.return;
 
       // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
-      // We replace the values inserted for CKEditro5 to be able to render the formulas with the mentioned characters.
+      // We replace the values inserted for CKEditor5 to be able to render the formulas with the mentioned characters.
       output = output
         .replaceAll('"<"', '"&lt;"')
         .replaceAll('">"', '"&gt;"')
@@ -478,26 +478,26 @@ export default class MathType extends Plugin {
       // Ckeditor retrieves editor data and removes the image information on the formulas
       // We transform all the retrieved data to images and then we Parse the data.
       let imageFormula = Parser.initParse(output);
-      return Parser.endParse(imageFormula);
-    };
+      e.return = Parser.endParse(imageFormula);
+    },
+      { priority: 'low' }
+    );
 
     /**
-     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
-     */
-    editor.data.set = (data) => {
+    * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
+    */
+    editor.data.on('set', (e, args) => {
       // Retrieve the data to be set on the CKEditor.
-      let modifiedData = data;
+      let modifiedData = args[0];
       // Regex to find all mathml formulas.
       const regexp = /<math(.*?)<\/math>/gm;
 
       // Get all MathML formulas and store them in an array.
-      // Using the conditional operator on data.main because the data patameter has different types depeding on:
+      // Using the conditional operator on data.main because the data parameter has different types depending on:
       //    editor.data.set can be used directly or by the source editing plugin.
-      //    With the source editor plugin, data is an object with the key `main` wich contains the source code string.
+      //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
       //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-      let formulas = Object.values(data)[0]
-        ? [...Object.values(data)[0].matchAll(regexp)]
-        : [...data.matchAll(regexp)];
+      let formulas = Object.values(modifiedData)[0] ? [...Object.values(modifiedData)[0].matchAll(regexp)] : [...modifiedData.matchAll(regexp)];
 
       // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
       formulas.forEach((formula) => {
@@ -509,9 +509,10 @@ export default class MathType extends Plugin {
         }
       });
 
-      // Run the setData code from CKEditor5 with the modified string.
-      set.bind(editor.data)(modifiedData);
-    };
+      args[0] = modifiedData
+    },
+      { priority: 'high' }
+    );
   }
 
   /**
