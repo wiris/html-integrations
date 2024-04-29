@@ -376,7 +376,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         ...payload,
       });
     } catch (error) {
-      console.error("Error tracking OPENED_MTCT_EDITOR", error);
+      console.error("Error tracking INSERTED_FORMULA", error);
     }
 
     /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.

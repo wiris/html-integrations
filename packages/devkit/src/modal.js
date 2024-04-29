@@ -330,9 +330,13 @@ export default class ModalDialog {
    * This method is called when the modal object has been cancelled. If
    * contentElement has implemented hasChanges method, a confirm popup
    * will be shown if hasChanges returns true.
+   *
+   ** The function was changed to async to ensure that telemetry tracking is completed before closing the modal.
    */
   async cancelAction() {
-    // opening an existing formula editor when trying to open a new one
+    // Opening a existing formula editor when trying to open a new one.
+    // Set temporal image to null to prevent loading an existent formula when starting one from scratch.
+    // Make focus come back too.
     if (typeof this.contentManager.hasChanges === "undefined" || !this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
       // Call Telemetry service to track the event.
@@ -348,7 +352,7 @@ export default class ModalDialog {
     } else {
       // Call Telemetry service to track the event.
       try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+        await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
           toolbar: this.contentManager.toolbar,
           trigger: "mtct_close",
         });

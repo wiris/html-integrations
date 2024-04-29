@@ -132,6 +132,7 @@ export default class GenericIntegration extends IntegrationModel {
      *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
+     ** The function was changed to async to ensure that telemetry tracking is completed before closing the modal.
      */
     async wrsClosedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
@@ -193,7 +194,7 @@ export default class GenericIntegration extends IntegrationModel {
             ...payload,
           });
         } catch (error) {
-          console.error("Error tracking OPENED_MTCT_EDITOR", error);
+          console.error("Error tracking INSERTED_FORMULA", error);
         }
 
       } else {
