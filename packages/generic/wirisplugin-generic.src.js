@@ -106,7 +106,7 @@ export default class GenericIntegration extends IntegrationModel {
      * @param {string} trigger 'button' when the modal is opened by clicking the MathType or ChemType button from the toolbar
      *                         'formula' when the modal is opened by double-click on the formula
      */
-    wrsOpenedEditorModal(toolbar, trigger) {
+    async wrsOpenedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
       if (
         /^(button|formula)$/.test(trigger) &&
@@ -115,7 +115,7 @@ export default class GenericIntegration extends IntegrationModel {
 
         // Call Telemetry service to track the event.
         try {
-          Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+          await Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
             toolbar: toolbar,
             trigger: trigger,
           });
@@ -143,14 +143,12 @@ export default class GenericIntegration extends IntegrationModel {
 
       try {
         await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: this.contentManager.toolbar,
-          trigger: "mtct_close",
+          toolbar: toolbar,
+          trigger: trigger,
         });
       } catch (error) {
         console.error("Error tracking CLOSED_MTCT_EDITOR", error);
       }
-
-      this.close();
     },
 
     /**
@@ -160,7 +158,7 @@ export default class GenericIntegration extends IntegrationModel {
      * @param {number} time The time passed since the MT/CT modal opened until the calling of this function
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      */
-    wrsInsertedFormula(mathml_origin, mathml, time, toolbar) {
+    async wrsInsertedFormula(mathml_origin, mathml, time, toolbar) {
       const validToolbar = /^(general|chemistry)$/.test(toolbar);
       const validDate = !isNaN(new Date(time));
       // Check that the manual string inputs contain the values we want, if not throw error.
@@ -185,7 +183,7 @@ export default class GenericIntegration extends IntegrationModel {
 
         // Call Telemetry service to track the event.
         try {
-          Telemeter.telemeter.track("INSERTED_FORMULA", {
+          await Telemeter.telemeter.track("INSERTED_FORMULA", {
             ...payload,
           });
         } catch (error) {
