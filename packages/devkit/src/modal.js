@@ -79,9 +79,6 @@ export default class ModalDialog {
       isDesktop: !isMobile && !isIOS && !isAndroid,
     };
 
-    // Trigger to tell the telemetry tracking the action to be tracked.
-    this.closeTrigger = null;
-
     this.properties = {
       created: false,
       state: "",
@@ -306,6 +303,7 @@ export default class ModalDialog {
     return this.contentManager;
   }
 
+
   /**
    * This method is called when the modal object has been submitted. Calls
    * contentElement submitAction method - if exists - and closes the modal
@@ -316,8 +314,8 @@ export default class ModalDialog {
     if (typeof this.contentManager.submitAction !== "undefined") {
       this.contentManager.submitAction();
     }
-    this.closeTrigger = 'mtc_insert';
-    await this.close();
+
+    await this.close('mtc_insert');
   }
 
   /**
@@ -329,8 +327,7 @@ export default class ModalDialog {
   async cancelAction() {
     if (typeof this.contentManager.hasChanges === "undefined" || !this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
-      this.closeTrigger = "mtc_close";
-      await this.close();
+      await this.close("mtc_close");
     } else {
       this.showPopUpMessage();
     }
@@ -596,7 +593,7 @@ export default class ModalDialog {
    * If a close trigger is defined, it tracks the telemetry event 'CLOSED_MTCT_EDITOR' with the trigger.
    * @returns {Promise<void>} A promise that resolves when the modal is closed.
    */
-  async close() {
+  async close(trigger) {
     this.removeClass("wrs_maximized");
     this.removeClass("wrs_minimized");
     this.removeClass("wrs_stack");
@@ -606,16 +603,15 @@ export default class ModalDialog {
     this.properties.open = false;
 
 
-    if (this.closeTrigger) {
+    if (trigger) {
       try {
         await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
           toolbar: this.contentManager.toolbar,
-          trigger: this.closeTrigger,
+          trigger: trigger,
         });
       } catch (error) {
         console.error("Error tracking CLOSED_MTCT_EDITOR", error);
       }
-      this.closeTrigger = null
     }
 
     Core.globalListeners.fire("onModalClose", {});
@@ -1503,22 +1499,25 @@ export default class ModalDialog {
    * Recalculating scale for modal when the browser is resized.
    */
   recalculateScale() {
-    let sizeModificated = false;
+    let sizeModified = false;
+
     if (parseInt(this.container.style.width, 10) > 580) {
       this.container.style.width = `${Math.min(parseInt(this.container.style.width, 10), window.innerWidth - this.scrollbarWidth)}px`;
-      sizeModificated = true;
+      sizeModified = true;
     } else {
       this.container.style.width = "580px";
       sizeModificated = true;
     }
+
     if (parseInt(this.container.style.height, 10) > 338) {
       this.container.style.height = `${Math.min(parseInt(this.container.style.height, 10), window.innerHeight)}px`;
-      sizeModificated = true;
+      sizeModified = true;
     } else {
       this.container.style.height = "338px";
       sizeModificated = true;
     }
-    if (sizeModificated) {
+
+    if (sizeModified) {
       this.recalculateSize();
     }
   }
