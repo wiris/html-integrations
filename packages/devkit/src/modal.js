@@ -254,12 +254,8 @@ export default class ModalDialog {
     };
 
     const callbacks = {
-      closeCallback: () => {
-        this.close();
-      },
-      cancelCallback: () => {
-        this.focus();
-      },
+      closeCallback: () => { this.close("mtc_close"); },
+      cancelCallback: () => { this.focus(); },
     };
 
     const popupupProperties = {
