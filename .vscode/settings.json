@@ -1,3 +1,70 @@
 {
-  "conventionalCommits.scopes": ["demos"]
+  //! Editor settings
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 120,
+  "editor.wordWrapMinified": true,
+  "editor.rulers": [120],
+  "editor.renderWhitespace": "all",
+  "editor.letterSpacing": 0.5,
+  "editor.lineNumbers": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "editor.formatOnPaste": true,
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+
+  //! File settings
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true
+  },
+
+  //! Git settings
+  "conventionalCommits.scopes": [
+    "devkit",
+    "demos",
+    "tiny5",
+    "tiny6",
+    "ck4",
+    "ck5",
+    "froala",
+    "generic",
+    "viewer",
+    "telemeter"
+  ],
+
+  //! CSpell settings
+  "cSpell.enabled": true,
+  // Add words to the dictionary
+  "cSpell.userWords": [
+    "devkit",
+    "demos",
+    "tiny5",
+    "tiny6",
+    "ck4",
+    "ck5",
+    "froala",
+    "generic",
+    "viewer",
+    "telemeter",
+    "ckeditor",
+    "devkit",
+    "dockerfiles",
+    "froala",
+    "mathml",
+    "mathtype",
+    "MTCT",
+    "Wiris"
+  ],
+  "editor.guides.indentation": true
 }

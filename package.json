@@ -12,10 +12,7 @@
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
     "build": "cd demos/html/generic && npm install && npm start &",
-    "lint": "npm run lint-js && npm run lint-html && npm run lint-css",
-    "lint-js": "eslint ${npm_config_route-.} --ext .js",
-    "lint-html": "html-validate ${npm_config_route-.}",
-    "lint-css": "stylelint \"${npm_config_route-**/*.css}\""
+    "format": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .eslintignore"
   },
   "devDependencies": {
     "@nrwl/js": "18.2.2",
@@ -42,5 +39,6 @@
   "workspaces": [
     "packages/**",
     "demos/**"
-  ]
+  ],
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
