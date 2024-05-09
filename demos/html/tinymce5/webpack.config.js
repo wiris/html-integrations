@@ -28,8 +28,11 @@ module.exports = (config, context) => {
       new CopyPlugin({
         patterns: [
           {
-            from: `${path.dirname(require.resolve(`tinymce`))}`,
+            from: `${path.dirname(require.resolve(`tinymce`))}/**/*.min.*`,
             to: path.resolve(__dirname, "dist/tinymce5"),
+            
+            // Avoid copying the absolute path from the source 
+            context: path.dirname(require.resolve(`tinymce`)),
           },
           {
             from: `${path.dirname(require.resolve(`@wiris/mathtype-tinymce5`))}/plugin.min.js`,

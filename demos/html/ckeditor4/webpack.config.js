@@ -30,8 +30,15 @@ module.exports = (config, context) => {
       new CopyPlugin({
         patterns: [
           {
-            from: `${path.dirname(require.resolve(`ckeditor4`))}`,
-            to: path.resolve(__dirname, "dist/ckeditor4"),
+            from: `${path.dirname(require.resolve('ckeditor4'))}/(skins|lang|plugins)/**/*.+(js|css|png)`,
+            to: path.resolve(__dirname, 'dist/ckeditor4/[path][name][ext]'),
+
+            // Avoid copying the absolute path from the source 
+            context: path.dirname(require.resolve('ckeditor4')),
+          },
+          {
+            from: `${path.dirname(require.resolve(`ckeditor4`))}/*.+(js|css|png)`,
+            to: path.resolve(__dirname, "dist/ckeditor4/[name][ext]"),
           },
         ],
       }),
