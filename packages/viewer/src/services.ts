@@ -193,14 +193,8 @@ export async function createImage(
     lang: lang,
   };
 
-  // POST request to get the corresponding image
-  const response = callService(
-    params,
-    "showimage",
-    MethodType.Post,
-    url,
-    extension,
-  );
+  // POST request to retrieve the corresponding image.
+  const response = callService(params, 'showimage', MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
