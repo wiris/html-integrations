@@ -1,11 +1,6 @@
 import { Properties } from "./properties";
-import {
-  showImage,
-  createImage,
-  mathml2accessible,
-} from "./services";
-import { htmlEntitiesToXmlEntities, corruptMathML } from "./utils";
-import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
+import { showImage, createImage, mathml2accessible } from './services';
+import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -49,7 +44,7 @@ function decodeSafeMathML(root: HTMLElement) {
   const safeNodes = findSafeMathMLTextNodes(root);
 
   for (const safeNode of safeNodes) {
-    const mathml = MathML.safeXmlDecode(safeNode.textContent);
+    const mathml = MathML.safeXmlDecode(safeNode.textContent ?? '');
     // Insert mathml node.
     const fragment = document.createRange().createContextualFragment(mathml);
 
@@ -74,7 +69,7 @@ export async function renderMathML(
   decodeSafeMathML(root);
 
   for (const mathElement of [...root.getElementsByTagName("math")]) {
-    const mml = htmlEntitiesToXmlEntities(mathElement.outerHTML);
+    const mml = serializeHtmlToXml(mathElement.outerHTML);
     try {
       let imgSource;
 
@@ -138,7 +133,7 @@ async function setImageProperties(
         );
         data.alt = text;
       }
-      img.alt = data.alt;
+      img.alt = data.alt ?? '';
     } catch {
       img.alt = "Alternative text not available";
     }
@@ -146,3 +141,41 @@ async function setImageProperties(
 
   return img;
 }
+
+/**
+ * ! --------------- IMPORTANT CONTEXT --------------- !
+ *
+ * 1. **Attribute Context**: When the HTML parser encounters entities within attribute values, it automatically decodes them. So, `&lt;` becomes `<` in your `open` attribute.
+ * 2. **Text Context**: However, within text nodes (the content between tags), entities are preserved to prevent potential issues with HTML syntax. For example, if `<` were not encoded as `&lt;` in a text node, it could be mistaken for the start of a new tag.
+ *
+ * So, when you call `outerHTML`, it generates a string representation of the element's opening tag (including attributes), content, and closing tag. The attributes have their entities decoded, but the text nodes keep their entities encoded.
+ * This is standard behavior for HTML parsers and is not specific to any particular browser or JavaScript environment.
+ */
+
+/**
+ * Serializes text representing an HTML document to text representing an XML document (encoding/decoding Html Entities when needed).
+ * @param {string} text - the string encoded as HTML
+ * @returns the same string encoded as XML
+ */
+export function serializeHtmlToXml(text: string): string {
+  const serializer = new XMLSerializer();
+  text = serializer.serializeToString(
+    document.createRange().createContextualFragment(text)
+  );
+  return text;
+}
+
+// Set of mathml and characters which don't have an accessible text associated
+// and can not be translated or transformed to LaTeX.
+const corruptMathML = [
+  "⟦",
+  "&#10214;",
+  "⟧",
+  "&#10215;",
+  "mscarries",
+  "mscarry",
+  "msgroup",
+  "mstack",
+  "msline",
+  "msrow",
+];
