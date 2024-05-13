@@ -30,7 +30,7 @@ export function bypassEncapsulation(properties: Properties, w: Window) {
 }
 
 interface MathMLPosition {
-  nextElement: Element;
+  nextElement: Node;
   safeMML: string;
 }
 
@@ -182,7 +182,7 @@ class JsPluginViewer {
     return returnValue;
   }
 
-  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions) {
+  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions: MathMLPosition[]) {
     JsPluginViewer.getMathMLPositionsAtNode(element, mathmlPositions);
     // Copy current children because DOM will be changed and element.childNodes won't be
     // consistent on call getMathMLPositionsAtElementAndChildren().
@@ -195,7 +195,7 @@ class JsPluginViewer {
     }
   }
 
-  private static getMathMLPositionsAtNode(node: Node, mathmlPositions) {
+  private static getMathMLPositionsAtNode(node: Node, mathmlPositions: MathMLPosition[] ) {
     var safeXMLCharacters = JsCharacters.getSafeXMLCharacters();
     if(node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
@@ -218,7 +218,7 @@ class JsPluginViewer {
         start = node.textContent?.indexOf(startMathmlTag) as number;
 
         mathmlPositions.push({
-          safeMML: safeMathml,
+          safeMML: safeMathml || "",
           nextElement: node
         });
       }
