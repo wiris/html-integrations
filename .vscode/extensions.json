@@ -19,6 +19,7 @@
     "ms-azuretools.vscode-docker", // Docker
     "ms-vsliveshare.vsliveshare", // Live Share
     "visualstudioexptteam.vscodeintellicode", // IntelliCode
+    "thundergang.thunder-client", // Thunder Client
 
     // GITHUB
     "eamodio.gitlens", // GitLens

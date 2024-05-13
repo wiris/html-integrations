@@ -1,5 +1,11 @@
-{
-  //! Editor settings
+# Settings for Visual Studio Code
+
+We modified the default settings of Visual Studio Code to ease the development experience. You can find the settings in the `.vscode` folder.
+
+## Settings
+
+```sh
+//! Editor settings
   "editor.tabSize": 2, // 2 spaces for tabs
   "editor.wordWrap": "on", // Wrap words when they reach the end of the line
   "editor.wordWrapColumn": 120, // Wrap words at 120 characters per line
@@ -61,3 +67,4 @@
   ],
   "editor.guides.indentation": true // Show indentation guides in the editor
 }
+```
