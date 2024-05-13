@@ -29,6 +29,11 @@ export function bypassEncapsulation(properties: Properties, w: Window) {
   }
 }
 
+interface MathMLPosition {
+  nextElement: Element;
+  safeMML: string;
+}
+
 /**
  * This class is a compatibility layer with the old Viewer.
  * See haxe/src-haxe/com/wiris/js/JsPluginViewer.hx in in the repo wiris/plugins previous to commit df1248a.
@@ -48,6 +53,7 @@ class JsPluginViewer {
 
     return JsPluginViewer.instance;
   }
+  
 
   /**
    * Render all the formulas written in SafeMathML inside the given element.
@@ -58,13 +64,13 @@ class JsPluginViewer {
    * Please consider using {@link renderLatex} or {@link renderMathML}.
    */
   parseSafeMathMLElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): void {
-    var mathmlPositions: Element[] = [];
+    var mathmlPositions: MathMLPosition[] = [];
     JsPluginViewer.getMathMLPositionsAtElementAndChildren(element, mathmlPositions);
     for (let i = 0; i < mathmlPositions.length; i++) {
       var mathmlPosition = mathmlPositions[i];
       var newNode = document.createElement("math");
-      mathmlPosition.parentNode?.insertBefore(newNode, mathmlPosition.nextElementSibling);
-      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.getAttribute("safeMML") as string);
+      mathmlPosition.nextElement.parentNode?.insertBefore(newNode, mathmlPosition.nextElement);
+      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.safeMML);
     }
   }
 
