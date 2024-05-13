@@ -8,7 +8,7 @@ type Wirispluginperformance = 'true' | 'false';
 /**
  * Type representing all the configuration for the viewer.
  */
-export type Config = {
+export interface Config {
   editorServicesRoot?: string,
   editorServicesExtension?: string,
   backendConfig?: {
@@ -23,10 +23,15 @@ export type Config = {
   zoom?: number,
 };
 
+/** Sets all fields and subfields of Config mandatory*/
+type MandatoryConfig = {
+  [K in keyof Config]-?: Required<Config[K]>
+};
 /**
  * Fallback values for the configurations that are not set.
+ * All properties are set to mandatory to guarantee a default value (and avoid checking at runtime to make the compiler happy )
  */
-const defaultValues: Required<Config> = {
+const defaultValues: MandatoryConfig = {
   editorServicesRoot: 'https://www.wiris.net/demo/plugins/app/',
   editorServicesExtension: '',
   backendConfig: {
@@ -54,16 +59,16 @@ export class Properties {
   config: Config = defaultValues;
 
   /**
-   * Do not use this method. Instead, use {@link Properties.generate}.
-   * Constructors cannot be async so we make it private and force instantiation through an alternative static method.
+   * Private constructor to avoid multiple instances of the class.
+   * To instantiate the class, use the static method  {@link Properties.getInstance}.
    */
-  private new() {}
+  private constructor(){}
   
 
-  static getInstance(): Properties {
+  static async getInstance(): Promise<Properties> {
     if (!Properties.instance) {
       Properties.instance = new Properties();
-      Properties.instance.initialize();
+      await Properties.instance.initialize();
     }
     return Properties.instance;
   }
@@ -74,7 +79,7 @@ export class Properties {
   private async initialize(): Promise<void> {
 
     if(!Properties.instance){
-      console.error('Properties instance is not set');
+      console.error('Properties.instance is not set');
       return
     }
 
@@ -82,7 +87,7 @@ export class Properties {
     const pluginName = 'WIRISplugins.js';
     const script: HTMLScriptElement | null = document.querySelector(`script[src*="${pluginName}"]`);
 
-    if (!!script) {
+    if (script) {
       const pluginNamePosition: number = script.src.lastIndexOf(pluginName);
       const params: string = script.src.substring(pluginNamePosition + pluginName.length);
       const urlParams = new URLSearchParams(params);
@@ -265,7 +270,7 @@ export class Properties {
    */
   get wirispluginperformance(): Wirispluginperformance {
     return this.config.backendConfig?.wirispluginperformance ||
-      defaultValues.backendConfig.wirispluginperformance as Wirispluginperformance;
+      defaultValues.backendConfig.wirispluginperformance;
   }
 
   set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
@@ -285,7 +290,7 @@ export class Properties {
    */
   get wiriseditormathmlattribute(): string {
     return this.config.backendConfig?.wiriseditormathmlattribute ||
-      defaultValues.backendConfig.wiriseditormathmlattribute as string;
+      defaultValues.backendConfig.wiriseditormathmlattribute;
   }
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
