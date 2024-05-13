@@ -8,7 +8,7 @@
     // FORMATERS
     "esbenp.prettier-vscode", // Prettier
 
-    //COMMENTS - COMITS - TEXT
+    // COMMENTS - COMMITS - TEXT
     "aaron-bond.better-comments", // Better Comments
     "vivaxy.vscode-conventional-commits", // Conventional Commits
     "streetsidesoftware.code-spell-checker", // Code Spell Checker
