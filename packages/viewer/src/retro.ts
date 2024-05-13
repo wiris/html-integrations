@@ -58,13 +58,13 @@ class JsPluginViewer {
    * Please consider using {@link renderLatex} or {@link renderMathML}.
    */
   parseSafeMathMLElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): void {
-    var mathmlPositions = [];
+    var mathmlPositions: Element[] = [];
     JsPluginViewer.getMathMLPositionsAtElementAndChildren(element, mathmlPositions);
     for (let i = 0; i < mathmlPositions.length; i++) {
       var mathmlPosition = mathmlPositions[i];
       var newNode = document.createElement("math");
-      mathmlPosition.nextElement.parentNode.insertBefore(newNode, mathmlPosition.nextElement);
-      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.safeMML);
+      mathmlPosition.parentNode?.insertBefore(newNode, mathmlPosition.nextElementSibling);
+      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.getAttribute("safeMML") as string);
     }
   }
 
@@ -149,7 +149,7 @@ class JsPluginViewer {
     // We are replacing $ by & when its part of an entity for retrocompatibility.
     // Now, the standard is replace § by &.
     var returnValue = '';
-    var currentEntity = null;
+    var currentEntity: string | null = null;
 
     var i = 0;
     while (i < inputCopy.length) {
@@ -194,22 +194,22 @@ class JsPluginViewer {
     if(node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
       var endMathmlTag = safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
-      var start = node.textContent.indexOf(startMathmlTag);
+      var start = node.textContent?.indexOf(startMathmlTag) as number;
       var end = 0;
       while(start != -1) {
-        end = node.textContent.indexOf(endMathmlTag,start + startMathmlTag.length);
+        end = node.textContent?.indexOf(endMathmlTag,start + startMathmlTag.length) as number;
 
         if(end == -1) break;
 
-        var nextMathML = node.textContent.indexOf(startMathmlTag,end + endMathmlTag.length);
+        var nextMathML = node.textContent?.indexOf(startMathmlTag,end + endMathmlTag.length) as number;
 
         if(nextMathML >= 0 && end > nextMathML) break;
 
-        var safeMathml = node.textContent.substring(start,end + endMathmlTag.length);
+        var safeMathml = node.textContent?.substring(start,end + endMathmlTag.length);
 
-        node.textContent = node.textContent.substring(0,start) + node.textContent.substring(end + endMathmlTag.length);
+        node.textContent = (node.textContent?.substring(0,start) as string) + node.textContent?.substring(end + endMathmlTag.length);
         node = (node as Text).splitText(start);
-        start = node.textContent.indexOf(startMathmlTag);
+        start = node.textContent?.indexOf(startMathmlTag) as number;
 
         mathmlPositions.push({
           safeMML: safeMathml,

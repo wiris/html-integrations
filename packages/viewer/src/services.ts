@@ -54,7 +54,7 @@ export async function callService(query: object, serviceName: string, method: Me
     const properties = Properties.getInstance();
     const headers = {
       'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      ...properties.config.backendConfig.wiriscustomheaders
+      ...properties.config.backendConfig?.wiriscustomheaders
     }
 
     const init: RequestInit = {

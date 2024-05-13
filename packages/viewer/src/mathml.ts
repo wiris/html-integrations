@@ -124,7 +124,7 @@ async function setImageProperties(properties: Properties, data: FormulaData, mml
         const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
         data.alt = text;
       }
-      img.alt = data.alt;
+      img.alt = data.alt || '';
     } catch {
       img.alt = 'Alternative text not available';
     }

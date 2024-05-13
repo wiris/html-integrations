@@ -34,13 +34,18 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
   let pos: number = 0;
 
   while (pos < textContent.length) {
-    const nextLatexPosition: LatexPosition = getNextLatexPos(pos, textContent);
+    const nextLatexPosition = getNextLatexPos(pos, textContent);
     if (nextLatexPosition) {
       // Get left non LaTeX text.
       const leftText: string = textContent.substring(pos, nextLatexPosition.start);
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
+
+      // Not sure if this should return or continue
+      if(node.nodeValue === null) {
+        return;
+      }
       node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
 
       // Get LaTeX text.
@@ -96,7 +101,7 @@ function findLatexTextNodes(root: any): Node[] {
  * @param {string} text - Text where the next latex it will be searched.
  * @
  */
-function getNextLatexPos(pos: number, text: string): LatexPosition {
+function getNextLatexPos(pos: number, text: string): LatexPosition | null{
   const firstLatexTags = text.indexOf('$$', pos);
   const secondLatexTags = firstLatexTags == -1 ? -1 : text.indexOf('$$', firstLatexTags + '$$'.length);
   return firstLatexTags != -1 && secondLatexTags != -1 ? {'start': firstLatexTags, 'end': secondLatexTags} : null;
