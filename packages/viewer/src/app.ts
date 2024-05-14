@@ -1,15 +1,15 @@
-import { Properties } from './properties';
-import { renderLatex } from './latex';
-import { renderMathML } from './mathml';
-import { bypassEncapsulation } from './retro';
-import packageInformation from '../../../node_modules/@wiris/mathtype-viewer/package.json'
+import { Properties } from "./properties";
+import { renderLatex } from "./latex";
+import { renderMathML } from "./mathml";
+import { bypassEncapsulation } from "./retro";
+import packageInformation from "../../../node_modules/@wiris/mathtype-viewer/package.json";
 
 declare global {
   interface Window {
     viewer: {
-      properties: Properties,
-      isLoaded: boolean,
-      version: string
+      properties: Properties;
+      isLoaded: boolean;
+      version: string;
     };
   }
 }
@@ -24,7 +24,6 @@ main(window);
  * @param {Window} w - The window instance of the browser.
  */
 async function main(w: Window): Promise<void> {
-
   const properties: Properties = await Properties.getInstance();
 
   // Expose the globals to the browser
@@ -32,7 +31,7 @@ async function main(w: Window): Promise<void> {
     w.viewer = {
       properties,
       isLoaded: false,
-      version: packageInformation.version
+      version: packageInformation.version,
     };
   } else {
     w.viewer.properties = properties;
@@ -100,5 +99,5 @@ async function main(w: Window): Promise<void> {
   bypassEncapsulation(properties, w);
 
   // Dispatch an event notifying that the viewer has been loaded
-  document.dispatchEvent(new Event('viewerLoaded'));
+  document.dispatchEvent(new Event("viewerLoaded"));
 }

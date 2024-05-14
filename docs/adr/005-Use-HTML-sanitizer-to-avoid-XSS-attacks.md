@@ -32,7 +32,7 @@ The browser engine will generate it to:
 ></MathML>
 ```
 
-Normally, an `<img>` inside an `<style>` will be parsed as a `#text` inside the `<MathML style>` tag. Nevertheless, this behavior changes when it's encapsulated inside a `<math>` tag, and interprets the `img` as a `<MathML>` independent block. 
+Normally, an `<img>` inside an `<style>` will be parsed as a `#text` inside the `<MathML style>` tag. Nevertheless, this behavior changes when it's encapsulated inside a `<math>` tag, and interprets the `img` as a `<MathML>` independent block.
 
 As a result, the HTML will be unwrapped and written on the DOM following this format:
 

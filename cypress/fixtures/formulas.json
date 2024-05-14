@@ -12,9 +12,9 @@
   "quadratic": "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#xB1;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>",
   "quadratic-accessible-en": "x equals fraction numerator negative b plus-or-minus square root of b squared minus 4 a c end root over denominator 2 a end fraction",
   "formula-drawn": [
-    {"x": 0, "y": 0},
-    {"x": 0, "y": 1},
-    {"x": 1, "y": 0},
-    {"x": 1, "y": 1}
+    { "x": 0, "y": 0 },
+    { "x": 0, "y": 1 },
+    { "x": 1, "y": 0 },
+    { "x": 1, "y": 1 }
   ]
 }

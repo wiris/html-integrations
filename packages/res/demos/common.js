@@ -16,10 +16,12 @@ export function copyContentFromxToy(x, y) {
  * @param {*} wirisVersion Version of the wiris plugin used.
  */
 export function setEditorAndWirisVersion(editorVersion = 0, wirisVersion = 0) {
-  if (wirisVersion !== 0) document.getElementById('version_wiris').innerHTML += wirisVersion;
-  if (editorVersion !== 0) document.getElementById('version_editor').innerHTML += editorVersion;
-  document.getElementById('git_branch').innerHTML += 'Branch: ' + git.branch;
-  document.getElementById('git_commit').innerHTML += 'Commit hash: ' + git.hash;
+  if (wirisVersion !== 0)
+    document.getElementById("version_wiris").innerHTML += wirisVersion;
+  if (editorVersion !== 0)
+    document.getElementById("version_editor").innerHTML += editorVersion;
+  document.getElementById("git_branch").innerHTML += "Branch: " + git.branch;
+  document.getElementById("git_commit").innerHTML += "Commit hash: " + git.hash;
 }
 
 /**
@@ -31,7 +33,9 @@ export function setEditorAndWirisVersion(editorVersion = 0, wirisVersion = 0) {
  */
 export function updateContent(editorContent, containerId) {
   document.getElementById(containerId).innerHTML = editorContent;
-  com.wiris.js.JsPluginViewer.parseElement(document.getElementById(containerId)); //eslint-disable-line
+  com.wiris.js.JsPluginViewer.parseElement(
+    document.getElementById(containerId),
+  ); //eslint-disable-line
 }
 
 // Initial content for the editors that use <math> for loading content

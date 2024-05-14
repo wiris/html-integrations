@@ -1,10 +1,10 @@
-import translations from '../lang/strings.json';
+import translations from "../lang/strings.json";
 /**
  * This class represents a string manager. It's used to load localized strings.
  */
 export default class StringManager {
   constructor() {
-    throw new Error('Static class StringManager can not be instantiated.');
+    throw new Error("Static class StringManager can not be instantiated.");
   }
 
   /**
@@ -15,9 +15,8 @@ export default class StringManager {
    * @returns {string} correspondent value. If doesn't exists original key.
    */
   static get(key, lang) {
-
     // Default language definition
-    let {language} = this;
+    let { language } = this;
 
     // If parameter language, use it
     if (lang) {
@@ -30,14 +29,18 @@ export default class StringManager {
     }
 
     // Check if we support the language
-    if (!this.strings.hasOwnProperty(language)) { // eslint-disable-line no-prototype-builtins
+    if (!this.strings.hasOwnProperty(language)) {
+      // eslint-disable-line no-prototype-builtins
       console.warn(`Unknown language ${language} set in StringManager.`);
-      language = 'en';
+      language = "en";
     }
 
     // Check if the key is supported in the given language
-    if (!this.strings[language].hasOwnProperty(key)) { // eslint-disable-line no-prototype-builtins
-      console.warn(`Unknown key ${key} for language ${language} in StringManager.`);
+    if (!this.strings[language].hasOwnProperty(key)) {
+      // eslint-disable-line no-prototype-builtins
+      console.warn(
+        `Unknown key ${key} for language ${language} in StringManager.`,
+      );
       return key;
     }
 
@@ -56,4 +59,4 @@ StringManager.strings = translations;
 /**
  * Language of the translations; English by default
  */
-StringManager.language = 'en';
+StringManager.language = "en";

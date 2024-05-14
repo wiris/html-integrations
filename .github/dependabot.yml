@@ -1,7 +1,5 @@
-
 version: 2
 updates:
-
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -9,13 +7,13 @@ updates:
     target-branch: "master"
     versioning-strategy: increase # Stategy that'll increase the version number in package.json instead of the package-lock.json
     reviewers:
-          - "wiris/integrations"
+      - "wiris/integrations"
     commit-message:
-          prefix: "npm prod" # Prefix to PR title in updating dependencies
-          prefix-development: "npm dev" # Prefix to PR title in updating devDependencies
-          include: "scope" # It'll include all the reviews and changes proposal
+      prefix: "npm prod" # Prefix to PR title in updating dependencies
+      prefix-development: "npm dev" # Prefix to PR title in updating devDependencies
+      include: "scope" # It'll include all the reviews and changes proposal
     labels:
-          - "type:dependencies"
+      - "type:dependencies"
     ignore:
       - dependency-name: "@ckeditor/ckeditor5-core"
       - dependency-name: "@ckeditor/ckeditor5-engine"

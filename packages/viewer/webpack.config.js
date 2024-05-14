@@ -1,35 +1,35 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = (config, context) => {
   return {
-    entry: './src/app.ts',
-    mode: 'none',
+    entry: "./src/app.ts",
+    mode: "none",
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
+          use: "ts-loader",
           exclude: /node_modules/,
         },
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          use: ['babel-loader']
+          use: ["babel-loader"],
         },
       ],
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: [".tsx", ".ts", ".js"],
     },
     output: {
-      filename: 'WIRISplugins.js',
-      path: path.resolve(__dirname, 'dist'),
+      filename: "WIRISplugins.js",
+      path: path.resolve(__dirname, "dist"),
     },
     devServer: {
       devMiddleware: {
         writeToDisk: true,
       },
-      static:  './',
+      static: "./",
       hot: true,
       port: 8001,
       open: true,
@@ -37,5 +37,5 @@ module.exports = (config, context) => {
     optimization: {
       minimize: true, // enabling this reduces file size and readability
     },
-  }
+  };
 };

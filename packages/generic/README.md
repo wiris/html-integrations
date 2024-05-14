@@ -53,53 +53,54 @@ To integrate MathType, please follow the steps below. Please, note you may adjus
 
 4. [OPTIONAL] Create a variable to Store MathType Configurable Properties, as for example:
 
-    ```js
-    let mathTypeParameters: {
-      editorParameters: { language: 'es' },
-    },
-    ```
+   ```js
+   let mathTypeParameters: {
+     editorParameters: { language: 'es' },
+   },
+   ```
 
-    For more information on the configurable properties, check the [official documentation page](https://docs.wiris.com/mathtype/en/mathtype-integrations/technical-configurations/parameters.html).
+   For more information on the configurable properties, check the [official documentation page](https://docs.wiris.com/mathtype/en/mathtype-integrations/technical-configurations/parameters.html).
 
 5. Add one of the following code just before closing the body tag:
 
    ```html
    <script>
      var genericIntegrationProperties = {};
-     genericIntegrationProperties.target = document.getElementById('htmlEditor');
-     genericIntegrationProperties.toolbar = document.getElementById('toolbar');
+     genericIntegrationProperties.target = document.getElementById("htmlEditor");
+     genericIntegrationProperties.toolbar = document.getElementById("toolbar");
      // optionally, add MathType Properties
      // genericIntegrationProperties.integrationParameters = mathTypeParameters;
 
      // GenericIntegration instance.
-      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
-      genericIntegrationInstance.init();
-      genericIntegrationInstance.listeners.fire('onTargetReady', {});
+     var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+     genericIntegrationInstance.init();
+     genericIntegrationInstance.listeners.fire("onTargetReady", {});
 
-      WirisPlugin.currentInstance = this.wiris_generic;
-    </script>
+     WirisPlugin.currentInstance = this.wiris_generic;
+   </script>
    ```
-    or
-  
+
+   or
+
    ```html
    <script>
-    const htmlEditorDiv = document.getElementById('htmlEditor');
-    const toolbarDiv = document.getElementById('toolbar');
+     const htmlEditorDiv = document.getElementById("htmlEditor");
+     const toolbarDiv = document.getElementById("toolbar");
 
-    // Initialyze the editor.
-    // optionally, add MathType Properties
-    window.wrs_int_init(htmlEditorDiv, toolbarDiv/*, mathTypeParameters*/);
+     // Initialyze the editor.
+     // optionally, add MathType Properties
+     window.wrs_int_init(htmlEditorDiv, toolbarDiv /*, mathTypeParameters*/);
 
-    WirisPlugin.currentInstance = genericIntegrationInstance;
+     WirisPlugin.currentInstance = genericIntegrationInstance;
    </script>
    ```
 
    This is the main step of the integration. It does the following:
 
-   * Appends two buttons to the toolbar `div`, one for the math editor and another for the chemistry editor.
-   * Initializes the integration into the editable HTML element, assigning listeners to some events of the HTML element. This allows, for instance, to open a formula just by double-clicking it. You may change **target** and **toolbar** parameters depending on the structure of your HTML editor.
-   * The **target** property must contain the editable HTML element. This is a mandatory parameter.
-   * The **toolbar** property must contain the HTML element representing the toolbar. This parameter is optional.
+   - Appends two buttons to the toolbar `div`, one for the math editor and another for the chemistry editor.
+   - Initializes the integration into the editable HTML element, assigning listeners to some events of the HTML element. This allows, for instance, to open a formula just by double-clicking it. You may change **target** and **toolbar** parameters depending on the structure of your HTML editor.
+   - The **target** property must contain the editable HTML element. This is a mandatory parameter.
+   - The **toolbar** property must contain the HTML element representing the toolbar. This parameter is optional.
 
 After following these steps, you should have something like this:
 
@@ -114,13 +115,13 @@ After following these steps, you should have something like this:
 
     <script>
       var genericIntegrationProperties = {};
-      genericIntegrationProperties.target = document.getElementById('htmlEditor');
-      genericIntegrationProperties.toolbar = document.getElementById('toolbar');
+      genericIntegrationProperties.target = document.getElementById("htmlEditor");
+      genericIntegrationProperties.toolbar = document.getElementById("toolbar");
 
       // GenericIntegration instance.
       var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
       genericIntegrationInstance.init();
-      genericIntegrationInstance.listeners.fire('onTargetReady', {});
+      genericIntegrationInstance.listeners.fire("onTargetReady", {});
 
       WirisPlugin.currentInstance = genericIntegrationInstance;
     </script>
@@ -135,9 +136,11 @@ Notice the example assumes this directory structure:
 └───node_modules
     └───@wiris/mathtype-generic
 ```
+
 ## Known issues
 
-* The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486) 
+- The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486)
+
 ## Parsing data
 
 By default, MathType stores equations and the formulas as **MathML**. However while editing, MathType converts all MathML into `img` tags rendered inside the editable HTML element.
@@ -153,20 +156,20 @@ htmlData = WirisPlugin.Parser.initParse(htmlData);
 For instance, the following call:
 
 ```js
-WirisPlugin.Parser.initParse('<span>hello!</span>  <math><mo>x</mo></math> goodbye');
+WirisPlugin.Parser.initParse("<span>hello!</span>  <math><mo>x</mo></math> goodbye");
 ```
 
 Returns the following:
 
 ```html
-<span>hello!</span>  <img style="max-width: none; vertical-align: -4px;" class="Wirisformula" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math»«mo»x«/mo»«/math»" alt="x" role="math" width="13" height="19" align="middle"/> goodbye
+<span>hello!</span> <img style="max-width: none; vertical-align: -4px;" class="Wirisformula" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math»«mo»x«/mo»«/math»" alt="x" role="math" width="13" height="19" align="middle" /> goodbye
 ```
 
 You can test this by adding the following JavaScript code at the end of `script` in our previous example:
 
 ```js
-var htmlEditor = document.getElementById('htmlEditor');
-var data = 'Initial data: <math><msqrt><mo>x</mo></msqrt></math>'
+var htmlEditor = document.getElementById("htmlEditor");
+var data = "Initial data: <math><msqrt><mo>x</mo></msqrt></math>";
 htmlEditor.innerHTML = WirisPlugin.Parser.initParse(data);
 ```
 
@@ -187,7 +190,7 @@ WirisPlugin.Parser.endParse('<span>hello!</span>  <img style="max-width: none; v
 Returns the following:
 
 ```html
-<span>hello!</span>  <math><mo>x</mo></math> goodbye
+<span>hello!</span> <math><mo>x</mo></math> goodbye
 ```
 
 ## Services
@@ -208,29 +211,17 @@ To install the Java services, please, follow the steps below:
 
 3. Set the following value for the `configurationService` property:
 
-    ```js
-    genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs';
-    ```
+   ```js
+   genericIntegrationProperties.configurationService = "/pluginwiris_engine/app/configurationjs";
+   ```
 
-    The previous example would end up like this:
+   The previous example would end up like this:
 
-    ```js
-    <script>
-      var genericIntegrationProperties = {};
-      genericIntegrationProperties.target = document.getElementById('htmlEditor');
-      genericIntegrationProperties.toolbar = document.getElementById('toolbar');
-
-      // We just added this line:
-      genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs';
-
-      // GenericIntegration instance.
-      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
-      genericIntegrationInstance.init();
-      genericIntegrationInstance.listeners.fire('onTargetReady', {});
-
-      WirisPlugin.currentInstance = genericIntegrationInstance;
-    </script>
-    ```
+   ```js
+   <script>
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor'); genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line: genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+   </script>
+   ```
 
 #### PHP
 
@@ -242,33 +233,22 @@ To install the PHP services, please, follow the steps below:
 
 3. Set the following value for the `configurationService` property:
 
-    ```js
-    genericIntegrationProperties.configurationService = 'integration/configurationjs.php';
-    ```
+   ```js
+   genericIntegrationProperties.configurationService = "integration/configurationjs.php";
+   ```
 
-    The previous example would end up like this:
+   The previous example would end up like this:
 
-    ```js
-    <script>
-      var genericIntegrationProperties = {};
-      genericIntegrationProperties.target = document.getElementById('htmlEditor');
-      genericIntegrationProperties.toolbar = document.getElementById('toolbar');
-
-      // We just added this line:
-      genericIntegrationProperties.configurationService = 'integration/configurationjs.php';
-
-      // GenericIntegration instance.
-      var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
-      genericIntegrationInstance.init();
-      genericIntegrationInstance.listeners.fire('onTargetReady', {});
-
-      WirisPlugin.currentInstance = genericIntegrationInstance;
-    </script>
-    ```
+   ```js
+   <script>
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor'); genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line: genericIntegrationProperties.configurationService = 'integration/configurationjs.php'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+   </script>
+   ```
 
 ## Displaying on Target Page
 
 In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+
 ```html
 <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
 ```
@@ -277,10 +257,10 @@ In order to display mathematical formulas on the target page, i.e. the page wher
 
 To find out more information about MathType, please go to the following documentation:
 
-* [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
-* [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
-* [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
-* [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
+- [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
+- [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
+- [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
+- [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
 
 ## Privacy policy
 

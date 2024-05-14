@@ -16,18 +16,14 @@
       }
     },
     "start": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "executor": "nx:run-script",
       "options": {
         "script": "start"
       }
     },
     "stop": {
-      "dependsOn": [
-        "start"
-      ],
+      "dependsOn": ["start"],
       "executor": "nx:run-script",
       "options": {
         "script": "stop"
@@ -35,9 +31,7 @@
     },
     "test": {
       "executor": "@nx/cypress:cypress",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "baseUrl": "http://localhost:8080",
         "cypressConfig": "./cypress.json"
@@ -47,13 +41,9 @@
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": [
-          "packages/wordpress/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["packages/wordpress/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

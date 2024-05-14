@@ -1,5 +1,4 @@
-MathType for CKEditor 4 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
-===
+# MathType for CKEditor 4 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/wirismath)
 
 Type and handwrite mathematical notation with MathType.
 
@@ -24,25 +23,26 @@ Easily include quality math equations in your documents and digital content.
 2. Add the plugin as an external plugin:
 
    ```js
-   CKEDITOR.plugins.addExternal('ckeditor_wiris', '../node_modules/@wiris/mathtype-ckeditor4/', 'plugin.js');
+   CKEDITOR.plugins.addExternal("ckeditor_wiris", "../node_modules/@wiris/mathtype-ckeditor4/", "plugin.js");
    ```
 
 3. Update the CKEditor configuration by adding the new plugin, allowing MathML content and adding the MathType and ChemType buttons to the toolbar:
 
    ```js
-   CKEDITOR.replace('editor', { //eslint-disable-line
-      extraPlugins: 'ckeditor_wiris',
-      // Allow MathML content.
-      allowedContent: true,
-      toolbar: [
-         { name: 'wirisplugins', items: ['ckeditor_wiris_formulaEditor', 'ckeditor_wiris_formulaEditorChemistry'] },
-         // To avoid errors and have mathtype fully functional
-         { name: 'others' },
-      ],
-      // language: 'de',
-      // mathTypeParameters: {
-      //   editorParameters: { language: 'es' }, // MathType config, including language
-      // },
+   CKEDITOR.replace("editor", {
+     //eslint-disable-line
+     extraPlugins: "ckeditor_wiris",
+     // Allow MathML content.
+     allowedContent: true,
+     toolbar: [
+       { name: "wirisplugins", items: ["ckeditor_wiris_formulaEditor", "ckeditor_wiris_formulaEditorChemistry"] },
+       // To avoid errors and have mathtype fully functional
+       { name: "others" },
+     ],
+     // language: 'de',
+     // mathTypeParameters: {
+     //   editorParameters: { language: 'es' }, // MathType config, including language
+     // },
    });
    ```
 
@@ -65,6 +65,7 @@ In order to install the plugin along with the correspondent services, please fol
 ## Displaying on Target Page
 
 In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+
 ```html
 <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
 ```
@@ -73,12 +74,12 @@ In order to display mathematical formulas on the target page, i.e. the page wher
 
 To find out more information about MathType, please go to the following documentation:
 
-* [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-ckeditor.html?utm_source=npmjs&utm_medium=referral)
-* [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
-* [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
-* [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
-* [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
-  
+- [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-ckeditor.html?utm_source=npmjs&utm_medium=referral)
+- [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
+- [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
+- [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
+- [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
+
 ## Privacy policy
 
 The [MathType Privacy Policy](https://www.wiris.com/en/mathtype-privacy-policy/?utm_source=npmjs&utm_medium=referral) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://www.wiris.com/en/privacy-policy?utm_source=npmjs&utm_medium=referral) still applies to MathType users.

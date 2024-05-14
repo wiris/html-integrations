@@ -10,10 +10,10 @@ export default class Constants {
    */
   static get safeXmlCharactersEntities() {
     return {
-      tagOpener: '&laquo;',
-      tagCloser: '&raquo;',
-      doubleQuote: '&uml;',
-      realDoubleQuote: '&quot;',
+      tagOpener: "&laquo;",
+      tagCloser: "&raquo;",
+      doubleQuote: "&uml;",
+      realDoubleQuote: "&quot;",
     };
   }
 
@@ -23,9 +23,9 @@ export default class Constants {
    */
   static get safeBadBlackboardCharacters() {
     return {
-      ltElement: '«mo»<«/mo»',
-      gtElement: '«mo»>«/mo»',
-      ampElement: '«mo»&«/mo»',
+      ltElement: "«mo»<«/mo»",
+      gtElement: "«mo»>«/mo»",
+      ampElement: "«mo»&«/mo»",
     };
   }
 
@@ -35,9 +35,9 @@ export default class Constants {
    */
   static get safeGoodBlackboardCharacters() {
     return {
-      ltElement: '«mo»§lt;«/mo»',
-      gtElement: '«mo»§gt;«/mo»',
-      ampElement: '«mo»§amp;«/mo»',
+      ltElement: "«mo»§lt;«/mo»",
+      gtElement: "«mo»§gt;«/mo»",
+      ampElement: "«mo»§amp;«/mo»",
     };
   }
 
@@ -47,30 +47,30 @@ export default class Constants {
    */
   static get xmlCharacters() {
     return {
-      id: 'xmlCharacters',
-      tagOpener: '<', // Hex: \x3C.
-      tagCloser: '>', // Hex: \x3E.
+      id: "xmlCharacters",
+      tagOpener: "<", // Hex: \x3C.
+      tagCloser: ">", // Hex: \x3E.
       doubleQuote: '"', // Hex: \x22.
-      ampersand: '&', // Hex: \x26.
-      quote: '\'', // Hex: \x27.
+      ampersand: "&", // Hex: \x26.
+      quote: "'", // Hex: \x27.
     };
   }
 
   /**
-  * Safe XML special characters. This characters are used instead the standard
-  * the standard to parse the  MathML if safeXML save mode is enable. Each XML
-  * special character have a UTF-8 representation.
-  * @type {Object}
-  */
+   * Safe XML special characters. This characters are used instead the standard
+   * the standard to parse the  MathML if safeXML save mode is enable. Each XML
+   * special character have a UTF-8 representation.
+   * @type {Object}
+   */
   static get safeXmlCharacters() {
     return {
-      id: 'safeXmlCharacters',
-      tagOpener: '«', // Hex: \xAB.
-      tagCloser: '»', // Hex: \xBB.
-      doubleQuote: '¨', // Hex: \xA8.
-      ampersand: '§', // Hex: \xA7.
-      quote: '`', // Hex: \x60.
-      realDoubleQuote: '¨',
+      id: "safeXmlCharacters",
+      tagOpener: "«", // Hex: \xAB.
+      tagCloser: "»", // Hex: \xBB.
+      doubleQuote: "¨", // Hex: \xA8.
+      ampersand: "§", // Hex: \xA7.
+      quote: "`", // Hex: \x60.
+      realDoubleQuote: "¨",
     };
   }
 }

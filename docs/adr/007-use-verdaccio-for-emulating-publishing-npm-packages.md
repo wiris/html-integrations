@@ -8,10 +8,10 @@ DRAFT
 
 ## Summary
 
-*When running the build pipeline, we want to automatically publish to npm*
-*but we want to be able to simulate the publishing in a safe manner.*
-*We decided to use Verdaccio*
-*to simulate a local npm registry to safely publish to.*
+_When running the build pipeline, we want to automatically publish to npm_
+_but we want to be able to simulate the publishing in a safe manner._
+_We decided to use Verdaccio_
+_to simulate a local npm registry to safely publish to._
 
 ## Context
 

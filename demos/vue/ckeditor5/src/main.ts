@@ -1,6 +1,6 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import CKEditor from '@ckeditor/ckeditor5-vue';
-import './assets/css/main.css';
+import { createApp } from "vue";
+import App from "./App.vue";
+import CKEditor from "@ckeditor/ckeditor5-vue";
+import "./assets/css/main.css";
 
-createApp( App ).use( CKEditor ).mount( '#editor' );
+createApp(App).use(CKEditor).mount("#editor");

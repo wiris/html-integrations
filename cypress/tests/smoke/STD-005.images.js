@@ -8,21 +8,21 @@
 // ***********************************************************
 beforeEach(() => {
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('The inserted formula should have the correct width and height', () => {
+it("The inserted formula should have the correct width and height", () => {
   // Open the mathtype modal
   cy.clickButtonToOpenModal();
 
   // Write a mathtype formula: x/3
-  cy.typeInModal('{ctrl}/').type('x').type('{downarrow}3');
+  cy.typeInModal("{ctrl}/").type("x").type("{downarrow}3");
 
   // Insert the written formula by clicking the insert button on the modal
-  cy.clickModalButton('insert');
+  cy.clickModalButton("insert");
 
   // Get the previous inserted formula
   cy.getFormula(0).then(($formula) => {

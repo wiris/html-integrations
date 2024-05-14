@@ -13,13 +13,9 @@
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": [
-          "packages/ckeditor5/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["packages/ckeditor5/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

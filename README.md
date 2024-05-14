@@ -8,7 +8,7 @@ This repository contains the source code of the plugins for the most popular HTM
 
 Our main goal is to enable web developers to integrate MathType on the widest range of technologies available. We also try to keep the library light, simple, and free from third-party dependencies. Everything you need to build and deploy is in the sources.
 
-**MathType can be used for free** up to a certain level of uses per natural year,  [more details](https://www.wiris.com/en/pricing/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations).
+**MathType can be used for free** up to a certain level of uses per natural year, [more details](https://www.wiris.com/en/pricing/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations).
 
 ## Table of contents
 
@@ -55,14 +55,14 @@ Visit the [MathType integrations release notes](https://docs.wiris.com/mathtype/
 ### Packages
 
 | Name                                                                                    | Version                                                                                                                                                              | Description                                                 |
-| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | --- |
 | [`@wiris/mathtype-html-integration-devkit`](packages/mathtype-html-integration-devkit/) | <a href="https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit"><img src="https://img.shields.io/npm/v/@wiris/mathtype-html-integration-devkit"></a> | The JavaScript devkit to use MathType web in your projects. |
 | [`@wiris/mathtype-generic`](packages/mathtype-generic)                                  | <a href="https://www.npmjs.com/package/@wiris/mathtype-generic"><img src="https://img.shields.io/npm/v/@wiris/mathtype-generic"></a>                                 | MathType Web for a generic HTML textarea.                   |
 | [`@wiris/mathtype-ckeditor4`](packages/mathtype-ckeditor4)                              | <a href="https://www.npmjs.com/package/@wiris/mathtype-ckeditor4"><img src="https://img.shields.io/npm/v/@wiris/mathtype-ckeditor4"></a>                             | MathType Web for CKEditor4 editor.                          |
 | [`@wiris/mathtype-ckeditor5`](packages/mathtype-ckeditor5)                              | <a href="https://www.npmjs.com/package/@wiris/mathtype-ckeditor5"><img src="https://img.shields.io/npm/v/@wiris/mathtype-ckeditor5"></a>                             | MathType Web for CKEditor5 editor.                          |
-| [`@wiris/mathtype-froala`](packages/mathtype-froala)                                    | <a href="https://www.npmjs.com/package/@wiris/mathtype-froala"><img src="https://img.shields.io/npm/v/@wiris/mathtype-froala"></a>                                   | MathType Web for Froala editor.                            |                          |
+| [`@wiris/mathtype-froala`](packages/mathtype-froala)                                    | <a href="https://www.npmjs.com/package/@wiris/mathtype-froala"><img src="https://img.shields.io/npm/v/@wiris/mathtype-froala"></a>                                   | MathType Web for Froala editor.                             |     |
 | [`@wiris/mathtype-tinymce5`](packages/mathtype-tinymce5)                                | <a href="https://www.npmjs.com/package/@wiris/mathtype-tinymce5"><img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5"></a>                               | MathType Web for TinyMCE5 editor.                           |
-| [`@wiris/mathtype-tinymce6`](packages/mathtype-tinymce6)                                | <img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5">                               | MathType Web for TinyMCE6 editor.                           |
+| [`@wiris/mathtype-tinymce6`](packages/mathtype-tinymce6)                                | <img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5">                                                                                                    | MathType Web for TinyMCE6 editor.                           |
 
 ## Documentation and important links
 

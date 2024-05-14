@@ -1,10 +1,10 @@
-import Configuration from './configuration';
-import Core from './core.src';
-import EditorListener from './editorlistener';
-import Listeners from './listeners';
-import MathML from './mathml';
-import Util from './util';
-import Telemeter from './telemeter';
+import Configuration from "./configuration";
+import Core from "./core.src";
+import EditorListener from "./editorlistener";
+import Listeners from "./listeners";
+import MathML from "./mathml";
+import Util from "./util";
+import Telemeter from "./telemeter";
 
 export default class ContentManager {
   /**
@@ -22,17 +22,18 @@ export default class ContentManager {
    * create a new instance.
    */
   constructor(contentManagerAttributes) {
-
     /**
      * An object containing MathType editor parameters. See
      * http://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters for further information.
      * @type {Object}
      */
     this.editorAttributes = {};
-    if ('editorAttributes' in contentManagerAttributes) {
+    if ("editorAttributes" in contentManagerAttributes) {
       this.editorAttributes = contentManagerAttributes.editorAttributes;
     } else {
-      throw new Error('ContentManager constructor error: editorAttributes property missed.');
+      throw new Error(
+        "ContentManager constructor error: editorAttributes property missed.",
+      );
     }
 
     /**
@@ -40,7 +41,7 @@ export default class ContentManager {
      * @type {CustomEditors}
      */
     this.customEditors = null;
-    if ('customEditors' in contentManagerAttributes) {
+    if ("customEditors" in contentManagerAttributes) {
       this.customEditors = contentManagerAttributes.customEditors;
     }
 
@@ -52,27 +53,31 @@ export default class ContentManager {
      * @property {String} version - Plugin version.
      */
     this.environment = {};
-    if ('environment' in contentManagerAttributes) {
+    if ("environment" in contentManagerAttributes) {
       this.environment = contentManagerAttributes.environment;
     } else {
-      throw new Error('ContentManager constructor error: environment property missed');
+      throw new Error(
+        "ContentManager constructor error: environment property missed",
+      );
     }
 
     /**
-      * ContentManager language.
-      * @type {String}
-      */
-    this.language = '';
-    if ('language' in contentManagerAttributes) {
+     * ContentManager language.
+     * @type {String}
+     */
+    this.language = "";
+    if ("language" in contentManagerAttributes) {
       this.language = contentManagerAttributes.language;
     } else {
-      throw new Error('ContentManager constructor error: language property missed');
+      throw new Error(
+        "ContentManager constructor error: language property missed",
+      );
     }
 
     /**
-    * {@link EditorListener} instance. Manages the changes inside the editor.
-    * @type {EditorListener}
-    */
+     * {@link EditorListener} instance. Manages the changes inside the editor.
+     * @type {EditorListener}
+     */
     this.editorListener = new EditorListener();
 
     /**
@@ -92,7 +97,7 @@ export default class ContentManager {
      * @type {DeviceProperties}
      */
     this.deviceProperties = {};
-    this.deviceProperties.isAndroid = this.ua.indexOf('android') > -1;
+    this.deviceProperties.isAndroid = this.ua.indexOf("android") > -1;
     this.deviceProperties.isIOS = ContentManager.isIOS();
 
     /**
@@ -180,15 +185,17 @@ export default class ContentManager {
    */
   insertEditor() {
     if (ContentManager.isEditorLoaded()) {
-      this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
+      this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(
+        this.editorAttributes,
+      );
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
       if (this.modalDialogInstance.rtl) {
-        this.editor.action('rtl');
+        this.editor.action("rtl");
       }
       // Setting div in rtl in case of it's activated.
       if (this.editor.getEditorModel().isRTL()) {
-        this.editor.element.style.direction = 'rtl';
+        this.editor.element.style.direction = "rtl";
       }
 
       // Editor listener: this object manages the changes logic of editor.
@@ -199,16 +206,26 @@ export default class ContentManager {
         setTimeout(function () {
           // Make sure the modalDialogInstance is available when the timeout is over
           // to avoid throw errors and stop execution.
-          if (this.hasOwnProperty('modalDialogInstance')) this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
+          if (this.hasOwnProperty("modalDialogInstance"))
+            this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
         }, 400);
 
-        const formulaDisplayDiv = document.getElementsByClassName('wrs_formulaDisplay')[0];
-        Util.addEvent(formulaDisplayDiv, 'focus', this.modalDialogInstance.handleOpenedIosSoftkeyboard);
-        Util.addEvent(formulaDisplayDiv, 'blur', this.modalDialogInstance.handleClosedIosSoftkeyboard);
+        const formulaDisplayDiv =
+          document.getElementsByClassName("wrs_formulaDisplay")[0];
+        Util.addEvent(
+          formulaDisplayDiv,
+          "focus",
+          this.modalDialogInstance.handleOpenedIosSoftkeyboard,
+        );
+        Util.addEvent(
+          formulaDisplayDiv,
+          "blur",
+          this.modalDialogInstance.handleClosedIosSoftkeyboard,
+        );
       }
       // Fire onLoad event. Necessary to set the MathML into the editor
       // after is loaded.
-      this.listeners.fire('onLoad', {});
+      this.listeners.fire("onLoad", {});
     } else {
       setTimeout(ContentManager.prototype.insertEditor.bind(this), 100);
     }
@@ -227,12 +244,12 @@ export default class ContentManager {
    * Adds script element to the DOM to include editor externally.
    */
   addEditorAsExternalDependency() {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    let editorUrl = Configuration.get('editorUrl');
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    let editorUrl = Configuration.get("editorUrl");
 
     // We create an object url for parse url string and work more efficiently.
-    const anchorElement = document.createElement('a');
+    const anchorElement = document.createElement("a");
 
     ContentManager.setHrefToAnchorElement(anchorElement, editorUrl);
     ContentManager.setProtocolToAnchorElement(anchorElement);
@@ -243,7 +260,7 @@ export default class ContentManager {
     const stats = this.getEditorStats();
     script.src = `${editorUrl}?lang=${this.language}&stats-editor=${stats.editor}&stats-mode=${stats.mode}&stats-version=${stats.version}`;
 
-    document.getElementsByTagName('head')[0].appendChild(script);
+    document.getElementsByTagName("head")[0].appendChild(script);
   }
 
   /**
@@ -261,11 +278,11 @@ export default class ContentManager {
    */
   static setProtocolToAnchorElement(anchorElement) {
     // Change to https if necessary.
-    if (window.location.href.indexOf('https://') === 0) {
+    if (window.location.href.indexOf("https://") === 0) {
       // It check if browser is https and configuration is http.
       // If this is so, we will replace protocol.
-      if (anchorElement.protocol === 'http:') {
-        anchorElement.protocol = 'https:';
+      if (anchorElement.protocol === "http:") {
+        anchorElement.protocol = "https:";
       }
     }
   }
@@ -278,8 +295,11 @@ export default class ContentManager {
    */
   static getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
-    const removePort = anchorElement.port === '80' || anchorElement.port === '443' || anchorElement.port === '';
-    return `${anchorElement.protocol}//${anchorElement.hostname}${removePort ? '' : (`:${anchorElement.port}`)}${anchorElement.pathname.startsWith('/') ? anchorElement.pathname : (`/${anchorElement.pathname}`)}`; // eslint-disable-line max-len
+    const removePort =
+      anchorElement.port === "80" ||
+      anchorElement.port === "443" ||
+      anchorElement.port === "";
+    return `${anchorElement.protocol}//${anchorElement.hostname}${removePort ? "" : `:${anchorElement.port}`}${anchorElement.pathname.startsWith("/") ? anchorElement.pathname : `/${anchorElement.pathname}`}`; // eslint-disable-line max-len
   }
 
   /**
@@ -294,22 +314,22 @@ export default class ContentManager {
   getEditorStats() {
     // Editor stats. Use environment property to set it.
     const stats = {};
-    if ('editor' in this.environment) {
+    if ("editor" in this.environment) {
       stats.editor = this.environment.editor;
     } else {
-      stats.editor = 'unknown';
+      stats.editor = "unknown";
     }
 
-    if ('mode' in this.environment) {
+    if ("mode" in this.environment) {
       stats.mode = this.environment.mode;
     } else {
-      stats.mode = Configuration.get('saveMode');
+      stats.mode = Configuration.get("saveMode");
     }
 
-    if ('version' in this.environment) {
+    if ("version" in this.environment) {
       stats.version = this.environment.version;
     } else {
-      stats.version = Configuration.get('version');
+      stats.version = Configuration.get("version");
     }
 
     return stats;
@@ -320,16 +340,18 @@ export default class ContentManager {
    * @returns {Boolean}
    */
   static isIOS() {
-    return [
-      'iPad Simulator',
-      'iPhone Simulator',
-      'iPod Simulator',
-      'iPad',
-      'iPhone',
-      'iPod',
-    ].includes(navigator.platform)
+    return (
+      [
+        "iPad Simulator",
+        "iPhone Simulator",
+        "iPod Simulator",
+        "iPad",
+        "iPhone",
+        "iPod",
+      ].includes(navigator.platform) ||
       // iPad on iOS 13 detection
-      || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+      (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    );
   }
 
   /**
@@ -337,7 +359,9 @@ export default class ContentManager {
    * @returns {Boolean}
    */
   static isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
   }
 
   /**
@@ -347,13 +371,18 @@ export default class ContentManager {
   static isEditorLoaded() {
     // To know if editor JavaScript is loaded we need to wait until
     // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
-    return (window.com && window.com.wiris && window.com.wiris.jsEditor
-      && window.com.wiris.jsEditor.JsEditor && window.com.wiris.jsEditor.JsEditor.newInstance);
+    return (
+      window.com &&
+      window.com.wiris &&
+      window.com.wiris.jsEditor &&
+      window.com.wiris.jsEditor.JsEditor &&
+      window.com.wiris.jsEditor.JsEditor.newInstance
+    );
   }
 
   /**
-  * Sets the {@link ContentManager.editor} initial content.
-  */
+   * Sets the {@link ContentManager.editor} initial content.
+   */
   setInitialContent() {
     if (!this.isNewElement) {
       this.setMathML(this.mathML);
@@ -368,7 +397,7 @@ export default class ContentManager {
    */
   setMathML(mathml, focusDisabled) {
     // By default focus is enabled.
-    if (typeof focusDisabled === 'undefined') {
+    if (typeof focusDisabled === "undefined") {
       focusDisabled = false;
     }
     // Using setMathML method is not a change produced by the user but for the API
@@ -393,12 +422,14 @@ export default class ContentManager {
    * {@link ModalDialog.focus}.
    */
   onFocus() {
-    if (typeof this.editor !== 'undefined' && this.editor != null) {
+    if (typeof this.editor !== "undefined" && this.editor != null) {
       this.editor.focus();
 
       // On WordPress integration, the focus gets lost right after setting it.
       // To fix this, we enforce another focus some milliseconds after this behaviour.
-      setTimeout(() => { this.editor.focus() }, 100);
+      setTimeout(() => {
+        this.editor.focus();
+      }, 100);
     }
   }
 
@@ -440,16 +471,17 @@ export default class ContentManager {
    * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
-    const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
+    const isMobile =
+      this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
     const isRTL = this.editor.getEditorModel().isRTL();
 
     if (isMobile || this.integrationModel.forcedHandMode) {
       // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
-      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ""}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
       this.setMathML(mathML, true);
     } else {
       // For non-mobile devices or not forced hand mode, set the empty MathML without an annotation.
-      const mathML = `<math${isRTL ? ' dir="rtl"' : ''}/>`;
+      const mathML = `<math${isRTL ? ' dir="rtl"' : ""}/>`;
       this.setMathML(mathML, true);
     }
   }
@@ -479,7 +511,7 @@ export default class ContentManager {
       }
     }
 
-    let trigger = this.dbclick ? 'formula' : 'button';
+    let trigger = this.dbclick ? "formula" : "button";
     try {
       Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
         toolbar: toolbar,
@@ -489,27 +521,32 @@ export default class ContentManager {
       console.error(err);
     }
 
-    Core.globalListeners.fire('onModalOpen', {});
+    Core.globalListeners.fire("onModalOpen", {});
 
     if (this.integrationModel.forcedHandMode) {
       this.hideHandModeButton();
 
       // In case we have a keyboard written formula, we still want it to be opened with handMode.
-      if (this.mathML && !(this.mathML).includes("<annotation encoding=\"application/json\">") && !this.isNewElement) {
+      if (
+        this.mathML &&
+        !this.mathML.includes('<annotation encoding="application/json">') &&
+        !this.isNewElement
+      ) {
         this.openHandOnKeyboardMathML(this.mathML, this.editor);
       }
     }
-
   }
 
   /**
    * Change Editor in keyboard mode when is loaded
    */
   setKeyboardMode() {
-    const wrsEditor = document.getElementsByClassName('wrs_handOpen wrs_disablePalette')[0];
+    const wrsEditor = document.getElementsByClassName(
+      "wrs_handOpen wrs_disablePalette",
+    )[0];
     if (wrsEditor) {
-      wrsEditor.classList.remove('wrs_handOpen');
-      wrsEditor.classList.remove('wrs_disablePalette');
+      wrsEditor.classList.remove("wrs_handOpen");
+      wrsEditor.classList.remove("wrs_disablePalette");
     } else {
       setTimeout(ContentManager.prototype.setKeyboardMode.bind(this), 100);
     }
@@ -532,12 +569,13 @@ export default class ContentManager {
 
     // "Open hand mode" button takes a little bit to be available.
     // This selector gets the hand <-> keyboard mode switch
-    const handModeButtonSelector = "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
+    const handModeButtonSelector =
+      "div.wrs_editor.wrs_flexEditor.wrs_withHand.wrs_animated .wrs_handWrapper input[type=button]";
 
     // If in "forced mode", we hide the "keyboard button" so the user can't can't change between hand and keyboard modes.
     // We use an observer to ensure that the button it hidden as soon as it appears.
     if (forced) {
-      const mutationInstance = new MutationObserver(mutations => {
+      const mutationInstance = new MutationObserver((mutations) => {
         const handModeButton = document.querySelector(handModeButtonSelector);
         if (handModeButton) {
           handModeButton.hidden = true;
@@ -549,7 +587,7 @@ export default class ContentManager {
         attributes: true,
         childList: true,
         characterData: true,
-        subtree: true
+        subtree: true,
       });
     }
   }
@@ -560,10 +598,10 @@ export default class ContentManager {
    * @param {String} mathml The original KeyBoard MathML
    * @param {Object} editor The editor object.
    */
-  async openHandOnKeyboardMathML(mathml, editor){
+  async openHandOnKeyboardMathML(mathml, editor) {
     // First, as an editor requirement, we need to update the editor object with the current MathML formula.
     // Once the MathML formula is updated to the one we want to open with handMode, we will be able to proceed.
-    await new Promise(resolve => {
+    await new Promise((resolve) => {
       editor.setMathMLWithCallback(mathml, resolve);
     });
 
@@ -586,7 +624,7 @@ export default class ContentManager {
    */
   async waitForHand(editor) {
     while (!editor.hand) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 
@@ -627,7 +665,7 @@ export default class ContentManager {
     if (customEditor) {
       this.modalDialogInstance.setTitle(customEditor.title);
     } else {
-      this.modalDialogInstance.setTitle('MathType');
+      this.modalDialogInstance.setTitle("MathType");
     }
   }
 
@@ -636,14 +674,18 @@ export default class ContentManager {
    * @returns {String} - Toolbar identifier.
    */
   getToolbar() {
-    let toolbar = 'general';
-    if ('toolbar' in this.editorAttributes) {
+    let toolbar = "general";
+    if ("toolbar" in this.editorAttributes) {
       ({ toolbar } = this.editorAttributes);
     }
     // TODO: Change global integration variable for integration custom toolbar.
-    if (toolbar === 'general') {
+    if (toolbar === "general") {
       // eslint-disable-next-line camelcase
-      toolbar = (typeof _wrs_int_wirisProperties === 'undefined' || typeof _wrs_int_wirisProperties.toolbar === 'undefined') ? 'general' : _wrs_int_wirisProperties.toolbar;
+      toolbar =
+        typeof _wrs_int_wirisProperties === "undefined" ||
+        typeof _wrs_int_wirisProperties.toolbar === "undefined"
+          ? "general"
+          : _wrs_int_wirisProperties.toolbar;
     }
 
     return toolbar;
@@ -668,8 +710,7 @@ export default class ContentManager {
     // We control that we only get String or Object as the input.
     if (typeof headers === "object") {
       headersObj = headers;
-    }
-    else if (typeof headers === 'string') {
+    } else if (typeof headers === "string") {
       headersObj = Util.convertStringToObject(headers);
     }
 
@@ -683,7 +724,9 @@ export default class ContentManager {
    * @returns {Boolean} True if the editor content has been changed. False otherwise.
    */
   hasChanges() {
-    return (!this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged());
+    return (
+      !this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged()
+    );
   }
 
   /**
@@ -692,13 +735,18 @@ export default class ContentManager {
    */
   onKeyDown(keyboardEvent) {
     if (keyboardEvent.key !== undefined && keyboardEvent.repeat === false) {
-      if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') { // Code to detect Esc event.
+      if (keyboardEvent.key === "Escape" || keyboardEvent.key === "Esc") {
+        // Code to detect Esc event.
         // There should be only one element with class name 'wrs_pressed' at the same time.
-        let list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed');
+        let list = document.getElementsByClassName(
+          "wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed",
+        );
         if (list.length === 0) {
-          list = document.getElementsByClassName('wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed');
+          list = document.getElementsByClassName(
+            "wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed",
+          );
           if (list.length === 0) {
-            list = document.getElementsByClassName('wrs_select wrs_pressed');
+            list = document.getElementsByClassName("wrs_select wrs_pressed");
             if (list.length === 0) {
               this.modalDialogInstance.cancelAction();
               keyboardEvent.stopPropagation();
@@ -706,13 +754,16 @@ export default class ContentManager {
             }
           }
         }
-      } else if (keyboardEvent.shiftKey && keyboardEvent.key === 'Tab') { // Code to detect shift Tab event.
+      } else if (keyboardEvent.shiftKey && keyboardEvent.key === "Tab") {
+        // Code to detect shift Tab event.
         if (document.activeElement === this.modalDialogInstance.submitButton) {
           // Focus is on OK button.
           this.editor.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else if (document.querySelector('[title="Manual"]') === document.activeElement) {
+        } else if (
+          document.querySelector('[title="Manual"]') === document.activeElement
+        ) {
           // Focus is on minimize button (_).
           this.modalDialogInstance.closeDiv.focus();
           keyboardEvent.stopPropagation();
@@ -720,22 +771,25 @@ export default class ContentManager {
         } else {
           if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
             // Focus on cancel button.
-            if (!(this.modalDialogInstance.properties.state === 'minimized')) {
+            if (!(this.modalDialogInstance.properties.state === "minimized")) {
               this.modalDialogInstance.cancelButton.focus();
               keyboardEvent.stopPropagation();
               keyboardEvent.preventDefault();
             }
           }
         }
-      } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
+      } else if (keyboardEvent.key === "Tab") {
+        // Code to detect Tab event.
         if (document.activeElement === this.modalDialogInstance.cancelButton) {
           // Focus is on X button.
           this.modalDialogInstance.minimizeDiv.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else if (document.activeElement === this.modalDialogInstance.closeDiv) {
+        } else if (
+          document.activeElement === this.modalDialogInstance.closeDiv
+        ) {
           // Focus on help button.
-          if (!(this.modalDialogInstance.properties.state === 'minimized')) {
+          if (!(this.modalDialogInstance.properties.state === "minimized")) {
             const element = document.querySelector('[title="Manual"]');
             element.focus();
             keyboardEvent.stopPropagation();
@@ -743,8 +797,11 @@ export default class ContentManager {
           }
         } else {
           // There should be only one element with class name 'wrs_formulaDisplay'.
-          const element = document.getElementsByClassName('wrs_formulaDisplay')[0];
-          if (element.getAttribute('class') === 'wrs_formulaDisplay wrs_focused') {
+          const element =
+            document.getElementsByClassName("wrs_formulaDisplay")[0];
+          if (
+            element.getAttribute("class") === "wrs_formulaDisplay wrs_focused"
+          ) {
             // Focus is on formuladisplay.
             this.modalDialogInstance.submitButton.focus();
             keyboardEvent.stopPropagation();

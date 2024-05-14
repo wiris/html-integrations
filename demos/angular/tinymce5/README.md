@@ -1,11 +1,11 @@
 # TinyMCE V5 integration in Angular
 
-A simple Angular App integrating WIRIS MathType on a TinyMCE V5 and step-by-step information on how to build it. The  code of this example loads a rich text editor instance with a default value.
+A simple Angular App integrating WIRIS MathType on a TinyMCE V5 and step-by-step information on how to build it. The code of this example loads a rich text editor instance with a default value.
 
 ## Requirements
 
-* npm
-* Angular (*Currently* v11.2.10)
+- npm
+- Angular (_Currently_ v11.2.10)
 
 ## How to run the demo
 
@@ -14,7 +14,7 @@ $ npm install
 $ npm start
 ```
 
-*More information on the different ways to run a demo [here](../../README.md)*
+_More information on the different ways to run a demo [here](../../README.md)_
 
 Runs the app in the development mode.
 Opens [http://localhost:4006/](http://localhost:4006/) to view it in the browser.
@@ -23,86 +23,83 @@ Opens [http://localhost:4006/](http://localhost:4006/) to view it in the browser
 
 1. Install MathType for TinyMCE dependency.
 
-    ```sh
-    $ npm install --save tinymce
-    $ npm install --save @wiris/mathtype-tinymce5
-    ```
+   ```sh
+   $ npm install --save tinymce
+   $ npm install --save @wiris/mathtype-tinymce5
+   ```
 
 2. Edit `src/app/app.module.ts`:
 
-    ```js
-    // Expose tinymce instance to the window
-    declare const require: any;
-    (window as any).tinymce = require('tinymce');
-    
-    // import synchronous mathtype-tinymce5 package
-    require('@wiris/mathtype-tinymce5')
-    ```
+   ```js
+   // Expose tinymce instance to the window
+   declare const require: any;
+   (window as any).tinymce = require('tinymce');
+
+   // import synchronous mathtype-tinymce5 package
+   require('@wiris/mathtype-tinymce5')
+   ```
 
 3. Edit `.angular.json`:
-    
-    ```js
-    "assets": [
-        ...
-        { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
-        ...
-    ]
 
-    ...
+   ```js
+   "assets": [
+       ...
+       { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
+       ...
+   ]
 
-    "scripts": [
-        ...
-        "node_modules/tinymce/tinymce.min.js"
-        ...
-    ]
-    ```
+   ...
+
+   "scripts": [
+       ...
+       "node_modules/tinymce/tinymce.min.js"
+       ...
+   ]
+   ```
 
 4. Edit `src/app/app.component.ts` and add the following content:
 
-    ```ts
-    // Load WIRISplugins.js dynamically
-    const jsDemoImagesTransform = document.createElement('script');
-    jsDemoImagesTransform.type = 'text/javascript';
-    jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-    // Load generated scripts.
-    document.head.appendChild(jsDemoImagesTransform);
+   ```ts
+   // Load WIRISplugins.js dynamically
+   const jsDemoImagesTransform = document.createElement('script');
+   jsDemoImagesTransform.type = 'text/javascript';
+   jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+   // Load generated scripts.
+   document.head.appendChild(jsDemoImagesTransform);
 
-    ...
-    
-    export class AppComponent {
-        // Define the initial options of the editor
-        public options: Object = {
-            base_url: '/tinymce', // Root for resources
-            suffix: '.min',        // Suffix to use when loading resources
-            
-            // Add wiris plugin
-            external_plugins: {
-                'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
-            },
-            htmlAllowedTags:  ['.*'],
-            htmlAllowedAttrs: ['.*'],
-            draggable_modal: true,
-            plugins: ['image', 'media'],
-            toolbar: 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+   ...
 
-            // You could set a different language for MathType editor:
-            // mathTypeParameters: {
-            //   editorParameters: { language: 'de' },
-            // },
-        };
-    }
+   export class AppComponent {
+       // Define the initial options of the editor
+       public options: Object = {
+           base_url: '/tinymce', // Root for resources
+           suffix: '.min',        // Suffix to use when loading resources
 
-    ```
+           // Add wiris plugin
+           external_plugins: {
+               'tiny_mce_wiris' : `${window.location.href}/node_modules/@wiris/mathtype-tinymce5/plugin.min.js`
+           },
+           htmlAllowedTags:  ['.*'],
+           htmlAllowedAttrs: ['.*'],
+           draggable_modal: true,
+           plugins: ['image', 'media'],
+           toolbar: 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+
+           // You could set a different language for MathType editor:
+           // mathTypeParameters: {
+           //   editorParameters: { language: 'de' },
+           // },
+       };
+   }
+
+   ```
 
 5. Edit `src/app/app.component.html` and replace its contents with:
 
-    ```html
-    <h1>TinyMCE 5 Angular Demo</h1>
-    <editor
-    id="editor"
-    [init]="options"
-    ></editor>
-    ```
+   ```html
+   <h1>TinyMCE 5 Angular Demo</h1>
+   <editor id="editor" [init]="options"></editor>
+   ```
 
 6. Finally, you are ready to run the development server through the specified command `ng serve`.
 

@@ -33,6 +33,7 @@ To run a demo, from the project root, run:
 ```js
 $ nx start-remote <FRAMEWORK>-<EDITOR>
 ```
+
 This is the full list of available examples of MathType Integrations on this project:
 
 ## Staging environment
@@ -49,9 +50,8 @@ The URL format for each demo is as follows: `https://integrations.wiris.kitchen/
 
 The following table contains all our demos, together with links to the corresponding deployment for the branch `stable`:
 
-
 | FRAMEWORK | Editor and Version  | EDITOR                                               | Deployment URL for `stable`                                  |
-|-----------|---------------------|------------------------------------------------------|--------------------------------------------------------------|
+| --------- | ------------------- | ---------------------------------------------------- | ------------------------------------------------------------ |
 | html      | CKEditor V4         | [ckeditor4](../../demos/html/ckeditor4)              | https://integrations.wiris.kitchen/stable/html/ckeditor4/    |
 | html      | CKEditor V5         | [ckeditor5](../../demos/html/ckeditor5)              | https://integrations.wiris.kitchen/stable/html/ckeditor5/    |
 | html      | Froala              | [froala](../../demos/html/froala)                    | https://integrations.wiris.kitchen/stable/html/froala/       |
@@ -66,7 +66,6 @@ The following table contains all our demos, together with links to the correspon
 | react     | Froala              | [froala](../../demos/react/froala/README.md)         | https://integrations.wiris.kitchen/stable/react/froala/      |
 | react     | Generic integration | [generic](../../demos/react/generic/README.md)       | https://integrations.wiris.kitchen/stable/react/generic/     |
 | react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)     | https://integrations.wiris.kitchen/stable/react/tinymce5/    |
-
 
 ## Running a demo using the local source code
 

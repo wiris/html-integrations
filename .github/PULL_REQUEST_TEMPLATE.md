@@ -1,13 +1,13 @@
 ## Description
 
-*What does this PR fix or add?*
+_What does this PR fix or add?_
 
 ## Steps to reproduce
 
-*If this PR solves a bug, include a short summary of the bug and the steps to reproduce it.*
+_If this PR solves a bug, include a short summary of the bug and the steps to reproduce it._
 
 ---
 
-Closes #X (*Associated GitHub issue, if any*)
+Closes #X (_Associated GitHub issue, if any_)
 
-[#taskid X](https://wiris.kanbanize.com/ctrl_board/2/cards/X/details/) (*Associated Kanbanize card, if any*)
+[#taskid X](https://wiris.kanbanize.com/ctrl_board/2/cards/X/details/) (_Associated Kanbanize card, if any_)

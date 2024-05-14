@@ -13,7 +13,7 @@ This project uses [Cypress][Cypress] to run integration and validation tests in 
 
 ## Before you begin
 
-Linux users will need to install `net-tools` to use Cypress. 
+Linux users will need to install `net-tools` to use Cypress.
 
 ```bash
 $ sudo apt install net-tools

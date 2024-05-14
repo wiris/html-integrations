@@ -16,8 +16,8 @@ In order to offer cross-browser compatibility and the latest features, most of t
 
 ## Requirements
 
-* [**yarn**](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (*currently: v1.22.19*)
-* [**nx**](https://nx.dev/getting-started/installation#installing-nx-globally) (*latest*) - Optional
+- [**yarn**](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (_currently: v1.22.19_)
+- [**nx**](https://nx.dev/getting-started/installation#installing-nx-globally) (_latest_) - Optional
 
 ## Bootstrap dependencies
 
@@ -43,22 +43,20 @@ You can also build the packages in development mode:
 $ nx build-dev <PACKAGE>
 ```
 
-
 > In case you haven't installed `nx`, you'll have to add `yarn` at the beggining of each one of the previous commands.
 
 Where PACKAGE can be:
 
-* ckeditor4
-* ckeditor5
-* froala
-* generic
-* tinymce5
-* tinymce6
+- ckeditor4
+- ckeditor5
+- froala
+- generic
+- tinymce5
+- tinymce6
 
 ## Point to your own back-end
 
 If your website hosts its own MathType Web services, instead of using the wiris.net services, then you must pass a flag indicating which technology your server uses (ASPX, Java, Ruby, or PHP), run the following command in the desired package folder:
-
 
 ```sh
 $ SERVICE_PROVIDER_URI=[url] SERVICE_PROVIDER_SERVER=[tech] yarn build

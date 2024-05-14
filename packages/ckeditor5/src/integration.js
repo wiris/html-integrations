@@ -1,9 +1,9 @@
-import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
-import Util from '@wiris/mathtype-html-integration-devkit/src/util';
-import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
-import Latex from '@wiris/mathtype-html-integration-devkit/src/latex';
-import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
-import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
+import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel";
+import Util from "@wiris/mathtype-html-integration-devkit/src/util";
+import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration";
+import Latex from "@wiris/mathtype-html-integration-devkit/src/latex";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
+import Telemeter from "@wiris/mathtype-html-integration-devkit/src/telemeter";
 
 /**
  * This class represents the MathType integration for CKEditor5.
@@ -13,40 +13,45 @@ export default class CKEditor5Integration extends IntegrationModel {
   constructor(ckeditorIntegrationModelProperties) {
     const editor = ckeditorIntegrationModelProperties.editorObject;
 
-    if (typeof editor.config !== 'undefined' && typeof editor.config.get('mathTypeParameters') !== 'undefined') {
-      ckeditorIntegrationModelProperties.integrationParameters = editor.config.get('mathTypeParameters');
+    if (
+      typeof editor.config !== "undefined" &&
+      typeof editor.config.get("mathTypeParameters") !== "undefined"
+    ) {
+      ckeditorIntegrationModelProperties.integrationParameters =
+        editor.config.get("mathTypeParameters");
     }
     /**
-         * CKEditor5 Integration.
-         *
-         * @param {integrationModelProperties} integrationModelAttributes
-         */
+     * CKEditor5 Integration.
+     *
+     * @param {integrationModelProperties} integrationModelAttributes
+     */
     super(ckeditorIntegrationModelProperties);
 
     /**
      * Folder name used for the integration inside CKEditor plugins folder.
      */
-    this.integrationFolderName = 'ckeditor_wiris';
+    this.integrationFolderName = "ckeditor_wiris";
   }
 
   /**
-     * @inheritdoc
-     * @returns {string} - The CKEditor instance language.
-     * @override
-     */
+   * @inheritdoc
+   * @returns {string} - The CKEditor instance language.
+   * @override
+   */
   getLanguage() {
     // Returns the CKEDitor instance language taking into account that the language can be an object.
     // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
     } catch (e) {}
-    const languageObject = this.editorObject.config.get('language');
+    const languageObject = this.editorObject.config.get("language");
     if (languageObject != null) {
-      if (typeof (languageObject) === 'object') {
+      if (typeof languageObject === "object") {
         // eslint-disable-next-line no-prototype-builtins
-        if (languageObject.hasOwnProperty('ui')) {
+        if (languageObject.hasOwnProperty("ui")) {
           return languageObject.ui;
-        } return languageObject;
+        }
+        return languageObject;
       }
       return languageObject;
     }
@@ -54,29 +59,31 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-     * Adds callbacks to the following CKEditor listeners:
-     * - 'focus' - updates the current instance.
-     * - 'contentDom' - adds 'doubleclick' callback.
-     * - 'doubleclick' - sets to null data.dialog property to avoid modifications for MathType formulas.
-     * - 'setData' - parses the data converting MathML into images.
-     * - 'afterSetData' - adds an observer to MathType formulas to avoid modifications.
-     * - 'getData' - parses the data converting images into selected save mode (MathML by default).
-     * - 'mode' - recalculates the active element.
-     */
+   * Adds callbacks to the following CKEditor listeners:
+   * - 'focus' - updates the current instance.
+   * - 'contentDom' - adds 'doubleclick' callback.
+   * - 'doubleclick' - sets to null data.dialog property to avoid modifications for MathType formulas.
+   * - 'setData' - parses the data converting MathML into images.
+   * - 'afterSetData' - adds an observer to MathType formulas to avoid modifications.
+   * - 'getData' - parses the data converting images into selected save mode (MathML by default).
+   * - 'mode' - recalculates the active element.
+   */
   addEditorListeners() {
     const editor = this.editorObject;
 
-    if (typeof editor.config.wirislistenersdisabled === 'undefined'
-      || !editor.config.wirislistenersdisabled) {
+    if (
+      typeof editor.config.wirislistenersdisabled === "undefined" ||
+      !editor.config.wirislistenersdisabled
+    ) {
       this.checkElement();
     }
   }
 
   /**
-     * Checks the current container and assign events in case that it doesn't have them.
-     * CKEditor replaces several times the element element during its execution,
-     * so we must assign the events again to editor element.
-     */
+   * Checks the current container and assign events in case that it doesn't have them.
+   * CKEditor replaces several times the element element during its execution,
+   * so we must assign the events again to editor element.
+   */
   checkElement() {
     const editor = this.editorObject;
     const newElement = editor.sourceElement;
@@ -91,24 +98,27 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-     * @inheritdoc
-     * @param {HTMLElement} element - HTMLElement target.
-     * @param {MouseEvent} event - event which trigger the handler.
-     */
+   * @inheritdoc
+   * @param {HTMLElement} element - HTMLElement target.
+   * @param {MouseEvent} event - event which trigger the handler.
+   */
   doubleClickHandler(element, event) {
     this.core.editionProperties.dbclick = true;
     if (this.editorObject.isReadOnly === false) {
-      if (element.nodeName.toLowerCase() === 'img') {
-        if (Util.containsClass(element, Configuration.get('imageClassName'))) {
+      if (element.nodeName.toLowerCase() === "img") {
+        if (Util.containsClass(element, Configuration.get("imageClassName"))) {
           // Some plugins (image2, image) open a dialog on Double-click. On formulas
           // doubleclick event ends here.
-          if (typeof event.stopPropagation !== 'undefined') { // old I.E compatibility.
+          if (typeof event.stopPropagation !== "undefined") {
+            // old I.E compatibility.
             event.stopPropagation();
           } else {
             event.returnValue = false;
           }
           this.core.getCustomEditors().disable();
-          const customEditorAttr = element.getAttribute(Configuration.get('imageCustomEditorName'));
+          const customEditorAttr = element.getAttribute(
+            Configuration.get("imageCustomEditorName"),
+          );
           if (customEditorAttr) {
             this.core.getCustomEditors().enable(customEditorAttr);
           }
@@ -132,23 +142,24 @@ export default class CKEditor5Integration extends IntegrationModel {
 
   openNewFormulaEditor() {
     // Store the editor selection as it will be lost upon opening the modal
-    this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
+    this.core.editionProperties.selection =
+      this.editorObject.editing.view.document.selection;
 
     return super.openNewFormulaEditor();
   }
 
   /**
-     * Replaces old formula with new MathML or inserts it in caret position if new
-     * @param {String} mathml MathML to update old one or insert
-     * @returns {module:engine/model/element~Element} The model element corresponding to the inserted image
-     */
+   * Replaces old formula with new MathML or inserts it in caret position if new
+   * @param {String} mathml MathML to update old one or insert
+   * @returns {module:engine/model/element~Element} The model element corresponding to the inserted image
+   */
   insertMathml(mathml) {
     // This returns the value returned by the callback function (writer => {...})
     return this.editorObject.model.change((writer) => {
       const core = this.getCore();
       const selection = this.editorObject.model.document.selection;
 
-      const modelElementNew = writer.createElement('mathml', {
+      const modelElementNew = writer.createElement("mathml", {
         formula: mathml,
         ...Object.fromEntries(selection.getAttributes()), // To keep the format, such as style and font
       });
@@ -158,8 +169,12 @@ export default class CKEditor5Integration extends IntegrationModel {
         // Don't bother inserting anything at all if the MathML is empty.
         if (!mathml) return;
 
-        const viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
-        const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
+        const viewSelection =
+          this.core.editionProperties.selection ||
+          this.editorObject.editing.view.document.selection;
+        const modelPosition = this.editorObject.editing.mapper.toModelPosition(
+          viewSelection.getLastPosition(),
+        );
 
         this.editorObject.model.insertObject(modelElementNew, modelPosition);
 
@@ -171,15 +186,19 @@ export default class CKEditor5Integration extends IntegrationModel {
         }
 
         // Set carret after the formula
-        const position = this.editorObject.model.createPositionAfter(modelElementNew);
+        const position =
+          this.editorObject.model.createPositionAfter(modelElementNew);
         writer.setSelection(position);
       } else {
         const img = core.editionProperties.temporalImage;
-        const viewElement = this.editorObject.editing.view.domConverter.domToView(img).parent;
-        const modelElementOld = this.editorObject.editing.mapper.toModelElement(viewElement);
+        const viewElement =
+          this.editorObject.editing.view.domConverter.domToView(img).parent;
+        const modelElementOld =
+          this.editorObject.editing.mapper.toModelElement(viewElement);
 
         // Insert the new <mathml> and remove the old one
-        const position = this.editorObject.model.createPositionBefore(modelElementOld);
+        const position =
+          this.editorObject.model.createPositionBefore(modelElementOld);
 
         // If the given MathML is empty, don't insert a new formula.
         if (mathml) {
@@ -194,19 +213,18 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-     * Finds the text node corresponding to given DOM text element.
-     * @param {element} viewElement Element to find corresponding text node of.
-     * @returns {module:engine/model/text~Text|undefined} Text node corresponding to the given element or undefined if it doesn't exist.
-     */
-  findText(viewElement) { // eslint-disable-line consistent-return
+   * Finds the text node corresponding to given DOM text element.
+   * @param {element} viewElement Element to find corresponding text node of.
+   * @returns {module:engine/model/text~Text|undefined} Text node corresponding to the given element or undefined if it doesn't exist.
+   */
+  findText(viewElement) {
+    // eslint-disable-line consistent-return
     // mapper always converts text nodes to *new* model elements so we need to convert the text's parents and then come back down
     let pivot = viewElement;
     let element;
     while (!element) {
       element = this.editorObject.editing.mapper.toModelElement(
-        this.editorObject.editing.view.domConverter.domToView(
-          pivot,
-        ),
+        this.editorObject.editing.view.domConverter.domToView(pivot),
       );
       pivot = pivot.parentElement;
     }
@@ -218,24 +236,33 @@ export default class CKEditor5Integration extends IntegrationModel {
       let viewElementData = viewElement.data;
       if (viewElement.nodeType === 3) {
         // Remove invisible white spaces
-        viewElementData = viewElementData.replaceAll(String.fromCharCode(8288), '')
+        viewElementData = viewElementData.replaceAll(
+          String.fromCharCode(8288),
+          "",
+        );
       }
-      if (node.is('textProxy') && node.data === viewElementData.replace(String.fromCharCode(160), ' ')) {
+      if (
+        node.is("textProxy") &&
+        node.data === viewElementData.replace(String.fromCharCode(160), " ")
+      ) {
         return node.textNode;
       }
     }
   }
 
   /** @inheritdoc */
-  insertFormula(focusElement, windowTarget, mathml, wirisProperties) { // eslint-disable-line no-unused-vars
+  insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+    // eslint-disable-line no-unused-vars
     const returnObject = {};
 
     let mathmlOrigin;
     if (!mathml) {
-      this.insertMathml('');
-    } else if (this.core.editMode === 'latex') {
+      this.insertMathml("");
+    } else if (this.core.editMode === "latex") {
       returnObject.latex = Latex.getLatexFromMathML(mathml);
-      returnObject.node = windowTarget.document.createTextNode(`$$${returnObject.latex}$$`);
+      returnObject.node = windowTarget.document.createTextNode(
+        `$$${returnObject.latex}$$`,
+      );
 
       this.editorObject.model.change((writer) => {
         const { latexRange } = this.core.editionProperties;
@@ -243,59 +270,83 @@ export default class CKEditor5Integration extends IntegrationModel {
         const startNode = this.findText(latexRange.startContainer);
         const endNode = this.findText(latexRange.endContainer);
 
-        let startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
-        let endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
-
-        let range = writer.createRange(
-          startPosition,
-          endPosition,
+        let startPosition = writer.createPositionAt(
+          startNode.parent,
+          startNode.startOffset + latexRange.startOffset,
+        );
+        let endPosition = writer.createPositionAt(
+          endNode.parent,
+          endNode.startOffset + latexRange.endOffset,
         );
 
-
+        let range = writer.createRange(startPosition, endPosition);
 
         // When Latex is next to image/formula.
-        if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
+        if (
+          latexRange.startContainer.nodeType === 3 &&
+          latexRange.startContainer.previousSibling?.nodeType === 1
+        ) {
           // Get the position of the latex to be replaced.
-          let latexEdited = '$$' +(Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml))) + '$$';
+          let latexEdited =
+            "$$" +
+            Latex.getLatexFromMathML(
+              MathML.safeXmlDecode(
+                this.core.editionProperties.temporalImage.dataset.mathml,
+              ),
+            ) +
+            "$$";
           let data = latexRange.startContainer.data;
 
           // Remove invisible characters.
-          data = data.replaceAll(String.fromCharCode(8288), '')
+          data = data.replaceAll(String.fromCharCode(8288), "");
 
           // Get to the start of the latex we are editing.
           let offset = data.indexOf(latexEdited);
           let dataOffset = data.substring(offset);
           let second$ = dataOffset.substring(2).indexOf("$$") + 4;
           let substring = dataOffset.substr(0, second$);
-          data = data.replace(substring, '');
+          data = data.replace(substring, "");
 
           if (!data) {
             startPosition = writer.createPositionBefore(startNode);
             range = startNode;
           } else {
-            startPosition = startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + offset);
-            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);
-            range = writer.createRange(
-              startPosition,
-              endPosition,
+            startPosition = startPosition = writer.createPositionAt(
+              startNode.parent,
+              startNode.startOffset + offset,
             );
+            endPosition = writer.createPositionAt(
+              endNode.parent,
+              endNode.startOffset + second$ + offset,
+            );
+            range = writer.createRange(startPosition, endPosition);
           }
         }
 
         writer.remove(range);
-        writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
+        writer.insertText(
+          `$$${returnObject.latex}$$`,
+          startNode.getAttributes(),
+          startPosition,
+        );
       });
     } else {
       mathmlOrigin = this.core.editionProperties.temporalImage?.dataset.mathml;
       try {
-        returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
-          this.editorObject.editing.mapper.toViewElement(
-            this.insertMathml(mathml),
-          ), windowTarget.document,
-        );
+        returnObject.node =
+          this.editorObject.editing.view.domConverter.viewToDom(
+            this.editorObject.editing.mapper.toViewElement(
+              this.insertMathml(mathml),
+            ),
+            windowTarget.document,
+          );
       } catch (e) {
         const x = e.toString();
-        if ((x).includes("CKEditorError: Cannot read property 'parent' of undefined")) {
+        if (
+          x.includes(
+            "CKEditorError: Cannot read property 'parent' of undefined",
+          )
+        ) {
           this.core.modalDialog.cancelAction();
         }
       }
@@ -303,7 +354,9 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     // Build the telemeter payload separated to delete null/undefined entries.
     let payload = {
-      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
+      mathml_origin: mathmlOrigin
+        ? MathML.safeXmlDecode(mathmlOrigin)
+        : mathmlOrigin,
       mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
       editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
@@ -312,8 +365,9 @@ export default class CKEditor5Integration extends IntegrationModel {
     };
 
     // Remove desired null keys.
-    Object.keys(payload).forEach(key => {
-      if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+    Object.keys(payload).forEach((key) => {
+      if (key === "mathml_origin" || key === "editor_origin")
+        !payload[key] ? delete payload[key] : {};
     });
 
     try {
@@ -335,8 +389,8 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-     * Function called when the content submits an action.
-     */
+   * Function called when the content submits an action.
+   */
   notifyWindowClosed() {
     this.editorObject.editing.view.focus();
   }

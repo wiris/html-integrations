@@ -2,9 +2,9 @@
 // This file has backwards compatibility purposes, eslint
 // is disabled.
 
-import Core from './core.src';
-import Parser from './parser';
-import Listeners from './listeners';
+import Core from "./core.src";
+import Parser from "./parser";
+import Listeners from "./listeners";
 
 var backwardsLib;
 export default backwardsLib;
@@ -19,7 +19,7 @@ export default backwardsLib;
  */
 function wrs_addPluginListener(jsonListener) {
   // TODO: Add documentation URL + doc example.
-  console.warn('Deprecated method');
+  console.warn("Deprecated method");
   var eventName;
   eventName = Object.keys(jsonListener)[0];
   var callback;
@@ -44,7 +44,7 @@ window.wrs_addPluginListener = wrs_addPluginListener;
  * @ignore
  */
 function wrs_initParse(code, language) {
-  console.warn('Deprecated method. Use Parser.endParse instead.');
+  console.warn("Deprecated method. Use Parser.endParse instead.");
   return Parser.initParse(code, language);
 }
 
@@ -63,7 +63,7 @@ window.wrs_initParse = wrs_initParse;
  * @ignore
  */
 function wrs_endParse(code, wirisProperties, language) {
-  console.warn('Deprecated method. Use Parser.endParse instead.')
+  console.warn("Deprecated method. Use Parser.endParse instead.");
   return Parser.endParse(code, wirisProperties, language);
 }
 

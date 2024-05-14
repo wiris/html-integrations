@@ -8,18 +8,18 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('an inserted formula should be the same on preview when this is updated', function () {
+it("an inserted formula should be the same on preview when this is updated", function () {
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-general'], true);
+  cy.insertFormulaFromScratch(this.formulas["formula-general"], true);
 
   // // Click the update button
   // cy.get('#btn_update').click();

@@ -1,5 +1,5 @@
-import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
-import { Properties } from './properties';
+import Parser from "@wiris/mathtype-html-integration-devkit/src/parser";
+import { Properties } from "./properties";
 
 enum MethodType {
   Post = "POST",
@@ -24,16 +24,18 @@ export class StatusError extends Error {
  * @returns {Promise<any>} The unwrapped result of the response, if valid.
  * @throws {StatusError} Service responded with a non-ok status.
  */
-export async function processJsonResponse(response: Promise<Response>): Promise<any> {
+export async function processJsonResponse(
+  response: Promise<Response>,
+): Promise<any> {
   try {
     const { status, result } = await (await response).json();
 
-    if (status !== 'ok') {
-      throw new StatusError('Service responded with a non-ok status');
+    if (status !== "ok") {
+      throw new StatusError("Service responded with a non-ok status");
     }
 
     return result;
-  } catch(e) {
+  } catch (e) {
     // TODO manage network and status non-ok errors
     throw e;
   }
@@ -47,19 +49,25 @@ export async function processJsonResponse(response: Promise<Response>): Promise<
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The request response.
  */
-export async function callService(query: object, serviceName: string, method: MethodType, serverURL: string, extension: string) : Promise<any> {
+export async function callService(
+  query: object,
+  serviceName: string,
+  method: MethodType,
+  serverURL: string,
+  extension: string,
+): Promise<any> {
   try {
     const url = new URL(serviceName + extension, serverURL);
 
     const properties = Properties.getInstance();
     const headers = {
-      'Content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-      ...properties.config.backendConfig.wiriscustomheaders
-    }
+      "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
+      ...properties.config.backendConfig.wiriscustomheaders,
+    };
 
     const init: RequestInit = {
       method,
-      headers
+      headers,
     };
 
     if (method === MethodType.Get) {
@@ -69,11 +77,11 @@ export async function callService(query: object, serviceName: string, method: Me
       }
     } else {
       // Add the query as the body of the request
-      init.body = new URLSearchParams({...query});
+      init.body = new URLSearchParams({ ...query });
     }
 
     return fetch(url.toString(), init);
-  } catch(e) {
+  } catch (e) {
     // TODO manage network and status non-ok errors
     throw e;
   }
@@ -87,18 +95,29 @@ export async function callService(query: object, serviceName: string, method: Me
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The mathml2accessible service response.
  */
-export async function mathml2accessible(mml: string, lang: string, url: string, extension: string) : Promise<any> {
+export async function mathml2accessible(
+  mml: string,
+  lang: string,
+  url: string,
+  extension: string,
+): Promise<any> {
   // Set the needed params to retrieve the alt text.
   const params = {
-    'service': 'mathml2accessible',
-    'mml': mml,
-    'metrics': 'true',
-    'centerbaseline': 'false',
-    'lang': lang,
-    'ignoreStyles': 'true',
-  }
+    service: "mathml2accessible",
+    mml: mml,
+    metrics: "true",
+    centerbaseline: "false",
+    lang: lang,
+    ignoreStyles: "true",
+  };
 
-  const response = callService(params, 'service', MethodType.Post, url, extension);
+  const response = callService(
+    params,
+    "service",
+    MethodType.Post,
+    url,
+    extension,
+  );
   return processJsonResponse(response);
 }
 
@@ -110,20 +129,31 @@ export async function mathml2accessible(mml: string, lang: string, url: string, 
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to showImage
  */
-export async function showImage(mml: string, lang: string, url: string, extension: string): Promise<any> {
+export async function showImage(
+  mml: string,
+  lang: string,
+  url: string,
+  extension: string,
+): Promise<any> {
   const params = {
-    'mml': mml,
-    'metrics': 'true',
-    'centerbaseline': 'false',
-    'lang':lang,
-  }
+    mml: mml,
+    metrics: "true",
+    centerbaseline: "false",
+    lang: lang,
+  };
 
   // Try to obtain the image via GET
   const getParams = Parser.createShowImageSrcData(params, params.lang);
-  const getResponse = callService(getParams, 'showimage', MethodType.Get, url, extension);
+  const getResponse = callService(
+    getParams,
+    "showimage",
+    MethodType.Get,
+    url,
+    extension,
+  );
   try {
     return await processJsonResponse(getResponse);
-  } catch(e) {
+  } catch (e) {
     if (e instanceof StatusError) {
       // Formula was not in cache; proceed with calling showimage via POST
     } else {
@@ -132,10 +162,15 @@ export async function showImage(mml: string, lang: string, url: string, extensio
   }
 
   // If GET request fails, it means that the formula was not in cache. Proceed with POST:
-  const response = callService(params, 'showimage', MethodType.Post, url, extension);
+  const response = callService(
+    params,
+    "showimage",
+    MethodType.Post,
+    url,
+    extension,
+  );
   return processJsonResponse(response);
-
-};
+}
 
 /**
  * Calls the createImage service with the given MathML and returns the received Response object.
@@ -145,18 +180,29 @@ export async function showImage(mml: string, lang: string, url: string, extensio
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to showImage
  */
-export async function createImage(mml: string, lang: string, url: string, extension: string): Promise<any> {
+export async function createImage(
+  mml: string,
+  lang: string,
+  url: string,
+  extension: string,
+): Promise<any> {
   const params = {
-    'mml': mml,
-    'metrics': 'true',
-    'centerbaseline': 'false',
-    'lang': lang,
-  }
+    mml: mml,
+    metrics: "true",
+    centerbaseline: "false",
+    lang: lang,
+  };
 
   // POST request to get the corresponding image
-  const response = callService(params, 'showimage', MethodType.Post, url, extension);
+  const response = callService(
+    params,
+    "showimage",
+    MethodType.Post,
+    url,
+    extension,
+  );
   return processJsonResponse(response);
-  };
+}
 
 /**
  * Calls the latex2mathml service with the given LaTeX and returns the received Response object.
@@ -165,13 +211,23 @@ export async function createImage(mml: string, lang: string, url: string, extens
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to service
  */
-export async function latexToMathml(latex: string, url: string, extension: string): Promise<any> {
+export async function latexToMathml(
+  latex: string,
+  url: string,
+  extension: string,
+): Promise<any> {
   const params = {
-    'service': 'latex2mathml',
-    'latex': latex,
-  }
+    service: "latex2mathml",
+    latex: latex,
+  };
 
-  const response = callService(params, 'service', MethodType.Post, url, extension);
+  const response = callService(
+    params,
+    "service",
+    MethodType.Post,
+    url,
+    extension,
+  );
   return processJsonResponse(response);
 }
 
@@ -181,11 +237,21 @@ export async function latexToMathml(latex: string, url: string, extension: strin
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The configurationjson service response.
  */
-export async function configurationJson(variablekeys: string[], url: string, extension: string) : Promise<any> {
+export async function configurationJson(
+  variablekeys: string[],
+  url: string,
+  extension: string,
+): Promise<any> {
   const params = {
-    'variablekeys': variablekeys.join(','),
-  }
+    variablekeys: variablekeys.join(","),
+  };
 
-  const response = callService(params, 'configurationjson', MethodType.Get, url, extension);
+  const response = callService(
+    params,
+    "configurationjson",
+    MethodType.Get,
+    url,
+    extension,
+  );
   return processJsonResponse(response);
 }

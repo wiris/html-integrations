@@ -1,21 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
 // Import wiris dependencies.
-import '@wiris/mathtype-generic/wirisplugin-generic';
-import { version as pluginVersion } from '@wiris/mathtype-generic/package.json';
+import "@wiris/mathtype-generic/wirisplugin-generic";
+import { version as pluginVersion } from "@wiris/mathtype-generic/package.json";
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
-import * as Generic from 'resources/demos/common';
-import 'resources/demos/design.css';
+import * as Generic from "resources/demos/common";
+import "resources/demos/design.css";
 
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from "./reportWebVitals";
 
 // Generate scripts.
-const jsDemoImagesTransform = document.createElement('script');
-jsDemoImagesTransform.type = 'text/javascript';
-jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+const jsDemoImagesTransform = document.createElement("script");
+jsDemoImagesTransform.type = "text/javascript";
+jsDemoImagesTransform.src =
+  "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
@@ -31,24 +32,29 @@ const content = Generic.editorContentImg;
 Generic.setEditorAndWirisVersion(0, pluginVersion);
 
 // Add listener on click button to launch updateContent function.
-document.getElementById('btn_update').addEventListener('click', (e) => {
+document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(WirisPlugin.Parser.initParse(htmlEditor.innerHTML), 'transform_content');      //eslint-disable-line
+  Generic.updateContent(
+    WirisPlugin.Parser.initParse(htmlEditor.innerHTML),
+    "transform_content",
+  ); //eslint-disable-line
 });
 
 // Create toolbar component.
 // eslint-disable-next-line no-unused-vars
 function Toolbar() {
-  return (
-    <div id="toolbar"></div>
-  );
+  return <div id="toolbar"></div>;
 }
 
 // Create editable component.
 // eslint-disable-next-line no-unused-vars
 function HtmlEditor(props) {
   return (
-    <div id="htmlEditor" contentEditable="true" dangerouslySetInnerHTML={{ __html: props.data }}></div>
+    <div
+      id="htmlEditor"
+      contentEditable="true"
+      dangerouslySetInnerHTML={{ __html: props.data }}
+    ></div>
   );
 }
 
@@ -57,10 +63,10 @@ class Editor extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   componentDidMount() {
     // Load the toolbar and the editable area into const variables to work easy with them.
-    const editableDiv = document.getElementById('htmlEditor');
-    const toolbarDiv = document.getElementById('toolbar');
+    const editableDiv = document.getElementById("htmlEditor");
+    const toolbarDiv = document.getElementById("toolbar");
     const mathTypeParameters = {
-      editorParameters: { language: 'en' }, // MathType config, including language
+      editorParameters: { language: "en" }, // MathType config, including language
     };
 
     // Initialyze the editor.
@@ -72,12 +78,12 @@ class Editor extends React.Component {
     // Array of react components.
     return [
       <Toolbar key="toolbar-generic" />,
-      <HtmlEditor data = {content} key="editor-generic" />,
+      <HtmlEditor data={content} key="editor-generic" />,
     ];
   }
 }
 
-ReactDOM.render(<Editor />, document.getElementById('editor'));
+ReactDOM.render(<Editor />, document.getElementById("editor"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

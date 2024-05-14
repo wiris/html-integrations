@@ -1,26 +1,15 @@
 {
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     },
     "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.js"
-      ],
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.js"],
       "cache": true
     },
     "test": {
-      "inputs": [
-        "default",
-        "^production"
-      ],
+      "inputs": ["default", "^production"],
       "cache": true
     },
     "e2e": {
@@ -39,17 +28,9 @@
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
-    "sharedGlobals": [
-      "{workspaceRoot}/babel.config.js"
-    ],
-    "production": [
-      "default",
-      "!{projectRoot}/.eslintrc.js"
-    ]
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/babel.config.js"],
+    "production": ["default", "!{projectRoot}/.eslintrc.js"]
   },
   "nxCloudAccessToken": "MmY2Mjc3ZWYtOTlhZC00Mjg4LWE4MjQtYjU0MGJkYzdlNjk1fHJlYWQtd3JpdGU=",
   "defaultBase": "main"
