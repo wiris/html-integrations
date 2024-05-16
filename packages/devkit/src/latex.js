@@ -1,8 +1,8 @@
-import TextCache from './textcache';
-import MathML from './mathml';
-import ServiceProvider from './serviceprovider';
-import Constants from './constants';
-import Util from './util';
+import TextCache from "./textcache";
+import MathML from "./mathml";
+import ServiceProvider from "./serviceprovider";
+import Constants from "./constants";
+import Util from "./util";
 
 /**
  * @classdesc
@@ -25,7 +25,7 @@ export default class Latex {
    * Set latex cache.
    * @param {Cache} value - The property value.
    * @ignore
-  */
+   */
   static set cache(value) {
     Latex._cache = value;
   }
@@ -44,20 +44,26 @@ export default class Latex {
     const { cache } = Latex;
 
     const data = {
-      service: 'mathml2latex',
+      service: "mathml2latex",
       mml: mathmlWithoutSemantics,
     };
 
-    const jsonResponse = JSON.parse(ServiceProvider.getService('service', data));
+    const jsonResponse = JSON.parse(
+      ServiceProvider.getService("service", data),
+    );
 
     // TODO: Error handling.
-    let latex = '';
+    let latex = "";
 
-    if (jsonResponse.status === 'ok') {
+    if (jsonResponse.status === "ok") {
       latex = jsonResponse.result.text;
       const latexHtmlEntitiesEncoded = Util.htmlEntities(latex);
       // Inserting LaTeX semantics.
-      const mathmlWithSemantics = MathML.addAnnotation(mathml, latexHtmlEntitiesEncoded, 'LaTeX');
+      const mathmlWithSemantics = MathML.addAnnotation(
+        mathml,
+        latexHtmlEntitiesEncoded,
+        "LaTeX",
+      );
       cache.populate(latex, mathmlWithSemantics);
     }
 
@@ -82,25 +88,30 @@ export default class Latex {
       return Latex.cache.get(latex);
     }
     const data = {
-      service: 'latex2mathml',
+      service: "latex2mathml",
       latex,
     };
 
     if (includeLatexOnSemantics) {
-      data.saveLatex = '';
+      data.saveLatex = "";
     }
 
-    const jsonResponse = JSON.parse(ServiceProvider.getService('service', data));
+    const jsonResponse = JSON.parse(
+      ServiceProvider.getService("service", data),
+    );
 
     let output;
-    if (jsonResponse.status === 'ok') {
+    if (jsonResponse.status === "ok") {
       let mathml = jsonResponse.result.text;
-      mathml = mathml.split('\r').join('').split('\n').join(' ');
+      mathml = mathml.split("\r").join("").split("\n").join(" ");
 
       // Populate LatexCache.
-      if (mathml.indexOf('semantics') === -1 && mathml.indexOf('annotation') === -1) {
+      if (
+        mathml.indexOf("semantics") === -1 &&
+        mathml.indexOf("annotation") === -1
+      ) {
         const content = Util.htmlEntities(latex);
-        mathml = MathML.addAnnotation(mathml, content, 'LaTeX');
+        mathml = MathML.addAnnotation(mathml, content, "LaTeX");
         output = mathml;
       } else {
         output = mathml;
@@ -123,7 +134,7 @@ export default class Latex {
    * replaced by the corresponding LaTeX code.
    */
   static parseMathmlToLatex(content, characters) {
-    let output = '';
+    let output = "";
     const mathTagBegin = `${characters.tagOpener}math`;
     const mathTagEnd = `${characters.tagOpener}/math${characters.tagCloser}`;
     const openTarget = `${characters.tagOpener}annotation encoding=${characters.doubleQuote}LaTeX${characters.doubleQuote}${characters.tagCloser}`;
@@ -182,17 +193,21 @@ export default class Latex {
     // TODO: Set LaTeX Tags as Core variable. Fix the call to this function (third argument).
     // Tags used for LaTeX formulas.
     const defaultLatexTags = {
-      open: '$$',
-      close: '$$',
+      open: "$$",
+      close: "$$",
     };
     // latexTags is an optional parameter. If is not set, use default latexTags.
-    if (typeof latexTags === 'undefined' || latexTags == null) {
+    if (typeof latexTags === "undefined" || latexTags == null) {
       latexTags = defaultLatexTags;
     }
     // Looking for the first textNode.
     let startNode = textNode;
 
-    while (startNode.previousSibling && startNode.previousSibling.nodeType === 3) { // TEXT_NODE.
+    while (
+      startNode.previousSibling &&
+      startNode.previousSibling.nodeType === 3
+    ) {
+      // TEXT_NODE.
       startNode = startNode.previousSibling;
     }
 
@@ -211,11 +226,14 @@ export default class Latex {
       while (position === -1) {
         currentNode = currentNode.nextSibling;
 
-        if (!currentNode) { // TEXT_NODE.
+        if (!currentNode) {
+          // TEXT_NODE.
           return null; // Not found.
         }
 
-        position = currentNode.nodeValue ? currentNode.nodeValue.indexOf(latexTags.close) : -1;
+        position = currentNode.nodeValue
+          ? currentNode.nodeValue.indexOf(latexTags.close)
+          : -1;
       }
 
       return {
@@ -234,13 +252,13 @@ export default class Latex {
      */
     function isPrevious(node, position, endNode, endPosition) {
       if (node === endNode) {
-        return (position <= endPosition);
+        return position <= endPosition;
       }
       while (node && node !== endNode) {
         node = node.nextSibling;
       }
 
-      return (node === endNode);
+      return node === endNode;
     }
 
     let start;
@@ -253,11 +271,18 @@ export default class Latex {
     do {
       start = getNextLatexPosition(end.node, end.position, latexTags.open);
 
-      if (start == null || isPrevious(textNode, caretPosition, start.node, start.position)) {
+      if (
+        start == null ||
+        isPrevious(textNode, caretPosition, start.node, start.position)
+      ) {
         return null;
       }
 
-      end = getNextLatexPosition(start.node, start.position + tagLength, latexTags.close);
+      end = getNextLatexPosition(
+        start.node,
+        start.position + tagLength,
+        latexTags.close,
+      );
 
       if (end == null) {
         return null;
@@ -270,10 +295,16 @@ export default class Latex {
     let latex;
 
     if (start.node === end.node) {
-      latex = start.node.nodeValue.substring(start.position + tagLength, end.position - tagLength);
+      latex = start.node.nodeValue.substring(
+        start.position + tagLength,
+        end.position - tagLength,
+      );
     } else {
       const index = start.position + tagLength;
-      latex = start.node.nodeValue.substring(index, start.node.nodeValue.length);
+      latex = start.node.nodeValue.substring(
+        index,
+        start.node.nodeValue.length,
+      );
       let currentNode = start.node;
 
       do {
@@ -281,7 +312,7 @@ export default class Latex {
         if (currentNode === end.node) {
           latex += end.node.nodeValue.substring(0, end.position - tagLength);
         } else {
-          latex += currentNode.nodeValue ? currentNode.nodeValue : '';
+          latex += currentNode.nodeValue ? currentNode.nodeValue : "";
         }
       } while (currentNode !== end.node);
     }

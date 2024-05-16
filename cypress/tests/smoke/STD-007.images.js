@@ -8,19 +8,19 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('A wiris formula should have the alt attribute', function () {
+it("A wiris formula should have the alt attribute", function () {
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-general']);
+  cy.insertFormulaFromScratch(this.formulas["formula-general"]);
 
   // Get the previous inserted formula
-  cy.getFormula(0).should('have.attr', 'alt');
+  cy.getFormula(0).should("have.attr", "alt");
 });

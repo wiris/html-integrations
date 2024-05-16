@@ -26,29 +26,27 @@ Easily include quality math equations in your documents and digital content.
    ```js
    tinymce.init({
      external_plugins: {
-      'tiny_mce_wiris': `node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
-     }
+       tiny_mce_wiris: `node_modules/@wiris/mathtype-tinymce5/plugin.min.js`,
+     },
    });
    ```
-
 
 3. Add MathType buttons to the TinyMCE5 toolbar and the recommended settings:
 
    ```js
    tinymce.init({
-    toolbar: 'tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry',
+     toolbar: "tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry",
 
-    // We recommend to set 'draggable_modal' to true to avoid overlapping issues
-    // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
-    // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
-    draggable_modal: true,
- 
-    // You could set a different language for MathType editor:
-    // language: 'fr_FR',
-    // mathTypeParameters: {
-    //   editorParameters: { language: 'fr' },
-    // },
+     // We recommend to set 'draggable_modal' to true to avoid overlapping issues
+     // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
+     // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
+     draggable_modal: true,
 
+     // You could set a different language for MathType editor:
+     // language: 'fr_FR',
+     // mathTypeParameters: {
+     //   editorParameters: { language: 'fr' },
+     // },
    });
    ```
 
@@ -62,7 +60,7 @@ Easily include quality math equations in your documents and digital content.
 
 ## Known issues
 
-* The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486) 
+- The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486)
 
 ## Services
 
@@ -75,6 +73,7 @@ In order to install the plugin along with the correspondent services, please fol
 ## Displaying on Target Page
 
 In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+
 ```html
 <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
 ```
@@ -83,11 +82,11 @@ In order to display mathematical formulas on the target page, i.e. the page wher
 
 To find out more information about MathType, please go to the following documentation:
 
-* [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-tinymce.html?utm_source=npmjs&utm_medium=referral)
-* [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
-* [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
-* [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
-* [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
+- [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-tinymce.html?utm_source=npmjs&utm_medium=referral)
+- [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
+- [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
+- [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
+- [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
 
 ## Privacy policy
 

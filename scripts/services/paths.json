@@ -1,107 +1,107 @@
 {
-    "devkit": {
-        "path": "./packages/devkit/",
-        "demo": false,
-        "port": ""
-    },
-    "mathCKEditor4": {
-        "path": "./packages/ckeditor4/",
-        "demo": false,
-        "port": ""
-    },
-    "mathCKEditor5": {
-        "path": "./packages/ckeditor5/",
-        "demo": false,
-        "port": ""
-    },
-    "mathFroala": {
-        "path": "./packages/froala/",
-        "demo": false,
-        "port": ""
-    },
-    "mathGeneric": {
-        "path": "./packages/generic/",
-        "demo": false,
-        "port": ""
-    },
-    "mathTinyMCE5": {
-        "path": "./packages/tinymce5/",
-        "demo": false,
-        "port": ""
-    },
-    "mathTinyMCE6": {
-        "path": "./packages/tinymce6/",
-        "demo": false,
-        "port": ""
-    },
-    "reactCKEditor5": {
-        "path": "./demos/react/ckeditor5/",
-        "demo": true,
-        "port": "3002"
-    },
-    "reactFroala": {
-        "path": "./demos/react/froala/",
-        "demo": true,
-        "port": "3004"
-    },
-    "reactGeneric": {
-        "path": "./demos/react/generic/",
-        "demo": true,
-        "port": "3007"
-    },
-    "reactTinyMCE5": {
-        "path": "./demos/react/tinymce5/",
-        "demo": true,
-        "port": "3006"
-    },
-    "angularCKEditor5": {
-        "path": "./demos/angular/ckeditor5/",
-        "demo": true,
-        "port": "4002"
-    },
-    "angularFroala": {
-        "path": "./demos/angular/froala/",
-        "demo": true,
-        "port": "4004"
-    },
-    "angularGeneric": {
-        "path": "./demos/angular/generic/",
-        "demo": true,
-        "port": "4007"
-    },
-    "angularTinyMCE5": {
-        "path": "./demos/angular/tinymce5/",
-        "demo": true,
-        "port": "4006"
-    },
-    "htmlCKEditor4": {
-        "path": "./demos/html/ckeditor4/",
-        "demo": true,
-        "port": "8001"
-    },
-    "htmlCKEditor5": {
-        "path": "./demos/html/ckeditor5/",
-        "demo": true,
-        "port": "8002"
-    },
-    "htmlFroala": {
-        "path": "./demos/html/froala/",
-        "demo": true,
-        "port": "8004"
-    },
-    "htmlGeneric": {
-        "path": "./demos/html/generic/",
-        "demo": true,
-        "port": "8007"
-    },
-    "htmlTinyMCE5": {
-        "path": "./demos/html/tinymce5/",
-        "demo": true,
-        "port": "8006"
-    },
-    "htmlTinyMCE6": {
-        "path": "./demos/html/tinymce6/",
-        "demo": true,
-        "port": "8008"
-    }
+  "devkit": {
+    "path": "./packages/devkit/",
+    "demo": false,
+    "port": ""
+  },
+  "mathCKEditor4": {
+    "path": "./packages/ckeditor4/",
+    "demo": false,
+    "port": ""
+  },
+  "mathCKEditor5": {
+    "path": "./packages/ckeditor5/",
+    "demo": false,
+    "port": ""
+  },
+  "mathFroala": {
+    "path": "./packages/froala/",
+    "demo": false,
+    "port": ""
+  },
+  "mathGeneric": {
+    "path": "./packages/generic/",
+    "demo": false,
+    "port": ""
+  },
+  "mathTinyMCE5": {
+    "path": "./packages/tinymce5/",
+    "demo": false,
+    "port": ""
+  },
+  "mathTinyMCE6": {
+    "path": "./packages/tinymce6/",
+    "demo": false,
+    "port": ""
+  },
+  "reactCKEditor5": {
+    "path": "./demos/react/ckeditor5/",
+    "demo": true,
+    "port": "3002"
+  },
+  "reactFroala": {
+    "path": "./demos/react/froala/",
+    "demo": true,
+    "port": "3004"
+  },
+  "reactGeneric": {
+    "path": "./demos/react/generic/",
+    "demo": true,
+    "port": "3007"
+  },
+  "reactTinyMCE5": {
+    "path": "./demos/react/tinymce5/",
+    "demo": true,
+    "port": "3006"
+  },
+  "angularCKEditor5": {
+    "path": "./demos/angular/ckeditor5/",
+    "demo": true,
+    "port": "4002"
+  },
+  "angularFroala": {
+    "path": "./demos/angular/froala/",
+    "demo": true,
+    "port": "4004"
+  },
+  "angularGeneric": {
+    "path": "./demos/angular/generic/",
+    "demo": true,
+    "port": "4007"
+  },
+  "angularTinyMCE5": {
+    "path": "./demos/angular/tinymce5/",
+    "demo": true,
+    "port": "4006"
+  },
+  "htmlCKEditor4": {
+    "path": "./demos/html/ckeditor4/",
+    "demo": true,
+    "port": "8001"
+  },
+  "htmlCKEditor5": {
+    "path": "./demos/html/ckeditor5/",
+    "demo": true,
+    "port": "8002"
+  },
+  "htmlFroala": {
+    "path": "./demos/html/froala/",
+    "demo": true,
+    "port": "8004"
+  },
+  "htmlGeneric": {
+    "path": "./demos/html/generic/",
+    "demo": true,
+    "port": "8007"
+  },
+  "htmlTinyMCE5": {
+    "path": "./demos/html/tinymce5/",
+    "demo": true,
+    "port": "8006"
+  },
+  "htmlTinyMCE6": {
+    "path": "./demos/html/tinymce6/",
+    "demo": true,
+    "port": "8008"
+  }
 }

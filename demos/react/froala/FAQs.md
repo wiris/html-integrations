@@ -1,7 +1,7 @@
 # FAQs
 
-* **Is this integration currently supported?** <br>
-    Yes
+- **Is this integration currently supported?** <br>
+  Yes
 
-* **Does this demo require jQuery?** <br>
-    Yes
+- **Does this demo require jQuery?** <br>
+  Yes

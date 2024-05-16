@@ -9,42 +9,38 @@
 
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('should be able to edit and existing formula and cancel the edition', function () {
+it("should be able to edit and existing formula and cancel the edition", function () {
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-general']);
+  cy.insertFormulaFromScratch(this.formulas["formula-general"]);
 
   // Double-click the previous inserted formula to start editing it
-  cy
-    .getFormula(0)
-    .dblclick();
+  cy.getFormula(0).dblclick();
 
   // Edit the opened formula by adding some other content (=y)
-  cy.typeInModal(this.formulas['formula-addition']);
+  cy.typeInModal(this.formulas["formula-addition"]);
 
   // Click the cancel button after editing the formula on the mathtype modal
-  cy.clickModalButton('cancel');
+  cy.clickModalButton("cancel");
 
   // CLick the close button on the confirmation close mathtype modal the cancel all changes and close it
-  cy.clickModalButton('confirmationClose');
+  cy.clickModalButton("confirmationClose");
 
   // Assert the formula has no changes
-  cy
-    .getFormula(0)
-    .should('have.attr', 'alt').then((alt) => {
-      expect(alt).to.equal(this.formulas['formula-general-alt-es']);
+  cy.getFormula(0)
+    .should("have.attr", "alt")
+    .then((alt) => {
+      expect(alt).to.equal(this.formulas["formula-general-alt-es"]);
     });
 
   // Verify the formula is propertly rendered
-  cy
-    .getFormula(0)
-    .isRendered();
+  cy.getFormula(0).isRendered();
 });

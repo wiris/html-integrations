@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # If we want to publish the WordPress plugin, which is not needed on npm.
-    if: contains(github.event.inputs, 'wordpress') 
+    if: contains(github.event.inputs, 'wordpress')
 
     steps:
       - uses: actions/checkout@v3
@@ -72,7 +72,7 @@ jobs:
       - name: Create Icons folder inside the build one
         run: |
           cp -a packages/wordpress/src/icons/ packages/wordpress/build/icons/
-      
+
       # Create a zip file with the files needed to integrate
       # Mathtype for WordPress
       - name: Zip integration

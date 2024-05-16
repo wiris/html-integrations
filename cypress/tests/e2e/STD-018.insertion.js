@@ -8,18 +8,18 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('an inserted latex formula should be rendered on preview', function () {
+it("an inserted latex formula should be rendered on preview", function () {
   // Type the formula that matxes the previous inserted text on the mathtype modal
-  cy.typeInTextEditor(this.formulas['latex-general']);
+  cy.typeInTextEditor(this.formulas["latex-general"]);
 
   // // Click the update button
   // cy.get('#btn_update').click();

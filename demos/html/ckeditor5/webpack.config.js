@@ -1,79 +1,81 @@
-const path = require('path');
-const { styles } = require('@ckeditor/ckeditor5-dev-utils');
+const path = require("path");
+const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 
 module.exports = (config, context) => {
   return {
-    mode: 'development',
+    mode: "development",
     entry: {
-      app: path.resolve(__dirname, 'src/app.js'),
+      app: path.resolve(__dirname, "src/app.js"),
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'demo.js',
+      path: path.resolve(__dirname, "dist"),
+      filename: "demo.js",
     },
     devServer: {
       devMiddleware: {
         writeToDisk: true,
       },
       static: {
-        directory: path.join(__dirname, "./")
+        directory: path.join(__dirname, "./"),
       },
-      onListening: !config.devServer ? '' : config.devServer.onListening,
+      onListening: !config.devServer ? "" : config.devServer.onListening,
       open: true,
       port: 8002,
       hot: true,
-      host: '0.0.0.0'
+      host: "0.0.0.0",
     },
     // Set watch to true for dev purposes.
     watch: false,
-    mode: 'none',
+    mode: "none",
     module: {
       rules: [
         {
           test: /\.svg$/,
-          type: 'asset/source',
+          type: "asset/source",
         },
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          use: ['babel-loader']
+          use: ["babel-loader"],
         },
         {
           test: /\.css$/,
           use: [
             {
-              loader: 'style-loader',
+              loader: "style-loader",
               options: {
-                injectType: 'singletonStyleTag',
+                injectType: "singletonStyleTag",
                 attributes: {
-                  'data-cke': true
-                }
-              }
+                  "data-cke": true,
+                },
+              },
             },
-            'css-loader',
+            "css-loader",
             {
-              loader: 'postcss-loader',
+              loader: "postcss-loader",
               options: {
                 postcssOptions: styles.getPostCssConfig({
                   themeImporter: {
-                    themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
+                    themePath: require.resolve(
+                      "@ckeditor/ckeditor5-theme-lark",
+                    ),
                   },
-                  minify: true
-                })
-              }
-            }
-          ]
+                  minify: true,
+                }),
+              },
+            },
+          ],
         },
         {
           test: /\.html$/i,
           exclude: /node_modules/,
-          loader: 'html-loader',
+          loader: "html-loader",
         },
       ],
     },
     // Useful for debugging.
-    devtool: 'source-map',
+    devtool: "source-map",
     // By default webpack logs warnings if the bundle is bigger than 200kb.
     performance: { hints: false },
   };
-}
+};

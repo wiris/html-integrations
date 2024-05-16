@@ -6,17 +6,14 @@
 name: Dismantle staging
 
 # Controls when the action will run
-on:
-  delete
+on: delete
 
 # Array of jobs to run in this workflow
 jobs:
-
   delete:
     if: github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
-
       - name: Delete S3 files
         run: |
           echo "Clean up for branch ${{ github.event.ref }}"

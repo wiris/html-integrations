@@ -33,8 +33,8 @@ This will start a Docker with WordPress and MathType on [localhost:8080](http://
 
 1. Navigate to admin dashboard [localhost:8080/wp-admin](http://localhost:8080/wp-admin).
 2. Log in as admin:
-    - **Username:** admin
-    - **Passowrd:** admin
+   - **Username:** admin
+   - **Passowrd:** admin
 
 ### 04. Use MathType for WordPress
 

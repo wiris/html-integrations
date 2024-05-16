@@ -8,21 +8,21 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('an inserted formula that looks like plain text should be aligned with the same plane text on preview', function () {
+it("an inserted formula that looks like plain text should be aligned with the same plane text on preview", function () {
   // Type the text plane on the text editor
-  cy.typeInTextEditor(this.formulas['text-alignment']);
+  cy.typeInTextEditor(this.formulas["text-alignment"]);
 
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-alignment']);
+  cy.insertFormulaFromScratch(this.formulas["formula-alignment"]);
 
   // // Click the update button
   // cy.get('#btn_update').click();

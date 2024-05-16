@@ -8,13 +8,13 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixtures
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit page
-  cy.visit('/');
+  cy.visit("/");
 });
 
-it('Validate switch between CT and MT, and viceversa', () => {
+it("Validate switch between CT and MT, and viceversa", () => {
   // Click the MT icon in the HTML editor toolbar.
   cy.clickButtonToOpenModal();
 
@@ -22,11 +22,11 @@ it('Validate switch between CT and MT, and viceversa', () => {
   cy.clickButtonToOpenModal(true);
 
   // MT modal window changes to CT modal window.
-  cy.get('.wrs_modal_title').eq(0).should('have.text', 'ChemType');
+  cy.get(".wrs_modal_title").eq(0).should("have.text", "ChemType");
 
   // Click the MT icon in the HTML editor toolbar.
   cy.clickButtonToOpenModal();
 
   // CT modal window changes to MT modal window.
-  cy.get('.wrs_modal_title').eq(0).should('have.text', 'MathType');
+  cy.get(".wrs_modal_title").eq(0).should("have.text", "MathType");
 });

@@ -34,16 +34,17 @@ window.WirisPlugin.Core.addGlobalListener(modalOpenListener);
 ## Requirements
 
 Using this project requires having [git], [Nx](https://nx.dev/) and [yarn](https://yarnpkg.com/) installed:
-* Follow [this guide](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) to install yarn.
-* Follow [this guide](https://www.atlassian.com/git/tutorials/install-git) to install git.
-* Run the following command, in your project directory, to install Nx: `yarn global add nx`.
+
+- Follow [this guide](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) to install yarn.
+- Follow [this guide](https://www.atlassian.com/git/tutorials/install-git) to install git.
+- Run the following command, in your project directory, to install Nx: `yarn global add nx`.
 
 [Git]: https://git-scm.com/
 [npm]: https://www.npmjs.com/
 
 ### For Windows users
 
-This project runs shell commands not compatible among different OS. 
+This project runs shell commands not compatible among different OS.
 
 To prevent that, you need to run the commands in the `git bash` instead of the windows one.
 
@@ -61,10 +62,10 @@ This allows us to make live changes to some dependency and see how it affects an
 The most important files and folders are:
 
 - `docs`. The main documentation for the project.
-    You can see the stable version rendered [here](https://wiris.github.io/html-integrations).
+  You can see the stable version rendered [here](https://wiris.github.io/html-integrations).
 - `packages`. The source code of the plugins, as well as their common API known as the "devkit".
-    Each folder contains one npm package.
-    All the usual npm commands work inside.
+  Each folder contains one npm package.
+  All the usual npm commands work inside.
 - `demos`. A growing set of demos to help developers integrate these plugins on different scenarios.
 - `scripts`. Scripts used for different development tasks.
 - `resources`. Resources files that are needed for the publish workflow.
@@ -88,6 +89,16 @@ $ yarn
 ```
 
 This will bootstrap the packages using `Yarn` and `Nx`.
+
+### Workspace configuration for Visual Studio Code ( OPTIONAL )
+
+If you are using Visual Studio Code, you can configure the workspace to use the team selection of extensions and settings.
+
+For more information, check the [Vscode Extensions](development/vscode/extensions.md)
+
+We also modified vscode default settings to ease the development experience.
+
+For more information, check the [Vscode Settings](development/vscode/settings.md)
 
 ## Next steps
 

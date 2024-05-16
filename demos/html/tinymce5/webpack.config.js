@@ -1,27 +1,27 @@
-const path = require('path');
+const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = (config, context) => {
   return {
     entry: {
-      app: path.resolve(__dirname, 'src/app.js'),
+      app: path.resolve(__dirname, "src/app.js"),
     },
     output: {
-      path: path.resolve(__dirname, 'dist'),
-      filename: 'demo.js',
+      path: path.resolve(__dirname, "dist"),
+      filename: "demo.js",
     },
     devServer: {
       devMiddleware: {
         writeToDisk: true,
       },
       static: {
-        directory: path.join(__dirname, "./")
+        directory: path.join(__dirname, "./"),
       },
-      onListening: !config.devServer ? '' : config.devServer.onListening,
+      onListening: !config.devServer ? "" : config.devServer.onListening,
       open: true,
       port: 8006,
       hot: true,
-      host: '0.0.0.0'
+      host: "0.0.0.0",
     },
     watch: false,
     plugins: [
@@ -38,30 +38,30 @@ module.exports = (config, context) => {
         ],
       }),
     ],
-    mode: 'none',
+    mode: "none",
     module: {
       rules: [
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: ["style-loader", "css-loader"],
         },
         {
           test: /\.(png|jpg|gif)$/i,
-          type: 'asset/inline',
+          type: "asset/inline",
         },
         {
           // For the modal close, minimize, maximize icons
           test: /\.svg$/,
-          type: 'asset/source',
+          type: "asset/source",
         },
         {
           test: /\.html$/i,
           exclude: /node_modules/,
-          loader: 'html-loader',
+          loader: "html-loader",
         },
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
+          use: "ts-loader",
           exclude: /node_modules/,
         },
       ],
@@ -71,7 +71,7 @@ module.exports = (config, context) => {
     },
     experiments: {
       topLevelAwait: true,
-      asyncWebAssembly: true
+      asyncWebAssembly: true,
     },
-  }
-}
+  };
+};

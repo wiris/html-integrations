@@ -1,4 +1,4 @@
-import IntegrationModel from './integrationmodel';
+import IntegrationModel from "./integrationmodel";
 
 /**
 
@@ -27,66 +27,83 @@ export default class PopUpMessage {
     /**
      * HTMLElement element to wrap all HTML elements inside the popupMessage.
      */
-    this.overlayWrapper = this.overlayElement.appendChild(document.createElement('div'));
-    this.overlayWrapper.setAttribute('class', 'wrs_popupmessage_overlay_envolture');
+    this.overlayWrapper = this.overlayElement.appendChild(
+      document.createElement("div"),
+    );
+    this.overlayWrapper.setAttribute(
+      "class",
+      "wrs_popupmessage_overlay_envolture",
+    );
 
     /**
      * HTMLElement to display the popup message, close button and cancel button.
      */
-    this.message = this.overlayWrapper.appendChild(document.createElement('div'));
-    this.message.id = 'wrs_popupmessage';
-    this.message.setAttribute('class', 'wrs_popupmessage_panel');
-    this.message.setAttribute('role', 'dialog');
-    this.message.setAttribute('aria-describedby', 'description_txt');
-    const paragraph = document.createElement('p');
-    const text = document.createTextNode(popupMessageAttributes.strings.message);
+    this.message = this.overlayWrapper.appendChild(
+      document.createElement("div"),
+    );
+    this.message.id = "wrs_popupmessage";
+    this.message.setAttribute("class", "wrs_popupmessage_panel");
+    this.message.setAttribute("role", "dialog");
+    this.message.setAttribute("aria-describedby", "description_txt");
+    const paragraph = document.createElement("p");
+    const text = document.createTextNode(
+      popupMessageAttributes.strings.message,
+    );
     paragraph.appendChild(text);
-    paragraph.id = 'description_txt';
+    paragraph.id = "description_txt";
     this.message.appendChild(paragraph);
 
     /**
      * HTML element overlaying the overlayElement.
      */
-    const overlay = this.overlayWrapper.appendChild(document.createElement('div'));
-    overlay.setAttribute('class', 'wrs_popupmessage_overlay');
+    const overlay = this.overlayWrapper.appendChild(
+      document.createElement("div"),
+    );
+    overlay.setAttribute("class", "wrs_popupmessage_overlay");
     // We create a overlay that close popup message on click in there
-    overlay.addEventListener('click', this.cancelAction.bind(this));
+    overlay.addEventListener("click", this.cancelAction.bind(this));
 
     /**
      * HTML element containing cancel and close buttons.
      */
-    this.buttonArea = this.message.appendChild(document.createElement('div'));
-    this.buttonArea.setAttribute('class', 'wrs_popupmessage_button_area');
-    this.buttonArea.id = 'wrs_popup_button_area';
+    this.buttonArea = this.message.appendChild(document.createElement("div"));
+    this.buttonArea.setAttribute("class", "wrs_popupmessage_button_area");
+    this.buttonArea.id = "wrs_popup_button_area";
 
     // Close button arguments.
     const buttonSubmitArguments = {
-      class: 'wrs_button_accept',
+      class: "wrs_button_accept",
       innerHTML: popupMessageAttributes.strings.submitString,
-      id: 'wrs_popup_accept_button',
+      id: "wrs_popup_accept_button",
       // To identifiy the element in automated testing
-      'data-testid': 'mtcteditor-cd-close-button',
+      "data-testid": "mtcteditor-cd-close-button",
     };
 
     /**
      * Close button arguments.
      */
-    this.closeButton = this.createButton(buttonSubmitArguments, this.closeAction.bind(this));
+    this.closeButton = this.createButton(
+      buttonSubmitArguments,
+      this.closeAction.bind(this),
+    );
     this.buttonArea.appendChild(this.closeButton);
 
     // Cancel button arguments.
     const buttonCancelArguments = {
-      class: 'wrs_button_cancel',
+      class: "wrs_button_cancel",
       innerHTML: popupMessageAttributes.strings.cancelString,
-      id: 'wrs_popup_cancel_button',
+      id: "wrs_popup_cancel_button",
       // To identifiy the element in automated testing
-      'data-testid': 'mtcteditor-cd-cancel-button',
+      "data-testid": "mtcteditor-cd-cancel-button",
     };
 
     /**
      * Cancel button.
      */
-    this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
+    this.cancelButton = this.createButton(
+      buttonCancelArguments,
+      this.cancelAction.bind(this),
+    );
     this.buttonArea.appendChild(this.cancelButton);
   }
 
@@ -102,13 +119,13 @@ export default class PopUpMessage {
   // eslint-disable-next-line class-methods-use-this
   createButton(parameters, callback) {
     let element = {};
-    element = document.createElement('button');
-    element.setAttribute('id', parameters.id);
-    element.setAttribute('class', parameters.class);
+    element = document.createElement("button");
+    element.setAttribute("id", parameters.id);
+    element.setAttribute("class", parameters.class);
     element.innerHTML = parameters.innerHTML;
-    element.addEventListener('click', callback);
-    if (parameters['data-testid']) {
-      element.setAttribute('data-testid', parameters['data-testid']);
+    element.addEventListener("click", callback);
+    if (parameters["data-testid"]) {
+      element.setAttribute("data-testid", parameters["data-testid"]);
     }
 
     return element;
@@ -119,13 +136,13 @@ export default class PopUpMessage {
    * to cancel the action or close the modal dialog.
    */
   show() {
-    if (this.overlayWrapper.style.display !== 'block') {
+    if (this.overlayWrapper.style.display !== "block") {
       // Clear focus with blur for prevent press any key.
       document.activeElement.blur();
-      this.overlayWrapper.style.display = 'block';
+      this.overlayWrapper.style.display = "block";
       this.closeButton.focus();
     } else {
-      this.overlayWrapper.style.display = 'none';
+      this.overlayWrapper.style.display = "none";
       // _wrs_modalWindow.focus(); This throws an error of not existing _wrs_modalWindow
     }
   }
@@ -135,8 +152,8 @@ export default class PopUpMessage {
    * A callback method is called (if defined). For example a method to focus the overlaid element.
    */
   cancelAction() {
-    this.overlayWrapper.style.display = 'none';
-    if (typeof this.callbacks.cancelCallback !== 'undefined') {
+    this.overlayWrapper.style.display = "none";
+    if (typeof this.callbacks.cancelCallback !== "undefined") {
       this.callbacks.cancelCallback();
       // Set temporal image to null to prevent loading
       // an existent formula when strarting one from scrath. Make focus come back too.
@@ -150,7 +167,7 @@ export default class PopUpMessage {
    */
   closeAction() {
     this.cancelAction();
-    if (typeof this.callbacks.closeCallback !== 'undefined') {
+    if (typeof this.callbacks.closeCallback !== "undefined") {
       this.callbacks.closeCallback();
     }
     IntegrationModel.setActionsOnCancelButtons();
@@ -163,11 +180,12 @@ export default class PopUpMessage {
   onKeyDown(keyboardEvent) {
     if (keyboardEvent.key !== undefined) {
       // Code to detect Esc event.
-      if (keyboardEvent.key === 'Escape' || keyboardEvent.key === 'Esc') {
+      if (keyboardEvent.key === "Escape" || keyboardEvent.key === "Esc") {
         this.cancelAction();
         keyboardEvent.stopPropagation();
         keyboardEvent.preventDefault();
-      } else if (keyboardEvent.key === 'Tab') { // Code to detect Tab event.
+      } else if (keyboardEvent.key === "Tab") {
+        // Code to detect Tab event.
         if (document.activeElement === this.closeButton) {
           this.cancelButton.focus();
         } else {

@@ -41,7 +41,7 @@ export default class EditorListener {
    */
   getIsContentChanged() {
     return this.isContentChanged;
-  };
+  }
 
   /**
    * Determines if the EditorListener should wait for any changes.
@@ -56,14 +56,14 @@ export default class EditorListener {
    * @type {JsEditor}
    * @ignore
    */
-  caretPositionChanged(_editor) { };
+  caretPositionChanged(_editor) {}
 
   /**
    * EditorListener method to overwrite
    * @type {JsEditor}
    * @ignore
    */
-  clipboardChanged(_editor) { };
+  clipboardChanged(_editor) {}
 
   /**
    * Determines if the content of an editor has been changed.
@@ -79,13 +79,11 @@ export default class EditorListener {
    * EditorListener method to overwrite
    * @param {JsEditor} editor - The editor instance.
    */
-  styleChanged(_editor) {
-  }
+  styleChanged(_editor) {}
 
   /**
    * EditorListener method to overwrite
    * @param {JsEditor} - The editor instance.
    */
-  transformationReceived(_editor) {
-  }
+  transformationReceived(_editor) {}
 }

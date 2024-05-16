@@ -17,9 +17,7 @@
     },
     "start": {
       "executor": "@nx/webpack:dev-server",
-      "dependsOn": [
-        "prestart"
-      ],
+      "dependsOn": ["prestart"],
       "options": {
         "buildTarget": "html-viewer:build",
         "webpackConfig": "demos/html/viewer/webpack.config.js"
@@ -27,19 +25,14 @@
     },
     "start-remote": {
       "executor": "@nx/web:file-server",
-      "dependsOn": [
-        "prestart-remote"
-      ],
+      "dependsOn": ["prestart-remote"],
       "options": {
         "buildTarget": "viewer:build"
       }
     },
     "build": {
       "executor": "@nx/webpack:webpack",
-      "dependsOn": [
-        "viewer:build",
-        "prestart"
-      ],
+      "dependsOn": ["viewer:build", "prestart"],
       "options": {
         "main": "demos/html/viewer/src/app.js",
         "outputPath": "dist",
@@ -53,13 +46,9 @@
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": [
-          "demos/html/viewer/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["demos/html/viewer/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

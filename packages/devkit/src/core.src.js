@@ -1,20 +1,20 @@
-import Parser from './parser';
-import Util from './util';
-import StringManager from './stringmanager';
-import ContentManager from './contentmanager';
-import Latex from './latex';
-import MathML from './mathml';
-import CustomEditors from './customeditors';
-import Configuration from './configuration';
-import jsProperties from './jsvariables';
-import Event from './event';
-import Listeners from './listeners';
-import Image from './image';
-import ServiceProvider from './serviceprovider';
-import ModalDialog from './modal';
-import Telemeter from './telemeter';
-import './polyfills';
-import '../styles/styles.css';
+import Parser from "./parser";
+import Util from "./util";
+import StringManager from "./stringmanager";
+import ContentManager from "./contentmanager";
+import Latex from "./latex";
+import MathML from "./mathml";
+import CustomEditors from "./customeditors";
+import Configuration from "./configuration";
+import jsProperties from "./jsvariables";
+import Event from "./event";
+import Listeners from "./listeners";
+import Image from "./image";
+import ServiceProvider from "./serviceprovider";
+import ModalDialog from "./modal";
+import Telemeter from "./telemeter";
+import "./polyfills";
+import "../styles/styles.css";
 
 /**
  * @typedef {Object} CoreProperties
@@ -45,7 +45,7 @@ export default class Core {
      * Language. Needed for accessibility and locales. 'en' by default.
      * @type {String}
      */
-    this.language = 'en';
+    this.language = "en";
 
     /**
      * Edit mode, 'images' by default. Admits the following values:
@@ -53,7 +53,7 @@ export default class Core {
      * - latex
      * @type {String}
      */
-    this.editMode = 'images';
+    this.editMode = "images";
 
     /**
      * Modal dialog instance.
@@ -73,15 +73,15 @@ export default class Core {
      * @type {CustomEditor}
      */
     const chemEditorParams = {
-      name: 'Chemistry',
-      toolbar: 'chemistry',
-      icon: 'chem.png',
-      confVariable: 'chemEnabled',
-      title: 'ChemType',
-      tooltip: 'Insert a chemistry formula - ChemType', // TODO: Localize tooltip.
+      name: "Chemistry",
+      toolbar: "chemistry",
+      icon: "chem.png",
+      confVariable: "chemEnabled",
+      title: "ChemType",
+      tooltip: "Insert a chemistry formula - ChemType", // TODO: Localize tooltip.
     };
 
-    this.customEditors.addEditor('chemistry', chemEditorParams);
+    this.customEditors.addEditor("chemistry", chemEditorParams);
 
     /**
      * Environment properties. This object contains data about the integration platform.
@@ -139,21 +139,20 @@ export default class Core {
      */
     this.browser = (() => {
       const ua = navigator.userAgent;
-      let browser = 'none';
-      if (ua.search('Edge/') >= 0) {
-        browser = 'EDGE';
-      } else if (ua.search('Chrome/') >= 0) {
-        browser = 'CHROME';
-      } else if (ua.search('Trident/') >= 0) {
-        browser = 'IE';
-      } else if (ua.search('Firefox/') >= 0) {
-        browser = 'FIREFOX';
-      } else if (ua.search('Safari/') >= 0) {
-        browser = 'SAFARI';
+      let browser = "none";
+      if (ua.search("Edge/") >= 0) {
+        browser = "EDGE";
+      } else if (ua.search("Chrome/") >= 0) {
+        browser = "CHROME";
+      } else if (ua.search("Trident/") >= 0) {
+        browser = "IE";
+      } else if (ua.search("Firefox/") >= 0) {
+        browser = "FIREFOX";
+      } else if (ua.search("Safari/") >= 0) {
+        browser = "SAFARI";
       }
       return browser;
-    }
-    )();
+    })();
 
     /**
      * Plugin listeners.
@@ -166,10 +165,10 @@ export default class Core {
      * @type {ServiceProviderProperties}
      */
     this.serviceProviderProperties = {};
-    if ('serviceProviderProperties' in coreProperties) {
+    if ("serviceProviderProperties" in coreProperties) {
       this.serviceProviderProperties = coreProperties.serviceProviderProperties;
     } else {
-      throw new Error('serviceProviderProperties property missing.');
+      throw new Error("serviceProviderProperties property missing.");
     }
   }
 
@@ -226,25 +225,25 @@ export default class Core {
    * The {@link IntegrationEnvironment} object.
    */
   setEnvironment(integrationEnvironment) {
-    if ('editor' in integrationEnvironment) {
+    if ("editor" in integrationEnvironment) {
       this.environment.editor = integrationEnvironment.editor;
     }
-    if ('mode' in integrationEnvironment) {
+    if ("mode" in integrationEnvironment) {
       this.environment.mode = integrationEnvironment.mode;
     }
-    if ('version' in integrationEnvironment) {
+    if ("version" in integrationEnvironment) {
       this.environment.version = integrationEnvironment.version;
     }
   }
-
 
   /**
    * Sets the custom headers added on editor requests if contentManager isn't undefined.
    * @returns {Object} headers - key value headers.
    */
   setHeaders(headers) {
-    const headerObject = this?.contentManager?.setCustomHeaders(headers) || headers;
-    Configuration.set('customHeaders', headerObject);
+    const headerObject =
+      this?.contentManager?.setCustomHeaders(headers) || headers;
+    Configuration.set("customHeaders", headerObject);
   }
 
   /**
@@ -266,8 +265,12 @@ export default class Core {
    */
   init() {
     if (!Core.initialized) {
-      const serviceProviderListener = Listeners.newListener('onInit', () => {
-        const jsConfiguration = ServiceProvider.getService('configurationjs', '', 'get');
+      const serviceProviderListener = Listeners.newListener("onInit", () => {
+        const jsConfiguration = ServiceProvider.getService(
+          "configurationjs",
+          "",
+          "get",
+        );
         const jsonConfiguration = JSON.parse(jsConfiguration);
         Configuration.addConfiguration(jsonConfiguration);
         // Adding JavaScript (not backend) configuration variables.
@@ -276,7 +279,7 @@ export default class Core {
         // All integration must listen this event in order to know if the plugin
         // has been properly loaded.
         StringManager.language = this.language;
-        this.listeners.fire('onLoad', {});
+        this.listeners.fire("onLoad", {});
       });
 
       ServiceProvider.addListener(serviceProviderListener);
@@ -286,7 +289,7 @@ export default class Core {
     } else {
       // Case when there are more than two editor instances.
       // After the first editor all the other editors don't need to load any file or service.
-      this.listeners.fire('onLoad', {});
+      this.listeners.fire("onLoad", {});
     }
   }
 
@@ -334,11 +337,13 @@ export default class Core {
     beforeUpdateEvent.language = this.language;
     beforeUpdateEvent.editMode = this.editMode;
 
-    if (this.listeners.fire('onBeforeFormulaInsertion', beforeUpdateEvent)) {
+    if (this.listeners.fire("onBeforeFormulaInsertion", beforeUpdateEvent)) {
       return {};
     }
 
-    if (Core.globalListeners.fire('onBeforeFormulaInsertion', beforeUpdateEvent)) {
+    if (
+      Core.globalListeners.fire("onBeforeFormulaInsertion", beforeUpdateEvent)
+    ) {
       return {};
     }
 
@@ -369,7 +374,7 @@ export default class Core {
 
     if (!mathml) {
       this.insertElementOnSelection(null, focusElement, windowTarget);
-    } else if (this.editMode === 'latex') {
+    } else if (this.editMode === "latex") {
       returnObject.latex = Latex.getLatexFromMathML(mathml);
       // this.integrationModel.getNonLatexNode is an integration wrapper
       // to have special behaviours for nonLatex.
@@ -380,17 +385,34 @@ export default class Core {
         afterUpdateEvent.windowTarget = windowTarget;
         afterUpdateEvent.focusElement = focusElement;
         afterUpdateEvent.latex = returnObject.latex;
-        this.integrationModel.fillNonLatexNode(afterUpdateEvent, windowTarget, mathml);
+        this.integrationModel.fillNonLatexNode(
+          afterUpdateEvent,
+          windowTarget,
+          mathml,
+        );
       } else {
-        returnObject.node = windowTarget.document.createTextNode(`$$${returnObject.latex}$$`);
+        returnObject.node = windowTarget.document.createTextNode(
+          `$$${returnObject.latex}$$`,
+        );
       }
-      this.insertElementOnSelection(returnObject.node, focusElement, windowTarget);
+      this.insertElementOnSelection(
+        returnObject.node,
+        focusElement,
+        windowTarget,
+      );
     } else {
-      returnObject.node = Parser.mathmlToImgObject(windowTarget.document,
+      returnObject.node = Parser.mathmlToImgObject(
+        windowTarget.document,
         mathml,
-        wirisProperties, this.language);
+        wirisProperties,
+        this.language,
+      );
 
-      this.insertElementOnSelection(returnObject.node, focusElement, windowTarget);
+      this.insertElementOnSelection(
+        returnObject.node,
+        focusElement,
+        windowTarget,
+      );
     }
 
     return returnObject;
@@ -413,11 +435,13 @@ export default class Core {
     afterUpdateEvent.node = node;
     afterUpdateEvent.latex = latex;
 
-    if (this.listeners.fire('onAfterFormulaInsertion', afterUpdateEvent)) {
+    if (this.listeners.fire("onAfterFormulaInsertion", afterUpdateEvent)) {
       return {};
     }
 
-    if (Core.globalListeners.fire('onAfterFormulaInsertion', afterUpdateEvent)) {
+    if (
+      Core.globalListeners.fire("onAfterFormulaInsertion", afterUpdateEvent)
+    ) {
       return {};
     }
 
@@ -433,7 +457,10 @@ export default class Core {
 
     this.integrationModel.getSelection();
     const nodeDocument = node.ownerDocument;
-    if (typeof nodeDocument.getSelection !== 'undefined' && !!node.parentElement) {
+    if (
+      typeof nodeDocument.getSelection !== "undefined" &&
+      !!node.parentElement
+    ) {
       const range = nodeDocument.createRange();
       range.setStartAfter(node);
       range.collapse(true);
@@ -454,22 +481,26 @@ export default class Core {
     let mathmlOrigin = null;
     if (this.editionProperties.isNewElement) {
       if (element) {
-        if (focusElement.type === 'textarea') {
+        if (focusElement.type === "textarea") {
           Util.updateTextArea(focusElement, element.textContent);
         } else if (document.selection && document.getSelection === 0) {
           let range = windowTarget.document.selection.createRange();
-          windowTarget.document.execCommand('InsertImage', false, element.src);
+          windowTarget.document.execCommand("InsertImage", false, element.src);
 
-          if (!('parentElement' in range)) {
-            windowTarget.document.execCommand('delete', false);
+          if (!("parentElement" in range)) {
+            windowTarget.document.execCommand("delete", false);
             range = windowTarget.document.selection.createRange();
-            windowTarget.document.execCommand('InsertImage', false, element.src);
+            windowTarget.document.execCommand(
+              "InsertImage",
+              false,
+              element.src,
+            );
           }
 
-          if ('parentElement' in range) {
+          if ("parentElement" in range) {
             const temporalObject = range.parentElement();
 
-            if (temporalObject.nodeName.toUpperCase() === 'IMG') {
+            if (temporalObject.nodeName.toUpperCase() === "IMG") {
               temporalObject.parentNode.replaceChild(element, temporalObject);
             } else {
               // IE9 fix: parentNode() does not return the IMG node,
@@ -495,16 +526,18 @@ export default class Core {
           let node = range.startContainer;
           const position = range.startOffset;
 
-          if (node.nodeType === 3) { // TEXT_NODE.
+          if (node.nodeType === 3) {
+            // TEXT_NODE.
             node = node.splitText(position);
             node.parentNode.insertBefore(element, node);
-          } else if (node.nodeType === 1) { // ELEMENT_NODE.
+          } else if (node.nodeType === 1) {
+            // ELEMENT_NODE.
             node.insertBefore(element, node.childNodes[position]);
           }
 
           this.placeCaretAfterNode(element);
         }
-      } else if (focusElement.type === 'textarea') {
+      } else if (focusElement.type === "textarea") {
         focusElement.focus();
       } else {
         const editorSelection = this.integrationModel.getSelection();
@@ -526,21 +559,24 @@ export default class Core {
         this.editionProperties.latexRange.insertNode(element);
         this.placeCaretAfterNode(element);
       }
-    } else if (focusElement.type === 'textarea') {
+    } else if (focusElement.type === "textarea") {
       let item;
       // Wrapper for some integrations that can have special behaviours to show latex.
-      if (typeof this.integrationModel.getSelectedItem !== 'undefined') {
+      if (typeof this.integrationModel.getSelectedItem !== "undefined") {
         item = this.integrationModel.getSelectedItem(focusElement, false);
       } else {
         item = Util.getSelectedItemOnTextarea(focusElement);
       }
-      Util.updateExistingTextOnTextarea(focusElement,
+      Util.updateExistingTextOnTextarea(
+        focusElement,
         element.textContent,
         item.startPosition,
-        item.endPosition);
+        item.endPosition,
+      );
     } else {
       mathmlOrigin = this.editionProperties.temporalImage?.dataset.mathml;
-      if (element && element.nodeName.toLowerCase() === 'img') { // Editor empty, formula has been erased on edit.
+      if (element && element.nodeName.toLowerCase() === "img") {
+        // Editor empty, formula has been erased on edit.
         // There are editors (e.g: CKEditor) that put attributes in images.
         // We don't allow that behaviour in our images.
         Image.removeImgDataAttributes(this.editionProperties.temporalImage);
@@ -555,7 +591,9 @@ export default class Core {
     // Build the telemeter payload separated to delete null/undefined entries.
     const mathml = element?.dataset?.mathml;
     let payload = {
-      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
+      mathml_origin: mathmlOrigin
+        ? MathML.safeXmlDecode(mathmlOrigin)
+        : mathmlOrigin,
       mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.editionProperties.editionStartTime,
       editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
@@ -564,8 +602,9 @@ export default class Core {
     };
 
     // Remove the desired null keys.
-    Object.keys(payload).forEach(key => {
-      if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+    Object.keys(payload).forEach((key) => {
+      if (key === "mathml_origin" || key === "editor_origin")
+        !payload[key] ? delete payload[key] : {};
     });
 
     try {
@@ -583,12 +622,11 @@ export default class Core {
    * @param {Boolean} isIframe - True if the target HTMLElement is an iframe. False otherwise.
    */
   openModalDialog(target, isIframe) {
-
     // Count the time since the editor is open
     this.editionProperties.editionStartTime = Date.now();
 
     // Textarea elements don't have normal document ranges. It only accepts latex edit.
-    this.editMode = 'images';
+    this.editMode = "images";
 
     // In IE is needed keep the range due to after focus the modal window
     // it can't be retrieved the last selection.
@@ -616,7 +654,7 @@ export default class Core {
 
     if (target) {
       let selectedItem;
-      if (typeof this.integrationModel.getSelectedItem !== 'undefined') {
+      if (typeof this.integrationModel.getSelectedItem !== "undefined") {
         selectedItem = this.integrationModel.getSelectedItem(target, isIframe);
       } else {
         selectedItem = Util.getSelectedItem(target, isIframe);
@@ -625,7 +663,13 @@ export default class Core {
       // Check LaTeX if and only if the node is a text node (nodeType==3).
       if (selectedItem) {
         // Case when image was selected and button pressed.
-        if (!selectedItem.caretPosition && Util.containsClass(selectedItem.node, Configuration.get('imageClassName'))) {
+        if (
+          !selectedItem.caretPosition &&
+          Util.containsClass(
+            selectedItem.node,
+            Configuration.get("imageClassName"),
+          )
+        ) {
           this.editionProperties.temporalImage = selectedItem.node;
           this.editionProperties.isNewElement = false;
         } else if (selectedItem.node.nodeType === 3) {
@@ -638,11 +682,12 @@ export default class Core {
               selectedItem.caretPosition,
             );
             if (mathml) {
-              this.editMode = 'latex';
+              this.editMode = "latex";
               this.editionProperties.isNewElement = false;
-              this.editionProperties.temporalImage = document.createElement('img');
+              this.editionProperties.temporalImage =
+                document.createElement("img");
               this.editionProperties.temporalImage.setAttribute(
-                Configuration.get('imageMathmlAttribute'),
+                Configuration.get("imageMathmlAttribute"),
                 MathML.safeXmlEncode(mathml),
               );
             }
@@ -653,16 +698,17 @@ export default class Core {
             );
             if (latexResult) {
               const mathml = Latex.getMathMLFromLatex(latexResult.latex);
-              this.editMode = 'latex';
+              this.editMode = "latex";
               this.editionProperties.isNewElement = false;
-              this.editionProperties.temporalImage = document.createElement('img');
+              this.editionProperties.temporalImage =
+                document.createElement("img");
               this.editionProperties.temporalImage.setAttribute(
-                Configuration.get('imageMathmlAttribute'),
+                Configuration.get("imageMathmlAttribute"),
                 MathML.safeXmlEncode(mathml),
               );
               const windowTarget = isIframe ? target.contentWindow : window;
 
-              if (target.tagName.toLowerCase() !== 'textarea') {
+              if (target.tagName.toLowerCase() !== "textarea") {
                 if (document.selection) {
                   let leftOffset = 0;
                   let previousNode = latexResult.startNode.previousSibling;
@@ -672,20 +718,22 @@ export default class Core {
                     previousNode = previousNode.previousSibling;
                   }
 
-                  this.editionProperties.latexRange = windowTarget.document.selection.createRange();
+                  this.editionProperties.latexRange =
+                    windowTarget.document.selection.createRange();
                   this.editionProperties.latexRange.moveToElementText(
                     latexResult.startNode.parentNode,
                   );
                   this.editionProperties.latexRange.move(
-                    'character',
+                    "character",
                     leftOffset + latexResult.startPosition,
                   );
                   this.editionProperties.latexRange.moveEnd(
-                    'character',
+                    "character",
                     latexResult.latex.length + 4,
                   ); // Plus 4 for the '$$' characters.
                 } else {
-                  this.editionProperties.latexRange = windowTarget.document.createRange();
+                  this.editionProperties.latexRange =
+                    windowTarget.document.createRange();
                   this.editionProperties.latexRange.setStart(
                     latexResult.startNode,
                     latexResult.startPosition,
@@ -699,9 +747,9 @@ export default class Core {
             }
           }
         }
-      } else if (target.tagName.toLowerCase() === 'textarea') {
+      } else if (target.tagName.toLowerCase() === "textarea") {
         // By default editMode is 'images', but when target is a textarea it needs to be 'latex'.
-        this.editMode = 'latex';
+        this.editMode = "latex";
       }
     }
 
@@ -714,10 +762,15 @@ export default class Core {
 
     // The backend send the default editor attributes in a coma separated
     // with the following structure: key1=value1,key2=value2...
-    const defaultEditorAttributesArray = Configuration.get('editorAttributes').split(', ');
+    const defaultEditorAttributesArray =
+      Configuration.get("editorAttributes").split(", ");
     const defaultEditorAttributes = {};
-    for (let i = 0, len = defaultEditorAttributesArray.length; i < len; i += 1) {
-      const tempAttribute = defaultEditorAttributesArray[i].split('=');
+    for (
+      let i = 0, len = defaultEditorAttributesArray.length;
+      i < len;
+      i += 1
+    ) {
+      const tempAttribute = defaultEditorAttributesArray[i].split("=");
       const key = tempAttribute[0];
       const value = tempAttribute[1];
       defaultEditorAttributes[key] = value;
@@ -727,11 +780,19 @@ export default class Core {
       language: this.language, // Default language value
     };
     // Editor parameters in backend, usually configuration.ini.
-    const serverEditorParameters = Configuration.get('editorParameters');
+    const serverEditorParameters = Configuration.get("editorParameters");
     // Editor parameters through JavaScript configuration.
     const clientEditorParameters = this.integrationModel.editorParameters;
-    Object.assign(editorAttributes, defaultEditorAttributes, serverEditorParameters);
-    Object.assign(editorAttributes, defaultEditorAttributes, clientEditorParameters);
+    Object.assign(
+      editorAttributes,
+      defaultEditorAttributes,
+      serverEditorParameters,
+    );
+    Object.assign(
+      editorAttributes,
+      defaultEditorAttributes,
+      clientEditorParameters,
+    );
 
     // Now, update backwards: if user has set a custom language, pass that back to core properties
     this.language = editorAttributes.language;
@@ -739,10 +800,13 @@ export default class Core {
 
     editorAttributes.rtl = this.integrationModel.rtl;
 
-    const customHeaders = Configuration.get('customHeaders');
+    const customHeaders = Configuration.get("customHeaders");
     // This is not being used in the code, we are keeping it just in case it's needed.
     // We check if it is a string since we have a setter that will make the customHeaders an object. And we do the conversion for the case when we get the headers from the backend.
-    editorAttributes.customHeaders = typeof customHeaders === 'string' ? Util.convertStringToObject(customHeaders) : customHeaders;
+    editorAttributes.customHeaders =
+      typeof customHeaders === "string"
+        ? Util.convertStringToObject(customHeaders)
+        : customHeaders;
 
     const contentManagerAttributes = {};
     contentManagerAttributes.editorAttributes = editorAttributes;
@@ -755,11 +819,15 @@ export default class Core {
       this.contentManager = new ContentManager(contentManagerAttributes);
       // When an instance of ContentManager is created we need to wait until
       // the ContentManager is ready by listening 'onLoad' event.
-      const listener = Listeners.newListener('onLoad', () => {
+      const listener = Listeners.newListener("onLoad", () => {
         this.contentManager.dbclick = this.editionProperties.dbclick;
         this.contentManager.isNewElement = this.editionProperties.isNewElement;
         if (this.editionProperties.temporalImage != null) {
-          const mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));
+          const mathML = MathML.safeXmlDecode(
+            this.editionProperties.temporalImage.getAttribute(
+              Configuration.get("imageMathmlAttribute"),
+            ),
+          );
           this.contentManager.mathML = mathML;
         }
       });
@@ -771,7 +839,11 @@ export default class Core {
       this.contentManager.dbclick = this.editionProperties.dbclick;
       this.contentManager.isNewElement = this.editionProperties.isNewElement;
       if (this.editionProperties.temporalImage != null) {
-        const mathML = MathML.safeXmlDecode(this.editionProperties.temporalImage.getAttribute(Configuration.get('imageMathmlAttribute')));
+        const mathML = MathML.safeXmlDecode(
+          this.editionProperties.temporalImage.getAttribute(
+            Configuration.get("imageMathmlAttribute"),
+          ),
+        );
         this.contentManager.mathML = mathML;
       }
     }

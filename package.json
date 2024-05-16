@@ -12,22 +12,19 @@
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
     "build": "cd demos/html/generic && npm install && npm start &",
-    "lint": "npm run lint-js && npm run lint-html && npm run lint-css",
-    "lint-js": "eslint ${npm_config_route-.} --ext .js",
-    "lint-html": "html-validate ${npm_config_route-.}",
-    "lint-css": "stylelint \"${npm_config_route-**/*.css}\""
+    "lint": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .eslintignore && nx run-many --target=lint --all --parallel"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.24.1",
     "@nrwl/js": "18.2.2",
     "@nrwl/tao": "18.2.2",
-    "@nx/eslint-plugin": "18.2.2",
     "@nx/cypress": "18.2.2",
+    "@nx/eslint-plugin": "18.2.2",
     "@nx/linter": "18.2.2",
     "@nx/web": "18.2.2",
     "@nx/webpack": "18.2.2",
     "@nx/workspace": "18.2.2",
     "@types/node": "20.12.4",
-    "@babel/eslint-parser": "^7.24.1",
     "clean-webpack-plugin": "^4.0.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -35,6 +32,7 @@
     "eslint-plugin-jsdoc": "^48.2.3",
     "html-validate": "^8.18.1",
     "nx": "18.2.2",
+    "prettier": "3.2.5",
     "typescript": "~5.4.4"
   },
   "license": "MIT",
@@ -42,5 +40,6 @@
   "workspaces": [
     "packages/**",
     "demos/**"
-  ]
+  ],
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

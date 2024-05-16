@@ -6,9 +6,9 @@ Wiris WordPress plugin allows WordPress pages to render MathML using MathType.
 
 ## Table of contents
 
- - [Requirements](#requirement)
- - [Structure](#structure)
- - [Next Steps](#next-steps)
+- [Requirements](#requirement)
+- [Structure](#structure)
+- [Next Steps](#next-steps)
 
 ## Requirements
 
@@ -21,11 +21,12 @@ Install these on your computer:
 
 ## Structure
 
- - `build`
- - `docs`. The main documentation for the project.
- - `wordpress-wiris-plugin`. Plugin source code
+- `build`
+- `docs`. The main documentation for the project.
+- `wordpress-wiris-plugin`. Plugin source code
 
 ## Next steps
+
 - [Install and start WordPress with MathType and Docker](docs/deploy/README.md)
 - [Build MathType Plugin](docs/build-plugin/README.md)
 - [Usage of the backend services](docs/build-backend/README.md)

@@ -128,7 +128,6 @@ For brevity, `<scope>` will take one of these next values depending on the affec
 | `tinymce5`  | `mathtype-tinymce5`                |
 | `tinymce6`  | `mathtype-tinymce6`                |
 
-
 There are usually a few exceptions to the above rules:
 
 - `demo`: used when updating the integrations examples on the `/demos` folder.
