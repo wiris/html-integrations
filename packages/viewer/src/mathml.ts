@@ -3,7 +3,6 @@ import {
   showImage,
   createImage,
   mathml2accessible,
-  processJsonResponse,
 } from "./services";
 import { htmlEntitiesToXmlEntities, corruptMathML } from "./utils";
 import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
@@ -76,32 +75,24 @@ export async function renderMathML(
 
   for (const mathElement of [...root.getElementsByTagName("math")]) {
     const mml = htmlEntitiesToXmlEntities(mathElement.outerHTML);
+    try {
+      let imgSource;
 
-    let result;
+      // Transform mml to img.
+      if (properties.wirispluginperformance === 'true') {
+        imgSource = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+      } else {
+        imgSource = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+      }
 
-    // Transform mml to img.
-    if (properties.wirispluginperformance === "true") {
-      result = await showImage(
-        mml,
-        properties.lang,
-        properties.editorServicesRoot,
-        properties.editorServicesExtension,
-      );
-    } else {
-      result = await createImage(
-        mml,
-        properties.lang,
-        properties.editorServicesRoot,
-        properties.editorServicesExtension,
-      );
+      // Set img properties.
+      const img = await setImageProperties(properties, imgSource, mml);
+      // Replace the MathML for the generated formula image.
+      mathElement.parentNode?.replaceChild(img, mathElement);
+    } catch {
+      console.error(`Cannot render ${mml}: invalid MathML format.`);
+      continue;
     }
-
-    // Set img properties.
-    const img = await setImageProperties(properties, result, mml);
-    // const fragment = document.createRange().createContextualFragment(data.result.content);
-
-    // Replace the MathML for the generated formula image.
-    mathElement.parentNode?.replaceChild(img, mathElement);
   }
 }
 
@@ -109,7 +100,7 @@ export async function renderMathML(
  * Returns an image formula containing all MathType properties.
  * @param {Properties} properties - Properties of the viewer.
  * @param {FormulaData} data - Object containing image values.
- * @param {string} mml - The MathML of the formula image beeing created.
+ * @param {string} mml - The MathML of the formula image being created.
  * @returns {Promise<HTMLImageElement>} - Formula image.
  */
 async function setImageProperties(
