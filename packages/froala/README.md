@@ -21,41 +21,43 @@ Easily include quality math equations in your documents and digital content.
    # froala-editor@3.x.x to froala-editor@4.x.x
    npm install @wiris/mathtype-froala
    ```
+
 2. Load the module into your project:
 
    ```html
    <script src="node_modules/@wiris/mathtype-froala/wiris.js"></script>
    ```
+
 3. Update Froala configuration options:
 
-     ```js  
-         // From Froala 'Get started' section https://froala.com/wysiwyg-editor/docs/overview/
-         new FroalaEditor('.selector', {
-            // Add MathType and ChemType buttons to the toolbar and the image menu:
-            toolbar: ['wirisEditor', 'wirisChemistry'], 
-            imageEditButtons: ['wirisEditor', 'wirisChemistry'],
-            // Allow all tags, in order to allow MathML:
-            htmlAllowedTags:  ['.*'],
-            htmlAllowedAttrs: ['.*'],
-            // Allow empty tags on these next elements for proper formula rendering:
-            htmlAllowedEmptyTags: ['mprescripts', 'none'],
-            // In case you are using a different Froala editor language than default,
-            // language: 'es',
-            // You can choose the language for the MathType editor, too:
-            // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
-            // mathTypeParameters: {
-            //   editorParameters: { language: 'es' },
-            // },
-         }
-     ```
+   ```js
+       // From Froala 'Get started' section https://froala.com/wysiwyg-editor/docs/overview/
+       new FroalaEditor('.selector', {
+          // Add MathType and ChemType buttons to the toolbar and the image menu:
+          toolbar: ['wirisEditor', 'wirisChemistry'],
+          imageEditButtons: ['wirisEditor', 'wirisChemistry'],
+          // Allow all tags, in order to allow MathML:
+          htmlAllowedTags:  ['.*'],
+          htmlAllowedAttrs: ['.*'],
+          // Allow empty tags on these next elements for proper formula rendering:
+          htmlAllowedEmptyTags: ['mprescripts', 'none'],
+          // In case you are using a different Froala editor language than default,
+          // language: 'es',
+          // You can choose the language for the MathType editor, too:
+          // @see: https://docs.wiris.com/en/mathtype/mathtype_web/sdk-api/parameters#regional_properties
+          // mathTypeParameters: {
+          //   editorParameters: { language: 'es' },
+          // },
+       }
+   ```
 
-     Notice the example assumes this directory structure:
+   Notice the example assumes this directory structure:
 
-     ```
-     └───index.html
-     └───node_modules
-         └───@wiris/mathtype-froala
-     ```
+   ```
+   └───index.html
+   └───node_modules
+       └───@wiris/mathtype-froala
+   ```
 
 ## Services
 
@@ -68,6 +70,7 @@ In order to install the plugin along with the correspondent services, please fol
 ## Displaying on Target Page
 
 In order to display mathematical formulas on the target page, i.e. the page where content produced by the HTML editor will be visible, the target page needs to include the [MathType script](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/mathml-mode#add_a_script_to_head). For example for the default setting this would be:
+
 ```html
 <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image"></script>
 ```
@@ -76,12 +79,12 @@ In order to display mathematical formulas on the target page, i.e. the page wher
 
 To find out more information about MathType, please go to the following documentation:
 
-* [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-froala.html?utm_source=npmjs&utm_medium=referral)
-* [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
-* [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
-* [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
-* [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
-* [Froala integration documentation](https://froala.com/wysiwyg-editor/docs/migrate-from-v2/)
+- [Install instructions](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-froala.html?utm_source=npmjs&utm_medium=referral)
+- [MathType documentation](https://docs.wiris.com/en/mathtype/mathtype_web/start?utm_source=npmjs&utm_medium=referral)
+- [Introductory tutorials](https://docs.wiris.com/en/mathtype/mathtype_web/intro_tutorials?utm_source=npmjs&utm_medium=referral)
+- [Service customization](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/config-table?utm_source=npmjs&utm_medium=referral)
+- [Testing](https://docs.wiris.com/en/mathtype/mathtype_web/integrations/html/plugins-test?utm_source=npmjs&utm_medium=referral)
+- [Froala integration documentation](https://froala.com/wysiwyg-editor/docs/migrate-from-v2/)
 
 ## Privacy policy
 

@@ -8,21 +8,24 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('formula should have wirisformula class', function () {
+it("formula should have wirisformula class", function () {
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-general']);
+  cy.insertFormulaFromScratch(this.formulas["formula-general"]);
 
   // Get the formula by it's alt text and assert it has the Wirisformula class
   // We could find the formula by using getFormula, but internally, that looks for
   // .Wirisformula, so it defeats the purpose. That's why we use the alt instead.
-  cy.get(`img[alt="${this.formulas['formula-general-alt-es']}"]`).should('have.class', 'Wirisformula');
+  cy.get(`img[alt="${this.formulas["formula-general-alt-es"]}"]`).should(
+    "have.class",
+    "Wirisformula",
+  );
 });

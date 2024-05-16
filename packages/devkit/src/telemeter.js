@@ -6,7 +6,6 @@ import init, { Telemeter as TelemeterWASM } from "../telemeter-wasm";
  * to Telemetry in a more comfortable and homogeneous way.
  */
 export default class Telemeter {
-
   /**
    * Inits Telemeter class.
    * The parameters structures are defiended on {@link [Telemeter API](https://github.com/wiris/telemeter/blob/main/docs/USAGE.md#telemeter-api)}
@@ -15,19 +14,20 @@ export default class Telemeter {
    * @param {Object} telemeterAttributes.config - Configuration parameters.
    */
   static init(telemeterAttributes) {
-    if (!this.telemeter && !this.waitingForInit){
+    if (!this.telemeter && !this.waitingForInit) {
       this.waitingForInit = true;
       init(telemeterAttributes.url)
         .then(() => {
           this.telemeter = new TelemeterWASM(
             telemeterAttributes.solution,
             telemeterAttributes.hosts,
-            telemeterAttributes.config);
+            telemeterAttributes.config,
+          );
         })
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => this.waitingForInit = false);
+        .finally(() => (this.waitingForInit = false));
     }
   }
 

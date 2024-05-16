@@ -6,16 +6,16 @@ Date: DATE
 
 > What is the status, such as proposed, accepted, rejected, deprecated, superseded, etc.?
 
-STATUS  
+STATUS
 
 ## Summary [optional]
 
 > Statement to summarize:
->    In the context of (use case)
->    facing (concern)
->    we decided for (option)
->    to achieve (quality)
->    accepting (downside)
+> In the context of (use case)
+> facing (concern)
+> we decided for (option)
+> to achieve (quality)
+> accepting (downside)
 
 ## Context (Discussion)
 
@@ -24,14 +24,13 @@ STATUS
 > Explains the forces at play (technical, political, social, project).  
 > This is the story explaining the problem we are looking to resolve.
 
-
 ## Decision
 
 > What is the change that we're proposing and/or doing?
 > The change that we're proposing or have agreed to implement.
 > Explains how the decision will solve the problem.
 
-### Pros and Cons of the Options  [optional]
+### Pros and Cons of the Options [optional]
 
 #### [option 1]
 

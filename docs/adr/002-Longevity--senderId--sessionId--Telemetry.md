@@ -4,15 +4,15 @@ Date: 2020-06-26
 
 ## Status
 
-ACCEPTED  
+ACCEPTED
 
 ## Summary
 
-*When sending Telemetry data*
-*session & sender ids are used.*
-*The Telemetry documentation does not specify the longevity of these ids.*
-*We have decided to extend the sender id to last between page loads*
-*and the session id to last exactly one page load.*
+_When sending Telemetry data_
+_session & sender ids are used._
+_The Telemetry documentation does not specify the longevity of these ids._
+_We have decided to extend the sender id to last between page loads_
+_and the session id to last exactly one page load._
 
 ## Context (Discussion)
 
@@ -25,14 +25,12 @@ In the case of MathType web, there could be various interpretations, e.g.
 - senderId: changes on page load.
 - sessionId: changes on opening MathType.
 
-
 ## Decision
 
 We asked the Data Science team and finally settled on the following interpretation:
 
 - senderId: ideally lasts for ever. In practice, should at least last in a same web session, across page loads.
 - sessionId: changes on page load.
-
 
 ### Pros and Cons of the Options
 
@@ -44,7 +42,6 @@ We asked the Data Science team and finally settled on the following interpretati
 
 - Good, because it better represents individual users.
 - Bad, because it's hard to keep permanent data on the client's browser.
-
 
 ## Consequences (Results)
 

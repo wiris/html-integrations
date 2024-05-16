@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (

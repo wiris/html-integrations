@@ -1,14 +1,14 @@
-import IntegrationModel from '@wiris/mathtype-html-integration-devkit/src/integrationmodel';
-import Configuration from '@wiris/mathtype-html-integration-devkit/src/configuration';
-import StringManager from '@wiris/mathtype-html-integration-devkit/src/stringmanager';
-import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter';
-import Parser from '@wiris/mathtype-html-integration-devkit/src/parser';
-import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
-import Util from '@wiris/mathtype-html-integration-devkit/src/util';
-import formulaIcon from './icons/formula.png';
-import chemIcon from './icons/chem.png';
+import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel";
+import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration";
+import StringManager from "@wiris/mathtype-html-integration-devkit/src/stringmanager";
+import Telemeter from "@wiris/mathtype-html-integration-devkit/src/telemeter";
+import Parser from "@wiris/mathtype-html-integration-devkit/src/parser";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
+import Util from "@wiris/mathtype-html-integration-devkit/src/util";
+import formulaIcon from "./icons/formula.png";
+import chemIcon from "./icons/chem.png";
 
-import packageInfo from './package.json';
+import packageInfo from "./package.json";
 
 /**
  * This property contains the current Generic integration instance,
@@ -30,14 +30,16 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
   const genericIntegrationProperties = {};
   genericIntegrationProperties.target = target;
   genericIntegrationProperties.toolbar = toolbar;
-  if (typeof mathtypeProperties !== 'undefined') {
+  if (typeof mathtypeProperties !== "undefined") {
     genericIntegrationProperties.integrationParameters = mathtypeProperties;
   }
 
   // GenericIntegration instance.
-  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties); // eslint-disable-line no-use-before-define
+  const genericIntegrationInstance = new GenericIntegration(
+    genericIntegrationProperties,
+  ); // eslint-disable-line no-use-before-define
   genericIntegrationInstance.init();
-  genericIntegrationInstance.listeners.fire('onTargetReady', {});
+  genericIntegrationInstance.listeners.fire("onTargetReady", {});
 
   WirisPlugin.currentInstance = genericIntegrationInstance;
 }
@@ -63,28 +65,34 @@ window.wrs_int_init = wrsInitEditor;
  */
 export default class GenericIntegration extends IntegrationModel {
   /**
-     * @constructs
-     * @param {IntegrationModelProperties} integrationModelProperties
-     */
+   * @constructs
+   * @param {IntegrationModelProperties} integrationModelProperties
+   */
   constructor(integrationModelProperties) {
-    if (typeof (integrationModelProperties.serviceProviderProperties) === 'undefined') {
+    if (
+      typeof integrationModelProperties.serviceProviderProperties ===
+      "undefined"
+    ) {
       integrationModelProperties.serviceProviderProperties = {
         URI: process.env.SERVICE_PROVIDER_URI,
         server: process.env.SERVICE_PROVIDER_SERVER,
       };
     }
     integrationModelProperties.version = packageInfo.version;
-    integrationModelProperties.scriptName = 'wirisplugin-generic.js';
+    integrationModelProperties.scriptName = "wirisplugin-generic.js";
     integrationModelProperties.environment = {};
-    integrationModelProperties.environment.editor = 'GenericHTML';
-    integrationModelProperties.environment.editorVersion = '1.0.0';
+    integrationModelProperties.environment.editor = "GenericHTML";
+    integrationModelProperties.environment.editorVersion = "1.0.0";
 
     super(integrationModelProperties);
 
     this.toolbar = null;
     this.toolbar = integrationModelProperties.toolbar;
-    if (typeof integrationModelProperties.configurationService !== 'undefined') {
-      this.configurationService = integrationModelProperties.configurationService;
+    if (
+      typeof integrationModelProperties.configurationService !== "undefined"
+    ) {
+      this.configurationService =
+        integrationModelProperties.configurationService;
     }
   }
 
@@ -100,18 +108,21 @@ export default class GenericIntegration extends IntegrationModel {
      */
     wrsOpenedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
-      if (/^(button|formula)$/.test(trigger) && /^(general|chemistry)$/.test(toolbar)) {
+      if (
+        /^(button|formula)$/.test(trigger) &&
+        /^(general|chemistry)$/.test(toolbar)
+      ) {
         try {
           Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
             toolbar: toolbar,
             trigger: trigger,
           });
         } catch (err) {
-          trigger
+          trigger;
           console.error(err);
         }
       } else {
-        console.error('Invalid trigger or toolbar value for open editor modal');
+        console.error("Invalid trigger or toolbar value for open editor modal");
       }
     },
 
@@ -122,7 +133,10 @@ export default class GenericIntegration extends IntegrationModel {
      */
     wrsClosedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
-      if (/^(mtct_insert|mtct_close)$/.test(trigger) && /^(general|chemistry)$/.test(toolbar)) {
+      if (
+        /^(mtct_insert|mtct_close)$/.test(trigger) &&
+        /^(general|chemistry)$/.test(toolbar)
+      ) {
         // Call Telemetry service
         try {
           Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
@@ -133,7 +147,9 @@ export default class GenericIntegration extends IntegrationModel {
           console.error(err);
         }
       } else {
-        console.error('Invalid trigger or toolbar value for close editor modal');
+        console.error(
+          "Invalid trigger or toolbar value for close editor modal",
+        );
       }
     },
 
@@ -151,7 +167,9 @@ export default class GenericIntegration extends IntegrationModel {
       if (validToolbar && validDate) {
         // Build the telemeter payload separated to delete null/undefined entries.
         let payload = {
-          mathml_origin: mathml_origin ? MathML.safeXmlDecode(mathml_origin) : mathml_origin,
+          mathml_origin: mathml_origin
+            ? MathML.safeXmlDecode(mathml_origin)
+            : mathml_origin,
           mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
           elapsed_time: time,
           editor_origin: null,
@@ -160,8 +178,9 @@ export default class GenericIntegration extends IntegrationModel {
         };
 
         // Remove desired null keys.
-        Object.keys(payload).forEach(key => {
-          if (key === 'mathml_origin' || key === 'editor_origin') !payload[key] ? delete payload[key] : {}
+        Object.keys(payload).forEach((key) => {
+          if (key === "mathml_origin" || key === "editor_origin")
+            !payload[key] ? delete payload[key] : {};
         });
 
         try {
@@ -172,23 +191,26 @@ export default class GenericIntegration extends IntegrationModel {
           console.error(err);
         }
       } else {
-        console.error('Invalid toolbar or time input for insert formula');
+        console.error("Invalid toolbar or time input for insert formula");
       }
-    }
-  }
+    },
+  };
 
   /**
-     * Returns the demo language, stored in _wrs_int_langCode variable. If the language
-     * is no set set, calls parent getLanguage() method.
-     * @returns {string} demo language.
-     */
+   * Returns the demo language, stored in _wrs_int_langCode variable. If the language
+   * is no set set, calls parent getLanguage() method.
+   * @returns {string} demo language.
+   */
   getLanguage() {
     // Try to get editorParameters.language, fail silently otherwise
     try {
       return this.editorParameters.language;
-    } catch (e) { }
-    if (typeof _wrs_int_langCode !== 'undefined') { // eslint-disable-line camelcase
-      console.warn('Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.');
+    } catch (e) {}
+    if (typeof _wrs_int_langCode !== "undefined") {
+      // eslint-disable-line camelcase
+      console.warn(
+        "Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.",
+      );
       return _wrs_int_langCode; // eslint-disable-line camelcase, no-undef
     }
     return super.getLanguage();
@@ -200,21 +222,26 @@ export default class GenericIntegration extends IntegrationModel {
     super.callbackFunction();
     /* Parsing input text */
     if (this.isIframe) {
-      this.target.contentWindow.document.body.innerHTML = Parser.initParse(this.target.contentWindow.document.body.innerHTML);
+      this.target.contentWindow.document.body.innerHTML = Parser.initParse(
+        this.target.contentWindow.document.body.innerHTML,
+      );
     } else {
       this.target.innerHTML = Parser.initParse(this.target.innerHTML);
     }
 
     // Check if MathType is enabled
-    if (Configuration.get('editorEnabled')) {
+    if (Configuration.get("editorEnabled")) {
       /* Creating toolbar buttons */
-      const formulaButton = document.createElement('img');
-      formulaButton.id = 'editorIcon';
+      const formulaButton = document.createElement("img");
+      formulaButton.id = "editorIcon";
       formulaButton.src = formulaIcon;
-      formulaButton.title = formulaButton.alt = StringManager.get('insert_math', this.getLanguage());
-      formulaButton.style.cursor = 'pointer';
+      formulaButton.title = formulaButton.alt = StringManager.get(
+        "insert_math",
+        this.getLanguage(),
+      );
+      formulaButton.style.cursor = "pointer";
 
-      Util.addEvent(formulaButton, 'click', () => {
+      Util.addEvent(formulaButton, "click", () => {
         this.core.getCustomEditors().disable();
         this.openNewFormulaEditor();
       });
@@ -228,20 +255,23 @@ export default class GenericIntegration extends IntegrationModel {
     for (const customEditor in customEditors.editors) {
       // Check if CustomEditor is enabled
       if (Configuration.get(customEditors.editors[customEditor].confVariable)) {
-        const customEditorButton = document.createElement('img');
+        const customEditorButton = document.createElement("img");
         // TODO make this work and add promises polyfill
         // import('./icons/' + customEditors.editors[customEditor].icon).then(({default: customEditorIcon}) => {
         //     customEditorButton.src = customEditorIcon;
         // });
         // Horrible hard-coded temporary fix
-        if (customEditor === 'chemistry') {
+        if (customEditor === "chemistry") {
           customEditorButton.src = chemIcon;
-          customEditorButton.title = customEditorButton.alt = StringManager.get('insert_chem', this.getLanguage());
+          customEditorButton.title = customEditorButton.alt = StringManager.get(
+            "insert_chem",
+            this.getLanguage(),
+          );
         }
         customEditorButton.id = `${customEditor}Icon`;
-        customEditorButton.style.cursor = 'pointer';
+        customEditorButton.style.cursor = "pointer";
 
-        Util.addEvent(customEditorButton, 'click', () => {
+        Util.addEvent(customEditorButton, "click", () => {
           customEditors.enable(customEditor);
           this.openNewFormulaEditor();
         });
@@ -256,7 +286,7 @@ export default class GenericIntegration extends IntegrationModel {
     this.core.editionProperties.dbclick = false;
     // If it exists a temporal image saved, open the existing formula editor
     const image = this.core.editionProperties.temporalImage;
-    if (image !== null && typeof image !== 'undefined') {
+    if (image !== null && typeof image !== "undefined") {
       super.openExistingFormulaEditor();
     } else {
       super.openNewFormulaEditor();
@@ -264,6 +294,11 @@ export default class GenericIntegration extends IntegrationModel {
   }
 
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    return super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+    return super.insertFormula(
+      focusElement,
+      windowTarget,
+      mathml,
+      wirisProperties,
+    );
   }
 }

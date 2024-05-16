@@ -1,30 +1,37 @@
 {
-    "getting_started" : {
-        "title" : "Getting Started"
-    },
-    "data" : {
-        "title" : "Parsing Data"
-    },
-    "services" : {
-        "title" : "Services overview",
-        "children" : ["services_generic", "services_tinymce", "services_froala", "services_ckeditor4", "services_ckeditor5", "menu_item"]
-    },
-    "services_generic" : {
-        "title" : "Generic Editor services"
-    },
-    "services_tinymce" : {
-        "title" : "TinyMCE services"
-    },
-    "services_froala" : {
-        "title" : "Froala services"
-    },
-    "services_ckeditor4" : {
-        "title" : "CKEditor 4 services"
-    },
-    "services_ckeditor5" : {
-        "title" : "CKEditor 5 services"
-    },
-    "menu_item" : {
-        "title" : "TinyMCE 5 services"
-    }
+  "getting_started": {
+    "title": "Getting Started"
+  },
+  "data": {
+    "title": "Parsing Data"
+  },
+  "services": {
+    "title": "Services overview",
+    "children": [
+      "services_generic",
+      "services_tinymce",
+      "services_froala",
+      "services_ckeditor4",
+      "services_ckeditor5",
+      "menu_item"
+    ]
+  },
+  "services_generic": {
+    "title": "Generic Editor services"
+  },
+  "services_tinymce": {
+    "title": "TinyMCE services"
+  },
+  "services_froala": {
+    "title": "Froala services"
+  },
+  "services_ckeditor4": {
+    "title": "CKEditor 4 services"
+  },
+  "services_ckeditor5": {
+    "title": "CKEditor 5 services"
+  },
+  "menu_item": {
+    "title": "TinyMCE 5 services"
+  }
 }

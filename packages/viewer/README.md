@@ -12,7 +12,6 @@ To use the MathType viewer in your page, just include the script `dist/WIRISplug
 
 When loading the page now, all MathML and LaTeX formulas should be displayed as images.
 
-
 ## Properties
 
 The MathType viewer admits various properties.
@@ -22,14 +21,13 @@ They can be set like this:
 ```html
 <script src="dist/WIRISplugins.js&viewer=image" defer></script>
 <script>
-  window.document.addEventListener('viewerLoaded', () => {
+  window.document.addEventListener("viewerLoaded", () => {
     window.viewer.Properties.key1 = value1;
     window.viewer.Properties.key2 = value2;
     // ...
   });
 </script>
 ```
-
 
 ## Compilation
 
@@ -63,7 +61,6 @@ The output will be found in `viewer/dist`.
 ## Documentation
 
 For the whole specification, see [here](docs/spec.md).
-
 
 ## Privacy policy
 

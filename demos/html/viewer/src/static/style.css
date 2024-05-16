@@ -2,7 +2,9 @@ body {
   font-family: sans-serif;
 }
 
-input[type=text], select, textarea {
+input[type="text"],
+select,
+textarea {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -20,7 +22,7 @@ main {
   margin-left: 1em;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   height: 25px;
   width: 25px;
   text-align: center;
@@ -29,7 +31,7 @@ input[type=checkbox] {
 
 button {
   width: 100%;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   font-weight: bold;
   margin-top: 1em;
@@ -54,7 +56,7 @@ form {
 }
 
 .form-container {
-  margin-top: 2em; 
+  margin-top: 2em;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 2em;

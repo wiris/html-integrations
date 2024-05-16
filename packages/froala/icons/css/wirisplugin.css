@@ -1,12 +1,12 @@
 @font-face {
-  font-family: 'wirisplugin';
-  src: url('../font/wirisplugin.eot?760662');
+  font-family: "wirisplugin";
+  src: url("../font/wirisplugin.eot?760662");
   src:
-    url('../font/wirisplugin.eot?760662#iefix') format('embedded-opentype'),
-    url('../font/wirisplugin.woff2?760662') format('woff2'),
-    url('../font/wirisplugin.woff?760662') format('woff'),
-    url('../font/wirisplugin.ttf?760662') format('truetype'),
-    url('../font/wirisplugin.svg?760662#wirisplugin') format('svg');
+    url("../font/wirisplugin.eot?760662#iefix") format("embedded-opentype"),
+    url("../font/wirisplugin.woff2?760662") format("woff2"),
+    url("../font/wirisplugin.woff?760662") format("woff"),
+    url("../font/wirisplugin.ttf?760662") format("truetype"),
+    url("../font/wirisplugin.svg?760662#wirisplugin") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -63,5 +63,9 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-mathtype-chemistry::before { content: '\e803'; } /* '' */
-.icon-mathtype-editor::before { content: '\e805'; } /* '' */
+.icon-mathtype-chemistry::before {
+  content: "\e803";
+} /* '' */
+.icon-mathtype-editor::before {
+  content: "\e805";
+} /* '' */

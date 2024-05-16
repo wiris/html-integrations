@@ -1,9 +1,9 @@
-import { latexToMathml } from './services';
-import { Properties } from './properties';
+import { latexToMathml } from "./services";
+import { Properties } from "./properties";
 
 interface LatexPosition {
-  start: number,
-  end: number,
+  start: number;
+  end: number;
 }
 
 /**
@@ -12,8 +12,7 @@ interface LatexPosition {
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 export async function renderLatex(properties: Properties, root: HTMLElement) {
-
-  if (properties.viewer !== 'image' && properties.viewer !== 'latex') {
+  if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
 
@@ -30,36 +29,51 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
  * @param {Node} node - Text node in which to search and replace LaTeX instances.
  */
 async function replaceLatexInTextNode(properties: Properties, node: Node) {
-  const textContent: string = node.textContent || '';
+  const textContent: string = node.textContent || "";
   let pos: number = 0;
 
   while (pos < textContent.length) {
     const nextLatexPosition: LatexPosition = getNextLatexPos(pos, textContent);
     if (nextLatexPosition) {
       // Get left non LaTeX text.
-      const leftText: string = textContent.substring(pos, nextLatexPosition.start);
+      const leftText: string = textContent.substring(
+        pos,
+        nextLatexPosition.start,
+      );
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
       node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
 
       // Get LaTeX text.
-      const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
+      const latex = textContent.substring(
+        nextLatexPosition.start + "$$".length,
+        nextLatexPosition.end,
+      );
       // Convert LaTeX to mathml.
-      const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
+      const response = await latexToMathml(
+        latex,
+        properties.editorServicesRoot,
+        properties.editorServicesExtension,
+      );
       // Insert mathml node.
-      const fragment = document.createRange().createContextualFragment(response.text);
+      const fragment = document
+        .createRange()
+        .createContextualFragment(response.text);
 
       node.parentNode?.insertBefore(fragment, node);
-      node.nodeValue = node.nodeValue.substring(nextLatexPosition.start, nextLatexPosition.end);
+      node.nodeValue = node.nodeValue.substring(
+        nextLatexPosition.start,
+        nextLatexPosition.end,
+      );
 
-      pos = nextLatexPosition.end + '$$'.length;
+      pos = nextLatexPosition.end + "$$".length;
     } else {
       // No more LaTeX node found.
       const text = textContent.substring(pos);
       const textNode = document.createTextNode(text);
       node.parentNode?.insertBefore(textNode, node);
-      node.nodeValue = '';
+      node.nodeValue = "";
       pos = textContent.length;
     }
   }
@@ -67,7 +81,6 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
   // Delete original text node.
   node.parentNode?.removeChild(node);
 }
-
 
 /**
  * Returns an array with all HTML LaTeX nodes.
@@ -78,12 +91,15 @@ function findLatexTextNodes(root: any): Node[] {
   const nodeIterator: NodeIterator = document.createNodeIterator(
     root,
     NodeFilter.SHOW_TEXT,
-    node => /(\$\$)(.*)(\$\$)/.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+    (node) =>
+      /(\$\$)(.*)(\$\$)/.test(node.nodeValue || "")
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT,
   );
-  const latexNodes : Node[] = [];
+  const latexNodes: Node[] = [];
 
   let currentNode: Node | null;
-  while (currentNode = nodeIterator.nextNode()) {
+  while ((currentNode = nodeIterator.nextNode())) {
     latexNodes.push(currentNode);
   }
 
@@ -97,7 +113,12 @@ function findLatexTextNodes(root: any): Node[] {
  * @
  */
 function getNextLatexPos(pos: number, text: string): LatexPosition {
-  const firstLatexTags = text.indexOf('$$', pos);
-  const secondLatexTags = firstLatexTags == -1 ? -1 : text.indexOf('$$', firstLatexTags + '$$'.length);
-  return firstLatexTags != -1 && secondLatexTags != -1 ? {'start': firstLatexTags, 'end': secondLatexTags} : null;
+  const firstLatexTags = text.indexOf("$$", pos);
+  const secondLatexTags =
+    firstLatexTags == -1
+      ? -1
+      : text.indexOf("$$", firstLatexTags + "$$".length);
+  return firstLatexTags != -1 && secondLatexTags != -1
+    ? { start: firstLatexTags, end: secondLatexTags }
+    : null;
 }

@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars, import/named
-import Core from './core.src';
-import Image from './image';
-import Listeners from './listeners';
-import Util from './util';
-import Configuration from './configuration';
-import ServiceProvider from './serviceprovider';
-import Telemeter from './telemeter';
-import warnIcon from '../styles/icons/general/warn_icon.svg';  //eslint-disable-line
+import Core from "./core.src";
+import Image from "./image";
+import Listeners from "./listeners";
+import Util from "./util";
+import Configuration from "./configuration";
+import ServiceProvider from "./serviceprovider";
+import Telemeter from "./telemeter";
+import warnIcon from "../styles/icons/general/warn_icon.svg"; //eslint-disable-line
 
 /**
  * @typedef {Object} IntegrationModelProperties
@@ -41,54 +41,64 @@ export default class IntegrationModel {
     /**
      * Language. Needed for accessibility and locales. English by default.
      */
-    this.language = 'en';
+    this.language = "en";
 
     /**
      * Service parameters
      * @type {ServiceProviderProperties}
      */
-    this.serviceProviderProperties = integrationModelProperties.serviceProviderProperties ?? {};
+    this.serviceProviderProperties =
+      integrationModelProperties.serviceProviderProperties ?? {};
 
     /**
      * Configuration service path. The integration service is needed by Core class to
      * load all the backend configuration into the frontend and also to create the paths
      * of all services (all services lives in the same route). Mandatory property.
      */
-    this.configurationService = '';
-    if ('configurationService' in integrationModelProperties) {
-      this.serviceProviderProperties.URI = integrationModelProperties.configurationService;
-      console.warn('Deprecated property configurationService. Use serviceParameters on instead.',
-        [integrationModelProperties.configurationService]);
+    this.configurationService = "";
+    if ("configurationService" in integrationModelProperties) {
+      this.serviceProviderProperties.URI =
+        integrationModelProperties.configurationService;
+      console.warn(
+        "Deprecated property configurationService. Use serviceParameters on instead.",
+        [integrationModelProperties.configurationService],
+      );
     }
 
     /**
      * Plugin version. Needed to stats and caching.
      * @type {string}
      */
-    this.version = ('version' in integrationModelProperties ? integrationModelProperties.version : '');
+    this.version =
+      "version" in integrationModelProperties
+        ? integrationModelProperties.version
+        : "";
 
     /**
      * DOM target in which the plugin works. Needed to associate events, insert formulas, etc.
      * Mandatory property.
      */
     this.target = null;
-    if ('target' in integrationModelProperties) {
+    if ("target" in integrationModelProperties) {
       this.target = integrationModelProperties.target;
     } else {
-      throw new Error('IntegrationModel constructor error: target property missed.');
+      throw new Error(
+        "IntegrationModel constructor error: target property missed.",
+      );
     }
 
     /**
      * Integration script name. Needed to know the plugin path.
      */
-    if ('scriptName' in integrationModelProperties) {
+    if ("scriptName" in integrationModelProperties) {
       this.scriptName = integrationModelProperties.scriptName;
     }
 
     /**
      * Object containing the arguments needed by the callback function.
      */
-    this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments ?? {};
+    this.callbackMethodArguments =
+      integrationModelProperties.callbackMethodArguments ?? {};
 
     /**
      * Contains information about the integration environment:
@@ -101,7 +111,7 @@ export default class IntegrationModel {
      */
     this.isIframe = false;
     if (this.target != null) {
-      this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
+      this.isIframe = this.target.tagName.toUpperCase() === "IFRAME";
     }
 
     /**
@@ -123,7 +133,9 @@ export default class IntegrationModel {
     /**
      * Specify if editor will open in hand mode only
      */
-    this.forcedHandMode = integrationModelProperties?.integrationParameters?.forcedHandMode ?? false;
+    this.forcedHandMode =
+      integrationModelProperties?.integrationParameters?.forcedHandMode ??
+      false;
 
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
@@ -145,11 +157,12 @@ export default class IntegrationModel {
     this.listeners = new Listeners();
 
     // Parameters overwrite.
-    if ('integrationParameters' in integrationModelProperties) {
+    if ("integrationParameters" in integrationModelProperties) {
       IntegrationModel.integrationParameters.forEach((parameter) => {
         if (parameter in integrationModelProperties.integrationParameters) {
           // Don't add empty parameters.
-          const value = integrationModelProperties.integrationParameters[parameter];
+          const value =
+            integrationModelProperties.integrationParameters[parameter];
           if (Object.keys(value).length !== 0) {
             this[parameter] = value;
           }
@@ -167,24 +180,30 @@ export default class IntegrationModel {
 
     // We need to wait until Core class is loaded ('onLoad' event) before
     // call the callback method.
-    const listener = Listeners.newListener('onLoad', () => {
+    const listener = Listeners.newListener("onLoad", () => {
       this.callbackFunction(this.callbackMethodArguments);
     });
 
     // Backwards compatibility.
-    if (this.serviceProviderProperties.URI.indexOf('configuration') !== -1) {
+    if (this.serviceProviderProperties.URI.indexOf("configuration") !== -1) {
       const uri = this.serviceProviderProperties.URI;
       const server = ServiceProvider.getServerLanguageFromService(uri);
       this.serviceProviderProperties.server = server;
-      const configurationIndex = this.serviceProviderProperties.URI.indexOf('configuration');
-      const subsTring = this.serviceProviderProperties.URI.substring(0, configurationIndex);
+      const configurationIndex =
+        this.serviceProviderProperties.URI.indexOf("configuration");
+      const subsTring = this.serviceProviderProperties.URI.substring(
+        0,
+        configurationIndex,
+      );
       this.serviceProviderProperties.URI = subsTring;
     }
 
     let serviceParametersURI = this.serviceProviderProperties.URI;
-    serviceParametersURI = serviceParametersURI.indexOf('/') === 0 || serviceParametersURI.indexOf('http') === 0
-      ? serviceParametersURI
-      : Util.concatenateUrl(this.getPath(), serviceParametersURI);
+    serviceParametersURI =
+      serviceParametersURI.indexOf("/") === 0 ||
+      serviceParametersURI.indexOf("http") === 0
+        ? serviceParametersURI
+        : Util.concatenateUrl(this.getPath(), serviceParametersURI);
 
     this.serviceProviderProperties.URI = serviceParametersURI;
 
@@ -203,35 +222,35 @@ export default class IntegrationModel {
     // No internet conection modal.
     let attributes = {};
     attributes.class = attributes.id = "wrs_modal_offline";
-    this.offlineModal = Util.createElement('div', attributes);
+    this.offlineModal = Util.createElement("div", attributes);
 
     attributes = {};
     attributes.class = "wrs_modal_content_offline";
-    this.offlineModalContent = Util.createElement('div', attributes);
+    this.offlineModalContent = Util.createElement("div", attributes);
 
     attributes = {};
     attributes.class = "wrs_modal_offline_close";
-    this.offlineModalClose = Util.createElement('span', attributes);
-    this.offlineModalClose.innerHTML = '&times;';
+    this.offlineModalClose = Util.createElement("span", attributes);
+    this.offlineModalClose.innerHTML = "&times;";
 
     attributes = {};
     attributes.class = "wrs_modal_offline_warn";
-    this.offlineModalWarn = Util.createElement('span', attributes);
+    this.offlineModalWarn = Util.createElement("span", attributes);
     let generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
-    this.offlineModalWarn.setAttribute('style', generalStyle);
+    this.offlineModalWarn.setAttribute("style", generalStyle);
 
     attributes = {};
     attributes.class = "wrs_modal_offline_text_container";
-    this.offlineModalMessage = Util.createElement('div', attributes);
+    this.offlineModalMessage = Util.createElement("div", attributes);
 
     attributes = {};
     attributes.class = "wrs_modal_offline_text_warn";
-    this.offlineModalMessage1 = Util.createElement('p', attributes);
-    this.offlineModalMessage1.innerHTML = 'You are not online!';
+    this.offlineModalMessage1 = Util.createElement("p", attributes);
+    this.offlineModalMessage1.innerHTML = "You are not online!";
 
     attributes = {};
     attributes.class = "wrs_modal_offline_text";
-    this.offlineModalMessage2 = Util.createElement('p', attributes);
+    this.offlineModalMessage2 = Util.createElement("p", attributes);
     this.offlineModalMessage2.innerHTML = `Thank you for using MathType. We have detected you are disconnected from the network. We remind you that you'll need to be connected to use MathType. <br /><br />Please refresh the page if this message continues appearing.`;
 
     //Append offline modal elements
@@ -244,7 +263,9 @@ export default class IntegrationModel {
     document.body.appendChild(this.offlineModal);
 
     let modal = document.getElementById("wrs_modal_offline");
-    this.offlineModalClose.addEventListener('click', function () { modal.style.display = "none"; });
+    this.offlineModalClose.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
 
     // Store editor name for telemetry purposes.
     let editorName = this.environment.editor;
@@ -254,20 +275,20 @@ export default class IntegrationModel {
     let solutionTelemeter = editorName;
 
     // If moodle, add information to hosts and solution.
-    let isMoodle = (!!((typeof M === 'object' && M !== null))),
+    let isMoodle = !!(typeof M === "object" && M !== null),
       lms;
 
     if (isMoodle) {
-      solutionTelemeter = 'Moodle';
+      solutionTelemeter = "Moodle";
       lms = {
-        nam: 'moodle',
-        fam: 'lms',
+        nam: "moodle",
+        fam: "lms",
         ver: this.environment.moodleVersion,
         category: this.environment.moodleCourseCategory,
         course: this.environment.moodleCourseName,
-      }
-      if (!editorName.includes('TinyMCE')) {
-        editorName = 'Atto';
+      };
+      if (!editorName.includes("TinyMCE")) {
+        editorName = "Atto";
       }
     }
 
@@ -303,7 +324,10 @@ export default class IntegrationModel {
 
     // Filter hosts to remove empty objects and empty keys.
     hosts = hosts.filter(function (element) {
-      if (element) Object.keys(element).forEach(key => element[key] === "unknown" ? delete element[key] : {});
+      if (element)
+        Object.keys(element).forEach((key) =>
+          element[key] === "unknown" ? delete element[key] : {},
+        );
       return element !== undefined;
     });
 
@@ -321,8 +345,7 @@ export default class IntegrationModel {
         api_key: "eda2ce9b-0e8a-46f2-acdd-c228a615314e", // to auth against Telemetry. Data team is the responsible of providing it.
       },
       url: undefined,
-    })
-
+    });
   }
 
   /**
@@ -341,50 +364,68 @@ export default class IntegrationModel {
       detectedBrowser = "brave";
       if (userAgent.indexOf("Brave/")) {
         let start = userAgent.indexOf("Brave") + 6;
-        let end = userAgent.substring(start).indexOf(' ');
-        end = (end === -1) ? userAgent.lastIndexOf("") : end;
-        versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+        let end = userAgent.substring(start).indexOf(" ");
+        end = end === -1 ? userAgent.lastIndexOf("") : end;
+        versionBrowser = userAgent
+          .substring(start, end + start)
+          .replace("_", ".")
+          .replace(/[^\d.-]/g, "");
       }
-    } else if (userAgent.indexOf('Edg/') !== -1) {
+    } else if (userAgent.indexOf("Edg/") !== -1) {
       detectedBrowser = "edge_chromium";
       let start = userAgent.indexOf("Edg/") + 4;
-      versionBrowser = (userAgent.substring(start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      versionBrowser = userAgent
+        .substring(start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (/Edg/.test(userAgent)) {
       detectedBrowser = "edge";
       let start = userAgent.indexOf("Edg") + 3;
-      start = start + userAgent.substring(start).indexOf('/');
-      let end = userAgent.substring(start).indexOf(' ');
-      end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      start = start + userAgent.substring(start).indexOf("/");
+      let end = userAgent.substring(start).indexOf(" ");
+      end = end === -1 ? userAgent.lastIndexOf("") : end;
+      versionBrowser = userAgent
+        .substring(start, end + start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (/Firefox/.test(userAgent) || /FxiOS/.test(userAgent)) {
       detectedBrowser = "firefox";
       let start = userAgent.indexOf("Firefox");
-      start = (start === -1) ? userAgent.indexOf("FxiOS") : start;
-      start = start + userAgent.substring(start).indexOf('/') + 1;
-      let end = userAgent.substring(start).indexOf(' ');
-      end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
+      start = start === -1 ? userAgent.indexOf("FxiOS") : start;
+      start = start + userAgent.substring(start).indexOf("/") + 1;
+      let end = userAgent.substring(start).indexOf(" ");
+      end = end === -1 ? userAgent.lastIndexOf("") : end;
+      versionBrowser = userAgent
+        .substring(start, end + start)
+        .replace("_", ".");
     } else if (/OPR/.test(userAgent)) {
       detectedBrowser = "opera";
       let start = userAgent.indexOf("OPR/") + 4;
-      let end = userAgent.substring(start).indexOf(' ');
-      end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      let end = userAgent.substring(start).indexOf(" ");
+      end = end === -1 ? userAgent.lastIndexOf("") : end;
+      versionBrowser = userAgent
+        .substring(start, end + start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (/Chrome/.test(userAgent) || /CriOS/.test(userAgent)) {
       detectedBrowser = "chrome";
       let start = userAgent.indexOf("Chrome");
-      start = (start === -1) ? userAgent.indexOf("CriOS") : start;
-      start = start + userAgent.substring(start).indexOf('/') + 1;
-      let end = userAgent.substring(start).indexOf(' ');
-      end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
+      start = start === -1 ? userAgent.indexOf("CriOS") : start;
+      start = start + userAgent.substring(start).indexOf("/") + 1;
+      let end = userAgent.substring(start).indexOf(" ");
+      end = end === -1 ? userAgent.lastIndexOf("") : end;
+      versionBrowser = userAgent
+        .substring(start, end + start)
+        .replace("_", ".");
     } else if (/Safari/.test(userAgent)) {
       detectedBrowser = "safari";
       let start = userAgent.indexOf("Version/");
-      start = start + userAgent.substring(start).indexOf('/') + 1;
-      let end = userAgent.substring(start).indexOf(' ');
-      end = (end === -1) ? userAgent.lastIndexOf("") : end;
-      versionBrowser = (userAgent.substring(start, end + start).replace('_', '.'));
+      start = start + userAgent.substring(start).indexOf("/") + 1;
+      let end = userAgent.substring(start).indexOf(" ");
+      end = end === -1 ? userAgent.lastIndexOf("") : end;
+      versionBrowser = userAgent
+        .substring(start, end + start)
+        .replace("_", ".");
     }
 
     return { detectedBrowser, versionBrowser };
@@ -396,7 +437,6 @@ export default class IntegrationModel {
    *                   versionOS = Operating System version.
    */
   getOS() {
-
     // default value for OS just in case nothing is detected
     let detectedOS = "unknown",
       versionOS = "unknown";
@@ -404,49 +444,64 @@ export default class IntegrationModel {
     // Retrieve properties to easily detect the OS
     let userAgent = window.navigator.userAgent,
       platform = window.navigator.platform,
-      macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
-      windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-      iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+      macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
+      windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
+      iosPlatforms = ["iPhone", "iPad", "iPod"];
 
     // Find OS and their respective versions
     if (macosPlatforms.indexOf(platform) !== -1) {
-      detectedOS = 'macos';
+      detectedOS = "macos";
       if (userAgent.indexOf("OS X") !== -1) {
         let start = userAgent.indexOf("OS X") + 5;
-        let end = userAgent.substring(start).indexOf(' ');
-        versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+        let end = userAgent.substring(start).indexOf(" ");
+        versionOS = userAgent
+          .substring(start, end + start)
+          .replace("_", ".")
+          .replace(/[^\d.-]/g, "");
       }
     } else if (iosPlatforms.indexOf(platform) !== -1) {
-      detectedOS = 'ios';
+      detectedOS = "ios";
       if (userAgent.indexOf("OS ") !== -1) {
         let start = userAgent.indexOf("OS ") + 3;
-        let end = userAgent.substring(start).indexOf(')');
-        versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+        let end = userAgent.substring(start).indexOf(")");
+        versionOS = userAgent
+          .substring(start, end + start)
+          .replace("_", ".")
+          .replace(/[^\d.-]/g, "");
       }
     } else if (windowsPlatforms.indexOf(platform) !== -1) {
-      detectedOS = 'windows';
+      detectedOS = "windows";
       let start = userAgent.indexOf("Windows");
-      let end = userAgent.substring(start).indexOf(';');
+      let end = userAgent.substring(start).indexOf(";");
       if (end === -1) {
-        end = userAgent.substring(start).indexOf(')');
+        end = userAgent.substring(start).indexOf(")");
       }
-      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      versionOS = userAgent
+        .substring(start, end + start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (/Android/.test(userAgent)) {
-      detectedOS = 'android';
+      detectedOS = "android";
       let start = userAgent.indexOf("Android");
-      let end = userAgent.substring(start).indexOf(';');
+      let end = userAgent.substring(start).indexOf(";");
       if (end === -1) {
-        end = userAgent.substring(start).indexOf(')');
+        end = userAgent.substring(start).indexOf(")");
       }
-      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      versionOS = userAgent
+        .substring(start, end + start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (/CrOS/.test(userAgent)) {
-      detectedOS = 'chromeos';
+      detectedOS = "chromeos";
       let start = userAgent.indexOf("CrOS ") + 5;
-      start = start + userAgent.substring(start).indexOf(' ');
-      let end = userAgent.substring(start).indexOf(')');
-      versionOS = (userAgent.substring(start, end + start).replace('_', '.')).replace(/[^\d.-]/g, '');
+      start = start + userAgent.substring(start).indexOf(" ");
+      let end = userAgent.substring(start).indexOf(")");
+      versionOS = userAgent
+        .substring(start, end + start)
+        .replace("_", ".")
+        .replace(/[^\d.-]/g, "");
     } else if (detectedOS === "unknown" && /Linux/.test(platform)) {
-      detectedOS = 'linux';
+      detectedOS = "linux";
     }
 
     return { detectedOS, versionOS };
@@ -457,11 +512,11 @@ export default class IntegrationModel {
    * @return {string} - Absolute path for the integration script.
    */
   getPath() {
-    if (typeof this.scriptName === 'undefined') {
-      throw new Error('scriptName property needed for getPath.');
+    if (typeof this.scriptName === "undefined") {
+      throw new Error("scriptName property needed for getPath.");
     }
-    const col = document.getElementsByTagName('script');
-    let path = '';
+    const col = document.getElementsByTagName("script");
+    let path = "";
     for (let i = 0; i < col.length; i += 1) {
       const j = col[i].src.lastIndexOf(this.scriptName);
       if (j >= 0) {
@@ -510,7 +565,7 @@ export default class IntegrationModel {
    */
   setTarget(target) {
     this.target = target;
-    this.isIframe = (this.target.tagName.toUpperCase() === 'IFRAME');
+    this.isIframe = this.target.tagName.toUpperCase() === "IFRAME";
   }
 
   /**
@@ -560,7 +615,11 @@ export default class IntegrationModel {
    */
   updateFormula(mathml) {
     if (this.editorParameters) {
-      mathml = com.wiris.editor.util.EditorUtils.addAnnotation(mathml, 'application/vnd.wiris.mtweb-params+json', JSON.stringify(this.editorParameters));
+      mathml = com.wiris.editor.util.EditorUtils.addAnnotation(
+        mathml,
+        "application/vnd.wiris.mtweb-params+json",
+        JSON.stringify(this.editorParameters),
+      );
     }
     let focusElement;
     let windowTarget;
@@ -577,16 +636,26 @@ export default class IntegrationModel {
     let obj = this.core.beforeUpdateFormula(mathml, wirisProperties);
 
     if (!obj) {
-      return '';
+      return "";
     }
 
-    obj = this.insertFormula(focusElement, windowTarget, obj.mathml, obj.wirisProperties);
+    obj = this.insertFormula(
+      focusElement,
+      windowTarget,
+      obj.mathml,
+      obj.wirisProperties,
+    );
 
     if (!obj) {
-      return '';
+      return "";
     }
 
-    return this.core.afterUpdateFormula(obj.focusElement, obj.windowTarget, obj.node, obj.latex);
+    return this.core.afterUpdateFormula(
+      obj.focusElement,
+      obj.windowTarget,
+      obj.node,
+      obj.latex,
+    );
   }
 
   /**
@@ -598,7 +667,12 @@ export default class IntegrationModel {
    * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    const obj = this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
+    const obj = this.core.insertFormula(
+      focusElement,
+      windowTarget,
+      mathml,
+      wirisProperties,
+    );
 
     // Delete temporal image when inserted
     this.core.editionProperties.temporalImage = null;
@@ -629,7 +703,9 @@ export default class IntegrationModel {
    * in case the formula is resized.
    */
   addEvents() {
-    const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
+    const eventTarget = this.isIframe
+      ? this.target.contentWindow.document
+      : this.target;
     Util.addElementEvents(
       eventTarget,
       (element, event) => {
@@ -650,7 +726,9 @@ export default class IntegrationModel {
    * Remove events to formulas in the DOM target.
    */
   removeEvents() {
-    const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
+    const eventTarget = this.isIframe
+      ? this.target.contentWindow.document
+      : this.target;
     Util.removeElementEvents(eventTarget);
   }
 
@@ -669,14 +747,16 @@ export default class IntegrationModel {
    */
   doubleClickHandler(element) {
     this.core.editionProperties.dbclick = true;
-    if (element.nodeName.toLowerCase() === 'img') {
+    if (element.nodeName.toLowerCase() === "img") {
       this.core.getCustomEditors().disable();
-      const customEditorAttributeName = Configuration.get('imageCustomEditorName');
+      const customEditorAttributeName = Configuration.get(
+        "imageCustomEditorName",
+      );
       if (element.hasAttribute(customEditorAttributeName)) {
         const customEditor = element.getAttribute(customEditorAttributeName);
         this.core.getCustomEditors().enable(customEditor);
       }
-      if (Util.containsClass(element, Configuration.get('imageClassName'))) {
+      if (Util.containsClass(element, Configuration.get("imageClassName"))) {
         this.core.editionProperties.temporalImage = element;
         this.core.editionProperties.isNewElement = true;
         this.openExistingFormulaEditor();
@@ -702,8 +782,8 @@ export default class IntegrationModel {
    * @param {HTMLElement} element - target element.
    */
   mousedownHandler(element) {
-    if (element.nodeName.toLowerCase() === 'img') {
-      if (Util.containsClass(element, Configuration.get('imageClassName'))) {
+    if (element.nodeName.toLowerCase() === "img") {
+      if (Util.containsClass(element, Configuration.get("imageClassName"))) {
         this.temporalImageResizing = element;
       }
     }
@@ -725,13 +805,13 @@ export default class IntegrationModel {
    */
   // eslint-disable-next-line class-methods-use-this
   getBrowserLanguage() {
-    let language = 'en';
+    let language = "en";
     if (navigator.userLanguage) {
       language = navigator.userLanguage.substring(0, 2);
     } else if (navigator.language) {
       language = navigator.language.substring(0, 2);
     } else {
-      language = 'en';
+      language = "en";
     }
     return language;
   }
@@ -745,7 +825,7 @@ export default class IntegrationModel {
   callbackFunction() {
     // It's needed to wait until the integration target is ready. The event is fired
     // from the integration side.
-    const listener = Listeners.newListener('onTargetReady', () => {
+    const listener = Listeners.newListener("onTargetReady", () => {
       this.addEvents(this.target);
     });
     this.listeners.add(listener);
@@ -769,7 +849,7 @@ export default class IntegrationModel {
    */
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  getMathmlFromTextNode(textNode, caretPosition) { }
+  getMathmlFromTextNode(textNode, caretPosition) {}
 
   /**
    * Wrapper
@@ -779,7 +859,7 @@ export default class IntegrationModel {
    * @param {string} mathml valid mathml.
    */
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  fillNonLatexNode(event, window, mathml) { }
+  fillNonLatexNode(event, window, mathml) {}
 
   /**
     Wrapper.
@@ -788,11 +868,10 @@ export default class IntegrationModel {
    * @param {boolean} iframe
    */
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
-  getSelectedItem(target, isIframe) { }
+  getSelectedItem(target, isIframe) {}
 
   // Set temporal image to null and make focus come back.
   static setActionsOnCancelButtons() {
-
     // Make focus come back on the previous place it was when click cancel button
     const currentInstance = WirisPlugin.currentInstance;
     const editorSelection = currentInstance.getSelection();
@@ -803,7 +882,9 @@ export default class IntegrationModel {
       currentInstance.core.editionProperties.range = null;
       editorSelection.addRange(range);
       if (range.startOffset !== range.endOffset) {
-        currentInstance.core.placeCaretAfterNode(currentInstance.core.editionProperties.temporalImage);
+        currentInstance.core.placeCaretAfterNode(
+          currentInstance.core.editionProperties.temporalImage,
+        );
       }
     }
 
@@ -824,4 +905,7 @@ IntegrationModel.prototype.getSelectedItem = undefined;
  * An object containing a list with the overwritable class constructor properties.
  * @type {Object}
  */
-IntegrationModel.integrationParameters = ['serviceProviderProperties', 'editorParameters'];
+IntegrationModel.integrationParameters = [
+  "serviceProviderProperties",
+  "editorParameters",
+];

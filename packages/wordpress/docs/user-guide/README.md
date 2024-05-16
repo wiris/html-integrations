@@ -3,19 +3,20 @@
 The MathType integration for WordPress works with the TinyMCE Classic editor.
 
 The MathType for WordPress plugin consists in:
-* A minified compiled file, `plugin.min.js`, for the integration. It'll be the default used ti add MathType to WordPress.
-* A compiled file, `plugin.js`, for debugging purposes.
-* The icons of the MathType and ChemType that'll be used on the toolbar.
-* A VERSION file with the plugin's version.
+
+- A minified compiled file, `plugin.min.js`, for the integration. It'll be the default used ti add MathType to WordPress.
+- A compiled file, `plugin.js`, for debugging purposes.
+- The icons of the MathType and ChemType that'll be used on the toolbar.
+- A VERSION file with the plugin's version.
 
 #### Requirements
 
-* WordPress 3.0 or higher installed.
-* TinyMCE as text editor (also known as Classic). WordPress versions earlier than 5.0 use it as default.
-* A valid license to install the integration in a production environment; otherwise, you can use the downloaded file just for demo purposes.
-* The following two packages must be downloaded:
-    * MathType integration for WordPress (php)
-    * MathType integration for TinyMCE 5 (js)
+- WordPress 3.0 or higher installed.
+- TinyMCE as text editor (also known as Classic). WordPress versions earlier than 5.0 use it as default.
+- A valid license to install the integration in a production environment; otherwise, you can use the downloaded file just for demo purposes.
+- The following two packages must be downloaded:
+  - MathType integration for WordPress (php)
+  - MathType integration for TinyMCE 5 (js)
 
 #### Installation
 
@@ -24,14 +25,14 @@ The MathType for WordPress plugin consists in:
 3. Unzip the MathType integration for TinyMCE 5 (js) package and add all its files inside the `/wp-includes/js/tinymce/plugins/tiny_mce_wiris` previously created directory.
 4. Activate WordPress MathType integration in your WordPress plugins administration.
 5. Include `WIRISplugins.js` script in the `header.php` file of your theme right before the `</head>` closing tag. As follows:
-    ```php
-    <script src="<?php echo get_option('home');?>/wp-includes/js/tinymce/plugins/tiny_mce_wiris/integration/WIRISplugins.js?viewer=image" type="text/javascript"></script>
-    ```
+   ```php
+   <script src="<?php echo get_option('home');?>/wp-includes/js/tinymce/plugins/tiny_mce_wiris/integration/WIRISplugins.js?viewer=image" type="text/javascript"></script>
+   ```
 
 #### Other configurations
 
-* If you stored the MathType for WordPress integration in a different route than the one mentioned above, modify the route inside the `wrs_addPlugin` function on the `tiny_mce_wiris.php` file, to math the route where you placed the integration.
-* If you want to use the compiled file for debugging purposes, replace the `plugin.min.js` for `plugin.js` text inside the `wrs_addPlugin` function on the `tiny_mce_wiris.php` file. This will make WordPress use the debugging file.
+- If you stored the MathType for WordPress integration in a different route than the one mentioned above, modify the route inside the `wrs_addPlugin` function on the `tiny_mce_wiris.php` file, to math the route where you placed the integration.
+- If you want to use the compiled file for debugging purposes, replace the `plugin.min.js` for `plugin.js` text inside the `wrs_addPlugin` function on the `tiny_mce_wiris.php` file. This will make WordPress use the debugging file.
 
 #### Integration/Back-end services
 
@@ -41,7 +42,7 @@ En el link del backend, si hi ha algun apartat de wordpress s'ha d'explicar els 
 
 #### Additional information
 
-* For more information on the MathType integration for TinyMCE, take a look at the [official documentation](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-tinymce.html).
+- For more information on the MathType integration for TinyMCE, take a look at the [official documentation](https://docs.wiris.com/mathtype/en/mathtype-integrations/mathtype-for-html-editors/mathtype-for-tinymce.html).
 
 #### Using MathType ion WordPress
 

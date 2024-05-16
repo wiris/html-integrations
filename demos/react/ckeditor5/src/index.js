@@ -1,24 +1,25 @@
 // Default React App from create-react-app command.
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
 // Import CKEditor.
-import CKEditor from '@ckeditor/ckeditor5-react'; // eslint-disable-line no-unused-vars
+import CKEditor from "@ckeditor/ckeditor5-react"; // eslint-disable-line no-unused-vars
 
 // import CKEditor custom build'.
 
 // Load the file that contains common imports between demos. (functions, styles, etc)
-import * as Generic from 'resources/demos/imports';
+import * as Generic from "resources/demos/imports";
 
 // Import the wiris plugin version.
-import { version as pluginVersion } from '@wiris/mathtype-ckeditor5/package.json';
-import * as ClassicEditor from './ckeditor';
-import reportWebVitals from './reportWebVitals';
+import { version as pluginVersion } from "@wiris/mathtype-ckeditor5/package.json";
+import * as ClassicEditor from "./ckeditor";
+import reportWebVitals from "./reportWebVitals";
 
 // Apply specific demo names to all the objects.
-document.getElementById('header_title_name').innerHTML = 'MathType for CKEditor 5 on React';
-document.getElementById('version_editor').innerHTML = 'CKEditor: ';
+document.getElementById("header_title_name").innerHTML =
+  "MathType for CKEditor 5 on React";
+document.getElementById("version_editor").innerHTML = "CKEditor: ";
 
 // Set the initial content.
 const content = Generic.editorContentMathML;
@@ -29,14 +30,22 @@ const content = Generic.editorContentMathML;
 
 // Initialize editor.
 // Define the toolbar & configuration options for the ckeditor.
-const toolbar = ['bold', 'italic', 'MathType', 'ChemType', 'alignment:left', 'alignment:center', 'alignment:right'];
+const toolbar = [
+  "bold",
+  "italic",
+  "MathType",
+  "ChemType",
+  "alignment:left",
+  "alignment:center",
+  "alignment:right",
+];
 const ckConfig = {
   iframe: true,
   charCounterCount: false,
   toolbar,
-  htmlAllowedTags: ['.*'],
-  htmlAllowedAttrs: ['.*'],
-  htmlAllowedEmptyTags: ['mprescripts'],
+  htmlAllowedTags: [".*"],
+  htmlAllowedAttrs: [".*"],
+  htmlAllowedEmptyTags: ["mprescripts"],
   imageResize: false,
   useClasses: false,
 };
@@ -44,14 +53,14 @@ const ckConfig = {
 // Function to call when the editor is initialyzed so it can add listeners on buttons.
 function updateContent(ckeditor) {
   // Add listener on click button to launch updateContent function.
-  document.getElementById('btn_update').addEventListener('click', (e) => {
+  document.getElementById("btn_update").addEventListener("click", (e) => {
     e.preventDefault();
-    Generic.updateContent(ckeditor.getData(), 'transform_content');
+    Generic.updateContent(ckeditor.getData(), "transform_content");
   });
 }
 
 // Get and set the editor and wiris versions in this order.
-Generic.setEditorAndWirisVersion('5.0.0', pluginVersion);
+Generic.setEditorAndWirisVersion("5.0.0", pluginVersion);
 
 /* Create a component to be rendered later.
  This is important to remove complexity from the reactDom.render
@@ -61,12 +70,19 @@ class Editor extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
-      <CKEditor editor = { ClassicEditor } config={ ckConfig } data = { content } onInit = { (editor) => { updateContent(editor); }}/>
+      <CKEditor
+        editor={ClassicEditor}
+        config={ckConfig}
+        data={content}
+        onInit={(editor) => {
+          updateContent(editor);
+        }}
+      />
     );
   }
 }
 
-ReactDOM.render(<Editor />, document.getElementById('editor'));
+ReactDOM.render(<Editor />, document.getElementById("editor"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

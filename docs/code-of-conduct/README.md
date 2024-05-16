@@ -15,15 +15,15 @@ Remember, we are all humans and it's common to make mistakes. Let's work togethe
 
 ## Expected behavior
 
- - **Respect**. We may not agree always between us, but this is not a excuse to have bad manners against the other people. It's important to maintain a respectful community to feel comfortable and be more productive.
+- **Respect**. We may not agree always between us, but this is not a excuse to have bad manners against the other people. It's important to maintain a respectful community to feel comfortable and be more productive.
 
- - **Be professional**. We are a community of professional, so it's important to remain like that and be careful of the words we choose.
+- **Be professional**. We are a community of professional, so it's important to remain like that and be careful of the words we choose.
 
- - **Be responsible**. It is important at work to remain responsible and to act accordingly, since our actions and our contributions can have an effect on other people and projects.
+- **Be responsible**. It is important at work to remain responsible and to act accordingly, since our actions and our contributions can have an effect on other people and projects.
 
- - **Be polite and kind**. We can find several people working together in this community, and therefore, it is everyone's mission to promote a favorable working and cooperation environment by being kind and polite.
-  
- - **Be supportive**. As we work, we may find that not all people are at the same level of knowledge as we are. In the case of finding a person with lower levels of knowledge than us, it is important to be understanding and supportive, it is better to help someone learn rather than to be angry and disrespectful. In this way, together we achieve a favorable environment, and in the case of finding ourselves in the opposite situation, we can be sure that we will feel good about receiving help and learning. We all want to grow!
+- **Be polite and kind**. We can find several people working together in this community, and therefore, it is everyone's mission to promote a favorable working and cooperation environment by being kind and polite.
+
+- **Be supportive**. As we work, we may find that not all people are at the same level of knowledge as we are. In the case of finding a person with lower levels of knowledge than us, it is important to be understanding and supportive, it is better to help someone learn rather than to be angry and disrespectful. In this way, together we achieve a favorable environment, and in the case of finding ourselves in the opposite situation, we can be sure that we will feel good about receiving help and learning. We all want to grow!
 
 ## Unacceptable behavior
 

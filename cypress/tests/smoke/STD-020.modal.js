@@ -8,10 +8,10 @@
 // ***********************************************************
 beforeEach(() => {
   // Visit page
-  cy.visit('/');
+  cy.visit("/");
 });
 
-it('User opens MT and closes it via ESC', () => {
+it("User opens MT and closes it via ESC", () => {
   // Click the MT button in the HTML editor toolbar
   cy.clickButtonToOpenModal();
 
@@ -19,6 +19,5 @@ it('User opens MT and closes it via ESC', () => {
   cy.pressESCButton();
 
   // MT editor modal window is closed
-  cy.get('.wrs_modal_dialogContainer')
-    .should('not.be.visible');
+  cy.get(".wrs_modal_dialogContainer").should("not.be.visible");
 });

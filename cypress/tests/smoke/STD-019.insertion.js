@@ -8,22 +8,28 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('should be able to edit an existing latex formula', function () {
+it("should be able to edit an existing latex formula", function () {
   // Write a latex formula on the text editor
-  cy.typeInTextEditor(this.formulas['latex-general']);
+  cy.typeInTextEditor(this.formulas["latex-general"]);
 
   // Edit the first latex formula with mathtype
-  cy.editFormula(this.formulas['latex-addition'], { chem: false, latex: true, formulaId: 0 });
+  cy.editFormula(this.formulas["latex-addition"], {
+    chem: false,
+    latex: true,
+    formulaId: 0,
+  });
 
   // Expect that the text editor contains the latex formula
-  cy.getTextEditor().invoke('text').should('contain', '$$\\cos^2(x)+\\sin^2(x)=\\log(e)$$');
+  cy.getTextEditor()
+    .invoke("text")
+    .should("contain", "$$\\cos^2(x)+\\sin^2(x)=\\log(e)$$");
 });

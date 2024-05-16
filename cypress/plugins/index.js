@@ -19,6 +19,6 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   // eslint-disable-next-line global-require
-  require('cypress-fail-fast/plugin')(on, config);
+  require("cypress-fail-fast/plugin")(on, config);
   return config;
 };

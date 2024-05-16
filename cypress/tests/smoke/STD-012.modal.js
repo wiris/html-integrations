@@ -6,27 +6,27 @@
 // Context:   UI / Modal
 // Issue:     KB-13069
 // ***********************************************************
-describe('Resize modal icons are visible', () => {
+describe("Resize modal icons are visible", () => {
   beforeEach(() => {
     // Visit the page.
-    cy.visit('/');
+    cy.visit("/");
 
     // Open the mathtype modal
     cy.clickButtonToOpenModal();
   });
 
-  it('minimize icon should be visible on mathtype modal', () => {
+  it("minimize icon should be visible on mathtype modal", () => {
     // Check that minimize button is visible on mathtype modal
-    cy.get('.wrs_modal_minimize_button').should('be.visible');
+    cy.get(".wrs_modal_minimize_button").should("be.visible");
   });
 
-  it('maximize icon should be visible on mathtype modal', () => {
+  it("maximize icon should be visible on mathtype modal", () => {
     // Check that minimize button is visible on mathtype modal
-    cy.get('.wrs_modal_maximize_button').should('be.visible');
+    cy.get(".wrs_modal_maximize_button").should("be.visible");
   });
 
-  it('close icon should be visible on mathtype modal', () => {
+  it("close icon should be visible on mathtype modal", () => {
     // Check that minimize button is visible on mathtype modal
-    cy.get('.wrs_modal_close_button').should('be.visible');
+    cy.get(".wrs_modal_close_button").should("be.visible");
   });
 });

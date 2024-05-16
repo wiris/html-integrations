@@ -4,8 +4,8 @@ A simple Angular App integrating WIRIS MathType on a Generic editor and step-by-
 
 ## Requirements
 
-* npm
-* Angular (*Currently* v11.2.10)
+- npm
+- Angular (_Currently_ v11.2.10)
 
 ## How to run the demo
 
@@ -14,63 +14,62 @@ $ npm install
 $ npm start
 ```
 
-> *More information on the different ways to run a demo [here](../../README.md)*.
+> _More information on the different ways to run a demo [here](../../README.md)_.
 
 Runs the app in the development mode.
 
 Open [http://localhost:4200/](http://localhost:4200/) to view it in the browser.
 
-
 ## How to add MathType to TinyMCE
 
 1. Install MathType dependency.
 
-    ```sh
-    $ npm install @wiris/mathtype-generic --save
-    ```
+   ```sh
+   $ npm install @wiris/mathtype-generic --save
+   ```
 
 2. Add the following import on `src/app/app.module.ts`:
 
-    ```ts
-    import '@wiris/mathtype-generic/wirisplugin-generic';
-    ```
+   ```ts
+   import "@wiris/mathtype-generic/wirisplugin-generic";
+   ```
 
 3. Open `src/app/app.component.ts` and add the following content:
-    
-    ```ts
-    // Load WIRISplugins.js dynamically
-    const jsDemoImagesTransform = document.createElement('script');
-    jsDemoImagesTransform.type = 'text/javascript';
-    jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
-    // Load generated scripts.
-    document.head.appendChild(jsDemoImagesTransform);
-    
-    // Import wiris plugin
-    import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
-    
-    ...
 
-    export class AppComponent implements OnInit {
-    
-        ngOnInit() {
-            // Load the toolbar and the editable area into const variables.
-            const editableDiv = document.getElementById('htmlEditor');
-            const toolbarDiv = document.getElementById('toolbar');
-            
-            // Initialize the editor.
-            wrsInitEditor(editableDiv, toolbarDiv);
-        }
-    }
-    ```
+   ```ts
+   // Load WIRISplugins.js dynamically
+   const jsDemoImagesTransform = document.createElement('script');
+   jsDemoImagesTransform.type = 'text/javascript';
+   jsDemoImagesTransform.src = 'https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image';
+   // Load generated scripts.
+   document.head.appendChild(jsDemoImagesTransform);
+
+   // Import wiris plugin
+   import { wrsInitEditor } from '@wiris/mathtype-generic/wirisplugin-generic.src';
+
+   ...
+
+   export class AppComponent implements OnInit {
+
+       ngOnInit() {
+           // Load the toolbar and the editable area into const variables.
+           const editableDiv = document.getElementById('htmlEditor');
+           const toolbarDiv = document.getElementById('toolbar');
+
+           // Initialize the editor.
+           wrsInitEditor(editableDiv, toolbarDiv);
+       }
+   }
+   ```
 
 4. Open `src/app/app.component.html` and add:
 
-    ```html
-    <div id="toolbar"></div>
-    <div id="htmlEditor" contenteditable="true">Try me!</div>
-    ```
+   ```html
+   <div id="toolbar"></div>
+   <div id="htmlEditor" contenteditable="true">Try me!</div>
+   ```
 
-5. Finally, you are ready to run the development server through the command: ```ng serve```
+5. Finally, you are ready to run the development server through the command: `ng serve`
 
 ## How to run the tests
 

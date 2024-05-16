@@ -1,8 +1,7 @@
 {
   "integrationFolder": "cypress/tests",
   "screenshotOnRunFailure": true,
-  "env":
-  {
+  "env": {
     "FAIL_FAST_STRATEGY": "run",
     "FAIL_FAST_ENABLED": true
   }

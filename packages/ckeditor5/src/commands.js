@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import Command from '@ckeditor/ckeditor5-core/src/command';
-import CKEditor5Integration from './integration';
+import Command from "@ckeditor/ckeditor5-core/src/command";
+import CKEditor5Integration from "./integration";
 
 /**
  * Command for opening the MathType editor
@@ -9,7 +9,10 @@ export class MathTypeCommand extends Command {
   execute(options = {}) {
     // Check we get a valid integration
     // eslint-disable-next-line no-prototype-builtins
-    if (!options.hasOwnProperty('integration') || !(options.integration instanceof CKEditor5Integration)) {
+    if (
+      !options.hasOwnProperty("integration") ||
+      !(options.integration instanceof CKEditor5Integration)
+    ) {
       throw 'Must pass a valid CKEditor5Integration instance as attribute "integration" of options';
     }
 
@@ -24,8 +27,8 @@ export class MathTypeCommand extends Command {
   }
 
   /**
-     * Sets the appropriate custom editor, if any, or disables them.
-     */
+   * Sets the appropriate custom editor, if any, or disables them.
+   */
   setEditor() {
     // It's possible that a custom editor was last used.
     // We need to disable it to avoid wrong behaviors.
@@ -33,12 +36,16 @@ export class MathTypeCommand extends Command {
   }
 
   /**
-     * Checks whether we are editing an existing formula or a new one and opens the editor.
-     */
+   * Checks whether we are editing an existing formula or a new one and opens the editor.
+   */
   openEditor() {
     this.integration.core.editionProperties.dbclick = false;
     const image = this._getSelectedImage();
-    if (typeof image !== 'undefined' && image !== null && image.classList.contains(WirisPlugin.Configuration.get('imageClassName'))) {
+    if (
+      typeof image !== "undefined" &&
+      image !== null &&
+      image.classList.contains(WirisPlugin.Configuration.get("imageClassName"))
+    ) {
       this.integration.core.editionProperties.temporalImage = image;
       this.integration.openExistingFormulaEditor();
     } else {
@@ -47,9 +54,9 @@ export class MathTypeCommand extends Command {
   }
 
   /**
-     * Gets the currently selected formula image
-     * @returns {Element} selected image, if any, undefined otherwise
-     */
+   * Gets the currently selected formula image
+   * @returns {Element} selected image, if any, undefined otherwise
+   */
   _getSelectedImage() {
     const { selection } = this.editor.editing.view.document;
 
@@ -65,7 +72,7 @@ export class MathTypeCommand extends Command {
     let image;
 
     for (const span of range) {
-      if (span.item.name !== 'span') {
+      if (span.item.name !== "span") {
         return;
       }
       image = span.item.getChild(0);
@@ -86,6 +93,6 @@ export class MathTypeCommand extends Command {
  */
 export class ChemTypeCommand extends MathTypeCommand {
   setEditor() {
-    this.integration.core.getCustomEditors().enable('chemistry');
+    this.integration.core.getCustomEditors().enable("chemistry");
   }
 }

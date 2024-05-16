@@ -19,13 +19,13 @@ A minimal MathType Integration for the web that includes mathematical formula ed
 
 ### Elements
 
-It would consist on these next HTML elements: 
+It would consist on these next HTML elements:
 
 1. an editable element, with a default value or not
 2. a read-only element with its content synchronized to the previous element through an `onChange` event
 3. the MathType and ChemType buttons, over the editable content
 
-Also, whenever the MathType or ChemType buttons are clicked, or a mathematical expression inside the textarea is clicked, 
+Also, whenever the MathType or ChemType buttons are clicked, or a mathematical expression inside the textarea is clicked,
 
 4. a MathType Modal Window is shown to the user to edit the formula.
 
@@ -35,30 +35,26 @@ A canonical representation of the HTML source code of this app would look like t
 
 ```html
 <!-- MathType and ChemType buttons added by the plugin: -->
-<mathtype-toolbar/>
+<mathtype-toolbar />
 <!-- An editable element integrating MathType: -->
 <textarea>...</textarea>
 <!-- A div with the same content as the textarea: -->
 <div>...</div>
 <!-- The MathType modal window:  -->
-<mathtype-modal-window/>
+<mathtype-modal-window />
 ```
 
 ### UI Preview
 
 This next diagram represents a common E2E interaction with the MathType for the Web UI elements of the canonical MathType Integration sample app: adding a mathematical formula from scratch using the MathType editor.
 
-
 ![Minimal MathType integration snapshot](mathtype-web-app.png)
-
 
 ### MathType Modal Window
 
 The MathType Modal Window consists on the following elements:
 
-
 ![Diagram of the MathType modal window](modal.jpg)
-
 
 > This diagram is based on a comment in the source code of [`modal.js`](/packages/mathtype-html-integration-devkit/src/modal.js) from the `mathtype-html-integration-devkit` package.
 

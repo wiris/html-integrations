@@ -34,7 +34,7 @@ export default class CustomEditors {
      * The active editor name.
      * @type {String}
      */
-    this.activeEditor = 'default';
+    this.activeEditor = "default";
   }
 
   /**
@@ -65,7 +65,7 @@ export default class CustomEditors {
    * Disables a {@link CustomEditor}.
    */
   disable() {
-    this.activeEditor = 'default';
+    this.activeEditor = "default";
   }
 
   /**
@@ -73,7 +73,7 @@ export default class CustomEditors {
    * @return {CustomEditor} - A {@link CustomEditor} if a custom editor is enabled. Null otherwise.
    */
   getActiveEditor() {
-    if (this.activeEditor !== 'default') {
+    if (this.activeEditor !== "default") {
       return this.editors[this.activeEditor];
     }
     return null;
