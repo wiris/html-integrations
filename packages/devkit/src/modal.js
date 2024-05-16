@@ -62,9 +62,7 @@ export default class ModalDialog {
     const isMobile = ContentManager.isMobile();
 
     // Obtain number of current instance.
-    this.instanceId = document.getElementsByClassName(
-      "wrs_modal_dialogContainer",
-    ).length;
+    this.instanceId = document.getElementsByClassName("wrs_modal_dialogContainer").length;
 
     // Device object properties.
 
@@ -144,10 +142,7 @@ export default class ModalDialog {
     this.stackDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
     this.stackDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
     // To identifiy the element in automated testing
-    this.stackDiv.setAttribute(
-      "data-testid",
-      "mtcteditor-fullscreen-disable-button",
-    );
+    this.stackDiv.setAttribute("data-testid", "mtcteditor-fullscreen-disable-button");
 
     attributes = {};
     attributes.class = "wrs_modal_maximize_button";
@@ -159,19 +154,10 @@ export default class ModalDialog {
     generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsIcon)})`;
     hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(fullsHoverIcon)})`;
     this.maximizeDiv.setAttribute("style", generalStyle);
-    this.maximizeDiv.setAttribute(
-      "onmouseover",
-      `this.style = "${hoverStyle}";`,
-    );
-    this.maximizeDiv.setAttribute(
-      "onmouseout",
-      `this.style = "${generalStyle}";`,
-    );
+    this.maximizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+    this.maximizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
     // To identifiy the element in automated testing
-    this.maximizeDiv.setAttribute(
-      "data-testid",
-      "mtcteditor-fullscreen-enable-button",
-    );
+    this.maximizeDiv.setAttribute("data-testid", "mtcteditor-fullscreen-enable-button");
 
     attributes = {};
     attributes.class = "wrs_modal_minimize_button";
@@ -183,14 +169,8 @@ export default class ModalDialog {
     generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute(
-      "onmouseover",
-      `this.style = "${hoverStyle}";`,
-    );
-    this.minimizeDiv.setAttribute(
-      "onmouseout",
-      `this.style = "${generalStyle}";`,
-    );
+    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
     // To identify the element in automated testing
     this.minimizeDiv.setAttribute("data-testid", "mtcteditor-minimize-button");
 
@@ -254,8 +234,12 @@ export default class ModalDialog {
     };
 
     const callbacks = {
-      closeCallback: () => { this.close("mtc_close"); },
-      cancelCallback: () => { this.focus(); },
+      closeCallback: () => {
+        this.close("mtc_close");
+      },
+      cancelCallback: () => {
+        this.focus();
+      },
     };
 
     const popupupProperties = {
@@ -276,10 +260,8 @@ export default class ModalDialog {
     }
 
     // Event handlers need modal instance context.
-    this.handleOpenedIosSoftkeyboard =
-      this.handleOpenedIosSoftkeyboard.bind(this);
-    this.handleClosedIosSoftkeyboard =
-      this.handleClosedIosSoftkeyboard.bind(this);
+    this.handleOpenedIosSoftkeyboard = this.handleOpenedIosSoftkeyboard.bind(this);
+    this.handleClosedIosSoftkeyboard = this.handleClosedIosSoftkeyboard.bind(this);
   }
 
   /**
@@ -299,7 +281,6 @@ export default class ModalDialog {
     return this.contentManager;
   }
 
-
   /**
    * This method is called when the modal object has been submitted. Calls
    * contentElement submitAction method - if exists - and closes the modal
@@ -311,7 +292,7 @@ export default class ModalDialog {
       this.contentManager.submitAction();
     }
 
-    await this.close('mtc_insert');
+    await this.close("mtc_insert");
   }
 
   /**
@@ -459,16 +440,8 @@ export default class ModalDialog {
     this.container.appendChild(this.resizerBR);
     this.titleBar.appendChild(this.resizerTL);
     // Add events to resize on click and drag.
-    Util.addEvent(
-      this.resizerBR,
-      "mousedown",
-      this.activateResizeStateBR.bind(this),
-    );
-    Util.addEvent(
-      this.resizerTL,
-      "mousedown",
-      this.activateResizeStateTL.bind(this),
-    );
+    Util.addEvent(this.resizerBR, "mousedown", this.activateResizeStateBR.bind(this));
+    Util.addEvent(this.resizerTL, "mousedown", this.activateResizeStateTL.bind(this));
   }
 
   /**
@@ -556,10 +529,7 @@ export default class ModalDialog {
       }
 
       // Maximize window only when the configuration is set and the device is not iOs or Android.
-      if (
-        this.deviceProperties.isDesktop &&
-        Configuration.get("modalWindowFullScreen")
-      ) {
+      if (this.deviceProperties.isDesktop && Configuration.get("modalWindowFullScreen")) {
         this.maximize();
       }
 
@@ -581,7 +551,6 @@ export default class ModalDialog {
     }
   }
 
-
   /**
    * Closes the modal.
    * Removes specific CSS classes, saves modal properties, unlocks website scroll,
@@ -598,7 +567,6 @@ export default class ModalDialog {
     this.unlockWebsiteScroll();
     this.properties.open = false;
 
-
     if (trigger) {
       try {
         await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
@@ -613,8 +581,8 @@ export default class ModalDialog {
     Core.globalListeners.fire("onModalClose", {});
   }
   /**
-    * Closes modal window and destroys the object.
-    */
+   * Closes modal window and destroys the object.
+   */
   destroy() {
     // Close modal window.
     this.close();
@@ -633,11 +601,7 @@ export default class ModalDialog {
   restoreWebsiteScale() {
     let viewportmeta = document.querySelector("meta[name=viewport]");
     // Let the equal symbols in order to search and make meta's final content.
-    const contentAttrsToUpdate = [
-      "initial-scale=",
-      "minimum-scale=",
-      "maximum-scale=",
-    ];
+    const contentAttrsToUpdate = ["initial-scale=", "minimum-scale=", "maximum-scale="];
     const contentAttrsValuesToUpdate = ["1.0", "1.0", "1.0"];
     const setMetaAttrFunc = (viewportelement, contentAttrs) => {
       const contentAttr = viewportelement.getAttribute("content");
@@ -674,10 +638,7 @@ export default class ModalDialog {
         viewportelement.setAttribute("content", "");
         viewportelement.setAttribute("content", contentAttr);
       } else {
-        viewportelement.setAttribute(
-          "content",
-          "initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0",
-        );
+        viewportelement.setAttribute("content", "initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0");
         viewportelement.removeAttribute("content");
       }
     };
@@ -685,18 +646,10 @@ export default class ModalDialog {
     if (!viewportmeta) {
       viewportmeta = document.createElement("meta");
       document.getElementsByTagName("head")[0].appendChild(viewportmeta);
-      setMetaAttrFunc(
-        viewportmeta,
-        contentAttrsToUpdate,
-        contentAttrsValuesToUpdate,
-      );
+      setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
       viewportmeta.remove();
     } else {
-      setMetaAttrFunc(
-        viewportmeta,
-        contentAttrsToUpdate,
-        contentAttrsValuesToUpdate,
-      );
+      setMetaAttrFunc(viewportmeta, contentAttrsToUpdate, contentAttrsValuesToUpdate);
     }
   }
 
@@ -705,15 +658,9 @@ export default class ModalDialog {
    */
   lockWebsiteScroll() {
     this.websiteBeforeLockParameters = {
-      bodyStylePosition: document.body.style.position
-        ? document.body.style.position
-        : "",
-      bodyStyleOverflow: document.body.style.overflow
-        ? document.body.style.overflow
-        : "",
-      htmlStyleOverflow: document.documentElement.style.overflow
-        ? document.documentElement.style.overflow
-        : "",
+      bodyStylePosition: document.body.style.position ? document.body.style.position : "",
+      bodyStyleOverflow: document.body.style.overflow ? document.body.style.overflow : "",
+      htmlStyleOverflow: document.documentElement.style.overflow ? document.documentElement.style.overflow : "",
       windowScrollX: window.scrollX,
       windowScrollY: window.scrollY,
     };
@@ -724,12 +671,9 @@ export default class ModalDialog {
    */
   unlockWebsiteScroll() {
     if (this.websiteBeforeLockParameters) {
-      document.body.style.position =
-        this.websiteBeforeLockParameters.bodyStylePosition;
-      document.body.style.overflow =
-        this.websiteBeforeLockParameters.bodyStyleOverflow;
-      document.documentElement.style.overflow =
-        this.websiteBeforeLockParameters.htmlStyleOverflow;
+      document.body.style.position = this.websiteBeforeLockParameters.bodyStylePosition;
+      document.body.style.overflow = this.websiteBeforeLockParameters.bodyStyleOverflow;
+      document.documentElement.style.overflow = this.websiteBeforeLockParameters.htmlStyleOverflow;
       const { windowScrollX } = this.websiteBeforeLockParameters;
       const { windowScrollY } = this.websiteBeforeLockParameters;
       window.scrollTo(windowScrollX, windowScrollY);
@@ -758,10 +702,7 @@ export default class ModalDialog {
    * @return {Boolean} true if current language is RTL. false otherwise.
    */
   isRTL() {
-    if (
-      this.attributes.language === "ar" ||
-      this.attributes.language === "he"
-    ) {
+    if (this.attributes.language === "ar" || this.attributes.language === "he") {
       return true;
     }
     return this.rtl;
@@ -812,10 +753,7 @@ export default class ModalDialog {
    */
   createModalWindowAndroid() {
     this.addClass("wrs_modal_android");
-    window.addEventListener(
-      "resize",
-      this.orientationChangeAndroidSoftkeyboard.bind(this),
-    );
+    window.addEventListener("resize", this.orientationChangeAndroidSoftkeyboard.bind(this));
   }
 
   /**
@@ -824,10 +762,7 @@ export default class ModalDialog {
   createModalWindowIos() {
     this.addClass("wrs_modal_ios");
     // Refresh the size when the orientation is changed.
-    window.addEventListener(
-      "resize",
-      this.orientationChangeIosSoftkeyboard.bind(this),
-    );
+    window.addEventListener("resize", this.orientationChangeIosSoftkeyboard.bind(this));
   }
 
   /**
@@ -862,21 +797,12 @@ export default class ModalDialog {
     const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute(
-      "onmouseover",
-      `this.style = "${hoverStyle}";`,
-    );
-    this.minimizeDiv.setAttribute(
-      "onmouseout",
-      `this.style = "${generalStyle}";`,
-    );
+    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
 
     this.restoreModalProperties();
 
-    if (
-      typeof this.resizerBR !== "undefined" &&
-      typeof this.resizerTL !== "undefined"
-    ) {
+    if (typeof this.resizerBR !== "undefined" && typeof this.resizerTL !== "undefined") {
       this.setResizeButtonsVisibility();
     }
 
@@ -894,15 +820,9 @@ export default class ModalDialog {
     // Saving width, height, top and bottom parameters to restore when opening.
     this.saveModalProperties();
     this.title.style.cursor = "pointer";
-    if (
-      this.properties.state === "minimized" &&
-      this.properties.previousState === "stack"
-    ) {
+    if (this.properties.state === "minimized" && this.properties.previousState === "stack") {
       this.stack();
-    } else if (
-      this.properties.state === "minimized" &&
-      this.properties.previousState === "maximized"
-    ) {
+    } else if (this.properties.state === "minimized" && this.properties.previousState === "maximized") {
       this.maximize();
     } else {
       // Setting css to prevent important tag into css style.
@@ -928,14 +848,8 @@ export default class ModalDialog {
       const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxIcon)})`;
       const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(maxHoverIcon)})`;
       this.minimizeDiv.setAttribute("style", generalStyle);
-      this.minimizeDiv.setAttribute(
-        "onmouseover",
-        `this.style = "${hoverStyle}";`,
-      );
-      this.minimizeDiv.setAttribute(
-        "onmouseout",
-        `this.style = "${generalStyle}";`,
-      );
+      this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+      this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
     }
   }
 
@@ -967,20 +881,11 @@ export default class ModalDialog {
     const generalStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minIcon)})`;
     const hoverStyle = `background-size: 10px; background-repeat: no-repeat; background-image: url(data:image/svg+xml;base64,${window.btoa(minHoverIcon)})`;
     this.minimizeDiv.setAttribute("style", generalStyle);
-    this.minimizeDiv.setAttribute(
-      "onmouseover",
-      `this.style = "${hoverStyle}";`,
-    );
-    this.minimizeDiv.setAttribute(
-      "onmouseout",
-      `this.style = "${generalStyle}";`,
-    );
+    this.minimizeDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+    this.minimizeDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
 
     // Set size to 80% screen with a max size.
-    this.setSize(
-      parseInt(window.innerHeight * 0.8, 10),
-      parseInt(window.innerWidth * 0.8, 10),
-    );
+    this.setSize(parseInt(window.innerHeight * 0.8, 10), parseInt(window.innerWidth * 0.8, 10));
     if (this.container.clientHeight > 700) {
       this.container.style.height = "700px";
     }
@@ -1045,10 +950,7 @@ export default class ModalDialog {
   saveModalProperties() {
     // Saving values of modal only when modal is in stack state.
     if (this.properties.state === "stack") {
-      this.properties.position.bottom = parseInt(
-        this.container.style.bottom,
-        10,
-      );
+      this.properties.position.bottom = parseInt(this.container.style.bottom, 10);
       this.properties.position.right = parseInt(this.container.style.right, 10);
       this.properties.size.width = parseInt(this.container.style.width, 10);
       this.properties.size.height = parseInt(this.container.style.height, 10);
@@ -1061,10 +963,7 @@ export default class ModalDialog {
   restoreModalProperties() {
     if (this.properties.state === "stack") {
       // Restoring Bottom and Right values from last modal.
-      this.setPosition(
-        this.properties.position.bottom,
-        this.properties.position.right,
-      );
+      this.setPosition(this.properties.position.bottom, this.properties.position.right);
       // Restoring Height and Left values from last modal.
       this.setSize(this.properties.size.height, this.properties.size.width);
     }
@@ -1104,12 +1003,7 @@ export default class ModalDialog {
     this.maximizeDiv.addEventListener(
       "keypress",
       function (e) {
-        if (
-          e.key === "Enter" ||
-          e.key === " " ||
-          e.keyCode === 13 ||
-          e.keyCode === 32
-        ) {
+        if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
         }
@@ -1119,12 +1013,7 @@ export default class ModalDialog {
     this.stackDiv.addEventListener(
       "keypress",
       function (e) {
-        if (
-          e.key === "Enter" ||
-          e.key === " " ||
-          e.keyCode === 13 ||
-          e.keyCode === 32
-        ) {
+        if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
           e.preventDefault();
@@ -1135,12 +1024,7 @@ export default class ModalDialog {
     this.minimizeDiv.addEventListener(
       "keypress",
       function (e) {
-        if (
-          e.key === "Enter" ||
-          e.key === " " ||
-          e.keyCode === 13 ||
-          e.keyCode === 32
-        ) {
+        if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
           e.preventDefault();
@@ -1149,12 +1033,7 @@ export default class ModalDialog {
       true,
     );
     this.closeDiv.addEventListener("keypress", function (e) {
-      if (
-        e.key === "Enter" ||
-        e.key === " " ||
-        e.keyCode === 13 ||
-        e.keyCode === 32
-      ) {
+      if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
         // Handle enter and space.
         e.target.click();
         e.preventDefault();
@@ -1194,10 +1073,7 @@ export default class ModalDialog {
    */
   // eslint-disable-next-line class-methods-use-this
   eventClient(mouseEvent) {
-    if (
-      typeof mouseEvent.clientX === "undefined" &&
-      mouseEvent.changedTouches
-    ) {
+    if (typeof mouseEvent.clientX === "undefined" && mouseEvent.changedTouches) {
       const client = {
         X: mouseEvent.changedTouches[0].clientX,
         Y: mouseEvent.changedTouches[0].clientY,
@@ -1222,10 +1098,7 @@ export default class ModalDialog {
       return;
     }
     if (mouseEvent.target === this.title) {
-      if (
-        typeof this.dragDataObject === "undefined" ||
-        this.dragDataObject === null
-      ) {
+      if (typeof this.dragDataObject === "undefined" || this.dragDataObject === null) {
         // Save first click mouse point on screen.
         this.dragDataObject = {
           x: this.eventClient(mouseEvent).X,
@@ -1268,15 +1141,9 @@ export default class ModalDialog {
       mouseEvent.preventDefault();
       // Calculate max and min between actual mouse position and limit of screeen.
       // It restric the movement of modal into window.
-      let limitY = Math.min(
-        this.eventClient(mouseEvent).Y,
-        this.limitWindow.minPointer.y,
-      );
+      let limitY = Math.min(this.eventClient(mouseEvent).Y, this.limitWindow.minPointer.y);
       limitY = Math.max(this.limitWindow.maxPointer.y, limitY);
-      let limitX = Math.min(
-        this.eventClient(mouseEvent).X,
-        this.limitWindow.minPointer.x,
-      );
+      let limitX = Math.min(this.eventClient(mouseEvent).X, this.limitWindow.minPointer.x);
       limitX = Math.max(this.limitWindow.maxPointer.x, limitX);
       // Subtract limit with first position to obtain relative pixels increment
       // to the anchor point.
@@ -1293,10 +1160,7 @@ export default class ModalDialog {
     if (this.resizeDataObject) {
       const { innerWidth } = window;
       const { innerHeight } = window;
-      let limitX = Math.min(
-        this.eventClient(mouseEvent).X,
-        innerWidth - this.scrollbarWidth - 7,
-      );
+      let limitX = Math.min(this.eventClient(mouseEvent).X, innerWidth - this.scrollbarWidth - 7);
       let limitY = Math.min(this.eventClient(mouseEvent).Y, innerHeight - 7);
       if (limitX < 0) {
         limitX = 0;
@@ -1352,16 +1216,12 @@ export default class ModalDialog {
     const dragY = this.dragDataObject.y;
     const dragX = this.dragDataObject.x;
 
-    const offSetToolbarY =
-      offsetHeight + contStyleBottom - (maxHeight - (dragY - pageXOffset));
-    const offSetToolbarX =
-      maxWidth - this.scrollbarWidth - (dragX - pageXOffset) - contStyleRight;
+    const offSetToolbarY = offsetHeight + contStyleBottom - (maxHeight - (dragY - pageXOffset));
+    const offSetToolbarX = maxWidth - this.scrollbarWidth - (dragX - pageXOffset) - contStyleRight;
 
     // Calculate limits with sizes of window, modal and mouse position.
-    const minPointerY =
-      maxHeight - this.container.offsetHeight + offSetToolbarY;
-    const maxPointerY =
-      this.title.offsetHeight - (this.title.offsetHeight - offSetToolbarY);
+    const minPointerY = maxHeight - this.container.offsetHeight + offSetToolbarY;
+    const maxPointerY = this.title.offsetHeight - (this.title.offsetHeight - offSetToolbarY);
     const minPointerX = maxWidth - offSetToolbarX - this.scrollbarWidth;
     const maxPointerX = this.container.offsetWidth - offSetToolbarX;
     const minPointer = { x: minPointerX, y: minPointerY };
@@ -1515,7 +1375,7 @@ export default class ModalDialog {
       sizeModified = true;
     } else {
       this.container.style.width = "580px";
-      sizeModificated = true;
+      sizeModified = true;
     }
 
     if (parseInt(this.container.style.height, 10) > 338) {
@@ -1523,7 +1383,7 @@ export default class ModalDialog {
       sizeModified = true;
     } else {
       this.container.style.height = "338px";
-      sizeModificated = true;
+      sizeModified = true;
     }
 
     if (sizeModified) {
@@ -1535,8 +1395,7 @@ export default class ModalDialog {
    * Recalculating width of browser scroll bar.
    */
   recalculateScrollBar() {
-    this.hasScrollBar =
-      window.innerWidth > document.documentElement.clientWidth;
+    this.hasScrollBar = window.innerWidth > document.documentElement.clientWidth;
     if (this.hasScrollBar) {
       this.scrollbarWidth = this.getScrollBarWidth();
     } else {
@@ -1564,10 +1423,7 @@ export default class ModalDialog {
    * Focus to contentManager object.
    */
   focus() {
-    if (
-      this.contentManager != null &&
-      typeof this.contentManager.onFocus !== "undefined"
-    ) {
+    if (this.contentManager != null && typeof this.contentManager.onFocus !== "undefined") {
       this.contentManager.onFocus();
     }
   }
@@ -1584,11 +1440,7 @@ export default class ModalDialog {
    * Event handler that change container size when IOS soft keyboard is opened.
    */
   handleOpenedIosSoftkeyboard() {
-    if (
-      !this.iosSoftkeyboardOpened &&
-      this.iosDivHeight != null &&
-      this.iosDivHeight === `100${this.iosMeasureUnit}`
-    ) {
+    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
       if (this.portraitMode()) {
         this.setContainerHeight(`63${this.iosMeasureUnit}`);
       } else {

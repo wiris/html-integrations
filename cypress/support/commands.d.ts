@@ -99,10 +99,7 @@ declare namespace Cypress {
      * @param subject the formula to apply this command to
      * @param coordinates place to drop the formula
      */
-    dragDropFormula(
-      subject: Element,
-      coordinates: { x: number; y: number },
-    ): Chainable;
+    dragDropFormula(subject: Element, coordinates: { x: number; y: number }): Chainable;
 
     /**
      * Not yet implemented.

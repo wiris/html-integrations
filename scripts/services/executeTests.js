@@ -23,15 +23,12 @@ const installDeps = (route) =>
         },
       );
     } else {
-      exec(
-        `npm install --prefix ${path.normalize(route.path)}`,
-        (err, stdout, stderr) => {
-          if (err) {
-            reject(err);
-          }
-          resolve({ dout: stdout, derr: stderr });
-        },
-      );
+      exec(`npm install --prefix ${path.normalize(route.path)}`, (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({ dout: stdout, derr: stderr });
+      });
     }
   });
 
@@ -57,9 +54,7 @@ async function openServer(route) {
 const runTests = (route) =>
   new Promise((resolve, reject) => {
     exec(
-      `jest --config=${path.normalize(
-        route.path,
-      )}jest.config.js ${path.normalize(route.path)}`,
+      `jest --config=${path.normalize(route.path)}jest.config.js ${path.normalize(route.path)}`,
       (err, stdout, stderr) => {
         if (err) {
           reject(err);
@@ -132,9 +127,7 @@ if (!module.parent) {
 
   // Log a warning if there are more than 0 arguments
   if (args.length > 0) {
-    emitWarning(
-      "No parameters needed, all the additional parameters will be ignored.",
-    );
+    emitWarning("No parameters needed, all the additional parameters will be ignored.");
   }
 
   // Execute all the tests and resolve when finished

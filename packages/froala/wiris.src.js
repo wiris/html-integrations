@@ -61,13 +61,12 @@ export class FroalaIntegration extends IntegrationModel {
     this.editorObject.events.on(
       "focus",
       function () {
-        WirisPlugin.currentInstance =
-          WirisPlugin.instances[this.editorObject.id];
+        WirisPlugin.currentInstance = WirisPlugin.instances[this.editorObject.id];
       }.bind(this, this.editorObject),
     );
 
     // Change the destroy behavior to also destroy the Mathtype instance.
-    this.editorObject.events.on('destroy', () => {
+    this.editorObject.events.on("destroy", () => {
       // Destroy the MathType plugin.
       this.destroy();
     });
@@ -79,10 +78,7 @@ export class FroalaIntegration extends IntegrationModel {
      */
     const editor = this.editorObject;
     if ("wiriseditorparameters" in editor.opts) {
-      Configuration.update(
-        "editorParameters",
-        editor.opts.wiriseditorparameters,
-      );
+      Configuration.update("editorParameters", editor.opts.wiriseditorparameters);
     }
 
     // When the data of Froala is retrieved we need to Parse the content.
@@ -96,13 +92,8 @@ export class FroalaIntegration extends IntegrationModel {
         if (!editor.codeView.isActive()) {
           // Froala transform entities like &#62; to its equivalent ('<' in this case).
           // so MathML properties need to be parsed.
-          const contentMathMLPropertiesEncoded = this.parseMathMLProperties(
-            editor.html.get(),
-          );
-          const parsedContent = Parser.initParse(
-            contentMathMLPropertiesEncoded,
-            editor.opts.language,
-          );
+          const contentMathMLPropertiesEncoded = this.parseMathMLProperties(editor.html.get());
+          const parsedContent = Parser.initParse(contentMathMLPropertiesEncoded, editor.opts.language);
           editor.html.set(parsedContent);
         }
       }
@@ -121,10 +112,7 @@ export class FroalaIntegration extends IntegrationModel {
       document.getElementById(mathTypeId).classList.add("fr-hidden");
     } else {
       // Translate the button title
-      document.getElementById(mathTypeId).title = StringManager.get(
-        "insert_math",
-        editor.opts.language,
-      );
+      document.getElementById(mathTypeId).title = StringManager.get("insert_math", editor.opts.language);
     }
 
     // Hide ChemType toolbar button if is disabled by config.
@@ -134,10 +122,7 @@ export class FroalaIntegration extends IntegrationModel {
       document.getElementById(chemTypeId).classList.add("fr-hidden");
     } else {
       // Translate the button title
-      document.getElementById(chemTypeId).title = StringManager.get(
-        "insert_chem",
-        editor.opts.language,
-      );
+      document.getElementById(chemTypeId).title = StringManager.get("insert_chem", editor.opts.language);
     }
   }
 
@@ -175,18 +160,14 @@ export class FroalaIntegration extends IntegrationModel {
     super.callbackFunction();
 
     // Froala editor uses a clean up process to remove unwanted tags and attributes. We need to avoid this process for Wiris formulas. If we don't do this a loading pup-up will appear with the message "Uploading" that can be exited clicking away and also if the froala version is greater than 4.2.0 the formula will paste 2 times and make every paste behave like this.
-    this.editorObject.events.on(
-      "paste.beforeCleanup",
-      function (clipboard_html) {
-        //* The regex pattern matches an image tag with the class attribute containing the 'Wirisformula' class.
-        const regex =
-          /<img[^>]*class\s*=\s*["'].*?\bWirisformula\b.*?["'][^>]*>/g;
-        // If a Wiris formula is detected, return false to avoid the clean up process.
-        if (clipboard_html.match(regex)) {
-          return false;
-        }
-      },
-    );
+    this.editorObject.events.on("paste.beforeCleanup", function (clipboard_html) {
+      //* The regex pattern matches an image tag with the class attribute containing the 'Wirisformula' class.
+      const regex = /<img[^>]*class\s*=\s*["'].*?\bWirisformula\b.*?["'][^>]*>/g;
+      // If a Wiris formula is detected, return false to avoid the clean up process.
+      if (clipboard_html.match(regex)) {
+        return false;
+      }
+    });
 
     this.editorObject.events.on("html.set", function () {
       const images = this.el.getElementsByClassName("Wirisformula");
@@ -197,14 +178,10 @@ export class FroalaIntegration extends IntegrationModel {
 
         // Froala malforms data-uri in images.
         // We need to rewrite them.
-        if (
-          Configuration.get("imageFormat") === "svg" &&
-          image.src.substr(0, 10) === "data:image"
-        ) {
+        if (Configuration.get("imageFormat") === "svg" && image.src.substr(0, 10) === "data:image") {
           const firstPart = image.src.substr(0, 33);
           const secondPart = image.src.substr(33, image.src.length);
-          image.src =
-            firstPart + encodeURIComponent(decodeURIComponent(secondPart));
+          image.src = firstPart + encodeURIComponent(decodeURIComponent(secondPart));
         }
       }
     });
@@ -263,12 +240,7 @@ export class FroalaIntegration extends IntegrationModel {
     // it is needed notificate to the editorObject that placeholder status
     // has to be updated.
     this.editorObject.events.trigger("contentChanged");
-    const obj = super.insertFormula(
-      focusElement,
-      windowTarget,
-      mathml,
-      wirisProperties,
-    );
+    const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
     this.editorObject.placeholder.refresh();
     this.editorObject.undo.saveStep();
@@ -307,17 +279,14 @@ export class FroalaIntegration extends IntegrationModel {
     froalaIntegrationProperties.environment = {};
     froalaIntegrationProperties.environment.editor = `Froala${FroalaEditor.VERSION[0]}`;
     froalaIntegrationProperties.environment.editorVersion = `${FroalaEditor.VERSION[0]}.x`;
-    froalaIntegrationProperties.callbackMethodArguments =
-      callbackMethodArguments;
+    froalaIntegrationProperties.callbackMethodArguments = callbackMethodArguments;
     froalaIntegrationProperties.editorObject = editor;
-    froalaIntegrationProperties.initOnImageMode =
-      target.nodeName.toLowerCase() === "img";
+    froalaIntegrationProperties.initOnImageMode = target.nodeName.toLowerCase() === "img";
 
     // Updating integration paths if context path is overwritten by editor javascript configuration.
     if ("wiriscontextpath" in editor.opts) {
       froalaIntegrationProperties.configurationService =
-        editor.opts.wiriscontextpath +
-        froalaIntegrationProperties.configurationService;
+        editor.opts.wiriscontextpath + froalaIntegrationProperties.configurationService;
       console.warn(
         "Deprecated property wiriscontextpath. Use mathTypeParameters on instead.",
         editor.opts.wiriscontextpath,
@@ -326,16 +295,12 @@ export class FroalaIntegration extends IntegrationModel {
 
     // Overriding MathType integration parameters.
     if ("mathTypeParameters" in editor.opts) {
-      froalaIntegrationProperties.integrationParameters =
-        editor.opts.mathTypeParameters;
+      froalaIntegrationProperties.integrationParameters = editor.opts.mathTypeParameters;
     }
-    const froalaIntegrationInstance = new FroalaIntegration(
-      froalaIntegrationProperties,
-    );
+    const froalaIntegrationInstance = new FroalaIntegration(froalaIntegrationProperties);
     froalaIntegrationInstance.init();
     froalaIntegrationInstance.listeners.fire("onTargetReady", {});
-    WirisPlugin.instances[froalaIntegrationInstance.editorObject.id] =
-      froalaIntegrationInstance;
+    WirisPlugin.instances[froalaIntegrationInstance.editorObject.id] = froalaIntegrationInstance;
     // The last instance as current instance.
     WirisPlugin.currentInstance = froalaIntegrationInstance;
   }
@@ -352,10 +317,7 @@ export class FroalaIntegration extends IntegrationModel {
   };
 
   // Icon templates for MathType.
-  FroalaEditor.DefineIconTemplate(
-    "wirisplugin",
-    '<i class="icon icon-[NAME]"></i>',
-  );
+  FroalaEditor.DefineIconTemplate("wirisplugin", '<i class="icon icon-[NAME]"></i>');
   FroalaEditor.DefineIcon("wirisEditor", {
     NAME: "mathtype-editor",
     template: "wirisplugin",
@@ -372,18 +334,14 @@ export class FroalaIntegration extends IntegrationModel {
       const currentFroalaIntegrationInstance = WirisPlugin.instances[this.id];
       currentFroalaIntegrationInstance.hidePopups();
       currentFroalaIntegrationInstance.core.getCustomEditors().disable();
-      const imageObject =
-        currentFroalaIntegrationInstance.editorObject.image.get();
+      const imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
       currentFroalaIntegrationInstance.core.editionProperties.dbclick = false;
       if (
         typeof imageObject !== "undefined" &&
         imageObject !== null &&
-        imageObject[0].classList.contains(
-          WirisPlugin.Configuration.get("imageClassName"),
-        )
+        imageObject[0].classList.contains(WirisPlugin.Configuration.get("imageClassName"))
       ) {
-        currentFroalaIntegrationInstance.core.editionProperties.temporalImage =
-          imageObject[0];
+        currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
         currentFroalaIntegrationInstance.openExistingFormulaEditor();
       } else {
         currentFroalaIntegrationInstance.openNewFormulaEditor();
@@ -396,10 +354,14 @@ export class FroalaIntegration extends IntegrationModel {
     const selectedImage = this.image.get();
     // Value can be undefined.
     if (selectedImage) {
-      if (($btn.parent()[0].hasAttribute('class') && $btn.parent()[0].getAttribute('class').indexOf('fr-buttons') === -1) ||
-      (selectedImage[0] && (selectedImage[0].classList.contains(Configuration.get('imageClassName')) ||
-      // Is a MathType image.
-      selectedImage.hasClass(Configuration.get('imageClassName'))))) {
+      if (
+        ($btn.parent()[0].hasAttribute("class") &&
+          $btn.parent()[0].getAttribute("class").indexOf("fr-buttons") === -1) ||
+        (selectedImage[0] &&
+          (selectedImage[0].classList.contains(Configuration.get("imageClassName")) ||
+            // Is a MathType image.
+            selectedImage.hasClass(Configuration.get("imageClassName"))))
+      ) {
         // Show MathType icons if previously were hidden.
         $btn.removeClass("fr-hidden");
         // Disable resize box.
@@ -407,9 +369,7 @@ export class FroalaIntegration extends IntegrationModel {
           // eslint-disable-line no-undef
           document
             .getElementsByTagName("head")[0]
-            .append(
-              '<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>',
-            );
+            .append('<style id="wrs_style">.fr-image-resizer {pointer-events: none;}</style>');
         }
       } else {
         // Is a non-MathType image.
@@ -438,20 +398,14 @@ export class FroalaIntegration extends IntegrationModel {
     callback() {
       const currentFroalaIntegrationInstance = WirisPlugin.instances[this.id];
       currentFroalaIntegrationInstance.hidePopups();
-      currentFroalaIntegrationInstance.core
-        .getCustomEditors()
-        .enable("chemistry");
-      const imageObject =
-        currentFroalaIntegrationInstance.editorObject.image.get();
+      currentFroalaIntegrationInstance.core.getCustomEditors().enable("chemistry");
+      const imageObject = currentFroalaIntegrationInstance.editorObject.image.get();
       if (
         typeof imageObject !== "undefined" &&
         imageObject !== null &&
-        imageObject[0].classList.contains(
-          WirisPlugin.Configuration.get("imageClassName"),
-        )
+        imageObject[0].classList.contains(WirisPlugin.Configuration.get("imageClassName"))
       ) {
-        currentFroalaIntegrationInstance.core.editionProperties.temporalImage =
-          imageObject[0];
+        currentFroalaIntegrationInstance.core.editionProperties.temporalImage = imageObject[0];
         currentFroalaIntegrationInstance.openExistingFormulaEditor();
       } else {
         currentFroalaIntegrationInstance.openNewFormulaEditor();
@@ -460,6 +414,5 @@ export class FroalaIntegration extends IntegrationModel {
   });
 
   // Prevent Froala to add it's own classes to the images generated with ChemType.
-  FroalaEditor.COMMANDS.wirisChemistry.refresh =
-    FroalaEditor.COMMANDS.wirisEditor.refresh;
+  FroalaEditor.COMMANDS.wirisChemistry.refresh = FroalaEditor.COMMANDS.wirisEditor.refresh;
 })(FroalaEditor);

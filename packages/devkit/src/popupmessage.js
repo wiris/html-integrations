@@ -27,28 +27,19 @@ export default class PopUpMessage {
     /**
      * HTMLElement element to wrap all HTML elements inside the popupMessage.
      */
-    this.overlayWrapper = this.overlayElement.appendChild(
-      document.createElement("div"),
-    );
-    this.overlayWrapper.setAttribute(
-      "class",
-      "wrs_popupmessage_overlay_envolture",
-    );
+    this.overlayWrapper = this.overlayElement.appendChild(document.createElement("div"));
+    this.overlayWrapper.setAttribute("class", "wrs_popupmessage_overlay_envolture");
 
     /**
      * HTMLElement to display the popup message, close button and cancel button.
      */
-    this.message = this.overlayWrapper.appendChild(
-      document.createElement("div"),
-    );
+    this.message = this.overlayWrapper.appendChild(document.createElement("div"));
     this.message.id = "wrs_popupmessage";
     this.message.setAttribute("class", "wrs_popupmessage_panel");
     this.message.setAttribute("role", "dialog");
     this.message.setAttribute("aria-describedby", "description_txt");
     const paragraph = document.createElement("p");
-    const text = document.createTextNode(
-      popupMessageAttributes.strings.message,
-    );
+    const text = document.createTextNode(popupMessageAttributes.strings.message);
     paragraph.appendChild(text);
     paragraph.id = "description_txt";
     this.message.appendChild(paragraph);
@@ -56,9 +47,7 @@ export default class PopUpMessage {
     /**
      * HTML element overlaying the overlayElement.
      */
-    const overlay = this.overlayWrapper.appendChild(
-      document.createElement("div"),
-    );
+    const overlay = this.overlayWrapper.appendChild(document.createElement("div"));
     overlay.setAttribute("class", "wrs_popupmessage_overlay");
     // We create a overlay that close popup message on click in there
     overlay.addEventListener("click", this.cancelAction.bind(this));
@@ -82,10 +71,7 @@ export default class PopUpMessage {
     /**
      * Close button arguments.
      */
-    this.closeButton = this.createButton(
-      buttonSubmitArguments,
-      this.closeAction.bind(this),
-    );
+    this.closeButton = this.createButton(buttonSubmitArguments, this.closeAction.bind(this));
     this.buttonArea.appendChild(this.closeButton);
 
     // Cancel button arguments.
@@ -100,10 +86,7 @@ export default class PopUpMessage {
     /**
      * Cancel button.
      */
-    this.cancelButton = this.createButton(
-      buttonCancelArguments,
-      this.cancelAction.bind(this),
-    );
+    this.cancelButton = this.createButton(buttonCancelArguments, this.cancelAction.bind(this));
     this.buttonArea.appendChild(this.cancelButton);
   }
 

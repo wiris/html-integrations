@@ -17,8 +17,7 @@ import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 import * as Generic from "resources/demos/imports";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for CKEditor 5 on HTML";
+document.getElementById("header_title_name").innerHTML = "MathType for CKEditor 5 on HTML";
 document.getElementById("version_editor").innerHTML = "CKEditor: ";
 
 // Insert the initial content in the editor
@@ -32,15 +31,7 @@ window.editor = null;
 
 // Create the CKEditor 5.
 ClassicEditor.create(document.querySelector("#editor"), {
-  plugins: [
-    Essentials,
-    Paragraph,
-    Bold,
-    Italic,
-    MathType,
-    Alignment,
-    SourceEditing,
-  ],
+  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
   toolbar: [
     "bold",
     "italic",
@@ -67,7 +58,6 @@ ClassicEditor.create(document.querySelector("#editor"), {
     // Get and set the editor and wiris versions in this order.
     Generic.setEditorAndWirisVersion("5.0.0", packageInfo.version);
     editor.editing.view.focus();
-    // updateFunction();
   })
   .catch((error) => {
     console.error(error.stack); //eslint-disable-line

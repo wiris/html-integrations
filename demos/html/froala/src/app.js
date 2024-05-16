@@ -6,8 +6,7 @@ import "./static/style.css";
 import * as Generic from "resources/demos/imports";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for Froala on HTML";
+document.getElementById("header_title_name").innerHTML = "MathType for Froala on HTML";
 document.getElementById("version_editor").innerHTML = "Froala: ";
 
 // Copy the editor content before initializing it.
@@ -18,26 +17,10 @@ document.getElementById("version_editor").innerHTML = "Froala: ";
 new FroalaEditor("#editor", {
   //eslint-disable-line
   // Define the toolbar options for the froala editor.
-  toolbarButtons: [
-    "undo",
-    "redo",
-    "bold",
-    "italic",
-    "|",
-    "wirisEditor",
-    "wirisChemistry",
-    "insertImage",
-  ],
+  toolbarButtons: ["undo", "redo", "bold", "italic", "|", "wirisEditor", "wirisChemistry", "insertImage"],
 
   // Add [MW] buttons to the image editing popup Toolbar.
-  imageEditButtons: [
-    "wirisEditor",
-    "wirisChemistry",
-    "imageDisplay",
-    "imageAlign",
-    "imageInfo",
-    "imageRemove",
-  ],
+  imageEditButtons: ["wirisEditor", "wirisChemistry", "imageDisplay", "imageAlign", "imageInfo", "imageRemove"],
 
   key: process.env.FROALA_API_KEY || "",
 
@@ -63,10 +46,7 @@ new FroalaEditor("#editor", {
   events: {
     initialized() {
       // Get and set the editor and wiris versions in this order.
-      Generic.setEditorAndWirisVersion(
-        FroalaEditor.VERSION,
-        WirisPlugin.currentInstance.version,
-      ); //eslint-disable-line
+      Generic.setEditorAndWirisVersion(FroalaEditor.VERSION, WirisPlugin.currentInstance.version); //eslint-disable-line
 
       // Set initial content
       this.html.set(Generic.editorContentImg);
@@ -77,8 +57,5 @@ new FroalaEditor("#editor", {
 // Add listener on click button to launch updateContent function.
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(
-    FroalaEditor.INSTANCES[0].html.get(),
-    "transform_content",
-  ); //eslint-disable-line
+  Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), "transform_content"); //eslint-disable-line
 });

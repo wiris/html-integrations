@@ -24,9 +24,7 @@ export class StatusError extends Error {
  * @returns {Promise<any>} The unwrapped result of the response, if valid.
  * @throws {StatusError} Service responded with a non-ok status.
  */
-export async function processJsonResponse(
-  response: Promise<Response>,
-): Promise<any> {
+export async function processJsonResponse(response: Promise<Response>): Promise<any> {
   try {
     const { status, result } = await (await response).json();
 
@@ -95,12 +93,7 @@ export async function callService(
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The mathml2accessible service response.
  */
-export async function mathml2accessible(
-  mml: string,
-  lang: string,
-  url: string,
-  extension: string,
-): Promise<any> {
+export async function mathml2accessible(mml: string, lang: string, url: string, extension: string): Promise<any> {
   // Set the needed params to retrieve the alt text.
   const params = {
     service: "mathml2accessible",
@@ -111,13 +104,7 @@ export async function mathml2accessible(
     ignoreStyles: "true",
   };
 
-  const response = callService(
-    params,
-    "service",
-    MethodType.Post,
-    url,
-    extension,
-  );
+  const response = callService(params, "service", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -129,12 +116,7 @@ export async function mathml2accessible(
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to showImage
  */
-export async function showImage(
-  mml: string,
-  lang: string,
-  url: string,
-  extension: string,
-): Promise<any> {
+export async function showImage(mml: string, lang: string, url: string, extension: string): Promise<any> {
   const params = {
     mml: mml,
     metrics: "true",
@@ -144,13 +126,7 @@ export async function showImage(
 
   // Try to obtain the image via GET
   const getParams = Parser.createShowImageSrcData(params, params.lang);
-  const getResponse = callService(
-    getParams,
-    "showimage",
-    MethodType.Get,
-    url,
-    extension,
-  );
+  const getResponse = callService(getParams, "showimage", MethodType.Get, url, extension);
   try {
     return await processJsonResponse(getResponse);
   } catch (e) {
@@ -162,13 +138,7 @@ export async function showImage(
   }
 
   // If GET request fails, it means that the formula was not in cache. Proceed with POST:
-  const response = callService(
-    params,
-    "showimage",
-    MethodType.Post,
-    url,
-    extension,
-  );
+  const response = callService(params, "showimage", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -180,12 +150,7 @@ export async function showImage(
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to showImage
  */
-export async function createImage(
-  mml: string,
-  lang: string,
-  url: string,
-  extension: string,
-): Promise<any> {
+export async function createImage(mml: string, lang: string, url: string, extension: string): Promise<any> {
   const params = {
     mml: mml,
     metrics: "true",
@@ -194,7 +159,7 @@ export async function createImage(
   };
 
   // POST request to retrieve the corresponding image.
-  const response = callService(params, 'showimage', MethodType.Post, url, extension);
+  const response = callService(params, "showimage", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -205,23 +170,13 @@ export async function createImage(
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} the Response object to the petition made to service
  */
-export async function latexToMathml(
-  latex: string,
-  url: string,
-  extension: string,
-): Promise<any> {
+export async function latexToMathml(latex: string, url: string, extension: string): Promise<any> {
   const params = {
     service: "latex2mathml",
     latex: latex,
   };
 
-  const response = callService(
-    params,
-    "service",
-    MethodType.Post,
-    url,
-    extension,
-  );
+  const response = callService(params, "service", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -231,21 +186,11 @@ export async function latexToMathml(
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The configurationjson service response.
  */
-export async function configurationJson(
-  variablekeys: string[],
-  url: string,
-  extension: string,
-): Promise<any> {
+export async function configurationJson(variablekeys: string[], url: string, extension: string): Promise<any> {
   const params = {
     variablekeys: variablekeys.join(","),
   };
 
-  const response = callService(
-    params,
-    "configurationjson",
-    MethodType.Get,
-    url,
-    extension,
-  );
+  const response = callService(params, "configurationjson", MethodType.Get, url, extension);
   return processJsonResponse(response);
 }

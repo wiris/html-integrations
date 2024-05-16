@@ -12,14 +12,12 @@ export const mathHandValid =
   '<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mi>x</mi><mn>3</mn></mfrac><mo>)</mo></math>';
 export const chemHandValid =
   '<math class="wrs_chemistry" xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><msub><mi>x</mi><mn>4</mn></msub><mn>2</mn></mfrac><msup><mi>x</mi><mn>2</mn></msup></math>';
-export const mathNoMrowValid =
-  '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>';
+export const mathNoMrowValid = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>';
 export const chemNoMrowValid =
   '<math xmlns="http://www.w3.org/1998/Math/MathML" class="wrs_chemistry"><mi>a</mi></math>';
 export const semantics01 =
   '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mn>123</mn><annotation-xml><cn>123</cn></annotation-xml></semantics></math>';
-export const semanticsValid01 =
-  '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>123</mn></math>';
+export const semanticsValid01 = '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>123</mn></math>';
 export const semantics02 =
   '<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mn>1.0</mn><annotation-xml encoding="MathML-Content"><cn>1</cn></annotation-xml></semantics><mo>=</mo><mn>1.0</mn></math>';
 export const semanticsValid02 =

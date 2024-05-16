@@ -5,8 +5,7 @@ import * as Generic from "resources/demos/common";
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement("script");
 jsDemoImagesTransform.type = "text/javascript";
-jsDemoImagesTransform.src =
-  "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+jsDemoImagesTransform.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
@@ -43,17 +42,11 @@ export class AppComponent implements OnInit {
     // Add listener on click button to launch updateContent function.
     document.getElementById("btn_update").addEventListener("click", (e) => {
       e.preventDefault();
-      Generic.updateContent(
-        (window as any).WirisPlugin.Parser.initParse(editableDiv.innerHTML),
-        "transform_content",
-      ); //eslint-disable-line
+      Generic.updateContent((window as any).WirisPlugin.Parser.initParse(editableDiv.innerHTML), "transform_content"); //eslint-disable-line
     });
 
     // Get an det the wiris editor plugin version
-    Generic.setEditorAndWirisVersion(
-      0,
-      (window as any).WirisPlugin.currentInstance.version,
-    );
+    Generic.setEditorAndWirisVersion(0, (window as any).WirisPlugin.currentInstance.version);
   }
 
   // Set app title.

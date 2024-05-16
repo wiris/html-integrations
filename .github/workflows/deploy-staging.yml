@@ -116,16 +116,7 @@ jobs:
       fail-fast: false
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
-        editor:
-          [
-            "ckeditor4",
-            "ckeditor5",
-            "froala",
-            "generic",
-            "tinymce5",
-            "tinymce6",
-            "viewer",
-          ]
+        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "viewer"]
         framework: ["html", "vue"]
         exclude:
           - framework: vue

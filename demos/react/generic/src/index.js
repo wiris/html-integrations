@@ -15,8 +15,7 @@ import reportWebVitals from "./reportWebVitals";
 // Generate scripts.
 const jsDemoImagesTransform = document.createElement("script");
 jsDemoImagesTransform.type = "text/javascript";
-jsDemoImagesTransform.src =
-  "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+jsDemoImagesTransform.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
 
 // Load generated scripts.
 document.head.appendChild(jsDemoImagesTransform);
@@ -34,10 +33,7 @@ Generic.setEditorAndWirisVersion(0, pluginVersion);
 // Add listener on click button to launch updateContent function.
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(
-    WirisPlugin.Parser.initParse(htmlEditor.innerHTML),
-    "transform_content",
-  ); //eslint-disable-line
+  Generic.updateContent(WirisPlugin.Parser.initParse(htmlEditor.innerHTML), "transform_content"); //eslint-disable-line
 });
 
 // Create toolbar component.
@@ -49,13 +45,7 @@ function Toolbar() {
 // Create editable component.
 // eslint-disable-next-line no-unused-vars
 function HtmlEditor(props) {
-  return (
-    <div
-      id="htmlEditor"
-      contentEditable="true"
-      dangerouslySetInnerHTML={{ __html: props.data }}
-    ></div>
-  );
+  return <div id="htmlEditor" contentEditable="true" dangerouslySetInnerHTML={{ __html: props.data }}></div>;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -76,10 +66,7 @@ class Editor extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   render() {
     // Array of react components.
-    return [
-      <Toolbar key="toolbar-generic" />,
-      <HtmlEditor data={content} key="editor-generic" />,
-    ];
+    return [<Toolbar key="toolbar-generic" />, <HtmlEditor data={content} key="editor-generic" />];
   }
 }
 

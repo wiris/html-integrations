@@ -17,8 +17,7 @@ import * as ClassicEditor from "./ckeditor";
 import reportWebVitals from "./reportWebVitals";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for CKEditor 5 on React";
+document.getElementById("header_title_name").innerHTML = "MathType for CKEditor 5 on React";
 document.getElementById("version_editor").innerHTML = "CKEditor: ";
 
 // Set the initial content.
@@ -30,15 +29,7 @@ const content = Generic.editorContentMathML;
 
 // Initialize editor.
 // Define the toolbar & configuration options for the ckeditor.
-const toolbar = [
-  "bold",
-  "italic",
-  "MathType",
-  "ChemType",
-  "alignment:left",
-  "alignment:center",
-  "alignment:right",
-];
+const toolbar = ["bold", "italic", "MathType", "ChemType", "alignment:left", "alignment:center", "alignment:right"];
 const ckConfig = {
   iframe: true,
   charCounterCount: false,

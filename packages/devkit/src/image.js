@@ -27,11 +27,7 @@ export default class Image {
 
     Object.keys(attributes).forEach((key) => {
       const attribute = attributes[key];
-      if (
-        attribute !== undefined &&
-        attribute.name !== undefined &&
-        attribute.name.indexOf("data-") === 0
-      ) {
+      if (attribute !== undefined && attribute.name !== undefined && attribute.name.indexOf("data-") === 0) {
         // Is preferred keep an array and remove after the search
         // because when attribute is removed the array of attributes
         // is modified.
@@ -51,9 +47,7 @@ export default class Image {
    * @param {HTMLImageElement} destImg - The destination image.
    */
   static clone(originImg, destImg) {
-    const customEditorAttributeName = Configuration.get(
-      "imageCustomEditorName",
-    );
+    const customEditorAttributeName = Configuration.get("imageCustomEditorName");
     if (!originImg.hasAttribute(customEditorAttributeName)) {
       destImg.removeAttribute(customEditorAttributeName);
     }
@@ -93,10 +87,7 @@ export default class Image {
    * @returns true if the img src is encoded in base64, false otherwise
    */
   static isBase64(img) {
-    return (
-      img.src.startsWith("data:image/svg+xml;base64,") ||
-      img.src.startsWith("data:image/png;base64,")
-    );
+    return img.src.startsWith("data:image/svg+xml;base64,") || img.src.startsWith("data:image/png;base64,");
   }
 
   /**
@@ -119,10 +110,7 @@ export default class Image {
         if (!Image.isBase64(img)) {
           ar = Image.getMetricsFromSvgString(uri);
         } else {
-          base64String = img.src.substr(
-            img.src.indexOf("base64,") + 7,
-            img.src.length,
-          );
+          base64String = img.src.substr(img.src.indexOf("base64,") + 7, img.src.length);
           svgString = "";
           bytes = Util.b64ToByteArray(base64String, base64String.length);
           for (let i = 0; i < bytes.length; i += 1) {
@@ -132,10 +120,7 @@ export default class Image {
         }
         // PNG format: we store all metrics information in the first 88 bytes.
       } else {
-        base64String = img.src.substr(
-          img.src.indexOf("base64,") + 7,
-          img.src.length,
-        );
+        base64String = img.src.substr(img.src.indexOf("base64,") + 7, img.src.length);
         bytes = Util.b64ToByteArray(base64String, 88);
         ar = Image.getMetricsFromBytes(bytes);
       }
@@ -183,25 +168,15 @@ export default class Image {
             const base64String = img.getAttribute("src").substring(26);
             const svgString = window.atob(base64String);
             const encodedSvgString = encodeURIComponent(svgString);
-            img.setAttribute(
-              "src",
-              `data:image/svg+xml;charset=utf8,${encodedSvgString}`,
-            );
+            img.setAttribute("src", `data:image/svg+xml;charset=utf8,${encodedSvgString}`);
             // 'data:image/svg+xml;charset=utf8,'.length === 32.
-            const svg = decodeURIComponent(
-              img.src.substring(32, img.src.length),
-            );
+            const svg = decodeURIComponent(img.src.substring(32, img.src.length));
             Image.setImgSize(img, svg, true);
             // Return src to base64!
-            img.setAttribute(
-              "src",
-              `data:image/svg+xml;base64,${base64String}`,
-            );
+            img.setAttribute("src", `data:image/svg+xml;base64,${base64String}`);
           } else {
             // 'data:image/svg+xml;charset=utf8,'.length === 32.
-            const svg = decodeURIComponent(
-              img.src.substring(32, img.src.length),
-            );
+            const svg = decodeURIComponent(img.src.substring(32, img.src.length));
             Image.setImgSize(img, svg, true);
           }
         } else {

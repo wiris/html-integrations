@@ -44,8 +44,7 @@ export class TinyMceIntegration extends IntegrationModel {
       return `${baseURL}/plugins/tiny_mce_wiris/tinymce/`;
     }
     if (this.isExternal) {
-      const externalUrl =
-        this.editorObject.options.get("external_plugins").tiny_mce_wiris;
+      const externalUrl = this.editorObject.options.get("external_plugins").tiny_mce_wiris;
       return externalUrl.substring(0, externalUrl.lastIndexOf("/") + 1);
     }
     return `${tinymce.baseURL}/plugins/tiny_mce_wiris/`;
@@ -68,14 +67,11 @@ export class TinyMceIntegration extends IntegrationModel {
     const editorSettings = this.editorObject;
     // Try to get editorParameters.language, fail silently otherwise
     try {
-      return editorSettings.options.get("mathTypeParameters").editorParameters
-        .language;
+      return editorSettings.options.get("mathTypeParameters").editorParameters.language;
     } catch (e) {}
     // Get the deprecated wirisformulaeditorlang
     if (editorSettings.options.get("wirisformulaeditorlang")) {
-      console.warn(
-        "Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.",
-      );
+      console.warn("Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.");
       return editorSettings.options.get("wirisformulaeditorlang");
     }
     const langParam = this.editorObject.options.get("language");
@@ -105,12 +101,9 @@ export class TinyMceIntegration extends IntegrationModel {
     } else {
       // Inline.
       // Attaching observers to wiris images.
-      Array.prototype.forEach.call(
-        document.getElementsByClassName(imageClassName),
-        (wirisImages) => {
-          Parser.observer.observe(wirisImages);
-        },
-      );
+      Array.prototype.forEach.call(document.getElementsByClassName(imageClassName), (wirisImages) => {
+        Parser.observer.observe(wirisImages);
+      });
     }
 
     // When a formula is updated TinyMCE 'Change' event must be fired.
@@ -124,15 +117,9 @@ export class TinyMceIntegration extends IntegrationModel {
 
     // Deprecated part on TinyMCE6; We need to find a workaround
     // Avoid filter formulas with performance enabled.
-    dataImgFiltered[this.editorObject.id] =
-      this.editorObject.images_dataimg_filter;
+    dataImgFiltered[this.editorObject.id] = this.editorObject.images_dataimg_filter;
     this.editorObject.images_dataimg_filter = (img) => {
-      if (
-        img.hasAttribute("class") &&
-        img
-          .getAttribute("class")
-          .indexOf(Configuration.get("imageClassName")) !== -1
-      ) {
+      if (img.hasAttribute("class") && img.getAttribute("class").indexOf(Configuration.get("imageClassName")) !== -1) {
         return img.hasAttribute("internal-blob");
       }
       // If the client put an image data filter, run. Otherwise default behaviour (put blob).
@@ -162,12 +149,7 @@ export class TinyMceIntegration extends IntegrationModel {
     // Due to insertFormula adds an image using pure JavaScript functions,
     // it is needed notificate to the editorObject that placeholder status
     // has to be updated.
-    const obj = super.insertFormula(
-      focusElement,
-      windowTarget,
-      mathml,
-      wirisProperties,
-    );
+    const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
     // Add formula to undo & redo
     this.editorObject.undoManager.add(obj);
@@ -270,8 +252,7 @@ export const currentInstance = null;
       });
 
       if (editor.options.isRegistered("mathTypeParameters")) {
-        integrationModelProperties.integrationParameters =
-          editor.options.get("mathTypeParameters");
+        integrationModelProperties.integrationParameters = editor.options.get("mathTypeParameters");
       }
 
       integrationModelProperties.scriptName = "plugin.min.js";
@@ -280,8 +261,7 @@ export const currentInstance = null;
       integrationModelProperties.environment.editor = "TinyMCE 6.x";
       integrationModelProperties.environment.editorVersion = `${tinymce.majorVersion}.${tinymce.minorVersion}`;
 
-      integrationModelProperties.callbackMethodArguments =
-        callbackMethodArguments;
+      integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
       integrationModelProperties.editorObject = editor;
       integrationModelProperties.initParsed = false;
       // We need to create the instance before TinyMce initialization in order to register commands.
@@ -292,8 +272,7 @@ export const currentInstance = null;
         typeof editor.options.get("external_plugins") !== "undefined" &&
         "tiny_mce_wiris" in editor.options.get("external_plugins");
       integrationModelProperties.isExternal = isExternalPlugin;
-      integrationModelProperties.rtl =
-        editor.options.get("directionality") === "rtl";
+      integrationModelProperties.rtl = editor.options.get("directionality") === "rtl";
 
       // Set Moodle configurations for Telemetry purposes.
       const registerOption = editor.options.register;
@@ -310,21 +289,16 @@ export const currentInstance = null;
         default: undefined,
       });
 
-      integrationModelProperties.environment.moodleVersion = editor.options.get(
-        `${pluginName}:moodleVersion`,
+      integrationModelProperties.environment.moodleVersion = editor.options.get(`${pluginName}:moodleVersion`);
+      integrationModelProperties.environment.moodleCourseCategory = editor.options.get(
+        `${pluginName}:moodleCourseCategory`,
       );
-      integrationModelProperties.environment.moodleCourseCategory =
-        editor.options.get(`${pluginName}:moodleCourseCategory`);
-      integrationModelProperties.environment.moodleCourseName =
-        editor.options.get(`${pluginName}:moodleCourseName`);
+      integrationModelProperties.environment.moodleCourseName = editor.options.get(`${pluginName}:moodleCourseName`);
 
       // GenericIntegration instance.
-      const tinyMceIntegrationInstance = new TinyMceIntegration(
-        integrationModelProperties,
-      );
+      const tinyMceIntegrationInstance = new TinyMceIntegration(integrationModelProperties);
       tinyMceIntegrationInstance.init();
-      WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id] =
-        tinyMceIntegrationInstance;
+      WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id] = tinyMceIntegrationInstance;
       WirisPlugin.currentInstance = tinyMceIntegrationInstance;
 
       // Set Moodle configuration parameters to the plugin
@@ -334,22 +308,16 @@ export const currentInstance = null;
 
       const onInit = function (editor) {
         // eslint-disable-line no-shadow
-        const integrationInstance =
-          WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id];
+        const integrationInstance = WirisPlugin.instances[tinyMceIntegrationInstance.editorObject.id];
         if (!editor.inline) {
-          integrationInstance.setTarget(
-            editor.getContentAreaContainer().firstChild,
-          );
+          integrationInstance.setTarget(editor.getContentAreaContainer().firstChild);
         } else {
           integrationInstance.setTarget(editor.getElement());
         }
         integrationInstance.setEditorObject(editor);
         integrationInstance.listeners.fire("onTargetReady", {});
         if (editor.options.isRegistered("mathTypeParameters")) {
-          Configuration.update(
-            "editorParameters",
-            editor.options.get("mathTypeParameters"),
-          );
+          Configuration.update("editorParameters", editor.options.get("mathTypeParameters"));
         }
 
         // Prevent TinyMCE attributes insertion.
@@ -369,9 +337,7 @@ export const currentInstance = null;
                     if (node.nodeType === 1) {
                       // Act only in our own formulas.
                       Array.prototype.forEach.call(
-                        node.querySelectorAll(
-                          `.${WirisPlugin.Configuration.get("imageClassName")}`,
-                        ),
+                        node.querySelectorAll(`.${WirisPlugin.Configuration.get("imageClassName")}`),
                         ((editor, image) => {
                           // eslint-disable-line no-shadow
                           // This only is executed due to init parse.
@@ -396,10 +362,7 @@ export const currentInstance = null;
         const content = editor.getContent();
         // We set content in html because other tiny plugins need data-mce
         // and this is not possible with raw format.
-        editor.setContent(
-          Parser.initParse(content, editor.options.get("language")),
-          { format: "html" },
-        );
+        editor.setContent(Parser.initParse(content, editor.options.get("language")), { format: "html" });
         // This clean undoQueue for prevent onChange and Dirty state.
         editor.undoManager.clear();
         // Init parsing OK. If a setContent method is called
@@ -408,13 +371,13 @@ export const currentInstance = null;
         // PLUGINS-1070: We set this variable out of condition to parse content after.
         WirisPlugin.instances[editor.id].initParsed = true;
       };
-      
+
       // Change the destroy behavior to also destroy the MathType instance.
       const destroy = editor.destroy;
-      
+
       editor.destroy = function () {
-        WirisPlugin.instances[editor.id].listeners.fire('onDestroy', {});
-        
+        WirisPlugin.instances[editor.id].listeners.fire("onDestroy", {});
+
         // Destroy the Mathtype instance.
         WirisPlugin.instances[editor.id].destroy();
         destroy.call(editor);
@@ -431,29 +394,21 @@ export const currentInstance = null;
       if ("onActivate" in editor) {
         editor.onActivate.add((editor) => {
           // eslint-disable-line no-unused-vars, no-shadow
-          WirisPlugin.currentInstance =
-            WirisPlugin.instances[tinymce.activeEditor.id];
+          WirisPlugin.currentInstance = WirisPlugin.instances[tinymce.activeEditor.id];
         });
       } else {
         editor.on("focus", (event) => {
           // eslint-disable-line no-unused-vars, no-shadow
-          WirisPlugin.currentInstance =
-            WirisPlugin.instances[tinymce.activeEditor.id];
+          WirisPlugin.currentInstance = WirisPlugin.instances[tinymce.activeEditor.id];
         });
       }
 
       const onSave = function (editor, params) {
         // eslint-disable-line no-shadow
         if (integrationModelProperties.isMoodle) {
-          params.content = Parser.endParseSaveMode(
-            params.content,
-            editor.getParam("language"),
-          );
+          params.content = Parser.endParseSaveMode(params.content, editor.getParam("language"));
         } else {
-          params.content = Parser.endParse(
-            params.content,
-            editor.getParam("language"),
-          );
+          params.content = Parser.endParse(params.content, editor.getParam("language"));
         }
       };
 
@@ -476,29 +431,17 @@ export const currentInstance = null;
       if ("onBeforeSetContent" in editor) {
         editor.onBeforeSetContent.add((e, params) => {
           if (integrationModelProperties.isMoodle) {
-            params.content = Parser.initParseSaveMode(
-              params.content,
-              editor.getParam("language"),
-            );
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam("language"));
           } else if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParseSaveMode(
-              params.content,
-              editor.getParam("language"),
-            );
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam("language"));
           }
         });
       } else {
         editor.on("beforeSetContent", (params) => {
           if (integrationModelProperties.isMoodle) {
-            params.content = Parser.initParseSaveMode(
-              params.content,
-              editor.getParam("language"),
-            );
+            params.content = Parser.initParseSaveMode(params.content, editor.getParam("language"));
           } else if (WirisPlugin.instances[editor.id].initParsed) {
-            params.content = Parser.initParse(
-              params.content,
-              editor.getParam("language"),
-            );
+            params.content = Parser.initParse(params.content, editor.getParam("language"));
           }
         });
       }
@@ -557,22 +500,17 @@ export const currentInstance = null;
 
       if (chemEnabled) {
         // Dynamic customEditors buttons.
-        const customEditors = WirisPlugin.instances[editor.id]
-          .getCore()
-          .getCustomEditors();
+        const customEditors = WirisPlugin.instances[editor.id].getCore().getCustomEditors();
         Object.keys(customEditors.editors).forEach((customEditor) => {
           if (customEditors.editors[customEditor].confVariable) {
-            commonEditor.addMenuItem(
-              `tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`,
-              {
-                text: customEditors.editors[customEditor].title,
-                icon: chemTypeIcon, // Parametrize when other custom editors are added.
-                onAction: () => {
-                  customEditors.enable(customEditor);
-                  WirisPlugin.instances[editor.id].openNewFormulaEditor();
-                },
+            commonEditor.addMenuItem(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
+              text: customEditors.editors[customEditor].title,
+              icon: chemTypeIcon, // Parametrize when other custom editors are added.
+              onAction: () => {
+                customEditors.enable(customEditor);
+                WirisPlugin.instances[editor.id].openNewFormulaEditor();
               },
-            );
+            });
           }
         });
 
@@ -586,17 +524,12 @@ export const currentInstance = null;
               WirisPlugin.instances[editor.id].openNewFormulaEditor(); // eslint-disable-line no-undef
             }
             editor.addCommand(cmd, commandFunction);
-            commonEditor.addButton(
-              `tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`,
-              {
-                tooltip: StringManager.get("insert_chem", lang_code),
-                onAction: commandFunction,
-                image:
-                  WirisPlugin.instances[editor.id].getIconsPath() +
-                  customEditors.editors[customEditor].icon,
-                icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
-              },
-            );
+            commonEditor.addButton(`tiny_mce_wiris_formulaEditor${customEditors.editors[customEditor].name}`, {
+              tooltip: StringManager.get("insert_chem", lang_code),
+              onAction: commandFunction,
+              image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
+              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
+            });
           }
         }
       }

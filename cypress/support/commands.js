@@ -55,26 +55,21 @@ Cypress.Commands.add("clickModalButton", (button) => {
       cy.get(".wrs_handWrapper > input").click();
       break;
     default:
-      throw new Error(
-        `The button '${button}' does not exist. Check the clickModalButton documentation.`,
-      );
+      throw new Error(`The button '${button}' does not exist. Check the clickModalButton documentation.`);
   }
 });
 
 // eslint-disable-next-line no-unused-vars
-Cypress.Commands.add(
-  "insertFormulaFromScratch",
-  (formula, chem = false, paste = false) => {
-    // Open the mathtype modal
-    cy.clickButtonToOpenModal(chem);
+Cypress.Commands.add("insertFormulaFromScratch", (formula, chem = false, paste = false) => {
+  // Open the mathtype modal
+  cy.clickButtonToOpenModal(chem);
 
-    // Type the formula that matxes the previous inserted text on the mathtype modal
-    cy.typeInModal(formula);
+  // Type the formula that matxes the previous inserted text on the mathtype modal
+  cy.typeInModal(formula);
 
-    // Insert the formula
-    cy.clickModalButton("insert");
-  },
-);
+  // Insert the formula
+  cy.clickModalButton("insert");
+});
 
 Cypress.Commands.add("getFormula", (formulaId) => {
   cy.get(".Wirisformula")
@@ -100,27 +95,15 @@ Cypress.Commands.add("selectLatexFormula", (formulaId) => {
       const caracter = html[i];
       if (caracter === "$" && prevDolar === false && waitEndDolar === false) {
         prevDolar = true;
-      } else if (
-        caracter === "$" &&
-        prevDolar === true &&
-        waitEndDolar === false
-      ) {
+      } else if (caracter === "$" && prevDolar === true && waitEndDolar === false) {
         prevDolar = false;
         waitEndDolar = true;
         if (countFormula === formulaId) startOffset = i + 1;
-      } else if (
-        caracter === "$" &&
-        prevDolar === false &&
-        waitEndDolar === true
-      ) {
+      } else if (caracter === "$" && prevDolar === false && waitEndDolar === true) {
         prevDolar = true;
         if (countFormula === formulaId) endOffset = i;
         else countFormula += 1;
-      } else if (
-        caracter === "$" &&
-        prevDolar === true &&
-        waitEndDolar === true
-      ) {
+      } else if (caracter === "$" && prevDolar === true && waitEndDolar === true) {
         prevDolar = false;
         waitEndDolar = false;
       }

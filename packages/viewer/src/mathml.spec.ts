@@ -1,6 +1,6 @@
 import { JSDOM } from "jsdom";
 import { serializeHtmlToXml } from "./mathml"; // adjust the import path as needed
- 
+
 describe("serializeHtmlToXml", () => {
   const testCases = [
     `<math />`,
@@ -161,22 +161,22 @@ describe("serializeHtmlToXml", () => {
     `<math xmlns="http://www.w3.org/1998/Math/MathML"><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&#xAB;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&lt;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&#xBB;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&gt;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&#xA7;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&amp;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&#xA8;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">&quot;</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">'</mo><mo mathvariant="bold" mathcolor="#7F0000" mathsize="48px">'</mo></math>`,
   ];
 
-/**
- * This test suite validates the functionality of the `serializeHtmlToXml` function.
- * The function is expected to convert valid HTML into valid XML.
- *
- * Each test case follows these steps:
- * 1. An input HTML string is passed to the `serializeHtmlToXml` function, which returns an XML string.
- * 2. The XML string is parsed as text/xml using the DOMParser's.
- * 3. The parsed XML document is checked for `parsererror` nodes.
- *
- * If the XML document contains any `parsererror` nodes, it indicates that the `serializeHtmlToXml` function
- * did not correctly convert the HTML to valid XML, causing the DOMParser to encounter errors during parsing.
- * In this case, the test will fail.
- *
- * If no `parsererror` nodes are found, it indicates that the `serializeHtmlToXml` function correctly converted
- * the HTML to valid XML, and the test will pass.
- */
+  /**
+   * This test suite validates the functionality of the `serializeHtmlToXml` function.
+   * The function is expected to convert valid HTML into valid XML.
+   *
+   * Each test case follows these steps:
+   * 1. An input HTML string is passed to the `serializeHtmlToXml` function, which returns an XML string.
+   * 2. The XML string is parsed as text/xml using the DOMParser's.
+   * 3. The parsed XML document is checked for `parsererror` nodes.
+   *
+   * If the XML document contains any `parsererror` nodes, it indicates that the `serializeHtmlToXml` function
+   * did not correctly convert the HTML to valid XML, causing the DOMParser to encounter errors during parsing.
+   * In this case, the test will fail.
+   *
+   * If no `parsererror` nodes are found, it indicates that the `serializeHtmlToXml` function correctly converted
+   * the HTML to valid XML, and the test will pass.
+   */
   testCases.forEach((input, index) => {
     it(`Test ${index}: ${input.slice(0, 40)} ...`, () => {
       const parser = new global.DOMParser();

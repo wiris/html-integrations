@@ -174,22 +174,13 @@ export default class ServiceProvider {
    * @static
    */
   static getUrl(url, postVariables) {
-    const currentPath = window.location
-      .toString()
-      .substr(0, window.location.toString().lastIndexOf("/") + 1);
+    const currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf("/") + 1);
     const httpRequest = Util.createHttpRequest();
 
     if (httpRequest) {
-      if (
-        typeof postVariables === "undefined" ||
-        typeof postVariables === "undefined"
-      ) {
+      if (typeof postVariables === "undefined" || typeof postVariables === "undefined") {
         httpRequest.open("GET", url, false);
-      } else if (
-        url.substr(0, 1) === "/" ||
-        url.substr(0, 7) === "http://" ||
-        url.substr(0, 8) === "https://"
-      ) {
+      } else if (url.substr(0, 1) === "/" || url.substr(0, 7) === "http://" || url.substr(0, 8) === "https://") {
         httpRequest.open("POST", url, false);
       } else {
         httpRequest.open("POST", currentPath + url, false);
@@ -200,16 +191,11 @@ export default class ServiceProvider {
         if (typeof header === "string") {
           header = Util.convertStringToObject(header);
         }
-        Object.entries(header).forEach(([key, val]) =>
-          httpRequest.setRequestHeader(key, val),
-        );
+        Object.entries(header).forEach(([key, val]) => httpRequest.setRequestHeader(key, val));
       }
 
       if (typeof postVariables !== "undefined" && postVariables) {
-        httpRequest.setRequestHeader(
-          "Content-type",
-          "application/x-www-form-urlencoded; charset=UTF-8",
-        );
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
         httpRequest.send(Util.httpBuildQuery(postVariables));
       } else {
         httpRequest.send(null);
@@ -267,9 +253,7 @@ export default class ServiceProvider {
    */
   static createServiceURI(service) {
     const extension = ServiceProvider.serverExtension();
-    return (
-      Util.concatenateUrl(ServiceProvider.parameters.URI, service) + extension
-    );
+    return Util.concatenateUrl(ServiceProvider.parameters.URI, service) + extension;
   }
 
   static serverExtension() {

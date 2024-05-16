@@ -25,7 +25,5 @@ it("an inserted formula that looks like plain text should be aligned with the sa
   cy.insertFormulaFromScratch(this.formulas["formula-alignment"]);
 
   // Assert that the vertical align is -4px, which means that is aligner vertically (base) to the previous writen 2222
-  cy.getFormula(0)
-    .should("have.attr", "style")
-    .and("contain", "vertical-align: -4px");
+  cy.getFormula(0).should("have.attr", "style").and("contain", "vertical-align: -4px");
 });

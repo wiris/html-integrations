@@ -22,8 +22,7 @@ window.tinymce = require("tinymce");
 require("@wiris/mathtype-tinymce5");
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for TinyMCE 5 on React";
+document.getElementById("header_title_name").innerHTML = "MathType for TinyMCE 5 on React";
 document.getElementById("version_editor").innerHTML = "TinyMCE: ";
 
 // Set the initial content.
@@ -70,10 +69,7 @@ const options = {
     // Launch on init event.
     editor.on("init", () => {
       // Get and set the editor and wiris versions in this order.
-      Generic.setEditorAndWirisVersion(
-        `${tinymce.majorVersion}.${tinymce.minorVersion}`,
-        pluginVersion,
-      ); //eslint-disable-line
+      Generic.setEditorAndWirisVersion(`${tinymce.majorVersion}.${tinymce.minorVersion}`, pluginVersion); //eslint-disable-line
     });
   },
 };

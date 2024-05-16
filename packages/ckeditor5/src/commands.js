@@ -9,10 +9,7 @@ export class MathTypeCommand extends Command {
   execute(options = {}) {
     // Check we get a valid integration
     // eslint-disable-next-line no-prototype-builtins
-    if (
-      !options.hasOwnProperty("integration") ||
-      !(options.integration instanceof CKEditor5Integration)
-    ) {
+    if (!options.hasOwnProperty("integration") || !(options.integration instanceof CKEditor5Integration)) {
       throw 'Must pass a valid CKEditor5Integration instance as attribute "integration" of options';
     }
 

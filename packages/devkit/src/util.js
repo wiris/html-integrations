@@ -68,18 +68,11 @@ export default class Util {
    * @param {Function} mouseupHandler - function to run when on mouseup event.
    * @static
    */
-  static addElementEvents(
-    eventTarget,
-    doubleClickHandler,
-    mousedownHandler,
-    mouseupHandler,
-  ) {
+  static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
     if (doubleClickHandler) {
       this.callbackDblclick = (event) => {
         const realEvent = event || window.event;
-        const element = realEvent.srcElement
-          ? realEvent.srcElement
-          : realEvent.target;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         doubleClickHandler(element, realEvent);
       };
 
@@ -89,9 +82,7 @@ export default class Util {
     if (mousedownHandler) {
       this.callbackMousedown = (event) => {
         const realEvent = event || window.event;
-        const element = realEvent.srcElement
-          ? realEvent.srcElement
-          : realEvent.target;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mousedownHandler(element, realEvent);
       };
 
@@ -101,9 +92,7 @@ export default class Util {
     if (mouseupHandler) {
       this.callbackMouseup = (event) => {
         const realEvent = event || window.event;
-        const element = realEvent.srcElement
-          ? realEvent.srcElement
-          : realEvent.target;
+        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
         mouseupHandler(element, realEvent);
       };
       // Chrome doesn't trigger this event for eventTarget if we release the mouse button
@@ -295,37 +284,25 @@ export default class Util {
       .join('<span wirisObject="WirisApplet" ')
       .split("<APPLET ")
       .join('<span wirisObject="WirisApplet" '); // It is a 'span' because 'span' objects can contain 'br' nodes.
-    objectCode = objectCode
-      .split("</applet>")
-      .join("</span>")
-      .split("</APPLET>")
-      .join("</span>");
+    objectCode = objectCode.split("</applet>").join("</span>").split("</APPLET>").join("</span>");
 
     objectCode = objectCode
       .split("<param ")
       .join('<br wirisObject="WirisParam" ')
       .split("<PARAM ")
       .join('<br wirisObject="WirisParam" '); // It is a 'br' because 'br' can't contain nodes.
-    objectCode = objectCode
-      .split("</param>")
-      .join("</br>")
-      .split("</PARAM>")
-      .join("</br>");
+    objectCode = objectCode.split("</param>").join("</br>").split("</PARAM>").join("</br>");
 
     const container = Util.createElement("div", {}, creator);
     container.innerHTML = objectCode;
 
     function recursiveParamsFix(object) {
-      if (
-        object.getAttribute &&
-        object.getAttribute("wirisObject") === "WirisParam"
-      ) {
+      if (object.getAttribute && object.getAttribute("wirisObject") === "WirisParam") {
         const attributesParsed = {};
 
         for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
-            attributesParsed[object.attributes[i].nodeName] =
-              object.attributes[i].nodeValue;
+            attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
           }
         }
 
@@ -339,16 +316,12 @@ export default class Util {
 
         param.removeAttribute("wirisObject");
         object.parentNode.replaceChild(param, object);
-      } else if (
-        object.getAttribute &&
-        object.getAttribute("wirisObject") === "WirisApplet"
-      ) {
+      } else if (object.getAttribute && object.getAttribute("wirisObject") === "WirisApplet") {
         const attributesParsed = {};
 
         for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
-            attributesParsed[object.attributes[i].nodeName] =
-              object.attributes[i].nodeValue;
+            attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
           }
         }
 
@@ -444,15 +417,7 @@ export default class Util {
    * @static
    */
   static htmlEntities(input) {
-    return input
-      .split("&")
-      .join("&amp;")
-      .split("<")
-      .join("&lt;")
-      .split(">")
-      .join("&gt;")
-      .split('"')
-      .join("&quot;");
+    return input.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;").split('"').join("&quot;");
   }
 
   /**
@@ -493,9 +458,7 @@ export default class Util {
    * @returns {XMLHttpRequest|ActiveXObject} the proper request object.
    */
   static createHttpRequest() {
-    const currentPath = window.location
-      .toString()
-      .substr(0, window.location.toString().lastIndexOf("/") + 1);
+    const currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf("/") + 1);
     if (currentPath.substr(0, 7) === "file://") {
       throw StringManager.get("exception_cross_site");
     }
@@ -704,9 +667,7 @@ export default class Util {
           return imgCode;
         }
 
-        const dataMathML = imgObject.getAttribute(
-          Configuration.get("imageMathmlAttribute"),
-        );
+        const dataMathML = imgObject.getAttribute(Configuration.get("imageMathmlAttribute"));
         // To handle annotations, first we need the MathML in XML.
         let mathML = MathML.safeXmlDecode(dataMathML);
 
@@ -802,28 +763,18 @@ export default class Util {
         if (temporalObject.nodeName.toUpperCase() !== "IMG") {
           // IE9 fix: parentElement() does not return the IMG node,
           // returns the parent DIV node. In IE < 9, pasteHTML does not work well.
-          range.pasteHTML(
-            '<span id="wrs_openEditorWindow_temporalObject"></span>',
-          );
-          temporalObject = windowTarget.document.getElementById(
-            "wrs_openEditorWindow_temporalObject",
-          );
+          range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
+          temporalObject = windowTarget.document.getElementById("wrs_openEditorWindow_temporalObject");
         }
 
         let node;
         let caretPosition;
 
-        if (
-          temporalObject.nextSibling &&
-          temporalObject.nextSibling.nodeType === 3
-        ) {
+        if (temporalObject.nextSibling && temporalObject.nextSibling.nodeType === 3) {
           // TEXT_NODE.
           node = temporalObject.nextSibling;
           caretPosition = 0;
-        } else if (
-          temporalObject.previousSibling &&
-          temporalObject.previousSibling.nodeType === 3
-        ) {
+        } else if (temporalObject.previousSibling && temporalObject.previousSibling.nodeType === 3) {
           node = temporalObject.previousSibling;
           caretPosition = node.nodeValue.length;
         } else {
@@ -888,14 +839,9 @@ export default class Util {
             ) {
               node.childNodes[position - 1].remove();
               return Util.getSelectedItem(target, isIframe, forceGetSelection);
-            } else if (
-              node.childNodes[position].classList?.contains("Wirisformula")
-            ) {
+            } else if (node.childNodes[position].classList?.contains("Wirisformula")) {
               if (
-                (position > 0 &&
-                  node.childNodes[position - 1].classList?.contains(
-                    "Wirisformula",
-                  )) ||
+                (position > 0 && node.childNodes[position - 1].classList?.contains("Wirisformula")) ||
                 position === 0
               ) {
                 var emptySpan = document.createElement("span");
@@ -928,10 +874,7 @@ export default class Util {
    */
   static getSelectedItemOnTextarea(textarea) {
     const textNode = document.createTextNode(textarea.value);
-    const textNodeValues = Latex.getLatexFromTextNode(
-      textNode,
-      textarea.selectionStart,
-    );
+    const textNodeValues = Latex.getLatexFromTextNode(textNode, textarea.selectionStart);
     if (textNodeValues === null) {
       return null;
     }
@@ -1081,9 +1024,7 @@ export default class Util {
         // Ignoring code checker standards (bitewise operators).
         // @codingStandardsIgnoreStart
         // eslint-disable-next-line max-len
-        tmp =
-          (Util.decode64(b64String.charAt(i)) << 2) |
-          (Util.decode64(b64String.charAt(i + 1)) >> 4);
+        tmp = (Util.decode64(b64String.charAt(i)) << 2) | (Util.decode64(b64String.charAt(i + 1)) >> 4);
         arr.push(tmp & 0xff);
       } else if (placeHolders === 1) {
         // eslint-disable-next-line max-len
@@ -1111,9 +1052,7 @@ export default class Util {
     }
     const int32 = bytes.splice(0, 4);
     // @codingStandardsIgnoreStart¡
-    return (
-      (int32[0] << 24) | (int32[1] << 16) | (int32[2] << 8) | (int32[3] << 0)
-    );
+    return (int32[0] << 24) | (int32[1] << 16) | (int32[2] << 8) | (int32[3] << 0);
     // @codingStandardsIgnoreEnd
   }
 
@@ -1154,14 +1093,8 @@ export default class Util {
 
       if (textarea.selectionStart != null) {
         const { selectionEnd } = textarea;
-        const selectionStart = textarea.value.substring(
-          0,
-          textarea.selectionStart,
-        );
-        const selectionEndSub = textarea.value.substring(
-          selectionEnd,
-          textarea.value.length,
-        );
+        const selectionStart = textarea.value.substring(0, textarea.selectionStart);
+        const selectionEndSub = textarea.value.substring(selectionEnd, textarea.value.length);
         textarea.value = selectionStart + text + selectionEndSub;
         textarea.selectionEnd = selectionEnd + text.length;
       } else {
@@ -1184,10 +1117,7 @@ export default class Util {
   static updateExistingTextOnTextarea(textarea, text, start, end) {
     textarea.focus();
     const textareaStart = textarea.value.substring(0, start);
-    textarea.value =
-      textareaStart +
-      text +
-      textarea.value.substring(end, textarea.value.length);
+    textarea.value = textareaStart + text + textarea.value.substring(end, textarea.value.length);
     textarea.selectionEnd = start + text.length;
   }
 

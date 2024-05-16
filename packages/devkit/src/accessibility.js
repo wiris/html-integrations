@@ -54,9 +54,7 @@ export default class Accessibility {
     } else {
       data.service = "mathml2accessible";
       data.lang = language;
-      const accessibleJsonResponse = JSON.parse(
-        ServiceProvider.getService("service", data),
-      );
+      const accessibleJsonResponse = JSON.parse(ServiceProvider.getService("service", data));
       if (accessibleJsonResponse.status !== "error") {
         accessibleText = accessibleJsonResponse.result.text;
         Accessibility.cache.populate(mathML, accessibleText);

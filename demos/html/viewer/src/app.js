@@ -2,8 +2,7 @@ import git from "resources/git-data.json";
 import "./static/style.css";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("content").value =
-    document.getElementsByTagName("main")[0].innerHTML;
+  document.getElementById("content").value = document.getElementsByTagName("main")[0].innerHTML;
   document.getElementById("git_commit").innerText = git.hash;
 });
 
@@ -36,7 +35,5 @@ document.getElementById("viewer_form").addEventListener("submit", () => {
   window.viewer.properties.config = config;
 
   document.getElementsByTagName("main")[0].innerHTML = document.getElementById("content").value;
-  window.com.wiris.js.JsPluginViewer.parseElement(
-    document.getElementsByTagName("main")[0],
-  );
+  window.com.wiris.js.JsPluginViewer.parseElement(document.getElementsByTagName("main")[0]);
 });

@@ -8,11 +8,7 @@ import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integr
 import Latex from "@wiris/mathtype-html-integration-devkit/src/latex";
 import "@wiris/mathtype-html-integration-devkit/src/backwardslib";
 import Test from "@wiris/mathtype-html-integration-devkit/src/test";
-import {
-  TinyMceIntegration,
-  currentInstance,
-  instances,
-} from "./editor_plugin.src";
+import { TinyMceIntegration, currentInstance, instances } from "./editor_plugin.src";
 
 // Expose WirisPlugin variable to the window.
 window.WirisPlugin = {

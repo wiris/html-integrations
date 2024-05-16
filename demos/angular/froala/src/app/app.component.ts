@@ -5,8 +5,7 @@ import * as Generic from "resources/demos/imports";
 import { environment } from "src/environments/environment";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for Froala on Angular";
+document.getElementById("header_title_name").innerHTML = "MathType for Froala on Angular";
 document.getElementById("version_editor").innerHTML = "Froala: ";
 
 // Create the initial editor content.
@@ -19,10 +18,7 @@ const editorContent = Generic.editorContentImg;
 // Add listener on click button to launch updateContent function.
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(
-    (window as any).FroalaEditor.INSTANCES[0].html.get(),
-    "transform_content",
-  ); //eslint-disable-line
+  Generic.updateContent((window as any).FroalaEditor.INSTANCES[0].html.get(), "transform_content"); //eslint-disable-line
 });
 
 @Component({
@@ -40,26 +36,10 @@ export class AppComponent {
   // Set options for the editor.
   public options: Object = {
     // Define the toolbar options for the froala editor.
-    toolbarButtons: [
-      "undo",
-      "redo",
-      "bold",
-      "italic",
-      "|",
-      "wirisEditor",
-      "wirisChemistry",
-      "insertImage",
-    ],
+    toolbarButtons: ["undo", "redo", "bold", "italic", "|", "wirisEditor", "wirisChemistry", "insertImage"],
 
     // Add [MW] buttons to the image editing popup Toolbar.
-    imageEditButtons: [
-      "wirisEditor",
-      "wirisChemistry",
-      "imageDisplay",
-      "imageAlign",
-      "imageInfo",
-      "imageRemove",
-    ],
+    imageEditButtons: ["wirisEditor", "wirisChemistry", "imageDisplay", "imageAlign", "imageInfo", "imageRemove"],
 
     // Allow all the tags to understand the mathml
     htmlAllowedTags: [".*"],

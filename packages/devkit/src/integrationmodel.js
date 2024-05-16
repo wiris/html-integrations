@@ -47,8 +47,7 @@ export default class IntegrationModel {
      * Service parameters
      * @type {ServiceProviderProperties}
      */
-    this.serviceProviderProperties =
-      integrationModelProperties.serviceProviderProperties ?? {};
+    this.serviceProviderProperties = integrationModelProperties.serviceProviderProperties ?? {};
 
     /**
      * Configuration service path. The integration service is needed by Core class to
@@ -57,22 +56,17 @@ export default class IntegrationModel {
      */
     this.configurationService = "";
     if ("configurationService" in integrationModelProperties) {
-      this.serviceProviderProperties.URI =
-        integrationModelProperties.configurationService;
-      console.warn(
-        "Deprecated property configurationService. Use serviceParameters on instead.",
-        [integrationModelProperties.configurationService],
-      );
+      this.serviceProviderProperties.URI = integrationModelProperties.configurationService;
+      console.warn("Deprecated property configurationService. Use serviceParameters on instead.", [
+        integrationModelProperties.configurationService,
+      ]);
     }
 
     /**
      * Plugin version. Needed to stats and caching.
      * @type {string}
      */
-    this.version =
-      "version" in integrationModelProperties
-        ? integrationModelProperties.version
-        : "";
+    this.version = "version" in integrationModelProperties ? integrationModelProperties.version : "";
 
     /**
      * DOM target in which the plugin works. Needed to associate events, insert formulas, etc.
@@ -82,9 +76,7 @@ export default class IntegrationModel {
     if ("target" in integrationModelProperties) {
       this.target = integrationModelProperties.target;
     } else {
-      throw new Error(
-        "IntegrationModel constructor error: target property missed.",
-      );
+      throw new Error("IntegrationModel constructor error: target property missed.");
     }
 
     /**
@@ -97,8 +89,7 @@ export default class IntegrationModel {
     /**
      * Object containing the arguments needed by the callback function.
      */
-    this.callbackMethodArguments =
-      integrationModelProperties.callbackMethodArguments ?? {};
+    this.callbackMethodArguments = integrationModelProperties.callbackMethodArguments ?? {};
 
     /**
      * Contains information about the integration environment:
@@ -133,9 +124,7 @@ export default class IntegrationModel {
     /**
      * Specify if editor will open in hand mode only
      */
-    this.forcedHandMode =
-      integrationModelProperties?.integrationParameters?.forcedHandMode ??
-      false;
+    this.forcedHandMode = integrationModelProperties?.integrationParameters?.forcedHandMode ?? false;
 
     /**
      * Indicates if an image is selected. Needed to resize the image to the original size in case
@@ -161,8 +150,7 @@ export default class IntegrationModel {
       IntegrationModel.integrationParameters.forEach((parameter) => {
         if (parameter in integrationModelProperties.integrationParameters) {
           // Don't add empty parameters.
-          const value =
-            integrationModelProperties.integrationParameters[parameter];
+          const value = integrationModelProperties.integrationParameters[parameter];
           if (Object.keys(value).length !== 0) {
             this[parameter] = value;
           }
@@ -189,19 +177,14 @@ export default class IntegrationModel {
       const uri = this.serviceProviderProperties.URI;
       const server = ServiceProvider.getServerLanguageFromService(uri);
       this.serviceProviderProperties.server = server;
-      const configurationIndex =
-        this.serviceProviderProperties.URI.indexOf("configuration");
-      const subsTring = this.serviceProviderProperties.URI.substring(
-        0,
-        configurationIndex,
-      );
+      const configurationIndex = this.serviceProviderProperties.URI.indexOf("configuration");
+      const subsTring = this.serviceProviderProperties.URI.substring(0, configurationIndex);
       this.serviceProviderProperties.URI = subsTring;
     }
 
     let serviceParametersURI = this.serviceProviderProperties.URI;
     serviceParametersURI =
-      serviceParametersURI.indexOf("/") === 0 ||
-      serviceParametersURI.indexOf("http") === 0
+      serviceParametersURI.indexOf("/") === 0 || serviceParametersURI.indexOf("http") === 0
         ? serviceParametersURI
         : Util.concatenateUrl(this.getPath(), serviceParametersURI);
 
@@ -324,10 +307,7 @@ export default class IntegrationModel {
 
     // Filter hosts to remove empty objects and empty keys.
     hosts = hosts.filter(function (element) {
-      if (element)
-        Object.keys(element).forEach((key) =>
-          element[key] === "unknown" ? delete element[key] : {},
-        );
+      if (element) Object.keys(element).forEach((key) => (element[key] === "unknown" ? delete element[key] : {}));
       return element !== undefined;
     });
 
@@ -395,9 +375,7 @@ export default class IntegrationModel {
       start = start + userAgent.substring(start).indexOf("/") + 1;
       let end = userAgent.substring(start).indexOf(" ");
       end = end === -1 ? userAgent.lastIndexOf("") : end;
-      versionBrowser = userAgent
-        .substring(start, end + start)
-        .replace("_", ".");
+      versionBrowser = userAgent.substring(start, end + start).replace("_", ".");
     } else if (/OPR/.test(userAgent)) {
       detectedBrowser = "opera";
       let start = userAgent.indexOf("OPR/") + 4;
@@ -414,18 +392,14 @@ export default class IntegrationModel {
       start = start + userAgent.substring(start).indexOf("/") + 1;
       let end = userAgent.substring(start).indexOf(" ");
       end = end === -1 ? userAgent.lastIndexOf("") : end;
-      versionBrowser = userAgent
-        .substring(start, end + start)
-        .replace("_", ".");
+      versionBrowser = userAgent.substring(start, end + start).replace("_", ".");
     } else if (/Safari/.test(userAgent)) {
       detectedBrowser = "safari";
       let start = userAgent.indexOf("Version/");
       start = start + userAgent.substring(start).indexOf("/") + 1;
       let end = userAgent.substring(start).indexOf(" ");
       end = end === -1 ? userAgent.lastIndexOf("") : end;
-      versionBrowser = userAgent
-        .substring(start, end + start)
-        .replace("_", ".");
+      versionBrowser = userAgent.substring(start, end + start).replace("_", ".");
     }
 
     return { detectedBrowser, versionBrowser };
@@ -639,23 +613,13 @@ export default class IntegrationModel {
       return "";
     }
 
-    obj = this.insertFormula(
-      focusElement,
-      windowTarget,
-      obj.mathml,
-      obj.wirisProperties,
-    );
+    obj = this.insertFormula(focusElement, windowTarget, obj.mathml, obj.wirisProperties);
 
     if (!obj) {
       return "";
     }
 
-    return this.core.afterUpdateFormula(
-      obj.focusElement,
-      obj.windowTarget,
-      obj.node,
-      obj.latex,
-    );
+    return this.core.afterUpdateFormula(obj.focusElement, obj.windowTarget, obj.node, obj.latex);
   }
 
   /**
@@ -667,12 +631,7 @@ export default class IntegrationModel {
    * @returns {ReturnObject} - Object with the information of the node or latex to insert.
    */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    const obj = this.core.insertFormula(
-      focusElement,
-      windowTarget,
-      mathml,
-      wirisProperties,
-    );
+    const obj = this.core.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
     // Delete temporal image when inserted
     this.core.editionProperties.temporalImage = null;
@@ -703,9 +662,7 @@ export default class IntegrationModel {
    * in case the formula is resized.
    */
   addEvents() {
-    const eventTarget = this.isIframe
-      ? this.target.contentWindow.document
-      : this.target;
+    const eventTarget = this.isIframe ? this.target.contentWindow.document : this.target;
     Util.addElementEvents(
       eventTarget,
       (element, event) => {
@@ -726,7 +683,8 @@ export default class IntegrationModel {
    * Remove events to formulas in the DOM target.
    */
   removeEvents() {
-    const eventTarget = this.isIframe && this.target.contentWindow?.document ? this.target.contentWindow.document : this.target;
+    const eventTarget =
+      this.isIframe && this.target.contentWindow?.document ? this.target.contentWindow.document : this.target;
 
     if (!eventTarget) {
       return;
@@ -762,9 +720,7 @@ export default class IntegrationModel {
     this.core.editionProperties.dbclick = true;
     if (element.nodeName.toLowerCase() === "img") {
       this.core.getCustomEditors().disable();
-      const customEditorAttributeName = Configuration.get(
-        "imageCustomEditorName",
-      );
+      const customEditorAttributeName = Configuration.get("imageCustomEditorName");
       if (element.hasAttribute(customEditorAttributeName)) {
         const customEditor = element.getAttribute(customEditorAttributeName);
         this.core.getCustomEditors().enable(customEditor);
@@ -895,9 +851,7 @@ export default class IntegrationModel {
       currentInstance.core.editionProperties.range = null;
       editorSelection.addRange(range);
       if (range.startOffset !== range.endOffset) {
-        currentInstance.core.placeCaretAfterNode(
-          currentInstance.core.editionProperties.temporalImage,
-        );
+        currentInstance.core.placeCaretAfterNode(currentInstance.core.editionProperties.temporalImage);
       }
     }
 
@@ -918,7 +872,4 @@ IntegrationModel.prototype.getSelectedItem = undefined;
  * An object containing a list with the overwritable class constructor properties.
  * @type {Object}
  */
-IntegrationModel.integrationParameters = [
-  "serviceProviderProperties",
-  "editorParameters",
-];
+IntegrationModel.integrationParameters = ["serviceProviderProperties", "editorParameters"];

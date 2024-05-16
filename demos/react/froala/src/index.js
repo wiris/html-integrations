@@ -27,8 +27,7 @@ window.FroalaEditor = require("froala-editor");
 require("@wiris/mathtype-froala");
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for Froala on React";
+document.getElementById("header_title_name").innerHTML = "MathType for Froala on React";
 document.getElementById("version_editor").innerHTML = "Froala: ";
 
 // // Set the initial content.
@@ -41,35 +40,16 @@ const content = Generic.editorContentImg;
 // Add listener on click button to launch updateFunction.
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(
-    FroalaEditor.INSTANCES[0].html.get(),
-    "transform_content",
-  ); //eslint-disable-line
+  Generic.updateContent(FroalaEditor.INSTANCES[0].html.get(), "transform_content"); //eslint-disable-line
 });
 
 // Initialize editor.
 // Define the toolbar & configuration options for the froala editor.
-const toolbar = [
-  "undo",
-  "redo",
-  "bold",
-  "italic",
-  "|",
-  "wirisEditor",
-  "wirisChemistry",
-  "insertImage",
-];
+const toolbar = ["undo", "redo", "bold", "italic", "|", "wirisEditor", "wirisChemistry", "insertImage"];
 const froalaConfig = {
   toolbarButtons: toolbar,
   // Add [MW] buttons to the image editing popup Toolbar.
-  imageEditButtons: [
-    "wirisEditor",
-    "wirisChemistry",
-    "imageDisplay",
-    "imageAlign",
-    "imageInfo",
-    "imageRemove",
-  ],
+  imageEditButtons: ["wirisEditor", "wirisChemistry", "imageDisplay", "imageAlign", "imageInfo", "imageRemove"],
 
   key: process.env.REACT_APP_FROALA_API_KEY || "",
 

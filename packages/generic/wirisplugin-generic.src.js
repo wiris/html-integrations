@@ -35,9 +35,7 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
   }
 
   // GenericIntegration instance.
-  const genericIntegrationInstance = new GenericIntegration(
-    genericIntegrationProperties,
-  ); // eslint-disable-line no-use-before-define
+  const genericIntegrationInstance = new GenericIntegration(genericIntegrationProperties); // eslint-disable-line no-use-before-define
   genericIntegrationInstance.init();
   genericIntegrationInstance.listeners.fire("onTargetReady", {});
 
@@ -50,7 +48,7 @@ export function wrsInitEditor(target, toolbar, mathtypeProperties) {
  * @returns {void}
  */
 export function wrsDestroyEditor(instance) {
-  instance.toolbar.innerHTML = '';
+  instance.toolbar.innerHTML = "";
   instance.destroy();
 }
 
@@ -79,10 +77,7 @@ export default class GenericIntegration extends IntegrationModel {
    * @param {IntegrationModelProperties} integrationModelProperties
    */
   constructor(integrationModelProperties) {
-    if (
-      typeof integrationModelProperties.serviceProviderProperties ===
-      "undefined"
-    ) {
+    if (typeof integrationModelProperties.serviceProviderProperties === "undefined") {
       integrationModelProperties.serviceProviderProperties = {
         URI: process.env.SERVICE_PROVIDER_URI,
         server: process.env.SERVICE_PROVIDER_SERVER,
@@ -98,11 +93,8 @@ export default class GenericIntegration extends IntegrationModel {
 
     this.toolbar = null;
     this.toolbar = integrationModelProperties.toolbar;
-    if (
-      typeof integrationModelProperties.configurationService !== "undefined"
-    ) {
-      this.configurationService =
-        integrationModelProperties.configurationService;
+    if (typeof integrationModelProperties.configurationService !== "undefined") {
+      this.configurationService = integrationModelProperties.configurationService;
     }
   }
 
@@ -118,11 +110,7 @@ export default class GenericIntegration extends IntegrationModel {
      */
     async wrsOpenedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
-      if (
-        /^(button|formula)$/.test(trigger) &&
-        /^(general|chemistry)$/.test(toolbar)
-      ) {
-
+      if (/^(button|formula)$/.test(trigger) && /^(general|chemistry)$/.test(toolbar)) {
         // Call Telemetry service to track the event.
         try {
           await Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
@@ -132,7 +120,6 @@ export default class GenericIntegration extends IntegrationModel {
         } catch (error) {
           console.error("Error tracking OPENED_MTCT_EDITOR", error);
         }
-
       } else {
         console.error("Invalid trigger or toolbar value for open editor modal");
       }
@@ -175,9 +162,7 @@ export default class GenericIntegration extends IntegrationModel {
       if (validToolbar && validDate) {
         // Build the telemeter payload separated to delete null/undefined entries.
         let payload = {
-          mathml_origin: mathml_origin
-            ? MathML.safeXmlDecode(mathml_origin)
-            : mathml_origin,
+          mathml_origin: mathml_origin ? MathML.safeXmlDecode(mathml_origin) : mathml_origin,
           mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
           elapsed_time: time,
           editor_origin: null,
@@ -187,8 +172,7 @@ export default class GenericIntegration extends IntegrationModel {
 
         // Remove desired null keys.
         Object.keys(payload).forEach((key) => {
-          if (key === "mathml_origin" || key === "editor_origin")
-            !payload[key] ? delete payload[key] : {};
+          if (key === "mathml_origin" || key === "editor_origin") !payload[key] ? delete payload[key] : {};
         });
 
         // Call Telemetry service to track the event.
@@ -199,7 +183,6 @@ export default class GenericIntegration extends IntegrationModel {
         } catch (error) {
           console.error("Error tracking INSERTED_FORMULA", error);
         }
-
       } else {
         console.error("Invalid toolbar or time input for insert formula");
       }
@@ -218,9 +201,7 @@ export default class GenericIntegration extends IntegrationModel {
     } catch (e) {}
     if (typeof _wrs_int_langCode !== "undefined") {
       // eslint-disable-line camelcase
-      console.warn(
-        "Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.",
-      );
+      console.warn("Deprecated property wirisformulaeditorlang. Use mathTypeParameters on instead.");
       return _wrs_int_langCode; // eslint-disable-line camelcase, no-undef
     }
     return super.getLanguage();
@@ -245,10 +226,7 @@ export default class GenericIntegration extends IntegrationModel {
       const formulaButton = document.createElement("img");
       formulaButton.id = "editorIcon";
       formulaButton.src = formulaIcon;
-      formulaButton.title = formulaButton.alt = StringManager.get(
-        "insert_math",
-        this.getLanguage(),
-      );
+      formulaButton.title = formulaButton.alt = StringManager.get("insert_math", this.getLanguage());
       formulaButton.style.cursor = "pointer";
 
       Util.addEvent(formulaButton, "click", () => {
@@ -273,10 +251,7 @@ export default class GenericIntegration extends IntegrationModel {
         // Horrible hard-coded temporary fix
         if (customEditor === "chemistry") {
           customEditorButton.src = chemIcon;
-          customEditorButton.title = customEditorButton.alt = StringManager.get(
-            "insert_chem",
-            this.getLanguage(),
-          );
+          customEditorButton.title = customEditorButton.alt = StringManager.get("insert_chem", this.getLanguage());
         }
         customEditorButton.id = `${customEditor}Icon`;
         customEditorButton.style.cursor = "pointer";
@@ -304,11 +279,6 @@ export default class GenericIntegration extends IntegrationModel {
   }
 
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    return super.insertFormula(
-      focusElement,
-      windowTarget,
-      mathml,
-      wirisProperties,
-    );
+    return super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
   }
 }

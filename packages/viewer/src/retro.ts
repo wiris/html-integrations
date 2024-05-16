@@ -57,26 +57,14 @@ class JsPluginViewer {
    * @deprecated There is currently no replacement for rendering SafeMathML formulas.
    * Please consider using {@link renderLatex} or {@link renderMathML}.
    */
-  parseSafeMathMLElement(
-    element: HTMLElement,
-    asynchronously?: boolean,
-    callbackFunc?: () => void,
-  ): void {
+  parseSafeMathMLElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): void {
     var mathmlPositions = [];
-    JsPluginViewer.getMathMLPositionsAtElementAndChildren(
-      element,
-      mathmlPositions,
-    );
+    JsPluginViewer.getMathMLPositionsAtElementAndChildren(element, mathmlPositions);
     for (let i = 0; i < mathmlPositions.length; i++) {
       var mathmlPosition = mathmlPositions[i];
       var newNode = document.createElement("math");
-      mathmlPosition.nextElement.parentNode.insertBefore(
-        newNode,
-        mathmlPosition.nextElement,
-      );
-      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(
-        mathmlPosition.safeMML,
-      );
+      mathmlPosition.nextElement.parentNode.insertBefore(newNode, mathmlPosition.nextElement);
+      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.safeMML);
     }
   }
 
@@ -87,11 +75,7 @@ class JsPluginViewer {
    * @param safeXml - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderMathML}.
    */
-  async parseDocument(
-    asynchronously?: boolean,
-    callbackFunc?: () => void,
-    safeXml?: boolean,
-  ): Promise<void> {
+  async parseDocument(asynchronously?: boolean, callbackFunc?: () => void, safeXml?: boolean): Promise<void> {
     return renderMathML(JsPluginViewer.properties, document.documentElement);
   }
 
@@ -102,11 +86,7 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderMathML}.
    */
-  async parseElement(
-    element: HTMLElement,
-    asynchronously?: boolean,
-    callbackFunc?: () => void,
-  ): Promise<void> {
+  async parseElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
     await renderLatex(JsPluginViewer.properties, element);
     return await renderMathML(JsPluginViewer.properties, element);
   }
@@ -117,10 +97,7 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderLatex}.
    */
-  async parseLatexDocument(
-    asynchronously?: boolean,
-    callbackFunc?: () => void,
-  ): Promise<void> {
+  async parseLatexDocument(asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
     return renderLatex(JsPluginViewer.properties, document.documentElement);
   }
 
@@ -131,11 +108,7 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderLatex}.
    */
-  async parseLatexElement(
-    element: HTMLElement,
-    asynchronously?: boolean,
-    callbackFunc?: () => void,
-  ): Promise<void> {
+  async parseLatexElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
     return renderLatex(JsPluginViewer.properties, element);
   }
 
@@ -153,18 +126,10 @@ class JsPluginViewer {
     var inputCopy = input.slice();
 
     // Decoding entities.
-    inputCopy = inputCopy
-      .split(tagOpenerEntity)
-      .join(safeXMLCharacters.tagOpener);
-    inputCopy = inputCopy
-      .split(tagCloserEntity)
-      .join(safeXMLCharacters.tagCloser);
-    inputCopy = inputCopy
-      .split(doubleQuoteEntity)
-      .join(safeXMLCharacters.doubleQuote);
-    inputCopy = inputCopy
-      .split(realDoubleQuoteEntity)
-      .join(safeXMLCharacters.realDoubleQuote);
+    inputCopy = inputCopy.split(tagOpenerEntity).join(safeXMLCharacters.tagOpener);
+    inputCopy = inputCopy.split(tagCloserEntity).join(safeXMLCharacters.tagCloser);
+    inputCopy = inputCopy.split(doubleQuoteEntity).join(safeXMLCharacters.doubleQuote);
+    inputCopy = inputCopy.split(realDoubleQuoteEntity).join(safeXMLCharacters.realDoubleQuote);
 
     var tagOpener = safeXMLCharacters.tagOpener;
     var tagCloser = safeXMLCharacters.tagCloser;
@@ -211,10 +176,7 @@ class JsPluginViewer {
     return returnValue;
   }
 
-  private static getMathMLPositionsAtElementAndChildren(
-    element: Node,
-    mathmlPositions,
-  ) {
+  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions) {
     JsPluginViewer.getMathMLPositionsAtNode(element, mathmlPositions);
     // Copy current children because DOM will be changed and element.childNodes won't be
     // consistent on call getMathMLPositionsAtElementAndChildren().
@@ -222,10 +184,7 @@ class JsPluginViewer {
     if (childNodes.length > 0) {
       for (let i = 0; i < childNodes.length; i++) {
         var child = childNodes[i];
-        JsPluginViewer.getMathMLPositionsAtElementAndChildren(
-          child,
-          mathmlPositions,
-        );
+        JsPluginViewer.getMathMLPositionsAtElementAndChildren(child, mathmlPositions);
       }
     }
   }
@@ -234,33 +193,21 @@ class JsPluginViewer {
     var safeXMLCharacters = JsCharacters.getSafeXMLCharacters();
     if (node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
-      var endMathmlTag =
-        safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
+      var endMathmlTag = safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
       var start = node.textContent.indexOf(startMathmlTag);
       var end = 0;
       while (start != -1) {
-        end = node.textContent.indexOf(
-          endMathmlTag,
-          start + startMathmlTag.length,
-        );
+        end = node.textContent.indexOf(endMathmlTag, start + startMathmlTag.length);
 
         if (end == -1) break;
 
-        var nextMathML = node.textContent.indexOf(
-          startMathmlTag,
-          end + endMathmlTag.length,
-        );
+        var nextMathML = node.textContent.indexOf(startMathmlTag, end + endMathmlTag.length);
 
         if (nextMathML >= 0 && end > nextMathML) break;
 
-        var safeMathml = node.textContent.substring(
-          start,
-          end + endMathmlTag.length,
-        );
+        var safeMathml = node.textContent.substring(start, end + endMathmlTag.length);
 
-        node.textContent =
-          node.textContent.substring(0, start) +
-          node.textContent.substring(end + endMathmlTag.length);
+        node.textContent = node.textContent.substring(0, start) + node.textContent.substring(end + endMathmlTag.length);
         node = (node as Text).splitText(start);
         start = node.textContent.indexOf(startMathmlTag);
 

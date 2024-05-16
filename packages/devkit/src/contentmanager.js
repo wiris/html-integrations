@@ -31,9 +31,7 @@ export default class ContentManager {
     if ("editorAttributes" in contentManagerAttributes) {
       this.editorAttributes = contentManagerAttributes.editorAttributes;
     } else {
-      throw new Error(
-        "ContentManager constructor error: editorAttributes property missed.",
-      );
+      throw new Error("ContentManager constructor error: editorAttributes property missed.");
     }
 
     /**
@@ -56,9 +54,7 @@ export default class ContentManager {
     if ("environment" in contentManagerAttributes) {
       this.environment = contentManagerAttributes.environment;
     } else {
-      throw new Error(
-        "ContentManager constructor error: environment property missed",
-      );
+      throw new Error("ContentManager constructor error: environment property missed");
     }
 
     /**
@@ -69,9 +65,7 @@ export default class ContentManager {
     if ("language" in contentManagerAttributes) {
       this.language = contentManagerAttributes.language;
     } else {
-      throw new Error(
-        "ContentManager constructor error: language property missed",
-      );
+      throw new Error("ContentManager constructor error: language property missed");
     }
 
     /**
@@ -185,9 +179,7 @@ export default class ContentManager {
    */
   insertEditor() {
     if (ContentManager.isEditorLoaded()) {
-      this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(
-        this.editorAttributes,
-      );
+      this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
       if (this.modalDialogInstance.rtl) {
@@ -206,22 +198,12 @@ export default class ContentManager {
         setTimeout(function () {
           // Make sure the modalDialogInstance is available when the timeout is over
           // to avoid throw errors and stop execution.
-          if (this.hasOwnProperty("modalDialogInstance"))
-            this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
+          if (this.hasOwnProperty("modalDialogInstance")) this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
         }, 400);
 
-        const formulaDisplayDiv =
-          document.getElementsByClassName("wrs_formulaDisplay")[0];
-        Util.addEvent(
-          formulaDisplayDiv,
-          "focus",
-          this.modalDialogInstance.handleOpenedIosSoftkeyboard,
-        );
-        Util.addEvent(
-          formulaDisplayDiv,
-          "blur",
-          this.modalDialogInstance.handleClosedIosSoftkeyboard,
-        );
+        const formulaDisplayDiv = document.getElementsByClassName("wrs_formulaDisplay")[0];
+        Util.addEvent(formulaDisplayDiv, "focus", this.modalDialogInstance.handleOpenedIosSoftkeyboard);
+        Util.addEvent(formulaDisplayDiv, "blur", this.modalDialogInstance.handleClosedIosSoftkeyboard);
       }
       // Fire onLoad event. Necessary to set the MathML into the editor
       // after is loaded.
@@ -295,10 +277,7 @@ export default class ContentManager {
    */
   static getURLFromAnchorElement(anchorElement) {
     // Check protocol and remove port if it's standard.
-    const removePort =
-      anchorElement.port === "80" ||
-      anchorElement.port === "443" ||
-      anchorElement.port === "";
+    const removePort = anchorElement.port === "80" || anchorElement.port === "443" || anchorElement.port === "";
     return `${anchorElement.protocol}//${anchorElement.hostname}${removePort ? "" : `:${anchorElement.port}`}${anchorElement.pathname.startsWith("/") ? anchorElement.pathname : `/${anchorElement.pathname}`}`; // eslint-disable-line max-len
   }
 
@@ -341,14 +320,7 @@ export default class ContentManager {
    */
   static isIOS() {
     return (
-      [
-        "iPad Simulator",
-        "iPhone Simulator",
-        "iPod Simulator",
-        "iPad",
-        "iPhone",
-        "iPod",
-      ].includes(navigator.platform) ||
+      ["iPad Simulator", "iPhone Simulator", "iPod Simulator", "iPad", "iPhone", "iPod"].includes(navigator.platform) ||
       // iPad on iOS 13 detection
       (navigator.userAgent.includes("Mac") && "ontouchend" in document)
     );
@@ -359,9 +331,7 @@ export default class ContentManager {
    * @returns {Boolean}
    */
   static isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
-    );
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
 
   /**
@@ -471,8 +441,7 @@ export default class ContentManager {
    * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
-    const isMobile =
-      this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
+    const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
     const isRTL = this.editor.getEditorModel().isRTL();
 
     if (isMobile || this.integrationModel.forcedHandMode) {
@@ -529,11 +498,7 @@ export default class ContentManager {
       this.hideHandModeButton();
 
       // In case we have a keyboard written formula, we still want it to be opened with handMode.
-      if (
-        this.mathML &&
-        !this.mathML.includes('<annotation encoding="application/json">') &&
-        !this.isNewElement
-      ) {
+      if (this.mathML && !this.mathML.includes('<annotation encoding="application/json">') && !this.isNewElement) {
         this.openHandOnKeyboardMathML(this.mathML, this.editor);
       }
     }
@@ -543,9 +508,7 @@ export default class ContentManager {
    * Change Editor in keyboard mode when is loaded
    */
   setKeyboardMode() {
-    const wrsEditor = document.getElementsByClassName(
-      "wrs_handOpen wrs_disablePalette",
-    )[0];
+    const wrsEditor = document.getElementsByClassName("wrs_handOpen wrs_disablePalette")[0];
     if (wrsEditor) {
       wrsEditor.classList.remove("wrs_handOpen");
       wrsEditor.classList.remove("wrs_disablePalette");
@@ -640,9 +603,7 @@ export default class ContentManager {
 
     let toolbar;
     if (customEditor) {
-      toolbar = customEditor.toolbar
-        ? customEditor.toolbar
-        : _wrs_int_wirisProperties.toolbar;
+      toolbar = customEditor.toolbar ? customEditor.toolbar : _wrs_int_wirisProperties.toolbar;
 
       if (this.toolbar == null || this.toolbar !== toolbar) {
         this.setToolbar(toolbar);
@@ -684,8 +645,7 @@ export default class ContentManager {
     if (toolbar === "general") {
       // eslint-disable-next-line camelcase
       toolbar =
-        typeof _wrs_int_wirisProperties === "undefined" ||
-        typeof _wrs_int_wirisProperties.toolbar === "undefined"
+        typeof _wrs_int_wirisProperties === "undefined" || typeof _wrs_int_wirisProperties.toolbar === "undefined"
           ? "general"
           : _wrs_int_wirisProperties.toolbar;
     }
@@ -726,9 +686,7 @@ export default class ContentManager {
    * @returns {Boolean} True if the editor content has been changed. False otherwise.
    */
   hasChanges() {
-    return (
-      !this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged()
-    );
+    return !this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged();
   }
 
   /**
@@ -740,13 +698,9 @@ export default class ContentManager {
       if (keyboardEvent.key === "Escape" || keyboardEvent.key === "Esc") {
         // Code to detect Esc event.
         // There should be only one element with class name 'wrs_pressed' at the same time.
-        let list = document.getElementsByClassName(
-          "wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed",
-        );
+        let list = document.getElementsByClassName("wrs_expandButton wrs_expandButtonFor3RowsLayout wrs_pressed");
         if (list.length === 0) {
-          list = document.getElementsByClassName(
-            "wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed",
-          );
+          list = document.getElementsByClassName("wrs_expandButton wrs_expandButtonFor2RowsLayout wrs_pressed");
           if (list.length === 0) {
             list = document.getElementsByClassName("wrs_select wrs_pressed");
             if (list.length === 0) {
@@ -763,9 +717,7 @@ export default class ContentManager {
           this.editor.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else if (
-          document.querySelector('[title="Manual"]') === document.activeElement
-        ) {
+        } else if (document.querySelector('[title="Manual"]') === document.activeElement) {
           // Focus is on minimize button (_).
           this.modalDialogInstance.closeDiv.focus();
           keyboardEvent.stopPropagation();
@@ -787,9 +739,7 @@ export default class ContentManager {
           this.modalDialogInstance.minimizeDiv.focus();
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
-        } else if (
-          document.activeElement === this.modalDialogInstance.closeDiv
-        ) {
+        } else if (document.activeElement === this.modalDialogInstance.closeDiv) {
           // Focus on help button.
           if (!(this.modalDialogInstance.properties.state === "minimized")) {
             const element = document.querySelector('[title="Manual"]');
@@ -799,11 +749,8 @@ export default class ContentManager {
           }
         } else {
           // There should be only one element with class name 'wrs_formulaDisplay'.
-          const element =
-            document.getElementsByClassName("wrs_formulaDisplay")[0];
-          if (
-            element.getAttribute("class") === "wrs_formulaDisplay wrs_focused"
-          ) {
+          const element = document.getElementsByClassName("wrs_formulaDisplay")[0];
+          if (element.getAttribute("class") === "wrs_formulaDisplay wrs_focused") {
             // Focus is on formuladisplay.
             this.modalDialogInstance.submitButton.focus();
             keyboardEvent.stopPropagation();

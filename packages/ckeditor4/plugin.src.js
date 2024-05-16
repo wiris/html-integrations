@@ -48,27 +48,20 @@ export class CKEditor4Integration extends IntegrationModel {
 
     const editor = this.editorObject;
     if ("wiriseditorparameters" in editor.config) {
-      Configuration.update(
-        "editorParameters",
-        editor.config.wiriseditorparameters,
-      );
+      Configuration.update("editorParameters", editor.config.wiriseditorparameters);
     }
 
     // Hide MathType toolbar button if is disabled by config.
     if (!Configuration.get("editorEnabled")) {
-      document.getElementsByClassName(
-        "cke_button__ckeditor_wiris_formulaeditor",
-      )[0].style.display = "none";
+      document.getElementsByClassName("cke_button__ckeditor_wiris_formulaeditor")[0].style.display = "none";
     }
 
     // Hide ChemType toolbar button if is disabled by config.
     if (!Configuration.get("chemEnabled")) {
-      document.getElementsByClassName(
-        "cke_button__ckeditor_wiris_formulaeditorchemistry",
-      )[0].style.display = "none";
+      document.getElementsByClassName("cke_button__ckeditor_wiris_formulaeditorchemistry")[0].style.display = "none";
     }
     // Change the destroy behavior to also destroy the Mathtype instance.
-    editor.on('destroy', () => {
+    editor.on("destroy", () => {
       this.destroy();
     });
   }
@@ -112,10 +105,7 @@ export class CKEditor4Integration extends IntegrationModel {
   addEditorListeners() {
     const editor = this.editorObject;
 
-    if (
-      typeof editor.config.wirislistenersdisabled === "undefined" ||
-      !editor.config.wirislistenersdisabled
-    ) {
+    if (typeof editor.config.wirislistenersdisabled === "undefined" || !editor.config.wirislistenersdisabled) {
       // First editor parsing.
       editor.setData(Parser.initParse(editor.getData()));
 
@@ -128,14 +118,8 @@ export class CKEditor4Integration extends IntegrationModel {
         editor.on("doubleclick", (event) => {
           if (
             (event.data.element.$.nodeName.toLowerCase() === "img" &&
-              Util.containsClass(
-                event.data.element.$,
-                Configuration.get("imageClassName"),
-              )) ||
-            Util.containsClass(
-              event.data.element.$,
-              Configuration.get("CASClassName"),
-            )
+              Util.containsClass(event.data.element.$, Configuration.get("imageClassName"))) ||
+            Util.containsClass(event.data.element.$, Configuration.get("CASClassName"))
           ) {
             event.data.dialog = null;
           }
@@ -151,12 +135,9 @@ export class CKEditor4Integration extends IntegrationModel {
       editor.on("afterSetData", (e) => {
         // eslint-disable-line no-unused-vars
         if (typeof Parser.observer !== "undefined") {
-          Array.prototype.forEach.call(
-            document.getElementsByClassName("Wirisformula"),
-            (wirisImages) => {
-              Parser.observer.observe(wirisImages);
-            },
-          );
+          Array.prototype.forEach.call(document.getElementsByClassName("Wirisformula"), (wirisImages) => {
+            Parser.observer.observe(wirisImages);
+          });
         }
       });
 
@@ -226,9 +207,7 @@ export class CKEditor4Integration extends IntegrationModel {
       if (editor.elementMode === CKEDITOR.ELEMENT_MODE_INLINE) {
         if (newElement.tagName === "TEXTAREA") {
           // Inline editor from a textarea element. In this case the textarea will be replaced by a div element with inline editing enabled.
-          const eventElements = document.getElementsByClassName(
-            "cke_textarea_inline",
-          );
+          const eventElements = document.getElementsByClassName("cke_textarea_inline");
           Array.prototype.forEach.call(eventElements, function (entry) {
             this.setTarget(entry);
             this.addEvents();
@@ -266,9 +245,7 @@ export class CKEditor4Integration extends IntegrationModel {
           event.returnValue = false;
         }
         this.core.getCustomEditors().disable();
-        const customEditorAttr = element.getAttribute(
-          Configuration.get("imageCustomEditorName"),
-        );
+        const customEditorAttr = element.getAttribute(Configuration.get("imageCustomEditorName"));
         if (customEditorAttr) {
           this.core.getCustomEditors().enable(customEditorAttr);
         }
@@ -284,12 +261,7 @@ export class CKEditor4Integration extends IntegrationModel {
     // Due to insertFormula adds an image using pure JavaScript functions,
     // it is needed notificate to the editorObject that placeholder status
     // has to be updated.
-    const formula = super.insertFormula(
-      focusElement,
-      windowTarget,
-      mathml,
-      wirisProperties,
-    );
+    const formula = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
     this.editorObject.fire("change");
     return formula;
   }
@@ -342,8 +314,7 @@ export class CKEditor4Integration extends IntegrationModel {
 
         exec: (editor) => {
           // eslint-disable-line no-shadow
-          const ckeditorIntegrationInstance =
-            WirisPlugin.instances[editor.name];
+          const ckeditorIntegrationInstance = WirisPlugin.instances[editor.name];
           // Can be that previously custom editor was used. So is needed disable
           // all the editors to avoid wrong behaviours.
           ckeditorIntegrationInstance.core.getCustomEditors().disable();
@@ -361,11 +332,8 @@ export class CKEditor4Integration extends IntegrationModel {
 
         exec: (editor) => {
           // eslint-disable-line no-shadow
-          const ckeditorIntegrationInstance =
-            WirisPlugin.instances[editor.name];
-          ckeditorIntegrationInstance.core
-            .getCustomEditors()
-            .enable("chemistry");
+          const ckeditorIntegrationInstance = WirisPlugin.instances[editor.name];
+          ckeditorIntegrationInstance.core.getCustomEditors().enable("chemistry");
           ckeditorIntegrationInstance.openNewFormulaEditor();
         },
       });
@@ -379,8 +347,7 @@ export class CKEditor4Integration extends IntegrationModel {
         ckeditorIntegrationModelProperties.editorObject = editor;
         // In CKEditor always there is an iframe or a div container. To access, we use the property that
         // the container has a class 'cke_wysiwyg_[container type]' where [container type] can be 'frame' or 'div'.
-        ckeditorIntegrationModelProperties.target =
-          editor.container.$.querySelector("*[class^=cke_wysiwyg]");
+        ckeditorIntegrationModelProperties.target = editor.container.$.querySelector("*[class^=cke_wysiwyg]");
         ckeditorIntegrationModelProperties.serviceProviderProperties = {
           URI: process.env.SERVICE_PROVIDER_URI,
           server: process.env.SERVICE_PROVIDER_SERVER,
@@ -393,8 +360,7 @@ export class CKEditor4Integration extends IntegrationModel {
         // Updating integration paths if context path is overwritten by editor javascript configuration.
         if ("wiriscontextpath" in editor.config) {
           ckeditorIntegrationModelProperties.configurationService =
-            editor.config.wiriscontextpath +
-            ckeditorIntegrationModelProperties.configurationService;
+            editor.config.wiriscontextpath + ckeditorIntegrationModelProperties.configurationService;
           console.warn(
             "Deprecated property wiriscontextpath. Use mathTypeParameters on instead.",
             editor.config.wiriscontextpath,
@@ -403,13 +369,10 @@ export class CKEditor4Integration extends IntegrationModel {
 
         // Overriding MathType integration parameters.
         if ("mathTypeParameters" in editor.config) {
-          ckeditorIntegrationModelProperties.integrationParameters =
-            editor.config.mathTypeParameters;
+          ckeditorIntegrationModelProperties.integrationParameters = editor.config.mathTypeParameters;
         }
 
-        const ckeditorIntegrationInstance = new CKEditor4Integration(
-          ckeditorIntegrationModelProperties,
-        );
+        const ckeditorIntegrationInstance = new CKEditor4Integration(ckeditorIntegrationModelProperties);
         ckeditorIntegrationInstance.init();
         ckeditorIntegrationInstance.listeners.fire("onTargetReady", {});
         WirisPlugin.instances[editor.name] = ckeditorIntegrationInstance;

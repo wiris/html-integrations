@@ -9,8 +9,7 @@ import * as Generic from "resources/demos/imports";
 import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for CKEditor 5 on Angular";
+document.getElementById("header_title_name").innerHTML = "MathType for CKEditor 5 on Angular";
 document.getElementById("version_editor").innerHTML = "CKEditor: ";
 
 // Create the initial editor content.
@@ -35,10 +34,7 @@ export class AppComponent implements OnInit {
     // Define the button update
     document.getElementById("btn_update").addEventListener("click", (e) => {
       e.preventDefault();
-      Generic.updateContent(
-        this.myEditor.editorInstance.getData(),
-        "transform_content",
-      );
+      Generic.updateContent(this.myEditor.editorInstance.getData(), "transform_content");
     });
   }
 

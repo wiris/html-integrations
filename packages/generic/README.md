@@ -162,7 +162,19 @@ WirisPlugin.Parser.initParse("<span>hello!</span>  <math><mo>x</mo></math> goodb
 Returns the following:
 
 ```html
-<span>hello!</span> <img style="max-width: none; vertical-align: -4px;" class="Wirisformula" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math»«mo»x«/mo»«/math»" alt="x" role="math" width="13" height="19" align="middle" /> goodbye
+<span>hello!</span>
+<img
+  style="max-width: none; vertical-align: -4px;"
+  class="Wirisformula"
+  src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E"
+  data-mathml="«math»«mo»x«/mo»«/math»"
+  alt="x"
+  role="math"
+  width="13"
+  height="19"
+  align="middle"
+/>
+goodbye
 ```
 
 You can test this by adding the following JavaScript code at the end of `script` in our previous example:
@@ -184,7 +196,9 @@ htmlData = WirisPlugin.Parser.endParse(htmlData);
 For instance, the following call:
 
 ```js
-WirisPlugin.Parser.endParse('<span>hello!</span>  <img style="max-width: none; vertical-align: -4px;" class="Wirisformula" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math»«mo»x«/mo»«/math»" alt="x" role="math" width="13" height="19" align="middle"/> goodbye');
+WirisPlugin.Parser.endParse(
+  '<span>hello!</span>  <img style="max-width: none; vertical-align: -4px;" class="Wirisformula" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2219%22%20width%3D%2213%22%20wrs%3Abaseline%3D%2215%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmo%3Ex%3C%2Fmo%3E%3C%2Fmath%3E--%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%2F%3E%3C%2Fdefs%3E%3Ctext%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20x%3D%226.5%22%20y%3D%2215%22%3Ex%3C%2Ftext%3E%3C%2Fsvg%3E" data-mathml="«math»«mo»x«/mo»«/math»" alt="x" role="math" width="13" height="19" align="middle"/> goodbye',
+);
 ```
 
 Returns the following:
@@ -219,7 +233,13 @@ To install the Java services, please, follow the steps below:
 
    ```js
    <script>
-     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor'); genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line: genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor');
+     genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line:
+     genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs'; //
+     GenericIntegration instance. var genericIntegrationInstance = new
+     WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init();
+     genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance =
+     genericIntegrationInstance;
    </script>
    ```
 
@@ -241,7 +261,12 @@ To install the PHP services, please, follow the steps below:
 
    ```js
    <script>
-     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor'); genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line: genericIntegrationProperties.configurationService = 'integration/configurationjs.php'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById('htmlEditor');
+     genericIntegrationProperties.toolbar = document.getElementById('toolbar'); // We just added this line:
+     genericIntegrationProperties.configurationService = 'integration/configurationjs.php'; // GenericIntegration
+     instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+     genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {});
+     WirisPlugin.currentInstance = genericIntegrationInstance;
    </script>
    ```
 

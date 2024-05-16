@@ -1,6 +1,6 @@
 import { Properties } from "./properties";
-import { showImage, createImage, mathml2accessible } from './services';
-import MathML from '@wiris/mathtype-html-integration-devkit/src/mathml';
+import { showImage, createImage, mathml2accessible } from "./services";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
 
 /**
  * Data obtained when rendering image. Data needed to set the formula image parameters.
@@ -18,13 +18,8 @@ interface FormulaData {
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
-  const nodeIterator: NodeIterator = document.createNodeIterator(
-    root,
-    NodeFilter.SHOW_TEXT,
-    (node) =>
-      /«math(.*?)«\/math»/g.test(node.nodeValue || "")
-        ? NodeFilter.FILTER_ACCEPT
-        : NodeFilter.FILTER_REJECT,
+  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
+    /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
   );
   const safeNodes: Node[] = [];
 
@@ -44,7 +39,7 @@ function decodeSafeMathML(root: HTMLElement) {
   const safeNodes = findSafeMathMLTextNodes(root);
 
   for (const safeNode of safeNodes) {
-    const mathml = MathML.safeXmlDecode(safeNode.textContent ?? '');
+    const mathml = MathML.safeXmlDecode(safeNode.textContent ?? "");
     // Insert mathml node.
     const fragment = document.createRange().createContextualFragment(mathml);
 
@@ -58,10 +53,7 @@ function decodeSafeMathML(root: HTMLElement) {
  * @param {Properties} properties - Properties of the viewer.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
-export async function renderMathML(
-  properties: Properties,
-  root: HTMLElement,
-): Promise<void> {
+export async function renderMathML(properties: Properties, root: HTMLElement): Promise<void> {
   if (properties.viewer !== "image" && properties.viewer !== "mathml") {
     return;
   }
@@ -74,10 +66,20 @@ export async function renderMathML(
       let imgSource;
 
       // Transform mml to img.
-      if (properties.wirispluginperformance === 'true') {
-        imgSource = await showImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+      if (properties.wirispluginperformance === "true") {
+        imgSource = await showImage(
+          mml,
+          properties.lang,
+          properties.editorServicesRoot,
+          properties.editorServicesExtension,
+        );
       } else {
-        imgSource = await createImage(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
+        imgSource = await createImage(
+          mml,
+          properties.lang,
+          properties.editorServicesRoot,
+          properties.editorServicesExtension,
+        );
       }
 
       // Set img properties.
@@ -98,11 +100,7 @@ export async function renderMathML(
  * @param {string} mml - The MathML of the formula image being created.
  * @returns {Promise<HTMLImageElement>} - Formula image.
  */
-async function setImageProperties(
-  properties: Properties,
-  data: FormulaData,
-  mml: string,
-): Promise<HTMLImageElement> {
+async function setImageProperties(properties: Properties, data: FormulaData, mml: string): Promise<HTMLImageElement> {
   // Create imag element.
   let img = document.createElement("img");
 
@@ -133,7 +131,7 @@ async function setImageProperties(
         );
         data.alt = text;
       }
-      img.alt = data.alt ?? '';
+      img.alt = data.alt ?? "";
     } catch {
       img.alt = "Alternative text not available";
     }
@@ -159,9 +157,7 @@ async function setImageProperties(
  */
 export function serializeHtmlToXml(text: string): string {
   const serializer = new XMLSerializer();
-  text = serializer.serializeToString(
-    document.createRange().createContextualFragment(text)
-  );
+  text = serializer.serializeToString(document.createRange().createContextualFragment(text));
   return text;
 }
 

@@ -43,12 +43,7 @@
           "image": "http://my-library.org/logo.png"
         },
         "manual": {
-          "files": [
-            "./getting_started.md",
-            "./data.md",
-            "./services.md",
-            "./documentation.md"
-          ]
+          "files": ["./getting_started.md", "./data.md", "./services.md", "./documentation.md"]
         }
       }
     },

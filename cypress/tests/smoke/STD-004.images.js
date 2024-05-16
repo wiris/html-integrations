@@ -24,8 +24,5 @@ it("formula should have wirisformula class", function () {
   // Get the formula by it's alt text and assert it has the Wirisformula class
   // We could find the formula by using getFormula, but internally, that looks for
   // .Wirisformula, so it defeats the purpose. That's why we use the alt instead.
-  cy.get(`img[alt="${this.formulas["formula-general-alt-es"]}"]`).should(
-    "have.class",
-    "Wirisformula",
-  );
+  cy.get(`img[alt="${this.formulas["formula-general-alt-es"]}"]`).should("have.class", "Wirisformula");
 });

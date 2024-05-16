@@ -3,17 +3,14 @@ const { emitWarning } = require("process");
 
 const pack = () =>
   new Promise((resolve, reject) => {
-    exec(
-      "cd packages/mathtype-ckeditor5/ && npm pack --quiet ",
-      (err, stdout, stderr) => {
-        if (err) {
-          reject(err);
-        }
-        // eslint-disable-next-line no-console
-        console.log({ dout: stdout, derr: stderr });
-        resolve({ dout: stdout, derr: stderr });
-      },
-    );
+    exec("cd packages/mathtype-ckeditor5/ && npm pack --quiet ", (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+      }
+      // eslint-disable-next-line no-console
+      console.log({ dout: stdout, derr: stderr });
+      resolve({ dout: stdout, derr: stderr });
+    });
   });
 
 const installMathtype = (path) =>
@@ -45,9 +42,7 @@ if (!module.parent) {
 
   // Log a warning if there are more than 0 arguments
   if (args.length > 0) {
-    emitWarning(
-      "No parameters needed, all the additional parameters will be ignored.",
-    );
+    emitWarning("No parameters needed, all the additional parameters will be ignored.");
   }
 
   // Execute all the tests and resolve when finished

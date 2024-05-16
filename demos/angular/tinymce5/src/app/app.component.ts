@@ -4,8 +4,7 @@ import { Component } from "@angular/core";
 import * as Generic from "resources/demos/imports";
 
 // Apply specific demo names to all the objects.
-document.getElementById("header_title_name").innerHTML =
-  "MathType for TinyMCE 5 on Angular";
+document.getElementById("header_title_name").innerHTML = "MathType for TinyMCE 5 on Angular";
 document.getElementById("version_editor").innerHTML = "TinyMCE: ";
 
 // Create the initial editor content.
@@ -18,10 +17,7 @@ const editorContent = Generic.editorContentMathML;
 // Add listener on click button to launch updateContent function.
 document.getElementById("btn_update").addEventListener("click", (e) => {
   e.preventDefault();
-  Generic.updateContent(
-    (window as any).tinyMCE.activeEditor.getContent(),
-    "transform_content",
-  ); //eslint-disable-line
+  Generic.updateContent((window as any).tinyMCE.activeEditor.getContent(), "transform_content"); //eslint-disable-line
 });
 
 @Component({

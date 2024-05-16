@@ -72,42 +72,26 @@ export class Properties {
   private async initialize(): Promise<void> {
     // Get URL parameters from <script>
     const pluginName = "WIRISplugins.js";
-    const script: HTMLScriptElement = document.querySelector(
-      `script[src*="${pluginName}"]`,
-    );
+    const script: HTMLScriptElement = document.querySelector(`script[src*="${pluginName}"]`);
 
     if (!!script) {
       const pluginNamePosition: number = script.src.lastIndexOf(pluginName);
-      const params: string = script.src.substring(
-        pluginNamePosition + pluginName.length,
-      );
+      const params: string = script.src.substring(pluginNamePosition + pluginName.length);
       const urlParams = new URLSearchParams(params);
 
       if (urlParams.get("dpi") !== null && urlParams.get("dpi") !== undefined) {
         Properties.instance.config.dpi = +urlParams.get("dpi");
       }
-      if (
-        urlParams.get("element") !== null &&
-        urlParams.get("element") !== undefined
-      ) {
+      if (urlParams.get("element") !== null && urlParams.get("element") !== undefined) {
         Properties.instance.config.element = urlParams.get("element");
       }
-      if (
-        urlParams.get("lang") !== null &&
-        urlParams.get("lang") !== undefined
-      ) {
+      if (urlParams.get("lang") !== null && urlParams.get("lang") !== undefined) {
         Properties.instance.config.lang = urlParams.get("lang");
       }
-      if (
-        urlParams.get("viewer") !== null &&
-        urlParams.get("viewer") !== undefined
-      ) {
+      if (urlParams.get("viewer") !== null && urlParams.get("viewer") !== undefined) {
         Properties.instance.config.viewer = urlParams.get("viewer") as Viewer;
       }
-      if (
-        urlParams.get("zoom") !== null &&
-        urlParams.get("zoom") !== undefined
-      ) {
+      if (urlParams.get("zoom") !== null && urlParams.get("zoom") !== undefined) {
         Properties.instance.config.zoom = +urlParams.get("zoom");
       }
     }
@@ -117,20 +101,15 @@ export class Properties {
     // Get backend parameters calling the configurationjson service
     try {
       Properties.instance.config.backendConfig = await configurationJson(
-        [
-          "wirispluginperformance",
-          "wiriseditormathmlattribute",
-          "wiriscustomheaders",
-        ],
+        ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders"],
         Properties.instance.editorServicesRoot,
         Properties.instance.editorServicesExtension,
       );
 
       // We'll always get a string from the wiriscustomheaders backend parameter. It needs to be converted to an object.
-      Properties.instance.config.backendConfig.wiriscustomheaders =
-        Util.convertStringToObject(
-          Properties.instance.config.backendConfig.wiriscustomheaders,
-        );
+      Properties.instance.config.backendConfig.wiriscustomheaders = Util.convertStringToObject(
+        Properties.instance.config.backendConfig.wiriscustomheaders,
+      );
     } catch (e) {
       if (e instanceof StatusError) {
         // Do nothing; leave default values.
@@ -169,10 +148,7 @@ export class Properties {
   }
 
   get editorServicesExtension(): string {
-    return (
-      this.config.editorServicesExtension ||
-      defaultValues.editorServicesExtension
-    );
+    return this.config.editorServicesExtension || defaultValues.editorServicesExtension;
   }
 
   set editorServicesExtension(editorServicesExtension: string) {
@@ -191,12 +167,7 @@ export class Properties {
    */
   get lang(): string {
     const configLang = this.config.lang === "inherit" ? null : this.config.lang;
-    return (
-      configLang ||
-      document.getElementsByTagName("html")[0].lang ||
-      navigator.language ||
-      defaultValues.lang
-    );
+    return configLang || document.getElementsByTagName("html")[0].lang || navigator.language || defaultValues.lang;
   }
 
   set lang(lang: string) {
@@ -271,10 +242,7 @@ export class Properties {
    * - true, by default.
    */
   get wirispluginperformance(): Wirispluginperformance {
-    return (
-      this.config.backendConfig.wirispluginperformance ||
-      defaultValues.backendConfig.wirispluginperformance
-    );
+    return this.config.backendConfig.wirispluginperformance || defaultValues.backendConfig.wirispluginperformance;
   }
 
   set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
@@ -290,14 +258,12 @@ export class Properties {
    */
   get wiriseditormathmlattribute(): string {
     return (
-      this.config.backendConfig.wiriseditormathmlattribute ||
-      defaultValues.backendConfig.wiriseditormathmlattribute
+      this.config.backendConfig.wiriseditormathmlattribute || defaultValues.backendConfig.wiriseditormathmlattribute
     );
   }
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
-    this.config.backendConfig.wiriseditormathmlattribute =
-      wiriseditormathmlattribute;
+    this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
     this.render();
   }
 }

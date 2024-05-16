@@ -15,9 +15,7 @@ require("@wiris/mathtype-tinymce5");
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, EditorModule],
-  providers: [
-    { provide: TINYMCE_SCRIPT_SRC, useValue: "tinymce/tinymce.min.js" },
-  ],
+  providers: [{ provide: TINYMCE_SCRIPT_SRC, useValue: "tinymce/tinymce.min.js" }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

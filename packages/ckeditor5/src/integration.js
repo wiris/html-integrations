@@ -13,12 +13,8 @@ export default class CKEditor5Integration extends IntegrationModel {
   constructor(ckeditorIntegrationModelProperties) {
     const editor = ckeditorIntegrationModelProperties.editorObject;
 
-    if (
-      typeof editor.config !== "undefined" &&
-      typeof editor.config.get("mathTypeParameters") !== "undefined"
-    ) {
-      ckeditorIntegrationModelProperties.integrationParameters =
-        editor.config.get("mathTypeParameters");
+    if (typeof editor.config !== "undefined" && typeof editor.config.get("mathTypeParameters") !== "undefined") {
+      ckeditorIntegrationModelProperties.integrationParameters = editor.config.get("mathTypeParameters");
     }
     /**
      * CKEditor5 Integration.
@@ -71,10 +67,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   addEditorListeners() {
     const editor = this.editorObject;
 
-    if (
-      typeof editor.config.wirislistenersdisabled === "undefined" ||
-      !editor.config.wirislistenersdisabled
-    ) {
+    if (typeof editor.config.wirislistenersdisabled === "undefined" || !editor.config.wirislistenersdisabled) {
       this.checkElement();
     }
   }
@@ -116,9 +109,7 @@ export default class CKEditor5Integration extends IntegrationModel {
             event.returnValue = false;
           }
           this.core.getCustomEditors().disable();
-          const customEditorAttr = element.getAttribute(
-            Configuration.get("imageCustomEditorName"),
-          );
+          const customEditorAttr = element.getAttribute(Configuration.get("imageCustomEditorName"));
           if (customEditorAttr) {
             this.core.getCustomEditors().enable(customEditorAttr);
           }
@@ -142,8 +133,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
   openNewFormulaEditor() {
     // Store the editor selection as it will be lost upon opening the modal
-    this.core.editionProperties.selection =
-      this.editorObject.editing.view.document.selection;
+    this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
 
     return super.openNewFormulaEditor();
   }
@@ -170,11 +160,8 @@ export default class CKEditor5Integration extends IntegrationModel {
         if (!mathml) return;
 
         const viewSelection =
-          this.core.editionProperties.selection ||
-          this.editorObject.editing.view.document.selection;
-        const modelPosition = this.editorObject.editing.mapper.toModelPosition(
-          viewSelection.getLastPosition(),
-        );
+          this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
+        const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
 
         this.editorObject.model.insertObject(modelElementNew, modelPosition);
 
@@ -186,19 +173,15 @@ export default class CKEditor5Integration extends IntegrationModel {
         }
 
         // Set carret after the formula
-        const position =
-          this.editorObject.model.createPositionAfter(modelElementNew);
+        const position = this.editorObject.model.createPositionAfter(modelElementNew);
         writer.setSelection(position);
       } else {
         const img = core.editionProperties.temporalImage;
-        const viewElement =
-          this.editorObject.editing.view.domConverter.domToView(img).parent;
-        const modelElementOld =
-          this.editorObject.editing.mapper.toModelElement(viewElement);
+        const viewElement = this.editorObject.editing.view.domConverter.domToView(img).parent;
+        const modelElementOld = this.editorObject.editing.mapper.toModelElement(viewElement);
 
         // Insert the new <mathml> and remove the old one
-        const position =
-          this.editorObject.model.createPositionBefore(modelElementOld);
+        const position = this.editorObject.model.createPositionBefore(modelElementOld);
 
         // If the given MathML is empty, don't insert a new formula.
         if (mathml) {
@@ -236,15 +219,9 @@ export default class CKEditor5Integration extends IntegrationModel {
       let viewElementData = viewElement.data;
       if (viewElement.nodeType === 3) {
         // Remove invisible white spaces
-        viewElementData = viewElementData.replaceAll(
-          String.fromCharCode(8288),
-          "",
-        );
+        viewElementData = viewElementData.replaceAll(String.fromCharCode(8288), "");
       }
-      if (
-        node.is("textProxy") &&
-        node.data === viewElementData.replace(String.fromCharCode(160), " ")
-      ) {
+      if (node.is("textProxy") && node.data === viewElementData.replace(String.fromCharCode(160), " ")) {
         return node.textNode;
       }
     }
@@ -260,9 +237,7 @@ export default class CKEditor5Integration extends IntegrationModel {
       this.insertMathml("");
     } else if (this.core.editMode === "latex") {
       returnObject.latex = Latex.getLatexFromMathML(mathml);
-      returnObject.node = windowTarget.document.createTextNode(
-        `$$${returnObject.latex}$$`,
-      );
+      returnObject.node = windowTarget.document.createTextNode(`$$${returnObject.latex}$$`);
 
       this.editorObject.model.change((writer) => {
         const { latexRange } = this.core.editionProperties;
@@ -270,30 +245,17 @@ export default class CKEditor5Integration extends IntegrationModel {
         const startNode = this.findText(latexRange.startContainer);
         const endNode = this.findText(latexRange.endContainer);
 
-        let startPosition = writer.createPositionAt(
-          startNode.parent,
-          startNode.startOffset + latexRange.startOffset,
-        );
-        let endPosition = writer.createPositionAt(
-          endNode.parent,
-          endNode.startOffset + latexRange.endOffset,
-        );
+        let startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
+        let endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
 
         let range = writer.createRange(startPosition, endPosition);
 
         // When Latex is next to image/formula.
-        if (
-          latexRange.startContainer.nodeType === 3 &&
-          latexRange.startContainer.previousSibling?.nodeType === 1
-        ) {
+        if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
           // Get the position of the latex to be replaced.
           let latexEdited =
             "$$" +
-            Latex.getLatexFromMathML(
-              MathML.safeXmlDecode(
-                this.core.editionProperties.temporalImage.dataset.mathml,
-              ),
-            ) +
+            Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml)) +
             "$$";
           let data = latexRange.startContainer.data;
 
@@ -311,42 +273,25 @@ export default class CKEditor5Integration extends IntegrationModel {
             startPosition = writer.createPositionBefore(startNode);
             range = startNode;
           } else {
-            startPosition = startPosition = writer.createPositionAt(
-              startNode.parent,
-              startNode.startOffset + offset,
-            );
-            endPosition = writer.createPositionAt(
-              endNode.parent,
-              endNode.startOffset + second$ + offset,
-            );
+            startPosition = startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + offset);
+            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);
             range = writer.createRange(startPosition, endPosition);
           }
         }
 
         writer.remove(range);
-        writer.insertText(
-          `$$${returnObject.latex}$$`,
-          startNode.getAttributes(),
-          startPosition,
-        );
+        writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
       });
     } else {
       mathmlOrigin = this.core.editionProperties.temporalImage?.dataset.mathml;
       try {
-        returnObject.node =
-          this.editorObject.editing.view.domConverter.viewToDom(
-            this.editorObject.editing.mapper.toViewElement(
-              this.insertMathml(mathml),
-            ),
-            windowTarget.document,
-          );
+        returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
+          this.editorObject.editing.mapper.toViewElement(this.insertMathml(mathml)),
+          windowTarget.document,
+        );
       } catch (e) {
         const x = e.toString();
-        if (
-          x.includes(
-            "CKEditorError: Cannot read property 'parent' of undefined",
-          )
-        ) {
+        if (x.includes("CKEditorError: Cannot read property 'parent' of undefined")) {
           this.core.modalDialog.cancelAction();
         }
       }
@@ -354,9 +299,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     // Build the telemeter payload separated to delete null/undefined entries.
     let payload = {
-      mathml_origin: mathmlOrigin
-        ? MathML.safeXmlDecode(mathmlOrigin)
-        : mathmlOrigin,
+      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
       mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
       elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
       editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
@@ -366,8 +309,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     // Remove desired null keys.
     Object.keys(payload).forEach((key) => {
-      if (key === "mathml_origin" || key === "editor_origin")
-        !payload[key] ? delete payload[key] : {};
+      if (key === "mathml_origin" || key === "editor_origin") !payload[key] ? delete payload[key] : {};
     });
 
     // Call Telemetry service to track the event.

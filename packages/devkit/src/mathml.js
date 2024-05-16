@@ -45,28 +45,18 @@ export default class MathML {
     // Decoding entities.
     input = input.split(tagOpener).join(Constants.safeXmlCharacters.tagOpener);
     input = input.split(tagCloser).join(Constants.safeXmlCharacters.tagCloser);
-    input = input
-      .split(doubleQuote)
-      .join(Constants.safeXmlCharacters.doubleQuote);
+    input = input.split(doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
     // Added to fix problem due to import from 1.9.x.
-    input = input
-      .split(realDoubleQuote)
-      .join(Constants.safeXmlCharacters.realDoubleQuote);
+    input = input.split(realDoubleQuote).join(Constants.safeXmlCharacters.realDoubleQuote);
 
     // Blackboard.
     const { ltElement } = Constants.safeBadBlackboardCharacters;
     const { gtElement } = Constants.safeBadBlackboardCharacters;
     const { ampElement } = Constants.safeBadBlackboardCharacters;
     if ("_wrs_blackboard" in window && window._wrs_blackboard) {
-      input = input
-        .split(ltElement)
-        .join(Constants.safeGoodBlackboardCharacters.ltElement);
-      input = input
-        .split(gtElement)
-        .join(Constants.safeGoodBlackboardCharacters.gtElement);
-      input = input
-        .split(ampElement)
-        .join(Constants.safeGoodBlackboardCharacters.ampElement);
+      input = input.split(ltElement).join(Constants.safeGoodBlackboardCharacters.ltElement);
+      input = input.split(gtElement).join(Constants.safeGoodBlackboardCharacters.gtElement);
+      input = input.split(ampElement).join(Constants.safeGoodBlackboardCharacters.ampElement);
     }
 
     ({ tagOpener } = Constants.safeXmlCharacters);
@@ -127,9 +117,7 @@ export default class MathML {
 
     input = input.split(tagOpener).join(Constants.safeXmlCharacters.tagOpener);
     input = input.split(tagCloser).join(Constants.safeXmlCharacters.tagCloser);
-    input = input
-      .split(doubleQuote)
-      .join(Constants.safeXmlCharacters.doubleQuote);
+    input = input.split(doubleQuote).join(Constants.safeXmlCharacters.doubleQuote);
     input = input.split(ampersand).join(Constants.safeXmlCharacters.ampersand);
     input = input.split(quote).join(Constants.safeXmlCharacters.quote);
 
@@ -203,10 +191,7 @@ export default class MathML {
    */
   static removeCustomEditorClassAttribute(mathml, customEditor) {
     // Discard MathML without the specified class.
-    if (
-      mathml.indexOf("class") === -1 ||
-      mathml.indexOf(`wrs_${customEditor}`) === -1
-    ) {
+    if (mathml.indexOf("class") === -1 || mathml.indexOf(`wrs_${customEditor}`) === -1) {
       return mathml;
     }
 
@@ -243,18 +228,12 @@ export default class MathML {
     } else if (MathML.isEmpty(mathml)) {
       const endIndexInline = mathml.indexOf("/>");
       const endIndexNonInline = mathml.indexOf(">");
-      const endIndex =
-        endIndexNonInline === endIndexInline
-          ? endIndexInline
-          : endIndexNonInline;
+      const endIndex = endIndexNonInline === endIndexInline ? endIndexInline : endIndexNonInline;
       mathmlWithAnnotation = `${mathml.substring(0, endIndex)}><semantics><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`;
     } else {
       const beginMathMLContent = mathml.indexOf(">") + 1;
       const endMathmlContent = mathml.lastIndexOf("</math>");
-      const mathmlContent = mathml.substring(
-        beginMathMLContent,
-        endMathmlContent,
-      );
+      const mathmlContent = mathml.substring(beginMathMLContent, endMathmlContent);
       mathmlWithAnnotation = `${mathml.substring(0, beginMathMLContent)}<semantics><mrow>${mathmlContent}</mrow><annotation encoding="${annotationEncoding}">${content}</annotation></semantics></math>`; // eslint-disable-line max-len
     }
 
@@ -280,21 +259,14 @@ export default class MathML {
         if (differentAnnotationIndex !== startAnnotationIndex) {
           differentAnnotationFound = true;
         }
-        differentAnnotationIndex = mathml.indexOf(
-          "<annotation",
-          differentAnnotationIndex + 1,
-        );
+        differentAnnotationIndex = mathml.indexOf("<annotation", differentAnnotationIndex + 1);
       }
 
       if (differentAnnotationFound) {
-        const closeIndex = mathml.indexOf(
-          closeAnnotationTag,
-          startAnnotationIndex,
-        );
+        const closeIndex = mathml.indexOf(closeAnnotationTag, startAnnotationIndex);
         const endAnnotationIndex = closeIndex + closeAnnotationTag.length;
         const startIndex = mathml.substring(0, startAnnotationIndex);
-        mathmlWithoutAnnotation =
-          startIndex + mathml.substring(endAnnotationIndex);
+        mathmlWithoutAnnotation = startIndex + mathml.substring(endAnnotationIndex);
       } else {
         mathmlWithoutAnnotation = MathML.removeSemantics(mathml);
       }
@@ -315,12 +287,9 @@ export default class MathML {
 
     // If `mrow` is found right after the `annotation` ending tag, it's removed as well
     // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
-    const semanticsEndingTagRegex =
-      /(<\/mrow>)?\s*<annotation[\W\w]*?<\/semantics>/gm;
+    const semanticsEndingTagRegex = /(<\/mrow>)?\s*<annotation[\W\w]*?<\/semantics>/gm;
 
-    return mathml
-      .replace(semanticsStartingTagRegex, "")
-      .replace(semanticsEndingTagRegex, "");
+    return mathml.replace(semanticsStartingTagRegex, "").replace(semanticsEndingTagRegex, "");
   }
 
   /**

@@ -38,9 +38,7 @@ export default class StringManager {
     // Check if the key is supported in the given language
     if (!this.strings[language].hasOwnProperty(key)) {
       // eslint-disable-line no-prototype-builtins
-      console.warn(
-        `Unknown key ${key} for language ${language} in StringManager.`,
-      );
+      console.warn(`Unknown key ${key} for language ${language} in StringManager.`);
       return key;
     }
 

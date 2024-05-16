@@ -112,8 +112,7 @@ export default md5;
   };
   Std.parseInt = function (x) {
     var v = parseInt(x, 10);
-    if (v == 0 && (HxOverrides.cca(x, 1) == 120 || HxOverrides.cca(x, 1) == 88))
-      v = parseInt(x);
+    if (v == 0 && (HxOverrides.cca(x, 1) == 120 || HxOverrides.cca(x, 1) == 88)) v = parseInt(x);
     if (isNaN(v)) return null;
     return v;
   };
@@ -145,8 +144,7 @@ export default md5;
     if (window.com.wiris == null) window.com.wiris = {};
     if (window.com.wiris.js == null) window.com.wiris.js = {};
     if (window.com.wiris.js.JsPluginTools == null)
-      window.com.wiris.js.JsPluginTools =
-        com.wiris.js.JsPluginTools.getInstance();
+      window.com.wiris.js.JsPluginTools = com.wiris.js.JsPluginTools.getInstance();
   };
   com.wiris.js.JsPluginTools.prototype = {
     md5encode: function (content) {
@@ -275,30 +273,13 @@ export default md5;
       return this.cmn(this.bitXOR(this.bitXOR(b, c), d), a, b, x, s, t);
     },
     gg: function (a, b, c, d, x, s, t) {
-      return this.cmn(
-        this.bitOR(this.bitAND(b, d), this.bitAND(c, ~d)),
-        a,
-        b,
-        x,
-        s,
-        t,
-      );
+      return this.cmn(this.bitOR(this.bitAND(b, d), this.bitAND(c, ~d)), a, b, x, s, t);
     },
     ff: function (a, b, c, d, x, s, t) {
-      return this.cmn(
-        this.bitOR(this.bitAND(b, c), this.bitAND(~b, d)),
-        a,
-        b,
-        x,
-        s,
-        t,
-      );
+      return this.cmn(this.bitOR(this.bitAND(b, c), this.bitAND(~b, d)), a, b, x, s, t);
     },
     cmn: function (q, a, b, x, s, t) {
-      return this.addme(
-        this.rol(this.addme(this.addme(a, q), this.addme(x, t)), s),
-        b,
-      );
+      return this.addme(this.rol(this.addme(this.addme(a, q), this.addme(x, t)), s), b);
     },
     rol: function (num, cnt) {
       return (num << cnt) | (num >>> (32 - cnt));
@@ -314,8 +295,7 @@ export default md5;
       }
       var i = 0;
       while (i < str.length) {
-        blks[i >> 2] |=
-          HxOverrides.cca(str, i) << (((str.length * 8 + i) % 4) * 8);
+        blks[i >> 2] |= HxOverrides.cca(str, i) << (((str.length * 8 + i) % 4) * 8);
         i++;
       }
       blks[i >> 2] |= 128 << (((str.length * 8 + i) % 4) * 8);
@@ -333,9 +313,7 @@ export default md5;
       var _g = 0;
       while (_g < 4) {
         var j = _g++;
-        str +=
-          hex_chr.charAt((num >> (j * 8 + 4)) & 15) +
-          hex_chr.charAt((num >> (j * 8)) & 15);
+        str += hex_chr.charAt((num >> (j * 8 + 4)) & 15) + hex_chr.charAt((num >> (j * 8)) & 15);
       }
       return str;
     },
@@ -398,25 +376,15 @@ export default md5;
   js.Boot = function () {};
   js.Boot.__name__ = true;
   js.Boot.__unhtml = function (s) {
-    return s
-      .split("&")
-      .join("&amp;")
-      .split("<")
-      .join("&lt;")
-      .split(">")
-      .join("&gt;");
+    return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
   };
   js.Boot.__trace = function (v, i) {
     var msg = i != null ? i.fileName + ":" + i.lineNumber + ": " : "";
     msg += js.Boot.__string_rec(v, "");
     var d;
-    if (
-      typeof document != "undefined" &&
-      (d = document.getElementById("haxe:trace")) != null
-    )
+    if (typeof document != "undefined" && (d = document.getElementById("haxe:trace")) != null)
       d.innerHTML += js.Boot.__unhtml(msg) + "<br/>";
-    else if (typeof console != "undefined" && console.log != null)
-      console.log(msg);
+    else if (typeof console != "undefined" && console.log != null) console.log(msg);
   };
   js.Boot.__clear_trace = function () {
     var d = document.getElementById("haxe:trace");
@@ -733,8 +701,7 @@ export default md5;
   };
   Std.parseInt = function (x) {
     var v = parseInt(x, 10);
-    if (v == 0 && (HxOverrides.cca(x, 1) == 120 || HxOverrides.cca(x, 1) == 88))
-      v = parseInt(x);
+    if (v == 0 && (HxOverrides.cca(x, 1) == 120 || HxOverrides.cca(x, 1) == 88)) v = parseInt(x);
     if (isNaN(v)) return null;
     return v;
   };
@@ -766,8 +733,7 @@ export default md5;
     if (window.com.wiris == null) window.com.wiris = {};
     if (window.com.wiris.js == null) window.com.wiris.js = {};
     if (window.com.wiris.js.JsPluginTools == null)
-      window.com.wiris.js.JsPluginTools =
-        com.wiris.js.JsPluginTools.getInstance();
+      window.com.wiris.js.JsPluginTools = com.wiris.js.JsPluginTools.getInstance();
   };
   com.wiris.js.JsPluginTools.prototype = {
     md5encode: function (content) {
@@ -896,30 +862,13 @@ export default md5;
       return this.cmn(this.bitXOR(this.bitXOR(b, c), d), a, b, x, s, t);
     },
     gg: function (a, b, c, d, x, s, t) {
-      return this.cmn(
-        this.bitOR(this.bitAND(b, d), this.bitAND(c, ~d)),
-        a,
-        b,
-        x,
-        s,
-        t,
-      );
+      return this.cmn(this.bitOR(this.bitAND(b, d), this.bitAND(c, ~d)), a, b, x, s, t);
     },
     ff: function (a, b, c, d, x, s, t) {
-      return this.cmn(
-        this.bitOR(this.bitAND(b, c), this.bitAND(~b, d)),
-        a,
-        b,
-        x,
-        s,
-        t,
-      );
+      return this.cmn(this.bitOR(this.bitAND(b, c), this.bitAND(~b, d)), a, b, x, s, t);
     },
     cmn: function (q, a, b, x, s, t) {
-      return this.addme(
-        this.rol(this.addme(this.addme(a, q), this.addme(x, t)), s),
-        b,
-      );
+      return this.addme(this.rol(this.addme(this.addme(a, q), this.addme(x, t)), s), b);
     },
     rol: function (num, cnt) {
       return (num << cnt) | (num >>> (32 - cnt));
@@ -935,8 +884,7 @@ export default md5;
       }
       var i = 0;
       while (i < str.length) {
-        blks[i >> 2] |=
-          HxOverrides.cca(str, i) << (((str.length * 8 + i) % 4) * 8);
+        blks[i >> 2] |= HxOverrides.cca(str, i) << (((str.length * 8 + i) % 4) * 8);
         i++;
       }
       blks[i >> 2] |= 128 << (((str.length * 8 + i) % 4) * 8);
@@ -954,9 +902,7 @@ export default md5;
       var _g = 0;
       while (_g < 4) {
         var j = _g++;
-        str +=
-          hex_chr.charAt((num >> (j * 8 + 4)) & 15) +
-          hex_chr.charAt((num >> (j * 8)) & 15);
+        str += hex_chr.charAt((num >> (j * 8 + 4)) & 15) + hex_chr.charAt((num >> (j * 8)) & 15);
       }
       return str;
     },
@@ -1019,25 +965,15 @@ export default md5;
   js.Boot = function () {};
   js.Boot.__name__ = true;
   js.Boot.__unhtml = function (s) {
-    return s
-      .split("&")
-      .join("&amp;")
-      .split("<")
-      .join("&lt;")
-      .split(">")
-      .join("&gt;");
+    return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
   };
   js.Boot.__trace = function (v, i) {
     var msg = i != null ? i.fileName + ":" + i.lineNumber + ": " : "";
     msg += js.Boot.__string_rec(v, "");
     var d;
-    if (
-      typeof document != "undefined" &&
-      (d = document.getElementById("haxe:trace")) != null
-    )
+    if (typeof document != "undefined" && (d = document.getElementById("haxe:trace")) != null)
       d.innerHTML += js.Boot.__unhtml(msg) + "<br/>";
-    else if (typeof console != "undefined" && console.log != null)
-      console.log(msg);
+    else if (typeof console != "undefined" && console.log != null) console.log(msg);
   };
   js.Boot.__clear_trace = function () {
     var d = document.getElementById("haxe:trace");

@@ -29,7 +29,5 @@ it("should be able to edit an existing latex formula", function () {
   });
 
   // Expect that the text editor contains the latex formula
-  cy.getTextEditor()
-    .invoke("text")
-    .should("contain", "$$\\cos^2(x)+\\sin^2(x)=\\log(e)$$");
+  cy.getTextEditor().invoke("text").should("contain", "$$\\cos^2(x)+\\sin^2(x)=\\log(e)$$");
 });

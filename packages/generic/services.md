@@ -22,7 +22,13 @@ To install the Java services follow the steps below:
 
    ```js
    <script>
-     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example"); genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load Java services. genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example");
+     genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load Java services.
+     genericIntegrationProperties.configurationService = '/pluginwiris_engine/app/configurationjs'; //
+     GenericIntegration instance. var genericIntegrationInstance = new
+     WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init();
+     genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance =
+     genericIntegrationInstance;
    </script>
    ```
 
@@ -42,7 +48,12 @@ To install the PHP services follow the steps below:
 
    ```js
    <script>
-     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example"); genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load PHP services. genericIntegrationProperties.configurationService = 'integration/configurationjs.php'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example");
+     genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load PHP services.
+     genericIntegrationProperties.configurationService = 'integration/configurationjs.php'; // GenericIntegration
+     instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+     genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {});
+     WirisPlugin.currentInstance = genericIntegrationInstance;
    </script>
    ```
 
@@ -62,7 +73,12 @@ To install the .NET services follow the steps below:
 
    ```js
    <script>
-     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example"); genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load Aspx services. genericIntegrationProperties.configurationService = 'integration/configurationjs.aspx'; // GenericIntegration instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties); genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {}); WirisPlugin.currentInstance = genericIntegrationInstance;
+     var genericIntegrationProperties = {}; genericIntegrationProperties.target = document.getElementById("example");
+     genericIntegrationProperties.toolbar = document.getElementById("toolbarLocation"); // Load Aspx services.
+     genericIntegrationProperties.configurationService = 'integration/configurationjs.aspx'; // GenericIntegration
+     instance. var genericIntegrationInstance = new WirisPlugin.GenericIntegration(genericIntegrationProperties);
+     genericIntegrationInstance.init(); genericIntegrationInstance.listeners.fire('onTargetReady', {});
+     WirisPlugin.currentInstance = genericIntegrationInstance;
    </script>
    ```
 

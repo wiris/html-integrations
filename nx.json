@@ -20,10 +20,7 @@
   "tasksRunnerOptions": {
     "default": {
       "options": {
-        "runtimeCacheInputs": [
-          "echo $SERVICE_PROVIDER_URI",
-          "echo $SERVICE_PROVIDER_SERVER"
-        ]
+        "runtimeCacheInputs": ["echo $SERVICE_PROVIDER_URI", "echo $SERVICE_PROVIDER_SERVER"]
       }
     }
   },
