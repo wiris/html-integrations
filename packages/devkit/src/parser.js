@@ -1,13 +1,13 @@
-import Util from './util';
-import Latex from './latex';
-import MathML from './mathml';
-import Image from './image';
-import Accessibility from './accessibility';
-import ServiceProvider from './serviceprovider';
-import Configuration from './configuration';
-import Constants from './constants';
+import Util from "./util";
+import Latex from "./latex";
+import MathML from "./mathml";
+import Image from "./image";
+import Accessibility from "./accessibility";
+import ServiceProvider from "./serviceprovider";
+import Configuration from "./configuration";
+import Constants from "./constants";
 // eslint-disable-next-line no-unused-vars
-import md5 from './md5';
+import md5 from "./md5";
 
 /**
  * @classdesc
@@ -26,9 +26,9 @@ export default class Parser {
    * @static
    */
   static mathmlToImgObject(creator, mathml, wirisProperties, language) {
-    const imgObject = creator.createElement('img');
-    imgObject.align = 'middle';
-    imgObject.style.maxWidth = 'none';
+    const imgObject = creator.createElement("img");
+    imgObject.align = "middle";
+    imgObject.style.maxWidth = "none";
     let data = wirisProperties || {};
 
     // Take into account the backend config
@@ -38,72 +38,107 @@ export default class Parser {
     data.mml = mathml;
     data.lang = language;
     // Request metrics of the generated image.
-    data.metrics = 'true';
-    data.centerbaseline = 'false';
+    data.metrics = "true";
+    data.centerbaseline = "false";
 
     // Full base64 method (edit & save).
-    if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default') {
+    if (
+      Configuration.get("saveMode") === "base64" &&
+      Configuration.get("base64savemode") === "default"
+    ) {
       data.base64 = true;
     }
 
     // Render js params: _wrs_int_wirisProperties contains some js render params.
     // Since MathML can support render params, js params should be send only to editor.
 
-    imgObject.className = Configuration.get('imageClassName');
+    imgObject.className = Configuration.get("imageClassName");
 
     if (mathml.indexOf('class="') !== -1) {
       // We check here if the MathML has been created from a customEditor (such chemistry)
       // to add custom editor name attribute to img object (if necessary).
-      let mathmlSubstring = mathml.substring(mathml.indexOf('class="') + 'class="'.length, mathml.length);
-      mathmlSubstring = mathmlSubstring.substring(0, mathmlSubstring.indexOf('"'));
+      let mathmlSubstring = mathml.substring(
+        mathml.indexOf('class="') + 'class="'.length,
+        mathml.length,
+      );
+      mathmlSubstring = mathmlSubstring.substring(
+        0,
+        mathmlSubstring.indexOf('"'),
+      );
       mathmlSubstring = mathmlSubstring.substring(4, mathmlSubstring.length);
-      imgObject.setAttribute(Configuration.get('imageCustomEditorName'), mathmlSubstring);
+      imgObject.setAttribute(
+        Configuration.get("imageCustomEditorName"),
+        mathmlSubstring,
+      );
     }
 
     // Performance enabled.
-    if (Configuration.get('wirisPluginPerformance') && (Configuration.get('saveMode') === 'xml' || Configuration.get('saveMode') === 'safeXml')) {
+    if (
+      Configuration.get("wirisPluginPerformance") &&
+      (Configuration.get("saveMode") === "xml" ||
+        Configuration.get("saveMode") === "safeXml")
+    ) {
       let result = JSON.parse(Parser.createShowImageSrc(data, language));
-      if (result.status === 'warning') {
+      if (result.status === "warning") {
         // POST call.
         // if the mathml is malformed, this function will throw an exception.
         try {
-          result = JSON.parse(ServiceProvider.getService('showimage', data));
+          result = JSON.parse(ServiceProvider.getService("showimage", data));
         } catch (e) {
           return null;
         }
       }
       ({ result } = result);
-      if (result.format === 'png') {
+      if (result.format === "png") {
         imgObject.src = `data:image/png;base64,${result.content}`;
       } else {
         imgObject.src = `data:image/svg+xml;charset=utf8,${Util.urlEncode(result.content)}`;
       }
-      imgObject.setAttribute(Configuration.get('imageMathmlAttribute'), MathML.safeXmlEncode(mathml));
+      imgObject.setAttribute(
+        Configuration.get("imageMathmlAttribute"),
+        MathML.safeXmlEncode(mathml),
+      );
       Image.setImgSize(imgObject, result.content, true);
 
-      if (Configuration.get('enableAccessibility')) {
-        if (typeof result.alt === 'undefined') {
-          imgObject.alt = Accessibility.mathMLToAccessible(mathml, language, data);
+      if (Configuration.get("enableAccessibility")) {
+        if (typeof result.alt === "undefined") {
+          imgObject.alt = Accessibility.mathMLToAccessible(
+            mathml,
+            language,
+            data,
+          );
         } else {
           imgObject.alt = result.alt;
         }
       }
     } else {
       const result = Parser.createImageSrc(mathml, data);
-      imgObject.setAttribute(Configuration.get('imageMathmlAttribute'), MathML.safeXmlEncode(mathml));
+      imgObject.setAttribute(
+        Configuration.get("imageMathmlAttribute"),
+        MathML.safeXmlEncode(mathml),
+      );
       imgObject.src = result;
-      Image.setImgSize(imgObject, result, Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default');
-      if (Configuration.get('enableAccessibility')) {
-        imgObject.alt = Accessibility.mathMLToAccessible(mathml, language, data);
+      Image.setImgSize(
+        imgObject,
+        result,
+        Configuration.get("saveMode") === "base64" &&
+          Configuration.get("base64savemode") === "default",
+      );
+      if (Configuration.get("enableAccessibility")) {
+        imgObject.alt = Accessibility.mathMLToAccessible(
+          mathml,
+          language,
+          data,
+        );
       }
     }
 
-    if (typeof Parser.observer !== 'undefined') {
+    if (typeof Parser.observer !== "undefined") {
       Parser.observer.observe(imgObject);
     }
 
     // Role math https://www.w3.org/TR/wai-aria/roles#math.
-    imgObject.setAttribute('role', 'math');
+    imgObject.setAttribute("role", "math");
     return imgObject;
   }
 
@@ -117,17 +152,21 @@ export default class Parser {
    */
   static createImageSrc(mathml, data) {
     // Full base64 method (edit & save).
-    if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'default') {
+    if (
+      Configuration.get("saveMode") === "base64" &&
+      Configuration.get("base64savemode") === "default"
+    ) {
       data.base64 = true;
     }
 
-    let result = ServiceProvider.getService('createimage', data);
+    let result = ServiceProvider.getService("createimage", data);
 
-    if (result.indexOf('@BASE@') !== -1) {
+    if (result.indexOf("@BASE@") !== -1) {
       // Replacing '@BASE@' with the base URL of createimage.
-      const baseParts = ServiceProvider.getServicePath('createimage').split('/');
+      const baseParts =
+        ServiceProvider.getServicePath("createimage").split("/");
       baseParts.pop();
-      result = result.split('@BASE@').join(baseParts.join('/'));
+      result = result.split("@BASE@").join(baseParts.join("/"));
     }
 
     return result;
@@ -161,14 +200,21 @@ export default class Parser {
    * @returns {string} HTML code parsed.
    */
   static initParseSaveMode(code, language) {
-    if (Configuration.get('saveMode')) {
+    if (Configuration.get("saveMode")) {
       // Converting XML to tags.
       code = Latex.parseMathmlToLatex(code, Constants.safeXmlCharacters);
       code = Latex.parseMathmlToLatex(code, Constants.xmlCharacters);
-      code = Parser.parseMathmlToImg(code, Constants.safeXmlCharacters, language);
+      code = Parser.parseMathmlToImg(
+        code,
+        Constants.safeXmlCharacters,
+        language,
+      );
       code = Parser.parseMathmlToImg(code, Constants.xmlCharacters, language);
-      if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'image') {
-        code = Parser.codeImgTransform(code, 'base642showimage');
+      if (
+        Configuration.get("saveMode") === "base64" &&
+        Configuration.get("base64savemode") === "image"
+      ) {
+        code = Parser.codeImgTransform(code, "base642showimage");
       }
     }
     return code;
@@ -182,18 +228,24 @@ export default class Parser {
    * @returns {string} parsed HTML code.
    */
   static initParseEditMode(code) {
-    if (Configuration.get('parseModes').indexOf('latex') !== -1) {
-      const imgList = Util.getElementsByNameFromString(code, 'img', true);
+    if (Configuration.get("parseModes").indexOf("latex") !== -1) {
+      const imgList = Util.getElementsByNameFromString(code, "img", true);
       const token = 'encoding="LaTeX">';
       // While replacing images with latex, the indexes of the found images changes
       // respecting the original code, so this carry is needed.
       let carry = 0;
 
       for (let i = 0; i < imgList.length; i += 1) {
-        const imgCode = code.substring(imgList[i].start + carry, imgList[i].end + carry);
+        const imgCode = code.substring(
+          imgList[i].start + carry,
+          imgList[i].end + carry,
+        );
 
-        if (imgCode.indexOf(` class="${Configuration.get('imageClassName')}"`) !== -1) {
-          let mathmlStartToken = ` ${Configuration.get('imageMathmlAttribute')}="`;
+        if (
+          imgCode.indexOf(` class="${Configuration.get("imageClassName")}"`) !==
+          -1
+        ) {
+          let mathmlStartToken = ` ${Configuration.get("imageMathmlAttribute")}="`;
           let mathmlStart = imgCode.indexOf(mathmlStartToken);
 
           if (mathmlStart === -1) {
@@ -204,13 +256,21 @@ export default class Parser {
           if (mathmlStart !== -1) {
             mathmlStart += mathmlStartToken.length;
             const mathmlEnd = imgCode.indexOf('"', mathmlStart);
-            const mathml = Util.htmlSanitize(MathML.safeXmlDecode(imgCode.substring(mathmlStart, mathmlEnd)));
+            const mathml = Util.htmlSanitize(
+              MathML.safeXmlDecode(imgCode.substring(mathmlStart, mathmlEnd)),
+            );
             let latexStartPosition = mathml.indexOf(token);
 
             if (latexStartPosition !== -1) {
               latexStartPosition += token.length;
-              const latexEndPosition = mathml.indexOf('</annotation>', latexStartPosition);
-              const latex = mathml.substring(latexStartPosition, latexEndPosition);
+              const latexEndPosition = mathml.indexOf(
+                "</annotation>",
+                latexStartPosition,
+              );
+              const latex = mathml.substring(
+                latexStartPosition,
+                latexEndPosition,
+              );
 
               const replaceText = `$$${Util.htmlEntitiesDecode(latex)}$$`;
               const start = code.substring(0, imgList[i].start + carry);
@@ -250,13 +310,13 @@ export default class Parser {
    */
   static endParseEditMode(code) {
     // Converting LaTeX to images.
-    if (Configuration.get('parseModes').indexOf('latex') !== -1) {
-      let output = '';
+    if (Configuration.get("parseModes").indexOf("latex") !== -1) {
+      let output = "";
       let endPosition = 0;
-      let startPosition = code.indexOf('$$');
+      let startPosition = code.indexOf("$$");
       while (startPosition !== -1) {
         output += code.substring(endPosition, startPosition);
-        endPosition = code.indexOf('$$', startPosition + 2);
+        endPosition = code.indexOf("$$", startPosition + 2);
 
         if (endPosition !== -1) {
           // Before, it was a condition here to execute the next codelines
@@ -265,19 +325,21 @@ export default class Parser {
           // latex formulas that contains '<'.
           const latex = code.substring(startPosition + 2, endPosition);
           const decodedLatex = Util.htmlEntitiesDecode(latex);
-          let mathml = Util.htmlSanitize(Latex.getMathMLFromLatex(decodedLatex, true));
-          if (!Configuration.get('saveHandTraces')) {
+          let mathml = Util.htmlSanitize(
+            Latex.getMathMLFromLatex(decodedLatex, true),
+          );
+          if (!Configuration.get("saveHandTraces")) {
             // Remove hand traces.
-            mathml = MathML.removeAnnotation(mathml, 'application/json');
+            mathml = MathML.removeAnnotation(mathml, "application/json");
           }
           output += mathml;
           endPosition += 2;
         } else {
-          output += '$$';
+          output += "$$";
           endPosition = startPosition + 2;
         }
 
-        startPosition = code.indexOf('$$', endPosition);
+        startPosition = code.indexOf("$$", endPosition);
       }
 
       output += code.substring(endPosition, code.length);
@@ -298,19 +360,21 @@ export default class Parser {
    * @returns {string} HTML code parsed.
    */
   static endParseSaveMode(code) {
-    if (Configuration.get('saveMode')) {
-      if (Configuration.get('saveMode') === 'safeXml') {
-        code = Parser.codeImgTransform(code, 'img2mathml');
-      } else if (Configuration.get('saveMode') === 'xml') {
-        code = Parser.codeImgTransform(code, 'img2mathml');
-      } else if (Configuration.get('saveMode') === 'base64' && Configuration.get('base64savemode') === 'image') {
-        code = Parser.codeImgTransform(code, 'img264');
+    if (Configuration.get("saveMode")) {
+      if (Configuration.get("saveMode") === "safeXml") {
+        code = Parser.codeImgTransform(code, "img2mathml");
+      } else if (Configuration.get("saveMode") === "xml") {
+        code = Parser.codeImgTransform(code, "img2mathml");
+      } else if (
+        Configuration.get("saveMode") === "base64" &&
+        Configuration.get("base64savemode") === "image"
+      ) {
+        code = Parser.codeImgTransform(code, "img264");
       }
     }
 
     return code;
   }
-
 
   /**
    * Auxiliar function that builds the data object to send to the showimage endpoint
@@ -320,9 +384,20 @@ export default class Parser {
    */
   static createShowImageSrcData(data, language) {
     const dataMd5 = {};
-    const renderParams = ['mml', 'color', 'centerbaseline', 'zoom', 'dpi', 'fontSize', 'fontFamily', 'defaultStretchy', 'backgroundColor', 'format'];
+    const renderParams = [
+      "mml",
+      "color",
+      "centerbaseline",
+      "zoom",
+      "dpi",
+      "fontSize",
+      "fontFamily",
+      "defaultStretchy",
+      "backgroundColor",
+      "format",
+    ];
     renderParams.forEach((param) => {
-      if (typeof data[param] !== 'undefined') {
+      if (typeof data[param] !== "undefined") {
         dataMd5[param] = data[param];
       }
     });
@@ -331,14 +406,16 @@ export default class Parser {
     Object.keys(data).forEach((key) => {
       // We don't need mathml in this request we try to get cached.
       // Only need the formula md5 calculated before.
-      if (key !== 'mml') {
+      if (key !== "mml") {
         dataObject[key] = data[key];
       }
     });
 
-    dataObject.formula = com.wiris.js.JsPluginTools.md5encode(Util.propertiesToString(dataMd5));
-    dataObject.lang = (typeof language === 'undefined') ? 'en' : language;
-    dataObject.version = Configuration.get('version');
+    dataObject.formula = com.wiris.js.JsPluginTools.md5encode(
+      Util.propertiesToString(dataMd5),
+    );
+    dataObject.lang = typeof language === "undefined" ? "en" : language;
+    dataObject.version = Configuration.get("version");
 
     return dataObject;
   }
@@ -354,7 +431,11 @@ export default class Parser {
    */
   static createShowImageSrc(data, language) {
     const dataObject = this.createShowImageSrcData(data, language);
-    const result = ServiceProvider.getService('showimage', Util.httpBuildQuery(dataObject), true);
+    const result = ServiceProvider.getService(
+      "showimage",
+      Util.httpBuildQuery(dataObject),
+      true,
+    );
     return result;
   }
 
@@ -366,7 +447,7 @@ export default class Parser {
    * @returns {string} html - code transformed.
    */
   static codeImgTransform(code, mode) {
-    let output = '';
+    let output = "";
     let endPosition = 0;
     const pattern = /<img/gi;
     const patternLength = pattern.source.length;
@@ -380,7 +461,7 @@ export default class Parser {
       while (i < code.length && endPosition <= startPosition) {
         const character = code.charAt(i);
 
-        if (character === '"' || character === '\'') {
+        if (character === '"' || character === "'") {
           const characterNextPosition = code.indexOf(character, i + 1);
 
           if (characterNextPosition === -1) {
@@ -388,49 +469,56 @@ export default class Parser {
           } else {
             i = characterNextPosition;
           }
-        } else if (character === '>') {
+        } else if (character === ">") {
           endPosition = i + 1;
         }
 
         i += 1;
       }
 
-      if (endPosition < startPosition) { // The img tag is stripped.
+      if (endPosition < startPosition) {
+        // The img tag is stripped.
         output += code.substring(startPosition, code.length);
         return output;
       }
       let imgCode = code.substring(startPosition, endPosition);
       const imgObject = Util.createObject(imgCode);
-      let xmlCode = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+      let xmlCode = imgObject.getAttribute(
+        Configuration.get("imageMathmlAttribute"),
+      );
       let convertToXml;
       let convertToSafeXml;
 
-      if (mode === 'base642showimage') {
+      if (mode === "base642showimage") {
         if (xmlCode == null) {
-          xmlCode = imgObject.getAttribute('alt');
+          xmlCode = imgObject.getAttribute("alt");
         }
         xmlCode = MathML.safeXmlDecode(xmlCode);
         imgCode = Parser.mathmlToImgObject(document, xmlCode, null, null);
         output += Util.createObjectCode(imgCode);
-      } else if (mode === 'img2mathml') {
-        if (Configuration.get('saveMode')) {
-          if (Configuration.get('saveMode') === 'safeXml') {
+      } else if (mode === "img2mathml") {
+        if (Configuration.get("saveMode")) {
+          if (Configuration.get("saveMode") === "safeXml") {
             convertToXml = true;
             convertToSafeXml = true;
-          } else if (Configuration.get('saveMode') === 'xml') {
+          } else if (Configuration.get("saveMode") === "xml") {
             convertToXml = true;
             convertToSafeXml = false;
           }
         }
-        output += Util.getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml);
-      } else if (mode === 'img264') {
+        output += Util.getWIRISImageOutput(
+          imgCode,
+          convertToXml,
+          convertToSafeXml,
+        );
+      } else if (mode === "img264") {
         if (xmlCode === null) {
-          xmlCode = imgObject.getAttribute('alt');
+          xmlCode = imgObject.getAttribute("alt");
         }
         xmlCode = MathML.safeXmlDecode(xmlCode);
 
         const properties = {};
-        properties.base64 = 'true';
+        properties.base64 = "true";
         imgCode = Parser.mathmlToImgObject(document, xmlCode, properties, null);
         // Metrics.
         Image.setImgSize(imgCode, imgCode.src, true);
@@ -453,7 +541,7 @@ export default class Parser {
    * occurrences replaced by the corresponding image.
    */
   static parseMathmlToImg(content, characters, language) {
-    let output = '';
+    let output = "";
     const mathTagBegin = `${characters.tagOpener}math`;
     const mathTagEnd = `${characters.tagOpener}/math${characters.tagCloser}`;
     let start = content.indexOf(mathTagBegin);
@@ -462,7 +550,9 @@ export default class Parser {
     while (start !== -1) {
       output += content.substring(end, start);
       // Avoid WIRIS images to be parsed.
-      const imageMathmlAtrribute = content.indexOf(Configuration.get('imageMathmlAttribute'));
+      const imageMathmlAtrribute = content.indexOf(
+        Configuration.get("imageMathmlAttribute"),
+      );
       end = content.indexOf(mathTagEnd, start);
 
       if (end === -1) {
@@ -470,17 +560,23 @@ export default class Parser {
       } else if (imageMathmlAtrribute !== -1) {
         // First close tag of img attribute
         // If a mathmlAttribute exists should be inside a img tag.
-        end += content.indexOf('/>', start);
+        end += content.indexOf("/>", start);
       } else {
         end += mathTagEnd.length;
       }
 
-      if (!MathML.isMathmlInAttribute(content, start) && imageMathmlAtrribute === -1) {
+      if (
+        !MathML.isMathmlInAttribute(content, start) &&
+        imageMathmlAtrribute === -1
+      ) {
         let mathml = content.substring(start, end);
-        mathml = (characters.id === Constants.safeXmlCharacters.id)
-          ? MathML.safeXmlDecode(mathml)
-          : MathML.mathMLEntities(mathml);
-        output += Util.createObjectCode(Parser.mathmlToImgObject(document, mathml, null, language));
+        mathml =
+          characters.id === Constants.safeXmlCharacters.id
+            ? MathML.safeXmlDecode(mathml)
+            : MathML.mathMLEntities(mathml);
+        output += Util.createObjectCode(
+          Parser.mathmlToImgObject(document, mathml, null, language),
+        );
       } else {
         output += content.substring(start, end);
       }
@@ -494,13 +590,17 @@ export default class Parser {
 }
 
 // Mutation observers to avoid wiris image formulas class be removed.
-if (typeof MutationObserver !== 'undefined') {
+if (typeof MutationObserver !== "undefined") {
   const mutationObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      if (mutation.oldValue === Configuration.get('imageClassName')
-        && mutation.attributeName === 'class'
-        && mutation.target.className.indexOf(Configuration.get('imageClassName')) === -1) {
-        mutation.target.className = Configuration.get('imageClassName');
+      if (
+        mutation.oldValue === Configuration.get("imageClassName") &&
+        mutation.attributeName === "class" &&
+        mutation.target.className.indexOf(
+          Configuration.get("imageClassName"),
+        ) === -1
+      ) {
+        mutation.target.className = Configuration.get("imageClassName");
       }
     });
   });

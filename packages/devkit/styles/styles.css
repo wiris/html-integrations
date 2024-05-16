@@ -570,8 +570,8 @@
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   margin: auto;
 }
 
@@ -579,7 +579,7 @@
 .wrs_modal_content_offline {
   margin: auto;
   padding: 16px;
-  background: #FFF7ED;
+  background: #fff7ed;
   border-radius: 6px;
   width: 517px;
   height: 100px;
@@ -588,14 +588,14 @@
 
 /* The Close Button */
 .wrs_modal_offline_close {
-  color: #C2410C;
+  color: #c2410c;
   font-size: 24px;
   font-weight: bold;
   left: 95.7%;
   right: 2.08%;
   top: 7.6%;
   bottom: 75%;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   position: absolute;
@@ -609,7 +609,7 @@
   top: 11.6%;
   bottom: 75%;
   font-size: 24px;
-  color: #FB923C;
+  color: #fb923c;
   background-repeat: no-repeat;
 }
 
@@ -622,22 +622,22 @@
 }
 
 .wrs_modal_offline_text {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #C2410C;
+  color: #c2410c;
 }
 
 .wrs_modal_offline_text_warn {
   height: 25px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-size: 14px;
   line-height: 20px;
   font-weight: bold;
-  color: #C2410C;
+  color: #c2410c;
 }
 
 .wrs_modal_offline_close:hover,

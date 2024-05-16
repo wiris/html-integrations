@@ -6,13 +6,9 @@
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": [
-          "packages/devkit/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["packages/devkit/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

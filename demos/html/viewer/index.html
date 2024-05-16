@@ -1,75 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Demo Viewer on HTML</title>
-  <meta charset="utf-8">
-  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-  <script src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image" defer></script>
-</head>
-<body>
-  <div class="mathml-container">
-    <main>
-      <p>
-        <b>MathML formula:</b>
-        <math><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></math>
-      </p>
-      <p><b>LaTeX formula:</b> $$4 - 2 = 2$$</p>
-    </main>
-  </div>
-  <form id="viewer_form">
-    <h3 class="title">MathType Viewer version: <output id="version"></output></h3>
-    <h4>Commit hash: <output id="git_commit"></output></h4>
-    <div class="form-container">
-      <div class="column">
-        <label>
-          wiriseditormathmlattribute:
-          <input name="wiriseditormathmlattribute" id="wiriseditormathmlattribute" type="text" value="data-mathml"/>
-        </label>
-        <label class="checkbox-container">
-          <input name="wirispluginperformance" id="wirispluginperformance" type="checkbox" checked/>
-          wirispluginperformance
-        </label>
-        <label>
-          editorServicesRoot:
-          <input name="editorServicesRoot" id="editorServicesRoot" type="text" value="https://www.wiris.net/demo/plugins/app/"/>
-        </label>
-        <div class="checkbox-container">
-          <label for="dpi">DPI:</label>
-          <input name="dpi" id="dpi" type="range" min="0" max="100" value="96"/>
-          <output id="dpiOutput">96</output>
-        </div>
-      </div>
-      <div class="column">
-        <label>
-          Viewer:
-          <select name="viewer" id="viewer">
-            <option value="none">none</option>
-            <option value="image" selected>image</option>
-            <option value="mathml">mathml</option>
-            <option value="latex">latex</option>
-          </select>
-        </label>
-        <label>
-          Element:
-          <input name="element" id="element" type="text" value="main"/>
-        </label>
-        <label>
-          Language:
-          <input name="lang" id="lang" type="text" value="en"/>
-        </label>
-        <div class="checkbox-container">
-          <label for="zoom">Zoom:</label>
-          <input name="zoom" id="zoom" type="range" min="0" max="10" step="0.01" value="1"/>
-          <output id="zoomOutput">1</output>
-        </div>
-      </div>
+  <head>
+    <title>Demo Viewer on HTML</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+    <script
+      src="node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js?viewer=image"
+      defer
+    ></script>
+  </head>
+  <body>
+    <div class="mathml-container">
+      <main>
+        <p>
+          <b>MathML formula:</b>
+          <math><mn>2</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></math>
+        </p>
+        <p><b>LaTeX formula:</b> $$4 - 2 = 2$$</p>
+      </main>
     </div>
-    <label>
-      Content:
-      <textarea name="content" id="content" cols="50" rows="20"></textarea>
-    </label>
-    <button type="submit">Submit</button>
-  </form>
-  <script src="./dist/demo.js"></script> 
-</body>
+    <form id="viewer_form">
+      <h3 class="title">
+        MathType Viewer version: <output id="version"></output>
+      </h3>
+      <h4>Commit hash: <output id="git_commit"></output></h4>
+      <div class="form-container">
+        <div class="column">
+          <label>
+            wiriseditormathmlattribute:
+            <input
+              name="wiriseditormathmlattribute"
+              id="wiriseditormathmlattribute"
+              type="text"
+              value="data-mathml"
+            />
+          </label>
+          <label class="checkbox-container">
+            <input
+              name="wirispluginperformance"
+              id="wirispluginperformance"
+              type="checkbox"
+              checked
+            />
+            wirispluginperformance
+          </label>
+          <label>
+            editorServicesRoot:
+            <input
+              name="editorServicesRoot"
+              id="editorServicesRoot"
+              type="text"
+              value="https://www.wiris.net/demo/plugins/app/"
+            />
+          </label>
+          <div class="checkbox-container">
+            <label for="dpi">DPI:</label>
+            <input
+              name="dpi"
+              id="dpi"
+              type="range"
+              min="0"
+              max="100"
+              value="96"
+            />
+            <output id="dpiOutput">96</output>
+          </div>
+        </div>
+        <div class="column">
+          <label>
+            Viewer:
+            <select name="viewer" id="viewer">
+              <option value="none">none</option>
+              <option value="image" selected>image</option>
+              <option value="mathml">mathml</option>
+              <option value="latex">latex</option>
+            </select>
+          </label>
+          <label>
+            Element:
+            <input name="element" id="element" type="text" value="main" />
+          </label>
+          <label>
+            Language:
+            <input name="lang" id="lang" type="text" value="en" />
+          </label>
+          <div class="checkbox-container">
+            <label for="zoom">Zoom:</label>
+            <input
+              name="zoom"
+              id="zoom"
+              type="range"
+              min="0"
+              max="10"
+              step="0.01"
+              value="1"
+            />
+            <output id="zoomOutput">1</output>
+          </div>
+        </div>
+      </div>
+      <label>
+        Content:
+        <textarea name="content" id="content" cols="50" rows="20"></textarea>
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+    <script src="./dist/demo.js"></script>
+  </body>
 </html>

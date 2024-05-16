@@ -8,21 +8,21 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixture data
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('Validate Hand formulas open Hand directly when edited', function () {
+it("Validate Hand formulas open Hand directly when edited", function () {
   // Insert a new MathType formula from scratch on the editor
-  cy.insertFormulaFromScratch(this.formulas['formula-general']);
+  cy.insertFormulaFromScratch(this.formulas["formula-general"]);
 
   // User types the string ‘wiris’ on the HTML editor
-  cy.typeInTextEditor('wiris');
+  cy.typeInTextEditor("wiris");
 
   // The string wiris is written right after the formula
   cy.getTextEditor()
@@ -32,5 +32,5 @@ it('Validate Hand formulas open Hand directly when edited', function () {
       // Get the second node inside the paragraph
       cy.wrap($p[0].childNodes[1].textContent);
     })
-    .should('eq', 'wiris');
+    .should("eq", "wiris");
 });

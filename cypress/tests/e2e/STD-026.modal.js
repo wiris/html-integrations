@@ -8,33 +8,31 @@
 // ***********************************************************
 beforeEach(() => {
   // Load fixtures
-  cy.fixture('formulas.json').as('formulas');
+  cy.fixture("formulas.json").as("formulas");
 
   // Visit page
-  cy.visit('/');
+  cy.visit("/");
 
   // Clear the editor content in order to reduce noise
   cy.getTextEditor().clear();
 });
 
-it('Validate Hand formulas open Hand directly when edited', function () {
+it("Validate Hand formulas open Hand directly when edited", function () {
   // Click the MT button on the HTML editor toolbar
   cy.clickButtonToOpenModal();
 
   // Switch to Hand editing mode by clicking the Hand icon in the MT modal window
   // Draw a formula
   // Instead of drawing the formula by hand, we type them in and let Hand transform them
-  cy.typeInModal(this.formulas['formula-general']);
-  cy.clickModalButton('hand');
+  cy.typeInModal(this.formulas["formula-general"]);
+  cy.clickModalButton("hand");
 
   // Click the OK button in the MT modal window
-  cy.clickModalButton('insert');
+  cy.clickModalButton("insert");
 
   // Double-click the created Hand formula
-  cy.getFormula(0)
-    .dblclick();
+  cy.getFormula(0).dblclick();
 
   // MT modal window opens and Hand editing mode is already displayed with the formula
-  cy.get('canvas')
-    .should('be.visible');
+  cy.get("canvas").should("be.visible");
 });

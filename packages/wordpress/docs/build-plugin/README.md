@@ -20,7 +20,7 @@ To update new changes, use the following commands:
 
 ```sh
 html-integrations$ yarn
-html-integrations$ nx build wordpress 
+html-integrations$ nx build wordpress
 ```
 
 > This will also automatically update the code on the Docker containers, if they're up.

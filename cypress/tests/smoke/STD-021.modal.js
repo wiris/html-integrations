@@ -8,18 +8,16 @@
 // ***********************************************************
 beforeEach(() => {
   // Visit the page.
-  cy.visit('/');
+  cy.visit("/");
 });
 
-it('should be able to edit and existing formula and cancel the edition', () => {
+it("should be able to edit and existing formula and cancel the edition", () => {
   // Open the mathtype modal bu clicking the mathtype button
   cy.clickButtonToOpenModal();
 
   // Click the cancel button on the mathtype modal to close the modal
-  cy.clickModalButton('cancel');
+  cy.clickModalButton("cancel");
 
   // Verify the modal is closed
-  cy
-    .get('.wrs_focusElement')
-    .should('not.be.visible');
+  cy.get(".wrs_focusElement").should("not.be.visible");
 });

@@ -8,10 +8,10 @@ DRAFT
 
 ## Summary
 
-*When publishing automatically to npm, we want to interact with Lerna*
-*but we don't want to require human interaction.*
-*We decided to use Expect*
-*to automatically interact with the text-based user interface.*
+_When publishing automatically to npm, we want to interact with Lerna_
+_but we don't want to require human interaction._
+_We decided to use Expect_
+_to automatically interact with the text-based user interface._
 
 ## Context
 

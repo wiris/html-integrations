@@ -1,9 +1,9 @@
 /* eslint-disable no-bitwise */
-import DOMPurify from 'dompurify';
-import MathML from './mathml';
-import Configuration from './configuration';
-import Latex from './latex';
-import StringManager from './stringmanager';
+import DOMPurify from "dompurify";
+import MathML from "./mathml";
+import Configuration from "./configuration";
+import Latex from "./latex";
+import StringManager from "./stringmanager";
 
 /**
  * This class represents an utility class.
@@ -17,7 +17,7 @@ export default class Util {
    */
   static fireEvent(eventTarget, eventName) {
     if (document.createEvent) {
-      const eventObject = document.createEvent('HTMLEvents');
+      const eventObject = document.createEvent("HTMLEvents");
       eventObject.initEvent(eventName, true, true);
       return !eventTarget.dispatchEvent(eventObject);
     }
@@ -68,39 +68,50 @@ export default class Util {
    * @param {Function} mouseupHandler - function to run when on mouseup event.
    * @static
    */
-  static addElementEvents(eventTarget, doubleClickHandler, mousedownHandler, mouseupHandler) {
+  static addElementEvents(
+    eventTarget,
+    doubleClickHandler,
+    mousedownHandler,
+    mouseupHandler,
+  ) {
     if (doubleClickHandler) {
       this.callbackDblclick = (event) => {
-        const realEvent = (event) || window.event;
-        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+        const realEvent = event || window.event;
+        const element = realEvent.srcElement
+          ? realEvent.srcElement
+          : realEvent.target;
         doubleClickHandler(element, realEvent);
       };
 
-      Util.addEvent(eventTarget, 'dblclick', this.callbackDblclick);
+      Util.addEvent(eventTarget, "dblclick", this.callbackDblclick);
     }
 
     if (mousedownHandler) {
       this.callbackMousedown = (event) => {
-        const realEvent = (event) || window.event;
-        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+        const realEvent = event || window.event;
+        const element = realEvent.srcElement
+          ? realEvent.srcElement
+          : realEvent.target;
         mousedownHandler(element, realEvent);
       };
 
-      Util.addEvent(eventTarget, 'mousedown', this.callbackMousedown);
+      Util.addEvent(eventTarget, "mousedown", this.callbackMousedown);
     }
 
     if (mouseupHandler) {
       this.callbackMouseup = (event) => {
-        const realEvent = (event) || window.event;
-        const element = realEvent.srcElement ? realEvent.srcElement : realEvent.target;
+        const realEvent = event || window.event;
+        const element = realEvent.srcElement
+          ? realEvent.srcElement
+          : realEvent.target;
         mouseupHandler(element, realEvent);
       };
       // Chrome doesn't trigger this event for eventTarget if we release the mouse button
       // while the mouse is outside the editor text field.
       // This is a workaround: we trigger the event independently of where the mouse
       // is when we release its button.
-      Util.addEvent(document, 'mouseup', this.callbackMouseup);
-      Util.addEvent(eventTarget, 'mouseup', this.callbackMouseup);
+      Util.addEvent(document, "mouseup", this.callbackMouseup);
+      Util.addEvent(eventTarget, "mouseup", this.callbackMouseup);
     }
   }
 
@@ -113,10 +124,10 @@ export default class Util {
    * @static
    */
   static removeElementEvents(eventTarget) {
-    Util.removeEvent(eventTarget, 'dblclick', this.callbackDblclick);
-    Util.removeEvent(eventTarget, 'mousedown', this.callbackMousedown);
-    Util.removeEvent(document, 'mouseup', this.callbackMouseup);
-    Util.removeEvent(eventTarget, 'mouseup', this.callbackMouseup);
+    Util.removeEvent(eventTarget, "dblclick", this.callbackDblclick);
+    Util.removeEvent(eventTarget, "mousedown", this.callbackMousedown);
+    Util.removeEvent(document, "mouseup", this.callbackMouseup);
+    Util.removeEvent(eventTarget, "mouseup", this.callbackMouseup);
   }
 
   /**
@@ -139,11 +150,11 @@ export default class Util {
    * @static
    */
   static containsClass(element, className) {
-    if (element == null || !('className' in element)) {
+    if (element == null || !("className" in element)) {
       return false;
     }
 
-    const currentClasses = element.className.split(' ');
+    const currentClasses = element.className.split(" ");
 
     for (let i = currentClasses.length - 1; i >= 0; i -= 1) {
       if (currentClasses[i] === className) {
@@ -161,8 +172,8 @@ export default class Util {
    * @static
    */
   static removeClass(element, className) {
-    let newClassName = '';
-    const classes = element.className.split(' ');
+    let newClassName = "";
+    const classes = element.className.split(" ");
 
     for (let i = 0; i < classes.length; i += 1) {
       if (classes[i] !== className) {
@@ -182,9 +193,9 @@ export default class Util {
   static convertOldXmlinitialtextAttribute(text) {
     // Used to fix a bug with Cas imported from Moodle 1.9 to Moodle 2.x.
     // This could be removed in future.
-    const val = 'value=';
+    const val = "value=";
 
-    const xitpos = text.indexOf('xmlinitialtext');
+    const xitpos = text.indexOf("xmlinitialtext");
     const valpos = text.indexOf(val, xitpos);
     const quote = text.charAt(valpos + val.length);
     const startquote = valpos + val.length + 1;
@@ -192,10 +203,10 @@ export default class Util {
 
     const value = text.substring(startquote, endquote);
 
-    let newvalue = value.split('«').join('§lt;');
-    newvalue = newvalue.split('»').join('§gt;');
-    newvalue = newvalue.split('&').join('§');
-    newvalue = newvalue.split('¨').join('§quot;');
+    let newvalue = value.split("«").join("§lt;");
+    newvalue = newvalue.split("»").join("§gt;");
+    newvalue = newvalue.split("&").join("§");
+    newvalue = newvalue.split("¨").join("§quot;");
 
     text = text.split(value).join(newvalue);
     return text;
@@ -207,12 +218,13 @@ export default class Util {
    * @returns {Object} - Object containing the key-value pairs
    */
   static convertStringToObject(keyValueString) {
-    if (!keyValueString || typeof keyValueString !== 'string') {
+    if (!keyValueString || typeof keyValueString !== "string") {
       return {};
     }
 
-    return keyValueString.split(',')
-      .map(pair => pair.trim().split('='))
+    return keyValueString
+      .split(",")
+      .map((pair) => pair.trim().split("="))
       .reduce((resultObject, [key, value]) => {
         if (key && value) {
           resultObject[key] = value;
@@ -244,18 +256,18 @@ export default class Util {
     let element;
 
     /*
-    * Internet Explorer fix:
-    * If you create a new object dynamically, you can't set a non-standard attribute.
-    * For example, you can't set the "src" attribute on an "applet" object.
-    * Other browsers will throw an exception and will run the standard code.
-    */
+     * Internet Explorer fix:
+     * If you create a new object dynamically, you can't set a non-standard attribute.
+     * For example, you can't set the "src" attribute on an "applet" object.
+     * Other browsers will throw an exception and will run the standard code.
+     */
     try {
       let html = `<${tagName}`;
 
       Object.keys(attributes).forEach((attributeName) => {
         html += ` ${attributeName}="${Util.htmlEntities(attributes[attributeName])}"`;
       });
-      html += '>';
+      html += ">";
       element = creator.createElement(html);
     } catch (e) {
       element = creator.createElement(tagName);
@@ -278,26 +290,46 @@ export default class Util {
     }
 
     // Internet Explorer can't include "param" tag when is setting an innerHTML property.
-    objectCode = objectCode.split('<applet ').join('<span wirisObject="WirisApplet" ').split('<APPLET ').join('<span wirisObject="WirisApplet" '); // It is a 'span' because 'span' objects can contain 'br' nodes.
-    objectCode = objectCode.split('</applet>').join('</span>').split('</APPLET>').join('</span>');
+    objectCode = objectCode
+      .split("<applet ")
+      .join('<span wirisObject="WirisApplet" ')
+      .split("<APPLET ")
+      .join('<span wirisObject="WirisApplet" '); // It is a 'span' because 'span' objects can contain 'br' nodes.
+    objectCode = objectCode
+      .split("</applet>")
+      .join("</span>")
+      .split("</APPLET>")
+      .join("</span>");
 
-    objectCode = objectCode.split('<param ').join('<br wirisObject="WirisParam" ').split('<PARAM ').join('<br wirisObject="WirisParam" '); // It is a 'br' because 'br' can't contain nodes.
-    objectCode = objectCode.split('</param>').join('</br>').split('</PARAM>').join('</br>');
+    objectCode = objectCode
+      .split("<param ")
+      .join('<br wirisObject="WirisParam" ')
+      .split("<PARAM ")
+      .join('<br wirisObject="WirisParam" '); // It is a 'br' because 'br' can't contain nodes.
+    objectCode = objectCode
+      .split("</param>")
+      .join("</br>")
+      .split("</PARAM>")
+      .join("</br>");
 
-    const container = Util.createElement('div', {}, creator);
+    const container = Util.createElement("div", {}, creator);
     container.innerHTML = objectCode;
 
     function recursiveParamsFix(object) {
-      if (object.getAttribute && object.getAttribute('wirisObject') === 'WirisParam') {
+      if (
+        object.getAttribute &&
+        object.getAttribute("wirisObject") === "WirisParam"
+      ) {
         const attributesParsed = {};
 
         for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
-            attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
+            attributesParsed[object.attributes[i].nodeName] =
+              object.attributes[i].nodeValue;
           }
         }
 
-        const param = Util.createElement('param', attributesParsed, creator);
+        const param = Util.createElement("param", attributesParsed, creator);
 
         // IE fix.
         if (param.NAME) {
@@ -305,24 +337,28 @@ export default class Util {
           param.value = param.VALUE;
         }
 
-        param.removeAttribute('wirisObject');
+        param.removeAttribute("wirisObject");
         object.parentNode.replaceChild(param, object);
-      } else if (object.getAttribute && object.getAttribute('wirisObject') === 'WirisApplet') {
+      } else if (
+        object.getAttribute &&
+        object.getAttribute("wirisObject") === "WirisApplet"
+      ) {
         const attributesParsed = {};
 
         for (let i = 0; i < object.attributes.length; i += 1) {
           if (object.attributes[i].nodeValue !== null) {
-            attributesParsed[object.attributes[i].nodeName] = object.attributes[i].nodeValue;
+            attributesParsed[object.attributes[i].nodeName] =
+              object.attributes[i].nodeValue;
           }
         }
 
-        const applet = Util.createElement('applet', attributesParsed, creator);
-        applet.removeAttribute('wirisObject');
+        const applet = Util.createElement("applet", attributesParsed, creator);
+        applet.removeAttribute("wirisObject");
 
         for (let i = 0; i < object.childNodes.length; i += 1) {
           recursiveParamsFix(object.childNodes[i]);
 
-          if (object.childNodes[i].nodeName.toLowerCase() === 'param') {
+          if (object.childNodes[i].nodeName.toLowerCase() === "param") {
             applet.appendChild(object.childNodes[i]);
             i -= 1; // When we insert the object child into the applet, object loses one child.
           }
@@ -348,11 +384,12 @@ export default class Util {
    */
   static createObjectCode(element) {
     // In case that the image was not created, the object can be null or undefined.
-    if (typeof element === 'undefined' || element === null) {
+    if (typeof element === "undefined" || element === null) {
       return null;
     }
 
-    if (element.nodeType === 1) { // ELEMENT_NODE.
+    if (element.nodeType === 1) {
+      // ELEMENT_NODE.
       let output = `<${element.tagName}`;
 
       for (let i = 0; i < element.attributes.length; i += 1) {
@@ -362,27 +399,28 @@ export default class Util {
       }
 
       if (element.childNodes.length > 0) {
-        output += '>';
+        output += ">";
 
         for (let i = 0; i < element.childNodes.length; i += 1) {
           output += Util.createObject(element.childNodes[i]);
         }
 
         output += `</${element.tagName}>`;
-      } else if (element.nodeName === 'DIV' || element.nodeName === 'SCRIPT') {
+      } else if (element.nodeName === "DIV" || element.nodeName === "SCRIPT") {
         output += `></${element.tagName}>`;
       } else {
-        output += '/>';
+        output += "/>";
       }
 
       return output;
     }
 
-    if (element.nodeType === 3) { // TEXT_NODE.
+    if (element.nodeType === 3) {
+      // TEXT_NODE.
       return Util.htmlEntities(element.nodeValue);
     }
 
-    return '';
+    return "";
   }
 
   /**
@@ -392,11 +430,11 @@ export default class Util {
    * @returns {string} new URL.
    */
   static concatenateUrl(path1, path2) {
-    let separator = '';
-    if ((path1.indexOf('/') !== path1.length) && (path2.indexOf('/') !== 0)) {
-      separator = '/';
+    let separator = "";
+    if (path1.indexOf("/") !== path1.length && path2.indexOf("/") !== 0) {
+      separator = "/";
     }
-    return (path1 + separator + path2).replace(/([^:]\/)\/+/g, '$1');
+    return (path1 + separator + path2).replace(/([^:]\/)\/+/g, "$1");
   }
 
   /**
@@ -406,11 +444,15 @@ export default class Util {
    * @static
    */
   static htmlEntities(input) {
-    return input.split('&').join('&amp;').split('<').join('&lt;')
-      .split('>')
-      .join('&gt;')
+    return input
+      .split("&")
+      .join("&amp;")
+      .split("<")
+      .join("&lt;")
+      .split(">")
+      .join("&gt;")
       .split('"')
-      .join('&quot;');
+      .join("&quot;");
   }
 
   /**
@@ -420,11 +462,14 @@ export default class Util {
    * @static
    */
   static htmlSanitize(html) {
-    let annotationRegex = /\<annotation.+\<\/annotation\>/
+    let annotationRegex = /\<annotation.+\<\/annotation\>/;
     // Get all the annotation content including the tags.
     let annotation = html.match(annotationRegex);
     // Sanitize html code without removing our supported MathML tags and attributes.
-    html = DOMPurify.sanitize(html, { ADD_TAGS: ['semantics', 'annotation', 'mstack', 'msline', 'msrow'], ADD_ATTR: ['linebreak', 'charalign', 'stackalign']});
+    html = DOMPurify.sanitize(html, {
+      ADD_TAGS: ["semantics", "annotation", "mstack", "msline", "msrow"],
+      ADD_ATTR: ["linebreak", "charalign", "stackalign"],
+    });
     // Readd old annotation content.
     return html.replace(annotationRegex, annotation);
   }
@@ -437,7 +482,7 @@ export default class Util {
    */
   static htmlEntitiesDecode(input) {
     // Textarea element decodes when inner html is set.
-    const textarea = document.createElement('textarea');
+    const textarea = document.createElement("textarea");
     textarea.innerHTML = input;
     return textarea.value;
   }
@@ -448,20 +493,22 @@ export default class Util {
    * @returns {XMLHttpRequest|ActiveXObject} the proper request object.
    */
   static createHttpRequest() {
-    const currentPath = window.location.toString().substr(0, window.location.toString().lastIndexOf('/') + 1);
-    if (currentPath.substr(0, 7) === 'file://') {
-      throw StringManager.get('exception_cross_site');
+    const currentPath = window.location
+      .toString()
+      .substr(0, window.location.toString().lastIndexOf("/") + 1);
+    if (currentPath.substr(0, 7) === "file://") {
+      throw StringManager.get("exception_cross_site");
     }
 
-    if (typeof XMLHttpRequest !== 'undefined') {
+    if (typeof XMLHttpRequest !== "undefined") {
       return new XMLHttpRequest();
     }
 
     try {
-      return new ActiveXObject('Msxml2.XMLHTTP');
+      return new ActiveXObject("Msxml2.XMLHTTP");
     } catch (e) {
       try {
-        return new ActiveXObject('Microsoft.XMLHTTP');
+        return new ActiveXObject("Microsoft.XMLHTTP");
       } catch (oc) {
         return null;
       }
@@ -476,7 +523,7 @@ export default class Util {
    * @static
    */
   static httpBuildQuery(properties) {
-    let result = '';
+    let result = "";
 
     Object.keys(properties).forEach((i) => {
       if (properties[i] != null) {
@@ -485,7 +532,7 @@ export default class Util {
     });
 
     // Deleting last '&' empty character.
-    if (result.substring(result.length - 1) === '&') {
+    if (result.substring(result.length - 1) === "&") {
       result = result.substring(0, result.length - 1);
     }
 
@@ -521,19 +568,19 @@ export default class Util {
     }
 
     // 2. Generate output.
-    let output = '';
+    let output = "";
     for (let i = 0; i < n; i += 1) {
       const key = keys[i];
       output += key;
-      output += '=';
+      output += "=";
       let value = hash[key];
-      value = value.replace('\\', '\\\\');
-      value = value.replace('\n', '\\n');
-      value = value.replace('\r', '\\r');
-      value = value.replace('\t', '\\t');
+      value = value.replace("\\", "\\\\");
+      value = value.replace("\n", "\\n");
+      value = value.replace("\r", "\\r");
+      value = value.replace("\t", "\\t");
 
       output += value;
-      output += '\n';
+      output += "\n";
     }
     return output;
   }
@@ -549,7 +596,7 @@ export default class Util {
     let i;
     const an = a.length;
     const bn = b.length;
-    const n = (an > bn) ? bn : an;
+    const n = an > bn ? bn : an;
     for (i = 0; i < n; i += 1) {
       const c = Util.fixedCharCodeAt(a, i) - Util.fixedCharCodeAt(b, i);
       if (c !== 0) {
@@ -576,16 +623,17 @@ export default class Util {
     /* High surrogate (could change last hex to 0xDB7F to treat high
     private surrogates as single characters) */
 
-    if (code >= 0xD800 && code <= 0xDBFF) {
+    if (code >= 0xd800 && code <= 0xdbff) {
       hi = code;
       low = string.charCodeAt(idx + 1);
       if (Number.isNaN(low)) {
-        throw StringManager.get('exception_high_surrogate');
+        throw StringManager.get("exception_high_surrogate");
       }
-      return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
+      return (hi - 0xd800) * 0x400 + (low - 0xdc00) + 0x10000;
     }
 
-    if (code >= 0xDC00 && code <= 0xDFFF) { // Low surrogate.
+    if (code >= 0xdc00 && code <= 0xdfff) {
+      // Low surrogate.
       /* We return false to allow loops to skip this iteration since should have
       already handled high surrogate above in the previous iteration. */
       return false;
@@ -601,16 +649,16 @@ export default class Util {
    */
   static urlToAssArray(url) {
     let i;
-    i = url.indexOf('?');
+    i = url.indexOf("?");
     if (i > 0) {
       const query = url.substring(i + 1);
-      const ss = query.split('&');
+      const ss = query.split("&");
       const h = {};
       for (i = 0; i < ss.length; i += 1) {
         const s = ss[i];
-        const kv = s.split('=');
+        const kv = s.split("=");
         if (kv.length > 1) {
-          h[kv[0]] = decodeURIComponent(kv[1].replace(/\+/g, ' '));
+          h[kv[0]] = decodeURIComponent(kv[1].replace(/\+/g, " "));
         }
       }
       return h;
@@ -628,7 +676,7 @@ export default class Util {
    * @static
    */
   static urlEncode(clearString) {
-    let output = '';
+    let output = "";
     // Method encodeURIComponent doesn't encode !'()*~ .
     output = encodeURIComponent(clearString);
     return output;
@@ -648,21 +696,26 @@ export default class Util {
   static getWIRISImageOutput(imgCode, convertToXml, convertToSafeXml) {
     const imgObject = Util.createObject(imgCode);
     if (imgObject) {
-      if (imgObject.className === Configuration.get('imageClassName') || imgObject.getAttribute(Configuration.get('imageMathmlAttribute'))) {
+      if (
+        imgObject.className === Configuration.get("imageClassName") ||
+        imgObject.getAttribute(Configuration.get("imageMathmlAttribute"))
+      ) {
         if (!convertToXml) {
           return imgCode;
         }
 
-        const dataMathML = imgObject.getAttribute(Configuration.get('imageMathmlAttribute'));
+        const dataMathML = imgObject.getAttribute(
+          Configuration.get("imageMathmlAttribute"),
+        );
         // To handle annotations, first we need the MathML in XML.
         let mathML = MathML.safeXmlDecode(dataMathML);
 
-        if (!Configuration.get('saveHandTraces')) {
-          mathML = MathML.removeAnnotation(mathML, 'application/json');
+        if (!Configuration.get("saveHandTraces")) {
+          mathML = MathML.removeAnnotation(mathML, "application/json");
         }
 
         if (mathML == null) {
-          mathML = imgObject.getAttribute('alt');
+          mathML = imgObject.getAttribute("alt");
         }
 
         if (convertToSafeXml) {
@@ -688,11 +741,13 @@ export default class Util {
       BR: 1,
     };
 
-    if (node.nodeType === 3) { // TEXT_NODE.
+    if (node.nodeType === 3) {
+      // TEXT_NODE.
       return node.nodeValue.length;
     }
 
-    if (node.nodeType === 1) { // ELEMENT_NODE.
+    if (node.nodeType === 1) {
+      // ELEMENT_NODE.
       let length = staticNodeLengths[node.nodeName.toUpperCase()];
 
       if (length === undefined) {
@@ -741,28 +796,38 @@ export default class Util {
           return null;
         }
 
-        windowTarget.document.execCommand('InsertImage', false, '#');
+        windowTarget.document.execCommand("InsertImage", false, "#");
         let temporalObject = range.parentElement();
 
-        if (temporalObject.nodeName.toUpperCase() !== 'IMG') {
+        if (temporalObject.nodeName.toUpperCase() !== "IMG") {
           // IE9 fix: parentElement() does not return the IMG node,
           // returns the parent DIV node. In IE < 9, pasteHTML does not work well.
-          range.pasteHTML('<span id="wrs_openEditorWindow_temporalObject"></span>');
-          temporalObject = windowTarget.document.getElementById('wrs_openEditorWindow_temporalObject');
+          range.pasteHTML(
+            '<span id="wrs_openEditorWindow_temporalObject"></span>',
+          );
+          temporalObject = windowTarget.document.getElementById(
+            "wrs_openEditorWindow_temporalObject",
+          );
         }
 
         let node;
         let caretPosition;
 
-        if (temporalObject.nextSibling && temporalObject.nextSibling.nodeType === 3) { // TEXT_NODE.
+        if (
+          temporalObject.nextSibling &&
+          temporalObject.nextSibling.nodeType === 3
+        ) {
+          // TEXT_NODE.
           node = temporalObject.nextSibling;
           caretPosition = 0;
-        } else if (temporalObject.previousSibling
-          && temporalObject.previousSibling.nodeType === 3) {
+        } else if (
+          temporalObject.previousSibling &&
+          temporalObject.previousSibling.nodeType === 3
+        ) {
           node = temporalObject.previousSibling;
           caretPosition = node.nodeValue.length;
         } else {
-          node = windowTarget.document.createTextNode('');
+          node = windowTarget.document.createTextNode("");
           temporalObject.parentNode.insertBefore(node, temporalObject);
           caretPosition = 0;
         }
@@ -796,7 +861,8 @@ export default class Util {
 
       const node = range.startContainer;
 
-      if (node.nodeType === 3) { // TEXT_NODE.
+      if (node.nodeType === 3) {
+        // TEXT_NODE.
         return {
           node,
           caretPosition: range.startOffset,
@@ -807,25 +873,36 @@ export default class Util {
         return null;
       }
 
-      if (node.nodeType === 1) { // ELEMENT_NODE.
+      if (node.nodeType === 1) {
+        // ELEMENT_NODE.
         const position = range.startOffset;
 
         if (node.childNodes[position]) {
-
           // In case that a formula is detected but not selected,
           // we create an empty span where we could insert the new formula.
           if (range.startOffset === range.endOffset) {
-            if (position !== 0 && node.childNodes[position - 1].localName === 'span' && node.childNodes[position].classList?.contains('Wirisformula')) {
+            if (
+              position !== 0 &&
+              node.childNodes[position - 1].localName === "span" &&
+              node.childNodes[position].classList?.contains("Wirisformula")
+            ) {
               node.childNodes[position - 1].remove();
               return Util.getSelectedItem(target, isIframe, forceGetSelection);
-            }
-            else if (node.childNodes[position].classList?.contains('Wirisformula')) {
-              if ((position > 0 && node.childNodes[position - 1].classList?.contains('Wirisformula')) || position === 0 ) {
-                var emptySpan = document.createElement('span');
+            } else if (
+              node.childNodes[position].classList?.contains("Wirisformula")
+            ) {
+              if (
+                (position > 0 &&
+                  node.childNodes[position - 1].classList?.contains(
+                    "Wirisformula",
+                  )) ||
+                position === 0
+              ) {
+                var emptySpan = document.createElement("span");
                 node.insertBefore(emptySpan, node.childNodes[position]);
                 return {
                   node: node.childNodes[position],
-                }
+                };
               }
             }
           }
@@ -851,7 +928,10 @@ export default class Util {
    */
   static getSelectedItemOnTextarea(textarea) {
     const textNode = document.createTextNode(textarea.value);
-    const textNodeValues = Latex.getLatexFromTextNode(textNode, textarea.selectionStart);
+    const textNodeValues = Latex.getLatexFromTextNode(
+      textNode,
+      textarea.selectionStart,
+    );
     if (textNodeValues === null) {
       return null;
     }
@@ -880,11 +960,12 @@ export default class Util {
     name = name.toLowerCase();
     let start = code.indexOf(`<${name} `);
 
-    while (start !== -1) { // Look for nodes.
+    while (start !== -1) {
+      // Look for nodes.
       let endString;
 
       if (autoClosed) {
-        endString = '>';
+        endString = ">";
       } else {
         endString = `</${name}>`;
       }
@@ -914,13 +995,13 @@ export default class Util {
    * @static
    */
   static decode64(character) {
-    const PLUS = '+'.charCodeAt(0);
-    const SLASH = '/'.charCodeAt(0);
-    const NUMBER = '0'.charCodeAt(0);
-    const LOWER = 'a'.charCodeAt(0);
-    const UPPER = 'A'.charCodeAt(0);
-    const PLUS_URL_SAFE = '-'.charCodeAt(0);
-    const SLASH_URL_SAFE = '_'.charCodeAt(0);
+    const PLUS = "+".charCodeAt(0);
+    const SLASH = "/".charCodeAt(0);
+    const NUMBER = "0".charCodeAt(0);
+    const LOWER = "a".charCodeAt(0);
+    const UPPER = "A".charCodeAt(0);
+    const PLUS_URL_SAFE = "-".charCodeAt(0);
+    const SLASH_URL_SAFE = "_".charCodeAt(0);
     const code = character.charCodeAt(0);
 
     if (code === PLUS || code === PLUS_URL_SAFE) {
@@ -956,17 +1037,18 @@ export default class Util {
     let tmp;
 
     if (b64String.length % 4 > 0) {
-      throw new Error('Invalid string. Length must be a multiple of 4'); // Tipped base64. Length is fixed.
+      throw new Error("Invalid string. Length must be a multiple of 4"); // Tipped base64. Length is fixed.
     }
 
     const arr = [];
 
     let l;
     let placeHolders;
-    if (!length) { // All b64String string.
-      if (b64String.charAt(b64String.length - 2) === '=') {
+    if (!length) {
+      // All b64String string.
+      if (b64String.charAt(b64String.length - 2) === "=") {
         placeHolders = 2;
-      } else if (b64String.charAt(b64String.length - 1) === '=') {
+      } else if (b64String.charAt(b64String.length - 1) === "=") {
         placeHolders = 1;
       } else {
         placeHolders = 0;
@@ -982,11 +1064,15 @@ export default class Util {
       // See https://tracker.moodle.org/browse/CONTRIB-5862 for further information.
       // @codingStandardsIgnoreStart
       // eslint-disable-next-line max-len
-      tmp = (Util.decode64(b64String.charAt(i)) << 18) | (Util.decode64(b64String.charAt(i + 1)) << 12) | (Util.decode64(b64String.charAt(i + 2)) << 6) | Util.decode64(b64String.charAt(i + 3));
+      tmp =
+        (Util.decode64(b64String.charAt(i)) << 18) |
+        (Util.decode64(b64String.charAt(i + 1)) << 12) |
+        (Util.decode64(b64String.charAt(i + 2)) << 6) |
+        Util.decode64(b64String.charAt(i + 3));
 
-      arr.push((tmp >> 16) & 0xFF);
-      arr.push((tmp >> 8) & 0xFF);
-      arr.push(tmp & 0xFF);
+      arr.push((tmp >> 16) & 0xff);
+      arr.push((tmp >> 8) & 0xff);
+      arr.push(tmp & 0xff);
       // @codingStandardsIgnoreEnd
     }
 
@@ -995,13 +1081,18 @@ export default class Util {
         // Ignoring code checker standards (bitewise operators).
         // @codingStandardsIgnoreStart
         // eslint-disable-next-line max-len
-        tmp = (Util.decode64(b64String.charAt(i)) << 2) | (Util.decode64(b64String.charAt(i + 1)) >> 4);
-        arr.push(tmp & 0xFF);
+        tmp =
+          (Util.decode64(b64String.charAt(i)) << 2) |
+          (Util.decode64(b64String.charAt(i + 1)) >> 4);
+        arr.push(tmp & 0xff);
       } else if (placeHolders === 1) {
         // eslint-disable-next-line max-len
-        tmp = (Util.decode64(b64String.charAt(i)) << 10) | (Util.decode64(b64String.charAt(i + 1)) << 4) | (Util.decode64(b64String.charAt(i + 2)) >> 2);
-        arr.push((tmp >> 8) & 0xFF);
-        arr.push(tmp & 0xFF);
+        tmp =
+          (Util.decode64(b64String.charAt(i)) << 10) |
+          (Util.decode64(b64String.charAt(i + 1)) << 4) |
+          (Util.decode64(b64String.charAt(i + 2)) >> 2);
+        arr.push((tmp >> 8) & 0xff);
+        arr.push(tmp & 0xff);
         // @codingStandardsIgnoreEnd
       }
     }
@@ -1020,7 +1111,9 @@ export default class Util {
     }
     const int32 = bytes.splice(0, 4);
     // @codingStandardsIgnoreStart¡
-    return (int32[0] << 24 | int32[1] << 16 | int32[2] << 8 | int32[3] << 0);
+    return (
+      (int32[0] << 24) | (int32[1] << 16) | (int32[2] << 8) | (int32[3] << 0)
+    );
     // @codingStandardsIgnoreEnd
   }
 
@@ -1061,8 +1154,14 @@ export default class Util {
 
       if (textarea.selectionStart != null) {
         const { selectionEnd } = textarea;
-        const selectionStart = textarea.value.substring(0, textarea.selectionStart);
-        const selectionEndSub = textarea.value.substring(selectionEnd, textarea.value.length);
+        const selectionStart = textarea.value.substring(
+          0,
+          textarea.selectionStart,
+        );
+        const selectionEndSub = textarea.value.substring(
+          selectionEnd,
+          textarea.value.length,
+        );
         textarea.value = selectionStart + text + selectionEndSub;
         textarea.selectionEnd = selectionEnd + text.length;
       } else {
@@ -1085,7 +1184,10 @@ export default class Util {
   static updateExistingTextOnTextarea(textarea, text, start, end) {
     textarea.focus();
     const textareaStart = textarea.value.substring(0, start);
-    textarea.value = textareaStart + text + textarea.value.substring(end, textarea.value.length);
+    textarea.value =
+      textareaStart +
+      text +
+      textarea.value.substring(end, textarea.value.length);
     textarea.selectionEnd = start + text.length;
   }
 
@@ -1098,10 +1200,10 @@ export default class Util {
    */
   static addArgument(path, parameter, value) {
     let sep;
-    if (path.indexOf('?') > 0) {
-      sep = '&';
+    if (path.indexOf("?") > 0) {
+      sep = "&";
     } else {
-      sep = '?';
+      sep = "?";
     }
     return `${path + sep + parameter}=${value}`;
   }

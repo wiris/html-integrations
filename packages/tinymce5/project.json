@@ -6,9 +6,7 @@
     "build": {
       "executor": "@nx/webpack:webpack",
       "dependsOn": [],
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "main": "demos/packages/tinymce5/global.js",
         "outputPath": "dist",
@@ -27,9 +25,7 @@
     },
     "test": {
       "executor": "@nx/cypress:cypress",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "baseUrl": "http://localhost:8006",
         "cypressConfig": "./cypress.json"
@@ -39,13 +35,9 @@
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": [
-          "packages/tinymce5/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["packages/tinymce5/**/*.{ts,tsx,js,jsx}"]
       },
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   }
 }

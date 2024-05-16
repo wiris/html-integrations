@@ -61,7 +61,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-              core.setFailed('jsdoc: main index file is empty')
+            core.setFailed('jsdoc: main index file is empty')
 
       # 06. Upload the jsdoc site to github artifacts
       - name: Upload artifacts

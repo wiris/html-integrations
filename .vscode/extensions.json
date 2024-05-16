@@ -1,8 +1,28 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "html-validate.vscode-html-validate",
-    "stylelint.vscode-stylelint",
-    "nrwl.angular-console"
+    // LINTERS
+    "dbaeumer.vscode-eslint", // ESLint
+    "sonarsource.sonarlint-vscode", // SonarLint
+    "davidanson.vscode-markdownlint", // Markdownlint
+
+    // FORMATERS
+    "esbenp.prettier-vscode", // Prettier
+
+    // COMMENTS - COMMITS - TEXT
+    "aaron-bond.better-comments", // Better Comments
+    "vivaxy.vscode-conventional-commits", // Conventional Commits
+    "streetsidesoftware.code-spell-checker", // Code Spell Checker
+
+    // UTILITIES
+    "usernamehw.errorlens", // ErrorLens
+    "wallabyjs.console-ninja", // Console Ninja
+    "ms-azuretools.vscode-docker", // Docker
+    "ms-vsliveshare.vsliveshare", // Live Share
+    "visualstudioexptteam.vscodeintellicode", // IntelliCode
+    "thundergang.thunder-client", // Thunder Client
+
+    // GITHUB
+    "eamodio.gitlens", // GitLens
+    "github.vscode-github-actions" // GitHub Actions
   ]
 }

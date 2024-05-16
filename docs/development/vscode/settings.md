@@ -1,0 +1,70 @@
+# Settings for Visual Studio Code
+
+We modified the default settings of Visual Studio Code to ease the development experience. You can find the settings in the `.vscode` folder.
+
+## Settings
+
+```sh
+//! Editor settings
+  "editor.tabSize": 2, // 2 spaces for tabs
+  "editor.wordWrap": "on", // Wrap words when they reach the end of the line
+  "editor.wordWrapColumn": 120, // Wrap words at 120 characters per line
+  "editor.rulers": [120], // Show a ruler at 120 characters
+  "editor.renderWhitespace": "all", // Show whitespace characters
+  "editor.letterSpacing": 0.5, // Add a little space between characters
+  "editor.lineNumbers": "on", // Show line numbers on the left
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // Use Prettier as the default formatter
+
+  "editor.formatOnPaste": true, // Format code when pasting
+  "files.autoSave": "afterDelay", // Autosave files after a delay
+  "editor.formatOnSave": true, // Format code when saving ( <Ctrl> + S)
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true // Fix all ESLint errors on save
+  },
+
+  //! File settings
+  "files.trimTrailingWhitespace": true, // Remove trailing whitespace
+  "files.insertFinalNewline": true, // Insert a newline at the end of the file
+  "files.eol": "\n", // Use LF (Unix) line endings
+
+  //! Git settings
+  "conventionalCommits.scopes": [
+    // List of scopes for Conventional Commits
+    "devkit",
+    "demos",
+    "tiny5",
+    "tiny6",
+    "ck4",
+    "ck5",
+    "froala",
+    "generic",
+    "viewer",
+    "telemeter"
+  ],
+
+  //! CSpell settings
+  "cSpell.enabled": true,
+  // Add words to the dictionary
+  "cSpell.userWords": [
+    "devkit",
+    "demos",
+    "tiny5",
+    "tiny6",
+    "ck4",
+    "ck5",
+    "froala",
+    "generic",
+    "viewer",
+    "telemeter",
+    "ckeditor",
+    "devkit",
+    "dockerfiles",
+    "froala",
+    "mathml",
+    "mathtype",
+    "MTCT",
+    "Wiris"
+  ],
+  "editor.guides.indentation": true // Show indentation guides in the editor
+}
+```

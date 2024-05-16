@@ -22,14 +22,14 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "../../../node_modules/tinymce", "output": "/tinymce/" }
+              {
+                "glob": "**/*",
+                "input": "../../../node_modules/tinymce",
+                "output": "/tinymce/"
+              }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": [
-              "../../../node_modules/tinymce/tinymce.min.js"
-            ]
+            "styles": ["src/styles.css"],
+            "scripts": ["../../../node_modules/tinymce/tinymce.min.js"]
           },
           "configurations": {
             "production": {
@@ -88,9 +88,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

@@ -27,7 +27,6 @@ $ nx lint <package>
 $ nx lint ckeditor5
 ```
 
-
 To validate all the `.js` files of the project, run:
 
 ```sh

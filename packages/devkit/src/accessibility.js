@@ -1,7 +1,7 @@
-import TextCache from './textcache';
-import ServiceProvider from './serviceprovider';
-import MathML from './mathml';
-import StringManager from './stringmanager';
+import TextCache from "./textcache";
+import ServiceProvider from "./serviceprovider";
+import MathML from "./mathml";
+import StringManager from "./stringmanager";
 
 /**
  * @classdesc
@@ -10,10 +10,10 @@ import StringManager from './stringmanager';
  */
 export default class Accessibility {
   /**
-  * Static property.
-  * Accessibility cache, each entry contains a MathML and its correspondent accessibility text.
-  * @type {TextCache}
-  */
+   * Static property.
+   * Accessibility cache, each entry contains a MathML and its correspondent accessibility text.
+   * @type {TextCache}
+   */
   static get cache() {
     return Accessibility._cache;
   }
@@ -36,30 +36,32 @@ export default class Accessibility {
    * @return {String} Accessibility text.
    */
   static mathMLToAccessible(mathML, language, data) {
-    if (typeof (language) === 'undefined') {
-      language = 'en';
+    if (typeof language === "undefined") {
+      language = "en";
     }
     // Check MathML class. If the class is chemistry,
     // we add chemistry to data to force accessibility service
     // to load chemistry grammar.
-    if (MathML.containClass(mathML, 'wrs_chemistry')) {
-      data.mode = 'chemistry';
+    if (MathML.containClass(mathML, "wrs_chemistry")) {
+      data.mode = "chemistry";
     }
     // Ignore accesibility styles
     data.ignoreStyles = true;
-    let accessibleText = '';
+    let accessibleText = "";
 
     if (Accessibility.cache.get(mathML)) {
       accessibleText = Accessibility.cache.get(mathML);
     } else {
-      data.service = 'mathml2accessible';
+      data.service = "mathml2accessible";
       data.lang = language;
-      const accessibleJsonResponse = JSON.parse(ServiceProvider.getService('service', data));
-      if (accessibleJsonResponse.status !== 'error') {
+      const accessibleJsonResponse = JSON.parse(
+        ServiceProvider.getService("service", data),
+      );
+      if (accessibleJsonResponse.status !== "error") {
         accessibleText = accessibleJsonResponse.result.text;
         Accessibility.cache.populate(mathML, accessibleText);
       } else {
-        accessibleText = StringManager.get('error_convert_accessibility');
+        accessibleText = StringManager.get("error_convert_accessibility");
       }
     }
 

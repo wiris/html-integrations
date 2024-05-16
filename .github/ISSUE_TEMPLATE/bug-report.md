@@ -8,32 +8,32 @@ assignees: ""
 
 ## Description
 
-*What does the bug consist in?*
+_What does the bug consist in?_
 
 ## Environment
 
-*Which version of MathType does this happen in?*
+_Which version of MathType does this happen in?_
 
-*What is the relevant software and their versions?*
+_What is the relevant software and their versions?_
 
-- *Editor (CKEditor, Froala, TinyMCE, etc.)*
-- *Framework (Angular, React, etc.)*
-- *Browser (Chrome, Firefox, etc.)*
-- *Operating System (Windows, macOS, Ubuntu, etc.)*
+- _Editor (CKEditor, Froala, TinyMCE, etc.)_
+- _Framework (Angular, React, etc.)_
+- _Browser (Chrome, Firefox, etc.)_
+- _Operating System (Windows, macOS, Ubuntu, etc.)_
 
 ## Steps to reproduce
 
-*What are the steps needed to reproduce the bug?*
-*Please be specific.*
+_What are the steps needed to reproduce the bug?_
+_Please be specific._
 
 ## Expected result
 
-*What is the expected outcome of the steps above?*
+_What is the expected outcome of the steps above?_
 
 ## Actual result
 
-*What is the actual outcome of the steps above?*
+_What is the actual outcome of the steps above?_
 
 ## Other details
 
-*Is there anything else to consider?*
+_Is there anything else to consider?_

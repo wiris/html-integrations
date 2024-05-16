@@ -11,19 +11,19 @@ import { Properties } from "./properties";
 export function bypassEncapsulation(properties: Properties, w: Window) {
   const wany = w as any;
 
-  if (typeof wany.com === 'undefined') {
+  if (typeof wany.com === "undefined") {
     wany.com = {};
   }
 
-  if (typeof wany.com.wiris === 'undefined') {
+  if (typeof wany.com.wiris === "undefined") {
     wany.com.wiris = {};
   }
 
-  if (typeof wany.com.wiris.js === 'undefined') {
+  if (typeof wany.com.wiris.js === "undefined") {
     wany.com.wiris.js = {};
   }
 
-  if (typeof wany.com.wiris.js.JsPluginViewer === 'undefined') {
+  if (typeof wany.com.wiris.js.JsPluginViewer === "undefined") {
     wany.com.wiris.js.JsPluginViewer = JsPluginViewer.getInstance();
     JsPluginViewer.properties = properties;
   }
@@ -57,14 +57,26 @@ class JsPluginViewer {
    * @deprecated There is currently no replacement for rendering SafeMathML formulas.
    * Please consider using {@link renderLatex} or {@link renderMathML}.
    */
-  parseSafeMathMLElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): void {
+  parseSafeMathMLElement(
+    element: HTMLElement,
+    asynchronously?: boolean,
+    callbackFunc?: () => void,
+  ): void {
     var mathmlPositions = [];
-    JsPluginViewer.getMathMLPositionsAtElementAndChildren(element, mathmlPositions);
+    JsPluginViewer.getMathMLPositionsAtElementAndChildren(
+      element,
+      mathmlPositions,
+    );
     for (let i = 0; i < mathmlPositions.length; i++) {
       var mathmlPosition = mathmlPositions[i];
       var newNode = document.createElement("math");
-      mathmlPosition.nextElement.parentNode.insertBefore(newNode, mathmlPosition.nextElement);
-      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.safeMML);
+      mathmlPosition.nextElement.parentNode.insertBefore(
+        newNode,
+        mathmlPosition.nextElement,
+      );
+      newNode.outerHTML = JsPluginViewer.decodeSafeMathML(
+        mathmlPosition.safeMML,
+      );
     }
   }
 
@@ -75,7 +87,11 @@ class JsPluginViewer {
    * @param safeXml - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderMathML}.
    */
-  async parseDocument(asynchronously?: boolean, callbackFunc?: () => void, safeXml?: boolean): Promise<void> {
+  async parseDocument(
+    asynchronously?: boolean,
+    callbackFunc?: () => void,
+    safeXml?: boolean,
+  ): Promise<void> {
     return renderMathML(JsPluginViewer.properties, document.documentElement);
   }
 
@@ -86,7 +102,11 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderMathML}.
    */
-  async parseElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
+  async parseElement(
+    element: HTMLElement,
+    asynchronously?: boolean,
+    callbackFunc?: () => void,
+  ): Promise<void> {
     await renderLatex(JsPluginViewer.properties, element);
     return await renderMathML(JsPluginViewer.properties, element);
   }
@@ -97,7 +117,10 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderLatex}.
    */
-  async parseLatexDocument(asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
+  async parseLatexDocument(
+    asynchronously?: boolean,
+    callbackFunc?: () => void,
+  ): Promise<void> {
     return renderLatex(JsPluginViewer.properties, document.documentElement);
   }
 
@@ -108,7 +131,11 @@ class JsPluginViewer {
    * @param callbackFunc - Currently ignored, only included for retrocompatibility purposes.
    * @deprecated Please consider using {@link renderLatex}.
    */
-  async parseLatexElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): Promise<void> {
+  async parseLatexElement(
+    element: HTMLElement,
+    asynchronously?: boolean,
+    callbackFunc?: () => void,
+  ): Promise<void> {
     return renderLatex(JsPluginViewer.properties, element);
   }
 
@@ -122,15 +149,22 @@ class JsPluginViewer {
     var doubleQuoteEntity = safeXMLCharactersEntities.doubleQuote;
     var realDoubleQuoteEntity = safeXMLCharactersEntities.realDoubleQuote;
 
-
     // Important to not change function parameter.
     var inputCopy = input.slice();
 
     // Decoding entities.
-    inputCopy = inputCopy.split(tagOpenerEntity).join(safeXMLCharacters.tagOpener);
-    inputCopy = inputCopy.split(tagCloserEntity).join(safeXMLCharacters.tagCloser);
-    inputCopy = inputCopy.split(doubleQuoteEntity).join(safeXMLCharacters.doubleQuote);
-    inputCopy = inputCopy.split(realDoubleQuoteEntity).join(safeXMLCharacters.realDoubleQuote);
+    inputCopy = inputCopy
+      .split(tagOpenerEntity)
+      .join(safeXMLCharacters.tagOpener);
+    inputCopy = inputCopy
+      .split(tagCloserEntity)
+      .join(safeXMLCharacters.tagCloser);
+    inputCopy = inputCopy
+      .split(doubleQuoteEntity)
+      .join(safeXMLCharacters.doubleQuote);
+    inputCopy = inputCopy
+      .split(realDoubleQuoteEntity)
+      .join(safeXMLCharacters.realDoubleQuote);
 
     var tagOpener = safeXMLCharacters.tagOpener;
     var tagCloser = safeXMLCharacters.tagCloser;
@@ -148,25 +182,26 @@ class JsPluginViewer {
 
     // We are replacing $ by & when its part of an entity for retrocompatibility.
     // Now, the standard is replace § by &.
-    var returnValue = '';
+    var returnValue = "";
     var currentEntity = null;
 
     var i = 0;
     while (i < inputCopy.length) {
       var character = inputCopy.charAt(i);
       if (currentEntity == null) {
-        if (character == '$') {
-          currentEntity = '';
+        if (character == "$") {
+          currentEntity = "";
         } else {
           returnValue += character;
         }
-      } else if (character == ';') {
-        returnValue += '&' + currentEntity;
+      } else if (character == ";") {
+        returnValue += "&" + currentEntity;
         currentEntity = null;
-      } else if (character.match(/([a-zA-Z0-9#._-] | '-')/)) { // Character is part of an entity.
+      } else if (character.match(/([a-zA-Z0-9#._-] | '-')/)) {
+        // Character is part of an entity.
         currentEntity += character;
       } else {
-        returnValue += '$' + 'currentEntity'; // Is not an entity.
+        returnValue += "$" + "currentEntity"; // Is not an entity.
         currentEntity = null;
         i -= 1; // Parse again the current character.
       }
@@ -176,7 +211,10 @@ class JsPluginViewer {
     return returnValue;
   }
 
-  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions) {
+  private static getMathMLPositionsAtElementAndChildren(
+    element: Node,
+    mathmlPositions,
+  ) {
     JsPluginViewer.getMathMLPositionsAtNode(element, mathmlPositions);
     // Copy current children because DOM will be changed and element.childNodes won't be
     // consistent on call getMathMLPositionsAtElementAndChildren().
@@ -184,73 +222,87 @@ class JsPluginViewer {
     if (childNodes.length > 0) {
       for (let i = 0; i < childNodes.length; i++) {
         var child = childNodes[i];
-        JsPluginViewer.getMathMLPositionsAtElementAndChildren(child, mathmlPositions);
+        JsPluginViewer.getMathMLPositionsAtElementAndChildren(
+          child,
+          mathmlPositions,
+        );
       }
     }
   }
 
   private static getMathMLPositionsAtNode(node: Node, mathmlPositions) {
     var safeXMLCharacters = JsCharacters.getSafeXMLCharacters();
-    if(node.nodeType == 3) {
+    if (node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
-      var endMathmlTag = safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
+      var endMathmlTag =
+        safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
       var start = node.textContent.indexOf(startMathmlTag);
       var end = 0;
-      while(start != -1) {
-        end = node.textContent.indexOf(endMathmlTag,start + startMathmlTag.length);
+      while (start != -1) {
+        end = node.textContent.indexOf(
+          endMathmlTag,
+          start + startMathmlTag.length,
+        );
 
-        if(end == -1) break;
+        if (end == -1) break;
 
-        var nextMathML = node.textContent.indexOf(startMathmlTag,end + endMathmlTag.length);
+        var nextMathML = node.textContent.indexOf(
+          startMathmlTag,
+          end + endMathmlTag.length,
+        );
 
-        if(nextMathML >= 0 && end > nextMathML) break;
+        if (nextMathML >= 0 && end > nextMathML) break;
 
-        var safeMathml = node.textContent.substring(start,end + endMathmlTag.length);
+        var safeMathml = node.textContent.substring(
+          start,
+          end + endMathmlTag.length,
+        );
 
-        node.textContent = node.textContent.substring(0,start) + node.textContent.substring(end + endMathmlTag.length);
+        node.textContent =
+          node.textContent.substring(0, start) +
+          node.textContent.substring(end + endMathmlTag.length);
         node = (node as Text).splitText(start);
         start = node.textContent.indexOf(startMathmlTag);
 
         mathmlPositions.push({
           safeMML: safeMathml,
-          nextElement: node
+          nextElement: node,
         });
       }
     }
   }
-
 }
 
 class JsCharacters {
   static getSafeXMLCharactersEntities(): any {
     return {
-      tagOpener: '&laquo;',
-      tagCloser: '&raquo;',
-      doubleQuote: '&uml;',
-      realDoubleQuote: '&quot;',
+      tagOpener: "&laquo;",
+      tagCloser: "&raquo;",
+      doubleQuote: "&uml;",
+      realDoubleQuote: "&quot;",
     };
   }
 
   static getXMLCharacters(): any {
     return {
-      id: 'xmlCharacters',
-      tagOpener: '<', // Hex: \x3C.
-      tagCloser: '>', // Hex: \x3E.
+      id: "xmlCharacters",
+      tagOpener: "<", // Hex: \x3C.
+      tagCloser: ">", // Hex: \x3E.
       doubleQuote: '"', // Hex: \x22.
-      ampersand: '&', // Hex: \x26.
-      quote: '\'', // Hex: \x27.
+      ampersand: "&", // Hex: \x26.
+      quote: "'", // Hex: \x27.
     };
   }
 
   static getSafeXMLCharacters(): any {
     return {
-      id: 'safeXmlCharacters',
-      tagOpener: '«', // Hex: \xAB.
-      tagCloser: '»', // Hex: \xBB.
-      doubleQuote: '¨', // Hex: \xA8.
-      ampersand: '§', // Hex: \xA7.
-      quote: '`', // Hex: \x60.
-      realDoubleQuote: '¨',
+      id: "safeXmlCharacters",
+      tagOpener: "«", // Hex: \xAB.
+      tagCloser: "»", // Hex: \xBB.
+      doubleQuote: "¨", // Hex: \xA8.
+      ampersand: "§", // Hex: \xA7.
+      quote: "`", // Hex: \x60.
+      realDoubleQuote: "¨",
     };
   }
 }
