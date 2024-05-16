@@ -106,21 +106,23 @@ export default class GenericIntegration extends IntegrationModel {
      * @param {string} trigger 'button' when the modal is opened by clicking the MathType or ChemType button from the toolbar
      *                         'formula' when the modal is opened by double-click on the formula
      */
-    wrsOpenedEditorModal(toolbar, trigger) {
+    async wrsOpenedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
       if (
         /^(button|formula)$/.test(trigger) &&
         /^(general|chemistry)$/.test(toolbar)
       ) {
+
+        // Call Telemetry service to track the event.
         try {
-          Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
+          await Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
             toolbar: toolbar,
             trigger: trigger,
           });
-        } catch (err) {
-          trigger;
-          console.error(err);
+        } catch (error) {
+          console.error("Error tracking OPENED_MTCT_EDITOR", error);
         }
+
       } else {
         console.error("Invalid trigger or toolbar value for open editor modal");
       }
@@ -130,26 +132,22 @@ export default class GenericIntegration extends IntegrationModel {
      *
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      * @param {string} trigger 'mtct_insert' when the modal is closed due to inserting or modifying a formula. 'mtct_close' otherwise
+     ** The function was changed to async to ensure that telemetry tracking is completed before closing the modal.
      */
-    wrsClosedEditorModal(toolbar, trigger) {
+    async wrsClosedEditorModal(toolbar, trigger) {
       // Check that the manual string inputs contain the values we want, if not throw error.
-      if (
-        /^(mtct_insert|mtct_close)$/.test(trigger) &&
-        /^(general|chemistry)$/.test(toolbar)
-      ) {
-        // Call Telemetry service
-        try {
-          Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-            toolbar: toolbar,
-            trigger: trigger,
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        console.error(
-          "Invalid trigger or toolbar value for close editor modal",
-        );
+      if (!/^(mtct_insert|mtct_close)$/.test(trigger) || !/^(general|chemistry)$/.test(toolbar)) {
+        console.error("Invalid trigger or toolbar value for close editor modal");
+        return;
+      }
+
+      try {
+        await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: toolbar,
+          trigger: trigger,
+        });
+      } catch (error) {
+        console.error("Error tracking CLOSED_MTCT_EDITOR", error);
       }
     },
 
@@ -160,7 +158,7 @@ export default class GenericIntegration extends IntegrationModel {
      * @param {number} time The time passed since the MT/CT modal opened until the calling of this function
      * @param {string} toolbar The MT/CT button clicked from the toolbar: 'general' for the MathType and 'chemistry' for the ChemType
      */
-    wrsInsertedFormula(mathml_origin, mathml, time, toolbar) {
+    async wrsInsertedFormula(mathml_origin, mathml, time, toolbar) {
       const validToolbar = /^(general|chemistry)$/.test(toolbar);
       const validDate = !isNaN(new Date(time));
       // Check that the manual string inputs contain the values we want, if not throw error.
@@ -183,13 +181,15 @@ export default class GenericIntegration extends IntegrationModel {
             !payload[key] ? delete payload[key] : {};
         });
 
+        // Call Telemetry service to track the event.
         try {
-          Telemeter.telemeter.track("INSERTED_FORMULA", {
+          await Telemeter.telemeter.track("INSERTED_FORMULA", {
             ...payload,
           });
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error("Error tracking INSERTED_FORMULA", error);
         }
+
       } else {
         console.error("Invalid toolbar or time input for insert formula");
       }

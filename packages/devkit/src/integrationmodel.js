@@ -219,7 +219,7 @@ export default class IntegrationModel {
     // TODO: Move to Core constructor.
     this.core.setEnvironment(this.environment);
 
-    // No internet conection modal.
+    // No internet connection modal.
     let attributes = {};
     attributes.class = attributes.id = "wrs_modal_offline";
     this.offlineModal = Util.createElement("div", attributes);
@@ -710,7 +710,7 @@ export default class IntegrationModel {
       eventTarget,
       (element, event) => {
         this.doubleClickHandler(element, event);
-        // Avoid creating the doublick listener more than once for each element.
+        // Avoid creating the double click listener more than once for each element.
         event.stopImmediatePropagation();
       },
       (element, event) => {

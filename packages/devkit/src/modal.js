@@ -72,7 +72,7 @@ export default class ModalDialog {
      * @type {DeviceProperties}
      */
     this.deviceProperties = {
-      orientation: landscape ? "landscape" : "portait",
+      orientation: landscape ? "landscape" : "portrait",
       isAndroid,
       isIOS,
       isMobile,
@@ -90,7 +90,7 @@ export default class ModalDialog {
     /**
      * Object to keep website's style before change it on lock scroll for mobile devices.
      * @type {Object}
-     * @property {String} bodyStylePosition - Previous body style postion.
+     * @property {String} bodyStylePosition - Previous body style position.
      * @property {String} bodyStyleOverflow - Previous body style overflow.
      * @property {String} htmlStyleOverflow - Previous body style overflow.
      * @property {String} windowScrollX - Previous window's scroll Y.
@@ -191,7 +191,7 @@ export default class ModalDialog {
       "onmouseout",
       `this.style = "${generalStyle}";`,
     );
-    // To identifiy the element in automated testing
+    // To identify the element in automated testing
     this.minimizeDiv.setAttribute("data-testid", "mtcteditor-minimize-button");
 
     attributes = {};
@@ -254,12 +254,8 @@ export default class ModalDialog {
     };
 
     const callbacks = {
-      closeCallback: () => {
-        this.close();
-      },
-      cancelCallback: () => {
-        this.focus();
-      },
+      closeCallback: () => { this.close("mtc_close"); },
+      cancelCallback: () => { this.focus(); },
     };
 
     const popupupProperties = {
@@ -303,75 +299,33 @@ export default class ModalDialog {
     return this.contentManager;
   }
 
+
   /**
    * This method is called when the modal object has been submitted. Calls
    * contentElement submitAction method - if exists - and closes the modal
    * object. No logic about the content should be placed here,
    * contentElement.submitAction is the responsible of the content logic.
    */
-  submitAction() {
+  async submitAction() {
     if (typeof this.contentManager.submitAction !== "undefined") {
       this.contentManager.submitAction();
     }
 
-    try {
-      Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-        toolbar: this.contentManager.toolbar,
-        trigger: "mtct_insert",
-      });
-    } catch (err) {
-      console.error(err);
-    }
-
-    this.close();
+    await this.close('mtc_insert');
   }
 
   /**
-   * This method is called when the modal object has been cancelled. If
-   * contentElement has implemented hasChanges method, a confirm popup
-   * will be shown if hasChanges returns true.
+   * Performs the cancel action.
+   * If there are no changes in the content, it closes the modal.
+   * Otherwise, it shows a pop-up message to confirm the cancel action.
+   * @returns {Promise<void>} - A promise that resolves when the modal is closed.
    */
-  cancelAction() {
-    // opening a existing formula editor when trying to open a new one
-    if (typeof this.contentManager.hasChanges === "undefined") {
-      // Set temporal image to null to prevent loading
-      // an existent formula when strarting one from scrath. Make focus come back too.
+  async cancelAction() {
+    if (typeof this.contentManager.hasChanges === "undefined" || !this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
-
-      try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: this.contentManager.toolbar,
-          trigger: "mtct_close",
-        });
-      } catch (err) {
-        console.error(err);
-      }
-
-      this.close();
-    } else if (!this.contentManager.hasChanges()) {
-      IntegrationModel.setActionsOnCancelButtons();
-
-      try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: this.contentManager.toolbar,
-          trigger: "mtct_close",
-        });
-      } catch (err) {
-        console.error(err);
-      }
-
-      this.close();
+      await this.close("mtc_close");
     } else {
       this.showPopUpMessage();
-
-      try {
-        Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
-          toolbar: this.contentManager.toolbar,
-          trigger: "mtct_close",
-        });
-      } catch (err) {
-        console.error(err);
-      }
     }
   }
 
@@ -627,10 +581,15 @@ export default class ModalDialog {
     }
   }
 
+
   /**
-   * Closes modal window and restores viewport header.
+   * Closes the modal.
+   * Removes specific CSS classes, saves modal properties, unlocks website scroll,
+   * sets the 'open' property to false, and triggers the 'onModalClose' event.
+   * If a close trigger is defined, it tracks the telemetry event 'CLOSED_MTCT_EDITOR' with the trigger.
+   * @returns {Promise<void>} A promise that resolves when the modal is closed.
    */
-  close() {
+  async close(trigger) {
     this.removeClass("wrs_maximized");
     this.removeClass("wrs_minimized");
     this.removeClass("wrs_stack");
@@ -638,6 +597,18 @@ export default class ModalDialog {
     this.saveModalProperties();
     this.unlockWebsiteScroll();
     this.properties.open = false;
+
+
+    if (trigger) {
+      try {
+        await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
+          toolbar: this.contentManager.toolbar,
+          trigger: trigger,
+        });
+      } catch (error) {
+        console.error("Error tracking CLOSED_MTCT_EDITOR", error);
+      }
+    }
 
     Core.globalListeners.fire("onModalClose", {});
   }
@@ -959,7 +930,7 @@ export default class ModalDialog {
    * Maximizes the modal object.
    */
   maximize() {
-    // Saving width, height, top and bottom parameters to restore when openning.
+    // Saving width, height, top and bottom parameters to restore when opening.
     this.saveModalProperties();
     if (this.properties.state !== "maximized") {
       this.properties.previousState = this.properties.state;
@@ -1261,7 +1232,7 @@ export default class ModalDialog {
         }
 
         // Needed for IE11 for apply disabled mouse events on editor because
-        // iexplorer need a dinamic object to apply this property.
+        // internet explorer needs a dynamic object to apply this property.
         if (this.isIE11()) {
           // this.iframe.style['position'] = 'relative';
         }
@@ -1294,7 +1265,7 @@ export default class ModalDialog {
         this.limitWindow.minPointer.x,
       );
       limitX = Math.max(this.limitWindow.maxPointer.x, limitX);
-      // Substract limit with first position to obtain relative pixels increment
+      // Subtract limit with first position to obtain relative pixels increment
       // to the anchor point.
       const dragX = `${limitX - this.dragDataObject.x}px`;
       const dragY = `${limitY - this.dragDataObject.y}px`;
@@ -1303,7 +1274,7 @@ export default class ModalDialog {
         x: dragX,
         y: dragY,
       };
-      // This move modal with hadware acceleration.
+      // This move modal with hardware acceleration.
       this.container.style.transform = `translate3d(${dragX},${dragY},0)`;
     }
     if (this.resizeDataObject) {
@@ -1524,22 +1495,25 @@ export default class ModalDialog {
    * Recalculating scale for modal when the browser is resized.
    */
   recalculateScale() {
-    let sizeModificated = false;
+    let sizeModified = false;
+
     if (parseInt(this.container.style.width, 10) > 580) {
       this.container.style.width = `${Math.min(parseInt(this.container.style.width, 10), window.innerWidth - this.scrollbarWidth)}px`;
-      sizeModificated = true;
+      sizeModified = true;
     } else {
       this.container.style.width = "580px";
       sizeModificated = true;
     }
+
     if (parseInt(this.container.style.height, 10) > 338) {
       this.container.style.height = `${Math.min(parseInt(this.container.style.height, 10), window.innerHeight)}px`;
-      sizeModificated = true;
+      sizeModified = true;
     } else {
       this.container.style.height = "338px";
       sizeModificated = true;
     }
-    if (sizeModificated) {
+
+    if (sizeModified) {
       this.recalculateSize();
     }
   }
@@ -1594,7 +1568,7 @@ export default class ModalDialog {
   }
 
   /**
-   * Event handler that change container size when IOS softkeyboard is opened.
+   * Event handler that change container size when IOS soft keyboard is opened.
    */
   handleOpenedIosSoftkeyboard() {
     if (
@@ -1612,7 +1586,7 @@ export default class ModalDialog {
   }
 
   /**
-   * Event handler that change container size when IOS softkeyboard is closed.
+   * Event handler that change container size when IOS soft keyboard is closed.
    */
   handleClosedIosSoftkeyboard() {
     this.iosSoftkeyboardOpened = false;
@@ -1661,7 +1635,7 @@ export default class ModalDialog {
   }
 
   /**
-   * Sets the tithle of the modal dialog.
+   * Sets the title of the modal dialog.
    * @param {String} title - Modal dialog title.
    */
   setTitle(title) {

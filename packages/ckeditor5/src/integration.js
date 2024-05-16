@@ -370,12 +370,13 @@ export default class CKEditor5Integration extends IntegrationModel {
         !payload[key] ? delete payload[key] : {};
     });
 
+    // Call Telemetry service to track the event.
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         ...payload,
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error tracking INSERTED_FORMULA", error);
     }
 
     /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.

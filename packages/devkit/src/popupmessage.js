@@ -156,7 +156,7 @@ export default class PopUpMessage {
     if (typeof this.callbacks.cancelCallback !== "undefined") {
       this.callbacks.cancelCallback();
       // Set temporal image to null to prevent loading
-      // an existent formula when strarting one from scrath. Make focus come back too.
+      // an existent formula when starting one from scratch. Make focus come back too.
       // IntegrationModel.setActionsOnCancelButtons();
     }
   }
