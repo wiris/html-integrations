@@ -83,7 +83,6 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
 
     // Set img properties.
     const img = await setImageProperties(properties, result, mml);
-    // const fragment = document.createRange().createContextualFragment(data.result.content);
 
     // Replace the MathML for the generated formula image.
     mathElement.parentNode?.replaceChild(img, mathElement);
@@ -124,7 +123,7 @@ async function setImageProperties(properties: Properties, data: FormulaData, mml
         const { text } = await mathml2accessible(mml, properties.lang, properties.editorServicesRoot, properties.editorServicesExtension);
         data.alt = text;
       }
-      img.alt = data.alt || '';
+      img.alt = data.alt ?? '';
     } catch {
       img.alt = 'Alternative text not available';
     }

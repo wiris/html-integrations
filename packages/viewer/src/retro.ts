@@ -200,22 +200,22 @@ class JsPluginViewer {
     if(node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
       var endMathmlTag = safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
-      var start = node.textContent?.indexOf(startMathmlTag) || -1;
+      var start = node.textContent?.indexOf(startMathmlTag) ?? -1;
       var end = 0;
       while(start != -1) {
-        end = node.textContent?.indexOf(endMathmlTag,start + startMathmlTag.length) || -1;
+        end = node.textContent?.indexOf(endMathmlTag,start + startMathmlTag.length) ?? -1;
 
         if(end == -1) break;
 
-        var nextMathML = node.textContent?.indexOf(startMathmlTag,end + endMathmlTag.length) || -1;
+        var nextMathML = node.textContent?.indexOf(startMathmlTag,end + endMathmlTag.length) ?? -1;
 
         if(nextMathML >= 0 && end > nextMathML) break;
 
         var safeMathml = node.textContent?.substring(start,end + endMathmlTag.length);
 
-        node.textContent = (node.textContent?.substring(0,start) as string) + node.textContent?.substring(end + endMathmlTag.length);
+        node.textContent = (node.textContent?.substring(0,start) ?? "") + node.textContent?.substring(end + endMathmlTag.length);
         node = (node as Text).splitText(start);
-        start = node.textContent?.indexOf(startMathmlTag) || -1;
+        start = node.textContent?.indexOf(startMathmlTag) ?? -1;
 
         mathmlPositions.push({
           safeMML: safeMathml || "",

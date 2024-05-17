@@ -9,29 +9,25 @@ type Wirispluginperformance = "true" | "false";
  * Type representing all the configuration for the viewer.
  */
 export interface Config {
-  editorServicesRoot?: string;
-  editorServicesExtension?: string;
-  backendConfig?: {
-    wirispluginperformance?: Wirispluginperformance;
-    wiriseditormathmlattribute?: string;
-    wiriscustomheaders?: object;
+  editorServicesRoot: string;
+  editorServicesExtension: string;
+  backendConfig: {
+    wirispluginperformance: Wirispluginperformance;
+    wiriseditormathmlattribute: string;
+    wiriscustomheaders: object;
   };
-  dpi?: number;
-  element?: string;
-  lang?: string;
-  viewer?: Viewer;
-  zoom?: number;
+  dpi: number;
+  element: string;
+  lang: string;
+  viewer: Viewer;
+  zoom: number;
 }
 
-/** Sets all fields and subfields of Config mandatory*/
-type MandatoryConfig = {
-  [K in keyof Config]-?: Required<Config[K]>;
-};
 /**
  * Fallback values for the configurations that are not set.
  * All properties are set to mandatory to guarantee a default value (and avoid checking at runtime to make the compiler happy )
  */
-const defaultValues: MandatoryConfig = {
+const defaultValues: Config = {
   editorServicesRoot: "https://www.wiris.net/demo/plugins/app/",
   editorServicesExtension: "",
   backendConfig: {
@@ -91,7 +87,7 @@ export class Properties {
       this.setProperties(script, pluginName, Properties.instance);
     }
 
-    Properties.instance?.checkServices();
+    Properties.instance.checkServices();
 
     // Get backend parameters calling the configurationjson service
     try {
@@ -106,7 +102,7 @@ export class Properties {
       );
 
       // We'll always get a string from the wiriscustomheaders backend parameter. It needs to be converted to an object.
-      Properties.instance.config.backendConfig!.wiriscustomheaders =
+      Properties.instance.config.backendConfig.wiriscustomheaders =
         Util.convertStringToObject(
           Properties.instance.config.backendConfig?.wiriscustomheaders
         );
@@ -176,7 +172,7 @@ export class Properties {
   }
 
   get editorServicesRoot(): string {
-    return this.config.editorServicesRoot || defaultValues.editorServicesRoot;
+    return this.config.editorServicesRoot ?? defaultValues.editorServicesRoot;
   }
 
   set editorServicesRoot(editorServicesRoot: string) {
@@ -186,7 +182,7 @@ export class Properties {
 
   get editorServicesExtension(): string {
     return (
-      this.config.editorServicesExtension ||
+      this.config.editorServicesExtension ??
       defaultValues.editorServicesExtension
     );
   }
@@ -227,7 +223,7 @@ export class Properties {
    * - none, by default.
    */
   get viewer(): Viewer {
-    return this.config.viewer || defaultValues.viewer;
+    return this.config.viewer;
   }
 
   set viewer(viewer: Viewer) {
@@ -242,7 +238,7 @@ export class Properties {
    * - 96, by default.
    */
   get dpi(): number {
-    return this.config.dpi || defaultValues.dpi;
+    return this.config.dpi ?? defaultValues.dpi;
   }
 
   set dpi(dpi: number) {
@@ -257,7 +253,7 @@ export class Properties {
    * - 1, by default.
    */
   get zoom(): number {
-    return this.config.zoom || defaultValues.zoom;
+    return this.config.zoom;
   }
 
   set zoom(zoom: number) {
@@ -272,7 +268,7 @@ export class Properties {
    * - 'body', by default.
    */
   get element(): string {
-    return this.config.element || defaultValues.element;
+    return this.config.element;
   }
 
   set element(element: string) {
@@ -288,8 +284,7 @@ export class Properties {
    */
   get wirispluginperformance(): Wirispluginperformance {
     return (
-      this.config.backendConfig?.wirispluginperformance ||
-      defaultValues.backendConfig.wirispluginperformance
+      this.config.backendConfig.wirispluginperformance 
     );
   }
 
@@ -312,8 +307,7 @@ export class Properties {
    */
   get wiriseditormathmlattribute(): string {
     return (
-      this.config.backendConfig?.wiriseditormathmlattribute ||
-      defaultValues.backendConfig.wiriseditormathmlattribute
+      this.config.backendConfig.wiriseditormathmlattribute
     );
   }
 

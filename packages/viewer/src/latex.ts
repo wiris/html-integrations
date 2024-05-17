@@ -30,10 +30,10 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
  * @param {Node} node - Text node in which to search and replace LaTeX instances.
  */
 async function replaceLatexInTextNode(properties: Properties, node: Node) {
-  const textContent: string = node.textContent || '';
+  const textContent: string = node.textContent ?? '';
   let pos: number = 0;
 
-  while (pos < textContent.length) {
+  while (pos < textContent.length && node.nodeValue) {
     const nextLatexPosition = getNextLatexPos(pos, textContent);
     if (nextLatexPosition) {
       // Get left non LaTeX text.
@@ -41,12 +41,7 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
-
-      // Not sure if this should return or continue
-      if(node.nodeValue === null) {
-        return;
-      }
-      node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
+      node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start); 
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + '$$'.length, nextLatexPosition.end);
@@ -97,6 +92,7 @@ function findLatexTextNodes(root: any): Node[] {
 
 /**
  * Returns an object {start, end} with the start and end latex position.
+ * It is guaranteed that start !== end or result is null
  * @param {number} pos - Current position inside the text.
  * @param {string} text - Text where the next latex it will be searched.
  * @
