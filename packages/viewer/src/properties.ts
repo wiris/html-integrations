@@ -8,20 +8,20 @@ type Wirispluginperformance = "true" | "false";
 /**
  * Type representing all the configuration for the viewer.
  */
-export type Config = {
-  editorServicesRoot?: string;
-  editorServicesExtension?: string;
-  backendConfig?: {
-    wirispluginperformance?: Wirispluginperformance;
-    wiriseditormathmlattribute?: string;
-    wiriscustomheaders?: object;
+export interface Config {
+  editorServicesRoot: string;
+  editorServicesExtension: string;
+  backendConfig: {
+    wirispluginperformance: Wirispluginperformance;
+    wiriseditormathmlattribute: string;
+    wiriscustomheaders: object;
   };
-  dpi?: number;
-  element?: string;
-  lang?: string;
-  viewer?: Viewer;
-  zoom?: number;
-};
+  dpi: number;
+  element: string;
+  lang: string;
+  viewer: Viewer;
+  zoom: number;
+}
 
 /**
  * Fallback values for the configurations that are not set.
@@ -53,10 +53,10 @@ export class Properties {
   config: Config = defaultValues;
 
   /**
-   * Do not use this method. Instead, use {@link Properties.generate}.
-   * Constructors cannot be async so we make it private and force instantiation through an alternative static method.
+   * Private constructor to avoid multiple instances of the class.
+   * To instantiate the class, use the static method  {@link Properties.getInstance}.
    */
-  private new() {}
+  private constructor() {}
 
   static async getInstance(): Promise<Properties> {
     if (!Properties.instance) {
@@ -70,30 +70,17 @@ export class Properties {
    * Creates and sets up a new instance of class Properties
    */
   private async initialize(): Promise<void> {
+    if (!Properties.instance) {
+      console.error("Properties.instance is not set");
+      return;
+    }
     // Get URL parameters from <script>
     const pluginName = "WIRISplugins.js";
-    const script: HTMLScriptElement = document.querySelector(`script[src*="${pluginName}"]`);
+    const script: HTMLScriptElement | null = document.querySelector(`script[src*="${pluginName}"]`);
 
-    if (!!script) {
-      const pluginNamePosition: number = script.src.lastIndexOf(pluginName);
-      const params: string = script.src.substring(pluginNamePosition + pluginName.length);
-      const urlParams = new URLSearchParams(params);
-
-      if (urlParams.get("dpi") !== null && urlParams.get("dpi") !== undefined) {
-        Properties.instance.config.dpi = +urlParams.get("dpi");
-      }
-      if (urlParams.get("element") !== null && urlParams.get("element") !== undefined) {
-        Properties.instance.config.element = urlParams.get("element");
-      }
-      if (urlParams.get("lang") !== null && urlParams.get("lang") !== undefined) {
-        Properties.instance.config.lang = urlParams.get("lang");
-      }
-      if (urlParams.get("viewer") !== null && urlParams.get("viewer") !== undefined) {
-        Properties.instance.config.viewer = urlParams.get("viewer") as Viewer;
-      }
-      if (urlParams.get("zoom") !== null && urlParams.get("zoom") !== undefined) {
-        Properties.instance.config.zoom = +urlParams.get("zoom");
-      }
+    // If the absence of the script is an error maybe this should throw
+    if (script) {
+      this.setProperties(script, pluginName, Properties.instance);
     }
 
     await Properties.instance.checkServices();
@@ -117,6 +104,43 @@ export class Properties {
       } else {
         throw e;
       }
+    }
+  }
+
+  /**
+   * Initialize properties from <script>
+   * @param script
+   * @param pluginName
+   * @param instance
+   */
+  private setProperties(script: HTMLScriptElement, pluginName: string, instance: Properties) {
+    const pluginNamePosition: number = script.src.lastIndexOf(pluginName);
+    const params: string = script.src.substring(pluginNamePosition + pluginName.length);
+    const urlParams = new URLSearchParams(params);
+
+    const dpi = urlParams.get("dpi");
+    if (dpi !== null && dpi !== undefined) {
+      instance.config.dpi = +dpi;
+    }
+
+    const element = urlParams.get("element");
+    if (element !== null && element !== undefined) {
+      instance.config.element = element;
+    }
+
+    const lang = urlParams.get("lang");
+    if (lang !== null && lang !== undefined) {
+      instance.config.lang = lang;
+    }
+
+    const viewer = urlParams.get("viewer");
+    if (viewer !== null && viewer !== undefined) {
+      instance.config.viewer = viewer as Viewer;
+    }
+
+    const zoom = urlParams.get("zoom");
+    if (zoom !== null && zoom !== undefined) {
+      instance.config.zoom = +zoom;
     }
   }
 
