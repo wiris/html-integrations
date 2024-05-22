@@ -7,7 +7,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 29th of April 2024.
+Last release of this project was 22nd of May 2024.
+
+### 8.9.2 2024-05-22
+
+- feat(viewer):Not halt execution when one of math input is not correct. #KB-43208
+- feat(ck5):Allow accepting option field on call editor.setData() function. #KB-43896
+- fix: change htmlEntitiesToXmlEntities' implementation in order to assure only valid XML. #KB-45734
+- fix: Exclude certain unnecessary files that are copied over during the deployment of TinyMCE 5 & 6 demos to prevent an infinite loop. #KB-44423
+- feat(demos): Destroy MathType when the editor is destroyed. #KB-44922
+- feat: update telemeter tracking to utilize promises. #KB-45700
 
 ### 8.9.1 2024-04-29
 
