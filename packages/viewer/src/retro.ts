@@ -29,11 +29,6 @@ export function bypassEncapsulation(properties: Properties, w: Window) {
   }
 }
 
-interface MathMLPosition {
-  nextElement: Node;
-  safeMML: string;
-}
-
 /**
  * This class is a compatibility layer with the old Viewer.
  * See haxe/src-haxe/com/wiris/js/JsPluginViewer.hx in in the repo wiris/plugins previous to commit df1248a.
@@ -63,12 +58,12 @@ class JsPluginViewer {
    * Please consider using {@link renderLatex} or {@link renderMathML}.
    */
   parseSafeMathMLElement(element: HTMLElement, asynchronously?: boolean, callbackFunc?: () => void): void {
-    var mathmlPositions: MathMLPosition[] = [];
+    var mathmlPositions = [];
     JsPluginViewer.getMathMLPositionsAtElementAndChildren(element, mathmlPositions);
     for (let i = 0; i < mathmlPositions.length; i++) {
       var mathmlPosition = mathmlPositions[i];
       var newNode = document.createElement("math");
-      mathmlPosition.nextElement.parentNode?.insertBefore(newNode, mathmlPosition.nextElement);
+      mathmlPosition.nextElement.parentNode.insertBefore(newNode, mathmlPosition.nextElement);
       newNode.outerHTML = JsPluginViewer.decodeSafeMathML(mathmlPosition.safeMML);
     }
   }
@@ -153,7 +148,7 @@ class JsPluginViewer {
     // We are replacing $ by & when its part of an entity for retrocompatibility.
     // Now, the standard is replace § by &.
     var returnValue = "";
-    var currentEntity: string | null = null;
+    var currentEntity = null;
 
     var i = 0;
     while (i < inputCopy.length) {
@@ -181,7 +176,7 @@ class JsPluginViewer {
     return returnValue;
   }
 
-  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions: MathMLPosition[]) {
+  private static getMathMLPositionsAtElementAndChildren(element: Node, mathmlPositions) {
     JsPluginViewer.getMathMLPositionsAtNode(element, mathmlPositions);
     // Copy current children because DOM will be changed and element.childNodes won't be
     // consistent on call getMathMLPositionsAtElementAndChildren().
@@ -199,23 +194,22 @@ class JsPluginViewer {
     if (node.nodeType == 3) {
       var startMathmlTag = safeXMLCharacters.tagOpener + "math";
       var endMathmlTag = safeXMLCharacters.tagOpener + "/math" + safeXMLCharacters.tagCloser;
-      var start = node.textContent?.indexOf(startMathmlTag) ?? -1;
+      var start = node.textContent.indexOf(startMathmlTag);
       var end = 0;
       while (start != -1) {
-        end = node.textContent?.indexOf(endMathmlTag, start + startMathmlTag.length) ?? -1;
+        end = node.textContent.indexOf(endMathmlTag, start + startMathmlTag.length);
 
         if (end == -1) break;
 
-        var nextMathML = node.textContent?.indexOf(startMathmlTag, end + endMathmlTag.length) ?? -1;
+        var nextMathML = node.textContent.indexOf(startMathmlTag, end + endMathmlTag.length);
 
         if (nextMathML >= 0 && end > nextMathML) break;
 
-        var safeMathml = node.textContent?.substring(start, end + endMathmlTag.length);
+        var safeMathml = node.textContent.substring(start, end + endMathmlTag.length);
 
-        node.textContent =
-          (node.textContent?.substring(0, start) ?? "") + node.textContent?.substring(end + endMathmlTag.length);
+        node.textContent = node.textContent.substring(0, start) + node.textContent.substring(end + endMathmlTag.length);
         node = (node as Text).splitText(start);
-        start = node.textContent?.indexOf(startMathmlTag) ?? -1;
+        start = node.textContent.indexOf(startMathmlTag);
 
         mathmlPositions.push({
           safeMML: safeMathml,

@@ -48,7 +48,7 @@ async function main(w: Window): Promise<void> {
    * @param {MutationObserver} observer - Mutation observer to activate or reactivate every time the rendering root changes.
    */
   properties.render = async () => {
-    const element: HTMLElement | null = document.querySelector(properties.element);
+    const element: HTMLElement = document.querySelector(properties.element);
     if (element) {
       await renderLatex(properties, element);
       await renderMathML(properties, element);
