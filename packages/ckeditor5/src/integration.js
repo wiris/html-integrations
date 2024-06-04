@@ -1,9 +1,9 @@
-import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel";
-import Util from "@wiris/mathtype-html-integration-devkit/src/util";
-import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration";
-import Latex from "@wiris/mathtype-html-integration-devkit/src/latex";
-import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
-import Telemeter from "@wiris/mathtype-html-integration-devkit/src/telemeter";
+import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel.js";
+import Util from "@wiris/mathtype-html-integration-devkit/src/util.js";
+import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration.js";
+import Latex from "@wiris/mathtype-html-integration-devkit/src/latex.js";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml.js";
+import Telemeter from "@wiris/mathtype-html-integration-devkit/src/telemeter.js";
 
 /**
  * This class represents the MathType integration for CKEditor5.
