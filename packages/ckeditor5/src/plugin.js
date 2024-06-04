@@ -1,28 +1,24 @@
 // CKEditor imports
-import Plugin from "@ckeditor/ckeditor5-core/src/plugin";
-import ButtonView from "@ckeditor/ckeditor5-ui/src/button/buttonview";
-import ClickObserver from "@ckeditor/ckeditor5-engine/src/view/observer/clickobserver";
-import HtmlDataProcessor from "@ckeditor/ckeditor5-engine/src/dataprocessor/htmldataprocessor";
-import XmlDataProcessor from "@ckeditor/ckeditor5-engine/src/dataprocessor/xmldataprocessor";
-import UpcastWriter from "@ckeditor/ckeditor5-engine/src/view/upcastwriter";
-import { toWidget, viewToModelPositionOutsideModelElement } from "@ckeditor/ckeditor5-widget/src/utils";
-import Widget from "@ckeditor/ckeditor5-widget/src/widget";
+import { Plugin } from 'ckeditor5/src/core.js';
+import { ButtonView } from 'ckeditor5/src/ui.js';
+import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from 'ckeditor5/src/engine.js';
+import { Widget, toWidget, viewToModelPositionOutsideModelElement } from 'ckeditor5/src/widget.js';
 
 // MathType API imports
-import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel";
-import Core from "@wiris/mathtype-html-integration-devkit/src/core.src";
-import Parser from "@wiris/mathtype-html-integration-devkit/src/parser";
-import Util from "@wiris/mathtype-html-integration-devkit/src/util";
-import Image from "@wiris/mathtype-html-integration-devkit/src/image";
-import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration";
-import Listeners from "@wiris/mathtype-html-integration-devkit/src/listeners";
-import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml";
-import Latex from "@wiris/mathtype-html-integration-devkit/src/latex";
-import StringManager from "@wiris/mathtype-html-integration-devkit/src/stringmanager";
+import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel.js";
+import Core from "@wiris/mathtype-html-integration-devkit/src/core.src.js";
+import Parser from "@wiris/mathtype-html-integration-devkit/src/parser.js";
+import Util from "@wiris/mathtype-html-integration-devkit/src/util.js";
+import Image from "@wiris/mathtype-html-integration-devkit/src/image.js";
+import Configuration from "@wiris/mathtype-html-integration-devkit/src/configuration.js";
+import Listeners from "@wiris/mathtype-html-integration-devkit/src/listeners.js";
+import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml.js";
+import Latex from "@wiris/mathtype-html-integration-devkit/src/latex.js";
+import StringManager from "@wiris/mathtype-html-integration-devkit/src/stringmanager.js";
 
 // Local imports
-import { MathTypeCommand, ChemTypeCommand } from "./commands";
-import CKEditor5Integration from "./integration";
+import { MathTypeCommand, ChemTypeCommand } from "./commands.js";
+import CKEditor5Integration from "./integration.js";
 
 import mathIcon from "../theme/icons/ckeditor5-formula.svg";
 import chemIcon from "../theme/icons/ckeditor5-chem.svg";

@@ -25,20 +25,35 @@
   "license": "MIT",
   "author": "WIRIS Team (http://www.wiris.com)",
   "files": [
-    "/src",
+    "dist",
+    "src",
     "icons",
     "theme",
     "lang"
   ],
   "main": "src/plugin.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/plugin.js",
+    "./dist/*.css": "./dist/*.css",
+    "./dist/*": "./dist/*",
+    "./src/*": "./src/*",
+    "./theme/*": "./theme/*",
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "build": "exit 0"
+    "build": "exit 0",
+    "build:dist": "node ./scripts/build-dist.mjs",
+    "prepare": "npm run build:dist"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-core": ">=27.0.0",
-    "@ckeditor/ckeditor5-engine": ">=27.0.0",
-    "@ckeditor/ckeditor5-ui": ">=27.0.0",
-    "@ckeditor/ckeditor5-widget": ">=27.0.0",
     "@wiris/mathtype-html-integration-devkit": "1.17.2"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "^40.2.0",
+    "ckeditor5": "nightly"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   }
 }

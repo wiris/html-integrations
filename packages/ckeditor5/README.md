@@ -23,7 +23,28 @@ Easily include quality math equations in your documents and digital content.
 2. Update the CKEditor configuration by adding the new plugin and including the MathType and ChemType buttons:
 
    ```js
-   import MathType from '@wiris/mathtype-ckeditor5/src/plugin';
+   import MathType from '@wiris/mathtype-ckeditor5';
+
+   ...
+
+   ClassicEditor
+        .create( editorElement, {
+            plugins: [ ..., MathType, ... ],
+            toolbar: {
+                items: [
+                    ...
+                    'MathType',
+                    'ChemType',
+                    ...
+                ]
+            },
+   ```
+
+   And when uses `CKEditor5` without legacy methods of installation:
+
+   ```js
+   import { ClassicEditor } from 'ckeditor5';
+   import MathType from '@wiris/mathtype-ckeditor5/dist/index.js';
 
    ...
 
