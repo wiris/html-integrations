@@ -15,7 +15,6 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-
   const latexNodes = findLatexTextNodes(root);
 
   for (const latexNode of latexNodes) {
@@ -32,7 +31,7 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
   const textContent: string = node.textContent ?? "";
   let pos: number = 0;
 
-  while (pos < textContent.length && node.nodeValue) {
+  while (pos < textContent.length) {
     const nextLatexPosition = getNextLatexPos(pos, textContent);
     if (nextLatexPosition) {
       // Get left non LaTeX text.
@@ -40,7 +39,7 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
-      node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
+      node.nodeValue = node.nodeValue?.substring(pos, nextLatexPosition.start) ?? "";
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + "$$".length, nextLatexPosition.end);
