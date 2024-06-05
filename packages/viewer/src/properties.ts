@@ -96,7 +96,7 @@ export class Properties {
       }
     }
 
-    Properties.instance.checkServices();
+    await Properties.instance.checkServices();
 
     // Get backend parameters calling the configurationjson service
     try {
@@ -124,17 +124,27 @@ export class Properties {
    * Check if is inside Integrations Services
    * @deprecated This will be removed once the viewer uncouple from the integration services.
    */
-  private checkServices(): void {
+  private async checkServices() {
     const path = (document.currentScript as HTMLScriptElement).src;
 
-    if (path.includes("pluginwiris_engine")) {
-      // If the path includes pluginwiris_engine use Java Integrations Services
-      this.config.editorServicesRoot = path;
-      this.config.editorServicesExtension = "";
-    } else if (path.includes("integration/WIRISplugins")) {
+    if (path.includes("integration/WIRISplugins")) {
       // If the path includes 'integration/WIRISplugins' use PHP Integrations Services
       this.config.editorServicesRoot = path;
       this.config.editorServicesExtension = ".php";
+    } else {
+      try {
+        // We want to know if we are using the integrations java services.
+        // So we call the configurationjson service assuming that the path is the one for the Java services.
+        // If we get an answer, we know we are using the Java services,
+        // otherwise, and since PHP has already been discarded, we'll set the services to wiris.net
+        await configurationJson(["wirispluginperformance"], path, "");
+
+        this.config.editorServicesRoot = path;
+        this.config.editorServicesExtension = "";
+      } catch (e) {
+        // We do noting.
+        // Getting here means that we are not using php nor Java services so we'll stick to the wiris.net default.
+      }
     }
   }
 
