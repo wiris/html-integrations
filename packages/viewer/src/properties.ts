@@ -58,10 +58,10 @@ export class Properties {
    */
   private new() {}
 
-  static getInstance(): Properties {
+  static async getInstance(): Promise<Properties> {
     if (!Properties.instance) {
       Properties.instance = new Properties();
-      Properties.instance.initialize();
+      await Properties.instance.initialize();
     }
     return Properties.instance;
   }
