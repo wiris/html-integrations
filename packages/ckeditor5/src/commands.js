@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
-import { Command } from 'ckeditor5/src/core.js';
-import CKEditor5Integration from './integration.js';
+import { Command } from "ckeditor5/src/core.js";
+import CKEditor5Integration from "./integration.js";
 
 /**
  * Command for opening the MathType editor

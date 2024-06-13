@@ -1,5 +1,4 @@
 const path = require("path");
-const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 
 module.exports = (config, context) => {
   return {
@@ -51,19 +50,6 @@ module.exports = (config, context) => {
               },
             },
             "css-loader",
-            {
-              loader: "postcss-loader",
-              options: {
-                postcssOptions: styles.getPostCssConfig({
-                  themeImporter: {
-                    themePath: require.resolve(
-                      "@ckeditor/ckeditor5-theme-lark",
-                    ),
-                  },
-                  minify: true,
-                }),
-              },
-            },
           ],
         },
         {
