@@ -42,7 +42,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "exit 0",
+    "build": "node ./scripts/build-dist.mjs",
     "build:dist": "node ./scripts/build-dist.mjs",
     "prepare": "npm run build:dist"
   },

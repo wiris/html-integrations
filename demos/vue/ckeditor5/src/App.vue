@@ -5,14 +5,11 @@
 </template>
 
 <script lang="ts">
-import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, SourceEditing } from "ckeditor5";
+import "ckeditor5/ckeditor5.css";
 
-import { Essentials } from "@ckeditor/ckeditor5-essentials";
-import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
-import { Link } from "@ckeditor/ckeditor5-link";
-import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 // @ts-ignore
-import MathType from "@wiris/mathtype-ckeditor5/src/plugin";
+import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // @ts-ignore
 // Import the wiris plugin version.
@@ -32,8 +29,8 @@ Generic.setEditorAndWirisVersion("5.0.0", pluginVersion);
 // Get the initial content.
 const content = Generic.editorContentMathML;
 
-const toolbar = ["bold", "italic", "link", "undo", "redo", "MathType", "ChemType"];
-const plugins = [Essentials, Bold, Italic, Link, Paragraph, MathType];
+const toolbar = ["bold", "italic", "link", "undo", "redo", "MathType", "ChemType", "sourceEditing"];
+const plugins = [Essentials, Bold, Italic, Link, Paragraph, MathType, SourceEditing];
 const editorConfig = {
   iframe: true,
   charCounterCount: false,

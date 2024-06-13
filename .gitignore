@@ -23,6 +23,7 @@ node_modules
 dist
 /tmp
 /out-tsc
+!packages/ckeditor5/dist/
 
 # dependencies
 /node_modules

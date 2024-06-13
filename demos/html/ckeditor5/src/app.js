@@ -1,15 +1,10 @@
 // Load scripts.
-import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
-import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
-import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
-import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
-import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
-import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
-import { SourceEditing } from "@ckeditor/ckeditor5-source-editing";
-import MathType from "@wiris/mathtype-ckeditor5/src/plugin";
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
+import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // Load styles.
 import "./static/style.css";
+import "ckeditor5/ckeditor5.css";
 
 import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 
