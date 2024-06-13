@@ -418,15 +418,13 @@ export default class MathType extends Plugin {
       "get",
       (e) => {
         let output = e.return;
-
         // CKEditor 5 replaces all the time the &lt; and &gt; for < and >, which our render can't understand.
         // We replace the values inserted for CKEditor5 to be able to render the formulas with the mentioned characters.
         output = output.replaceAll('"<"', '"&lt;"').replaceAll('">"', '"&gt;"').replaceAll("><<", ">&lt;<");
 
-        // Ckeditor retrieves editor data and removes the image information on the formulas
-        // We transform all the retrieved data to images and then we Parse the data.
-        let imageFormula = Parser.initParse(output);
-        e.return = Parser.endParse(imageFormula);
+        // This line cleans all the semantics stuff, including the handwritten data points and returns the MathML IF there is any.
+        // For text or latex formulas, it returns the original output.
+        e.return = MathML.removeSemantics(output, "application/json");
       },
       { priority: "low" },
     );
