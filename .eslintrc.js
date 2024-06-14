@@ -1,7 +1,7 @@
 module.exports = {
   plugins: ["import", "jsdoc", "@nx", "prettier"],
   extends: ["airbnb-base", "prettier"],
-  parser: "@babel/eslint-parser", // Parser that'll help linting react demos
+  parser: "@babel/eslint-parser", // Parser that'll help linting demos
 
   // Variables we use taking into account that our code will run with another one,
   // for example, the TinyMCE integration will use the TinyMCE variable created for the code of the editor but not us.

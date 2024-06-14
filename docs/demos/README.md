@@ -15,8 +15,6 @@ We create and curate a collection of working code examples in order to test, val
 **Frameworks:**
 
 - HTML
-- React
-- Angular
 - Vue
 
 **Editors**
@@ -58,14 +56,7 @@ The following table contains all our demos, together with links to the correspon
 | html      | Generic integration | [generic](../../demos/html/generic)                  | https://integrations.wiris.kitchen/stable/html/generic/      |
 | html      | TinyMCE V5          | [tinymce5](../../demos/html/tinymce5)                | https://integrations.wiris.kitchen/stable/html/tinymce5/     |
 | html      | TinyMCE V6          | [tinymce6](../../demos/html/tinymce6)                | https://integrations.wiris.kitchen/stable/html/tinymce6/     |
-| angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) | https://integrations.wiris.kitchen/stable/angular/ckeditor5/ |
-| angular   | Froala              | [froala](../../demos/angular/froala/README.md)       | https://integrations.wiris.kitchen/stable/angular/froala/    |
-| angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     | https://integrations.wiris.kitchen/stable/angular/generic/   |
-| angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)   | https://integrations.wiris.kitchen/stable/angular/tinymce5/  |
-| react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)   | https://integrations.wiris.kitchen/stable/react/ckeditor5/   |
-| react     | Froala              | [froala](../../demos/react/froala/README.md)         | https://integrations.wiris.kitchen/stable/react/froala/      |
-| react     | Generic integration | [generic](../../demos/react/generic/README.md)       | https://integrations.wiris.kitchen/stable/react/generic/     |
-| react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)     | https://integrations.wiris.kitchen/stable/react/tinymce5/    |
+| vue       | CKEditor V5         | [ckeditor5](../../demos/vue/ckeditor5/README.md)     | https://integrations.wiris.kitchen/stable/vue/ckeditor5/   |
 
 ## Running a demo using the local source code
 

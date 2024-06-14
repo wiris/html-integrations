@@ -47,14 +47,7 @@ $ nx start <FRAMEWORK>-<EDITOR>
 | html      | Generic integration | [generic](../../demos/html/generic)                  |
 | html      | TinyMCE V5          | [tinymce5](../../demos/html/tinymce5)                |
 | html      | TinyMCE V6          | [tinymce6](../../demos/html/tinymce6)                |
-| angular   | CKEditor V5         | [ckeditor5](../../demos/angular/ckeditor5/README.md) |
-| angular   | Froala              | [froala](../../demos/angular/froala/README.md)       |
-| angular   | Generic integration | [generic](../../demos/angular/generic/README.md)     |
-| angular   | TinyMCE V5          | [tinymce5](../../demos/angular/tinymce5/README.md)   |
-| react     | CKEditor V5         | [ckeditor5](../../demos/react/ckeditor5/README.md)   |
-| react     | Froala              | [froala](../../demos/react/froala/README.md)         |
-| react     | Generic integration | [generic](../../demos/react/generic/README.md)       |
-| react     | TinyMCE V5          | [tinymce5](../../demos/react/tinymce5/README.md)     |
+| vue       | CKEditor V5         | [ckeditor5](../../demos/vue/ckeditor5/README.md)     |
 
 Each time you apply a change to a package and want to see the changes in your demo, you'll have to re-run the previous two commands.
 
