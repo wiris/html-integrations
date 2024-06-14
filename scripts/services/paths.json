@@ -34,45 +34,10 @@
     "demo": false,
     "port": ""
   },
-  "reactCKEditor5": {
-    "path": "./demos/react/ckeditor5/",
+  "vueCKEditor5": {
+    "path": "./demos/vue/ckeditor5/",
     "demo": true,
-    "port": "3002"
-  },
-  "reactFroala": {
-    "path": "./demos/react/froala/",
-    "demo": true,
-    "port": "3004"
-  },
-  "reactGeneric": {
-    "path": "./demos/react/generic/",
-    "demo": true,
-    "port": "3007"
-  },
-  "reactTinyMCE5": {
-    "path": "./demos/react/tinymce5/",
-    "demo": true,
-    "port": "3006"
-  },
-  "angularCKEditor5": {
-    "path": "./demos/angular/ckeditor5/",
-    "demo": true,
-    "port": "4002"
-  },
-  "angularFroala": {
-    "path": "./demos/angular/froala/",
-    "demo": true,
-    "port": "4004"
-  },
-  "angularGeneric": {
-    "path": "./demos/angular/generic/",
-    "demo": true,
-    "port": "4007"
-  },
-  "angularTinyMCE5": {
-    "path": "./demos/angular/tinymce5/",
-    "demo": true,
-    "port": "4006"
+    "port": "5173"
   },
   "htmlCKEditor4": {
     "path": "./demos/html/ckeditor4/",

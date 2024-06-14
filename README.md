@@ -4,7 +4,7 @@
 
 **MathType Web** is the official open-source JavaScript library for [MathType by Wiris], the leading formula editor and equation writer for CMS, LMS, and web applications.
 
-This repository contains the source code of the plugins for the most popular HTML editors, such as [CKEditor], [Froala], and [TinyMCE]. They are available from the [npm](https://www.npmjs.com/~wiris) directory. It also provides a collection of working examples, including step-by-step information, on how to integrate MathType in vanilla HTML, [Angular], [React] projects, or even your own custom web editor.
+This repository contains the source code of the plugins for the most popular HTML editors, such as [CKEditor], [Froala], and [TinyMCE]. They are available from the [npm](https://www.npmjs.com/~wiris) directory. It also provides a collection of working examples, including step-by-step information, on how to integrate MathType in vanilla HTML, or even your own custom web editor.
 
 Our main goal is to enable web developers to integrate MathType on the widest range of technologies available. We also try to keep the library light, simple, and free from third-party dependencies. Everything you need to build and deploy is in the sources.
 
@@ -89,5 +89,3 @@ Copyright © 2010-2022 [Wiris](https://www.wiris.com/en/?utm_source=github&utm_m
 [CKEditor]: https://ckeditor.com/
 [Froala]: https://froala.com/
 [TinyMCE]: https://www.tiny.cloud/tinymce/
-[Angular]: https://angular.io/
-[React]: https://reactjs.org/

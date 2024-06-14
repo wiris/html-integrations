@@ -137,12 +137,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Create environment.prod.ts file
-        run: node scripts/createEnvFile.js
-        if: ${{ matrix.framework == 'angular' && matrix.editor == 'froala' }}
-        env:
-          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -154,7 +148,6 @@ jobs:
         env:
           CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
-          REACT_APP_FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
         run: |
           unset NODE_OPTIONS
@@ -175,7 +168,7 @@ jobs:
 
               # For all demos copy dist
               aws s3 cp demos/html/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/dist --recursive
-              
+
               if [ "${{ matrix.editor }}" = "ckeditor4" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/chem.png
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-ckeditor4/icons/formula.png
@@ -197,12 +190,6 @@ jobs:
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/package.json s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/package.json
               fi
-              ;;
-            angular)
-              aws s3 cp demos/angular/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/angular/${{ matrix.editor }} --recursive
-              ;;
-            react)
-              aws s3 cp demos/react/${{ matrix.editor }}/build s3://wiris-integrations-staging-html/${{ matrix.branch }}/react/${{ matrix.editor }} --recursive
               ;;
             vue)
               aws s3 cp demos/vue/${{ matrix.editor }}/dist s3://wiris-integrations-staging-html/${{ matrix.branch }}/vue/${{ matrix.editor }} --recursive
