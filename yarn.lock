@@ -5917,12 +5917,12 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha512-0FcBfdcmaumGPQ0qPn7Q5qTgz/ooXgIyp1rf8ik5bGX8mpE2YHjC0P/eyQvxu1GURYQgq9ozf2mteQ5ZD9YiyQ==
 
-angular-froala-wysiwyg@~4.1.4:
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/angular-froala-wysiwyg/-/angular-froala-wysiwyg-4.1.4.tgz#e6985badd27f98940a844e2b117d41845b72cdd1"
-  integrity sha512-K+N4EaMwgZxO2Xe36C477yq3r5914SjXQ99u9u8dPKFz4CT/FWUBOa1vAxmmohytBvG5XnklU+wZWtRpgfHrZw==
+angular-froala-wysiwyg@~4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/angular-froala-wysiwyg/-/angular-froala-wysiwyg-4.2.1.tgz#bc3a62d26c6ace36fd04a5adf89513b60f102636"
+  integrity sha512-66/VESS15Uy/SHgZTwDX+i5Fl3I362795EkBqWcUyxbMzqW4S37H/RxYQdX1Na+kjNFe5u3yL4mVfo2zTHwuOw==
   dependencies:
-    froala-editor "4.1.4"
+    froala-editor "4.2.1"
     tslib "^2.3.0"
 
 ansi-align@^3.0.1:
@@ -11295,10 +11295,10 @@ froala-editor@4.1.4:
   resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-4.1.4.tgz#6eebb465fd610f2d9cbcf6b9ac45abcff534469a"
   integrity sha512-oWF8SZNtLvfweURV5T0WYO69ZQpB1LQiGO2e6zoYRAlOwmqlW5yqLWfGi0tfn99qOgZ/4dxqBBDxqfOsRCQFiA==
 
-froala-editor@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-4.2.0.tgz#3cf0c732ef92e717fd9634e6e623bf4e93efabe3"
-  integrity sha512-gYVw0oR4yD/8TNFdFELnOwKjNKifxsNnWZIcmjYaoFXYx0rdnSN8z6ewqXurEZ4Ehm3q/hIq1eVXzx1v/fynlA==
+froala-editor@4.2.1, froala-editor@^4.2.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-4.2.1.tgz#cbede1eaf673bf782baf2286ca63ebba128e74d9"
+  integrity sha512-Ov8XdJpP6X+hernpF89CzkDHBiXEsBzFUX2ftmG2QLw+2ZqiK2RirUbUy2IABxBXZrBzHgzm8GZyZ5rd+cAU5Q==
 
 from2@^2.1.0:
   version "2.3.0"

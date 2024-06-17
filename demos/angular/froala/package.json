@@ -16,7 +16,7 @@
   "dependencies": {
     "@wiris/mathtype-froala": "*",
     "@wiris/mathtype-html-integration-devkit": "*",
-    "angular-froala-wysiwyg": "~4.1.4"
+    "angular-froala-wysiwyg": "~4.2.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.5",
