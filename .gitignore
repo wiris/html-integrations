@@ -75,3 +75,7 @@ app.*.js
 
 # Ignores all .hot-update.js files
 **.hot-update.js
+
+# Ignore yarn.lock
+yarn.lock
+
