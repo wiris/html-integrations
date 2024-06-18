@@ -57,7 +57,8 @@ export async function callService(
   try {
     const url = new URL(serviceName + extension, serverURL);
 
-    const properties = Properties.getInstance();
+    // Getting the configuration is asynchronous since we make some requests.
+    const properties = await Properties.getInstance();
     const headers = {
       "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
       ...properties.config.backendConfig.wiriscustomheaders,

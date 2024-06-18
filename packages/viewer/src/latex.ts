@@ -15,7 +15,6 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-
   const latexNodes = findLatexTextNodes(root);
 
   for (const latexNode of latexNodes) {
@@ -29,18 +28,18 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
  * @param {Node} node - Text node in which to search and replace LaTeX instances.
  */
 async function replaceLatexInTextNode(properties: Properties, node: Node) {
-  const textContent: string = node.textContent || "";
+  const textContent: string = node.textContent ?? "";
   let pos: number = 0;
 
   while (pos < textContent.length) {
-    const nextLatexPosition: LatexPosition = getNextLatexPos(pos, textContent);
+    const nextLatexPosition = getNextLatexPos(pos, textContent);
     if (nextLatexPosition) {
       // Get left non LaTeX text.
       const leftText: string = textContent.substring(pos, nextLatexPosition.start);
       const leftTextNode = document.createTextNode(leftText);
       // Create a node with left text.
       node.parentNode?.insertBefore(leftTextNode, node);
-      node.nodeValue = node.nodeValue.substring(pos, nextLatexPosition.start);
+      node.nodeValue = node.nodeValue?.substring(pos, nextLatexPosition.start) ?? "";
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + "$$".length, nextLatexPosition.end);
@@ -92,7 +91,7 @@ function findLatexTextNodes(root: any): Node[] {
  * @param {string} text - Text where the next latex it will be searched.
  * @
  */
-function getNextLatexPos(pos: number, text: string): LatexPosition {
+function getNextLatexPos(pos: number, text: string): LatexPosition | null {
   const firstLatexTags = text.indexOf("$$", pos);
   const secondLatexTags = firstLatexTags == -1 ? -1 : text.indexOf("$$", firstLatexTags + "$$".length);
   return firstLatexTags != -1 && secondLatexTags != -1 ? { start: firstLatexTags, end: secondLatexTags } : null;
