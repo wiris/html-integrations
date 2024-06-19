@@ -21,6 +21,9 @@ export type Config = {
   lang?: string;
   viewer?: Viewer;
   zoom?: number;
+  vieweroffset?: number,
+  simultaneousmml?: number;
+  simultaneouslatex?: number;
 };
 
 /**
@@ -39,6 +42,9 @@ const defaultValues: Config = {
   lang: "en",
   viewer: "none",
   zoom: 1,
+  vieweroffset: 200,
+  simultaneousmml: 50,
+  simultaneouslatex: 50,
 };
 
 /**
@@ -47,7 +53,7 @@ const defaultValues: Config = {
 export class Properties {
   private static instance: Properties | null = null;
 
-  render: () => Promise<void> = async () => {};
+  render: () => Promise<void> = async () => { };
 
   // Get URL properties (retrocompatibility).
   config: Config = defaultValues;
@@ -56,7 +62,6 @@ export class Properties {
    * Do not use this method. Instead, use {@link Properties.generate}.
    * Constructors cannot be async so we make it private and force instantiation through an alternative static method.
    */
-  private new() {}
 
   static getInstance(): Properties {
     if (!Properties.instance) {
@@ -93,6 +98,17 @@ export class Properties {
       }
       if (urlParams.get("zoom") !== null && urlParams.get("zoom") !== undefined) {
         Properties.instance.config.zoom = +urlParams.get("zoom");
+      }
+      if (urlParams.get("viewer-offset") !== null && urlParams.get("viewer-offset") !== undefined) {
+        Properties.instance.config.vieweroffset = +urlParams.get("viewer-offset");
+      }
+      if (urlParams.get("simultaneous-mml") !== null && urlParams.get("simultaneous-mml") !== undefined) {
+        Properties.instance.config.simultaneousmml = +urlParams.get("simultaneous-mml");
+        Math.min(Properties.instance.config.simultaneousmml, 50);
+      }
+      if (urlParams.get("simultaneous-latex") !== null && urlParams.get("simultaneous-latex") !== undefined) {
+        Properties.instance.config.simultaneouslatex = +urlParams.get("simultaneous-latex");
+        Math.min(Properties.instance.config.simultaneouslatex, 50);
       }
     }
 
@@ -264,6 +280,39 @@ export class Properties {
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
+  }
+
+  /**
+ * Return the max number of simultaneous MathML rendering petition can make at the same time.
+ */
+  get simultaneousmml(): number {
+    return this.config.simultaneousmml || defaultValues.simultaneousmml;
+  }
+
+  set simultaneousmml(simultaneousmml: number) {
+    this.config.simultaneousmml = simultaneousmml;
+    this.render();
+  }
+  /**
+ * Return the max number of simultaneous LaTeX rendering petition can make at the same time.
+ */
+  get simultaneouslatex(): number {
+    return this.config.simultaneouslatex || defaultValues.simultaneouslatex;
+  }
+  set simultaneouslatex(simultaneouslatex: number) {
+    this.config.simultaneouslatex = simultaneouslatex;
+    this.render();
+  }
+
+  /**
+    * Return value serves to grow or shrink each side of the root element's bounding box before computing intersections.
+  */
+  get vieweroffset(): number {
+    return this.config.vieweroffset || defaultValues.vieweroffset;
+  }
+  set vieweroffset(vieweroffset: number) {
+    this.config.vieweroffset = vieweroffset;
     this.render();
   }
 }

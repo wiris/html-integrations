@@ -3,6 +3,7 @@ body {
 }
 
 input[type="text"],
+input[type="number"],
 select,
 textarea {
   width: 100%;

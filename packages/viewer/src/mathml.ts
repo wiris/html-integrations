@@ -48,6 +48,41 @@ function decodeSafeMathML(root: HTMLElement) {
   }
 }
 
+export async function renderAMathML(properties: Properties, mathElement: MathMLElement): Promise<void> {
+  if (properties.viewer !== "image" && properties.viewer !== "mathml") {
+    return;
+  }
+
+  const mml = serializeHtmlToXml(mathElement.outerHTML);
+
+  try {
+    let imgSource;
+
+    // Transform mml to img.
+    if (properties.wirispluginperformance === "true") {
+      imgSource = await showImage(
+        mml,
+        properties.lang,
+        properties.editorServicesRoot,
+        properties.editorServicesExtension,
+      );
+    } else {
+      imgSource = await createImage(
+        mml,
+        properties.lang,
+        properties.editorServicesRoot,
+        properties.editorServicesExtension,
+      );
+    }
+
+    // Set img properties.
+    const img = await setImageProperties(properties, imgSource, mml);
+    // Replace the MathML for the generated formula image.
+    mathElement.parentNode?.replaceChild(img, mathElement);
+  } catch {
+    console.error(`Cannot render ${mml}: invalid MathML format.`);
+  }
+}
 /**
  * Parse the DOM looking for <math> elements and replace them with the corresponding rendered images within the given element.
  * @param {Properties} properties - Properties of the viewer.
@@ -60,37 +95,44 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
 
   decodeSafeMathML(root);
 
+  const promises = [];
+
   for (const mathElement of [...root.getElementsByTagName("math")]) {
     const mml = serializeHtmlToXml(mathElement.outerHTML);
-    try {
-      let imgSource;
+    const promise = (async () => {
+      try {
+        let imgSource;
 
-      // Transform mml to img.
-      if (properties.wirispluginperformance === "true") {
-        imgSource = await showImage(
-          mml,
-          properties.lang,
-          properties.editorServicesRoot,
-          properties.editorServicesExtension,
-        );
-      } else {
-        imgSource = await createImage(
-          mml,
-          properties.lang,
-          properties.editorServicesRoot,
-          properties.editorServicesExtension,
-        );
+        // Transform mml to img.
+        if (properties.wirispluginperformance === "true") {
+          imgSource = await showImage(
+            mml,
+            properties.lang,
+            properties.editorServicesRoot,
+            properties.editorServicesExtension,
+          );
+        } else {
+          imgSource = await createImage(
+            mml,
+            properties.lang,
+            properties.editorServicesRoot,
+            properties.editorServicesExtension,
+          );
+        }
+
+        // Set img properties.
+        const img = await setImageProperties(properties, imgSource, mml);
+        // Replace the MathML for the generated formula image.
+        mathElement.parentNode?.replaceChild(img, mathElement);
+      } catch {
+        console.error(`Cannot render ${mml}: invalid MathML format.`);
       }
+    })();
 
-      // Set img properties.
-      const img = await setImageProperties(properties, imgSource, mml);
-      // Replace the MathML for the generated formula image.
-      mathElement.parentNode?.replaceChild(img, mathElement);
-    } catch {
-      console.error(`Cannot render ${mml}: invalid MathML format.`);
-      continue;
-    }
+    promises.push(promise);
   }
+
+  await Promise.all(promises);
 }
 
 /**

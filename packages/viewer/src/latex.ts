@@ -18,9 +18,21 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
 
   const latexNodes = findLatexTextNodes(root);
 
+  const maxLatexPetition = properties.simultaneousmml;
+
+  let promises = [];
+
   for (const latexNode of latexNodes) {
-    await replaceLatexInTextNode(properties, latexNode);
+    promises.push(replaceLatexInTextNode(properties, latexNode));
+
+    // To not saturate service, not make all render petition at once
+    if (promises.length >= maxLatexPetition) {
+      await Promise.all(promises);
+      promises = [];
+    }
   }
+
+  await Promise.all(promises);
 }
 
 /**

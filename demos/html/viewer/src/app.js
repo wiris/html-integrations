@@ -30,10 +30,12 @@ document.getElementById("viewer_form").addEventListener("submit", () => {
     lang: lang.value,
     viewer: viewer.value,
     zoom: zoom.value,
+    vieweroffset:vieweroffset.value,
+    simultaneousmml:simultaneousmml.value,
+    simultaneouslatex:simultaneouslatex.value,
   };
 
   window.viewer.properties.config = config;
 
   document.getElementsByTagName("main")[0].innerHTML = document.getElementById("content").value;
-  window.com.wiris.js.JsPluginViewer.parseElement(document.getElementsByTagName("main")[0]);
 });
