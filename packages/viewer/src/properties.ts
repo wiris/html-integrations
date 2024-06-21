@@ -91,6 +91,7 @@ export class Properties {
         ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders"],
         Properties.instance.editorServicesRoot,
         Properties.instance.editorServicesExtension,
+        false,
       );
 
       // We'll always get a string from the wiriscustomheaders backend parameter. It needs to be converted to an object.
@@ -161,7 +162,7 @@ export class Properties {
         // So we call the configurationjson service assuming that the path is the one for the Java services.
         // If we get an answer, we know we are using the Java services,
         // otherwise, and since PHP has already been discarded, we'll set the services to wiris.net
-        await configurationJson(["wirispluginperformance"], path, "");
+        await configurationJson(["wirispluginperformance"], path, "", true);
 
         this.config.editorServicesRoot = path;
         this.config.editorServicesExtension = "";
