@@ -187,11 +187,22 @@ export async function latexToMathml(latex: string, url: string, extension: strin
  * @param {string} extension - Extension to add to the end of the serviceName (including the dot if necessary).
  * @returns {Promise<Response>} The configurationjson service response.
  */
-export async function configurationJson(variablekeys: string[], url: string, extension: string): Promise<any> {
+export async function configurationJson(
+  variablekeys: string[],
+  url: string,
+  extension: string,
+  check: boolean,
+): Promise<any> {
   const params = {
     variablekeys: variablekeys.join(","),
   };
 
-  const response = callService(params, "configurationjson", MethodType.Get, url, extension);
+  const response = await callService(params, "configurationjson", MethodType.Get, url, extension);
+
+  // Provide a warning to alert the users that the console error is an expected outcome,
+  // since this request only aims to be a check and does not expect to retrieve any data.
+  if (check && !response.ok) {
+    console.warn("Fetching the url: " + response.url + ", is expected to fail and handled. Don't panic!");
+  }
   return processJsonResponse(response);
 }
