@@ -44,9 +44,16 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + "$$".length, nextLatexPosition.end);
       // Convert LaTeX to mathml.
-      const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
+      let responseText;
+      try {
+        const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
+        responseText = response.text;
+      } catch (e) {
+        responseText = "Error converting LaTeX to MathML";
+        console.error(responseText + " " + e);
+      }
       // Insert mathml node.
-      const fragment = document.createRange().createContextualFragment(response.text);
+      const fragment = document.createRange().createContextualFragment(responseText);
 
       node.parentNode?.insertBefore(fragment, node);
       node.nodeValue = node.nodeValue.substring(nextLatexPosition.start, nextLatexPosition.end);

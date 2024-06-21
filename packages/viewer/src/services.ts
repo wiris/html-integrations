@@ -20,23 +20,19 @@ export class StatusError extends Error {
  * Helper function to process responses from the editor services.
  * These usually come wrapped in a JSON with a status field that can be either "ok" or "warning".
  * If status is "ok", return the result value along it. Otherwise, throw a StatusError.
- * @param {Promise<Response>} response - The response given by the service.
+ * @param {Response} response - The response given by the service.
  * @returns {Promise<any>} The unwrapped result of the response, if valid.
  * @throws {StatusError} Service responded with a non-ok status.
+ *                       If the response.json() fails, it'll return a generic exception.
  */
-export async function processJsonResponse(response: Promise<Response>): Promise<any> {
-  try {
-    const { status, result } = await (await response).json();
+async function processJsonResponse(response: Response): Promise<any> {
+  const { status, result } = await response.json();
 
-    if (status !== "ok") {
-      throw new StatusError("Service responded with a non-ok status");
-    }
-
-    return result;
-  } catch (e) {
-    // TODO manage network and status non-ok errors
-    throw e;
+  if (status !== "ok") {
+    throw new StatusError("Service responded with a non-ok status");
   }
+
+  return result;
 }
 
 /**
@@ -54,36 +50,31 @@ export async function callService(
   serverURL: string,
   extension: string,
 ): Promise<any> {
-  try {
-    const url = new URL(serviceName + extension, serverURL);
+  const url = new URL(serviceName + extension, serverURL);
 
-    // Getting the configuration is asynchronous since we make some requests.
-    const properties = await Properties.getInstance();
-    const headers = {
-      "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
-      ...properties.config.backendConfig.wiriscustomheaders,
-    };
+  // Getting the configuration is asynchronous since we make some requests.
+  const properties = await Properties.getInstance();
+  const headers = {
+    "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
+    ...properties.config.backendConfig.wiriscustomheaders,
+  };
 
-    const init: RequestInit = {
-      method,
-      headers,
-    };
+  const init: RequestInit = {
+    method,
+    headers,
+  };
 
-    if (method === MethodType.Get) {
-      // Add the query as search params
-      for (const [key, value] of Object.entries(query)) {
-        url.searchParams.set(key, value);
-      }
-    } else {
-      // Add the query as the body of the request
-      init.body = new URLSearchParams({ ...query });
+  if (method === MethodType.Get) {
+    // Add the query as search params
+    for (const [key, value] of Object.entries(query)) {
+      url.searchParams.set(key, value);
     }
-
-    return fetch(url.toString(), init);
-  } catch (e) {
-    // TODO manage network and status non-ok errors
-    throw e;
+  } else {
+    // Add the query as the body of the request
+    init.body = new URLSearchParams({ ...query });
   }
+
+  return await fetch(url.toString(), init);
 }
 
 /**
@@ -105,7 +96,7 @@ export async function mathml2accessible(mml: string, lang: string, url: string, 
     ignoreStyles: "true",
   };
 
-  const response = callService(params, "service", MethodType.Post, url, extension);
+  const response = await callService(params, "service", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -127,20 +118,17 @@ export async function showImage(mml: string, lang: string, url: string, extensio
 
   // Try to obtain the image via GET
   const getParams = Parser.createShowImageSrcData(params, params.lang);
-  const getResponse = callService(getParams, "showimage", MethodType.Get, url, extension);
+  const showImageResponse = await callService(getParams, "showimage", MethodType.Get, url, extension);
   try {
-    return await processJsonResponse(getResponse);
+    return await processJsonResponse(showImageResponse);
   } catch (e) {
     if (e instanceof StatusError) {
-      // Formula was not in cache; proceed with calling showimage via POST
+      // If GET request fails, it means that the formula was not in cache. Proceed to create the image:
+      return createImage(mml, lang, url, extension);
     } else {
       throw e;
     }
   }
-
-  // If GET request fails, it means that the formula was not in cache. Proceed with POST:
-  const response = callService(params, "showimage", MethodType.Post, url, extension);
-  return processJsonResponse(response);
 }
 
 /**
@@ -160,7 +148,7 @@ export async function createImage(mml: string, lang: string, url: string, extens
   };
 
   // POST request to retrieve the corresponding image.
-  const response = callService(params, "showimage", MethodType.Post, url, extension);
+  const response = await callService(params, "showimage", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -177,7 +165,7 @@ export async function latexToMathml(latex: string, url: string, extension: strin
     latex: latex,
   };
 
-  const response = callService(params, "service", MethodType.Post, url, extension);
+  const response = await callService(params, "service", MethodType.Post, url, extension);
   return processJsonResponse(response);
 }
 
@@ -192,6 +180,10 @@ export async function configurationJson(variablekeys: string[], url: string, ext
     variablekeys: variablekeys.join(","),
   };
 
-  const response = callService(params, "configurationjson", MethodType.Get, url, extension);
-  return processJsonResponse(response);
+  try {
+    const response = await callService(params, "configurationjson", MethodType.Get, url, extension);
+    return processJsonResponse(response);
+  } catch (e) {
+    return e;
+  }
 }
