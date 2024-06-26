@@ -19,7 +19,7 @@
     "@wiris/mathtype-html-integration-devkit": "1.17.3"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.24.1",
+    "@babel/preset-typescript": "^7.24.7",
     "@types/jest": "^29.5.12",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.3",
