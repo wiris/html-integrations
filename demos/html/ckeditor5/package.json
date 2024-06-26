@@ -11,7 +11,7 @@
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
-    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly",
+    "ckeditor5": ">=42.0.0",
     "@wiris/mathtype-ckeditor5": "*",
     "@wiris/mathtype-html-integration-devkit": "*"
   },

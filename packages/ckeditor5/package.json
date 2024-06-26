@@ -51,9 +51,9 @@
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "^40.2.0",
-    "ckeditor5": "nightly"
+    "ckeditor5": ">=42.0.0"
   },
   "peerDependencies": {
-    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=42.0.0"
   }
 }
