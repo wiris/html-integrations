@@ -86,8 +86,8 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
       const img = await setImageProperties(properties, imgSource, mml);
       // Replace the MathML for the generated formula image.
       mathElement.parentNode?.replaceChild(img, mathElement);
-    } catch {
-      console.error(`Cannot render ${mml}: invalid MathML format.`);
+    } catch (e) {
+      console.error(`Cannot render ${mml}: ${e}`);
       continue;
     }
   }
