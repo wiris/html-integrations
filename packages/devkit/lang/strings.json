@@ -562,6 +562,9 @@
   "nl": {
     "latex": "LaTeX",
     "cancel": "Annuleren",
+    "accept": "Invoegen",
+    "manual": "Handmatig",
+    "insert_math": "Een wiskundige vergelijking invoegen - MathType",
     "insert_chem": "Een scheikundige formule invoegen - ChemType",
     "minimize": "Minimaliseer",
     "maximize": "Maximaliseer",
