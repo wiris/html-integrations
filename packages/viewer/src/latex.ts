@@ -36,45 +36,47 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
     if (nextLatexPosition) {
       // Get left non LaTeX text.
       const leftText: string = textContent.substring(pos, nextLatexPosition.start);
-      const leftTextNode = document.createTextNode(leftText);
-      // Create a node with left text.
-      node.parentNode?.insertBefore(leftTextNode, node);
-      node.nodeValue = node.nodeValue?.substring(pos, nextLatexPosition.start) ?? "";
+      if (leftText) {
+        const leftTextNode = document.createTextNode(leftText);
+        // Create a node with left text.
+        node.parentNode?.insertBefore(leftTextNode, node);
+      }
 
       // Get LaTeX text.
       const latex = textContent.substring(nextLatexPosition.start + "$$".length, nextLatexPosition.end);
-      // Convert LaTeX to mathml.
+      // Convert LaTeX to MathML.
       const response = await latexToMathml(latex, properties.editorServicesRoot, properties.editorServicesExtension);
-      // Insert mathml node.
+      // Insert MathML node.
       const fragment = document.createRange().createContextualFragment(response.text);
-
       node.parentNode?.insertBefore(fragment, node);
-      node.nodeValue = node.nodeValue.substring(nextLatexPosition.start, nextLatexPosition.end);
 
+      // Update pos to search for next LaTeX instance.
       pos = nextLatexPosition.end + "$$".length;
     } else {
-      // No more LaTeX node found.
-      const text = textContent.substring(pos);
-      const textNode = document.createTextNode(text);
-      node.parentNode?.insertBefore(textNode, node);
-      node.nodeValue = "";
-      pos = textContent.length;
+      // If no more LaTeX found, append the rest of the text as a new text node and break the loop.
+      const remainingText = textContent.substring(pos);
+      if (remainingText) {
+        const remainingTextNode = document.createTextNode(remainingText);
+        node.parentNode?.insertBefore(remainingTextNode, node);
+      }
+      break; // Exit the loop as we've processed all text.
     }
   }
-
-  // Delete original text node.
+  // Remove the original node after processing.
   node.parentNode?.removeChild(node);
 }
 
 /**
  * Returns an array with all HTML LaTeX nodes.
- * @param {HTMLElement} root - Any DOM element that can contain LaTeX.
+ * @param {Node} root - Any DOM element that can contain LaTeX.
  * @returns {Node[]} Array with all HTML LaTeX nodes inside root.
  */
-function findLatexTextNodes(root: any): Node[] {
-  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
-    /(\$\$)(.*)(\$\$)/.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
-  );
+function findLatexTextNodes(root: Node): Node[] {
+  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) => {
+    // Use a regex pattern to match LaTeX formulas.
+    const latexRegex = /(\$\$.*?\$\$)/;
+    return latexRegex.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+  });
   const latexNodes: Node[] = [];
 
   let currentNode: Node | null;
