@@ -84,12 +84,9 @@ async function main(w: Window): Promise<void> {
 
     const allElements = document.querySelectorAll('*');
     window.addEventListener("load", function () {
-      let counter = 0;
       allElements.forEach(function (element) {
         mathobserver.observe(element);
-        counter++;
       });
-      console.log(counter);
     });
 
     //MutationObserver

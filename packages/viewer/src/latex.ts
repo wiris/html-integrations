@@ -18,7 +18,7 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
 
   const latexNodes = findLatexTextNodes(root);
 
-  const maxLatexPetition = properties.simultaneousmml;
+  const maxLatexPetition = properties.simultaneouslatex;
 
   let promises = [];
 
