@@ -18,7 +18,7 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
     return;
   }
   const latexNodes = findLatexTextNodes(properties, root);
-  console.log("Latex nodes", latexNodes);
+
   for (const latexNode of latexNodes) {
     await replaceLatexInTextNode(properties, latexNode);
   }
