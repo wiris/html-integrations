@@ -1,7 +1,6 @@
 import { latexToMathml } from "./services";
 import { Properties } from "./properties";
 
-const NODE_SIZE_LIMIT = 20000;
 
 interface LatexPosition {
   start: number;
@@ -82,7 +81,7 @@ function findLatexTextNodes(properties: Properties, root: any): Node[] {
 
   let currentNode: Node | null;
   while ((currentNode = nodeIterator.nextNode())) {
-    if (isNodeBlacklisted(currentNode, blackListedNodes) || isNodeTooLarge(currentNode)) {
+    if (isNodeBlacklisted(currentNode, blackListedNodes)) {
       continue;
     }
     latexNodes.push(currentNode);
@@ -119,16 +118,6 @@ function isNodeBlacklisted(node: Node, blackListedNodes: NodeListOf<Element>): b
     ancestor = ancestor.parentNode;
   }
   return false;
-}
-
-/**
- * Checks if a node's text content exceeds the character limit.
- *
- * @param node - The node to check.
- * @returns True if the node's text content exceeds the character limit, false otherwise.
- */
-function isNodeTooLarge(node: Node): boolean {
-  return (node.textContent?.length ?? 0) > NODE_SIZE_LIMIT;
 }
 
 /**
