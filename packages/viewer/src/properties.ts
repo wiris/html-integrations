@@ -310,7 +310,7 @@ export class Properties {
   }
 
   get blacklist(): string | null {
-    return this.config.blacklist || defaultValues.blacklist;
+    return this.config.blacklist ?? defaultValues.blacklist;
   }
 
   set blacklist(blacklist: string) {
