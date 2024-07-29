@@ -18,11 +18,9 @@ interface FormulaData {
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
-  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) => {
-    // Use a corrected regex pattern to match «math» formulas.
-    const regex = /«math.*?».*?«\/math»/g;
-    return regex.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-  });
+  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
+    /«math(.*?)«\/math»/g.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  );
   const safeNodes: Node[] = [];
 
   let currentNode: Node | null;

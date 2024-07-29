@@ -1,6 +1,8 @@
 import { latexToMathml } from "./services";
 import { Properties } from "./properties";
 
+const NODE_SIZE_LIMIT = 20000;
+
 interface LatexPosition {
   start: number;
   end: number;
@@ -15,8 +17,8 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-  const latexNodes = findLatexTextNodes(root);
-
+  const latexNodes = findLatexTextNodes(properties, root);
+  console.log("Latex nodes", latexNodes);
   for (const latexNode of latexNodes) {
     await replaceLatexInTextNode(properties, latexNode);
   }
@@ -67,24 +69,66 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
 }
 
 /**
- * Returns an array with all HTML LaTeX nodes.
- * @param {Node} root - Any DOM element that can contain LaTeX.
- * @returns {Node[]} Array with all HTML LaTeX nodes inside root.
+ * Finds and returns an array of text nodes containing LaTeX expressions.
+ *
+ * @param properties - The properties object.
+ * @param root - The root element to search within.
+ * @returns An array of text nodes containing LaTeX expressions.
  */
-function findLatexTextNodes(root: Node): Node[] {
-  const nodeIterator: NodeIterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) => {
-    // Use a regex pattern to match LaTeX formulas.
-    const latexRegex = /(\$\$.*?\$\$)/;
-    return latexRegex.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-  });
+function findLatexTextNodes(properties: Properties, root: any): Node[] {
+  const nodeIterator: NodeIterator = createNodeIterator(root);
+  const blackListedNodes = root.querySelectorAll(properties.blacklist);
   const latexNodes: Node[] = [];
 
   let currentNode: Node | null;
   while ((currentNode = nodeIterator.nextNode())) {
+    if (isNodeBlacklisted(currentNode, blackListedNodes) || isNodeTooLarge(currentNode)) {
+      continue;
+    }
     latexNodes.push(currentNode);
   }
 
   return latexNodes;
+}
+
+/**
+ * Creates a NodeIterator to find text nodes containing LaTeX expressions.
+ *
+ * @param root - The root element to search within.
+ * @returns A NodeIterator for text nodes containing LaTeX expressions.
+ */
+function createNodeIterator(root: any): NodeIterator {
+  return document.createNodeIterator(root, NodeFilter.SHOW_TEXT, (node) =>
+    /(\$\$)(.*)(\$\$)/.test(node.nodeValue || "") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  );
+}
+
+/**
+ * Checks if a node or any of its ancestors are in the blacklist.
+ *
+ * @param node - The node to check.
+ * @param blackListedNodes - The list of blacklisted nodes.
+ * @returns True if the node or any of its ancestors are blacklisted, false otherwise.
+ */
+function isNodeBlacklisted(node: Node, blackListedNodes: NodeListOf<Element>): boolean {
+  let ancestor: Node | null = node;
+  while (ancestor) {
+    if (Array.from(blackListedNodes).includes(ancestor as Element)) {
+      return true;
+    }
+    ancestor = ancestor.parentNode;
+  }
+  return false;
+}
+
+/**
+ * Checks if a node's text content exceeds the character limit.
+ *
+ * @param node - The node to check.
+ * @returns True if the node's text content exceeds the character limit, false otherwise.
+ */
+function isNodeTooLarge(node: Node): boolean {
+  return (node.textContent?.length ?? 0) > NODE_SIZE_LIMIT;
 }
 
 /**

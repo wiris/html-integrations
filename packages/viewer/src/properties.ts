@@ -21,6 +21,7 @@ export interface Config {
   lang: string;
   viewer: Viewer;
   zoom: number;
+  blacklist: string | null;
 }
 
 /**
@@ -39,6 +40,7 @@ const defaultValues: Config = {
   lang: "en",
   viewer: "none",
   zoom: 1,
+  blacklist: null,
 };
 
 /**
@@ -142,6 +144,11 @@ export class Properties {
     const zoom = urlParams.get("zoom");
     if (zoom !== null && zoom !== undefined) {
       instance.config.zoom = +zoom;
+    }
+
+    const blacklist = urlParams.get("blacklist");
+    if (blacklist !== null && blacklist !== undefined) {
+      instance.config.blacklist = blacklist;
     }
   }
 
@@ -299,6 +306,15 @@ export class Properties {
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
+  }
+
+  get blacklist(): string | null {
+    return this.config.blacklist || defaultValues.blacklist;
+  }
+
+  set blacklist(blacklist: string) {
+    this.config.blacklist = blacklist;
     this.render();
   }
 }
