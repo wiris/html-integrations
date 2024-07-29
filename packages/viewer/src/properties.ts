@@ -21,7 +21,7 @@ export interface Config {
   lang: string;
   viewer: Viewer;
   zoom: number;
-  blacklist: string | null;
+  ignored_latex_containers: string | null;
 }
 
 /**
@@ -40,7 +40,7 @@ const defaultValues: Config = {
   lang: "en",
   viewer: "none",
   zoom: 1,
-  blacklist: null,
+  ignored_latex_containers: null,
 };
 
 /**
@@ -146,9 +146,9 @@ export class Properties {
       instance.config.zoom = +zoom;
     }
 
-    const blacklist = urlParams.get("blacklist");
-    if (blacklist !== null && blacklist !== undefined) {
-      instance.config.blacklist = blacklist;
+    const ignored_latex_containers = urlParams.get("ignored_latex_containers");
+    if (ignored_latex_containers !== null && ignored_latex_containers !== undefined) {
+      instance.config.ignored_latex_containers = ignored_latex_containers;
     }
   }
 
@@ -309,12 +309,12 @@ export class Properties {
     this.render();
   }
 
-  get blacklist(): string | null {
-    return this.config.blacklist ?? defaultValues.blacklist;
+  get ignored_latex_containers(): string | null {
+    return this.config.ignored_latex_containers ?? defaultValues.ignored_latex_containers;
   }
 
-  set blacklist(blacklist: string) {
-    this.config.blacklist = blacklist;
+  set ignored_latex_containers(ignored_latex_containers: string) {
+    this.config.ignored_latex_containers = ignored_latex_containers;
     this.render();
   }
 }
