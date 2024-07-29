@@ -1,7 +1,6 @@
 import { latexToMathml } from "./services";
 import { Properties } from "./properties";
 
-
 interface LatexPosition {
   start: number;
   end: number;
@@ -16,7 +15,7 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-  const latexNodes = findLatexTextNodes(properties, root);
+  const latexNodes = findLatexTextNodes(properties.blacklist, root);
 
   for (const latexNode of latexNodes) {
     await replaceLatexInTextNode(properties, latexNode);
@@ -74,14 +73,14 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
  * @param root - The root element to search within.
  * @returns An array of text nodes containing LaTeX expressions.
  */
-function findLatexTextNodes(properties: Properties, root: any): Node[] {
+function findLatexTextNodes(blacklist: string | null, root: any): Node[] {
   const nodeIterator: NodeIterator = createNodeIterator(root);
-  const blackListedNodes = root.querySelectorAll(properties.blacklist);
+  const blackListedNodes = root.querySelectorAll(blacklist) ?? [];
   const latexNodes: Node[] = [];
 
   let currentNode: Node | null;
   while ((currentNode = nodeIterator.nextNode())) {
-    if (isNodeBlacklisted(currentNode, blackListedNodes)) {
+    if (blackListedNodes.length > 0 && isNodeBlacklisted(currentNode, blackListedNodes)) {
       continue;
     }
     latexNodes.push(currentNode);
@@ -110,14 +109,7 @@ function createNodeIterator(root: any): NodeIterator {
  * @returns True if the node or any of its ancestors are blacklisted, false otherwise.
  */
 function isNodeBlacklisted(node: Node, blackListedNodes: NodeListOf<Element>): boolean {
-  let ancestor: Node | null = node;
-  while (ancestor) {
-    if (Array.from(blackListedNodes).includes(ancestor as Element)) {
-      return true;
-    }
-    ancestor = ancestor.parentNode;
-  }
-  return false;
+  return Array.from(blackListedNodes).some((blackListedNode) => blackListedNode.contains(node));
 }
 
 /**
