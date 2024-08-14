@@ -22,6 +22,7 @@ export interface Config {
   viewer: Viewer;
   zoom: number;
   ignored_latex_containers: string | null;
+  ignored_mathml_containers: string | null;
 }
 
 /**
@@ -41,6 +42,7 @@ const defaultValues: Config = {
   viewer: "none",
   zoom: 1,
   ignored_latex_containers: null,
+  ignored_mathml_containers: null,
 };
 
 /**
@@ -149,6 +151,11 @@ export class Properties {
     const ignored_latex_containers = urlParams.get("ignored_latex_containers");
     if (ignored_latex_containers !== null && ignored_latex_containers !== undefined) {
       instance.config.ignored_latex_containers = ignored_latex_containers;
+    }
+
+    const ignored_mathml_containers = urlParams.get("ignored_mathml_containers");
+    if (ignored_mathml_containers !== null && ignored_mathml_containers !== undefined) {
+      instance.config.ignored_mathml_containers = ignored_mathml_containers;
     }
   }
 
@@ -315,6 +322,15 @@ export class Properties {
 
   set ignored_latex_containers(ignored_latex_containers: string) {
     this.config.ignored_latex_containers = ignored_latex_containers;
+    this.render();
+  }
+
+  get ignored_mathml_containers(): string | null {
+    return this.config.ignored_mathml_containers ?? defaultValues.ignored_mathml_containers;
+  }
+
+  set ignored_mathml_containers(ignored_mathml_containers: string) {
+    this.config.ignored_mathml_containers = ignored_mathml_containers;
     this.render();
   }
 }
