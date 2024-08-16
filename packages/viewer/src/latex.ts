@@ -15,7 +15,7 @@ export async function renderLatex(properties: Properties, root: HTMLElement) {
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
-  const latexNodes = findLatexTextNodes(properties.ignored_latex_containers, root);
+  const latexNodes = findLatexTextNodes(root, properties.ignored_containers);
 
   for (const latexNode of latexNodes) {
     await replaceLatexInTextNode(properties, latexNode);
@@ -73,7 +73,7 @@ async function replaceLatexInTextNode(properties: Properties, node: Node) {
  * @param root - The root element to search within.
  * @returns An array of text nodes containing LaTeX expressions.
  */
-function findLatexTextNodes(ignored_latex_containers: string | null, root: any): Node[] {
+function findLatexTextNodes(root: any, ignored_latex_containers: string | null): Node[] {
   const nodeIterator: NodeIterator = createNodeIterator(root);
   const blackListedNodes = root.querySelectorAll(ignored_latex_containers) ?? [];
   const latexNodes: Node[] = [];

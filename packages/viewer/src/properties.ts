@@ -21,8 +21,7 @@ export interface Config {
   lang: string;
   viewer: Viewer;
   zoom: number;
-  ignored_latex_containers: string | null;
-  ignored_mathml_containers: string | null;
+  ignored_containers: string | null;
 }
 
 /**
@@ -41,8 +40,7 @@ const defaultValues: Config = {
   lang: "en",
   viewer: "none",
   zoom: 1,
-  ignored_latex_containers: null,
-  ignored_mathml_containers: null,
+  ignored_containers: null,
 };
 
 /**
@@ -148,14 +146,9 @@ export class Properties {
       instance.config.zoom = +zoom;
     }
 
-    const ignored_latex_containers = urlParams.get("ignored_latex_containers");
-    if (ignored_latex_containers !== null && ignored_latex_containers !== undefined) {
-      instance.config.ignored_latex_containers = ignored_latex_containers;
-    }
-
-    const ignored_mathml_containers = urlParams.get("ignored_mathml_containers");
-    if (ignored_mathml_containers !== null && ignored_mathml_containers !== undefined) {
-      instance.config.ignored_mathml_containers = ignored_mathml_containers;
+    const ignored_containers = urlParams.get("ignored_containers");
+    if (ignored_containers !== null && ignored_containers !== undefined) {
+      instance.config.ignored_containers = ignored_containers;
     }
   }
 
@@ -316,21 +309,12 @@ export class Properties {
     this.render();
   }
 
-  get ignored_latex_containers(): string | null {
-    return this.config.ignored_latex_containers ?? defaultValues.ignored_latex_containers;
+  get ignored_containers(): string | null {
+    return this.config.ignored_containers ?? defaultValues.ignored_containers;
   }
 
-  set ignored_latex_containers(ignored_latex_containers: string) {
-    this.config.ignored_latex_containers = ignored_latex_containers;
-    this.render();
-  }
-
-  get ignored_mathml_containers(): string | null {
-    return this.config.ignored_mathml_containers ?? defaultValues.ignored_mathml_containers;
-  }
-
-  set ignored_mathml_containers(ignored_mathml_containers: string) {
-    this.config.ignored_mathml_containers = ignored_mathml_containers;
+  set ignored_containers(ignored_containers: string) {
+    this.config.ignored_containers = ignored_containers;
     this.render();
   }
 }

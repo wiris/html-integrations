@@ -35,7 +35,7 @@ function findSafeMathMLTextNodes(root: HTMLElement): Node[] {
  * Parse the DOM looking for «math» formulas and replace them with the corresponding rendered images within the given element.
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
-function decodeSafeMathML(ignored_mathml_containers: string | null, root: any) {
+function decodeSafeMathML(root: any, ignored_mathml_containers: string | null) {
   const safeNodes = findSafeMathMLTextNodes(root);
   const blackListedNodes = root.querySelectorAll(ignored_mathml_containers) ?? [];
 
@@ -75,7 +75,7 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
     return;
   }
 
-  decodeSafeMathML(properties.ignored_mathml_containers, root);
+  decodeSafeMathML(root, properties.ignored_containers);
 
   for (const mathElement of [...root.getElementsByTagName("math")]) {
     const mml = serializeHtmlToXml(mathElement.outerHTML);
