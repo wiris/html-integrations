@@ -7,12 +7,12 @@ import StringManager from "@wiris/mathtype-html-integration-devkit/src/stringman
 import packageInfo from "./package.json";
 
 /**
- * This property contains all Froala Integration instances.
+ * This property contains all CKEditor4 Integration instances.
  * @type {Object}
  */
 export const instances = {};
 /**
- * This property contains the current Froala integration instance,
+ * This property contains the current CKEditor4 integration instance,
  * which is the instance of the active editor.
  * @class
  * @type {IntegrationModel}
