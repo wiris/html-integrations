@@ -10819,7 +10819,7 @@ var dependencies = {
 	"@wiris/mathtype-html-integration-devkit": "1.17.3"
 };
 var devDependencies = {
-	"@ckeditor/ckeditor5-dev-build-tools": "^42.0.0",
+	"@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",
 	ckeditor5: ">=43.0.0"
 };
 var peerDependencies = {
