@@ -7,7 +7,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 26th of June 2024.
+Last release of this project was 2nd of September 2024.
+
+### 8.11.0 2024-09-02
+
+- fix: Superscript getting casted to subscript. #KB-50069
+- fix(ck5): Wrong caret position when multiple editor instances. #KB-48969
+- chore(ck5): Update dependencies fro v43 compatibility. KB-49655
 
 ### 8.10.0 2024-06-26
 
