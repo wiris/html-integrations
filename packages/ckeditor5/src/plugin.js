@@ -24,7 +24,7 @@ import mathIcon from "../theme/icons/ckeditor5-formula.svg";
 import chemIcon from "../theme/icons/ckeditor5-chem.svg";
 
 import packageInfo from "../package.json";
-import { transformEditorContent } from "utils.js";
+import { transformEditorContent } from "./utils.js";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
 
