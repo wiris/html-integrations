@@ -289,7 +289,28 @@ export default class MathML {
     // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
     const semanticsEndingTagRegex = /(<\/mrow>)?\s*<annotation[\W\w]*?<\/semantics>/gm;
 
-    return mathml.replace(semanticsStartingTagRegex, "").replace(semanticsEndingTagRegex, "");
+    return mathml
+      .replace(semanticsStartingTagRegex, "")
+      .replace(semanticsEndingTagRegex, "");
+  }
+
+  /**
+   * Removes semantics tag to element that contains mathml.
+   * When using Hand to create formulas, it adds the mrow tag due to the semantics one, this one is also removed.
+   * @param {string} element - Inner HTML text string.
+   * @returns {string} - 'mathml' without semantics tag.
+   */
+  static removeSafeXMLSemantics(element) {
+    // If `mrow` is found right before the `semantics` starting tag, it's removed as well
+    const semanticsSafeStartingTagRegex = /«semantics»\s*?(«mrow»)?/gm;
+
+    // If `mrow` is found right after the `annotation` ending tag, it's removed as well
+    // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
+    const semanticsSafeEndingTagRegex = /(«\/mrow»)?\s*«annotation[\W\w]*?«\/semantics»/gm;
+
+    return element
+      .replace(semanticsSafeStartingTagRegex, "")
+      .replace(semanticsSafeEndingTagRegex, "");
   }
 
   /**

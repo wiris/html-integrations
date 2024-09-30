@@ -24,8 +24,10 @@ import mathIcon from "../theme/icons/ckeditor5-formula.svg";
 import chemIcon from "../theme/icons/ckeditor5-chem.svg";
 
 import packageInfo from "../package.json";
+import { transformEditorContent } from "utils.js";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
+
 
 export default class MathType extends Plugin {
   static get requires() {
@@ -83,7 +85,8 @@ export default class MathType extends Plugin {
     integrationProperties.version = packageInfo.version;
     integrationProperties.editorObject = editor;
     integrationProperties.serviceProviderProperties = {};
-    integrationProperties.serviceProviderProperties.URI = "https://www.wiris.net/demo/plugins/app";
+    //CHANGEMEEEEEEE DELETE MEEEE
+    integrationProperties.serviceProviderProperties.URI = "http://localhost:8080/pluginwiris_engine/app";
     integrationProperties.serviceProviderProperties.server = "java";
     integrationProperties.target = editor.sourceElement;
     integrationProperties.scriptName = "bundle.js";
@@ -341,6 +344,9 @@ export default class MathType extends Plugin {
       const imgHtml = Parser.initParse(mathString, integration.getLanguage());
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
+      // Add HTML element (<img>) to model
+      viewWriter.setAttribute('htmlContent', imgHtml, modelItem);
+
       /* Although we use the HtmlDataProcessor to obtain the attributes,
             we must create a new EmptyElement which is independent of the
             DataProcessor being used by this editor instance */
@@ -391,7 +397,8 @@ export default class MathType extends Plugin {
     function createDataString(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      let mathString = Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+      // Load img element
+      let mathString = modelItem.getAttribute("htmlContent");
 
       const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
 
@@ -414,15 +421,14 @@ export default class MathType extends Plugin {
       "get",
       (e) => {
         let output = e.return;
-        // This line cleans all the semantics stuff, including the handwritten data points and returns the MathML IF there is any.
-        // For text or latex formulas, it returns the original output.
-        e.return = MathML.removeSemantics(output, "application/json");
+
+        e.return = transformEditorContent(output);
       },
       { priority: "low" },
     );
 
     /**
-     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
+     * Hack to transform <math> with LaTeX into $$LaTeX$$ and formula images in editor.setData().
      */
     editor.data.on(
       "set",
@@ -430,24 +436,32 @@ export default class MathType extends Plugin {
         // Retrieve the data to be set on the CKEditor.
         let modifiedData = args[0];
         // Regex to find all mathml formulas.
-        const regexp = /<math(.*?)<\/math>/gm;
+        const regexp = /(<img\b[^>]*>)|(<math(.*?)<\/math>)/gm;
+        const formulas = [];
+        let formula;
 
         // Get all MathML formulas and store them in an array.
         // Using the conditional operator on data.main because the data parameter has different types depending on:
         //    editor.data.set can be used directly or by the source editing plugin.
         //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
         //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-        let formulas = Object.values(modifiedData)[0]
-          ? [...Object.values(modifiedData)[0].matchAll(regexp)]
-          : [...modifiedData.matchAll(regexp)];
+        while ((formula = regexp.exec(modifiedData)) !== null) {
+          formulas.push(formula[0]);
+        }
 
-        // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
+        // Loop to find LaTeX and formula images and replace the MathML for the both.
         formulas.forEach((formula) => {
-          let mathml = formula[0];
-          if (mathml.includes('encoding="LaTeX"')) {
+          if (formula.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            let latex = "$$$" + Latex.getLatexFromMathML(mathml) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
-            modifiedData = modifiedData.replace(mathml, latex);
+            let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+            modifiedData = modifiedData.replace(formula, latex);
+          }
+          else if (formula.includes('<img')) {
+            // If we found a formula image, we should find MathML data, and then substitute the entire image.
+            const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
+            const safexml = formula.match(regexp);
+            let decodeXML = MathML.safeXmlDecode(safexml[0]);
+            modifiedData = modifiedData.replace(formula, decodeXML);
           }
         });
 
