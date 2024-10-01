@@ -1,8 +1,8 @@
 // CKEditor imports
-import { Plugin } from 'ckeditor5/src/core.js';
-import { ButtonView } from 'ckeditor5/src/ui.js';
-import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from 'ckeditor5/src/engine.js';
-import { Widget, toWidget, viewToModelPositionOutsideModelElement } from 'ckeditor5/src/widget.js';
+import { Plugin } from "ckeditor5/src/core.js";
+import { ButtonView } from "ckeditor5/src/ui.js";
+import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from "ckeditor5/src/engine.js";
+import { Widget, toWidget, viewToModelPositionOutsideModelElement } from "ckeditor5/src/widget.js";
 
 // MathType API imports
 import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel.js";
@@ -27,7 +27,6 @@ import packageInfo from "../package.json";
 import { transformEditorContent } from "./utils.js";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
-
 
 export default class MathType extends Plugin {
   static get requires() {
@@ -312,7 +311,7 @@ export default class MathType extends Plugin {
       const { viewItem } = data;
 
       // Only upcast when is wiris formula
-      if(viewItem.getClassNames().next().value !== "Wirisformula") {
+      if (viewItem.getClassNames().next().value !== "Wirisformula") {
         return;
       }
 
@@ -397,7 +396,7 @@ export default class MathType extends Plugin {
       const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
       // Add HTML element (<img>) to model
-      viewWriter.setAttribute('htmlContent', imgHtml, modelItem);
+      viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
             we must create a new EmptyElement which is independent of the
@@ -507,8 +506,7 @@ export default class MathType extends Plugin {
             // LaTeX found.
             let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
             modifiedData = modifiedData.replace(formula, latex);
-          }
-          else if (formula.includes('<img')) {
+          } else if (formula.includes("<img")) {
             // If we found a formula image, we should find MathML data, and then substitute the entire image.
             const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
             const safexml = formula.match(regexp);

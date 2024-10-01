@@ -289,9 +289,7 @@ export default class MathML {
     // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
     const semanticsEndingTagRegex = /(<\/mrow>)?\s*<annotation[\W\w]*?<\/semantics>/gm;
 
-    return mathml
-      .replace(semanticsStartingTagRegex, "")
-      .replace(semanticsEndingTagRegex, "");
+    return mathml.replace(semanticsStartingTagRegex, "").replace(semanticsEndingTagRegex, "");
   }
 
   /**
@@ -308,9 +306,7 @@ export default class MathML {
     // alongside `semantics` closing tag and the whole `annotation` tag and its contents.
     const semanticsSafeEndingTagRegex = /(«\/mrow»)?\s*«annotation[\W\w]*?«\/semantics»/gm;
 
-    return element
-      .replace(semanticsSafeStartingTagRegex, "")
-      .replace(semanticsSafeEndingTagRegex, "");
+    return element.replace(semanticsSafeStartingTagRegex, "").replace(semanticsSafeEndingTagRegex, "");
   }
 
   /**
