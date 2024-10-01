@@ -306,6 +306,59 @@ export default class MathType extends Plugin {
       }
     });
 
+    // Data view -> Model
+    editor.data.upcastDispatcher.on("element:img", (evt, data, conversionApi) => {
+      const { consumable, writer } = conversionApi;
+      const { viewItem } = data;
+
+      // Only upcast when is wiris formula
+      if(viewItem.getClassNames().next().value !== "Wirisformula") {
+        return;
+      }
+
+      const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
+      let formula = Util.htmlSanitize(`<img${mathAttributes}>`);
+
+      const modelNode = writer.createElement("mathml", { formula });
+
+      // Find allowed parent for element that we are going to insert.
+      // If current parent does not allow to insert element but one of the ancestors does
+      // then split nodes to allowed parent.
+      const splitResult = conversionApi.splitToAllowedParent(modelNode, data.modelCursor);
+
+      // When there is no split result it means that we can't insert element to model tree, so let's skip it.
+      if (!splitResult) {
+        return;
+      }
+
+      // Insert element on allowed position.
+      conversionApi.writer.insert(modelNode, splitResult.position);
+
+      // Consume appropriate value from consumable values list.
+      consumable.consume(viewItem, { name: true });
+
+      const parts = conversionApi.getSplitParts(modelNode);
+
+      // Set conversion result range.
+      data.modelRange = writer.createRange(
+        conversionApi.writer.createPositionBefore(modelNode),
+        conversionApi.writer.createPositionAfter(parts[parts.length - 1]),
+      );
+
+      // Now we need to check where the `modelCursor` should be.
+      if (splitResult.cursorParent) {
+        // If we split parent to insert our element then we want to continue conversion in the new part of the split parent.
+        //
+        // before: <allowed><notAllowed>foo[]</notAllowed></allowed>
+        // after:  <allowed><notAllowed>foo</notAllowed><converted></converted><notAllowed>[]</notAllowed></allowed>
+
+        data.modelCursor = conversionApi.writer.createPositionAt(splitResult.cursorParent, 0);
+      } else {
+        // Otherwise just continue after inserted element.
+        data.modelCursor = data.modelRange.end;
+      }
+    });
+
     /**
      * Whether the given view <math> element has a LaTeX annotation element.
      * @param {*} math
