@@ -571,7 +571,7 @@ export default class ModalDialog {
       try {
         await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
           toolbar: this.contentManager.toolbar,
-          trigger: trigger,
+          trigger,
         });
       } catch (error) {
         console.error("Error tracking CLOSED_MTCT_EDITOR", error);
@@ -580,6 +580,7 @@ export default class ModalDialog {
 
     Core.globalListeners.fire("onModalClose", {});
   }
+
   /**
    * Closes modal window and destroys the object.
    */
@@ -1002,7 +1003,7 @@ export default class ModalDialog {
     this.closeDiv.addEventListener("click", this.cancelAction.bind(this));
     this.maximizeDiv.addEventListener(
       "keypress",
-      function (e) {
+      (e) => {
         if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
@@ -1012,7 +1013,7 @@ export default class ModalDialog {
     );
     this.stackDiv.addEventListener(
       "keypress",
-      function (e) {
+      (e) => {
         if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
@@ -1023,7 +1024,7 @@ export default class ModalDialog {
     );
     this.minimizeDiv.addEventListener(
       "keypress",
-      function (e) {
+      (e) => {
         if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
           // Handle enter and space.
           e.target.click();
@@ -1032,7 +1033,7 @@ export default class ModalDialog {
       },
       true,
     );
-    this.closeDiv.addEventListener("keypress", function (e) {
+    this.closeDiv.addEventListener("keypress", (e) => {
       if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
         // Handle enter and space.
         e.target.click();
