@@ -472,8 +472,11 @@ export default class MathType extends Plugin {
       "get",
       (e) => {
         let output = e.return;
+        const parsedResult = Parser.endParse(output);
 
-        e.return = transformEditorContent(output);
+        // Cleans all the semantics tag for safexml
+        // including the handwritten data points
+        return MathML.removeSafeXMLSemantics(parsedResult);
       },
       { priority: "low" },
     );
