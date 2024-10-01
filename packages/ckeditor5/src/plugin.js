@@ -1,8 +1,8 @@
 // CKEditor imports
-import { Plugin } from 'ckeditor5/src/core.js';
-import { ButtonView } from 'ckeditor5/src/ui.js';
-import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from 'ckeditor5/src/engine.js';
-import { Widget, toWidget, viewToModelPositionOutsideModelElement } from 'ckeditor5/src/widget.js';
+import { Plugin } from "ckeditor5/src/core.js";
+import { ButtonView } from "ckeditor5/src/ui.js";
+import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from "ckeditor5/src/engine.js";
+import { Widget, toWidget, viewToModelPositionOutsideModelElement } from "ckeditor5/src/widget.js";
 
 // MathType API imports
 import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel.js";
@@ -391,7 +391,7 @@ export default class MathType extends Plugin {
     function createDataString(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      let mathString = Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+      const mathString = Parser.endParseSaveMode(modelItem.getAttribute("formula"));
 
       const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
 
@@ -413,7 +413,7 @@ export default class MathType extends Plugin {
     editor.data.on(
       "get",
       (e) => {
-        let output = e.return;
+        const output = e.return;
         // This line cleans all the semantics stuff, including the handwritten data points and returns the MathML IF there is any.
         // For text or latex formulas, it returns the original output.
         e.return = MathML.removeSemantics(output, "application/json");
@@ -437,16 +437,16 @@ export default class MathType extends Plugin {
         //    editor.data.set can be used directly or by the source editing plugin.
         //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
         //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-        let formulas = Object.values(modifiedData)[0]
+        const formulas = Object.values(modifiedData)[0]
           ? [...Object.values(modifiedData)[0].matchAll(regexp)]
           : [...modifiedData.matchAll(regexp)];
 
         // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
         formulas.forEach((formula) => {
-          let mathml = formula[0];
+          const mathml = formula[0];
           if (mathml.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            let latex = "$$$" + Latex.getLatexFromMathML(mathml) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+            const latex = `$$$${  Latex.getLatexFromMathML(mathml)  }$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
             modifiedData = modifiedData.replace(mathml, latex);
           }
         });
