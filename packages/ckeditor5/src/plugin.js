@@ -446,7 +446,7 @@ export default class MathType extends Plugin {
           const mathml = formula[0];
           if (mathml.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            const latex = `$$$${  Latex.getLatexFromMathML(mathml)  }$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
+            const latex = `$$$${Latex.getLatexFromMathML(mathml)}$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
             modifiedData = modifiedData.replace(mathml, latex);
           }
         });

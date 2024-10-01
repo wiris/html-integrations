@@ -102,8 +102,8 @@ export class FroalaIntegration extends IntegrationModel {
     super.init();
 
     // Create dynamic button id.
-    const mathTypeId = `wirisEditor-${  editor.id}`;
-    const chemTypeId = `wirisChemistry-${  editor.id}`;
+    const mathTypeId = `wirisEditor-${editor.id}`;
+    const chemTypeId = `wirisChemistry-${editor.id}`;
 
     // Hide MathType toolbar button if is disabled by config.
     if (!Configuration.get("editorEnabled")) {

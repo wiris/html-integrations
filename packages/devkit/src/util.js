@@ -839,7 +839,8 @@ export default class Util {
             ) {
               node.childNodes[position - 1].remove();
               return Util.getSelectedItem(target, isIframe, forceGetSelection);
-            } if (node.childNodes[position].classList?.contains("Wirisformula")) {
+            }
+            if (node.childNodes[position].classList?.contains("Wirisformula")) {
               if (
                 (position > 0 && node.childNodes[position - 1].classList?.contains("Wirisformula")) ||
                 position === 0

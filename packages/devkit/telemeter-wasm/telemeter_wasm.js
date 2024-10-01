@@ -166,17 +166,15 @@ function debugString(val) {
     const description = val.description;
     if (description == null) {
       return "Symbol";
-    } 
-      return `Symbol(${description})`;
-    
+    }
+    return `Symbol(${description})`;
   }
   if (type == "function") {
     const name = val.name;
     if (typeof name == "string" && name.length > 0) {
       return `Function(${name})`;
-    } 
-      return "Function";
-    
+    }
+    return "Function";
   }
   // objects
   if (Array.isArray(val)) {
@@ -186,7 +184,7 @@ function debugString(val) {
       debug += debugString(val[0]);
     }
     for (let i = 1; i < length; i++) {
-      debug += `, ${  debugString(val[i])}`;
+      debug += `, ${debugString(val[i])}`;
     }
     debug += "]";
     return debug;
@@ -205,7 +203,7 @@ function debugString(val) {
     // JSON.stringify avoids problems with cycles, and is generally much
     // easier than looping through ownProperties of `val`.
     try {
-      return `Object(${  JSON.stringify(val)  })`;
+      return `Object(${JSON.stringify(val)})`;
     } catch (_) {
       return "Object";
     }
@@ -415,15 +413,13 @@ async function __wbg_load(module, imports) {
 
     const bytes = await module.arrayBuffer();
     return await WebAssembly.instantiate(bytes, imports);
-  } 
-    const instance = await WebAssembly.instantiate(module, imports);
+  }
+  const instance = await WebAssembly.instantiate(module, imports);
 
-    if (instance instanceof WebAssembly.Instance) {
-      return { instance, module };
-    } 
-      return instance;
-    
-  
+  if (instance instanceof WebAssembly.Instance) {
+    return { instance, module };
+  }
+  return instance;
 }
 
 function __wbg_get_imports() {

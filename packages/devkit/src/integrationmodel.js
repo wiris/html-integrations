@@ -259,7 +259,7 @@ export default class IntegrationModel {
 
     // If moodle, add information to hosts and solution.
     const isMoodle = !!(typeof M === "object" && M !== null);
-      let lms;
+    let lms;
 
     if (isMoodle) {
       solutionTelemeter = "Moodle";
@@ -314,7 +314,7 @@ export default class IntegrationModel {
     // Initialize telemeter
     Telemeter.init({
       solution: {
-        name: `MathType for ${  solutionTelemeter}`,
+        name: `MathType for ${solutionTelemeter}`,
         version: this.version,
       },
       hosts,
@@ -336,7 +336,7 @@ export default class IntegrationModel {
   getBrowser() {
     // default value for OS just in case nothing is detected
     let detectedBrowser = "unknown";
-      let versionBrowser = "unknown";
+    let versionBrowser = "unknown";
 
     const userAgent = window.navigator.userAgent;
 
@@ -413,14 +413,14 @@ export default class IntegrationModel {
   getOS() {
     // default value for OS just in case nothing is detected
     let detectedOS = "unknown";
-      let versionOS = "unknown";
+    let versionOS = "unknown";
 
     // Retrieve properties to easily detect the OS
     const userAgent = window.navigator.userAgent;
-      const platform = window.navigator.platform;
-      const macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"];
-      const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
-      const iosPlatforms = ["iPhone", "iPad", "iPod"];
+    const platform = window.navigator.platform;
+    const macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"];
+    const windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"];
+    const iosPlatforms = ["iPhone", "iPad", "iPod"];
 
     // Find OS and their respective versions
     if (macosPlatforms.indexOf(platform) !== -1) {
