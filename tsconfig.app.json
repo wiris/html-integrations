@@ -6,5 +6,5 @@
     "types": ["node"]
   },
   "exclude": ["**/*.spec.js"],
-  "include": ["**/*.js", "packages/ckeditor5/babel.config.cjs", "packages/ckeditor5/jest.config.cjs"]
+  "include": ["**/*.js"]
 }
