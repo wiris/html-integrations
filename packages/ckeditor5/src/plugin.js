@@ -493,11 +493,7 @@ export default class MathType extends Plugin {
         const formulas = [];
         let formula;
 
-        // Get all MathML formulas and store them in an array.
-        // Using the conditional operator on data.main because the data parameter has different types depending on:
-        //    editor.data.set can be used directly or by the source editing plugin.
-        //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
-        //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
+        // Both data.set from the source plugin and console command are taken into account as the data received is mathml or an image containing the MathML.
         while ((formula = regexp.exec(modifiedData)) !== null) {
           formulas.push(formula[0]);
         }
