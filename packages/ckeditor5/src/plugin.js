@@ -493,7 +493,7 @@ export default class MathType extends Plugin {
         const formulas = [];
         let formula;
 
-        // Both data.set from the source plugin and console command are taken into account as the data received is mathml or an image containing the MathML.
+        // Both data.set from the source plugin and console command are taken into account as the data received is MathML or an image containing the MathML.
         while ((formula = regexp.exec(modifiedData)) !== null) {
           formulas.push(formula[0]);
         }
