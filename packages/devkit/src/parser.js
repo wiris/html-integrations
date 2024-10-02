@@ -305,12 +305,15 @@ export default class Parser {
    * @returns {string} HTML code parsed.
    */
   static endParseSaveMode(code) {
-    if (Configuration.get("saveMode")) {
-      if (Configuration.get("saveMode") === "safeXml") {
+    const savemode = Configuration.get("saveMode");
+    const base64savemode = Configuration.get("base64savemode");
+
+    if (savemode) {
+      if (savemode === "safeXml") {
         code = Parser.codeImgTransform(code, "img2mathml");
-      } else if (Configuration.get("saveMode") === "xml") {
+      } else if (savemode === "xml") {
         code = Parser.codeImgTransform(code, "img2mathml");
-      } else if (Configuration.get("saveMode") === "base64" && Configuration.get("base64savemode") === "image") {
+      } else if (savemode === "base64" && base64savemode === "image") {
         code = Parser.codeImgTransform(code, "img264");
       }
     }
