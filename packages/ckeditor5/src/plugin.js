@@ -398,7 +398,10 @@ export default class MathType extends Plugin {
       }
 
       let imgElement = null;
-      if(formula) {
+
+      if (htmlContent) {
+        imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
+      } else if(formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
 
         const imgHtml = Parser.initParse(mathString, integration.getLanguage());
@@ -406,8 +409,6 @@ export default class MathType extends Plugin {
 
         // Add HTML element (<img>) to model
         viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
-      } else if (htmlContent) {
-        imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
       }
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
