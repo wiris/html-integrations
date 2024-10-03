@@ -410,6 +410,9 @@ export default class MathType extends Plugin {
         imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
       }
 
+      // Add HTML element (<img>) to model
+      viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
+
       /* Although we use the HtmlDataProcessor to obtain the attributes,
         *  we must create a new EmptyElement which is independent of the
         *  DataProcessor being used by this editor instance
