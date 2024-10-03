@@ -523,8 +523,10 @@ export default class MathType extends Plugin {
             // If we found a formula image, we should find MathML data, and then substitute the entire image.
             const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
             const safexml = formula.match(regexp);
-            let decodeXML = MathML.safeXmlDecode(safexml[0]);
-            modifiedData = modifiedData.replace(formula, decodeXML);
+            if(safexml !== null) {
+              let decodeXML = MathML.safeXmlDecode(safexml[0]);
+              modifiedData = modifiedData.replace(formula, decodeXML);
+            }
           }
         });
 
