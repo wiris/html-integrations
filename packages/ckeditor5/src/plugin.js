@@ -201,7 +201,7 @@ export default class MathType extends Plugin {
 
     schema.register("mathml", {
       inheritAllFrom: "$inlineObject",
-      allowAttributes: ["formula"],
+      allowAttributes: ["formula", "htmlContent"],
     });
   }
 
@@ -315,9 +315,9 @@ export default class MathType extends Plugin {
       }
 
       const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
-      let formula = Util.htmlSanitize(`<img${mathAttributes}>`);
+      let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
 
-      const modelNode = writer.createElement("mathml", { formula });
+      const modelNode = writer.createElement("mathml", { htmlContent });
 
       // Find allowed parent for element that we are going to insert.
       // If current parent does not allow to insert element but one of the ancestors does
@@ -390,16 +390,30 @@ export default class MathType extends Plugin {
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      const mathString = modelItem.getAttribute("formula").replaceAll('ref="<"', 'ref="&lt;"');
-      const imgHtml = Parser.initParse(mathString, integration.getLanguage());
-      const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+      const formula = modelItem.getAttribute("formula");
+      const htmlContent = modelItem.getAttribute("htmlContent");
 
-      // Add HTML element (<img>) to model
-      viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
+      if(!formula && !htmlContent){
+        return null;
+      }
+
+      let imgElement = null;
+      if(formula) {
+        const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
+
+        const imgHtml = Parser.initParse(mathString, integration.getLanguage());
+        imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+
+        // Add HTML element (<img>) to model
+        viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
+      } else if (htmlContent) {
+        imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
+      }
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
-            we must create a new EmptyElement which is independent of the
-            DataProcessor being used by this editor instance */
+        *  we must create a new EmptyElement which is independent of the
+        *  DataProcessor being used by this editor instance
+        */
       if (imgElement) {
         return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
           renderUnsafeAttributes: ["src"],
