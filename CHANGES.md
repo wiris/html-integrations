@@ -7,7 +7,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 2nd of September 2024.
+Last release of this project was 4nd of October 2024.
+
+### 8.11.1 2024-10-04
+
+- feat: Added missing Dutch translation keys. #KB-49694
+- fix(ck5): Take in account image format when rendering and save image into model. #KB-50469
 
 ### 8.11.0 2024-09-02
 
