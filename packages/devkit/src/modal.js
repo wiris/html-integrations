@@ -21,6 +21,7 @@ import maxIcon from "../styles/icons/general/max_icon.svg"; //eslint-disable-lin
 import maxHoverIcon from "../styles/icons/hover/max_icon_h.svg"; //eslint-disable-line
 import qrIcon from "../styles/icons/general/qr_icon.svg"; //eslint-disable-line
 import qrIconPNG from "../styles/icons/qr-code-scan.png"; //eslint-disable-line
+import QRCode from "qrcode";
 
 /**
  * @typedef {Object} DeviceProperties
@@ -91,7 +92,7 @@ export default class ModalDialog {
 
     // Identifier for the mobile session
     this.mobileSessionID = null;
-    this.#ws = new WebSocket("ws://localhost:3030"); // Should be a constant open server.
+    this.#ws = new WebSocket("ws://192.168.0.24:8080"); // Should be a constant open server.
     this.#startedMbSession = false;
 
     // Handle server events
@@ -100,6 +101,15 @@ export default class ModalDialog {
 
       if (data.type === "sessionStarted") {
         this.mobileSessionID = data.sessionId;
+
+        QRCode.toDataURL(data.sessionId.toString())
+          .then((url) => {
+            console.log(url);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
         alert(`Started session on: ${data.sessionId}`);
       } else if (data.type === "messageReceived") {
         console.log("receiving mathml");
