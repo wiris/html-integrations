@@ -349,6 +349,71 @@
   font-size: 16px;
 }
 
+.wrs_modal_button_QR,
+.wrs_modal_button_QR:visited,
+.wrs_modal_button_QR:active,
+.wrs_modal_button_QR:focus {
+  min-width: 32px;
+  padding: 6px 8px;
+  border: 1px solid white;
+  border-radius: 6px;
+  margin: 10px 5px 0 5px;
+  min-height: 32px;
+  background: white;
+  text-indent: -9999px; /* To hide the forced innerHTML. */
+}
+
+.wrs_modal_button_QR:hover {
+  background: rgb(223, 223, 223);
+  border: 1px solid #b9b9b9;
+}
+
+.wrs_modal_button_edit_mobile,
+.wrs_modal_button_edit_mobile:visited,
+.wrs_modal_button_edit_mobile:active,
+.wrs_modal_button_edit_mobile:focus {
+  min-width: 80px;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #7d9c69;
+  padding: 6px 8px;
+  margin: 10px auto;
+  margin-left: 5px;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-family: arial, sans-serif;
+  background-color: #b2dc96;
+  height: 32px;
+}
+
+.wrs_modal_button_edit_mobile:hover {
+  background-color: #d0dfc7;
+  border: 1px solid #b2dc96;
+}
+
+.wrs_modal_button_edit_web,
+.wrs_modal_button_edit_web:visited,
+.wrs_modal_button_edit_web:active,
+.wrs_modal_button_edit_web:focus {
+  min-width: 80px;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #9c8969;
+  padding: 6px 8px;
+  margin: 10px auto;
+  margin-left: 5px;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-family: arial, sans-serif;
+  background-color: #dcc896;
+  height: 32px;
+}
+
+.wrs_modal_button_edit_web:hover {
+  background-color: #dfdac7;
+  border: 1px solid #dcc296;
+}
+
 .wrs_modal_button_cancel,
 .wrs_modal_button_cancel:hover,
 .wrs_modal_button_cancel:visited,
@@ -359,9 +424,7 @@
   border-radius: 3px;
   border: 1px solid #778e9a;
   padding: 6px 8px;
-  margin: 10px auto;
-  margin-left: 5px;
-  margin-bottom: 0;
+  margin: 10px 5px 0 5px;
   cursor: pointer;
   font-family: arial, sans-serif;
   background-color: #ddd;

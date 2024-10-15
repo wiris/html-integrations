@@ -19,6 +19,8 @@ import minsIcon from "../styles/icons/general/mins_icon.svg"; //eslint-disable-l
 import minsHoverIcon from "../styles/icons/hover/mins_icon_h.svg"; //eslint-disable-line
 import maxIcon from "../styles/icons/general/max_icon.svg"; //eslint-disable-line
 import maxHoverIcon from "../styles/icons/hover/max_icon_h.svg"; //eslint-disable-line
+import qrIcon from "../styles/icons/general/qr_icon.svg"; //eslint-disable-line
+import qrIconPNG from "../styles/icons/qr-code-scan.png"; //eslint-disable-line
 
 /**
  * @typedef {Object} DeviceProperties
@@ -39,6 +41,8 @@ export default class ModalDialog {
    * @constructs
    * @param {Object} modalDialogAttributes  - An object containing all modal dialog attributes.
    */
+  #startedMbSession;
+  #ws;
   constructor(modalDialogAttributes) {
     this.attributes = modalDialogAttributes;
 
@@ -83,6 +87,24 @@ export default class ModalDialog {
       previousState: "",
       position: { bottom: 0, right: 10 },
       size: { height: 338, width: 580 },
+    };
+
+    // Identifier for the mobile session
+    this.mobileSessionID = null;
+    this.#ws = new WebSocket("ws://localhost:3030"); // Should be a constant open server.
+    this.#startedMbSession = false;
+
+    // Handle server events
+    this.#ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === "sessionStarted") {
+        this.mobileSessionID = data.sessionId;
+        alert(`Started session on: ${data.sessionId}`);
+      } else if (data.type === "messageReceived") {
+        console.log("receiving mathml");
+        WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
+      }
     };
 
     /**
@@ -224,6 +246,42 @@ export default class ModalDialog {
       this.cancelAction.bind(this),
     );
 
+    this.QRButton = this.createSubmitButton(
+      {
+        id: this.getElementId("wrs_modal_button_QR"),
+        class: "wrs_modal_button_QR",
+        innerHTML: "Q",
+        // To identifiy the element in automated testing
+        "data-testid": "mtcteditor-edit-qr",
+      },
+      this.qrAction.bind(this),
+    );
+
+    let qrgeneralStyle = `background-size:29px; background-repeat: no-repeat; background-image: url(${qrIconPNG})`;
+    this.QRButton.setAttribute("style", qrgeneralStyle);
+
+    this.editMobileButton = this.createSubmitButton(
+      {
+        id: this.getElementId("wrs_modal_button_edit_mobile"),
+        class: "wrs_modal_button_edit_mobile",
+        innerHTML: StringManager.get("edit_mobile"),
+        // To identifiy the element in automated testing
+        "data-testid": "mtcteditor-edit-mobile-button",
+      },
+      this.editMobileAction.bind(this),
+    );
+
+    this.editWebButton = this.createSubmitButton(
+      {
+        id: this.getElementId("wrs_modal_button_edit_web"),
+        class: "wrs_modal_button_edit_web",
+        innerHTML: StringManager.get("edit_web"),
+        // To identifiy the element in automated testing
+        "data-testid": "mtcteditor-edit-web-button",
+      },
+      this.editWebAction.bind(this),
+    );
+
     this.contentManager = null;
 
     // Overlay popup.
@@ -310,6 +368,40 @@ export default class ModalDialog {
     }
   }
 
+  qrAction() {
+    // TODO: when scan QR, open mobile edition by default.
+    // Only append the button if they don't already exist.
+    if (!this.buttonContainer.contains(this.editMobileButton) && !this.buttonContainer.contains(this.editWebButton)) {
+      this.buttonContainer.appendChild(this.editMobileButton);
+    }
+    if (!this.mobileSessionID) {
+      this.#ws.send(JSON.stringify({ type: "startSession" }));
+    } else alert(`Session ID: ${this.mobileSessionID}`);
+    // Show in the center of the screen a small not movable modal with the ID of the session and a button end session
+  }
+
+  editMobileAction() {
+    this.buttonContainer.removeChild(this.editMobileButton);
+    this.buttonContainer.appendChild(this.editWebButton);
+    console.log("connect");
+    this.#startedMbSession = true;
+    console.log(this.contentManager.mathML);
+    this.#ws.send(
+      JSON.stringify({ type: "sendMessage", sessionId: this.mobileSessionID, message: "startedMbSession" }),
+    );
+    this.contentManager.editor.handTemporalMathML = this.contentManager.editor.getMathML();
+    const handCoordinates = this.contentManager.editor.editorModel.getHandStrokes();
+    this.#ws.send(JSON.stringify({ type: "sendMessage", sessionId: this.mobileSessionID, message: handCoordinates }));
+  }
+
+  editWebAction() {
+    this.buttonContainer.removeChild(this.editWebButton);
+    this.buttonContainer.appendChild(this.editMobileButton);
+    console.log("disconnect");
+    this.#startedMbSession = false;
+    this.#ws.send(JSON.stringify({ type: "sendMessage", sessionId: this.mobileSessionID, message: "endedMbSession" }));
+  }
+
   /**
    * Returns a button element.
    * @param {Object} properties - Input button properties.
@@ -382,6 +474,7 @@ export default class ModalDialog {
 
     this.buttonContainer.appendChild(this.submitButton);
     this.buttonContainer.appendChild(this.cancelButton);
+    this.buttonContainer.appendChild(this.QRButton);
 
     this.container.appendChild(this.wrapper);
 
@@ -496,6 +589,11 @@ export default class ModalDialog {
    * if exists. By default the modal object opens in stack mode.
    */
   open() {
+    if (!this.contentManager.isNewElement && this.#startedMbSession) {
+      this.#ws.send(
+        JSON.stringify({ type: "sendMessage", sessionId: this.mobileSessionID, message: this.contentManager.mathML }),
+      );
+    }
     // Removing close class.
     this.removeClass("wrs_closed");
     // Hiding keyboard for mobile devices.
