@@ -92,7 +92,7 @@ export default class ModalDialog {
 
     // Identifier for the mobile session
     this.mobileSessionID = null;
-    this.#ws = new WebSocket("ws://192.168.0.24:8080"); // Should be a constant open server.
+    this.#ws = new WebSocket("wss://preferably-correct-cheetah.ngrok-free.app"); // Should be a constant open server.
     this.#startedMbSession = false;
 
     // Handle server events
