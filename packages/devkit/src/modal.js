@@ -92,30 +92,10 @@ export default class ModalDialog {
 
     // Identifier for the mobile session
     this.mobileSessionID = null;
-    this.#ws = new WebSocket("wss://preferably-correct-cheetah.ngrok-free.app"); // Should be a constant open server.
-    this.#startedMbSession = false;
+    this.#startedMbSession = null;
+    this.#ws = null;
 
-    // Handle server events
-    this.#ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.type === "sessionStarted") {
-        this.mobileSessionID = data.sessionId;
-
-        QRCode.toDataURL(data.sessionId.toString())
-          .then((url) => {
-            console.log(url);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-
-        alert(`Started session on: ${data.sessionId}`);
-      } else if (data.type === "messageReceived") {
-        console.log("receiving mathml");
-        WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
-      }
-    };
+    this.start();
 
     /**
      * Object to keep website's style before change it on lock scroll for mobile devices.
@@ -331,6 +311,40 @@ export default class ModalDialog {
     this.handleOpenedIosSoftkeyboard = this.handleOpenedIosSoftkeyboard.bind(this);
     this.handleClosedIosSoftkeyboard = this.handleClosedIosSoftkeyboard.bind(this);
   }
+
+  start = () => {
+    // Identifier for the mobile session
+    this.mobileSessionID = null;
+    this.#ws = new WebSocket("wss://preferably-correct-cheetah.ngrok-free.app"); // Should be a constant open server.
+    this.#startedMbSession = false;
+
+    // Handle server events
+    this.#ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === "sessionStarted") {
+        this.mobileSessionID = data.sessionId;
+
+        QRCode.toDataURL(data.sessionId.toString())
+          .then((url) => {
+            console.log(url);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
+        alert(`Started session on: ${data.sessionId}`);
+      } else if (data.type === "messageReceived") {
+        console.log("receiving mathml");
+        WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
+      }
+    };
+
+    this.#ws.onclose = () => {
+      // Reconnect.
+      setTimeout(this.start.bind(this), 5000);
+    };
+  };
 
   /**
    * This method sets an ContentManager instance to ModalDialog. ContentManager
