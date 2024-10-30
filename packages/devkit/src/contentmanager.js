@@ -480,6 +480,10 @@ export default class ContentManager {
       }
     }
 
+    if (this.modalDialogInstance.getStartedMbSession()) {
+      this.modalDialogInstance.editMobileAction();
+    }
+
     let trigger = this.dbclick ? "formula" : "button";
 
     // Call Telemetry service to track the event.
