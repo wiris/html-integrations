@@ -338,10 +338,8 @@ export default class ModalDialog {
 
         alert(`Started session on: ${data.sessionId}`);
       } else if (data.type === "clientJoined") {
-        console.log("A client has logged in this session");
         this.editMobileAction();
       } else if (data.type === "messageReceived") {
-        console.log("receiving mathml");
         WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
         this.submitAction();
       }
@@ -457,14 +455,16 @@ export default class ModalDialog {
       );
     }
 
+    let mathml = this.contentManager.mathML || this.contentManager.editor.getMathML();
+
     // First, as an editor requirement, we need to update the editor object with the current MathML formula.
     // Once the MathML formula is updated to the one we want to open with handMode, we will be able to proceed.
     await new Promise((resolve) => {
-      this.contentManager.editor.setMathMLWithCallback(this.contentManager.mathML, resolve);
+      this.contentManager.editor.setMathMLWithCallback(mathml, resolve);
     });
 
     await this.contentManager.waitForHand(this.contentManager.editor);
-    this.contentManager.editor.handTemporalMathML = this.contentManager.mathML;
+    this.contentManager.editor.handTemporalMathML = mathml;
 
     let handCoordinates;
     if (this.contentManager.editor.isHandOpen()) {
