@@ -395,6 +395,11 @@ export default class ModalDialog {
     // Clean variables.
     this.#mobileSessionID = null;
     this.#startedMbSession = null;
+
+    // Enable editor to allow content changes.
+    this.contentContainer.style.removeProperty("pointer-events");
+    this.contentContainer.style.removeProperty("opacity");
+    this.contentContainer.style.removeProperty("cursor");
   };
 
   /**
@@ -453,6 +458,11 @@ export default class ModalDialog {
       this.#ws.send(
         JSON.stringify({ type: "sendMessage", sessionId: this.#mobileSessionID, message: "startedMbSession" }),
       );
+
+      // Disable editor to avoid content changes.
+      this.contentContainer.style.setProperty("pointer-events", "none");
+      this.contentContainer.style.setProperty("opacity", "0.5");
+      this.contentContainer.style.setProperty("cursor", "not-allowed");
     }
 
     let mathml = this.contentManager.mathML || this.contentManager.editor.getMathML();
@@ -479,6 +489,11 @@ export default class ModalDialog {
   editWebAction() {
     this.buttonContainer.removeChild(this.editWebButton);
     this.buttonContainer.appendChild(this.editMobileButton);
+
+    // Enable editor to allow content changes.
+    this.contentContainer.style.removeProperty("pointer-events");
+    this.contentContainer.style.removeProperty("opacity");
+    this.contentContainer.style.removeProperty("cursor");
 
     this.#startedMbSession = false;
     this.#ws.send(JSON.stringify({ type: "sendMessage", sessionId: this.#mobileSessionID, message: "endedMbSession" }));
