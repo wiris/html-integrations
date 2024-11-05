@@ -10808,7 +10808,7 @@ var keywords = [
 	"mathtype",
 	"wiris"
 ];
-var repository = "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5";
+var repository = "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5";
 var homepage = "https://www.wiris.com/";
 var bugs = {
 	email: "support@wiris.com"
