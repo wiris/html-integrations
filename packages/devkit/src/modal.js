@@ -46,6 +46,7 @@ export default class ModalDialog {
   #startedMbSession;
   #mobileSessionID;
   #ws;
+
   constructor(modalDialogAttributes) {
     this.attributes = modalDialogAttributes;
 
@@ -144,6 +145,21 @@ export default class ModalDialog {
     this.closeDiv.setAttribute("data-testid", "mtcteditor-close-button");
 
     attributes = {};
+    attributes.class = "wrs_modal_mobile_close_div";
+    attributes.id = this.getElementId(attributes.class);
+    attributes.title = StringManager.get("close");
+    attributes.style = {};
+    this.closeMobileDiv = Util.createElement("a", attributes);
+    this.closeMobileDiv.setAttribute("role", "button");
+    this.closeMobileDiv.setAttribute("tabindex", 3);
+    generalStyle = `color: black`;
+    hoverStyle = `color: grey`;
+    this.closeMobileDiv.setAttribute("style", generalStyle);
+    this.closeMobileDiv.innerHTML = "&#10006;";
+    this.closeMobileDiv.setAttribute("onmouseover", `this.style = "${hoverStyle}";`);
+    this.closeMobileDiv.setAttribute("onmouseout", `this.style = "${generalStyle}";`);
+
+    attributes = {};
     attributes.class = "wrs_modal_stack_button";
     attributes.id = this.getElementId(attributes.class);
     attributes.title = StringManager.get("exit_fullscreen");
@@ -215,6 +231,44 @@ export default class ModalDialog {
     attributes.id = this.getElementId(attributes.class);
     this.buttonContainer = Util.createElement("div", attributes);
 
+    // Mobile modal
+    attributes = {};
+    attributes.role = "dialog";
+    this.mobileContainer = Util.createElement("div", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_mobile_backdrop";
+    attributes.id = this.getElementId(attributes.class);
+    this.modalMobileBackdrop = Util.createElement("div", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_mobile";
+    attributes.id = this.getElementId(attributes.class);
+    this.modalMobile = Util.createElement("div", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_mobile_content";
+    attributes.id = this.getElementId(attributes.class);
+    this.modalMobileContent = Util.createElement("div", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_modal_mobile_footer";
+    attributes.id = this.getElementId(attributes.class);
+    this.modalMobileFooter = Util.createElement("div", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_mobile_session_id";
+    attributes.id = this.getElementId(attributes.class);
+    this.mobileSessionIDiv = Util.createElement("p", attributes);
+
+    attributes = {};
+    attributes.class = "wrs_mobile_session_qr";
+    attributes.id = this.getElementId(attributes.class);
+    this.mobileSessionQRDiv = Util.createElement("img", attributes);
+    this.mobileSessionQRDiv.setAttribute("alt", "QR");
+    this.mobileSessionQRDiv.style.setProperty("display", "block");
+    this.mobileSessionQRDiv.style.setProperty("margin", "auto");
+
     // Buttons: all button must be created using createSubmitButton method.
     this.submitButton = this.createSubmitButton(
       {
@@ -274,6 +328,17 @@ export default class ModalDialog {
       this.editWebAction.bind(this),
     );
 
+    this.closeModalMobileBtn = this.createSubmitButton(
+      {
+        id: this.getElementId("wrs_modal_mobile_close_button"),
+        class: "wrs_modal_button_cancel",
+        innerHTML: StringManager.get("close"),
+        // To identifiy the element in automated testing
+        "data-testid": "mobile-cancel-button",
+      },
+      this.closeMobileModal.bind(this),
+    );
+
     this.contentManager = null;
 
     // Overlay popup.
@@ -326,22 +391,23 @@ export default class ModalDialog {
 
       if (data.type === "sessionStarted") {
         this.#mobileSessionID = data.sessionId;
+        this.mobileSessionIDiv.innerHTML = `<strong>ID:</strong> ${data.sessionId}`;
 
         // Transform the session ID to a QR code.
         QRCode.toDataURL(data.sessionId.toString())
           .then((url) => {
+            this.mobileSessionQRDiv.src = url;
             console.log(url);
           })
           .catch((err) => {
             console.error(err);
           });
-
-        alert(`Started session on: ${data.sessionId}`);
       } else if (data.type === "clientJoined") {
         this.editMobileAction();
       } else if (data.type === "messageReceived") {
         WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
         this.submitAction();
+        this.closeMobileModal();
       }
     };
 
@@ -352,6 +418,32 @@ export default class ModalDialog {
       setTimeout(this.start.bind(this), 5000);
     };
   };
+
+  // Function to create the modal
+  createModalMobile() {
+    // Create close button (X) for top right
+    this.closeMobileDiv.addEventListener("click", this.closeMobileModal.bind(this));
+
+    // Create modal content - session info and QR code
+    this.modalMobileContent.innerHTML = `
+      <h2>Session Information</h2>
+    `;
+
+    this.modalMobileContent.appendChild(this.mobileSessionIDiv);
+    this.modalMobileContent.appendChild(this.mobileSessionQRDiv);
+
+    // Append elements to footer and modal
+    this.modalMobileFooter.appendChild(this.closeModalMobileBtn);
+    this.modalMobile.appendChild(this.closeMobileDiv);
+    this.modalMobile.appendChild(this.modalMobileContent);
+    this.modalMobile.appendChild(this.modalMobileFooter);
+    this.modalMobileBackdrop.appendChild(this.modalMobile);
+
+    // Append modal backdrop to modal container
+    this.mobileContainer.appendChild(this.modalMobileBackdrop);
+
+    document.body.appendChild(this.mobileContainer);
+  }
 
   /**
    * @returns private parameter with started mobile session information.
@@ -389,17 +481,23 @@ export default class ModalDialog {
    */
   endSession = () => {
     // Remove buttons to avoid noise
-    if (this.buttonContainer.contains(this.editMobileButton)) this.buttonContainer.removeChild(this.editMobileButton);
-    if (this.buttonContainer.contains(this.editWebButton)) this.buttonContainer.removeChild(this.editWebButton);
+    if (this.modalMobileFooter.contains(this.editMobileButton))
+      this.modalMobileFooter.removeChild(this.editMobileButton);
+    if (this.modalMobileFooter.contains(this.editWebButton)) this.modalMobileFooter.removeChild(this.editWebButton);
 
     // Clean variables.
     this.#mobileSessionID = null;
     this.#startedMbSession = null;
+    this.mobileSessionIDiv.innerHTML = "";
+    this.mobileSessionQRDiv.removeAttribute("src");
 
     // Enable editor to allow content changes.
     this.contentContainer.style.removeProperty("pointer-events");
     this.contentContainer.style.removeProperty("opacity");
     this.contentContainer.style.removeProperty("cursor");
+
+    // Close modal mobile.
+    this.closeMobileModal();
   };
 
   /**
@@ -409,6 +507,9 @@ export default class ModalDialog {
    * contentElement.submitAction is the responsible of the content logic.
    */
   async submitAction() {
+    // Close modal mobile, if open.
+    this.closeMobileModal();
+
     if (typeof this.contentManager.submitAction !== "undefined") {
       this.contentManager.submitAction();
     }
@@ -423,6 +524,9 @@ export default class ModalDialog {
    * @returns {Promise<void>} - A promise that resolves when the modal is closed.
    */
   async cancelAction() {
+    // Close modal mobile if open.
+    this.closeMobileModal();
+
     if (typeof this.contentManager.hasChanges === "undefined" || !this.contentManager.hasChanges()) {
       IntegrationModel.setActionsOnCancelButtons();
       await this.close("mtc_close");
@@ -439,7 +543,17 @@ export default class ModalDialog {
     // TODO: Display modal information.
     if (!this.#mobileSessionID) {
       this.#ws.send(JSON.stringify({ type: "startSession" }));
-    } else alert(`Session ID: ${this.#mobileSessionID}`);
+    }
+
+    this.openMobileModal();
+
+    if (!this.mobileSessionQRDiv.src) {
+      this.mobileSessionIDiv.innerHTML =
+        "<strong>Unexpected error: Could not establish connection. Please, try again later.</strong>";
+      this.mobileSessionQRDiv.removeAttribute("alt");
+    } else {
+      this.mobileSessionQRDiv.setAttribute("alt", "QR");
+    }
     // Show in the center of the screen a small not movable modal with the ID of the session and a button end session
   }
 
@@ -447,10 +561,10 @@ export default class ModalDialog {
    * Enable mobile editing, for a newly started session or when opening an editor modal.
    */
   async editMobileAction() {
-    if (this.buttonContainer.contains(this.editMobileButton)) {
-      this.buttonContainer.removeChild(this.editMobileButton);
+    if (this.modalMobileFooter.contains(this.editMobileButton)) {
+      this.modalMobileFooter.removeChild(this.editMobileButton);
     }
-    this.buttonContainer.appendChild(this.editWebButton);
+    this.modalMobileFooter.appendChild(this.editWebButton);
 
     if (!this.#startedMbSession) {
       this.#startedMbSession = true;
@@ -487,8 +601,8 @@ export default class ModalDialog {
   }
 
   editWebAction() {
-    this.buttonContainer.removeChild(this.editWebButton);
-    this.buttonContainer.appendChild(this.editMobileButton);
+    this.modalMobileFooter.removeChild(this.editWebButton);
+    this.modalMobileFooter.appendChild(this.editMobileButton);
 
     // Enable editor to allow content changes.
     this.contentContainer.style.removeProperty("pointer-events");
@@ -497,6 +611,25 @@ export default class ModalDialog {
 
     this.#startedMbSession = false;
     this.#ws.send(JSON.stringify({ type: "sendMessage", sessionId: this.#mobileSessionID, message: "endedMbSession" }));
+  }
+
+  openMobileModal() {
+    this.removeMobileClass("wrs_mobile_closed");
+
+    // Function to open the modal
+    this.modalMobileBackdrop.style.display = "flex";
+
+    if (!this.properties.createModalMobile) {
+      this.createModalMobile();
+      this.properties.createModalMobile = true;
+    }
+
+    this.modalMobileBackdrop.style.display = "flex";
+    this.mobileContainer.style.display = "block";
+  }
+
+  closeMobileModal() {
+    this.addMobileClass("wrs_mobile_closed");
   }
 
   /**
@@ -776,12 +909,16 @@ export default class ModalDialog {
   destroy() {
     // Close modal window.
     this.close();
+    this.closeMobileModal();
     // Remove listeners and destroy the object.
     this.removeListeners();
     this.overlay.remove();
     this.container.remove();
+    this.mobileContainer.remove();
+    this.modalMobileBackdrop.remove();
     // Reset properties to allow open again.
     this.properties.created = false;
+    this.properties.createModalMobile = false;
   }
 
   /**
@@ -914,6 +1051,17 @@ export default class ModalDialog {
     Util.addClass(this.wrapper, className);
   }
 
+  addMobileClass(className) {
+    Util.addClass(this.mobileContainer, className);
+    Util.addClass(this.modalMobileBackdrop, className);
+    Util.addClass(this.modalMobile, className);
+    Util.addClass(this.modalMobileContent, className);
+    Util.addClass(this.modalMobileFooter, className);
+    Util.addClass(this.mobileSessionIDiv, className);
+    Util.addClass(this.mobileSessionQRDiv, className);
+    Util.addClass(this.closeModalMobileBtn, className);
+  }
+
   /**
    * Remove a class from all modal DOM elements.
    * @param {String} className - Class name.
@@ -928,6 +1076,17 @@ export default class ModalDialog {
     Util.removeClass(this.minimizeDiv, className);
     Util.removeClass(this.maximizeDiv, className);
     Util.removeClass(this.wrapper, className);
+  }
+
+  removeMobileClass(className) {
+    Util.removeClass(this.mobileContainer, className);
+    Util.removeClass(this.modalMobileBackdrop, className);
+    Util.removeClass(this.modalMobile, className);
+    Util.removeClass(this.modalMobileContent, className);
+    Util.removeClass(this.modalMobileFooter, className);
+    Util.removeClass(this.mobileSessionIDiv, className);
+    Util.removeClass(this.mobileSessionQRDiv, className);
+    Util.removeClass(this.closeModalMobileBtn, className);
   }
 
   /**
