@@ -15,7 +15,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-html-integration-devkit",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/devkit",
   "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"

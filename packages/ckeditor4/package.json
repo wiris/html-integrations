@@ -17,7 +17,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor4",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor4",
   "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
