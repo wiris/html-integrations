@@ -45,6 +45,7 @@ export default class ModalDialog {
   // Define private class variables.
   #startedMbSession;
   #mobileSessionID;
+  #manualClose;
   #ws;
 
   constructor(modalDialogAttributes) {
@@ -92,13 +93,6 @@ export default class ModalDialog {
       position: { bottom: 0, right: 10 },
       size: { height: 338, width: 580 },
     };
-
-    // Identifier for the mobile session
-    this.#mobileSessionID = null;
-    this.#startedMbSession = null;
-    this.#ws = null;
-
-    this.start();
 
     /**
      * Object to keep website's style before change it on lock scroll for mobile devices.
@@ -265,7 +259,6 @@ export default class ModalDialog {
     attributes.class = "wrs_mobile_session_qr";
     attributes.id = this.getElementId(attributes.class);
     this.mobileSessionQRDiv = Util.createElement("img", attributes);
-    this.mobileSessionQRDiv.setAttribute("alt", "QR");
     this.mobileSessionQRDiv.style.setProperty("display", "block");
     this.mobileSessionQRDiv.style.setProperty("margin", "auto");
 
@@ -339,6 +332,17 @@ export default class ModalDialog {
       this.closeMobileModal.bind(this),
     );
 
+    this.closeSocketButton = this.createSubmitButton(
+      {
+        id: this.getElementId("wrs_close_socket_button"),
+        class: "wrs_modal_button_cancel",
+        innerHTML: "End session", // StringManager.get("close"),
+        // To identifiy the element in automated testing
+        "data-testid": "close-socket-button",
+      },
+      this.closeWebSocket.bind(this),
+    );
+
     this.contentManager = null;
 
     // Overlay popup.
@@ -380,10 +384,23 @@ export default class ModalDialog {
   }
 
   start = () => {
+    // Check if WebSocket is already open or connecting.
+    if (this.#ws && (this.#ws.readyState === WebSocket.OPEN || this.#ws.readyState === WebSocket.CONNECTING)) {
+      return;
+    }
+
     // Identifier for the mobile session
     this.#mobileSessionID = null;
     this.#startedMbSession = false;
-    this.#ws = new WebSocket("wss://preferably-correct-cheetah.ngrok-free.app"); // Should be a constant open server.
+    this.#manualClose = false;
+
+    this.#ws = new WebSocket("wss://preferably-correct-cheetah.ngrok-free.app");
+
+    this.#ws.onopen = () => {
+      this.mobileSessionIDiv.innerHTML =
+        "<strong>Connection established!</strong> Click on the QR button to start a session.";
+      this.mobileSessionQRDiv.removeAttribute("alt");
+    };
 
     // Handle server events
     this.#ws.onmessage = (event) => {
@@ -392,6 +409,7 @@ export default class ModalDialog {
       if (data.type === "sessionStarted") {
         this.#mobileSessionID = data.sessionId;
         this.mobileSessionIDiv.innerHTML = `<strong>ID:</strong> ${data.sessionId}`;
+        this.modalMobileFooter.appendChild(this.closeSocketButton);
 
         // Transform the session ID to a QR code.
         QRCode.toDataURL(data.sessionId.toString())
@@ -415,9 +433,53 @@ export default class ModalDialog {
       this.endSession();
 
       // Reconnect.
-      setTimeout(this.start.bind(this), 5000);
+      if (!this.#manualClose) {
+        setTimeout(this.start.bind(this), 5000);
+      }
+    };
+
+    this.#ws.onerror = (error) => {
+      console.error(error);
     };
   };
+
+  waitForOpenConnection() {
+    return new Promise((resolve, reject) => {
+      if (this.#ws.readyState === WebSocket.OPEN) {
+        resolve(); // Connection is already open
+      } else {
+        const onOpenHandler = () => {
+          cleanup();
+          resolve();
+        };
+
+        const onErrorHandler = (event) => {
+          cleanup();
+          if (event && event.message) {
+            reject(`WebSocket error: ${event.message}`);
+          } else {
+            reject("WebSocket encountered an unknown error");
+          }
+        };
+
+        const onCloseHandler = () => {
+          cleanup();
+          reject("WebSocket closed before opening");
+        };
+
+        // Add event listeners for open, error, and close without overwriting any existing handlers
+        this.#ws.addEventListener("open", onOpenHandler);
+        this.#ws.addEventListener("error", onErrorHandler);
+        this.#ws.addEventListener("close", onCloseHandler);
+
+        const cleanup = () => {
+          this.#ws.removeEventListener("open", onOpenHandler);
+          this.#ws.removeEventListener("error", onErrorHandler);
+          this.#ws.removeEventListener("close", onCloseHandler);
+        };
+      }
+    });
+  }
 
   // Function to create the modal
   createModalMobile() {
@@ -484,20 +546,21 @@ export default class ModalDialog {
     if (this.modalMobileFooter.contains(this.editMobileButton))
       this.modalMobileFooter.removeChild(this.editMobileButton);
     if (this.modalMobileFooter.contains(this.editWebButton)) this.modalMobileFooter.removeChild(this.editWebButton);
+    if (this.modalMobileFooter.contains(this.closeSocketButton)) {
+      this.modalMobileFooter.removeChild(this.closeSocketButton);
+    }
 
     // Clean variables.
     this.#mobileSessionID = null;
     this.#startedMbSession = null;
-    this.mobileSessionIDiv.innerHTML = "";
+    this.mobileSessionIDiv.innerHTML = "<strong>Unexpected error: Connection lost. Please, try again later.</strong>";
+    this.mobileSessionQRDiv.removeAttribute("alt");
     this.mobileSessionQRDiv.removeAttribute("src");
 
     // Enable editor to allow content changes.
     this.contentContainer.style.removeProperty("pointer-events");
     this.contentContainer.style.removeProperty("opacity");
     this.contentContainer.style.removeProperty("cursor");
-
-    // Close modal mobile.
-    this.closeMobileModal();
   };
 
   /**
@@ -539,22 +602,25 @@ export default class ModalDialog {
    * If no mobile session active, start a new one.
    * Otherwise display a modal with the session information and configuration.
    */
-  qrAction() {
-    // TODO: Display modal information.
-    if (!this.#mobileSessionID) {
-      this.#ws.send(JSON.stringify({ type: "startSession" }));
-    }
+  async qrAction() {
+    this.start();
 
-    this.openMobileModal();
+    try {
+      await this.waitForOpenConnection();
 
-    if (!this.mobileSessionQRDiv.src) {
-      this.mobileSessionIDiv.innerHTML =
-        "<strong>Unexpected error: Could not establish connection. Please, try again later.</strong>";
-      this.mobileSessionQRDiv.removeAttribute("alt");
-    } else {
-      this.mobileSessionQRDiv.setAttribute("alt", "QR");
+      if (!this.#mobileSessionID) {
+        this.#ws.send(JSON.stringify({ type: "startSession" }));
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      console.log("finally");
+      this.openMobileModal();
+
+      if (this.mobileSessionQRDiv.src) {
+        this.mobileSessionQRDiv.setAttribute("alt", "QR");
+      }
     }
-    // Show in the center of the screen a small not movable modal with the ID of the session and a button end session
   }
 
   /**
@@ -630,6 +696,16 @@ export default class ModalDialog {
 
   closeMobileModal() {
     this.addMobileClass("wrs_mobile_closed");
+  }
+
+  closeWebSocket() {
+    if (this.#mobileSessionID) {
+      this.#manualClose = true; // Set the flag to prevent auto-reconnect
+      this.#ws.close();
+
+      // Close modal mobile.
+      this.closeMobileModal();
+    }
   }
 
   /**
@@ -1060,6 +1136,7 @@ export default class ModalDialog {
     Util.addClass(this.mobileSessionIDiv, className);
     Util.addClass(this.mobileSessionQRDiv, className);
     Util.addClass(this.closeModalMobileBtn, className);
+    Util.addClass(this.closeSocketButton, className);
   }
 
   /**
@@ -1087,6 +1164,7 @@ export default class ModalDialog {
     Util.removeClass(this.mobileSessionIDiv, className);
     Util.removeClass(this.mobileSessionQRDiv, className);
     Util.removeClass(this.closeModalMobileBtn, className);
+    Util.removeClass(this.closeSocketButton, className);
   }
 
   /**
