@@ -455,6 +455,19 @@ export default class ContentManager {
     }
   }
 
+  emptyMathML() {
+    const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
+    const isRTL = this.editor.getEditorModel().isRTL();
+
+    if (isMobile || this.integrationModel.forcedHandMode) {
+      // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
+      return `<math${isRTL ? ' dir="rtl"' : ""}><semantics><annotation encoding="application/json">[]</annotation></semantics></math>`;
+    } else {
+      // For non-mobile devices or not forced hand mode, set the empty MathML without an annotation.
+      return `<math${isRTL ? ' dir="rtl"' : ""}/>`;
+    }
+  }
+
   /**
    * Open event. Triggered by {@link ModalDialog.open}. Does the following:
    * - Updates the {@link ContentManager.editor} content

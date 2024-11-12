@@ -415,7 +415,6 @@ export default class ModalDialog {
         QRCode.toDataURL(data.sessionId.toString())
           .then((url) => {
             this.mobileSessionQRDiv.src = url;
-            console.log(url);
           })
           .catch((err) => {
             console.error(err);
@@ -423,9 +422,19 @@ export default class ModalDialog {
       } else if (data.type === "clientJoined") {
         this.editMobileAction();
       } else if (data.type === "messageReceived") {
-        WirisPlugin.currentInstance.core.modalDialog.contentManager.setMathML(data.message);
+        // Calculate caret position and recover it.
+        WirisPlugin.currentInstance.target.focus();
+        WirisPlugin.currentInstance.core.editionProperties.range = getSelection().getRangeAt(0);
+
+        // Check if there's some hand traces before inserting content to the editor.
+        if (data.message !== "<math></math>") {
+          this.contentManager.setMathML(data.message);
+        }
         this.submitAction();
-        this.closeMobileModal();
+
+        // Clean up variables to specify new content is going to be added after this.
+        WirisPlugin.currentInstance.core.editionProperties.isNewElement = true;
+        this.contentManager.isNewElement = true;
       }
     };
 
@@ -614,7 +623,6 @@ export default class ModalDialog {
     } catch (e) {
       console.error(e);
     } finally {
-      console.log("finally");
       this.openMobileModal();
 
       if (this.mobileSessionQRDiv.src) {
