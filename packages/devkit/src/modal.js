@@ -336,7 +336,7 @@ export default class ModalDialog {
       {
         id: this.getElementId("wrs_close_socket_button"),
         class: "wrs_modal_button_cancel",
-        innerHTML: "End session", // StringManager.get("close"),
+        innerHTML: "Finish connection", // StringManager.get("close"),
         // To identifiy the element in automated testing
         "data-testid": "close-socket-button",
       },
@@ -398,7 +398,7 @@ export default class ModalDialog {
 
     this.#ws.onopen = () => {
       this.mobileSessionIDiv.innerHTML =
-        "<strong>Connection established!</strong> Click on the QR button to start a session.";
+        "<strong>Connection established!</strong> Click on the QR button to connect to the mobile app.";
       this.mobileSessionQRDiv.removeAttribute("alt");
     };
 
@@ -497,7 +497,7 @@ export default class ModalDialog {
 
     // Create modal content - session info and QR code
     this.modalMobileContent.innerHTML = `
-      <h2>Session Information</h2>
+      <h2>Mobile app connection information</h2>
     `;
 
     this.modalMobileContent.appendChild(this.mobileSessionIDiv);
