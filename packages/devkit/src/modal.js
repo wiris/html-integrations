@@ -497,7 +497,7 @@ export default class ModalDialog {
 
     // Create modal content - session info and QR code
     this.modalMobileContent.innerHTML = `
-      <h2>Mobile app connection information</h2>
+      <h2>Mobile app connection</h2>
     `;
 
     this.modalMobileContent.appendChild(this.mobileSessionIDiv);
