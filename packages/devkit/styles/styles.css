@@ -159,25 +159,25 @@
 }
 
 .wrs_modal_dialogContainer.wrs_modal_android {
-  margin: auto;
+   margin: 0;
   position: fixed;
-  width: 99%;
-  height: 99%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  transform: translate(50%, -50%);
-  top: 50%;
-  right: 50% !important;
+  top: 0;
+  left: 0;
+  transform: none;
 }
 
 .wrs_modal_dialogContainer.wrs_modal_ios {
-  margin: auto;
+  margin: 0;
   position: fixed;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  transform: translate(50%, -50%);
-  top: 50%;
-  right: 50% !important;
+  top: 0;
+  left: 0;
+  transform: none;
 }
 
 /* Class that exists but hasn't got css properties defined
