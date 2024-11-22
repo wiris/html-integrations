@@ -158,26 +158,20 @@
   box-shadow: rgba(0, 0, 0, 0.5) 0 2px 8px;
 }
 
+.wrs_modal_dialogContainer.wrs_modal_ios,
 .wrs_modal_dialogContainer.wrs_modal_android {
-   margin: 0;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  transform: none;
-}
-
-.wrs_modal_dialogContainer.wrs_modal_ios {
-  margin: 0;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  top: 0;
-  left: 0;
-  transform: none;
+  margin: 0 !important;
+  position: fixed !important;
+  width: 100vw !important;
+  height: calc(100vh - env(safe-area-inset-bottom)) !important;
+  overflow: hidden !important;
+  top: env(safe-area-inset-top) !important;
+  left: env(safe-area-inset-left) !important;
+  right: env(safe-area-inset-right) !important;
+  bottom: env(safe-area-inset-bottom) !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+  padding-bottom: env(safe-area-inset-bottom) !important;
 }
 
 /* Class that exists but hasn't got css properties defined
@@ -191,14 +185,6 @@
     flex-grow: 1;
 } */
 
-.wrs_content_container.wrs_modal_android {
-  width: 100%;
-  height: 0%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .wrs_content_container.wrs_modal_android > div:first-child {
   flex-grow: 1;
 }
@@ -211,12 +197,17 @@
   flex-grow: 1;
 }
 
-.wrs_modal_wrapper.wrs_modal_android {
-  margin: auto;
+.wrs_modal_wrapper.wrs_modal_android,
+.wrs_modal_wrapper.wrs_modal_ios {
+  margin: 0.5rem !important;
+  height: -webkit-fill-available !important;
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
+}
+
+.wrs_content_container.wrs_modal_ios,
+.wrs_content_container.wrs_modal_android {
+  flex-grow: 1;
+  display: flex;
 }
 
 .wrs_content_container.wrs_modal_desktop {
@@ -224,22 +215,6 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-}
-
-.wrs_content_container.wrs_modal_ios {
-  width: 100%;
-  height: 0%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.wrs_modal_wrapper.wrs_modal_ios {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
 }
 
 .wrs_virtual_keyboard {
@@ -328,8 +303,6 @@
 
 .wrs_modal_controls {
   height: 42px;
-  margin: 3px 0;
-  overflow: hidden;
   line-height: normal;
 }
 
@@ -561,17 +534,26 @@
 
 /* The Offline Modal (background) */
 .wrs_modal_offline {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 2; /* Sit on top */
-  padding-top: 150px; /* Location of the box */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 2;
+  /* Sit on top */
+  padding-top: 150px;
+  /* Location of the box */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
   margin: auto;
 }
 
