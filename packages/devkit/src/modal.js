@@ -1442,9 +1442,9 @@ export default class ModalDialog {
   handleOpenedIosSoftkeyboard() {
     if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
       if (this.portraitMode()) {
-        this.setContainerHeight(`63${this.iosMeasureUnit}`);
+        this.setContainerHeight(`60${this.iosMeasureUnit}`);
       } else {
-        this.setContainerHeight(`40${this.iosMeasureUnit}`);
+        this.setContainerHeight(`35${this.iosMeasureUnit}`);
       }
     }
     this.iosSoftkeyboardOpened = true;
@@ -1464,9 +1464,9 @@ export default class ModalDialog {
   orientationChangeIosSoftkeyboard() {
     if (this.iosSoftkeyboardOpened) {
       if (this.portraitMode()) {
-        this.setContainerHeight(`63${this.iosMeasureUnit}`);
+        this.setContainerHeight(`65${this.iosMeasureUnit}`);
       } else {
-        this.setContainerHeight(`40${this.iosMeasureUnit}`);
+        this.setContainerHeight(`45${this.iosMeasureUnit}`);
       }
     } else {
       this.setContainerHeight(`100${this.iosMeasureUnit}`);
