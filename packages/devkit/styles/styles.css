@@ -160,18 +160,21 @@
 
 .wrs_modal_dialogContainer.wrs_modal_ios,
 .wrs_modal_dialogContainer.wrs_modal_android {
-  margin: 0 !important;
-  position: fixed !important;
-  width: 100vw !important;
-  height: calc(100vh - env(safe-area-inset-bottom)) !important;
-  overflow: hidden !important;
-  top: env(safe-area-inset-top) !important;
-  left: env(safe-area-inset-left) !important;
-  right: env(safe-area-inset-right) !important;
-  bottom: env(safe-area-inset-bottom) !important;
-  transform: none !important;
-  box-sizing: border-box !important;
-  padding-bottom: env(safe-area-inset-bottom) !important;
+  margin: 0;
+  position: fixed;  
+  height: calc(100vh - env(safe-area-inset-bottom) - env(safe-area-inset-top)) !important;
+
+  overflow: hidden;
+  top: env(safe-area-inset-top);
+  left: env(safe-area-inset-left);
+  right: env(safe-area-inset-right);
+  bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom) !important;
+
+  transform: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Class that exists but hasn't got css properties defined
@@ -185,14 +188,6 @@
     flex-grow: 1;
 } */
 
-.wrs_content_container.wrs_modal_android > div:first-child {
-  flex-grow: 1;
-}
-
-.wrs_content_container.wrs_modal_ios > div:first-child {
-  flex-grow: 1;
-}
-
 .wrs_content_container.wrs_modal_desktop > div:first-child {
   flex-grow: 1;
 }
@@ -200,7 +195,6 @@
 .wrs_modal_wrapper.wrs_modal_android,
 .wrs_modal_wrapper.wrs_modal_ios {
   margin: 0.5rem !important;
-  height: -webkit-fill-available !important;
   display: flex;
 }
 
@@ -215,44 +209,6 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-}
-
-.wrs_virtual_keyboard {
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-@media all and (orientation: portrait) {
-  .wrs_modal_dialogContainer.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-    border-width: 0;
-  }
-
-  .wrs_modal_wrapper.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-  }
-}
-
-@media all and (orientation: landscape) {
-  .wrs_modal_dialogContainer.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-    border-width: 0;
-  }
-
-  .wrs_modal_wrapper.wrs_modal_mobile {
-    width: 100vmin;
-    height: 100vmin;
-    margin: auto;
-  }
 }
 
 .wrs_modal_dialogContainer.wrs_modal_badStock {
@@ -374,10 +330,6 @@
   float: left;
 }
 
-.wrs_modal_buttons_container.wrs_modalAndroid {
-  padding-left: 6px;
-}
-
 .wrs_modal_buttons_container.wrs_modalDesktop {
   padding-left: 0;
 }
@@ -395,12 +347,6 @@
 
 .wrs_modal_wrapper.wrs_modal_desktop.wrs_minimized {
   display: none;
-}
-
-@media only screen and (max-device-width: 480px) and (orientation: portrait) {
-  #wrs_modal_wrapper {
-    width: 140%;
-  }
 }
 
 .wrs_popupmessage_overlay_envolture {
