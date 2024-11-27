@@ -1,0 +1,1 @@
+../tinymce6/editor_plugin.src.js

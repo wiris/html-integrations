@@ -14,7 +14,7 @@ export class TinyMceIntegration extends IntegrationModel {
   constructor(integrationModelProperties) {
     super(integrationModelProperties);
     /**
-     * Indicates if the content of the TinyMCe editor has
+     * Indicates if the content of the TinyMCE editor has
      * been parsed.
      * @type {Boolean}
      */
@@ -115,7 +115,7 @@ export class TinyMceIntegration extends IntegrationModel {
     });
     this.getCore().addListener(listener);
 
-    // Deprecated part on TinyMCE6; We need to find a workaround
+    // Deprecated part on TinyMCE6 and onwards; We need to find a workaround
     // Avoid filter formulas with performance enabled.
     dataImgFiltered[this.editorObject.id] = this.editorObject.images_dataimg_filter;
     this.editorObject.images_dataimg_filter = (img) => {
@@ -160,7 +160,7 @@ export class TinyMceIntegration extends IntegrationModel {
   /**
    * Set Moodle configuration on plugin.
    * @param {string} editor - Editor instance.
-   * @param {string} pluginName - TinyMCE 6 plugin name.
+   * @param {string} pluginName - TinyMCE plugin name.
    */
   registerMoodleOption(editor, pluginName) {
     const registerOption = editor.options.register;
@@ -258,7 +258,7 @@ export const currentInstance = null;
       integrationModelProperties.scriptName = "plugin.min.js";
       integrationModelProperties.environment = {};
 
-      integrationModelProperties.environment.editor = "TinyMCE 6.x";
+      integrationModelProperties.environment.editor = `TinyMCE ${tinymce.majorVersion}.x`;
       integrationModelProperties.environment.editorVersion = `${tinymce.majorVersion}.${tinymce.minorVersion}`;
 
       integrationModelProperties.callbackMethodArguments = callbackMethodArguments;
@@ -528,7 +528,7 @@ export const currentInstance = null;
               tooltip: StringManager.get("insert_chem", lang_code),
               onAction: commandFunction,
               image: WirisPlugin.instances[editor.id].getIconsPath() + customEditors.editors[customEditor].icon,
-              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6.
+              icon: chemTypeIcon, // At the moment only chemTypeIcon because of the provisional solution for TinyMCE6/7.
             });
           }
         }
