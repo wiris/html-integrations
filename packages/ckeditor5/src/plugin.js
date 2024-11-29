@@ -26,6 +26,7 @@ import chemIcon from "../theme/icons/ckeditor5-chem.svg";
 import packageInfo from "../package.json";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
+export const integration = null; // eslint-disable-line import/no-mutable-exports
 
 export default class MathType extends Plugin {
   static get requires() {
@@ -38,19 +39,19 @@ export default class MathType extends Plugin {
 
   init() {
     // Create the MathType API Integration object
-    const integration = this._addIntegration();
+    this.integration = this._addIntegration();
 
     // Add the MathType and ChemType commands to the editor
     this._addCommands();
 
     // Add the buttons for MathType and ChemType
-    this._addViews(integration);
+    this._addViews(this.integration);
 
     // Registers the <mathml> element in the schema
     this._addSchema();
 
     // Add the downcast and upcast converters
-    this._addConverters(integration);
+    this._addConverters(this.integration);
 
     // Expose the WirisPlugin variable to the window
     this._exposeWiris();
@@ -558,9 +559,7 @@ export default class MathType extends Plugin {
       Configuration,
       Listeners,
       IntegrationModel,
-      get currentInstance() {
-        return currentInstance;
-      },
+      currentInstance,
       Latex,
     };
   }
