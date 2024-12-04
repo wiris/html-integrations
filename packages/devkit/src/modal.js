@@ -1439,9 +1439,8 @@ export default class ModalDialog {
    * Event handler that change container size when IOS soft keyboard is opened.
    */
   handleOpenedIosSoftkeyboard() {
-    if (
-      !this.iosSoftkeyboardOpened && this.iosDivHeight != null &&
-      this.iosDivHeight === `auto`
+    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight
+    === `auto`
     ) {
       if (this.portraitMode()) {
         this.setContainerHeight(`60${this.iosMeasureUnit}`);
@@ -1452,7 +1451,6 @@ export default class ModalDialog {
       }
     }
     this.iosSoftkeyboardOpened = true;
-    //change  this.wrapper to  flex-grow 1
     this.wrapper.style.flexGrow = "1";
   }
 
