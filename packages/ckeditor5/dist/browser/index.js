@@ -7497,7 +7497,6 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
             // iOS keyboard is a float div which can overlay the modal object.
             if (this.deviceProperties.isIOS) {
                 this.iosSoftkeyboardOpened = false;
-                this.setContainerHeight(`${100 + this.iosMeasureUnit}`);
             }
         }
         if (!ContentManager.isEditorLoaded()) {

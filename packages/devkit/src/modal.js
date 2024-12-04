@@ -48,7 +48,7 @@ export default class ModalDialog {
     const isIOS = ContentManager.isIOS();
     this.iosSoftkeyboardOpened = false;
     this.iosMeasureUnit = ua.indexOf("crios") === -1 ? "%" : "vh";
-    this.iosDivHeight = `100%${this.iosMeasureUnit}`;
+    this.iosDivHeight = `auto`;
 
     const deviceWidth = window.outerWidth;
     const deviceHeight = window.outerHeight;
@@ -537,7 +537,6 @@ export default class ModalDialog {
       // iOS keyboard is a float div which can overlay the modal object.
       if (this.deviceProperties.isIOS) {
         this.iosSoftkeyboardOpened = false;
-        this.setContainerHeight(`${100 + this.iosMeasureUnit}`);
       }
     }
 
@@ -1440,14 +1439,21 @@ export default class ModalDialog {
    * Event handler that change container size when IOS soft keyboard is opened.
    */
   handleOpenedIosSoftkeyboard() {
-    if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
+    if (
+      !this.iosSoftkeyboardOpened && this.iosDivHeight != null &&
+      this.iosDivHeight === `auto`
+    ) {
       if (this.portraitMode()) {
         this.setContainerHeight(`60${this.iosMeasureUnit}`);
+        this.wrapper.style.flexGrow = "unset";
       } else {
         this.setContainerHeight(`35${this.iosMeasureUnit}`);
+        this.wrapper.style.flexGrow = "unset";
       }
     }
     this.iosSoftkeyboardOpened = true;
+    //change  this.wrapper to  flex-grow 1
+    this.wrapper.style.flexGrow = "1";
   }
 
   /**
@@ -1455,7 +1461,7 @@ export default class ModalDialog {
    */
   handleClosedIosSoftkeyboard() {
     this.iosSoftkeyboardOpened = false;
-    this.setContainerHeight(`100${this.iosMeasureUnit}`);
+    this.wrapper.style.flexGrow = "1";
   }
 
   /**
@@ -1465,11 +1471,15 @@ export default class ModalDialog {
     if (this.iosSoftkeyboardOpened) {
       if (this.portraitMode()) {
         this.setContainerHeight(`65${this.iosMeasureUnit}`);
+        this.wrapper.style.flexGrow = "unset";
+
       } else {
         this.setContainerHeight(`45${this.iosMeasureUnit}`);
+        this.wrapper.style.flexGrow = "unset";
+
       }
     } else {
-      this.setContainerHeight(`100${this.iosMeasureUnit}`);
+      this.wrapper.style.flexGrow = "1";
     }
   }
 
@@ -1477,7 +1487,7 @@ export default class ModalDialog {
    * Change container sizes when orientation is changed on Android.
    */
   orientationChangeAndroidSoftkeyboard() {
-    this.setContainerHeight("100%");
+    this.wrapper.style.flexGrow = "1";
   }
 
   /**

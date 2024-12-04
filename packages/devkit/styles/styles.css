@@ -160,17 +160,14 @@
 
 .wrs_modal_dialogContainer.wrs_modal_ios,
 .wrs_modal_dialogContainer.wrs_modal_android {
-  margin: 0;
-  position: fixed;  
-  height: calc(100vh - env(safe-area-inset-bottom) - env(safe-area-inset-top)) !important;
-
+  margin: 0px;
+  position: fixed;
+  height: auto;
   overflow: hidden;
-  top: env(safe-area-inset-top);
-  left: env(safe-area-inset-left);
-  right: env(safe-area-inset-right);
-  bottom: env(safe-area-inset-bottom);
-    padding-bottom: env(safe-area-inset-bottom) !important;
-
+  top: calc(env(safe-area-inset-top));
+  right: calc(env(safe-area-inset-right));
+  left: calc(env(safe-area-inset-left));
+  bottom: calc(env(safe-area-inset-bottom));
   transform: none;
   box-sizing: border-box;
   display: flex;
@@ -200,7 +197,7 @@
 
 .wrs_content_container.wrs_modal_ios,
 .wrs_content_container.wrs_modal_android {
-  flex-grow: 1;
+  flex-grow: 0.98;
   display: flex;
 }
 
