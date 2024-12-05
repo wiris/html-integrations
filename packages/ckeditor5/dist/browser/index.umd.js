@@ -5,7 +5,7 @@
 })(this, (function (ckeditor5) { 'use strict';
 
   var _documentCurrentScript = typeof document !== 'undefined' ? document.currentScript : null;
-  /*! @license DOMPurify 3.2.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.3/LICENSE */
+  /*! @license DOMPurify 3.2.2 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.2/LICENSE */
 
   const {
     entries,
@@ -180,6 +180,7 @@
   }
 
   const html$1 = freeze(['a', 'abbr', 'acronym', 'address', 'area', 'article', 'aside', 'audio', 'b', 'bdi', 'bdo', 'big', 'blink', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'content', 'data', 'datalist', 'dd', 'decorator', 'del', 'details', 'dfn', 'dialog', 'dir', 'div', 'dl', 'dt', 'element', 'em', 'fieldset', 'figcaption', 'figure', 'font', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hgroup', 'hr', 'html', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'map', 'mark', 'marquee', 'menu', 'menuitem', 'meter', 'nav', 'nobr', 'ol', 'optgroup', 'option', 'output', 'p', 'picture', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'select', 'shadow', 'small', 'source', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'template', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'track', 'tt', 'u', 'ul', 'var', 'video', 'wbr']);
+  // SVG
   const svg$1 = freeze(['svg', 'a', 'altglyph', 'altglyphdef', 'altglyphitem', 'animatecolor', 'animatemotion', 'animatetransform', 'circle', 'clippath', 'defs', 'desc', 'ellipse', 'filter', 'font', 'g', 'glyph', 'glyphref', 'hkern', 'image', 'line', 'lineargradient', 'marker', 'mask', 'metadata', 'mpath', 'path', 'pattern', 'polygon', 'polyline', 'radialgradient', 'rect', 'stop', 'style', 'switch', 'symbol', 'text', 'textpath', 'title', 'tref', 'tspan', 'view', 'vkern']);
   const svgFilters = freeze(['feBlend', 'feColorMatrix', 'feComponentTransfer', 'feComposite', 'feConvolveMatrix', 'feDiffuseLighting', 'feDisplacementMap', 'feDistantLight', 'feDropShadow', 'feFlood', 'feFuncA', 'feFuncB', 'feFuncG', 'feFuncR', 'feGaussianBlur', 'feImage', 'feMerge', 'feMergeNode', 'feMorphology', 'feOffset', 'fePointLight', 'feSpecularLighting', 'feSpotLight', 'feTile', 'feTurbulence']);
   // List of SVG elements that are disallowed by default.
@@ -201,8 +202,8 @@
   // eslint-disable-next-line unicorn/better-regex
   const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
   const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-  const TMPLIT_EXPR = seal(/\$\{[\w\W]*}/gm); // eslint-disable-line unicorn/better-regex
-  const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/); // eslint-disable-line no-useless-escape
+  const TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
+  const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
   const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
   const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
   );
@@ -301,7 +302,7 @@
   function createDOMPurify() {
     let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
     const DOMPurify = root => createDOMPurify(root);
-    DOMPurify.version = '3.2.3';
+    DOMPurify.version = '3.2.2';
     DOMPurify.removed = [];
     if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document) {
       // Not running in a browser, provide a factory function
@@ -1038,7 +1039,7 @@
         attributes
       } = currentNode;
       /* Check if we have attributes; if not we might have a text node */
-      if (!attributes || _isClobbered(currentNode)) {
+      if (!attributes) {
         return;
       }
       const hookEvent = {
@@ -1155,13 +1156,15 @@
         /* Execute a hook if present */
         _executeHooks(hooks.uponSanitizeShadowNode, shadowNode, null);
         /* Sanitize tags and elements */
-        _sanitizeElements(shadowNode);
-        /* Check attributes next */
-        _sanitizeAttributes(shadowNode);
+        if (_sanitizeElements(shadowNode)) {
+          continue;
+        }
         /* Deep shadow DOM detected */
         if (shadowNode.content instanceof DocumentFragment) {
           _sanitizeShadowDOM(shadowNode.content);
         }
+        /* Check attributes, sanitize if necessary */
+        _sanitizeAttributes(shadowNode);
       }
       /* Execute a hook if present */
       _executeHooks(hooks.afterSanitizeShadowDOM, fragment, null);
@@ -1250,13 +1253,15 @@
       /* Now start iterating over the created document */
       while (currentNode = nodeIterator.nextNode()) {
         /* Sanitize tags and elements */
-        _sanitizeElements(currentNode);
-        /* Check attributes next */
-        _sanitizeAttributes(currentNode);
+        if (_sanitizeElements(currentNode)) {
+          continue;
+        }
         /* Shadow DOM detected, sanitize it */
         if (currentNode.content instanceof DocumentFragment) {
           _sanitizeShadowDOM(currentNode.content);
         }
+        /* Check attributes, sanitize if necessary */
+        _sanitizeAttributes(currentNode);
       }
       /* If we sanitized `dirty` in-place, return it. */
       if (IN_PLACE) {
@@ -7084,7 +7089,7 @@
           const isIOS = ContentManager.isIOS();
           this.iosSoftkeyboardOpened = false;
           this.iosMeasureUnit = ua.indexOf("crios") === -1 ? "%" : "vh";
-          this.iosDivHeight = `100%${this.iosMeasureUnit}`;
+          this.iosDivHeight = `auto`;
           const deviceWidth = window.outerWidth;
           const deviceHeight = window.outerHeight;
           const landscape = deviceWidth > deviceHeight;
@@ -7499,7 +7504,6 @@
               // iOS keyboard is a float div which can overlay the modal object.
               if (this.deviceProperties.isIOS) {
                   this.iosSoftkeyboardOpened = false;
-                  this.setContainerHeight(`${100 + this.iosMeasureUnit}`);
               }
           }
           if (!ContentManager.isEditorLoaded()) {
@@ -8282,38 +8286,43 @@
       /**
      * Event handler that change container size when IOS soft keyboard is opened.
      */ handleOpenedIosSoftkeyboard() {
-          if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
+          if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `auto`) {
               if (this.portraitMode()) {
-                  this.setContainerHeight(`63${this.iosMeasureUnit}`);
+                  this.setContainerHeight(`60${this.iosMeasureUnit}`);
+                  this.wrapper.style.flexGrow = "unset";
               } else {
-                  this.setContainerHeight(`40${this.iosMeasureUnit}`);
+                  this.setContainerHeight(`35${this.iosMeasureUnit}`);
+                  this.wrapper.style.flexGrow = "unset";
               }
           }
           this.iosSoftkeyboardOpened = true;
+          this.wrapper.style.flexGrow = "1";
       }
       /**
      * Event handler that change container size when IOS soft keyboard is closed.
      */ handleClosedIosSoftkeyboard() {
           this.iosSoftkeyboardOpened = false;
-          this.setContainerHeight(`100${this.iosMeasureUnit}`);
+          this.wrapper.style.flexGrow = "1";
       }
       /**
      * Change container sizes when orientation is changed on iOS.
      */ orientationChangeIosSoftkeyboard() {
           if (this.iosSoftkeyboardOpened) {
               if (this.portraitMode()) {
-                  this.setContainerHeight(`63${this.iosMeasureUnit}`);
+                  this.setContainerHeight(`65${this.iosMeasureUnit}`);
+                  this.wrapper.style.flexGrow = "unset";
               } else {
-                  this.setContainerHeight(`40${this.iosMeasureUnit}`);
+                  this.setContainerHeight(`45${this.iosMeasureUnit}`);
+                  this.wrapper.style.flexGrow = "unset";
               }
           } else {
-              this.setContainerHeight(`100${this.iosMeasureUnit}`);
+              this.wrapper.style.flexGrow = "1";
           }
       }
       /**
      * Change container sizes when orientation is changed on Android.
      */ orientationChangeAndroidSoftkeyboard() {
-          this.setContainerHeight("100%");
+          this.wrapper.style.flexGrow = "1";
       }
       /**
      * Set iframe container height.
@@ -10563,9 +10572,9 @@
                   viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
               }
               /* Although we use the HtmlDataProcessor to obtain the attributes,
-         *  we must create a new EmptyElement which is independent of the
-         *  DataProcessor being used by this editor instance
-         */ if (imgElement) {
+          *  we must create a new EmptyElement which is independent of the
+          *  DataProcessor being used by this editor instance
+          */ if (imgElement) {
                   return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
                       renderUnsafeAttributes: [
                           "src"
@@ -10607,7 +10616,7 @@
           function createDataString(modelItem, { writer: viewWriter }) {
               const htmlDataProcessor = new ckeditor5.HtmlDataProcessor(viewWriter.document);
               // Load img element
-              let mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+              let mathString = modelItem.getAttribute("htmlContent");
               const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
               return clone(viewWriter, sourceMathElement);
           }
