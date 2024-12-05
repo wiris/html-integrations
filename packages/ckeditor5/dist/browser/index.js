@@ -7878,8 +7878,6 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
     /**
    * Sets the modal dialog initial size.
    */ recalculateSize() {
-        this.wrapper.style.width = `${this.container.clientWidth - 12}px`;
-        this.wrapper.style.height = `${this.container.clientHeight - 38}px`;
         this.contentContainer.style.height = `${parseInt(this.wrapper.offsetHeight - 50, 10)}px`;
     }
     /**
@@ -8287,10 +8285,8 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
         if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `auto`) {
             if (this.portraitMode()) {
                 this.setContainerHeight(`60${this.iosMeasureUnit}`);
-                this.wrapper.style.flexGrow = "unset";
             } else {
                 this.setContainerHeight(`35${this.iosMeasureUnit}`);
-                this.wrapper.style.flexGrow = "unset";
             }
         }
         this.iosSoftkeyboardOpened = true;
@@ -8308,10 +8304,8 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
         if (this.iosSoftkeyboardOpened) {
             if (this.portraitMode()) {
                 this.setContainerHeight(`65${this.iosMeasureUnit}`);
-                this.wrapper.style.flexGrow = "unset";
             } else {
                 this.setContainerHeight(`45${this.iosMeasureUnit}`);
-                this.wrapper.style.flexGrow = "unset";
             }
         } else {
             this.wrapper.style.flexGrow = "1";
