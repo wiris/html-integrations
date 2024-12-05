@@ -7880,8 +7880,6 @@
       /**
      * Sets the modal dialog initial size.
      */ recalculateSize() {
-          this.wrapper.style.width = `${this.container.clientWidth - 12}px`;
-          this.wrapper.style.height = `${this.container.clientHeight - 38}px`;
           this.contentContainer.style.height = `${parseInt(this.wrapper.offsetHeight - 50, 10)}px`;
       }
       /**
@@ -8289,10 +8287,8 @@
           if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `auto`) {
               if (this.portraitMode()) {
                   this.setContainerHeight(`60${this.iosMeasureUnit}`);
-                  this.wrapper.style.flexGrow = "unset";
               } else {
                   this.setContainerHeight(`35${this.iosMeasureUnit}`);
-                  this.wrapper.style.flexGrow = "unset";
               }
           }
           this.iosSoftkeyboardOpened = true;
@@ -8310,10 +8306,8 @@
           if (this.iosSoftkeyboardOpened) {
               if (this.portraitMode()) {
                   this.setContainerHeight(`65${this.iosMeasureUnit}`);
-                  this.wrapper.style.flexGrow = "unset";
               } else {
                   this.setContainerHeight(`45${this.iosMeasureUnit}`);
-                  this.wrapper.style.flexGrow = "unset";
               }
           } else {
               this.wrapper.style.flexGrow = "1";
