@@ -1,8 +1,8 @@
 // CKEditor imports
-import { Plugin } from 'ckeditor5/src/core.js';
-import { ButtonView } from 'ckeditor5/src/ui.js';
-import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from 'ckeditor5/src/engine.js';
-import { Widget, toWidget, viewToModelPositionOutsideModelElement } from 'ckeditor5/src/widget.js';
+import { Plugin } from "ckeditor5/src/core.js";
+import { ButtonView } from "ckeditor5/src/ui.js";
+import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriter } from "ckeditor5/src/engine.js";
+import { Widget, toWidget, viewToModelPositionOutsideModelElement } from "ckeditor5/src/widget.js";
 
 // MathType API imports
 import IntegrationModel from "@wiris/mathtype-html-integration-devkit/src/integrationmodel.js";
@@ -201,7 +201,7 @@ export default class MathType extends Plugin {
 
     schema.register("mathml", {
       inheritAllFrom: "$inlineObject",
-      allowAttributes: ["formula"],
+      allowAttributes: ["formula", "htmlContent"],
     });
   }
 
@@ -304,6 +304,59 @@ export default class MathType extends Plugin {
       }
     });
 
+    // Data view -> Model
+    editor.data.upcastDispatcher.on("element:img", (evt, data, conversionApi) => {
+      const { consumable, writer } = conversionApi;
+      const { viewItem } = data;
+
+      // Only upcast when is wiris formula
+      if (viewItem.getClassNames().next().value !== "Wirisformula") {
+        return;
+      }
+
+      const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
+      let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+
+      const modelNode = writer.createElement("mathml", { htmlContent });
+
+      // Find allowed parent for element that we are going to insert.
+      // If current parent does not allow to insert element but one of the ancestors does
+      // then split nodes to allowed parent.
+      const splitResult = conversionApi.splitToAllowedParent(modelNode, data.modelCursor);
+
+      // When there is no split result it means that we can't insert element to model tree, so let's skip it.
+      if (!splitResult) {
+        return;
+      }
+
+      // Insert element on allowed position.
+      conversionApi.writer.insert(modelNode, splitResult.position);
+
+      // Consume appropriate value from consumable values list.
+      consumable.consume(viewItem, { name: true });
+
+      const parts = conversionApi.getSplitParts(modelNode);
+
+      // Set conversion result range.
+      data.modelRange = writer.createRange(
+        conversionApi.writer.createPositionBefore(modelNode),
+        conversionApi.writer.createPositionAfter(parts[parts.length - 1]),
+      );
+
+      // Now we need to check where the `modelCursor` should be.
+      if (splitResult.cursorParent) {
+        // If we split parent to insert our element then we want to continue conversion in the new part of the split parent.
+        //
+        // before: <allowed><notAllowed>foo[]</notAllowed></allowed>
+        // after:  <allowed><notAllowed>foo</notAllowed><converted></converted><notAllowed>[]</notAllowed></allowed>
+
+        data.modelCursor = conversionApi.writer.createPositionAt(splitResult.cursorParent, 0);
+      } else {
+        // Otherwise just continue after inserted element.
+        data.modelCursor = data.modelRange.end;
+      }
+    });
+
     /**
      * Whether the given view <math> element has a LaTeX annotation element.
      * @param {*} math
@@ -337,13 +390,31 @@ export default class MathType extends Plugin {
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      const mathString = modelItem.getAttribute("formula").replaceAll('ref="<"', 'ref="&lt;"');
-      const imgHtml = Parser.initParse(mathString, integration.getLanguage());
-      const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+      const formula = modelItem.getAttribute("formula");
+      const htmlContent = modelItem.getAttribute("htmlContent");
+
+      if(!formula && !htmlContent){
+        return null;
+      }
+
+      let imgElement = null;
+
+      if (htmlContent) {
+        imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
+      } else if(formula) {
+        const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
+
+        const imgHtml = Parser.initParse(mathString, integration.getLanguage());
+        imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+
+        // Add HTML element (<img>) to model
+        viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
+      }
 
       /* Although we use the HtmlDataProcessor to obtain the attributes,
-            we must create a new EmptyElement which is independent of the
-            DataProcessor being used by this editor instance */
+        *  we must create a new EmptyElement which is independent of the
+        *  DataProcessor being used by this editor instance
+        */
       if (imgElement) {
         return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
           renderUnsafeAttributes: ["src"],
@@ -391,7 +462,8 @@ export default class MathType extends Plugin {
     function createDataString(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
-      let mathString = Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+      // Load img element
+      let mathString = modelItem.getAttribute("htmlContent");
 
       const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
 
@@ -414,15 +486,17 @@ export default class MathType extends Plugin {
       "get",
       (e) => {
         let output = e.return;
-        // This line cleans all the semantics stuff, including the handwritten data points and returns the MathML IF there is any.
-        // For text or latex formulas, it returns the original output.
-        e.return = MathML.removeSemantics(output, "application/json");
+        const parsedResult = Parser.endParse(output);
+
+        // Cleans all the semantics tag for safexml
+        // including the handwritten data points
+        e.return = MathML.removeSafeXMLSemantics(parsedResult);
       },
       { priority: "low" },
     );
 
     /**
-     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
+     * Hack to transform <math> with LaTeX into $$LaTeX$$ and formula images in editor.setData().
      */
     editor.data.on(
       "set",
@@ -430,24 +504,29 @@ export default class MathType extends Plugin {
         // Retrieve the data to be set on the CKEditor.
         let modifiedData = args[0];
         // Regex to find all mathml formulas.
-        const regexp = /<math(.*?)<\/math>/gm;
+        const regexp = /(<img\b[^>]*>)|(<math(.*?)<\/math>)/gm;
+        const formulas = [];
+        let formula;
 
-        // Get all MathML formulas and store them in an array.
-        // Using the conditional operator on data.main because the data parameter has different types depending on:
-        //    editor.data.set can be used directly or by the source editing plugin.
-        //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
-        //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-        let formulas = Object.values(modifiedData)[0]
-          ? [...Object.values(modifiedData)[0].matchAll(regexp)]
-          : [...modifiedData.matchAll(regexp)];
+        // Both data.set from the source plugin and console command are taken into account as the data received is MathML or an image containing the MathML.
+        while ((formula = regexp.exec(modifiedData)) !== null) {
+          formulas.push(formula[0]);
+        }
 
-        // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
+        // Loop to find LaTeX and formula images and replace the MathML for the both.
         formulas.forEach((formula) => {
-          let mathml = formula[0];
-          if (mathml.includes('encoding="LaTeX"')) {
+          if (formula.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            let latex = "$$$" + Latex.getLatexFromMathML(mathml) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
-            modifiedData = modifiedData.replace(mathml, latex);
+            let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+            modifiedData = modifiedData.replace(formula, latex);
+          } else if (formula.includes("<img")) {
+            // If we found a formula image, we should find MathML data, and then substitute the entire image.
+            const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
+            const safexml = formula.match(regexp);
+            if(safexml !== null) {
+              let decodeXML = MathML.safeXmlDecode(safexml[0]);
+              modifiedData = modifiedData.replace(formula, decodeXML);
+            }
           }
         });
 

@@ -17,11 +17,13 @@ This job uses JSDoc library to generate a static site as an artifact called `mat
 
 ### Run Cypress tests with npm packages
 
+**[Deprecated]**
+
 Builds the packages using the source code available at npmjs and runs all available Cypress tests.
 
 - **On schedule**: every Monday at 1AM. It sends the test data to [Cypress Dashboard][cypress-dashboard]. It can be run on any branch.
 
-- **On demand**: a manual trigger that allows the user to send data to [Cypress Dashboard][cypress-dashboard], optionally. It only runs on `stable` branch.
+- **On demand**: a manual trigger that allows the user to send data to [Cypress Dashboard][cypress-dashboard], optionally.
 
 ## Actions secrets
 

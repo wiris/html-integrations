@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-generic",
-  "version": "8.10.0",
+  "version": "8.11.1",
   "description": "MathType Web for a generic HTML editor",
   "keywords": [
     "chem",
@@ -15,7 +15,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-generic",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/generic",
   "homepage": "http://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
@@ -30,7 +30,7 @@
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.3"
+    "@wiris/mathtype-html-integration-devkit": "1.17.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
