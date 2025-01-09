@@ -167,7 +167,7 @@
   top: calc(env(safe-area-inset-top));
   right: calc(env(safe-area-inset-right));
   left: calc(env(safe-area-inset-left));
-  bottom: calc(env(safe-area-inset-bottom));
+  bottom: 0px;
   transform: none;
   box-sizing: border-box;
   display: flex;
@@ -192,6 +192,7 @@
 .wrs_modal_wrapper.wrs_modal_android,
 .wrs_modal_wrapper.wrs_modal_ios {
   margin: 0.5rem !important;
+  flex-grow: 0.98;
   display: flex;
 }
 
