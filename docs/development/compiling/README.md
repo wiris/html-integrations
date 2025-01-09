@@ -53,7 +53,7 @@ Where PACKAGE can be:
 - generic
 - tinymce5
 - tinymce6
-- tinymce67
+- tinymce7
 
 ## Point to your own back-end
 
