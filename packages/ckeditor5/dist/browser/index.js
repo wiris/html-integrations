@@ -7082,7 +7082,7 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
         const isIOS = ContentManager.isIOS();
         this.iosSoftkeyboardOpened = false;
         this.iosMeasureUnit = ua.indexOf("crios") === -1 ? "%" : "vh";
-        this.iosDivHeight = `100%${this.iosMeasureUnit}`;
+        this.iosDivHeight = `auto`;
         const deviceWidth = window.outerWidth;
         const deviceHeight = window.outerHeight;
         const landscape = deviceWidth > deviceHeight;
@@ -7497,7 +7497,6 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
             // iOS keyboard is a float div which can overlay the modal object.
             if (this.deviceProperties.isIOS) {
                 this.iosSoftkeyboardOpened = false;
-                this.setContainerHeight(`${100 + this.iosMeasureUnit}`);
             }
         }
         if (!ContentManager.isEditorLoaded()) {
@@ -7874,8 +7873,6 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
     /**
    * Sets the modal dialog initial size.
    */ recalculateSize() {
-        this.wrapper.style.width = `${this.container.clientWidth - 12}px`;
-        this.wrapper.style.height = `${this.container.clientHeight - 38}px`;
         this.contentContainer.style.height = `${parseInt(this.wrapper.offsetHeight - 50, 10)}px`;
     }
     /**
@@ -8280,38 +8277,39 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
     /**
    * Event handler that change container size when IOS soft keyboard is opened.
    */ handleOpenedIosSoftkeyboard() {
-        if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `100${this.iosMeasureUnit}`) {
+        if (!this.iosSoftkeyboardOpened && this.iosDivHeight != null && this.iosDivHeight === `auto`) {
             if (this.portraitMode()) {
-                this.setContainerHeight(`63${this.iosMeasureUnit}`);
+                this.setContainerHeight(`60${this.iosMeasureUnit}`);
             } else {
-                this.setContainerHeight(`40${this.iosMeasureUnit}`);
+                this.setContainerHeight(`35${this.iosMeasureUnit}`);
             }
         }
         this.iosSoftkeyboardOpened = true;
+        this.wrapper.style.flexGrow = "1";
     }
     /**
    * Event handler that change container size when IOS soft keyboard is closed.
    */ handleClosedIosSoftkeyboard() {
         this.iosSoftkeyboardOpened = false;
-        this.setContainerHeight(`100${this.iosMeasureUnit}`);
+        this.wrapper.style.flexGrow = "1";
     }
     /**
    * Change container sizes when orientation is changed on iOS.
    */ orientationChangeIosSoftkeyboard() {
         if (this.iosSoftkeyboardOpened) {
             if (this.portraitMode()) {
-                this.setContainerHeight(`63${this.iosMeasureUnit}`);
+                this.setContainerHeight(`65${this.iosMeasureUnit}`);
             } else {
-                this.setContainerHeight(`40${this.iosMeasureUnit}`);
+                this.setContainerHeight(`45${this.iosMeasureUnit}`);
             }
         } else {
-            this.setContainerHeight(`100${this.iosMeasureUnit}`);
+            this.wrapper.style.flexGrow = "1";
         }
     }
     /**
    * Change container sizes when orientation is changed on Android.
    */ orientationChangeAndroidSoftkeyboard() {
-        this.setContainerHeight("100%");
+        this.wrapper.style.flexGrow = "1";
     }
     /**
    * Set iframe container height.
@@ -10302,7 +10300,7 @@ class MathType extends Plugin {
         integrationProperties.managesLanguage = true;
         // etc
         // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
-        // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
+        // To avoid a wrong behavior, this integration only starts if the workspace container exists.
         let integration;
         if (integrationProperties.target) {
             // Instance of the integration associated to this editor instance

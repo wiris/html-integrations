@@ -489,7 +489,7 @@ class MathType extends Plugin {
         integrationProperties.managesLanguage = true;
         // etc
         // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
-        // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
+        // To avoid a wrong behavior, this integration only starts if the workspace container exists.
         let integration;
         if (integrationProperties.target) {
             // Instance of the integration associated to this editor instance
