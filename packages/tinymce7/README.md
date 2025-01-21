@@ -21,7 +21,7 @@ Easily include quality math equations in your documents and digital content.
    npm install @wiris/mathtype-tinymce7
    ```
 
-   > MathType is fully compatible with TinyMCE 7 from version 7.5.0.
+   > MathType is fully compatible with TinyMCE 7 from version 7.6.0.
 
 2. Add the plugin as an external plugin:
 
@@ -46,6 +46,7 @@ Easily include quality math equations in your documents and digital content.
      // This option allows you to introduce mathml formulas with wiris plugins.
      // Not enabling this, will provide formulas from being created and rendered.
      extended_valid_elements: "*[.*]",
+     valid_elements: "*[*]",
 
      // You could set a different language for MathType editor:
      // language: 'fr_FR',
