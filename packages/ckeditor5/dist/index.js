@@ -489,7 +489,7 @@ class MathType extends Plugin {
         integrationProperties.managesLanguage = true;
         // etc
         // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
-        // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
+        // To avoid a wrong behavior, this integration only starts if the workspace container exists.
         let integration;
         if (integrationProperties.target) {
             // Instance of the integration associated to this editor instance
@@ -748,9 +748,9 @@ class MathType extends Plugin {
                 viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
             }
             /* Although we use the HtmlDataProcessor to obtain the attributes,
-        *  we must create a new EmptyElement which is independent of the
-        *  DataProcessor being used by this editor instance
-        */ if (imgElement) {
+       *  we must create a new EmptyElement which is independent of the
+       *  DataProcessor being used by this editor instance
+       */ if (imgElement) {
                 return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
                     renderUnsafeAttributes: [
                         "src"
@@ -792,7 +792,7 @@ class MathType extends Plugin {
         function createDataString(modelItem, { writer: viewWriter }) {
             const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
             // Load img element
-            let mathString = modelItem.getAttribute("htmlContent");
+            let mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
             const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
             return clone(viewWriter, sourceMathElement);
         }
