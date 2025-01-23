@@ -15,6 +15,7 @@ export interface Config {
     wirispluginperformance: Wirispluginperformance;
     wiriseditormathmlattribute: string;
     wiriscustomheaders: object;
+    wiriseditorparselatex: boolean;
   };
   dpi: number;
   element: string;
@@ -34,6 +35,7 @@ const defaultValues: Config = {
     wirispluginperformance: "true",
     wiriseditormathmlattribute: "data-mathml",
     wiriscustomheaders: {},
+    wiriseditorparselatex: true,
   },
   dpi: 96,
   element: "body",
@@ -90,7 +92,7 @@ export class Properties {
     // Get backend parameters calling the configurationjson service
     try {
       Properties.instance.config.backendConfig = await configurationJson(
-        ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders"],
+        ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders", "wiriseditorparselatex"],
         Properties.instance.editorServicesRoot,
         Properties.instance.editorServicesExtension,
         false,

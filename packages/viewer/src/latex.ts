@@ -12,6 +12,11 @@ interface LatexPosition {
  * @param {HTMLElement} root - Any DOM element that can contain MathML.
  */
 export async function renderLatex(properties: Properties, root: HTMLElement) {
+  // Prevent rendering LaTeX when the parameter wiriseditorparselatex is set to false.
+  if (!properties.config.backendConfig.wiriseditorparselatex) {
+    return;
+  }
+
   if (properties.viewer !== "image" && properties.viewer !== "latex") {
     return;
   }
