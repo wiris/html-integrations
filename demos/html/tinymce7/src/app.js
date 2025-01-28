@@ -23,6 +23,7 @@ tinymce.init({
   // This option allows us to introduce mathml formulas
   extended_valid_elements: "*[.*]",
   valid_elements: "*[*]",
+  xss_sanitization: false,
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
   // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
