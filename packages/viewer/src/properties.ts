@@ -3,7 +3,7 @@ import Util from "@wiris/mathtype-html-integration-devkit/src/util";
 
 // Helper types for Config below
 type Viewer = "none" | "image" | "mathml" | "latex";
-type WirisBoolean = "true" | "false";
+type stringifiedBoolean = "true" | "false";
 
 /**
  * Type representing all the configuration for the viewer.
@@ -12,10 +12,10 @@ export interface Config {
   editorServicesRoot: string;
   editorServicesExtension: string;
   backendConfig: {
-    wirispluginperformance: WirisBoolean;
+    wirispluginperformance: stringifiedBoolean;
     wiriseditormathmlattribute: string;
     wiriscustomheaders: object;
-    wiriseditorparselatex: WirisBoolean;
+    wiriseditorparselatex: stringifiedBoolean;
   };
   dpi: number;
   element: string;
@@ -285,11 +285,11 @@ export class Properties {
    * - The backend configuration of the parameter.
    * - true, by default.
    */
-  get wirispluginperformance(): WirisBoolean {
+  get wirispluginperformance(): stringifiedBoolean {
     return this.config.backendConfig.wirispluginperformance || defaultValues.backendConfig.wirispluginperformance;
   }
 
-  set wirispluginperformance(wirispluginperformance: WirisBoolean) {
+  set wirispluginperformance(wirispluginperformance: stringifiedBoolean) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
     this.render();
   }
@@ -311,11 +311,11 @@ export class Properties {
     this.render();
   }
 
-  get wiriseditorparselatex(): WirisBoolean {
+  get wiriseditorparselatex(): stringifiedBoolean {
     return this.config.backendConfig.wiriseditorparselatex || defaultValues.backendConfig.wiriseditorparselatex;
   }
 
-  set wiriseditorparselatex(wiriseditorparselatex: WirisBoolean) {
+  set wiriseditorparselatex(wiriseditorparselatex: stringifiedBoolean) {
     this.config.backendConfig.wiriseditorparselatex = wiriseditorparselatex;
     this.render();
   }
