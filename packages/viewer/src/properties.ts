@@ -3,7 +3,7 @@ import Util from "@wiris/mathtype-html-integration-devkit/src/util";
 
 // Helper types for Config below
 type Viewer = "none" | "image" | "mathml" | "latex";
-type Wirispluginperformance = "true" | "false";
+type WirisBoolean = "true" | "false";
 
 /**
  * Type representing all the configuration for the viewer.
@@ -12,10 +12,10 @@ export interface Config {
   editorServicesRoot: string;
   editorServicesExtension: string;
   backendConfig: {
-    wirispluginperformance: Wirispluginperformance;
+    wirispluginperformance: WirisBoolean;
     wiriseditormathmlattribute: string;
     wiriscustomheaders: object;
-    wiriseditorparselatex: boolean;
+    wiriseditorparselatex: WirisBoolean;
   };
   dpi: number;
   element: string;
@@ -35,7 +35,7 @@ const defaultValues: Config = {
     wirispluginperformance: "true",
     wiriseditormathmlattribute: "data-mathml",
     wiriscustomheaders: {},
-    wiriseditorparselatex: true,
+    wiriseditorparselatex: "true",
   },
   dpi: 96,
   element: "body",
@@ -285,11 +285,11 @@ export class Properties {
    * - The backend configuration of the parameter.
    * - true, by default.
    */
-  get wirispluginperformance(): Wirispluginperformance {
+  get wirispluginperformance(): WirisBoolean {
     return this.config.backendConfig.wirispluginperformance || defaultValues.backendConfig.wirispluginperformance;
   }
 
-  set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
+  set wirispluginperformance(wirispluginperformance: WirisBoolean) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
     this.render();
   }
@@ -308,6 +308,15 @@ export class Properties {
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
+  }
+
+  get wiriseditorparselatex(): WirisBoolean {
+    return this.config.backendConfig.wiriseditorparselatex || defaultValues.backendConfig.wiriseditorparselatex;
+  }
+
+  set wiriseditorparselatex(wiriseditorparselatex: WirisBoolean) {
+    this.config.backendConfig.wiriseditorparselatex = wiriseditorparselatex;
     this.render();
   }
 

@@ -13,7 +13,7 @@ interface LatexPosition {
  */
 export async function renderLatex(properties: Properties, root: HTMLElement) {
   // Prevent rendering LaTeX when the parameter wiriseditorparselatex is set to false.
-  if (!properties.config.backendConfig.wiriseditorparselatex) {
+  if (properties.wiriseditorparselatex === "false") {
     return;
   }
 
