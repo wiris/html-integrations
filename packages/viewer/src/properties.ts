@@ -3,7 +3,7 @@ import Util from "@wiris/mathtype-html-integration-devkit/src/util";
 
 // Helper types for Config below
 type Viewer = "none" | "image" | "mathml" | "latex";
-type stringifiedBoolean = "true" | "false";
+type StringifiedBoolean = "true" | "false";
 
 /**
  * Type representing all the configuration for the viewer.
@@ -12,10 +12,10 @@ export interface Config {
   editorServicesRoot: string;
   editorServicesExtension: string;
   backendConfig: {
-    wirispluginperformance: stringifiedBoolean;
+    wirispluginperformance: StringifiedBoolean;
     wiriseditormathmlattribute: string;
     wiriscustomheaders: object;
-    wiriseditorparselatex: stringifiedBoolean;
+    wiriseditorparselatex: StringifiedBoolean;
   };
   dpi: number;
   element: string;
@@ -161,8 +161,8 @@ export class Properties {
   private async checkServices() {
     const path = (document.currentScript as HTMLScriptElement).src;
 
-    if (path.includes("integration/WIRISplugins")) {
-      // If the path includes 'integration/WIRISplugins' use PHP Integrations Services
+    if (path.includes("integration/WIRISplugins") || path.includes("render/WIRISplugins")) {
+      // If the path includes 'integration/WIRISplugins' use PHP Integrations Services or Moodle.
       this.config.editorServicesRoot = path;
       this.config.editorServicesExtension = ".php";
     } else {
@@ -285,11 +285,11 @@ export class Properties {
    * - The backend configuration of the parameter.
    * - true, by default.
    */
-  get wirispluginperformance(): stringifiedBoolean {
+  get wirispluginperformance(): StringifiedBoolean {
     return this.config.backendConfig.wirispluginperformance || defaultValues.backendConfig.wirispluginperformance;
   }
 
-  set wirispluginperformance(wirispluginperformance: stringifiedBoolean) {
+  set wirispluginperformance(wirispluginperformance: StringifiedBoolean) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
     this.render();
   }
@@ -311,11 +311,11 @@ export class Properties {
     this.render();
   }
 
-  get wiriseditorparselatex(): stringifiedBoolean {
+  get wiriseditorparselatex(): StringifiedBoolean {
     return this.config.backendConfig.wiriseditorparselatex || defaultValues.backendConfig.wiriseditorparselatex;
   }
 
-  set wiriseditorparselatex(wiriseditorparselatex: stringifiedBoolean) {
+  set wiriseditorparselatex(wiriseditorparselatex: StringifiedBoolean) {
     this.config.backendConfig.wiriseditorparselatex = wiriseditorparselatex;
     this.render();
   }
