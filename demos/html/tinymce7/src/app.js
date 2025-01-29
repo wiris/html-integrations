@@ -23,6 +23,8 @@ tinymce.init({
   // This option allows us to introduce mathml formulas
   extended_valid_elements: "*[.*]",
   valid_elements: "*[*]",
+  // This option disables the DOMPurify library, which is used to sanitize the content.
+  // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
   xss_sanitization: false,
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
