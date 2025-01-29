@@ -66,6 +66,7 @@ Easily include quality math equations in your documents and digital content.
 
 ## Known issues
 
+- When loading the page with initial content, TinyMCE 7 removes the `<semantics>` tag. This tag is the one that identifies formulas as Handwriting. To bypass their sanitization and allow the `<semantics>` tag the initial content, add the following configuration to you TinyMCE instance: `xss_sanitization: false`. Checkout [more information here](https://github.com/tinymce/tinymce/issues/10114).
 - The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486)
 
 ## Services
