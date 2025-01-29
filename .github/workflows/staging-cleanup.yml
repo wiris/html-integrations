@@ -39,9 +39,6 @@ jobs:
             cat text.txt
           echo "cat text.txt"
 
-      - name: Check if repository branches exist in array
-        id: check_branches
-        run: |
           source $branches_s3
           while read branch; do
           if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
