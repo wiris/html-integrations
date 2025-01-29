@@ -163,7 +163,7 @@ export class Properties {
 
     if (path.includes("integration/WIRISplugins") || path.includes("render/WIRISplugins")) {
       // If the path includes 'integration/WIRISplugins' use PHP Integrations Services or Moodle.
-      this.config.editorServicesRoot = path;
+      this.config.editorServicesRoot = path.replace("render/WIRISplugins", "integration/WIRISplugins");
       this.config.editorServicesExtension = ".php";
     } else {
       try {
