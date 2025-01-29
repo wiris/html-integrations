@@ -1,4 +1,4 @@
-name: Dismantle staging
+name: Cleanup staging
 
 # Controls when the action will run
 on: workflow_dispatch
@@ -33,9 +33,10 @@ jobs:
       - name: Get branches from S3 bucket
         id: define_array
         run: |
+          BRANCHES=branches
           # Copy list of branches from S3 to local
-          aws s3 cp "s3://wiris-integrations-staging-html/${branches_s3}" "${branches_s3}"
-          echo $branches_s3
+          aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" "${BRANCHES}"
+          echo $BRANCHES
 
       - name: Check if repository branches exist in array
         id: check_branches
