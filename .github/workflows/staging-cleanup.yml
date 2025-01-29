@@ -35,8 +35,9 @@ jobs:
         run: |
           BRANCHES=branches
           # Copy list of branches from S3 to local
-          aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" text.txt
-          echo text.txt
+            aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" text.txt
+            cat text.txt
+          echo "cat text.txt"
 
       - name: Check if repository branches exist in array
         id: check_branches
