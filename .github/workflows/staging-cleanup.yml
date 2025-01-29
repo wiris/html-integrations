@@ -44,6 +44,29 @@ jobs:
         run: |
           source $branches_s3
           while read branch; do
+          if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
+            echo "Branch ${branch} exists in the repo."
+          else
+            echo "Branch ${branch} does not exist in the repo."
+          fi
+            done < repo_branches.txt
+            echo "repo_branches=(${repo_branches[@]})" >> repo_branches.sh
+
+      - name: Check if branch exists in text.txt
+        id: check_branch_in_text
+        run: |
+          while read branch; do
+          if grep -q "$branch" text.txt; then
+            echo "Branch $branch exists in text.txt."
+          else
+            echo "Branch $branch does not exist in text.txt."
+          fi
+            done < repo_branches.txt
+
+      - name: Check if repository branches exist in array
+        run: |
+          source $branches_s3
+          while read branch; do
             if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
               echo "Branch ${branch} exists in the repo."
             else
