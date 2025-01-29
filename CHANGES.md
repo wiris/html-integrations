@@ -7,7 +7,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 4nd of October 2024.
+Last release of this project was 29nd of January 2025.
+
+### 8.12.0 2025-01-29
+
+- feat: Create TinyMCE7 plugin, demos & integration services. #KB-52600
+- feat: Improve viewer rendering. #KB-53490
+- fix: Take into account wiriseditorparselatex parameter. #KB-53746
+- fix: Insert/Cancel buttons hidden in iPad with CKEditor5. #KB- 51855
+- fix: Cannot read properties of undefined (reading 'trim'). #KB-53286
 
 ### 8.11.1 2024-10-04
 
