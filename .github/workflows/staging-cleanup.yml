@@ -1,0 +1,51 @@
+name: Dismantle staging
+
+# Controls when the action will run
+on: workflow_dispatch
+
+# Array of jobs to run in this workflow
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+
+    env:
+      branches_s3: branches
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: List all branches in the repository
+        id: list_repo_branches
+        run: |
+          git fetch --all
+          git branch -r | grep -v '\->' | sed 's/origin\///' > repo_branches.sh
+          echo "repo_branches=(\$(cat repo_branches.sh))" >> repo_branches.sh
+
+      - name: Get branches from S3 bucket
+        id: define_array
+        run: |
+          # Copy list of branches from S3 to local
+          aws s3 cp "s3://wiris-integrations-staging-html/${branches_s3}" "${branches_s3}"
+          echo $branches_s3
+
+      - name: Check if repository branches exist in array
+        id: check_branches
+        run: |
+          source $branches_s3
+          while read branch; do
+            if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
+              echo "Branch ${branch} exists in the repo."
+            else
+              echo "Branch ${branch} does not exist in the repo."
+            fi
+          done < repo_branches.txt
+          echo "repo_branches=(${repo_branches[@]})" >> repo_branches.sh
