@@ -19,11 +19,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
           aws-region: eu-west-2
 
-      - name: List all branches in the repository
+      - name: List all branches in the repository (clean format)
         run: |
           git fetch --all
-          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/ //g' > repo_branches.txt
-          echo "Repository branches:"
+          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/^\s*//' > repo_branches.txt
+          echo "Repository branches (formatted):"
           cat repo_branches.txt
 
       - name: Get branches from S3 bucket
@@ -44,6 +44,12 @@ jobs:
               aws s3 rm "s3://wiris-integrations-staging-html/$branch" --recursive
             fi
           done < s3_branches.txt
+
+      # - name: Upload updated branches list to S3
+      #   run: |
+      #     echo "Uploading cleaned repository branches list to S3..."
+      #     aws s3 cp "repo_branches.txt" "s3://wiris-integrations-staging-html/branches"
+      #     echo "✅ Updated branches file uploaded successfully."
 
       - name: Compare branches from S3 and repo
         run: |
