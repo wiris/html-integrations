@@ -21,7 +21,6 @@ jobs:
           aws-region: eu-west-2
 
       - name: List all branches in the repository
-        id: list_repo_branches
         run: |
           git fetch --all
           git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/ //g' > repo_branches.txt
@@ -29,14 +28,24 @@ jobs:
           cat repo_branches.txt
 
       - name: Get branches from S3 bucket
-        id: get_s3_branches
         run: |
           aws s3 cp "s3://wiris-integrations-staging-html/branches" s3_branches.txt
           echo "Branches from S3:"
           cat s3_branches.txt
 
       - name: Compare branches from S3 and repo
-        id: compare_branches
+        run: |
+          echo "Checking if branches from S3 exist in the repository..."
+
+          while read branch; do
+            if grep -Fxq "$branch" repo_branches.txt; then
+              echo "✅ Branch $branch exists in the repo."
+            else
+              echo "❌ Branch $branch does NOT exist in the repo."
+            fi
+          done < s3_branches.txt
+
+      - name: Compare branches from S3 and repo
         run: |
           echo "Checking if branches from S3 exist in the repository..."
 
