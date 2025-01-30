@@ -1,15 +1,14 @@
-name: Dismantle staging
+name: Cleanup Staging
 
-# Controls when the action will run
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
-# Array of jobs to run in this workflow
+  schedule:
+    - cron: "0 6 * * 1"
+
 jobs:
   delete:
     runs-on: ubuntu-latest
-
-    env:
-      branches_s3: branches
 
     steps:
 
@@ -23,29 +22,37 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
           aws-region: eu-west-2
 
-      - name: List all branches in the repository
-        id: list_repo_branches
+      - name: Get branches in the repository with a clean format
         run: |
           git fetch --all
-          git branch -r | grep -v '\->' | sed 's/origin\///' > repo_branches.sh
-          echo "repo_branches=(\$(cat repo_branches.sh))" >> repo_branches.sh
+          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/^\s*//' > repo_branches.txt
+          echo "Repository branches (formatted):"
+          cat repo_branches.txt
 
       - name: Get branches from S3 bucket
-        id: define_array
         run: |
-          # Copy list of branches from S3 to local
-          aws s3 cp "s3://wiris-integrations-staging-html/${branches_s3}" "${branches_s3}"
-          echo $branches_s3
+          aws s3 cp "s3://wiris-integrations-staging-html/branches" s3_branches.txt
+          echo "Branches from S3:"
+          cat s3_branches.txt
 
-      - name: Check if repository branches exist in array
-        id: check_branches
+      - name: Delete branches from S3 that do not exist in the repository
         run: |
-          source $branches_s3
+          echo "Checking if branches from S3 exist in the repository..."
+
           while read branch; do
-            if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
-              echo "Branch ${branch} exists in the repo."
+            if grep -Fxq "$branch" repo_branches.txt; then
+              echo "✅ Branch $branch exists in the repo."
             else
-              echo "Branch ${branch} does not exist in the repo."
+              echo "❌ Branch $branch does NOT exist in the repo. Deleting from S3..."
+              aws s3 rm "s3://wiris-integrations-staging-html/$branch" --recursive
             fi
-          done < repo_branches.txt
-          echo "repo_branches=(${repo_branches[@]})" >> repo_branches.sh
+          done < s3_branches.txt
+
+      - name: Upload updated branches list to S3 with only the branches in the repository
+        run: |
+          echo "Uploading cleaned repository branches list to S3..."
+          aws s3 cp "repo_branches.txt" "s3://wiris-integrations-staging-html/branches"
+          echo "✅ Updated branches file uploaded successfully."
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items!=null] | [?contains(Aliases.Items, 'integrations.wiris.kitchen')].Id | [0]" --output text) --paths '/*'
