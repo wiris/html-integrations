@@ -44,6 +44,8 @@ jobs:
               aws s3 rm "s3://wiris-integrations-staging-html/$branch" --recursive
             fi
           done < s3_branches.txt
+          echo "PATATA"
+          cat repo_branches.txt
 
       # - name: Upload updated branches list to S3
       #   run: |
