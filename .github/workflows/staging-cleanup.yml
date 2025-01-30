@@ -1,15 +1,12 @@
-name: Cleanup staging
 
-# Controls when the action will run
-on: workflow_dispatch
+name: Cleanup Staging
 
-# Array of jobs to run in this workflow
+on:
+  workflow_dispatch
+
 jobs:
   delete:
     runs-on: ubuntu-latest
-
-    env:
-      branches_s3: branches
 
     steps:
 
@@ -21,53 +18,32 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
-          aws-region: eu-west-2
+          aws-region: eu-west-9
 
       - name: List all branches in the repository
         id: list_repo_branches
         run: |
           git fetch --all
-          git branch -r | grep -v '\->' | sed 's/origin\///' > repo_branches.sh
-          echo "repo_branches=(\$(cat repo_branches.sh))" >> repo_branches.sh
+          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/ //g' > repo_branches.txt
+          echo "Repository branches:"
+          cat repo_branches.txt
 
       - name: Get branches from S3 bucket
-        id: define_array
+        id: get_s3_branches
         run: |
-          BRANCHES=branches
-          # Copy list of branches from S3 to local
-            aws s3 cp "s3://wiris-integrations-staging-html/${BRANCHES}" text.txt
-            cat text.txt
-          echo "cat text.txt"
+          aws s3 cp "s3://wiris-integrations-staging-html/branches" s3_branches.txt
+          echo "Branches from S3:"
+          cat s3_branches.txt
 
-          source $branches_s3
-          while read branch; do
-          if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
-            echo "Branch ${branch} exists in the repo."
-          else
-            echo "Branch ${branch} does not exist in the repo."
-          fi
-            done < repo_branches.txt
-            echo "repo_branches=(${repo_branches[@]})" >> repo_branches.sh
-
-      - name: Check if branch exists in text.txt
-        id: check_branch_in_text
+      - name: Compare branches from S3 and repo
+        id: compare_branches
         run: |
-          while read branch; do
-          if grep -q "$branch" text.txt; then
-            echo "Branch $branch exists in text.txt."
-          else
-            echo "Branch $branch does not exist in text.txt."
-          fi
-            done < repo_branches.txt
+          echo "Checking if branches from S3 exist in the repository..."
 
-      - name: Check if repository branches exist in array
-        run: |
-          source $branches_s3
           while read branch; do
-            if [[ " ${repo_branches[@]} " =~ " ${branch} " ]]; then
-              echo "Branch ${branch} exists in the repo."
+            if grep -Fxq "$branch" repo_branches.txt; then
+              echo "✅ Branch $branch exists in the repo."
             else
-              echo "Branch ${branch} does not exist in the repo."
+              echo "❌ Branch $branch does NOT exist in the repo."
             fi
-          done < repo_branches.txt
-          echo "repo_branches=(${repo_branches[@]})" >> repo_branches.sh
+          done < s3_branches.txt
