@@ -47,20 +47,33 @@ jobs:
           echo "PATATA"
           cat repo_branches.txt
 
-      # - name: Upload updated branches list to S3
-      #   run: |
-      #     echo "Uploading cleaned repository branches list to S3..."
-      #     aws s3 cp "repo_branches.txt" "s3://wiris-integrations-staging-html/branches"
-      #     echo "✅ Updated branches file uploaded successfully."
+      - name: Upload updated branches list to S3
+        run: |
+          echo "Uploading cleaned repository branches list to S3..."
+          aws s3 cp "repo_branches.txt" "s3://wiris-integrations-staging-html/branches"
+          echo "✅ Updated branches file uploaded successfully."
+
+      - name: List all branches in the repository (clean format)
+        run: |
+          git fetch --all
+          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/^\s*//' > repo_branches2.txt
+          echo "Repository branches (formatted):"
+          cat repo_branches2.txt
+
+      - name: Get branches from S3 bucket
+        run: |
+          aws s3 cp "s3://wiris-integrations-staging-html/branches" s3_branches2.txt
+          echo "Branches from S3:"
+          cat s3_branches2.txt
 
       - name: Compare branches from S3 and repo
         run: |
           echo "Checking if branches from S3 exist in the repository..."
 
           while read branch; do
-            if grep -Fxq "$branch" repo_branches.txt; then
+            if grep -Fxq "$branch" repo_branches2.txt; then
               echo "✅ Branch $branch exists in the repo."
             else
               echo "❌ Branch $branch does NOT exist in the repo."
             fi
-          done < s3_branches.txt
+          done < s3_branches2.txt
