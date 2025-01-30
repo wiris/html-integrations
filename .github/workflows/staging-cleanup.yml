@@ -1,4 +1,3 @@
-
 name: Cleanup Staging
 
 on:
@@ -33,7 +32,7 @@ jobs:
           echo "Branches from S3:"
           cat s3_branches.txt
 
-      - name: Compare branches from S3 and repo
+      - name: Compare branches from S3 and repo, delete missing ones
         run: |
           echo "Checking if branches from S3 exist in the repository..."
 
@@ -41,7 +40,8 @@ jobs:
             if grep -Fxq "$branch" repo_branches.txt; then
               echo "✅ Branch $branch exists in the repo."
             else
-              echo "❌ Branch $branch does NOT exist in the repo."
+              echo "❌ Branch $branch does NOT exist in the repo. Deleting from S3..."
+              aws s3 rm "s3://wiris-integrations-staging-html/$branch" --recursive
             fi
           done < s3_branches.txt
 
