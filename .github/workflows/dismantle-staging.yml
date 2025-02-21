@@ -37,7 +37,7 @@ jobs:
           # Check if branch name is in the file
           if grep -q -F "${{ matrix.branch }}" "${BRANCHES}"; then
             # Update local list of branches
-            sed -i '/^${{ github.event.ref }}$/d' "${BRANCHES}"
+            sed -i "\|^${{ github.event.ref }}$|d" "${BRANCHES}"
             # Upload updated file
             aws s3 cp "${BRANCHES}" "s3://wiris-integrations-staging-html/${BRANCHES}"
           fi
