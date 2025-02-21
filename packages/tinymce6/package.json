@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-tinymce6",
-  "version": "8.11.0",
+  "version": "8.12.0",
   "description": "MathType Web for TinyMCE6 editor",
   "keywords": [
     "chem",
@@ -17,7 +17,7 @@
     "tinymce5",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-tinymce6",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/tinymce6",
   "homepage": "www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
@@ -32,7 +32,7 @@
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.4"
+    "@wiris/mathtype-html-integration-devkit": "1.17.6"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",

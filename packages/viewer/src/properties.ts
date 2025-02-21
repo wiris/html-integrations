@@ -3,7 +3,7 @@ import Util from "@wiris/mathtype-html-integration-devkit/src/util";
 
 // Helper types for Config below
 type Viewer = "none" | "image" | "mathml" | "latex";
-type Wirispluginperformance = "true" | "false";
+type StringifiedBoolean = "true" | "false";
 
 /**
  * Type representing all the configuration for the viewer.
@@ -12,15 +12,17 @@ export interface Config {
   editorServicesRoot: string;
   editorServicesExtension: string;
   backendConfig: {
-    wirispluginperformance: Wirispluginperformance;
+    wirispluginperformance: StringifiedBoolean;
     wiriseditormathmlattribute: string;
     wiriscustomheaders: object;
+    wiriseditorparselatex: StringifiedBoolean;
   };
   dpi: number;
   element: string;
   lang: string;
   viewer: Viewer;
   zoom: number;
+  ignored_containers: string | null;
 }
 
 /**
@@ -33,12 +35,14 @@ const defaultValues: Config = {
     wirispluginperformance: "true",
     wiriseditormathmlattribute: "data-mathml",
     wiriscustomheaders: {},
+    wiriseditorparselatex: "true",
   },
   dpi: 96,
   element: "body",
   lang: "en",
   viewer: "none",
   zoom: 1,
+  ignored_containers: null,
 };
 
 /**
@@ -88,7 +92,7 @@ export class Properties {
     // Get backend parameters calling the configurationjson service
     try {
       Properties.instance.config.backendConfig = await configurationJson(
-        ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders"],
+        ["wirispluginperformance", "wiriseditormathmlattribute", "wiriscustomheaders", "wiriseditorparselatex"],
         Properties.instance.editorServicesRoot,
         Properties.instance.editorServicesExtension,
         false,
@@ -143,6 +147,11 @@ export class Properties {
     if (zoom !== null && zoom !== undefined) {
       instance.config.zoom = +zoom;
     }
+
+    const ignored_containers = urlParams.get("ignored_containers");
+    if (ignored_containers !== null && ignored_containers !== undefined) {
+      instance.config.ignored_containers = ignored_containers;
+    }
   }
 
   /**
@@ -152,9 +161,9 @@ export class Properties {
   private async checkServices() {
     const path = (document.currentScript as HTMLScriptElement).src;
 
-    if (path.includes("integration/WIRISplugins")) {
-      // If the path includes 'integration/WIRISplugins' use PHP Integrations Services
-      this.config.editorServicesRoot = path;
+    if (path.includes("integration/WIRISplugins") || path.includes("render/WIRISplugins")) {
+      // If the path includes 'integration/WIRISplugins' use PHP Integrations Services or Moodle.
+      this.config.editorServicesRoot = path.replace("render/WIRISplugins", "integration/WIRISplugins");
       this.config.editorServicesExtension = ".php";
     } else {
       try {
@@ -276,11 +285,11 @@ export class Properties {
    * - The backend configuration of the parameter.
    * - true, by default.
    */
-  get wirispluginperformance(): Wirispluginperformance {
+  get wirispluginperformance(): StringifiedBoolean {
     return this.config.backendConfig.wirispluginperformance || defaultValues.backendConfig.wirispluginperformance;
   }
 
-  set wirispluginperformance(wirispluginperformance: Wirispluginperformance) {
+  set wirispluginperformance(wirispluginperformance: StringifiedBoolean) {
     this.config.backendConfig.wirispluginperformance = wirispluginperformance;
     this.render();
   }
@@ -299,6 +308,24 @@ export class Properties {
 
   set wiriseditormathmlattribute(wiriseditormathmlattribute: string) {
     this.config.backendConfig.wiriseditormathmlattribute = wiriseditormathmlattribute;
+    this.render();
+  }
+
+  get wiriseditorparselatex(): StringifiedBoolean {
+    return this.config.backendConfig.wiriseditorparselatex || defaultValues.backendConfig.wiriseditorparselatex;
+  }
+
+  set wiriseditorparselatex(wiriseditorparselatex: StringifiedBoolean) {
+    this.config.backendConfig.wiriseditorparselatex = wiriseditorparselatex;
+    this.render();
+  }
+
+  get ignored_containers(): string | null {
+    return this.config.ignored_containers ?? defaultValues.ignored_containers;
+  }
+
+  set ignored_containers(ignored_containers: string) {
+    this.config.ignored_containers = ignored_containers;
     this.render();
   }
 }

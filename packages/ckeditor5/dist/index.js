@@ -379,7 +379,7 @@ var chemIcon =
   '<?xml version="1.0" encoding="utf-8"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\n\t viewBox="0 0 40.3 49.5" style="enable-background:new 0 0 40.3 49.5;" xml:space="preserve">\n<style type="text/css">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class="st0" d="M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1"/>\n</svg>\n';
 
 var name = "@wiris/mathtype-ckeditor5";
-var version = "8.10.0";
+var version = "8.11.1";
 var description = "MathType Web for CKEditor5 editor";
 var keywords = [
   "chem",
@@ -396,7 +396,7 @@ var keywords = [
   "mathtype",
   "wiris",
 ];
-var repository = "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5";
+var repository = "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5";
 var homepage = "https://www.wiris.com/";
 var bugs = {
   email: "support@wiris.com",
@@ -420,7 +420,7 @@ var scripts = {
   prepare: "npm run build:dist",
 };
 var dependencies = {
-  "@wiris/mathtype-html-integration-devkit": "1.17.4",
+  "@wiris/mathtype-html-integration-devkit": "1.17.6",
 };
 var devDependencies = {
   "@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",
@@ -501,7 +501,7 @@ class MathType extends Plugin {
     integrationProperties.managesLanguage = true;
     // etc
     // There are platforms like Drupal that initialize CKEditor but they hide or remove the container element.
-    // To avoid a wrong behaviour, this integration only starts if the workspace container exists.
+    // To avoid a wrong behavior, this integration only starts if the workspace container exists.
     let integration;
     if (integrationProperties.target) {
       // Instance of the integration associated to this editor instance
@@ -591,7 +591,7 @@ class MathType extends Plugin {
     const { schema } = this.editor.model;
     schema.register("mathml", {
       inheritAllFrom: "$inlineObject",
-      allowAttributes: ["formula"],
+      allowAttributes: ["formula", "htmlContent"],
     });
   }
   /**
@@ -680,6 +680,51 @@ class MathType extends Plugin {
         data.modelCursor = data.modelRange.end;
       }
     });
+    // Data view -> Model
+    editor.data.upcastDispatcher.on("element:img", (evt, data, conversionApi) => {
+      const { consumable, writer } = conversionApi;
+      const { viewItem } = data;
+      // Only upcast when is wiris formula
+      if (viewItem.getClassNames().next().value !== "Wirisformula") {
+        return;
+      }
+      const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
+      let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+      const modelNode = writer.createElement("mathml", {
+        htmlContent,
+      });
+      // Find allowed parent for element that we are going to insert.
+      // If current parent does not allow to insert element but one of the ancestors does
+      // then split nodes to allowed parent.
+      const splitResult = conversionApi.splitToAllowedParent(modelNode, data.modelCursor);
+      // When there is no split result it means that we can't insert element to model tree, so let's skip it.
+      if (!splitResult) {
+        return;
+      }
+      // Insert element on allowed position.
+      conversionApi.writer.insert(modelNode, splitResult.position);
+      // Consume appropriate value from consumable values list.
+      consumable.consume(viewItem, {
+        name: true,
+      });
+      const parts = conversionApi.getSplitParts(modelNode);
+      // Set conversion result range.
+      data.modelRange = writer.createRange(
+        conversionApi.writer.createPositionBefore(modelNode),
+        conversionApi.writer.createPositionAfter(parts[parts.length - 1]),
+      );
+      // Now we need to check where the `modelCursor` should be.
+      if (splitResult.cursorParent) {
+        // If we split parent to insert our element then we want to continue conversion in the new part of the split parent.
+        //
+        // before: <allowed><notAllowed>foo[]</notAllowed></allowed>
+        // after:  <allowed><notAllowed>foo</notAllowed><converted></converted><notAllowed>[]</notAllowed></allowed>
+        data.modelCursor = conversionApi.writer.createPositionAt(splitResult.cursorParent, 0);
+      } else {
+        // Otherwise just continue after inserted element.
+        data.modelCursor = data.modelRange.end;
+      }
+    });
     /**
      * Whether the given view <math> element has a LaTeX annotation element.
      * @param {*} math
@@ -708,12 +753,25 @@ class MathType extends Plugin {
     }
     function createViewImage(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
-      const mathString = modelItem.getAttribute("formula").replaceAll('ref="<"', 'ref="&lt;"');
-      const imgHtml = Parser.initParse(mathString, integration.getLanguage());
-      const imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+      const formula = modelItem.getAttribute("formula");
+      const htmlContent = modelItem.getAttribute("htmlContent");
+      if (!formula && !htmlContent) {
+        return null;
+      }
+      let imgElement = null;
+      if (htmlContent) {
+        imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
+      } else if (formula) {
+        const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
+        const imgHtml = Parser.initParse(mathString, integration.getLanguage());
+        imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
+        // Add HTML element (<img>) to model
+        viewWriter.setAttribute("htmlContent", imgHtml, modelItem);
+      }
       /* Although we use the HtmlDataProcessor to obtain the attributes,
-            we must create a new EmptyElement which is independent of the
-            DataProcessor being used by this editor instance */ if (imgElement) {
+       *  we must create a new EmptyElement which is independent of the
+       *  DataProcessor being used by this editor instance
+       */ if (imgElement) {
         return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
           renderUnsafeAttributes: ["src"],
         });
@@ -752,7 +810,9 @@ class MathType extends Plugin {
     }
     function createDataString(modelItem, { writer: viewWriter }) {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
-      let mathString = Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+      // Load img element
+      let mathString =
+        modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
       const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
       return clone(viewWriter, sourceMathElement);
     }
@@ -769,38 +829,44 @@ class MathType extends Plugin {
       "get",
       (e) => {
         let output = e.return;
-        // This line cleans all the semantics stuff, including the handwritten data points and returns the MathML IF there is any.
-        // For text or latex formulas, it returns the original output.
-        e.return = MathML.removeSemantics(output, "application/json");
+        const parsedResult = Parser.endParse(output);
+        // Cleans all the semantics tag for safexml
+        // including the handwritten data points
+        e.return = MathML.removeSafeXMLSemantics(parsedResult);
       },
       {
         priority: "low",
       },
     );
     /**
-     * Hack to transform <math> with LaTeX into $$LaTeX$$ in editor.setData().
+     * Hack to transform <math> with LaTeX into $$LaTeX$$ and formula images in editor.setData().
      */ editor.data.on(
       "set",
       (e, args) => {
         // Retrieve the data to be set on the CKEditor.
         let modifiedData = args[0];
         // Regex to find all mathml formulas.
-        const regexp = /<math(.*?)<\/math>/gm;
-        // Get all MathML formulas and store them in an array.
-        // Using the conditional operator on data.main because the data parameter has different types depending on:
-        //    editor.data.set can be used directly or by the source editing plugin.
-        //    With the source editor plugin, data is an object with the key `main` which contains the source code string.
-        //    When using the editor.data.set method, the data is a string with the content to be set to the editor.
-        let formulas = Object.values(modifiedData)[0]
-          ? [...Object.values(modifiedData)[0].matchAll(regexp)]
-          : [...modifiedData.matchAll(regexp)];
-        // Loop to find LaTeX formulas and replace the MathML for the LaTeX notation.
+        const regexp = /(<img\b[^>]*>)|(<math(.*?)<\/math>)/gm;
+        const formulas = [];
+        let formula;
+        // Both data.set from the source plugin and console command are taken into account as the data received is MathML or an image containing the MathML.
+        while ((formula = regexp.exec(modifiedData)) !== null) {
+          formulas.push(formula[0]);
+        }
+        // Loop to find LaTeX and formula images and replace the MathML for the both.
         formulas.forEach((formula) => {
-          let mathml = formula[0];
-          if (mathml.includes('encoding="LaTeX"')) {
+          if (formula.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            let latex = "$$$" + Latex.getLatexFromMathML(mathml) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
-            modifiedData = modifiedData.replace(mathml, latex);
+            let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+            modifiedData = modifiedData.replace(formula, latex);
+          } else if (formula.includes("<img")) {
+            // If we found a formula image, we should find MathML data, and then substitute the entire image.
+            const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
+            const safexml = formula.match(regexp);
+            if (safexml !== null) {
+              let decodeXML = MathML.safeXmlDecode(safexml[0]);
+              modifiedData = modifiedData.replace(formula, decodeXML);
+            }
           }
         });
         args[0] = modifiedData;

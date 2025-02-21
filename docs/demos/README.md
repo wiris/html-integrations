@@ -42,11 +42,11 @@ This is managed by the `deploy-staging.yml` workflow.
 Conversely, when a branch is deleted, the corresponding deployed demos get removed as well.
 This is managed by the `dismantle-staging.yml` workflow.
 
-For example, if you push a commit to the branch `stable`, then https://integrations.wiris.kitchen/stable/html/generic/ will contain the HTML demo for the generic editor with the latest changes you pushed.
+For example, if you push a commit to the branch `master`, then https://integrations.wiris.kitchen/master/html/generic/ will contain the HTML demo for the generic editor with the latest changes you pushed.
 
 The URL format for each demo is as follows: `https://integrations.wiris.kitchen/<BRANCH>/<FRAMEWORK>/<EDITOR>/`.
 
-The following table contains all our demos, together with links to the corresponding deployment for the branch `stable`:
+The following table contains all our demos, together with links to the corresponding deployment for the branch `master`:
 
 | FRAMEWORK | Editor and Version  | EDITOR                                           | Deployment URL for `stable`                               |
 | --------- | ------------------- | ------------------------------------------------ | --------------------------------------------------------- |

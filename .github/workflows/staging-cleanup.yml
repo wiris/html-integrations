@@ -1,0 +1,58 @@
+name: Cleanup Staging
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Get branches in the repository with a clean format
+        run: |
+          git fetch --all
+          git branch -r | grep -v '\->' | sed 's/origin\///' | sed 's/^\s*//' > repo_branches.txt
+          echo "Repository branches (formatted):"
+          cat repo_branches.txt
+
+      - name: Get branches from S3 bucket
+        run: |
+          aws s3 cp "s3://wiris-integrations-staging-html/branches" s3_branches.txt
+          echo "Branches from S3:"
+          cat s3_branches.txt
+
+      - name: Delete branches from S3 that do not exist in the repository
+        run: |
+          echo "Checking if branches from S3 exist in the repository..."
+
+          while read branch; do
+            if grep -Fxq "$branch" repo_branches.txt; then
+              echo "✅ Branch $branch exists in the repo."
+            else
+              echo "❌ Branch $branch does NOT exist in the repo. Deleting from S3..."
+              aws s3 rm "s3://wiris-integrations-staging-html/$branch" --recursive
+            fi
+          done < s3_branches.txt
+
+      - name: Upload updated branches list to S3 with only the branches in the repository
+        run: |
+          echo "Uploading cleaned repository branches list to S3..."
+          aws s3 cp "repo_branches.txt" "s3://wiris-integrations-staging-html/branches"
+          echo "✅ Updated branches file uploaded successfully."
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items!=null] | [?contains(Aliases.Items, 'integrations.wiris.kitchen')].Id | [0]" --output text) --paths '/*'

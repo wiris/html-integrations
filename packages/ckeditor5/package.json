@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-ckeditor5",
-  "version": "8.11.0",
+  "version": "8.12.0",
   "description": "MathType Web for CKEditor5 editor",
   "keywords": [
     "chem",
@@ -17,7 +17,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/stable/packages/mathtype-ckeditor5",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5",
   "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
@@ -47,7 +47,7 @@
     "prepare": "npm run build:dist"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.4"
+    "@wiris/mathtype-html-integration-devkit": "1.17.6"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",

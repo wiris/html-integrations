@@ -1,35 +1,34 @@
 {
-  "name": "@wiris/mathtype-froala",
+  "name": "@wiris/mathtype-tinymce7",
   "version": "8.12.0",
-  "description": "MathType Web for Froala Editor",
+  "description": "MathType Web for TinyMCE7 editor",
   "keywords": [
     "chem",
     "chemistry",
     "chemtype",
     "editor",
     "equation",
-    "froala",
-    "froala3",
-    "froala4",
     "latex",
     "math",
     "mathml",
     "maths",
     "mathtype",
+    "tinymce",
+    "tinymce7",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/froala",
-  "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/tinymce7",
+  "homepage": "www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
   },
   "license": "MIT",
-  "author": "WIRIS Team (https://www.wiris.com/?utm_source=npmjs&utm_medium=referral)",
-  "main": "wiris.js",
+  "author": "WIRIS Team (www.wiris.com/?utm_source=npmjs&utm_medium=referral)",
+  "main": "plugin.min.js",
   "scripts": {
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
-    "clean": "shx rm -f wiris.js",
+    "clean": "shx rm -f plugin.min.js",
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
