@@ -315,7 +315,7 @@ export default class MathType extends Plugin {
       }
 
       const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
-      let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+      const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
 
       const modelNode = writer.createElement("mathml", { htmlContent });
 
@@ -463,7 +463,7 @@ export default class MathType extends Plugin {
       const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
 
       // Load img element
-      let mathString =
+      const mathString =
         modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
 
       const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
@@ -486,8 +486,7 @@ export default class MathType extends Plugin {
     editor.data.on(
       "get",
       (e) => {
-
-        let output = e.return;
+        const output = e.return;
         const parsedResult = Parser.endParse(output);
         // Cleans all the semantics tag for safexml
         // including the handwritten data points
@@ -519,14 +518,14 @@ export default class MathType extends Plugin {
         formulas.forEach((formula) => {
           if (formula.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+            const latex = `$$$${  Latex.getLatexFromMathML(formula)  }$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
             modifiedData = modifiedData.replace(formula, latex);
           } else if (formula.includes("<img")) {
             // If we found a formula image, we should find MathML data, and then substitute the entire image.
             const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
             const safexml = formula.match(regexp);
             if (safexml !== null) {
-              let decodeXML = MathML.safeXmlDecode(safexml[0]);
+              const decodeXML = MathML.safeXmlDecode(safexml[0]);
               modifiedData = modifiedData.replace(formula, decodeXML);
             }
           }
