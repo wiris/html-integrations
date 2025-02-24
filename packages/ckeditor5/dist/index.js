@@ -219,15 +219,15 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 // When Latex is next to image/formula.
                 if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
                     // Get the position of the latex to be replaced.
-                    let latexEdited = "$$" + Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml)) + "$$";
+                    const latexEdited = `$$${Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml))}$$`;
                     let data = latexRange.startContainer.data;
                     // Remove invisible characters.
                     data = data.replaceAll(String.fromCharCode(8288), "");
                     // Get to the start of the latex we are editing.
-                    let offset = data.indexOf(latexEdited);
-                    let dataOffset = data.substring(offset);
-                    let second$ = dataOffset.substring(2).indexOf("$$") + 4;
-                    let substring = dataOffset.substr(0, second$);
+                    const offset = data.indexOf(latexEdited);
+                    const dataOffset = data.substring(offset);
+                    const second$ = dataOffset.substring(2).indexOf("$$") + 4;
+                    const substring = dataOffset.substr(0, second$);
                     data = data.replace(substring, "");
                     if (!data) {
                         startPosition = writer.createPositionBefore(startNode);
@@ -253,7 +253,7 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
             }
         }
         // Build the telemeter payload separated to delete null/undefined entries.
-        let payload = {
+        const payload = {
             mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
             mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
             elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
@@ -359,83 +359,9 @@ var mathIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adob
 
 var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-var name = "@wiris/mathtype-ckeditor5";
 var version = "8.12.0";
-var description = "MathType Web for CKEditor5 editor";
-var keywords = [
-	"chem",
-	"chemistry",
-	"chemtype",
-	"ckeditor",
-	"ckeditor5",
-	"editor",
-	"equation",
-	"latex",
-	"math",
-	"mathml",
-	"maths",
-	"mathtype",
-	"wiris"
-];
-var repository = "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5";
-var homepage = "https://www.wiris.com/";
-var bugs = {
-	email: "support@wiris.com"
-};
-var license = "MIT";
-var author = "WIRIS Team (http://www.wiris.com)";
-var files = [
-	"dist",
-	"src",
-	"icons",
-	"theme",
-	"lang"
-];
-var main = "src/plugin.js";
-var type = "module";
-var exports = {
-	".": "./src/plugin.js",
-	"./dist/*": "./dist/*",
-	"./browser/*": null,
-	"./src/*": "./src/*",
-	"./theme/*": "./theme/*",
-	"./package.json": "./package.json"
-};
-var scripts = {
-	"set-telemeter": "cp ../devkit/telemeter-wasm/telemeter_wasm_bg.wasm dist/browser/telemeter_wasm_bg.wasm",
-	build: "node ./scripts/build-dist.mjs && npm run set-telemeter",
-	"build:dist": "node ./scripts/build-dist.mjs && npm run set-telemeter",
-	prepare: "npm run build:dist"
-};
-var dependencies = {
-	"@wiris/mathtype-html-integration-devkit": "1.17.6"
-};
-var devDependencies = {
-	"@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",
-	ckeditor5: ">=43.0.0"
-};
-var peerDependencies = {
-	ckeditor5: ">=43.0.0"
-};
 var packageInfo = {
-	name: name,
-	version: version,
-	description: description,
-	keywords: keywords,
-	repository: repository,
-	homepage: homepage,
-	bugs: bugs,
-	license: license,
-	author: author,
-	files: files,
-	main: main,
-	type: type,
-	exports: exports,
-	scripts: scripts,
-	dependencies: dependencies,
-	devDependencies: devDependencies,
-	peerDependencies: peerDependencies
-};
+	version: version};
 
 // CKEditor imports
 let currentInstance = null; // eslint-disable-line import/no-mutable-exports
@@ -466,8 +392,10 @@ class MathType extends Plugin {
     /**
    * Inherited from Plugin class: Executed when CKEditor5 is destroyed
    */ destroy() {
-        // eslint-disable-line class-methods-use-this
-        currentInstance.destroy();
+        if (currentInstance) {
+            // eslint-disable-line class-methods-use-this
+            currentInstance.destroy();
+        }
     }
     /**
    * Create the MathType API Integration object
@@ -673,7 +601,7 @@ class MathType extends Plugin {
             const mathAttributes = [
                 ...viewItem.getAttributes()
             ].map(([key, value])=>` ${key}="${value}"`).join("");
-            let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+            const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
             const modelNode = writer.createElement("mathml", {
                 htmlContent
             });
@@ -794,18 +722,18 @@ class MathType extends Plugin {
         function createDataString(modelItem, { writer: viewWriter }) {
             const htmlDataProcessor = new HtmlDataProcessor(viewWriter.document);
             // Load img element
-            let mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+            const mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
             const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
             return clone(viewWriter, sourceMathElement);
         }
         // This stops the view selection getting into the <span>s and messing up caret movement
         editor.editing.mapper.on("viewToModelPosition", viewToModelPositionOutsideModelElement(editor.model, (viewElement)=>viewElement.hasClass("ck-math-widget")));
         // Keep a reference to the original get and set function.
-        editor.data;
+        const { get, set } = editor.data;
         /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */ editor.data.on("get", (e)=>{
-            let output = e.return;
+            const output = e.return;
             const parsedResult = Parser.endParse(output);
             // Cleans all the semantics tag for safexml
             // including the handwritten data points
@@ -830,14 +758,14 @@ class MathType extends Plugin {
             formulas.forEach((formula)=>{
                 if (formula.includes('encoding="LaTeX"')) {
                     // LaTeX found.
-                    let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+                    const latex = `$$$${Latex.getLatexFromMathML(formula)}$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
                     modifiedData = modifiedData.replace(formula, latex);
                 } else if (formula.includes("<img")) {
                     // If we found a formula image, we should find MathML data, and then substitute the entire image.
                     const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
                     const safexml = formula.match(regexp);
                     if (safexml !== null) {
-                        let decodeXML = MathML.safeXmlDecode(safexml[0]);
+                        const decodeXML = MathML.safeXmlDecode(safexml[0]);
                         modifiedData = modifiedData.replace(formula, decodeXML);
                     }
                 }
@@ -866,5 +794,5 @@ class MathType extends Plugin {
     }
 }
 
-export { MathType as default };
+export { CKEditor5Integration, ChemTypeCommand, MathTypeCommand, MathType as default };
 //# sourceMappingURL=index.js.map
