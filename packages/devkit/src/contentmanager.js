@@ -723,13 +723,13 @@ export default class ContentManager {
           keyboardEvent.stopPropagation();
           keyboardEvent.preventDefault();
         } else if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
-            // Focus on cancel button.
-            if (!(this.modalDialogInstance.properties.state === "minimized")) {
-              this.modalDialogInstance.cancelButton.focus();
-              keyboardEvent.stopPropagation();
-              keyboardEvent.preventDefault();
-            }
+          // Focus on cancel button.
+          if (!(this.modalDialogInstance.properties.state === "minimized")) {
+            this.modalDialogInstance.cancelButton.focus();
+            keyboardEvent.stopPropagation();
+            keyboardEvent.preventDefault();
           }
+        }
       } else if (keyboardEvent.key === "Tab") {
         // Code to detect Tab event.
         if (document.activeElement === this.modalDialogInstance.cancelButton) {

@@ -256,10 +256,9 @@ export default class CKEditor5Integration extends IntegrationModel {
         // When Latex is next to image/formula.
         if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
           // Get the position of the latex to be replaced.
-          const latexEdited =
-            `$$${ 
-            Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml)) 
-            }$$`;
+          const latexEdited = `$$${Latex.getLatexFromMathML(
+            MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml),
+          )}$$`;
           let data = latexRange.startContainer.data;
 
           // Remove invisible characters.

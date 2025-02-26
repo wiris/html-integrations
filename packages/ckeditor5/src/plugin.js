@@ -518,7 +518,7 @@ export default class MathType extends Plugin {
         formulas.forEach((formula) => {
           if (formula.includes('encoding="LaTeX"')) {
             // LaTeX found.
-            const latex = `$$$${  Latex.getLatexFromMathML(formula)  }$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
+            const latex = `$$$${Latex.getLatexFromMathML(formula)}$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
             modifiedData = modifiedData.replace(formula, latex);
           } else if (formula.includes("<img")) {
             // If we found a formula image, we should find MathML data, and then substitute the entire image.
