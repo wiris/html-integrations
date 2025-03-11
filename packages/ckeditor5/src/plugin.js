@@ -15,6 +15,7 @@ import Listeners from "@wiris/mathtype-html-integration-devkit/src/listeners.js"
 import MathML from "@wiris/mathtype-html-integration-devkit/src/mathml.js";
 import Latex from "@wiris/mathtype-html-integration-devkit/src/latex.js";
 import StringManager from "@wiris/mathtype-html-integration-devkit/src/stringmanager.js";
+import "@wiris/mathtype-html-integration-devkit/src/md5.js";
 
 // Local imports
 import { MathTypeCommand, ChemTypeCommand } from "./commands.js";
