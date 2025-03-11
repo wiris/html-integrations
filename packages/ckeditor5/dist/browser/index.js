@@ -11369,9 +11369,9 @@ var exports = {
 	"./package.json": "./package.json"
 };
 var scripts = {
-	"copy-telemeter": "cp ../devkit/telemeter-wasm/telemeter_wasm.js dist/browser/telemeter_wasm.js",
-	build: "node ./scripts/build-dist.mjs && npm run copy-telemeter",
-	"build:dist": "node ./scripts/build-dist.mjs && npm run copy-telemeter",
+	"set-telemeter": "cp ../devkit/telemeter-wasm/telemeter_wasm_bg.wasm dist/browser/telemeter_wasm_bg.wasm",
+	build: "node ./scripts/build-dist.mjs && npm run set-telemeter",
+	"build:dist": "node ./scripts/build-dist.mjs && npm run set-telemeter",
 	prepare: "npm run build:dist"
 };
 var dependencies = {
