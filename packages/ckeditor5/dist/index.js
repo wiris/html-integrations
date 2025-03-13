@@ -392,10 +392,8 @@ class MathType extends Plugin {
     /**
    * Inherited from Plugin class: Executed when CKEditor5 is destroyed
    */ destroy() {
-        if (currentInstance) {
-            // eslint-disable-line class-methods-use-this
-            currentInstance.destroy();
-        }
+        // eslint-disable-line class-methods-use-this
+        currentInstance?.destroy();
     }
     /**
    * Create the MathType API Integration object
