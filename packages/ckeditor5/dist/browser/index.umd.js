@@ -1,11 +1,11 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('ckeditor5')) :
-  typeof define === 'function' && define.amd ? define(['ckeditor5'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global["@wiris/mathtype-ckeditor5"] = factory(global.CKEDITOR));
-})(this, (function (ckeditor5) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('ckeditor5')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'ckeditor5'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global["@wiris/mathtype-ckeditor5"] = {}, global.CKEDITOR));
+})(this, (function (exports, ckeditor5) { 'use strict';
 
   var _documentCurrentScript = typeof document !== 'undefined' ? document.currentScript : null;
-  /*! @license DOMPurify 3.2.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.3/LICENSE */
+  /*! @license DOMPurify 3.2.4 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.4/LICENSE */
 
   const {
     entries,
@@ -44,8 +44,10 @@
     };
   }
   const arrayForEach = unapply(Array.prototype.forEach);
+  const arrayLastIndexOf = unapply(Array.prototype.lastIndexOf);
   const arrayPop = unapply(Array.prototype.pop);
   const arrayPush = unapply(Array.prototype.push);
+  const arraySplice = unapply(Array.prototype.splice);
   const stringToLowerCase = unapply(String.prototype.toLowerCase);
   const stringToString = unapply(String.prototype.toString);
   const stringMatch = unapply(String.prototype.match);
@@ -201,7 +203,7 @@
   // eslint-disable-next-line unicorn/better-regex
   const MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
   const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
-  const TMPLIT_EXPR = seal(/\$\{[\w\W]*}/gm); // eslint-disable-line unicorn/better-regex
+  const TMPLIT_EXPR = seal(/\$\{[\w\W]*/gm); // eslint-disable-line unicorn/better-regex
   const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/); // eslint-disable-line no-useless-escape
   const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
   const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
@@ -230,20 +232,11 @@
   // https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
   const NODE_TYPE = {
     element: 1,
-    attribute: 2,
     text: 3,
-    cdataSection: 4,
-    entityReference: 5,
-    // Deprecated
-    entityNode: 6,
     // Deprecated
     progressingInstruction: 7,
     comment: 8,
-    document: 9,
-    documentType: 10,
-    documentFragment: 11,
-    notation: 12 // Deprecated
-  };
+    document: 9};
   const getGlobal = function getGlobal() {
     return typeof window === 'undefined' ? null : window;
   };
@@ -301,9 +294,9 @@
   function createDOMPurify() {
     let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
     const DOMPurify = root => createDOMPurify(root);
-    DOMPurify.version = '3.2.3';
+    DOMPurify.version = '3.2.4';
     DOMPurify.removed = [];
-    if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document) {
+    if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document || !window.Element) {
       // Not running in a browser, provide a factory function
       // so that you can pass your own Window
       DOMPurify.isSupported = false;
@@ -1322,7 +1315,11 @@
       }
       arrayPush(hooks[entryPoint], hookFunction);
     };
-    DOMPurify.removeHook = function (entryPoint) {
+    DOMPurify.removeHook = function (entryPoint, hookFunction) {
+      if (hookFunction !== undefined) {
+        const index = arrayLastIndexOf(hooks[entryPoint], hookFunction);
+        return index === -1 ? undefined : arraySplice(hooks[entryPoint], index, 1)[0];
+      }
       return arrayPop(hooks[entryPoint]);
     };
     DOMPurify.removeHooks = function (entryPoint) {
@@ -1575,7 +1572,8 @@
           // Otherwise without the space
           if (mathml.indexOf(` class="wrs_${customEditor}"`) !== -1) {
               return mathml.replace(` class="wrs_${customEditor}"`, "");
-          } else if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
+          }
+          if (mathml.indexOf(`class="wrs_${customEditor}"`) !== -1) {
               return mathml.replace(`class="wrs_${customEditor}"`, "");
           }
           // Non Trivial case: class attribute contains editor name.
@@ -3744,9 +3742,9 @@
      * @returns {string} html sanitized.
      * @static
      */ static htmlSanitize(html) {
-          let annotationRegex = /\<annotation.+\<\/annotation\>/;
+          const annotationRegex = /\<annotation.+\<\/annotation\>/;
           // Get all the annotation content including the tags.
-          let annotation = html.match(annotationRegex);
+          const annotation = html.match(annotationRegex);
           // Sanitize html code without removing our supported MathML tags and attributes.
           html = purify.sanitize(html, {
               ADD_TAGS: [
@@ -4097,9 +4095,10 @@
                           if (position !== 0 && node.childNodes[position - 1].localName === "span" && node.childNodes[position].classList?.contains("Wirisformula")) {
                               node.childNodes[position - 1].remove();
                               return Util.getSelectedItem(target, isIframe, forceGetSelection);
-                          } else if (node.childNodes[position].classList?.contains("Wirisformula")) {
+                          }
+                          if (node.childNodes[position].classList?.contains("Wirisformula")) {
                               if (position > 0 && node.childNodes[position - 1].classList?.contains("Wirisformula") || position === 0) {
-                                  var emptySpan = document.createElement("span");
+                                  const emptySpan = document.createElement("span");
                                   node.insertBefore(emptySpan, node.childNodes[position]);
                                   return {
                                       node: node.childNodes[position]
@@ -4525,7 +4524,7 @@
               processImg(img);
           // if it does contain a blob, then read that, replace the src with the decoded content, and process it
           } else {
-              let reader = new FileReader();
+              const reader = new FileReader();
               reader.onload = function() {
                   img.setAttribute("src", reader.result);
                   processImg(img);
@@ -6133,7 +6132,7 @@
      */ static async finish() {
           if (!this.telemeter) return;
           try {
-              let local_telemeter = this.telemeter;
+              const local_telemeter = this.telemeter;
               this.telemeter = undefined;
               await local_telemeter.finish();
           } catch (e) {
@@ -6515,7 +6514,7 @@
           } else {
               this.setMathML(this.mathML);
           }
-          let toolbar = this.updateToolbar();
+          const toolbar = this.updateToolbar();
           this.onFocus();
           if (this.deviceProperties.isIOS) {
               const zoom = document.documentElement.clientWidth / window.innerWidth;
@@ -6524,12 +6523,12 @@
                   this.setKeyboardMode();
               }
           }
-          let trigger = this.dbclick ? "formula" : "button";
+          const trigger = this.dbclick ? "formula" : "button";
           // Call Telemetry service to track the event.
           try {
               Telemeter.telemeter.track("OPENED_MTCT_EDITOR", {
-                  toolbar: toolbar,
-                  trigger: trigger
+                  toolbar,
+                  trigger
               });
           } catch (error) {
               console.error("Error tracking OPENED_MTCT_EDITOR", error);
@@ -6730,14 +6729,12 @@
                       this.modalDialogInstance.closeDiv.focus();
                       keyboardEvent.stopPropagation();
                       keyboardEvent.preventDefault();
-                  } else {
-                      if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
-                          // Focus on cancel button.
-                          if (!(this.modalDialogInstance.properties.state === "minimized")) {
-                              this.modalDialogInstance.cancelButton.focus();
-                              keyboardEvent.stopPropagation();
-                              keyboardEvent.preventDefault();
-                          }
+                  } else if (document.activeElement === this.modalDialogInstance.minimizeDiv) {
+                      // Focus on cancel button.
+                      if (!(this.modalDialogInstance.properties.state === "minimized")) {
+                          this.modalDialogInstance.cancelButton.focus();
+                          keyboardEvent.stopPropagation();
+                          keyboardEvent.preventDefault();
                       }
                   }
               } else if (keyboardEvent.key === "Tab") {
@@ -7528,7 +7525,7 @@
               try {
                   await Telemeter.telemeter.track("CLOSED_MTCT_EDITOR", {
                       toolbar: this.contentManager.toolbar,
-                      trigger: trigger
+                      trigger
                   });
               } catch (error) {
                   console.error("Error tracking CLOSED_MTCT_EDITOR", error);
@@ -7896,27 +7893,27 @@
           this.stackDiv.addEventListener("click", this.stack.bind(this), true);
           this.minimizeDiv.addEventListener("click", this.minimize.bind(this), true);
           this.closeDiv.addEventListener("click", this.cancelAction.bind(this));
-          this.maximizeDiv.addEventListener("keypress", function(e) {
+          this.maximizeDiv.addEventListener("keypress", (e)=>{
               if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
                   // Handle enter and space.
                   e.target.click();
               }
           }, true);
-          this.stackDiv.addEventListener("keypress", function(e) {
-              if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
-                  // Handle enter and space.
-                  e.target.click();
-                  e.preventDefault();
-              }
-          }, true);
-          this.minimizeDiv.addEventListener("keypress", function(e) {
+          this.stackDiv.addEventListener("keypress", (e)=>{
               if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
                   // Handle enter and space.
                   e.target.click();
                   e.preventDefault();
               }
           }, true);
-          this.closeDiv.addEventListener("keypress", function(e) {
+          this.minimizeDiv.addEventListener("keypress", (e)=>{
+              if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
+                  // Handle enter and space.
+                  e.target.click();
+                  e.preventDefault();
+              }
+          }, true);
+          this.closeDiv.addEventListener("keypress", (e)=>{
               if (e.key === "Enter" || e.key === " " || e.keyCode === 13 || e.keyCode === 32) {
                   // Handle enter and space.
                   e.target.click();
@@ -8926,7 +8923,7 @@
           }
           // Build the telemeter payload separated to delete null/undefined entries.
           const mathml = element?.dataset?.mathml;
-          let payload = {
+          const payload = {
               mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
               mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
               elapsed_time: Date.now() - this.editionProperties.editionStartTime,
@@ -9285,7 +9282,7 @@
           attributes = {};
           attributes.class = "wrs_modal_offline_warn";
           this.offlineModalWarn = Util.createElement("span", attributes);
-          let generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
+          const generalStyle = `background-image: url(data:image/svg+xml;base64,${window.btoa(warnIcon)})`;
           this.offlineModalWarn.setAttribute("style", generalStyle);
           attributes = {};
           attributes.class = "wrs_modal_offline_text_container";
@@ -9298,7 +9295,7 @@
           attributes.class = "wrs_modal_offline_text";
           this.offlineModalMessage2 = Util.createElement("p", attributes);
           this.offlineModalMessage2.innerHTML = `Thank you for using MathType. We have detected you are disconnected from the network. We remind you that you'll need to be connected to use MathType. <br /><br />Please refresh the page if this message continues appearing.`;
-          //Append offline modal elements
+          // Append offline modal elements
           this.offlineModalContent.appendChild(this.offlineModalClose);
           this.offlineModalMessage.appendChild(this.offlineModalMessage1);
           this.offlineModalMessage.appendChild(this.offlineModalMessage2);
@@ -9306,8 +9303,8 @@
           this.offlineModalContent.appendChild(this.offlineModalWarn);
           this.offlineModal.appendChild(this.offlineModalContent);
           document.body.appendChild(this.offlineModal);
-          let modal = document.getElementById("wrs_modal_offline");
-          this.offlineModalClose.addEventListener("click", function() {
+          const modal = document.getElementById("wrs_modal_offline");
+          this.offlineModalClose.addEventListener("click", ()=>{
               modal.style.display = "none";
           });
           // Store editor name for telemetry purposes.
@@ -9317,7 +9314,8 @@
           if (editorName.includes("Generic")) editorName = "Generic"; // Remove version from Generic editor.
           let solutionTelemeter = editorName;
           // If moodle, add information to hosts and solution.
-          let isMoodle = !!(typeof M === "object" && M !== null), lms;
+          const isMoodle = !!(typeof M === "object" && M !== null);
+          let lms;
           if (isMoodle) {
               solutionTelemeter = "Moodle";
               lms = {
@@ -9332,9 +9330,9 @@
               }
           }
           // Get the OS and its version.
-          let OSData = this.getOS();
+          const OSData = this.getOS();
           // Get the broswer and its version.
-          let broswerData = this.getBrowser();
+          const broswerData = this.getBrowser();
           // Create list of hosts to send to telemetry.
           let hosts = [
               {
@@ -9359,17 +9357,17 @@
               lms
           ];
           // Filter hosts to remove empty objects and empty keys.
-          hosts = hosts.filter(function(element) {
+          hosts = hosts.filter((element)=>{
               if (element) Object.keys(element).forEach((key)=>element[key] === "unknown" ? delete element[key] : {});
               return element !== undefined;
           });
           // Initialize telemeter
           Telemeter.init({
               solution: {
-                  name: "MathType for " + solutionTelemeter,
+                  name: `MathType for ${solutionTelemeter}`,
                   version: this.version
               },
-              hosts: hosts,
+              hosts,
               config: {
                   test: false,
                   debug: false,
@@ -9385,24 +9383,25 @@
      *                   versionBrowser = Operating System version.
      */ getBrowser() {
           // default value for OS just in case nothing is detected
-          let detectedBrowser = "unknown", versionBrowser = "unknown";
-          let userAgent = window.navigator.userAgent;
+          let detectedBrowser = "unknown";
+          let versionBrowser = "unknown";
+          const userAgent = window.navigator.userAgent;
           if (/Brave/.test(userAgent)) {
               detectedBrowser = "brave";
               if (userAgent.indexOf("Brave/")) {
-                  let start = userAgent.indexOf("Brave") + 6;
+                  const start = userAgent.indexOf("Brave") + 6;
                   let end = userAgent.substring(start).indexOf(" ");
                   end = end === -1 ? userAgent.lastIndexOf("") : end;
                   versionBrowser = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
               }
           } else if (userAgent.indexOf("Edg/") !== -1) {
               detectedBrowser = "edge_chromium";
-              let start = userAgent.indexOf("Edg/") + 4;
+              const start = userAgent.indexOf("Edg/") + 4;
               versionBrowser = userAgent.substring(start).replace("_", ".").replace(/[^\d.-]/g, "");
           } else if (/Edg/.test(userAgent)) {
               detectedBrowser = "edge";
               let start = userAgent.indexOf("Edg") + 3;
-              start = start + userAgent.substring(start).indexOf("/");
+              start += userAgent.substring(start).indexOf("/");
               let end = userAgent.substring(start).indexOf(" ");
               end = end === -1 ? userAgent.lastIndexOf("") : end;
               versionBrowser = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
@@ -9416,7 +9415,7 @@
               versionBrowser = userAgent.substring(start, end + start).replace("_", ".");
           } else if (/OPR/.test(userAgent)) {
               detectedBrowser = "opera";
-              let start = userAgent.indexOf("OPR/") + 4;
+              const start = userAgent.indexOf("OPR/") + 4;
               let end = userAgent.substring(start).indexOf(" ");
               end = end === -1 ? userAgent.lastIndexOf("") : end;
               versionBrowser = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
@@ -9447,19 +9446,24 @@
      *                   versionOS = Operating System version.
      */ getOS() {
           // default value for OS just in case nothing is detected
-          let detectedOS = "unknown", versionOS = "unknown";
+          let detectedOS = "unknown";
+          let versionOS = "unknown";
           // Retrieve properties to easily detect the OS
-          let userAgent = window.navigator.userAgent, platform = window.navigator.platform, macosPlatforms = [
+          const userAgent = window.navigator.userAgent;
+          const platform = window.navigator.platform;
+          const macosPlatforms = [
               "Macintosh",
               "MacIntel",
               "MacPPC",
               "Mac68K"
-          ], windowsPlatforms = [
+          ];
+          const windowsPlatforms = [
               "Win32",
               "Win64",
               "Windows",
               "WinCE"
-          ], iosPlatforms = [
+          ];
+          const iosPlatforms = [
               "iPhone",
               "iPad",
               "iPod"
@@ -9468,20 +9472,20 @@
           if (macosPlatforms.indexOf(platform) !== -1) {
               detectedOS = "macos";
               if (userAgent.indexOf("OS X") !== -1) {
-                  let start = userAgent.indexOf("OS X") + 5;
-                  let end = userAgent.substring(start).indexOf(" ");
+                  const start = userAgent.indexOf("OS X") + 5;
+                  const end = userAgent.substring(start).indexOf(" ");
                   versionOS = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
               }
           } else if (iosPlatforms.indexOf(platform) !== -1) {
               detectedOS = "ios";
               if (userAgent.indexOf("OS ") !== -1) {
-                  let start = userAgent.indexOf("OS ") + 3;
-                  let end = userAgent.substring(start).indexOf(")");
+                  const start = userAgent.indexOf("OS ") + 3;
+                  const end = userAgent.substring(start).indexOf(")");
                   versionOS = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
               }
           } else if (windowsPlatforms.indexOf(platform) !== -1) {
               detectedOS = "windows";
-              let start = userAgent.indexOf("Windows");
+              const start = userAgent.indexOf("Windows");
               let end = userAgent.substring(start).indexOf(";");
               if (end === -1) {
                   end = userAgent.substring(start).indexOf(")");
@@ -9489,7 +9493,7 @@
               versionOS = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
           } else if (/Android/.test(userAgent)) {
               detectedOS = "android";
-              let start = userAgent.indexOf("Android");
+              const start = userAgent.indexOf("Android");
               let end = userAgent.substring(start).indexOf(";");
               if (end === -1) {
                   end = userAgent.substring(start).indexOf(")");
@@ -9498,8 +9502,8 @@
           } else if (/CrOS/.test(userAgent)) {
               detectedOS = "chromeos";
               let start = userAgent.indexOf("CrOS ") + 5;
-              start = start + userAgent.substring(start).indexOf(" ");
-              let end = userAgent.substring(start).indexOf(")");
+              start += userAgent.substring(start).indexOf(" ");
+              const end = userAgent.substring(start).indexOf(")");
               versionOS = userAgent.substring(start, end + start).replace("_", ".").replace(/[^\d.-]/g, "");
           } else if (detectedOS === "unknown" && /Linux/.test(platform)) {
               detectedOS = "linux";
@@ -9573,7 +9577,7 @@
               this.core.editionProperties.isNewElement = true;
               this.core.openModalDialog(this.target, this.isIframe);
           } else {
-              let modal = document.getElementById("wrs_modal_offline");
+              const modal = document.getElementById("wrs_modal_offline");
               modal.style.display = "block";
           }
       }
@@ -9585,7 +9589,7 @@
               this.core.editionProperties.isNewElement = false;
               this.core.openModalDialog(this.target, this.isIframe);
           } else {
-              let modal = document.getElementById("wrs_modal_offline");
+              const modal = document.getElementById("wrs_modal_offline");
               modal.style.display = "block";
           }
       }
@@ -10368,15 +10372,9 @@
           "Date"
       ];
       var Int = {
-          __name__: [
-              "Int"
-          ]
-      };
+          };
       var Dynamic = {
-          __name__: [
-              "Dynamic"
-          ]
-      };
+          };
       var Float = Number;
       Float.__name__ = [
           "Float"
@@ -10386,10 +10384,7 @@
           "Bool"
       ];
       var Class = {
-          __name__: [
-              "Class"
-          ]
-      };
+          };
       var Enum = {};
       if (typeof document != "undefined") js.Lib.document = document;
       if (typeof window != "undefined") {
@@ -10946,15 +10941,9 @@
           "Date"
       ];
       var Int = {
-          __name__: [
-              "Int"
-          ]
-      };
+          };
       var Dynamic = {
-          __name__: [
-              "Dynamic"
-          ]
-      };
+          };
       var Float = Number;
       Float.__name__ = [
           "Float"
@@ -10964,10 +10953,7 @@
           "Bool"
       ];
       var Class = {
-          __name__: [
-              "Class"
-          ]
-      };
+          };
       var Enum = {};
       if (typeof document != "undefined") js.Lib.document = document;
       if (typeof window != "undefined") {
@@ -11188,15 +11174,15 @@
                   // When Latex is next to image/formula.
                   if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
                       // Get the position of the latex to be replaced.
-                      let latexEdited = "$$" + Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml)) + "$$";
+                      const latexEdited = `$$${Latex.getLatexFromMathML(MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml))}$$`;
                       let data = latexRange.startContainer.data;
                       // Remove invisible characters.
                       data = data.replaceAll(String.fromCharCode(8288), "");
                       // Get to the start of the latex we are editing.
-                      let offset = data.indexOf(latexEdited);
-                      let dataOffset = data.substring(offset);
-                      let second$ = dataOffset.substring(2).indexOf("$$") + 4;
-                      let substring = dataOffset.substr(0, second$);
+                      const offset = data.indexOf(latexEdited);
+                      const dataOffset = data.substring(offset);
+                      const second$ = dataOffset.substring(2).indexOf("$$") + 4;
+                      const substring = dataOffset.substr(0, second$);
                       data = data.replace(substring, "");
                       if (!data) {
                           startPosition = writer.createPositionBefore(startNode);
@@ -11222,7 +11208,7 @@
               }
           }
           // Build the telemeter payload separated to delete null/undefined entries.
-          let payload = {
+          const payload = {
               mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
               mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
               elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
@@ -11328,83 +11314,9 @@
 
   var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-  var name = "@wiris/mathtype-ckeditor5";
   var version = "8.12.0";
-  var description = "MathType Web for CKEditor5 editor";
-  var keywords = [
-  	"chem",
-  	"chemistry",
-  	"chemtype",
-  	"ckeditor",
-  	"ckeditor5",
-  	"editor",
-  	"equation",
-  	"latex",
-  	"math",
-  	"mathml",
-  	"maths",
-  	"mathtype",
-  	"wiris"
-  ];
-  var repository = "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5";
-  var homepage = "https://www.wiris.com/";
-  var bugs = {
-  	email: "support@wiris.com"
-  };
-  var license = "MIT";
-  var author = "WIRIS Team (http://www.wiris.com)";
-  var files = [
-  	"dist",
-  	"src",
-  	"icons",
-  	"theme",
-  	"lang"
-  ];
-  var main = "src/plugin.js";
-  var type = "module";
-  var exports$1 = {
-  	".": "./src/plugin.js",
-  	"./dist/*": "./dist/*",
-  	"./browser/*": null,
-  	"./src/*": "./src/*",
-  	"./theme/*": "./theme/*",
-  	"./package.json": "./package.json"
-  };
-  var scripts = {
-  	"set-telemeter": "cp ../devkit/telemeter-wasm/telemeter_wasm_bg.wasm dist/browser/telemeter_wasm_bg.wasm",
-  	build: "node ./scripts/build-dist.mjs && npm run set-telemeter",
-  	"build:dist": "node ./scripts/build-dist.mjs && npm run set-telemeter",
-  	prepare: "npm run build:dist"
-  };
-  var dependencies = {
-  	"@wiris/mathtype-html-integration-devkit": "1.17.6"
-  };
-  var devDependencies = {
-  	"@ckeditor/ckeditor5-dev-build-tools": "^42.1.0",
-  	ckeditor5: ">=43.0.0"
-  };
-  var peerDependencies = {
-  	ckeditor5: ">=43.0.0"
-  };
   var packageInfo = {
-  	name: name,
-  	version: version,
-  	description: description,
-  	keywords: keywords,
-  	repository: repository,
-  	homepage: homepage,
-  	bugs: bugs,
-  	license: license,
-  	author: author,
-  	files: files,
-  	main: main,
-  	type: type,
-  	exports: exports$1,
-  	scripts: scripts,
-  	dependencies: dependencies,
-  	devDependencies: devDependencies,
-  	peerDependencies: peerDependencies
-  };
+  	version: version};
 
   // CKEditor imports
   let currentInstance = null; // eslint-disable-line import/no-mutable-exports
@@ -11435,8 +11347,10 @@
       /**
      * Inherited from Plugin class: Executed when CKEditor5 is destroyed
      */ destroy() {
-          // eslint-disable-line class-methods-use-this
-          currentInstance.destroy();
+          if (currentInstance) {
+              // eslint-disable-line class-methods-use-this
+              currentInstance.destroy();
+          }
       }
       /**
      * Create the MathType API Integration object
@@ -11642,7 +11556,7 @@
               const mathAttributes = [
                   ...viewItem.getAttributes()
               ].map(([key, value])=>` ${key}="${value}"`).join("");
-              let htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+              const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
               const modelNode = writer.createElement("mathml", {
                   htmlContent
               });
@@ -11763,18 +11677,18 @@
           function createDataString(modelItem, { writer: viewWriter }) {
               const htmlDataProcessor = new ckeditor5.HtmlDataProcessor(viewWriter.document);
               // Load img element
-              let mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
+              const mathString = modelItem.getAttribute("htmlContent") || Parser.endParseSaveMode(modelItem.getAttribute("formula"));
               const sourceMathElement = htmlDataProcessor.toView(mathString).getChild(0);
               return clone(viewWriter, sourceMathElement);
           }
           // This stops the view selection getting into the <span>s and messing up caret movement
           editor.editing.mapper.on("viewToModelPosition", ckeditor5.viewToModelPositionOutsideModelElement(editor.model, (viewElement)=>viewElement.hasClass("ck-math-widget")));
           // Keep a reference to the original get and set function.
-          editor.data;
+          const { get, set } = editor.data;
           /**
        * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
        */ editor.data.on("get", (e)=>{
-              let output = e.return;
+              const output = e.return;
               const parsedResult = Parser.endParse(output);
               // Cleans all the semantics tag for safexml
               // including the handwritten data points
@@ -11799,14 +11713,14 @@
               formulas.forEach((formula)=>{
                   if (formula.includes('encoding="LaTeX"')) {
                       // LaTeX found.
-                      let latex = "$$$" + Latex.getLatexFromMathML(formula) + "$$$"; // We add $$$ instead of $$ because the replace function ignores one $.
+                      const latex = `$$$${Latex.getLatexFromMathML(formula)}$$$`; // We add $$$ instead of $$ because the replace function ignores one $.
                       modifiedData = modifiedData.replace(formula, latex);
                   } else if (formula.includes("<img")) {
                       // If we found a formula image, we should find MathML data, and then substitute the entire image.
                       const regexp = /«math\b[^»]*»(.*?)«\/math»/g;
                       const safexml = formula.match(regexp);
                       if (safexml !== null) {
-                          let decodeXML = MathML.safeXmlDecode(safexml[0]);
+                          const decodeXML = MathML.safeXmlDecode(safexml[0]);
                           modifiedData = modifiedData.replace(formula, decodeXML);
                       }
                   }
@@ -11835,7 +11749,12 @@
       }
   }
 
-  return MathType;
+  exports.CKEditor5Integration = CKEditor5Integration;
+  exports.ChemTypeCommand = ChemTypeCommand;
+  exports.MathTypeCommand = MathTypeCommand;
+  exports.default = MathType;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
 //# sourceMappingURL=index.umd.js.map
