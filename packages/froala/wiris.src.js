@@ -236,14 +236,13 @@ export class FroalaIntegration extends IntegrationModel {
 
   /** @inheritdoc */
   insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
-    // Due to insertFormula adds an image using pure JavaScript functions,
-    // it is needed notificate to the editorObject that placeholder status
-    // has to be updated.
-    this.editorObject.events.trigger("contentChanged");
     const obj = super.insertFormula(focusElement, windowTarget, mathml, wirisProperties);
 
+    // Due to insertFormula adds an image using pure JavaScript functions,
+    // it is needed to notify the editorObject that placeholder status has to be updated.
     this.editorObject.placeholder.refresh();
     this.editorObject.undo.saveStep();
+
     return obj;
   }
 }
