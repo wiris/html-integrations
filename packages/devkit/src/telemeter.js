@@ -1,4 +1,5 @@
-import init, { Telemeter as TelemeterWASM } from "@wiris/telemeter-wasm";
+/* eslint-disable-next-line */
+import init, { Telemeter as TelemeterWASM } from "../telemeter-wasm";
 
 /**
  * @classdesc
