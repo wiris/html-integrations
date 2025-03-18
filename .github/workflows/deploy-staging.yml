@@ -7,7 +7,12 @@
 name: Deploy staging
 
 # Controls when the action will run
-on: push
+on:
+  push:
+  workflow_run:
+    workflows: ["Publish"]
+    types:
+      - completed
 
 # Array of jobs to run in this workflow
 jobs:
@@ -18,7 +23,7 @@ jobs:
       branches: ${{ steps.get_branches.outputs.branches }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
