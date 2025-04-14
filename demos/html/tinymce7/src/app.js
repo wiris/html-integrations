@@ -24,6 +24,11 @@ tinymce.init({
   // This option prevents the DOMPurify library from filtering wiris MathML tags.
   // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
   allow_mathml_annotation_encodings: ["wiris", "application/json"],
+
+  // Those options are necessary to allow the additional MathML tags to be saved in the editor.
+  extended_mathml_elements: [ "semantics" ],
+  extended_mathml_attributes: [ "linebreak" ],
+
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
   // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
