@@ -44,7 +44,7 @@ Easily include quality math equations in your documents and digital content.
      valid_elements: "*[*]",
      // This option prevents the DOMPurify library from filtering wiris MathML tags.
      // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
-     allow_mathml_annotation_encodings: ["wiris", "application/json"],
+     allow_mathml_annotation_encodings: ["application/json"],
 
      // Those options are necessary to allow the additional MathML tags to be saved in the editor.
      extended_mathml_elements: [ "semantics", "annotation", "mstack", "msline", "msrow", "none" ],
