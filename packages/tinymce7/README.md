@@ -47,8 +47,8 @@ Easily include quality math equations in your documents and digital content.
      allow_mathml_annotation_encodings: ["wiris", "application/json"],
 
      // Those options are necessary to allow the additional MathML tags to be saved in the editor.
-     extended_mathml_elements: [ "semantics" ],
-     extended_mathml_attributes: [ "linebreak" ],
+     extended_mathml_elements: [ "semantics", "annotation", "mstack", "msline", "msrow", "none" ],
+     extended_mathml_attributes: [ "linebreak", "charalign", "stackalign" ],
      // You could set a different language for MathType editor:
      // language: 'fr_FR',
      // mathTypeParameters: {

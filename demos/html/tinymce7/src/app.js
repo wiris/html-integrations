@@ -23,11 +23,11 @@ tinymce.init({
   valid_elements: "*[*]",
   // This option prevents the DOMPurify library from filtering wiris MathML tags.
   // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
-  allow_mathml_annotation_encodings: ["wiris", "application/json"],
+  allow_mathml_annotation_encodings: ["application/json"],
 
   // Those options are necessary to allow the additional MathML tags to be saved in the editor.
-  extended_mathml_elements: [ "semantics" ],
-  extended_mathml_attributes: [ "linebreak" ],
+  extended_mathml_elements: [ "semantics", "annotation", "mstack", "msline", "msrow", "none" ],
+  extended_mathml_attributes: [ "linebreak", "charalign", "stackalign" ],
 
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
