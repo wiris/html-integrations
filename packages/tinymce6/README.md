@@ -43,10 +43,6 @@ Easily include quality math equations in your documents and digital content.
      // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
      draggable_modal: true,
 
-     // This option allows you to introduce mathml formulas with wiris plugins.
-     // Not enabling this, will provide formulas from beeing created and rendered.
-     extended_valid_elements: "*[.*]",
-
      // You could set a different language for MathType editor:
      // language: 'fr_FR',
      // mathTypeParameters: {

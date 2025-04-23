@@ -255,6 +255,34 @@ export const currentInstance = null;
         integrationModelProperties.integrationParameters = editor.options.get("mathTypeParameters");
       }
 
+      // This option allows us to introduce MathML formulas.
+      editor.options.register("extended_valid_elements", {
+        processor: "string",
+        default: "*[.*]",
+      });
+
+      // This option allows all elements and attributes.
+      editor.options.register("valid_elements", {
+        processor: "string",
+        default: "*[*]",
+      });
+
+      // Those options prevent the DOMPurify library from filtering Wiris MathML tags.
+      editor.options.register("allow_mathml_annotation_encodings", {
+        processor: "array",
+        default: ["application/json"],
+      });
+
+      editor.options.register("extended_mathml_elements", {
+        processor: "array",
+        default: ["semantics", "annotation", "mstack", "msline", "msrow", "none"],
+      });
+
+      editor.options.register("extended_mathml_attributes", {
+        processor: "array",
+        default: ["linebreak", "charalign", "stackalign"],
+      });
+
       integrationModelProperties.scriptName = "plugin.min.js";
       integrationModelProperties.environment = {};
 

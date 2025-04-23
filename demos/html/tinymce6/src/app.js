@@ -19,8 +19,6 @@ tinymce.init({
     tiny_mce_wiris: `${window.location.href}dist/plugin.min.js`,
   },
 
-  // This option allows us to introduce mathml formulas
-  extended_valid_elements: "*[.*]",
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
   // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642
