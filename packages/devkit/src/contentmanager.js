@@ -182,7 +182,9 @@ export default class ContentManager {
       this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
       this.editor.insertInto(this.modalDialogInstance.contentContainer);
       this.editor.focus();
-      if (this.modalDialogInstance.rtl) {
+
+      // `editor.action("rtl");` toggles the RTL mode based on the current state, it doesn't just switch to RTL.
+      if (this.modalDialogInstance.rtl && !this.editor.getEditorModel().isRTL()) {
         this.editor.action("rtl");
       }
       // Setting div in rtl in case of it's activated.
