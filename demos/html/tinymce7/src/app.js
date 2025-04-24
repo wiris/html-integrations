@@ -18,12 +18,6 @@ tinymce.init({
   license_key: "gpl",
   external_plugins: { tiny_mce_wiris: `${window.location.href}dist/plugin.min.js` },
 
-  // This option allows us to introduce mathml formulas
-  extended_valid_elements: "*[.*]",
-  valid_elements: "*[*]",
-  // This option prevents the DOMPurify library from filtering wiris MathML tags.
-  // It's necessary when you want to initialize the editor with a content that contains handwritten formulas.
-  allow_mathml_annotation_encodings: ["wiris", "application/json"],
   // We recommend to set 'draggable_modal' to true to avoid overlapping issues
   // with the different UI modal dialog windows implementations between core and third-party plugins on TinyMCE.
   // @see: https://github.com/wiris/html-integrations/issues/134#issuecomment-905448642

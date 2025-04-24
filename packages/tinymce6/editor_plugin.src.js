@@ -255,6 +255,12 @@ export const currentInstance = null;
         integrationModelProperties.integrationParameters = editor.options.get("mathTypeParameters");
       }
 
+      // This option allows us to introduce MathML formulas.
+      editor.options.register("extended_valid_elements", {
+        processor: "string",
+        default: "*[.*]",
+      });
+
       integrationModelProperties.scriptName = "plugin.min.js";
       integrationModelProperties.environment = {};
 
