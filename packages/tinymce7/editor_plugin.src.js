@@ -267,7 +267,7 @@ export const currentInstance = null;
         default: "*[*]",
       });
 
-      // Those options prevent the DOMPurify library from filtering Wiris MathML tags.
+      // Those options prevent the DOMPurify library from filtering Wiris MathML tags and attributes.
       editor.options.register("allow_mathml_annotation_encodings", {
         processor: "array",
         default: ["application/json"],
