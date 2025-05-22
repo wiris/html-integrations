@@ -544,14 +544,18 @@ export default class ModalDialog {
     if (!ContentManager.isEditorLoaded()) {
       const listener = Listeners.newListener("onLoad", () => {
         this.contentManager.onOpen(this);
-        // Apply focus protection after editor is loaded
-        FocusProtection.protect(this.container, this.overlay, this.contentContainer);
+        if (integrationModelProperties.isMoodle) {
+          // Apply focus protection after editor is loaded
+          FocusProtection.protect(this.container, this.overlay, this.contentContainer);
+        }
       });
       this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
-      // Apply focus protection immediately if editor is already loaded
-      FocusProtection.protect(this.container, this.overlay, this.contentContainer);
+      if (integrationModelProperties.isMoodle) {
+        // Apply focus protection immediately if editor is already loaded
+        FocusProtection.protect(this.container, this.overlay, this.contentContainer);
+      }
     }
   }
 
@@ -592,8 +596,10 @@ export default class ModalDialog {
    * Closes modal window and destroys the object.
    */
   destroy() {
-    // Remove focus protection before destroying
-    FocusProtection.unprotect(this.container);
+    if (integrationModelProperties.isMoodle) {
+      // Remove focus protection before destroying
+      FocusProtection.unprotect(this.container);
+    }
 
     // Close modal window.
     this.close();

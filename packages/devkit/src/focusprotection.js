@@ -9,10 +9,12 @@
  */
 
 /**
- * FocusProtection class provides methods to prevent external scripts from
+ * focusProtection function creates and returns methods to prevent external scripts from
  * interfering with the focus of the MathType modal dialog.
+ *
+ * @returns {Object} An object with protect and unprotect methods.
  */
-export default class FocusProtection {
+const focusProtection = () => {
   /**
    * Initialize focus protection on the given modal element.
    *
@@ -20,15 +22,15 @@ export default class FocusProtection {
    * @param {HTMLElement} overlayElement - The overlay element of the modal (not used in current implementation)
    * @param {HTMLElement} editorElement - The editor element inside the modal
    */
-  static protect(modalElement, overlayElement, editorElement) {
+  const protect = (modalElement, overlayElement, editorElement) => {
     if (!modalElement || !overlayElement || !editorElement) {
       console.warn("FocusProtection: Missing required elements");
       return;
     }
 
     // Apply the focus protection
-    FocusProtection._applyFocusProtection(modalElement, editorElement);
-  }
+    overrideFocusBehavior(modalElement, editorElement);
+  };
 
   /**
    * Apply focus protection by overriding focus-related methods
@@ -37,7 +39,7 @@ export default class FocusProtection {
    * @param {HTMLElement} editorElement - The editor element to keep focused
    * @private
    */
-  static _applyFocusProtection(modalElement, editorElement) {
+  const overrideFocusBehavior = (modalElement, editorElement) => {
     // Store original focus methods to be able to restore them
     const originalElementFocus = HTMLElement.prototype.focus;
     const originalElementBlur = HTMLElement.prototype.blur;
@@ -62,14 +64,14 @@ export default class FocusProtection {
     // Store the methods to remove them when the modal is closed
     modalElement.originalElementFocus = originalElementFocus;
     modalElement.originalElementBlur = originalElementBlur;
-  }
+  };
 
   /**
    * Remove focus protection from the modal
    *
    * @param {HTMLElement} modalElement - The modal element to unprotect
    */
-  static unprotect(modalElement) {
+  const unprotect = (modalElement) => {
     if (!modalElement) {
       return;
     }
@@ -84,5 +86,12 @@ export default class FocusProtection {
       HTMLElement.prototype.blur = modalElement.originalElementBlur;
       delete modalElement.originalElementBlur;
     }
-  }
-}
+  };
+
+  return {
+    protect,
+    unprotect,
+  };
+};
+
+export default focusProtection;
