@@ -8,6 +8,7 @@ import ContentManager from "./contentmanager";
 import Telemeter from "./telemeter";
 import IntegrationModel from "./integrationmodel";
 import Core from "./core.src";
+import FocusProtection from "./focusprotection";
 
 import closeIcon from "../styles/icons/general/close_icon.svg"; //eslint-disable-line
 import closeHoverIcon from "../styles/icons/hover/close_icon_h.svg"; //eslint-disable-line
@@ -543,10 +544,14 @@ export default class ModalDialog {
     if (!ContentManager.isEditorLoaded()) {
       const listener = Listeners.newListener("onLoad", () => {
         this.contentManager.onOpen(this);
+        // Apply focus protection after editor is loaded
+        FocusProtection.protect(this.container, this.overlay, this.contentContainer);
       });
       this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
+      // Apply focus protection immediately if editor is already loaded
+      FocusProtection.protect(this.container, this.overlay, this.contentContainer);
     }
   }
 
@@ -558,6 +563,9 @@ export default class ModalDialog {
    * @returns {Promise<void>} A promise that resolves when the modal is closed.
    */
   async close(trigger) {
+    // Remove focus protection before closing
+    FocusProtection.unprotect(this.container);
+
     this.removeClass("wrs_maximized");
     this.removeClass("wrs_minimized");
     this.removeClass("wrs_stack");
@@ -584,6 +592,9 @@ export default class ModalDialog {
    * Closes modal window and destroys the object.
    */
   destroy() {
+    // Remove focus protection before destroying
+    FocusProtection.unprotect(this.container);
+
     // Close modal window.
     this.close();
     // Remove listeners and destroy the object.
