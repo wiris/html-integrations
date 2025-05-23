@@ -556,8 +556,9 @@ export default class ModalDialog {
       this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
-      // Detect Moodle environment
+
       if (isMoodle) {
+      
         // Apply focus protection immediately if editor is already loaded
         FocusProtection.protect(this.container, this.overlay, this.contentContainer);
       }
