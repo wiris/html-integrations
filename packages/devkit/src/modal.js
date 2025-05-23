@@ -548,8 +548,8 @@ export default class ModalDialog {
         this.contentManager.onOpen(this);
 
         if (isMoodle) {
+        
           // Apply focus protection after editor is loaded
-
           FocusProtection.protect(this.container, this.overlay, this.contentContainer);
         }
       });
