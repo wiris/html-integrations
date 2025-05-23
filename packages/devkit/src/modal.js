@@ -19,9 +19,7 @@ import minsIcon from "../styles/icons/general/mins_icon.svg"; //eslint-disable-l
 import minsHoverIcon from "../styles/icons/hover/mins_icon_h.svg"; //eslint-disable-line
 import maxIcon from "../styles/icons/general/max_icon.svg"; //eslint-disable-line
 import maxHoverIcon from "../styles/icons/hover/max_icon_h.svg"; //eslint-disable-line
-const FocusProtection = focusProtection();
-
-const isMoodle = !!(typeof M === "object" && M !== null);
+const { unprotect } = focusProtection();
 
 /**
  * @typedef {Object} DeviceProperties
@@ -546,22 +544,10 @@ export default class ModalDialog {
     if (!ContentManager.isEditorLoaded()) {
       const listener = Listeners.newListener("onLoad", () => {
         this.contentManager.onOpen(this);
-
-        if (isMoodle) {
-        
-          // Apply focus protection after editor is loaded
-          FocusProtection.protect(this.container, this.overlay, this.contentContainer);
-        }
       });
       this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
-
-      if (isMoodle) {
-      
-        // Apply focus protection immediately if editor is already loaded
-        FocusProtection.protect(this.container, this.overlay, this.contentContainer);
-      }
     }
   }
 
@@ -574,7 +560,7 @@ export default class ModalDialog {
    */
   async close(trigger) {
     // Remove focus protection before closing
-    FocusProtection.unprotect(this.container);
+    unprotect(this.container);
 
     this.removeClass("wrs_maximized");
     this.removeClass("wrs_minimized");
@@ -603,7 +589,7 @@ export default class ModalDialog {
    */
   destroy() {
     // Remove focus protection before destroying
-    FocusProtection.unprotect(this.container);
+    unprotect(this.container);
 
     // Close modal window.
     this.close();

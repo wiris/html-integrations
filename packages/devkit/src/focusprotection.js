@@ -1,9 +1,4 @@
 /**
- * @license
- * Copyright 2024 WIRIS. All rights reserved.
- */
-
-/**
  * This module provides protection against external focus management scripts
  * that might interfere with the MathType editor modal.
  */
