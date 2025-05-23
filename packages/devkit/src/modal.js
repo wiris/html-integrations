@@ -8,8 +8,7 @@ import ContentManager from "./contentmanager";
 import Telemeter from "./telemeter";
 import IntegrationModel from "./integrationmodel";
 import Core from "./core.src";
-import FocusProtection from "./focusprotection";
-
+import focusProtection from "./focusprotection";
 import closeIcon from "../styles/icons/general/close_icon.svg"; //eslint-disable-line
 import closeHoverIcon from "../styles/icons/hover/close_icon_h.svg"; //eslint-disable-line
 import fullsIcon from "../styles/icons/general/fulls_icon.svg"; //eslint-disable-line
@@ -20,6 +19,9 @@ import minsIcon from "../styles/icons/general/mins_icon.svg"; //eslint-disable-l
 import minsHoverIcon from "../styles/icons/hover/mins_icon_h.svg"; //eslint-disable-line
 import maxIcon from "../styles/icons/general/max_icon.svg"; //eslint-disable-line
 import maxHoverIcon from "../styles/icons/hover/max_icon_h.svg"; //eslint-disable-line
+const FocusProtection = focusProtection();
+
+const isMoodle = !!(typeof M === "object" && M !== null);
 
 /**
  * @typedef {Object} DeviceProperties
@@ -544,15 +546,18 @@ export default class ModalDialog {
     if (!ContentManager.isEditorLoaded()) {
       const listener = Listeners.newListener("onLoad", () => {
         this.contentManager.onOpen(this);
-        if (integrationModelProperties.isMoodle) {
+
+        if (isMoodle) {
           // Apply focus protection after editor is loaded
+
           FocusProtection.protect(this.container, this.overlay, this.contentContainer);
         }
       });
       this.contentManager.addListener(listener);
     } else {
       this.contentManager.onOpen(this);
-      if (integrationModelProperties.isMoodle) {
+      // Detect Moodle environment
+      if (isMoodle) {
         // Apply focus protection immediately if editor is already loaded
         FocusProtection.protect(this.container, this.overlay, this.contentContainer);
       }
@@ -596,10 +601,8 @@ export default class ModalDialog {
    * Closes modal window and destroys the object.
    */
   destroy() {
-    if (integrationModelProperties.isMoodle) {
-      // Remove focus protection before destroying
-      FocusProtection.unprotect(this.container);
-    }
+    // Remove focus protection before destroying
+    FocusProtection.unprotect(this.container);
 
     // Close modal window.
     this.close();
