@@ -5,9 +5,6 @@ import Listeners from "./listeners";
 import MathML from "./mathml";
 import Util from "./util";
 import Telemeter from "./telemeter";
-import focusProtection from "./focusprotection";
-
-const { protect } = focusProtection;
 
 export default class ContentManager {
   /**
@@ -504,11 +501,6 @@ export default class ContentManager {
       if (this.mathML && !this.mathML.includes('<annotation encoding="application/json">') && !this.isNewElement) {
         this.openHandOnKeyboardMathML(this.mathML, this.editor);
       }
-    }
-    if (this.integrationModel.isMoodle) {
-
-      // Apply focus protection to prevent focus loss when the modal is open.
-      protect(this.container, this.overlay, this.contentContainer);
     }
   }
 
