@@ -8,7 +8,7 @@ import ContentManager from "./contentmanager";
 import Telemeter from "./telemeter";
 import IntegrationModel from "./integrationmodel";
 import Core from "./core.src";
-
+import focusProtection from "./focusprotection";
 import closeIcon from "../styles/icons/general/close_icon.svg"; //eslint-disable-line
 import closeHoverIcon from "../styles/icons/hover/close_icon_h.svg"; //eslint-disable-line
 import fullsIcon from "../styles/icons/general/fulls_icon.svg"; //eslint-disable-line
@@ -19,6 +19,7 @@ import minsIcon from "../styles/icons/general/mins_icon.svg"; //eslint-disable-l
 import minsHoverIcon from "../styles/icons/hover/mins_icon_h.svg"; //eslint-disable-line
 import maxIcon from "../styles/icons/general/max_icon.svg"; //eslint-disable-line
 import maxHoverIcon from "../styles/icons/hover/max_icon_h.svg"; //eslint-disable-line
+const { unprotect, protect } = focusProtection();
 
 /**
  * @typedef {Object} DeviceProperties
@@ -542,12 +543,31 @@ export default class ModalDialog {
 
     if (!ContentManager.isEditorLoaded()) {
       const listener = Listeners.newListener("onLoad", () => {
-        this.contentManager.onOpen(this);
+        this.displayEditor();
       });
       this.contentManager.addListener(listener);
     } else {
-      this.contentManager.onOpen(this);
+      this.displayEditor();
     }
+  }
+
+  /**
+   * Prepares and displays the editor in the modal.
+   *
+   * This method is responsible for displaying the MathType editor inside the modal container.
+   *
+   * For Moodle environments, it applies focus protection to prevent external scripts
+   * from hijacking focus away from the editor while it's open. This is particularly
+   * important in Moodle which may have its own focus management scripts.
+   * @returns {void}
+   */
+  displayEditor() {
+    if (this.contentManager.integrationModel.isMoodle) {
+      protect(this.container, this.overlay, this.contentContainer);
+    }
+
+    // Initialize and open the editor using the contentManager.
+    this.contentManager.onOpen(this);
   }
 
   /**
@@ -558,6 +578,9 @@ export default class ModalDialog {
    * @returns {Promise<void>} A promise that resolves when the modal is closed.
    */
   async close(trigger) {
+    // Remove focus protection before closing
+    unprotect(this.container);
+
     this.removeClass("wrs_maximized");
     this.removeClass("wrs_minimized");
     this.removeClass("wrs_stack");
@@ -584,6 +607,9 @@ export default class ModalDialog {
    * Closes modal window and destroys the object.
    */
   destroy() {
+    // Remove focus protection before destroying
+    unprotect(this.container);
+
     // Close modal window.
     this.close();
     // Remove listeners and destroy the object.
