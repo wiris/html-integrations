@@ -7,14 +7,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this project was 17th of March 2025.
+### 8.13.2 2025-06-11
+
+- docs: Update TinyMCE 7 documentation. #KB-55222
+- fix: Prevent Moodle TinyMCE 7 from losing focus. #KB-56852
 
 ### 8.13.0 2025-03-17
-	feat: Update to the latest TinyMCE 7 version #KB-54591
-	fix: Prevent errors when using destroy method #KB-54684
-	fix: Lost some exports when updating the installation methods #KB-54691
-	fix: Set MathType to use CK5 version as peer dependency. #KB-55057
-	fix: Cannot insert formulas in certain cases. #KB-53563
+
+- feat: Update to the latest TinyMCE 7 version #KB-54591
+- fix: Prevent errors when using destroy method #KB-54684
+- fix: Lost some exports when updating the installation methods #KB-54691
+- fix: Set MathType to use CK5 version as peer dependency. #KB-55057
+- fix: Cannot insert formulas in certain cases. #KB-53563
 
 
 ### 8.12.0 2025-01-29
