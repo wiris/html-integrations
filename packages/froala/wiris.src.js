@@ -106,23 +106,37 @@ export class FroalaIntegration extends IntegrationModel {
     const chemTypeId = `wirisChemistry-${editor.id}`;
 
     // Hide MathType toolbar button if is disabled by config.
-    if (!Configuration.get("editorEnabled")) {
+    if (Configuration.get("editorEnabled")) {
+      // Translate the button title
+      const mathButton = document.getElementById(mathTypeId);
+
+      if (!mathButton) {
+        return
+      }
+
+      mathButton.title = StringManager.get("insert_math", editor.opts.language);
+    }
+    else {
       FroalaEditor.ICONS.wirisEditor = null;
       FroalaEditor.COMMANDS.wirisEditor = null;
       document.getElementById(mathTypeId).classList.add("fr-hidden");
-    } else {
-      // Translate the button title
-      document.getElementById(mathTypeId).title = StringManager.get("insert_math", editor.opts.language);
     }
 
     // Hide ChemType toolbar button if is disabled by config.
-    if (!Configuration.get("chemEnabled")) {
+    if (Configuration.get("chemEnabled")) {
+      // Translate the button title
+      const chemButton = document.getElementById(chemTypeId);
+
+      if (!chemButton) {
+        return
+      }
+
+      chemButton.title = StringManager.get("insert_chem", editor.opts.language);
+    }
+    else {
       FroalaEditor.ICONS.wirisChemistry = null;
       FroalaEditor.COMMANDS.wirisChemistry = null;
       document.getElementById(chemTypeId).classList.add("fr-hidden");
-    } else {
-      // Translate the button title
-      document.getElementById(chemTypeId).title = StringManager.get("insert_chem", editor.opts.language);
     }
   }
 
