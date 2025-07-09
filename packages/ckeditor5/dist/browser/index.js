@@ -1,6 +1,6 @@
 import { Command, Plugin } from 'ckeditor5';
 import { ButtonView } from 'ckeditor5';
-import { ClickObserver, XmlDataProcessor, UpcastWriterr, HtmlDataProcessor } from 'ckeditor5';
+import { ClickObserver, XmlDataProcessor, HtmlDataProcessor } from 'ckeditor5';
 import { Widget, viewToModelPositionOutsideModelElement, toWidget } from 'ckeditor5';
 
 /*! @license DOMPurify 3.2.6 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.6/LICENSE */
@@ -11601,7 +11601,7 @@ class MathType extends Plugin {
             const processor = new XmlDataProcessor(editor.editing.view.document);
             // Only god knows why the following line makes viewItem lose all of its children,
             // so we obtain isLatex before doing this because we need viewItem's children for that.
-            const upcastWriter = new UpcastWriterr(editor.editing.view.document);
+            const upcastWriter = undefined; // = new UpcastWriterr(editor.editing.view.document);
             const viewDocumentFragment = upcastWriter.createDocumentFragment(viewItem.getChildren());
             // and obtain the attributes of <math> too!
             const mathAttributes = [

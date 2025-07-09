@@ -1,7 +1,7 @@
 // CKEditor imports
 import { Plugin } from "ckeditor5/src/core.js";
 import { ButtonView } from "ckeditor5/src/ui.js";
-import { ClickObserver, HtmlDataProcessor, XmlDataProcessor, UpcastWriterr } from "ckeditor5/src/engine.js";
+import { ClickObserver, HtmlDataProcessor, XmlDataProcessor } from "ckeditor5/src/engine.js";
 import { Widget, toWidget, viewToModelPositionOutsideModelElement } from "ckeditor5/src/widget.js";
 
 // MathType API imports
@@ -245,7 +245,7 @@ export default class MathType extends Plugin {
 
       // Only god knows why the following line makes viewItem lose all of its children,
       // so we obtain isLatex before doing this because we need viewItem's children for that.
-      const upcastWriter = new UpcastWriterr(editor.editing.view.document);
+      const upcastWriter = undefined; // = new UpcastWriterr(editor.editing.view.document);
       const viewDocumentFragment = upcastWriter.createDocumentFragment(viewItem.getChildren());
 
       // and obtain the attributes of <math> too!
