@@ -17,10 +17,10 @@ document.getElementById("version_editor").innerHTML = "Froala: ";
 new FroalaEditor("#editor", {
   //eslint-disable-line
   // Define the toolbar options for the froala editor.
-  toolbarButtons: ["undo", "redo", "bold", "italic", "|", "wirisEditor", "wirisChemistry", "insertImage"],
+  toolbarButtons: ["undo", "redo", "bold", "italic", "|", "wirisEditor", "insertImage"],
 
   // Add [MW] buttons to the image editing popup Toolbar.
-  imageEditButtons: ["wirisEditor", "wirisChemistry", "imageDisplay", "imageAlign", "imageInfo", "imageRemove"],
+  imageEditButtons: ["wirisEditor", "imageDisplay", "imageAlign", "imageInfo", "imageRemove"],
 
   key: process.env.FROALA_API_KEY || "",
 
