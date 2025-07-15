@@ -1,9 +1,9 @@
 import { Command, Plugin } from 'ckeditor5';
 import { ButtonView } from 'ckeditor5';
-import { ClickObserver, XmlDataProcessor, UpcastWriter, HtmlDataProcessor } from 'ckeditor5';
+import { ClickObserver, XmlDataProcessor, ViewUpcastWriter, HtmlDataProcessor } from 'ckeditor5';
 import { Widget, viewToModelPositionOutsideModelElement, toWidget } from 'ckeditor5';
 
-/*! @license DOMPurify 3.2.4 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.4/LICENSE */
+/*! @license DOMPurify 3.2.6 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.6/LICENSE */
 
 const {
   entries,
@@ -63,6 +63,9 @@ const typeErrorCreate = unconstruct(TypeError);
  */
 function unapply(func) {
   return function (thisArg) {
+    if (thisArg instanceof RegExp) {
+      thisArg.lastIndex = 0;
+    }
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
@@ -204,7 +207,7 @@ const ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
 const TMPLIT_EXPR = seal(/\$\{[\w\W]*/gm); // eslint-disable-line unicorn/better-regex
 const DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/); // eslint-disable-line no-useless-escape
 const ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
-const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
+const IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|matrix):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
 );
 const IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
 const ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g // eslint-disable-line no-control-regex
@@ -292,7 +295,7 @@ const _createHooksMap = function _createHooksMap() {
 function createDOMPurify() {
   let window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
   const DOMPurify = root => createDOMPurify(root);
-  DOMPurify.version = '3.2.4';
+  DOMPurify.version = '3.2.6';
   DOMPurify.removed = [];
   if (!window || !window.document || window.document.nodeType !== NODE_TYPE.document || !window.Element) {
     // Not running in a browser, provide a factory function
@@ -531,8 +534,8 @@ function createDOMPurify() {
     URI_SAFE_ATTRIBUTES = objectHasOwnProperty(cfg, 'ADD_URI_SAFE_ATTR') ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR, transformCaseFunc) : DEFAULT_URI_SAFE_ATTRIBUTES;
     DATA_URI_TAGS = objectHasOwnProperty(cfg, 'ADD_DATA_URI_TAGS') ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS, transformCaseFunc) : DEFAULT_DATA_URI_TAGS;
     FORBID_CONTENTS = objectHasOwnProperty(cfg, 'FORBID_CONTENTS') ? addToSet({}, cfg.FORBID_CONTENTS, transformCaseFunc) : DEFAULT_FORBID_CONTENTS;
-    FORBID_TAGS = objectHasOwnProperty(cfg, 'FORBID_TAGS') ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : {};
-    FORBID_ATTR = objectHasOwnProperty(cfg, 'FORBID_ATTR') ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : {};
+    FORBID_TAGS = objectHasOwnProperty(cfg, 'FORBID_TAGS') ? addToSet({}, cfg.FORBID_TAGS, transformCaseFunc) : clone({});
+    FORBID_ATTR = objectHasOwnProperty(cfg, 'FORBID_ATTR') ? addToSet({}, cfg.FORBID_ATTR, transformCaseFunc) : clone({});
     USE_PROFILES = objectHasOwnProperty(cfg, 'USE_PROFILES') ? cfg.USE_PROFILES : false;
     ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false; // Default true
     ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false; // Default true
@@ -897,7 +900,7 @@ function createDOMPurify() {
       allowedTags: ALLOWED_TAGS
     });
     /* Detect mXSS attempts abusing namespace confusion */
-    if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+    if (SAFE_FOR_XML && currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && regExpTest(/<[/\w!]/g, currentNode.innerHTML) && regExpTest(/<[/\w!]/g, currentNode.textContent)) {
       _forceRemove(currentNode);
       return true;
     }
@@ -1049,7 +1052,8 @@ function createDOMPurify() {
         value: attrValue
       } = attr;
       const lcName = transformCaseFunc(name);
-      let value = name === 'value' ? attrValue : stringTrim(attrValue);
+      const initValue = attrValue;
+      let value = name === 'value' ? initValue : stringTrim(initValue);
       /* Execute a hook if present */
       hookEvent.attrName = lcName;
       hookEvent.attrValue = value;
@@ -1075,10 +1079,9 @@ function createDOMPurify() {
       if (hookEvent.forceKeepAttr) {
         continue;
       }
-      /* Remove attribute */
-      _removeAttribute(name, currentNode);
       /* Did the hooks approve of the attribute? */
       if (!hookEvent.keepAttr) {
+        _removeAttribute(name, currentNode);
         continue;
       }
       /* Work around a security issue in jQuery 3.0 */
@@ -1095,6 +1098,7 @@ function createDOMPurify() {
       /* Is `value` valid for this attribute? */
       const lcTag = transformCaseFunc(currentNode.nodeName);
       if (!_isValidAttribute(lcTag, lcName, value)) {
+        _removeAttribute(name, currentNode);
         continue;
       }
       /* Handle attributes that require Trusted Types */
@@ -1115,19 +1119,23 @@ function createDOMPurify() {
         }
       }
       /* Handle invalid data-* attribute set by try-catching it */
-      try {
-        if (namespaceURI) {
-          currentNode.setAttributeNS(namespaceURI, name, value);
-        } else {
-          /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
-          currentNode.setAttribute(name, value);
+      if (value !== initValue) {
+        try {
+          if (namespaceURI) {
+            currentNode.setAttributeNS(namespaceURI, name, value);
+          } else {
+            /* Fallback to setAttribute() for browser-unrecognized namespaces e.g. "x-schema". */
+            currentNode.setAttribute(name, value);
+          }
+          if (_isClobbered(currentNode)) {
+            _forceRemove(currentNode);
+          } else {
+            arrayPop(DOMPurify.removed);
+          }
+        } catch (_) {
+          _removeAttribute(name, currentNode);
         }
-        if (_isClobbered(currentNode)) {
-          _forceRemove(currentNode);
-        } else {
-          arrayPop(DOMPurify.removed);
-        }
-      } catch (_) {}
+      }
     }
     /* Execute a hook if present */
     _executeHooks(hooks.afterSanitizeAttributes, currentNode, null);
@@ -6275,7 +6283,8 @@ class ContentManager {
             this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
             this.editor.insertInto(this.modalDialogInstance.contentContainer);
             this.editor.focus();
-            if (this.modalDialogInstance.rtl) {
+            // `editor.action("rtl");` toggles the RTL mode based on the current state, it doesn't just switch to RTL.
+            if (this.modalDialogInstance.rtl && !this.editor.getEditorModel().isRTL()) {
                 this.editor.action("rtl");
             }
             // Setting div in rtl in case of it's activated.
@@ -7034,6 +7043,82 @@ class Event {
     }
 }
 
+/**
+ * This module provides protection against external focus management scripts
+ * that might interfere with the MathType editor modal.
+ */ /**
+ * focusProtection function creates and returns methods to prevent external scripts from
+ * interfering with the focus of the MathType modal dialog.
+ *
+ * @returns {Object} An object with protect and unprotect methods.
+ */ const focusProtection = ()=>{
+    /**
+   * Initialize focus protection on the given modal element.
+   *
+   * @param {HTMLElement} modalElement - The modal element to protect
+   * @param {HTMLElement} overlayElement - The overlay element of the modal (not used in current implementation)
+   * @param {HTMLElement} editorElement - The editor element inside the modal
+   */ const protect = (modalElement, overlayElement, editorElement)=>{
+        if (!modalElement || !overlayElement || !editorElement) {
+            console.warn("FocusProtection: Missing required elements");
+            return;
+        }
+        // Apply the focus protection
+        overrideFocusBehavior(modalElement, editorElement);
+    };
+    /**
+   * Apply focus protection by overriding focus-related methods
+   *
+   * @param {HTMLElement} modalElement - The modal element
+   * @param {HTMLElement} editorElement - The editor element to keep focused
+   * @private
+   */ const overrideFocusBehavior = (modalElement, editorElement)=>{
+        // Store original focus methods to be able to restore them
+        const originalElementFocus = HTMLElement.prototype.focus;
+        const originalElementBlur = HTMLElement.prototype.blur;
+        // Override the focus method for all elements
+        HTMLElement.prototype.focus = function(...args) {
+            // If the modal is open and this is not part of the modal, prevent focus
+            if (modalElement.style.display !== "none" && !modalElement.contains(this) && this !== document.body) {
+                // If some external script is trying to focus another element, prevent it
+                // and restore focus to the editor
+                if (editorElement) {
+                    // Use the original focus method to avoid infinite recursion
+                    originalElementFocus.apply(editorElement, args);
+                }
+                return;
+            }
+            // Otherwise, allow the focus to happen
+            originalElementFocus.apply(this, args);
+        };
+        // Store the methods to remove them when the modal is closed
+        modalElement.originalElementFocus = originalElementFocus;
+        modalElement.originalElementBlur = originalElementBlur;
+    };
+    /**
+   * Remove focus protection from the modal
+   *
+   * @param {HTMLElement} modalElement - The modal element to unprotect
+   */ const unprotect = (modalElement)=>{
+        if (!modalElement) {
+            return;
+        }
+        // Restore original focus methods
+        if (modalElement.originalElementFocus) {
+            HTMLElement.prototype.focus = modalElement.originalElementFocus;
+            delete modalElement.originalElementFocus;
+        }
+        if (modalElement.originalElementBlur) {
+            HTMLElement.prototype.blur = modalElement.originalElementBlur;
+            delete modalElement.originalElementBlur;
+        }
+    };
+    return {
+        protect,
+        unprotect
+    };
+};
+
 var closeIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n   xmlns:cc=\"http://creativecommons.org/ns#\"\n   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n   viewBox=\"0 0 13.76 13.76\"\n   height=\"13.76\"\n   width=\"13.76\"\n   id=\"svg3783\"\n   version=\"1.1\">\n  <metadata\n     id=\"metadata3789\">\n    <rdf:RDF>\n      <cc:Work\n         rdf:about=\"\">\n        <dc:format>image/svg+xml</dc:format>\n        <dc:type\n           rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n        <dc:title></dc:title>\n      </cc:Work>\n    </rdf:RDF>\n  </metadata>\n  <defs\n     id=\"defs3787\" />\n  <image\n     y=\"0\"\n     x=\"0\"\n     id=\"image3791\"\n     xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAArCAYAAADhXXHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAAB\nvklEQVRYw83Z23GDMBAF0AsNhBIowSVQgjuISnAJKSEdZNOBS6CDOBUkqSC4gs2PyGhAQg92se4M\n4w8bccYW2hVumBmRdAB6ADfopQcw2SOYNoIkAL8APgB8AzgLI0/2S/iy1xkt3B9m9h0dM9/YHxM4\nJ/c4MfPkGX+y763OyYVKgUPQTXAJdC84Bg2CS6Gl4FSoF7wHmgvOhbrgzsW+8L4YJegccrEj749R\ngs7ZXGdz8wbAeNbREcDTzrHvblEgBbAUFACuy6JALJeL0E/P9sbvmBnNojcgAM+oJ58AhrlnWM5Z\nA+C9RmiokakBvIJuNTLSc7hojqY0Mo8EB6Ep2CPBm9BU7BHgKDQHqwlOguZiNcDJ0JLe4FV4iaLY\nJjF16dLqnoob+EdDs8A1QJPBtUCTwDVBo+DaoJvgNvBIR6rDl9wirbA1QIPgVgl6VwHb+dAr7Jkk\nS/Pg3mCkVOslxxV9yBFqSqTA/3N2Utkzye3pftw5OxzQ5tHeddcdzGj3o4VgClUwowgtAVOs3BpF\naA6YUnsDowhNAVNu12UUoVtgCn2+ifxp1wO42Ner4KPR5dJ2tsse2ZLvTQxbVf4AmC2z7WnSvpIA\nAAAASUVORK5CYII=\n\"\n     style=\"image-rendering:optimizeQuality\"\n     preserveAspectRatio=\"none\"\n     height=\"13.76\"\n     width=\"13.76\" />\n</svg>\n";
 
 var closeHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n   xmlns:cc=\"http://creativecommons.org/ns#\"\n   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n   viewBox=\"0 0 13.76 13.76\"\n   height=\"13.76\"\n   width=\"13.76\"\n   id=\"svg2\"\n   version=\"1.1\">\n  <metadata\n     id=\"metadata8\">\n    <rdf:RDF>\n      <cc:Work\n         rdf:about=\"\">\n        <dc:format>image/svg+xml</dc:format>\n        <dc:type\n           rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n        <dc:title></dc:title>\n      </cc:Work>\n    </rdf:RDF>\n  </metadata>\n  <defs\n     id=\"defs6\" />\n  <image\n     y=\"0\"\n     x=\"0\"\n     id=\"image10\"\n     xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAArCAYAAADhXXHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAAB\n2ElEQVRYw9XZoXPCMBTH8S+5KfDzQ29606CH3/SmQTO96aGHHn/F0Himh8eDZSblQknSJH2F0DtE\nQw8+12vyfulr7XY7LuW4qvj+DugD18AC+AE2woa+/mz07y9cF7Y8d7YPDEtjK2AsCB4BvdLYHPi0\nXawioAA3wAfQaQiKHhuFYl1QSbAL6gWrSKgEuArqBKsEaB1wKNQKVsasHybcpRhwLNQED0zsoMbz\nFwJOhWL6Cmzd2e0D14Wi1/k9di2wFNnAEtBifd9jv4GtIPgaeBOCAkzLFayr/6idWSSY6DJ8sHT9\n6VK6zRFqKwo5gQ+grnKbA/gI6gsy5wRboT7sucBOaBX21GAvNAR7KnAlNBTbNDgIGoMtwO/C0Gko\nNBZbN525tk+dJrAj4F4YGxXgVQS019DkCgarM0OjwCoDaDBYZQINAquMoJVglRnUC1YZQp1g1RB0\nJryn65jYJ0HoRGPHguDX8hsZ6VAiGX4eUrJBbHqSArdN7LLBmCcBnpvYWfHWo6E8Wge8Ar7Kj8E4\nARwcnBPBB20BE7uJBMdAU8BH/YvyBAsFp0BjwNZGi201qALXgYaAnR0hX2upAzwDj/p8raFL5I4u\n8ALc6vNfvc+ztq5al9Rh/AfwZZ/LmlMllAAAAABJRU5ErkJggg==\n\"\n     style=\"image-rendering:optimizeQuality\"\n     preserveAspectRatio=\"none\"\n     height=\"13.76\"\n     width=\"13.76\" />\n</svg>\n";
@@ -7055,6 +7140,7 @@ var maxIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<sv
 var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<svg\n   xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n   xmlns:cc=\"http://creativecommons.org/ns#\"\n   xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n   xmlns:svg=\"http://www.w3.org/2000/svg\"\n   xmlns=\"http://www.w3.org/2000/svg\"\n   xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n   viewBox=\"0 0 13.44 13.76\"\n   height=\"13.76\"\n   width=\"13.44\"\n   id=\"svg22\"\n   version=\"1.1\">\n  <metadata\n     id=\"metadata28\">\n    <rdf:RDF>\n      <cc:Work\n         rdf:about=\"\">\n        <dc:format>image/svg+xml</dc:format>\n        <dc:type\n           rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" />\n        <dc:title></dc:title>\n      </cc:Work>\n    </rdf:RDF>\n  </metadata>\n  <defs\n     id=\"defs26\" />\n  <image\n     y=\"0\"\n     x=\"0\"\n     id=\"image30\"\n     xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAArCAYAAAAOnxr+AAAACXBIWXMAAC4jAAAuIwF4pT92AAAA\nvUlEQVRYw+3ZsQ3CMBCF4d8WFekZgBqWIDUDZACmYBQWYIn0pGYAegZIexROERHRIBTdhXeVy08+\nyT4/JzMjQmWCVBjoarSugK0z3/0degKODjeyBy5Am8ysARrnnT8nM7sCa+fQLgdAAlQ6ngQVVFBB\nfzeUTK6t8VAwU328ztV6QQUVVFBBBRVUUEG9Ds41sJvZs/8GelDrlw7tAjhvmZLo9o6RD4bEGUp+\nX1My/I0T4HN4rrcASf9M/wp9ASNzIKYYz2hAAAAAAElFTkSuQmCC\n\"\n     style=\"image-rendering:optimizeQuality\"\n     preserveAspectRatio=\"none\"\n     height=\"13.76\"\n     width=\"13.44\" />\n</svg>\n";
 
 // eslint-disable-next-line max-classes-per-file
+const { unprotect, protect } = focusProtection();
 /**
  * @typedef {Object} DeviceProperties
  * @property {String} DeviceProperties.orientation - Indicates of the orientation of the device.
@@ -7498,12 +7584,28 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
         }
         if (!ContentManager.isEditorLoaded()) {
             const listener = Listeners.newListener("onLoad", ()=>{
-                this.contentManager.onOpen(this);
+                this.displayEditor();
             });
             this.contentManager.addListener(listener);
         } else {
-            this.contentManager.onOpen(this);
+            this.displayEditor();
         }
+    }
+    /**
+   * Prepares and displays the editor in the modal.
+   *
+   * This method is responsible for displaying the MathType editor inside the modal container.
+   *
+   * For Moodle environments, it applies focus protection to prevent external scripts
+   * from hijacking focus away from the editor while it's open. This is particularly
+   * important in Moodle which may have its own focus management scripts.
+   * @returns {void}
+   */ displayEditor() {
+        if (this.contentManager.integrationModel.isMoodle) {
+            protect(this.container, this.overlay, this.contentContainer);
+        }
+        // Initialize and open the editor using the contentManager.
+        this.contentManager.onOpen(this);
     }
     /**
    * Closes the modal.
@@ -7512,6 +7614,8 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
    * If a close trigger is defined, it tracks the telemetry event 'CLOSED_MTCT_EDITOR' with the trigger.
    * @returns {Promise<void>} A promise that resolves when the modal is closed.
    */ async close(trigger) {
+        // Remove focus protection before closing
+        unprotect(this.container);
         this.removeClass("wrs_maximized");
         this.removeClass("wrs_minimized");
         this.removeClass("wrs_stack");
@@ -7534,6 +7638,8 @@ var maxHoverIcon = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
     /**
    * Closes modal window and destroys the object.
    */ destroy() {
+        // Remove focus protection before destroying
+        unprotect(this.container);
         // Close modal window.
         this.close();
         // Remove listeners and destroy the object.
@@ -11312,7 +11418,7 @@ var mathIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adob
 
 var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-var version = "8.13.0";
+var version = "8.13.2";
 var packageInfo = {
 	version: version};
 
@@ -11495,7 +11601,7 @@ class MathType extends Plugin {
             const processor = new XmlDataProcessor(editor.editing.view.document);
             // Only god knows why the following line makes viewItem lose all of its children,
             // so we obtain isLatex before doing this because we need viewItem's children for that.
-            const upcastWriter = new UpcastWriter(editor.editing.view.document);
+            const upcastWriter = new ViewUpcastWriter(editor.editing.view.document);
             const viewDocumentFragment = upcastWriter.createDocumentFragment(viewItem.getChildren());
             // and obtain the attributes of <math> too!
             const mathAttributes = [
