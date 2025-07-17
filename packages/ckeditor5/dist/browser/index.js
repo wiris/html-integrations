@@ -11105,8 +11105,7 @@ delete Array.prototype.__class__; // @codingStandardsIgnoreEnd
         const languageObject = this.editorObject.config.get("language");
         if (languageObject != null) {
             if (typeof languageObject === "object") {
-                // eslint-disable-next-line no-prototype-builtins
-                if (languageObject.hasOwnProperty("ui")) {
+               if (Object.prototype.hasOwnProperty.call(languageObject, "ui")) {
                     return languageObject.ui;
                 }
                 return languageObject;
