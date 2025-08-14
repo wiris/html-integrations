@@ -315,6 +315,19 @@ export default class MathType extends Plugin {
         return;
       }
 
+      // Check if we can consume the element name
+      if (!consumable.test(viewItem, { name: true })) {
+        return;
+      }
+      // Consume the name, attributes, and classes so nothing else processes it
+      consumable.consume(viewItem, { name: true });
+      for (const [attrName] of viewItem.getAttributes()) {
+          consumable.consume(viewItem, { attributes: [attrName] });
+      }
+      for (const className of viewItem.getClassNames()) {
+          consumable.consume(viewItem, { classes: [className] });
+      }
+
       const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
       const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
 
@@ -356,7 +369,7 @@ export default class MathType extends Plugin {
         // Otherwise just continue after inserted element.
         data.modelCursor = data.modelRange.end;
       }
-    });
+    }, { priority: 'high' });
 
     /**
      * Whether the given view <math> element has a LaTeX annotation element.
