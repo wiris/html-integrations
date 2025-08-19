@@ -327,7 +327,7 @@ export default class MathType extends Plugin {
 
         // Consume the name, attributes, and classes so nothing else processes it.
         consumable.consume(viewItem, { name: true });
-        for (const [attrName] of viewItem.getAttributes()) {
+        for (const attrName of viewItem.getAttributes()) {
           consumable.consume(viewItem, { attributes: [attrName] });
         }
 
