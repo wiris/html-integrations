@@ -306,70 +306,80 @@ export default class MathType extends Plugin {
     });
 
     // Data view -> Model
-    editor.data.upcastDispatcher.on("element:img", (evt, data, conversionApi) => {
-      const { consumable, writer } = conversionApi;
-      const { viewItem } = data;
+    editor.data.upcastDispatcher.on(
+      "element:img",
+      (evt, data, conversionApi) => {
+        const { consumable, writer } = conversionApi;
+        const { viewItem } = data;
 
-      // Only upcast when is wiris formula
-      if (viewItem.getClassNames().next().value !== "Wirisformula") {
-        return;
-      }
+        // Only upcast when is wiris formula
+        if (viewItem.getClassNames().next().value !== "Wirisformula") {
+          return;
+        }
 
-      // Check if we can consume the element name
-      if (!consumable.test(viewItem, { name: true })) {
-        return;
-      }
-      // Consume the name, attributes, and classes so nothing else processes it
-      consumable.consume(viewItem, { name: true });
-      for (const [attrName] of viewItem.getAttributes()) {
+        //  The following code ensures that the element's name, attributes, and classes are consumed.
+        // This means that they are marked as handled so that other parts of the system or plugins don't process them again.
+
+        // Check if we can consume the element name.
+        if (!consumable.test(viewItem, { name: true })) {
+          return;
+        }
+
+        // Consume the name, attributes, and classes so nothing else processes it.
+        consumable.consume(viewItem, { name: true });
+        for (const [attrName] of viewItem.getAttributes()) {
           consumable.consume(viewItem, { attributes: [attrName] });
-      }
-      for (const className of viewItem.getClassNames()) {
+        }
+
+        for (const className of viewItem.getClassNames()) {
           consumable.consume(viewItem, { classes: [className] });
-      }
+        }
 
-      const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
-      const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
+        const mathAttributes = [...viewItem.getAttributes()].map(([key, value]) => ` ${key}="${value}"`).join("");
+        const htmlContent = Util.htmlSanitize(`<img${mathAttributes}>`);
 
-      const modelNode = writer.createElement("mathml", { htmlContent });
+        const modelNode = writer.createElement("mathml", { htmlContent });
 
-      // Find allowed parent for element that we are going to insert.
-      // If current parent does not allow to insert element but one of the ancestors does
-      // then split nodes to allowed parent.
-      const splitResult = conversionApi.splitToAllowedParent(modelNode, data.modelCursor);
+        // Find allowed parent for element that we are going to insert.
+        // If current parent does not allow to insert element but one of the ancestors does
+        // then split nodes to allowed parent.
+        const splitResult = conversionApi.splitToAllowedParent(modelNode, data.modelCursor);
 
-      // When there is no split result it means that we can't insert element to model tree, so let's skip it.
-      if (!splitResult) {
-        return;
-      }
+        // When there is no split result it means that we can't insert element to model tree, so let's skip it.
+        if (!splitResult) {
+          return;
+        }
 
-      // Insert element on allowed position.
-      conversionApi.writer.insert(modelNode, splitResult.position);
+        // Insert element on allowed position.
+        conversionApi.writer.insert(modelNode, splitResult.position);
 
-      // Consume appropriate value from consumable values list.
-      consumable.consume(viewItem, { name: true });
+        // Consume appropriate value from consumable values list.
+        consumable.consume(viewItem, { name: true });
 
-      const parts = conversionApi.getSplitParts(modelNode);
+        const parts = conversionApi.getSplitParts(modelNode);
 
-      // Set conversion result range.
-      data.modelRange = writer.createRange(
-        conversionApi.writer.createPositionBefore(modelNode),
-        conversionApi.writer.createPositionAfter(parts[parts.length - 1]),
-      );
+        // Set conversion result range.
+        data.modelRange = writer.createRange(
+          conversionApi.writer.createPositionBefore(modelNode),
+          conversionApi.writer.createPositionAfter(parts[parts.length - 1]),
+        );
 
-      // Now we need to check where the `modelCursor` should be.
-      if (splitResult.cursorParent) {
-        // If we split parent to insert our element then we want to continue conversion in the new part of the split parent.
-        //
-        // before: <allowed><notAllowed>foo[]</notAllowed></allowed>
-        // after:  <allowed><notAllowed>foo</notAllowed><converted></converted><notAllowed>[]</notAllowed></allowed>
+        // Now we need to check where the `modelCursor` should be.
+        if (splitResult.cursorParent) {
+          // If we split parent to insert our element then we want to continue conversion in the new part of the split parent.
+          //
+          // before: <allowed><notAllowed>foo[]</notAllowed></allowed>
+          // after:  <allowed><notAllowed>foo</notAllowed><converted></converted><notAllowed>[]</notAllowed></allowed>
 
-        data.modelCursor = conversionApi.writer.createPositionAt(splitResult.cursorParent, 0);
-      } else {
-        // Otherwise just continue after inserted element.
-        data.modelCursor = data.modelRange.end;
-      }
-    }, { priority: 'high' });
+          data.modelCursor = conversionApi.writer.createPositionAt(splitResult.cursorParent, 0);
+        } else {
+          // Otherwise just continue after inserted element.
+          data.modelCursor = data.modelRange.end;
+        }
+      },
+      // Ensures MathType processes the Wiris formulas before other plugins, preventing conflicts.
+      { priority: "high" },
+    );
 
     /**
      * Whether the given view <math> element has a LaTeX annotation element.
