@@ -16,7 +16,7 @@
   "author": "Integrations",
   "license": "ISC",
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.10"
+    "@wiris/mathtype-html-integration-devkit": "1.17.11"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.1",
