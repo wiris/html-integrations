@@ -11107,8 +11107,7 @@
           const languageObject = this.editorObject.config.get("language");
           if (languageObject != null) {
               if (typeof languageObject === "object") {
-                  // eslint-disable-next-line no-prototype-builtins
-                  if (languageObject.hasOwnProperty("ui")) {
+                  if (Object.prototype.hasOwnProperty.call(languageObject, "ui")) {
                       return languageObject.ui;
                   }
                   return languageObject;
@@ -11420,7 +11419,7 @@
 
   var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-  var version = "8.13.3";
+  var version = "8.13.4";
   var packageInfo = {
   	version: version};
 
@@ -11657,17 +11656,19 @@
               if (viewItem.getClassNames().next().value !== "Wirisformula") {
                   return;
               }
-              // Check if we can consume the element name
+              //  The following code ensures that the element's name, attributes, and classes are consumed.
+              // This means that they are marked as handled so that other parts of the system or plugins don't process them again.
+              // Check if we can consume the element name.
               if (!consumable.test(viewItem, {
                   name: true
               })) {
                   return;
               }
-              // Consume the name, attributes, and classes so nothing else processes it
+              // Consume the name, attributes, and classes so nothing else processes it.
               consumable.consume(viewItem, {
                   name: true
               });
-              for (const [attrName] of viewItem.getAttributes()){
+              for (const attrName of viewItem.getAttributes()){
                   consumable.consume(viewItem, {
                       attributes: [
                           attrName
@@ -11716,8 +11717,9 @@
                   // Otherwise just continue after inserted element.
                   data.modelCursor = data.modelRange.end;
               }
-          }, {
-              priority: 'high'
+          }, // Ensures MathType processes the Wiris formulas before other plugins, preventing conflicts.
+          {
+              priority: "high"
           });
           /**
        * Whether the given view <math> element has a LaTeX annotation element.

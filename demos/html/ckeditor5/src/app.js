@@ -2,6 +2,8 @@
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
 import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
+// import coreTranslations from 'ckeditor5/translations/de.js';
+
 // Load styles.
 import "./static/style.css";
 import "ckeditor5/ckeditor5.css";
@@ -38,7 +40,13 @@ ClassicEditor.create(document.querySelector("#editor"), {
     "alignment:right",
     "sourceEditing",
   ],
-  // language: 'de',
+  // translations: [
+  //   coreTranslations,
+  // ],
+  // language: {
+  //   ui: 'de',
+  //   content: 'de'
+  // },
   // mathTypeParameters: {
   //   editorParameters: { language: 'es' }, // MathType config, including language
   // },
