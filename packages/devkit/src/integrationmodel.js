@@ -668,7 +668,8 @@ export default class IntegrationModel {
       (element, event) => {
         this.doubleClickHandler(element, event);
         // Avoid creating the double click listener more than once for each element.
-        event.stopImmediatePropagation();
+        // This also allows CKEditor4 to add their own double click listener.
+        event.preventDefault();
       },
       (element, event) => {
         this.mousedownHandler(element, event);

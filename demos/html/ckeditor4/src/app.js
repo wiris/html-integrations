@@ -32,7 +32,7 @@ CKEDITOR.replace("editor", {
       name: "wirisplugins",
       items: ["ckeditor_wiris_formulaEditor", "ckeditor_wiris_formulaEditorChemistry"],
     },
-    { name: "others" },
+    { name: "others", items: ["Image"] },
   ],
 
   licenseKey: process.env.CKEDITOR4_API_KEY || "",
