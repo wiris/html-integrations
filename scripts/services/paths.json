@@ -39,6 +39,11 @@
     "demo": false,
     "port": ""
   },
+  "mathTinyMCE8": {
+    "path": "./packages/tinymce8/",
+    "demo": false,
+    "port": ""
+  },
   "vueCKEditor5": {
     "path": "./demos/vue/ckeditor5/",
     "demo": true,
@@ -78,5 +83,10 @@
     "path": "./demos/html/tinymce7/",
     "demo": true,
     "port": "8009"
+  },
+  "htmlTinyMCE8": {
+    "path": "./demos/html/tinymce8/",
+    "demo": true,
+    "port": "8010"
   }
 }
