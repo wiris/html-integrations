@@ -127,13 +127,13 @@ jobs:
           - framework: vue
             editor: viewer
           - framework: vue
+            editor: tinymce5
+          - framework: vue
             editor: tinymce6
           - framework: vue
             editor: tinymce7
           - framework: vue
             editor: tinymce8
-          - framework: vue
-            editor: tinymce5
           - framework: vue
             editor: generic
           - framework: vue

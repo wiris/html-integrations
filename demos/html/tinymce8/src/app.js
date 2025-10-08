@@ -43,7 +43,7 @@ tinymce.init({
       ); //eslint-disable-line
 
       // Insert the initial content in the editor.
-      editor.setContent(Generic.editorContentMathML);
+      editor.insertContent(Generic.editorContentMathML);
     });
   },
 });
