@@ -199,7 +199,7 @@ jobs:
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js
               fi
               if [ "${{ matrix.editor }}" = "tinymce8" ]; then
-                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce8/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce8/plugin.min.js
+                aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js
               fi
               if [ "${{ matrix.editor }}" = "viewer" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-viewer/dist/WIRISplugins.js

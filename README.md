@@ -63,7 +63,7 @@ Visit the [MathType integrations release notes](https://docs.wiris.com/mathtype/
 | [`@wiris/mathtype-froala`](packages/mathtype-froala)                                    | <a href="https://www.npmjs.com/package/@wiris/mathtype-froala"><img src="https://img.shields.io/npm/v/@wiris/mathtype-froala"></a>                                   | MathType Web for Froala editor.                             |
 | [`@wiris/mathtype-tinymce5`](packages/mathtype-tinymce5)                                | <a href="https://www.npmjs.com/package/@wiris/mathtype-tinymce5"><img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5"></a>                               | MathType Web for TinyMCE5 editor.                           |
 | [`@wiris/mathtype-tinymce6`](packages/mathtype-tinymce6)                                | <img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce5">                                                                                                    | MathType Web for TinyMCE6 editor.                           |
-| [`@wiris/mathtype-tinymce7`](packages/mathtype-tinymce7)                                | <img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce7">                                                                                                    | MathType Web for TinyMCE7 editor.                           |
+| [`@wiris/mathtype-tinymce7`](packages/mathtype-tinymce7)                                | <img src="https://img.shields.io/npm/v/@wiris/mathtype-tinymce7">                                                                                                    | MathType Web for TinyMCE7 and TinyMCE8 editor.                           |
 
 ## Documentation and important links
 

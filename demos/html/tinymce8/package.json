@@ -5,14 +5,14 @@
   "description": "A simple html App integrating WIRIS MathType in a TinyMCE8 rich text editor.",
   "main": "app.js",
   "scripts": {
-    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce8 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
-    "prestart": "yarn && yarn link @wiris/mathtype-tinymce8 && yarn link @wiris/mathtype-html-integration-devkit"
+    "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce7 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
+    "prestart": "yarn && yarn link @wiris/mathtype-tinymce7 && yarn link @wiris/mathtype-html-integration-devkit"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
     "@wiris/mathtype-html-integration-devkit": "*",
-    "@wiris/mathtype-tinymce8": "*",
+    "@wiris/mathtype-tinymce7": "*",
     "tinymce": "^8.1.2"
   },
   "devDependencies": {

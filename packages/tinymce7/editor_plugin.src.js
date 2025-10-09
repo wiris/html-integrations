@@ -109,8 +109,8 @@ export class TinyMceIntegration extends IntegrationModel {
     // When a formula is updated TinyMCE 'Change' event must be fired.
     // See https://www.tiny.cloud/docs/advanced/events/#change for further information.
     const listener = Listeners.newListener("onAfterFormulaInsertion", () => {
-      if (typeof this.editorObject.fire !== "undefined") {
-        this.editorObject.fire("Change");
+      if (typeof this.editorObject.dispatch !== "undefined") {
+        this.editorObject.dispatch("Change");
       }
     });
     this.getCore().addListener(listener);
@@ -135,8 +135,8 @@ export class TinyMceIntegration extends IntegrationModel {
    * @param {string} mathml - MathML to generate the formula and can be caught with the event.
    */
   updateFormula(mathml) {
-    if (typeof this.editorObject.fire !== "undefined") {
-      this.editorObject.fire("ExecCommand", {
+    if (typeof this.editorObject.dispatch !== "undefined") {
+      this.editorObject.dispatch("ExecCommand", {
         command: "updateFormula",
         value: mathml,
       });

@@ -36,7 +36,7 @@ module.exports = (config, context) => {
             context: path.dirname(require.resolve(`tinymce`)),
           },
           {
-            from: `${path.dirname(require.resolve(`@wiris/mathtype-tinymce8`))}/plugin.min.js`,
+            from: `${path.dirname(require.resolve(`@wiris/mathtype-tinymce7`))}/plugin.min.js`,
             to: path.resolve(__dirname, "dist/plugin.min.js"),
           },
         ],
