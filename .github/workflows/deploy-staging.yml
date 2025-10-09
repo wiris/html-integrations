@@ -158,7 +158,7 @@ jobs:
           CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
-        # We build tinymce7 when the editor is tinymce8 as they use the same package
+        # We build tinymce7 package for tinymce8 editor as they use the same package
         run: |
           unset NODE_OPTIONS
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
