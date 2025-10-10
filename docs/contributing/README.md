@@ -128,6 +128,7 @@ For brevity, `<scope>` will take one of these next values depending on the affec
 | `tinymce5`  | `mathtype-tinymce5`                |
 | `tinymce6`  | `mathtype-tinymce6`                |
 | `tinymce7`  | `mathtype-tinymce7`*                |
+| `tinymce8`  | `mathtype-tinymce7`*                |
 
 *`mathtype-tinymce7` package is also compatible with TinyMCE8 editor.
 
