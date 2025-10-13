@@ -121,17 +121,19 @@ jobs:
       fail-fast: false
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
-        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "tinymce7", "viewer"]
+        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "tinymce7", "tinymce8", "viewer"]
         framework: ["html", "vue"]
         exclude:
           - framework: vue
             editor: viewer
           - framework: vue
+            editor: tinymce5
+          - framework: vue
             editor: tinymce6
           - framework: vue
             editor: tinymce7
           - framework: vue
-            editor: tinymce5
+            editor: tinymce8
           - framework: vue
             editor: generic
           - framework: vue
@@ -156,11 +158,18 @@ jobs:
           CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
+        # We build tinymce7 package for tinymce8 editor as they use the same package
         run: |
           unset NODE_OPTIONS
           npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
           yarn
-          yarn nx build ${{ matrix.editor }}
+          if [ "${{ matrix.editor }}" == "tinymce8" ]; then
+            echo "Building editor: ${{ matrix.editor }}"
+            yarn nx build tinymce7
+          else
+            echo "Building editor: ${{ matrix.editor }}"
+            yarn nx build ${{ matrix.editor }}
+          fi
           yarn nx build ${{ matrix.framework }}-${{ matrix.editor }}
 
       - name: Deploy the demos to S3 bucket
@@ -193,7 +202,7 @@ jobs:
               if [ "${{ matrix.editor }}" = "tinymce6" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce6/plugin.min.js
               fi
-              if [ "${{ matrix.editor }}" = "tinymce7" ]; then
+              if [ "${{ matrix.editor }}" = "tinymce7" ] || [ "${{ matrix.editor }}" = "tinymce8" ]; then
                 aws s3 cp demos/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js  s3://wiris-integrations-staging-html/${{ matrix.branch }}/html/${{ matrix.editor }}/node_modules/@wiris/mathtype-tinymce7/plugin.min.js
               fi
               if [ "${{ matrix.editor }}" = "viewer" ]; then
