@@ -1,4 +1,5 @@
-# MathType for TinyMCE V7
+# MathType for TinyMCE V7 and V8
+> **Warning:** This package works for TinyMCE v7 and v8.
 
 Type and handwrite mathematical notation with MathType.
 
@@ -20,7 +21,9 @@ Easily include quality math equations in your documents and digital content.
    npm install @wiris/mathtype-tinymce7
    ```
 
-   > MathType is fully compatible with TinyMCE 7 from version 7.8.0.
+   > This module is fully compatible with:
+   >  - TinyMCE 7 from version 7.8.0
+   >  - TinyMCE 8
 
 2. Add the plugin as an external plugin:
 
@@ -28,7 +31,7 @@ Easily include quality math equations in your documents and digital content.
    tinymce.init({ external_plugins: { tiny_mce_wiris: `node_modules/@wiris/mathtype-tinymce7/plugin.min.js` } });
    ```
 
-3. Add MathType buttons to the TinyMCE7 toolbar and the recommended settings:
+3. Add MathType buttons to the TinyMCE toolbar and the recommended settings:
 
    ```js
    tinymce.init({
@@ -67,8 +70,6 @@ Easily include quality math equations in your documents and digital content.
       tiny_mce_wiris: wirisPlugin,
    });
   ```
-
-- The editor's caret is lost when inserting a new formula on Safari with ChemType [#486](https://github.com/wiris/html-integrations/issues/486)
 
 ## Services
 
