@@ -49,7 +49,7 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 if (Object.prototype.hasOwnProperty.call(languageObject, "ui")) {
                     return languageObject.ui;
                 }
-                return languageObject;
+                return this.editorObject.locale.uiLanguage;
             }
             return languageObject;
         }

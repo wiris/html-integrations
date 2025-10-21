@@ -46,7 +46,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         if (Object.prototype.hasOwnProperty.call(languageObject, "ui")) {
           return languageObject.ui;
         }
-        return languageObject;
+        return this.editorObject.locale.uiLanguage;
       }
       return languageObject;
     }
