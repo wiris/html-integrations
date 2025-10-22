@@ -30,7 +30,7 @@
     "prepack": "yarn && npm run build"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.11"
+    "@wiris/mathtype-html-integration-devkit": "1.17.12"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
