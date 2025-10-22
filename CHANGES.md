@@ -7,9 +7,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### 8.14.0 2025-10-22
+
+- feat: Add TinyMCE8 compatibility. #KB-60372
+- fix: CK5 language config property check null. #KB-59658
+- fix: Viewer regex with spacial character. #KB-59690
+- fix: Improve error handling. #KB-48497
+- fix: Double click blocks other plugins. #KB-46220
+- fix: Make modal more CSP friendly. #KB-59711
+- fix: CKEditor 5 support to multiple instance on same page. #KB-59680
+- fix: CKeditor 5 compatibility with TextPartLanguage plugin. #KB-45315
+
 ### 8.13.4 2025-08-26
 
-- fix: Copy & Paste adds 2 formulas when image plugin enabled on CK5. (#KB-54677)
+- fix: Copy & Paste adds 2 formulas when image plugin enabled on CK5. #KB-54677
 
 ### 8.13.3 2025-07-17
 
