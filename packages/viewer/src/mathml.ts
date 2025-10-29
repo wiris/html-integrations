@@ -79,10 +79,10 @@ export async function renderMathML(properties: Properties, root: HTMLElement): P
 
   // Fixed to get all possible math elements, including namespaced ones.
   const allMathElements = [
-    ...root.getElementsByTagName("math"),           // Standard <math>
-    ...root.getElementsByTagNameNS("*", "math"),    // Any valid namespaced math
-    ...root.querySelectorAll("m\\:math"),           // CSS: <m:math> (literal colon)
-    ...root.querySelectorAll("mml\\:math"),         // CSS: <mml:math> (literal colon)
+    ...root.getElementsByTagName("math"), // Standard <math>
+    ...root.getElementsByTagNameNS("*", "math"), // Any valid namespaced math
+    ...root.querySelectorAll("m\\:math"), // CSS: <m:math> (literal colon)
+    ...root.querySelectorAll("mml\\:math"), // CSS: <mml:math> (literal colon)
   ];
 
   for (const mathElement of allMathElements) {
