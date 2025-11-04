@@ -247,6 +247,15 @@ export default class CKEditor5Integration extends IntegrationModel {
       this.editorObject.model.change((writer) => {
         const { latexRange } = this.core.editionProperties;
 
+        // Add null check for latexRange.
+        // When the editor is initialized in a textarea element, latexRange may not be set on initial load.
+        // This check ensures formulas can still be inserted by falling back to MathML insertion if latexRange is not available.
+        if (!latexRange) {
+          // Fallback to regular MathML insertion if latexRange is not available
+          this.insertMathml(mathml);
+          return;
+        }
+
         const startNode = this.findText(latexRange.startContainer);
         const endNode = this.findText(latexRange.endContainer);
 
