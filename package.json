@@ -9,8 +9,7 @@
     "preinstall": "node packages/res/git-data.mjs",
     "postinstall": "rm -rf ~/.config/yarn/link/* && for d in packages/*/ ; do (cd $d && yarn link); done",
     "test-old": "node scripts/services/executeTests.js",
-    "test": "nx run-many --target=test --all --parallel",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --config=tests/e2e/playwright.config.ts",
     "build": "cd demos/html/generic && npm install && npm start &",
     "lint": "prettier --write . --ignore-path .gitignore --ignore-path .prettierignore --ignore-path .eslintignore && nx run-many --target=lint --all --parallel --fix"
   },

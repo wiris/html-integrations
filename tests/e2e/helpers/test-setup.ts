@@ -12,16 +12,19 @@ export async function setupEditor(page: Page, editorName: string): Promise<TestS
   const editorManager = new EditorManager()
   const availableEditors = editorManager.getEditors(page)
   const editor = availableEditors.find(e => e.getName() === editorName)
-  
+
   if (!editor) {
     throw new Error(`Editor ${editorName} not found`)
   }
-  
+
   const wirisEditor = new WirisEditor(page)
-  
+
   return { editor, wirisEditor }
 }
 
 export function getEditorsFromEnv(): string[] {
-  return process.env.HTML_EDITOR?.split('|') || ['generic', 'ckeditor5', 'tinymce8']
+  if (!process.env.HTML_EDITOR) {
+    throw new Error('Environment variable HTML_EDITOR is not set')
+  }
+  return process.env.HTML_EDITOR.split('|')
 }

@@ -28,10 +28,35 @@ export default abstract class BaseEditor extends BasePage {
 
   /**
    * Constructs the URL for the specific editor and opens it in the browser.
-   * @returns {Promise<string>} The URL of the opened editor. Unused in the current implementation
-   */
+   * @returns {Promise<string>} The URL of the opened editor. **/
   public async open(): Promise<string> {
-    await this.page.goto(`${process.env.TEST_BRANCH}/html/${this.getName()}/`)
+    const isStaging = process.env.USE_STAGING === 'true'
+
+    let url: string
+
+    if (isStaging) {
+      url = `${process.env.TEST_BRANCH}/html/${this.getName()}/`
+    } else {
+      // Use localhost with each editor's corresponding port
+      const editorPortMap = {
+        'ckeditor4': 8001,
+        'ckeditor5': 8002,
+        'froala': 8003,
+        'tinymce5': 8004,
+        'tinymce6': 8005,
+        'tinymce7': 8006,
+        'generic': 8008,
+      }
+
+      const port = editorPortMap[this.getName() as keyof typeof editorPortMap]
+      if (!port) {
+        throw new Error(`No port mapping found for editor: ${this.getName()}`)
+      }
+
+      url = `http://localhost:${port}/`
+    }
+
+    await this.page.goto(url)
     await this.page.waitForLoadState('domcontentloaded')
     return this.page.url()
   }
@@ -89,7 +114,7 @@ export default abstract class BaseEditor extends BasePage {
     } else {
       frameOrPage = this.page
     }
-    
+
     await this.page.waitForTimeout(500)
 
     const equationsInEditor = await frameOrPage.locator(`${this.editField} img[alt][data-mathml]`)
@@ -126,7 +151,7 @@ export default abstract class BaseEditor extends BasePage {
     if (this.iframe) {
       return this.page.frameLocator(this.iframe).locator(`${this.editField} img[alt="${equation.altText}"]`)
     }
-    
+
     return this.page.locator(`${this.editField} img[alt="${equation.altText}"]`)
   }
 
@@ -157,7 +182,7 @@ export default abstract class BaseEditor extends BasePage {
    */
   public async focus(): Promise<void> {
     let editFieldLocator: Locator
-    
+
     if (this.iframe) {
       editFieldLocator = this.page.frameLocator(this.iframe).locator(this.editField)
     } else {
@@ -173,7 +198,7 @@ export default abstract class BaseEditor extends BasePage {
    */
   public async appendText(textToInsert: string): Promise<void> {
     await this.focus()
-    
+
     await this.page.keyboard.press('Control+End')
     await this.pause(500)
     await this.page.keyboard.type(textToInsert)
@@ -186,11 +211,11 @@ export default abstract class BaseEditor extends BasePage {
    */
   public async openWirisEditorForLastInsertedFormula(toolbar: Toolbar, equation: Equation): Promise<void> {
     const isFroala = this.getName() === 'froala'
-    
+
     if (isFroala) {
       const equationElement = this.getEquationElement(equation)
       await equationElement.click()
-      
+
       const mathTypeButton = this.getContextualToolbarMathTypeButton?.()
       if (mathTypeButton) {
         await this.page.locator(mathTypeButton).click()
@@ -246,7 +271,7 @@ export default abstract class BaseEditor extends BasePage {
     if (!textContents) {
       return undefined
     }
-    
+
     const expressions = textContents.match(/\$\$.*?\$\$/g)?.map((latexEquation) => latexEquation.trim().replaceAll('$$', ''))
 
     return expressions
@@ -283,19 +308,19 @@ export default abstract class BaseEditor extends BasePage {
 
   public async dragDropLastFormula(equation: Equation): Promise<void> {
     await this.focus()
-    
+
     const equationElement = this.getEquationElement(equation)
     let editDivElement: Locator
-    
+
     if (this.iframe) {
       editDivElement = this.page.frameLocator(this.iframe).locator(this.editField)
     } else {
       editDivElement = this.page.locator(this.editField)
     }
-    
+
     const equationBox = await equationElement.boundingBox()
     const editDivBox = await editDivElement.boundingBox()
-    
+
     if (equationBox && editDivBox) {
       await this.page.mouse.move(equationBox.x + equationBox.width / 2, equationBox.y + equationBox.height / 2)
       //await this.page.mouse.click(equationBox.x + equationBox.width / 2, equationBox.y + equationBox.height / 2)
@@ -340,7 +365,7 @@ export default abstract class BaseEditor extends BasePage {
     }
 
     await this.pause(1000)
-    
+
     const element = frameOrPage.locator(this.editField)
     const rawText = (await element.textContent()) ?? ''
     const normalized = rawText.replace(/[\s\uFEFF\xA0]+/g, '')
@@ -353,17 +378,17 @@ export default abstract class BaseEditor extends BasePage {
 
   public async getImageSize(equation: Equation): Promise<{ width: number; height: number } | null> {
     await this.focus()
-    
+
     const equationElement = this.getEquationElement(equation)
     return await equationElement.boundingBox()
   }
 
   public async resizeImageEquation(equation: Equation): Promise<void> {
     await this.focus()
-    
+
     const equationElement = this.getEquationElement(equation)
     await equationElement.click()
-    
+
     const box = await equationElement.boundingBox()
     if (box) {
       await this.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
@@ -385,7 +410,7 @@ export default abstract class BaseEditor extends BasePage {
 
   public async isTextBoldAndItalic(text: string): Promise<boolean> {
     await this.focus()
-    
+
     let frameOrPage: Page | FrameLocator
     if (this.iframe) {
       frameOrPage = this.page.frameLocator(this.iframe)
@@ -402,20 +427,20 @@ export default abstract class BaseEditor extends BasePage {
 
     const elements = frameOrPage.locator(`${this.editField} >> text="${text}"`)
     const count = await elements.count()
-    
+
     for (let i = 0; i < count; i++) {
       const element = elements.nth(i)
       const fontWeight = await element.evaluate((el) => (globalThis as any).getComputedStyle(el).fontWeight)
       const fontStyle = await element.evaluate((el) => (globalThis as any).getComputedStyle(el).fontStyle)
-      
+
       const isBold = parseInt(fontWeight) >= 700
       const isItalic = fontStyle === 'italic'
-      
+
       if (isBold && isItalic) {
         return true
       }
     }
-    
+
     return false
   }
 
@@ -428,18 +453,18 @@ export default abstract class BaseEditor extends BasePage {
 
   public async checkElementAlignment(): Promise<void> {
     await this.focus()
-    
+
     let editContent: Locator
-    
+
     if (this.iframe) {
       editContent = this.page.frameLocator(this.iframe).locator(this.editField)
     } else {
       editContent = this.page.locator(this.editField)
     }
-    
+
     // Take screenshot for visual comparison
-    await editContent.screenshot({ 
-      path: `screenshots/${this.getName()}_alignment.png` 
+    await editContent.screenshot({
+      path: `screenshots/${this.getName()}_alignment.png`
     })
   }
 
