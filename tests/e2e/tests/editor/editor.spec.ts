@@ -104,7 +104,7 @@ for (const editorName of editors) {
     })
 
     test.describe('Text Alignment', () => {
-      test.only(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
+      test(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
 
         await editor.open()
