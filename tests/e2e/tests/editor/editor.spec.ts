@@ -16,7 +16,7 @@ for (const editorName of editors) {
         test.fail(isKnownIssue, 'Known issue: generic editors fails to undo equation');
 
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.clear()
         await editor.openWirisEditor(Toolbar.MATH)
@@ -36,7 +36,7 @@ for (const editorName of editors) {
     test.describe('Resize', () => {
       test(`MTHTML-22 Formulas cannot be resized ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.clear()
         await editor.openWirisEditor(Toolbar.MATH)
@@ -56,11 +56,11 @@ for (const editorName of editors) {
     test.describe('Source code', () => {
       test(`MTHTML-87 Edit source code of a math formula with ${editorName} editor`, async ({ page }) => {
         const { editor } = await setupEditor(page, editorName)
-        
+
         // Skip test if editor doesn't support source code editing
         const hasSourceCodeButton = editor.getSourceCodeEditorButton !== undefined
         test.skip(!hasSourceCodeButton, `Source code editing not supported for ${editorName}`)
-        
+
         await editor.open()
         await editor.clear()
         //await editor.openWirisEditor(Toolbar.MATH) TODO: review if we want to open the wiris editor first, fails tests in some editors
@@ -76,7 +76,7 @@ for (const editorName of editors) {
       test(`MTHTML-79 Validate formula insertion after typing text that contains styles: ${editorName} editor`, async ({ page }) => {
         test.fixme((editorName === 'generic') && test.info().project.name === 'firefox', `Ctrl+B and Ctrl+I not working for generic editor on Firefox`)
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.clear()
         const textBeginning = 'Text_Beginning'
@@ -104,9 +104,9 @@ for (const editorName of editors) {
     })
 
     test.describe('Text Alignment', () => {
-      test(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
+      test.only(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.clear()
         await page.keyboard.type('___')

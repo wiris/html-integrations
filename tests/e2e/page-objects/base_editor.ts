@@ -2,7 +2,7 @@ import { Page, Locator, expect, FrameLocator } from '@playwright/test'
 import Toolbar from '../enums/toolbar'
 import type Equation from '../interfaces/equation'
 import BasePage from './page'
-import page from './page'
+const path = require('path')
 
 /**
  * Abstract class used in each of the HTML editors which includes the methods for all the editors, and specifies the properties each editor needs.
@@ -34,6 +34,7 @@ export default abstract class BaseEditor extends BasePage {
 
     let url: string
 
+    // Determine the URL based on the environment (staging or local) and the html editor name
     if (isStaging) {
       url = `${process.env.TEST_BRANCH}/html/${this.getName()}/`
     } else {
@@ -464,7 +465,7 @@ export default abstract class BaseEditor extends BasePage {
 
     // Take screenshot for visual comparison
     await editContent.screenshot({
-      path: `screenshots/${this.getName()}_alignment.png`
+      path: path.resolve(__dirname, '../screenshots', `${this.getName()}_alignment.png`)
     })
   }
 

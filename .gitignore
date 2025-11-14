@@ -7,11 +7,6 @@
 package-lock.json
 packages/*/yarn.lock
 
-# Ignore Playwright test reports and results
-playwright-report
-test-results
-screenshots
-
 node_modules
 
 # Verdaccio

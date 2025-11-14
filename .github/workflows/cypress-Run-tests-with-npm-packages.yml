@@ -1,0 +1,68 @@
+name: E2E Tests - All Editors
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Matrix strategy to enable per html editor parallelization
+  e2e-tests:
+    name: E2E Tests - ${{ matrix.editor }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Continue other jobs even if one fails
+      matrix:
+        editor:
+          - generic
+          - ckeditor4
+          - ckeditor5
+          - froala
+          - tinymce5
+          - tinymce6
+          - tinymce7
+          - tinymce8
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '23.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: |
+          yarn install --frozen-lockfile
+          yarn playwright install --with-deps
+
+      - name: Build ${{ matrix.editor }} packages
+        run: |
+          yarn nx build ${{ matrix.editor }}
+          yarn nx build html-${{ matrix.editor }}
+
+      - name: Run E2E tests for ${{ matrix.editor }}
+        id: e2e-${{ matrix.editor }}
+        run: HTML_EDITOR=${{ matrix.editor }} yarn test:e2e
+        continue-on-error: true
+
+      - name: Publish test results for ${{ matrix.editor }}
+        uses: dorny/test-reporter@d61b558e8df85cb60d09ca3e5b09653b4477cea7 # v2.0.0
+        if: always()
+        with:
+          name: E2E Tests - ${{ matrix.editor }}
+          path: tests/e2e/test-results/results.xml
+          reporter: java-junit
+          fail-on-error: ${{ steps.e2e.outcome == 'failure' }}
+        continue-on-error: true
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.editor }}
+          path: tests/e2e/playwright-report/
+          retention-days: 2 # TODO: adjust retention if needed. Be careful with storage limits.
+

@@ -8,7 +8,6 @@ const Equations: Record<string, Equation> = {
   styledSingleNumber: {
     altText: 'bold italic 1',
     mathml: '<math style="font-family:Arial" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathsize="72px"><mn mathvariant="bold-italic" mathcolor="#FF0000">1</mn></mstyle></math>'
-
   },
   squareRootY: {
     altText: 'square root of y',
