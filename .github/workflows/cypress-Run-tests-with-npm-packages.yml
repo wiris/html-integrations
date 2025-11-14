@@ -44,7 +44,7 @@ jobs:
           yarn nx build html-${{ matrix.editor }}
 
       - name: Run E2E tests for ${{ matrix.editor }}
-        id: e2e-${{ matrix.editor }}
+        id: e2e
         run: HTML_EDITOR=${{ matrix.editor }} yarn test:e2e
         continue-on-error: true
 
