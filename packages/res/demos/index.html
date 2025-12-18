@@ -9,8 +9,19 @@
     </ul>
   </div>
 </header>
-<div id="editor">
-  <!-- Default content of the editor div is loaded through imports.js -->
+<div class="main-container">
+  <div class="editor-container editor-container--classic-editor editor-container--include-annotations" id="editor-container">
+    <div class="editor-container__editor-wrapper">
+      <div class="editor-container__editor">
+        <div id="editor">
+          <!-- Default content of the editor div is loaded through imports.js -->
+        </div>
+      </div>
+      <div class="editor-container__sidebar">
+        <div id="editor-annotations"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="actions">
   <a class="btn btn_update-distances btn_update-display" id="btn_update" href="#" data-testid="demo-update-button"
