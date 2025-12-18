@@ -64,8 +64,9 @@ ClassicEditor.create(document.querySelector("#editor"), {
     users.addUser({ id: "u1", name: "Editor User", initials: "EU", color: "#4a8cff" });
     users.defineMe("u1");
 
-    // Enable suggestions mode by default.
+    // Disable suggestions mode by default.
     editor.execute("trackChanges");
+    editor.execute('trackChanges', { forceValue: false });
 
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
