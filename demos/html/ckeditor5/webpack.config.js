@@ -1,6 +1,6 @@
-const path = require("path");
+const path = require("node:path");
 
-module.exports = (config, context) => {
+function createConfig(config, context) {
   return {
     mode: "development",
     entry: {
@@ -17,7 +17,7 @@ module.exports = (config, context) => {
       static: {
         directory: path.join(__dirname, "./"),
       },
-      onListening: !config.devServer ? "" : config.devServer.onListening,
+      onListening: config.devServer ? config.devServer.onListening : "",
       open: true,
       port: 8002,
       hot: true,
@@ -25,7 +25,6 @@ module.exports = (config, context) => {
     },
     // Set watch to true for dev purposes.
     watch: false,
-    mode: "none",
     module: {
       rules: [
         {
@@ -37,17 +36,27 @@ module.exports = (config, context) => {
           exclude: /node_modules/,
           use: ["babel-loader"],
         },
+        // CKEditor and premium-features CSS: inject as singleton with data-cke attribute
         {
-          test: /\.css$/,
+          test: /(ckeditor5|ckeditor5-premium-features)\/.*\.css$/,
           use: [
             {
               loader: "style-loader",
               options: {
                 injectType: "singletonStyleTag",
-                attributes: {
-                  "data-cke": true,
-                },
+                attributes: { "data-cke": true },
               },
+            },
+            "css-loader",
+          ],
+        },
+        // App CSS: regular injection without data-cke
+        {
+          test: /\.css$/,
+          exclude: /(ckeditor5|ckeditor5-premium-features)\/.*\.css$/,
+          use: [
+            {
+              loader: "style-loader",
             },
             "css-loader",
           ],
@@ -64,4 +73,6 @@ module.exports = (config, context) => {
     // By default webpack logs warnings if the bundle is bigger than 200kb.
     performance: { hints: false },
   };
-};
+}
+
+module.exports = createConfig;
