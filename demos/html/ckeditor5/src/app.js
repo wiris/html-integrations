@@ -1,6 +1,7 @@
 // Load scripts.
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
 import { TrackChanges, Comments } from "ckeditor5-premium-features";
+import "ckeditor5-premium-features/ckeditor5-premium-features.css";
 import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // import coreTranslations from 'ckeditor5/translations/de.js';
