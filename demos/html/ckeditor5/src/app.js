@@ -43,6 +43,10 @@ ClassicEditor.create(document.querySelector("#editor"), {
     "comment",
     "sourceEditing",
   ],
+  // Configure the sidebar for annotations
+  sidebar: {
+    container: document.querySelector('#editor-annotations')
+  },
   // translations: [
   //   coreTranslations,
   // ],
