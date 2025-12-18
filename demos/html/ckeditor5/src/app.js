@@ -70,6 +70,8 @@ ClassicEditor.create(document.querySelector("#editor"), {
     // Enable suggestions mode by default.
     editor.execute("trackChanges");
 
+    editor.execute('trackChanges', { forceValue: false });
+
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
     //   e.preventDefault();
