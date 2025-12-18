@@ -170,7 +170,10 @@ export default class CKEditor5Integration extends IntegrationModel {
         // Remove selection
         if (!viewSelection.isCollapsed) {
           for (const range of viewSelection.getRanges()) {
-            writer.remove(this.editorObject.editing.mapper.toModelRange(range));
+            const modelRange = this.editorObject.editing.mapper.toModelRange(range);
+            const modelSelection = this.editorObject.model.createSelection(modelRange);
+
+            this.editorObject.model.deleteContent(modelSelection);
           }
         }
 
@@ -189,7 +192,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         if (mathml) {
           this.editorObject.model.insertObject(modelElementNew, position);
         }
-        writer.remove(modelElementOld);
+        this.editorObject.model.deleteContent(this.editorObject.model.createSelection(modelElementOld,'on'));
       }
 
       // eslint-disable-next-line consistent-return
@@ -280,7 +283,9 @@ export default class CKEditor5Integration extends IntegrationModel {
           }
         }
 
-        writer.remove(range);
+        const modelSelection = this.editorObject.model.createSelection(range);
+
+        this.editorObject.model.deleteContent(modelSelection);
         writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
       });
     } else {
