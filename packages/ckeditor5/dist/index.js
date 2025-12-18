@@ -150,7 +150,9 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 // Remove selection
                 if (!viewSelection.isCollapsed) {
                     for (const range of viewSelection.getRanges()){
-                        writer.remove(this.editorObject.editing.mapper.toModelRange(range));
+                        const modelRange = this.editorObject.editing.mapper.toModelRange(range);
+                        const modelSelection = this.editorObject.model.createSelection(modelRange);
+                        this.editorObject.model.deleteContent(modelSelection);
                     }
                 }
                 // Set carret after the formula
@@ -166,7 +168,7 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 if (mathml) {
                     this.editorObject.model.insertObject(modelElementNew, position);
                 }
-                writer.remove(modelElementOld);
+                this.editorObject.model.deleteContent(this.editorObject.model.createSelection(modelElementOld, 'on'));
             }
             // eslint-disable-next-line consistent-return
             return modelElementNew;
@@ -237,7 +239,8 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                         range = writer.createRange(startPosition, endPosition);
                     }
                 }
-                writer.remove(range);
+                const modelSelection = this.editorObject.model.createSelection(range);
+                this.editorObject.model.deleteContent(modelSelection);
                 writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
             });
         } else {
@@ -378,7 +381,9 @@ class MathType extends Plugin {
         const integration = this._addIntegration();
         currentInstance = integration;
         // Add the MathType and ChemType commands to the editor
-        this._addCommands();
+        this._addCommands(integration);
+        // Add the track changes feature integration
+        this._addTrackChangesIntegration(integration);
         // Add the buttons for MathType and ChemType
         this._addViews(integration);
         // Registers the <mathml> element in the schema
@@ -817,6 +822,18 @@ class MathType extends Plugin {
             currentInstance,
             Latex
         };
+    }
+    _addTrackChangesIntegration(integration) {
+        const { editor } = this;
+        if (editor.plugins.has("TrackChangesEditing")) {
+            const trackChangesEditing = editor.plugins.get("TrackChangesEditing");
+            // Makes MathType and ChemType buttons available when editor is in the track changes mode
+            trackChangesEditing.enableCommand("MathType");
+            trackChangesEditing.enableCommand("ChemType");
+            // Adds custom label replacing the default 'mathml'.
+            // Handles both singular and plural forms.
+            trackChangesEditing.descriptionFactory.registerElementLabel("mathml", (quantity)=>(quantity > 1 ? quantity + ' ' : '') + StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()));
+        }
     }
 }
 
