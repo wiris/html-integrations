@@ -43,7 +43,10 @@ export default class MathType extends Plugin {
     currentInstance = integration;
 
     // Add the MathType and ChemType commands to the editor
-    this._addCommands();
+    this._addCommands(integration);
+
+    // Add the track changes feature integration
+    this._addTrackChangesIntegration(integration);
 
     // Add the buttons for MathType and ChemType
     this._addViews(integration);
@@ -578,5 +581,25 @@ export default class MathType extends Plugin {
       currentInstance,
       Latex,
     };
+  }
+
+  _addTrackChangesIntegration(integration) {
+    const { editor } = this;
+
+    if (editor.plugins.has("TrackChangesEditing")) {
+      const trackChangesEditing = editor.plugins.get("TrackChangesEditing");
+
+      // Makes MathType and ChemType buttons available when editor is in the track changes mode
+      trackChangesEditing.enableCommand("MathType");
+      trackChangesEditing.enableCommand("ChemType");
+
+      // Adds custom label replacing the default 'mathml'.
+      // Handles both singular and plural forms.
+      trackChangesEditing.descriptionFactory.registerElementLabel(
+        "mathml",
+        quantity => (quantity > 1 ? quantity + ' ' : '') +
+          StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()),
+      );
+    }
   }
 }
