@@ -7,25 +7,47 @@ body {
 
 /* CKEditor5 official wide sidebar styling */
 .editor-container {
-	--ckeditor5-preview-sidebar-width: 270px;
+	--ckeditor5-preview-sidebar-width: 160px;
 }
 
 .editor-container__editor-wrapper {
 	display: flex;
-	width: fit-content;
+	width: auto; /* prevent stretching to full viewport width */
+	max-width: calc(795px + var(--ckeditor5-preview-sidebar-width) + 40px); /* editor + sidebar + margins */
 }
 
 .editor-container--classic-editor .editor-container__editor {
 	min-width: 795px;
 	max-width: 795px;
+	position: relative;
+	flex: 0 0 795px; /* keep editor fixed and prevent flex growth */
 }
 
+/* Ensure sidebar width stays as configured */
 .editor-container__sidebar {
 	min-width: var(--ckeditor5-preview-sidebar-width);
 	max-width: var(--ckeditor5-preview-sidebar-width);
+	flex: 0 0 var(--ckeditor5-preview-sidebar-width); /* prevent flex growth */
 	margin-top: 28px;
 	margin-left: 10px;
 	margin-right: 10px;
+	transition: min-width .4s ease-out-in;
 }
 
-/* Remove duplicate styling and keep only what's necessary */
+.editor-container__sidebar.narrow {
+	min-width: 65px;
+}
+
+.editor-container__sidebar.hidden {
+	display: none;
+}
+
+.buttons {
+  margin-bottom: 1em;
+}
+
+/* Improve contrast to satisfy linter */
+.buttons button.active {
+  background-color: #005fcc;
+  color: #ffffff;
+}
