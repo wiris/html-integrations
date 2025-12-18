@@ -8,6 +8,8 @@ import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 // Load styles.
 import "./static/style.css";
 import "ckeditor5/ckeditor5.css";
+import "ckeditor5-premium-features/ckeditor5-premium-features.css";
+
 
 import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 
