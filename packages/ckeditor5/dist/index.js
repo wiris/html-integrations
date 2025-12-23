@@ -90,6 +90,8 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
    * @param {HTMLElement} element - HTMLElement target.
    * @param {MouseEvent} event - event which trigger the handler.
    */ doubleClickHandler(element, event) {
+        // this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
+        // WirisPlugin.currentInstance = this;
         this.core.editionProperties.dbclick = true;
         if (this.editorObject.isReadOnly === false) {
             if (element.nodeName.toLowerCase() === "img") {
@@ -150,7 +152,9 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 // Remove selection
                 if (!viewSelection.isCollapsed) {
                     for (const range of viewSelection.getRanges()){
-                        writer.remove(this.editorObject.editing.mapper.toModelRange(range));
+                        const modelRange = this.editorObject.editing.mapper.toModelRange(range);
+                        const modelSelection = this.editorObject.model.createSelection(modelRange);
+                        this.editorObject.model.deleteContent(modelSelection);
                     }
                 }
                 // Set carret after the formula
@@ -166,7 +170,7 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                 if (mathml) {
                     this.editorObject.model.insertObject(modelElementNew, position);
                 }
-                writer.remove(modelElementOld);
+                this.editorObject.model.deleteContent(this.editorObject.model.createSelection(modelElementOld, 'on'));
             }
             // eslint-disable-next-line consistent-return
             return modelElementNew;
@@ -237,7 +241,8 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
                         range = writer.createRange(startPosition, endPosition);
                     }
                 }
-                writer.remove(range);
+                const modelSelection = this.editorObject.model.createSelection(range);
+                this.editorObject.model.deleteContent(modelSelection);
                 writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
             });
         } else {
@@ -358,7 +363,7 @@ var mathIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adob
 
 var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-var version = "8.13.4";
+var version = "8.14.0";
 var packageInfo = {
 	version: version};
 
@@ -378,7 +383,9 @@ class MathType extends Plugin {
         const integration = this._addIntegration();
         currentInstance = integration;
         // Add the MathType and ChemType commands to the editor
-        this._addCommands();
+        this._addCommands(integration);
+        // Add the track changes feature integration
+        this._addTrackChangesIntegration(integration);
         // Add the buttons for MathType and ChemType
         this._addViews(integration);
         // Registers the <mathml> element in the schema
@@ -817,6 +824,18 @@ class MathType extends Plugin {
             currentInstance,
             Latex
         };
+    }
+    _addTrackChangesIntegration(integration) {
+        const { editor } = this;
+        if (editor.plugins.has("TrackChangesEditing")) {
+            const trackChangesEditing = editor.plugins.get("TrackChangesEditing");
+            // Makes MathType and ChemType buttons available when editor is in the track changes mode
+            trackChangesEditing.enableCommand("MathType");
+            trackChangesEditing.enableCommand("ChemType");
+            // Adds custom label replacing the default 'mathml'.
+            // Handles both singular and plural forms.
+            trackChangesEditing.descriptionFactory.registerElementLabel("mathml", (quantity)=>(quantity > 1 ? quantity + ' ' : '') + StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()));
+        }
     }
 }
 
