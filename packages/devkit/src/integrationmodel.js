@@ -570,7 +570,9 @@ export default class IntegrationModel {
    * actions from integration part before the formula is edited.
    */
   openExistingFormulaEditor() {
+    // Recover owner integration instance.
     WirisPlugin.currentInstance = this;
+
     if (window.navigator.onLine) {
       this.core.editionProperties.isNewElement = false;
       this.core.openModalDialog(this.target, this.isIframe);
