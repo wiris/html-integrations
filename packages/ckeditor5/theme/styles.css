@@ -1,0 +1,28 @@
+/* Replace the default suggestion marker border because it's doesn't span the entire widget. */
+.ck-widget.ck-math-widget.ck-suggestion-marker {
+  border: none;
+
+  &.ck-suggestion-marker-insertion {
+    & .Wirisformula {
+      border: 3px solid var(--ck-color-suggestion-marker-insertion-border);
+    }
+
+    &.ck-suggestion-marker--active {
+      & .Wirisformula {
+        border: 3px solid var(--ck-color-suggestion-marker-insertion-border-active);
+      }
+    }
+  }
+
+  &.ck-suggestion-marker-deletion {
+    & .Wirisformula {
+      border: 3px solid var(--ck-color-suggestion-marker-deletion-border);
+    }
+
+    &.ck-suggestion-marker--active {
+      & .Wirisformula {
+        border: 3px solid var(--ck-color-suggestion-marker-deletion-border-active);
+      }
+    }
+  }
+}
