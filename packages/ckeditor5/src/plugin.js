@@ -23,6 +23,7 @@ import CKEditor5Integration from "./integration.js";
 
 import mathIcon from "../theme/icons/ckeditor5-formula.svg";
 import chemIcon from "../theme/icons/ckeditor5-chem.svg";
+import "../theme/styles.css";
 
 import packageInfo from "../package.json";
 
