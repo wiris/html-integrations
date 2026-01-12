@@ -1,6 +1,6 @@
 // Load scripts.
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
-import { TrackChanges, Comments } from "ckeditor5-premium-features";
+import { TrackChanges, Comments, TrackChangesPreview } from "ckeditor5-premium-features";
 import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // import coreTranslations from 'ckeditor5/translations/de.js';
@@ -32,7 +32,7 @@ window.editor = null;
 // Create the CKEditor 5.
 ClassicEditor.create(document.querySelector("#editor"), {
   licenseKey: "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3Njk0NzE5OTksImp0aSI6IjE0ODc0ZDZkLTNjZWUtNGI3Ni1hYzA5LWNjMmY2NWU4NjIxZiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjNhMWYxYmVkIn0.fNRCXTa3WL263IiKmCjSIgwwCfMOzzklkrUPGqJbV_C5rI9ab5FXkdqt20rQ1ghJfERoeOD2fY50cNclDUgo9Q",
-  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing, TrackChanges, Comments],
+  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing, TrackChanges, Comments, TrackChangesPreview],
   toolbar: [
     "bold",
     "italic",
