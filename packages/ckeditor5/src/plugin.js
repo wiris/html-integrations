@@ -430,8 +430,9 @@ export default class MathType extends Plugin {
         imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
       } else if (formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
+        const lang = integration.getLanguage() || 'en'; // Safe fallback to 'en' in case integration is undefined.
+        const imgHtml = Parser.initParse(mathString, lang);
 
-        const imgHtml = Parser.initParse(mathString, integration.getLanguage());
         imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
 
         // Add HTML element (<img>) to model
@@ -507,6 +508,22 @@ export default class MathType extends Plugin {
     // Keep a reference to the original get and set function.
     const { get, set } = editor.data;
 
+    // Listen to the preview command execution to set a flag in localStorage.
+    // This flag will be used in the getData() to prevent converting formulas while generating the preview.
+    // This is necessary because the preview command uses editor.getData() multiple times internally.
+    const previewCommand = editor.commands.get('previewFinalContent');
+
+    if (previewCommand) {
+      this.listenTo(previewCommand, 'execute', () => {
+        localStorage.setItem("isGeneratingPreview", true);
+
+        setTimeout(() => {
+          localStorage.setItem("isGeneratingPreview", false);
+        }, 1000);
+      }, { priority: 'high' });
+    }
+
+
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
      */
@@ -515,6 +532,13 @@ export default class MathType extends Plugin {
       (e) => {
         const output = e.return;
         const parsedResult = Parser.endParse(output);
+
+        // Skip conversion if we are generating the preview, we need the formula images.
+        const retrievedObject = localStorage.getItem("isGeneratingPreview");
+
+        if (retrievedObject === "true") {
+          return;
+      }
 
         // Cleans all the semantics tag for safexml
         // including the handwritten data points
