@@ -29,6 +29,61 @@ import packageInfo from "../package.json";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
 
+/**
+ * Extracts track changes attributes from Wirisformula images.
+ * @param {string} html - The HTML content
+ * @returns {Map} Map of MathML content to track changes attributes
+ */
+function extractTrackChangesFromImages(html) {
+  const trackChanges = new Map();
+  const images = html.match(/<img[^>]*class="Wirisformula"[^>]*data-suggestion[^>]*>/g) || [];
+
+  for (const img of images) {
+    const start = img.match(/data-(suggestion|comment)-start-before="([^"]*)"/);
+    const end = img.match(/data-(suggestion|comment)-end-after="([^"]*)"/);
+    const mathml = img.match(/data-mathml="([^"]*)"/);
+
+    if (start && end && mathml) {
+      trackChanges.set(MathML.safeXmlDecode(mathml[1]), {
+        group: start[1],
+        startName: start[2],
+        endName: end[2],
+      });
+    }
+  }
+
+  return trackChanges;
+}
+
+/**
+ * Wraps MathML formulas with suggestion/comment tags if they have track changes.
+ * @param {string} html - The HTML with MathML
+ * @param {Map} trackChanges - Map of MathML to track changes data
+ * @returns {string} HTML with wrapped MathML
+ */
+function wrapMathMLWithSuggestionTags(html, trackChanges) {
+  let result = html;
+
+  if (trackChanges.size > 0) {
+    result = html.replaceAll(/<math[^>]*>[\s\S]*?<\/math>/g, (mathTag) => {
+      let wrappedTag = mathTag;
+
+      for (const [mathml, attrs] of trackChanges) {
+        if (mathTag.includes(mathml.slice(6, 50)) || mathml.includes(mathTag.slice(6, 50))) {
+          trackChanges.delete(mathml);
+          wrappedTag = `<${attrs.group}-start name="${attrs.startName}"></${attrs.group}-start>${mathTag}<${attrs.group}-end name="${attrs.endName}"></${attrs.group}-end>`;
+
+          break;
+        }
+      }
+
+      return wrappedTag;
+    });
+  }
+
+  return result;
+}
+
 export default class MathType extends Plugin {
   static get requires() {
     return [Widget];
@@ -432,7 +487,7 @@ export default class MathType extends Plugin {
       } else if (formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
 
-        const lang = integration.getLanguage() || 'en'; // Safe fallback to 'en' in case integration is undefined.
+        const lang = integration.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
         const imgHtml = Parser.initParse(mathString, lang);
 
         imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
@@ -513,20 +568,26 @@ export default class MathType extends Plugin {
     // Listen to the preview command execution to set a flag in localStorage.
     // This flag will be used in the getData() to prevent converting formulas while generating the preview.
     // This is necessary because the preview command uses editor.getData() multiple times internally.
-    const previewCommand = editor.commands.get('previewFinalContent');
+    const previewCommand = editor.commands.get("previewFinalContent");
 
     if (previewCommand) {
-      this.listenTo(previewCommand, 'execute', () => {
-        localStorage.setItem("isGeneratingPreview", true);
+      this.listenTo(
+        previewCommand,
+        "execute",
+        () => {
+          localStorage.setItem("isGeneratingPreview", true);
 
-        setTimeout(() => {
-          localStorage.setItem("isGeneratingPreview", false);
-        }, 1000);
-      }, { priority: 'high' });
+          setTimeout(() => {
+            localStorage.setItem("isGeneratingPreview", false);
+          }, 1000);
+        },
+        { priority: "high" },
+      );
     }
 
     /**
      * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
+     * Also preserves track changes markers by wrapping MathML in suggestion tags.
      */
     editor.data.on(
       "get",
@@ -539,11 +600,22 @@ export default class MathType extends Plugin {
         }
 
         const output = e.return;
-        const parsedResult = Parser.endParse(output);
+        const isPreview = localStorage.getItem("isGeneratingPreview") === "true";
 
         // Cleans all the semantics tag for safexml
         // including the handwritten data points
-        e.return = MathML.removeSafeXMLSemantics(parsedResult);
+
+        // Preview mode: just filter out deletion images
+        if (isPreview) {
+          e.return = output.replace(/<img[^>]*data-suggestion-start-before="deletion:[^"]*"[^>]*>/g, "");
+          return;
+        }
+
+        // Normal mode: convert to MathML preserving track changes
+        const trackChangesData = extractTrackChangesFromImages(output);
+        const mathmlOutput = MathML.removeSafeXMLSemantics(Parser.endParse(output));
+
+        e.return = wrapMathMLWithSuggestionTags(mathmlOutput, trackChangesData);
       },
       { priority: "low" },
     );
@@ -622,7 +694,8 @@ export default class MathType extends Plugin {
       // Handles both singular and plural forms.
       trackChangesEditing.descriptionFactory.registerElementLabel(
         "mathml",
-        quantity => (quantity > 1 ? quantity + ' ' : '') +
+        (quantity) =>
+          (quantity > 1 ? quantity + " " : "") +
           StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()),
       );
     }
