@@ -592,13 +592,6 @@ export default class MathType extends Plugin {
     editor.data.on(
       "get",
       (e) => {
-        // Skip conversion if we are generating the preview, we need the formula images.
-        const isGeneratingPreview = localStorage.getItem("isGeneratingPreview");
-
-        if (isGeneratingPreview === "true") {
-          return;
-        }
-
         const output = e.return;
         const isPreview = localStorage.getItem("isGeneratingPreview") === "true";
 
