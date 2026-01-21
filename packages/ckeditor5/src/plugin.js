@@ -29,59 +29,126 @@ import packageInfo from "../package.json";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
 
+// ============================================================================
+// Track Changes Preview Helpers
+// ============================================================================
+
 /**
- * Extracts track changes attributes from Wirisformula images.
- * @param {string} html - The HTML content
- * @returns {Map} Map of MathML content to track changes attributes
+ * Cleans raw <math> elements in HTML, removing semantics and annotation tags.
+ * @param {string} html - The HTML content.
+ * @returns {string} HTML with cleaned <math> elements.
  */
-function extractTrackChangesFromImages(html) {
-  const trackChanges = new Map();
-  const images = html.match(/<img[^>]*class="Wirisformula"[^>]*data-suggestion[^>]*>/g) || [];
-
-  for (const img of images) {
-    const start = img.match(/data-(suggestion|comment)-start-before="([^"]*)"/);
-    const end = img.match(/data-(suggestion|comment)-end-after="([^"]*)"/);
-    const mathml = img.match(/data-mathml="([^"]*)"/);
-
-    if (start && end && mathml) {
-      trackChanges.set(MathML.safeXmlDecode(mathml[1]), {
-        group: start[1],
-        startName: start[2],
-        endName: end[2],
-      });
-    }
-  }
-
-  return trackChanges;
+function cleanRawMathElements(html) {
+  return html.replaceAll(/<math[^>]*>[\s\S]*?<\/math>/g, (mathTag) => MathML.removeSafeXMLSemantics(mathTag));
 }
 
 /**
- * Wraps MathML formulas with suggestion/comment tags if they have track changes.
- * @param {string} html - The HTML with MathML
- * @param {Map} trackChanges - Map of MathML to track changes data
- * @returns {string} HTML with wrapped MathML
+ * Extracts Track Changes attributes from an image tag.
+ * @param {string} imgTag - The <img> tag string.
+ * @returns {Object} Map of attribute names to values.
  */
-function wrapMathMLWithSuggestionTags(html, trackChanges) {
-  let result = html;
+function extractTrackChangesAttributes(imgTag) {
+  const attrs = {};
+  const matches = imgTag.matchAll(/data-(suggestion|comment)-([a-z]+-[a-z]+)="([^"]*)"/g);
+  for (const [, type, position, value] of matches) {
+    attrs[`${type}-${position}`] = value;
+  }
+  return attrs;
+}
 
-  if (trackChanges.size > 0) {
-    result = html.replaceAll(/<math[^>]*>[\s\S]*?<\/math>/g, (mathTag) => {
-      let wrappedTag = mathTag;
+/**
+ * Checks if an image is marked as a direct deletion.
+ * @param {Object} attrs - The extracted Track Changes attributes.
+ * @returns {boolean} True if the image should be hidden.
+ */
+function isMarkedAsDeleted(attrs) {
+  const suggestionBefore = attrs["suggestion-start-before"];
+  return suggestionBefore && suggestionBefore.startsWith("deletion:");
+}
 
-      for (const [mathml, attrs] of trackChanges) {
-        if (mathTag.includes(mathml.slice(6, 50)) || mathml.includes(mathTag.slice(6, 50))) {
-          trackChanges.delete(mathml);
-          wrappedTag = `<${attrs.group}-start name="${attrs.startName}"></${attrs.group}-start>${mathTag}<${attrs.group}-end name="${attrs.endName}"></${attrs.group}-end>`;
-
-          break;
-        }
-      }
-
-      return wrappedTag;
-    });
+/**
+ * Cleans the data-mathml attribute of an image, removing handwritten semantics.
+ * @param {string} imgTag - The <img> tag string.
+ * @returns {string} The image tag with cleaned data-mathml.
+ */
+function cleanMathMLAttribute(imgTag) {
+  const mathmlMatch = imgTag.match(/data-mathml="([^"]*)"/);
+  if (!mathmlMatch) {
+    return imgTag;
   }
 
-  return result;
+  const decodedMathML = MathML.safeXmlDecode(mathmlMatch[1]);
+  const cleanedMathML = MathML.removeSafeXMLSemantics(decodedMathML);
+  const encodedMathML = MathML.safeXmlEncode(cleanedMathML);
+
+  return imgTag.replace(/data-mathml="[^"]*"/, `data-mathml="${encodedMathML}"`);
+}
+
+/**
+ * Wraps an image tag with Track Changes suggestion/comment markers.
+ * @param {string} imgTag - The <img> tag string.
+ * @param {Object} attrs - The extracted Track Changes attributes.
+ * @returns {string} The image wrapped with appropriate markers.
+ */
+function wrapWithTrackChangesMarkers(imgTag, attrs) {
+  const createMarker = (type, name) => `<${type} name="${name}"></${type}>`;
+
+  const getMarkers = (position) => {
+    let markers = "";
+    if (attrs[`suggestion-start-${position}`]) {
+      markers += createMarker("suggestion-start", attrs[`suggestion-start-${position}`]);
+    }
+    if (attrs[`comment-start-${position}`]) {
+      markers += createMarker("comment-start", attrs[`comment-start-${position}`]);
+    }
+    if (attrs[`suggestion-end-${position}`]) {
+      markers += createMarker("suggestion-end", attrs[`suggestion-end-${position}`]);
+    }
+    if (attrs[`comment-end-${position}`]) {
+      markers += createMarker("comment-end", attrs[`comment-end-${position}`]);
+    }
+    return markers;
+  };
+
+  return getMarkers("before") + imgTag + getMarkers("after");
+}
+
+/**
+ * Processes Wiris formula images for Track Changes Preview Mode.
+ *
+ * This function handles the visual representation of formulas in the preview:
+ * - Strips deleted formulas (images with deletion suggestion attributes).
+ * - Preserves Track Changes attributes for insertions (wraps images with suggestion markers).
+ * - Cleans the data-mathml attribute to remove handwritten semantics.
+ *
+ * @param {string} html - The HTML content containing Wiris formula images.
+ * @returns {string} The processed HTML ready for preview display.
+ */
+function processImagesForPreview(html) {
+  return html.replaceAll(/<img[^>]*>/g, (imgTag) => {
+    // Skip non-Wiris images.
+    if (!imgTag.includes('class="Wirisformula"')) {
+      return imgTag;
+    }
+
+    // Extract Track Changes attributes (data-suggestion-*, data-comment-*).
+    const trackChangesAttrs = extractTrackChangesAttributes(imgTag);
+
+    // Hide deleted formulas in preview.
+    if (isMarkedAsDeleted(trackChangesAttrs)) {
+      return "";
+    }
+
+    // Clean the MathML data to remove handwritten semantics.
+    let processedTag = cleanMathMLAttribute(imgTag);
+
+    // Wrap with suggestion markers if this image has Track Changes attributes.
+    if (Object.keys(trackChangesAttrs).length > 0) {
+      processedTag = wrapWithTrackChangesMarkers(processedTag, trackChangesAttrs);
+    }
+
+    return processedTag;
+  });
 }
 
 export default class MathType extends Plugin {
@@ -487,7 +554,7 @@ export default class MathType extends Plugin {
       } else if (formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
 
-        const lang = integration.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
+        const lang = integration?.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
         const imgHtml = Parser.initParse(mathString, lang);
 
         imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
@@ -586,29 +653,31 @@ export default class MathType extends Plugin {
     }
 
     /**
-     * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
-     * Also preserves track changes markers by wrapping MathML in suggestion tags.
+     * Listener for getData() that handles Track Changes and semantics cleanup.
+     *
+     * - Preview Mode: Preserves images with Track Changes visibility, cleans <math> semantics.
+     * - Save Mode: Converts formulas to clean MathML (removes handwritten semantics).
      */
     editor.data.on(
       "get",
       (e) => {
-        const output = e.return;
-        const isPreview = localStorage.getItem("isGeneratingPreview") === "true";
+        const htmlOutput = e.return;
 
-        // Cleans all the semantics tag for safexml
-        // including the handwritten data points
+        const isPreviewMode = localStorage.getItem("isGeneratingPreview") === "true";
 
-        // Preview mode: just filter out deletion images
-        if (isPreview) {
-          e.return = output.replace(/<img[^>]*data-suggestion-start-before="deletion:[^"]*"[^>]*>/g, "");
-          return;
+        if (isPreviewMode) {
+          // Preview: Keep images, apply Track Changes visibility, clean raw <math> elements.
+          let previewContent = processImagesForPreview(htmlOutput);
+
+          previewContent = cleanRawMathElements(previewContent);
+
+          e.return = previewContent;
+        } else {
+          // Save: Convert to clean MathML (removes semantics and handwritten data).
+          const cleanMathML = MathML.removeSafeXMLSemantics(Parser.endParse(htmlOutput));
+
+          e.return = cleanMathML;
         }
-
-        // Normal mode: convert to MathML preserving track changes
-        const trackChangesData = extractTrackChangesFromImages(output);
-        const mathmlOutput = MathML.removeSafeXMLSemantics(Parser.endParse(output));
-
-        e.return = wrapMathMLWithSuggestionTags(mathmlOutput, trackChangesData);
       },
       { priority: "low" },
     );
