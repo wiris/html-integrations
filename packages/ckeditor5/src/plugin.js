@@ -29,128 +29,6 @@ import packageInfo from "../package.json";
 
 export let currentInstance = null; // eslint-disable-line import/no-mutable-exports
 
-// ============================================================================
-// Track Changes Preview Helpers
-// ============================================================================
-
-/**
- * Cleans raw <math> elements in HTML, removing semantics and annotation tags.
- * @param {string} html - The HTML content.
- * @returns {string} HTML with cleaned <math> elements.
- */
-function cleanRawMathElements(html) {
-  return html.replaceAll(/<math[^>]*>[\s\S]*?<\/math>/g, (mathTag) => MathML.removeSafeXMLSemantics(mathTag));
-}
-
-/**
- * Extracts Track Changes attributes from an image tag.
- * @param {string} imgTag - The <img> tag string.
- * @returns {Object} Map of attribute names to values.
- */
-function extractTrackChangesAttributes(imgTag) {
-  const attrs = {};
-  const matches = imgTag.matchAll(/data-(suggestion|comment)-([a-z]+-[a-z]+)="([^"]*)"/g);
-  for (const [, type, position, value] of matches) {
-    attrs[`${type}-${position}`] = value;
-  }
-  return attrs;
-}
-
-/**
- * Checks if an image is marked as a direct deletion.
- * @param {Object} attrs - The extracted Track Changes attributes.
- * @returns {boolean} True if the image should be hidden.
- */
-function isMarkedAsDeleted(attrs) {
-  const suggestionBefore = attrs["suggestion-start-before"];
-  return suggestionBefore && suggestionBefore.startsWith("deletion:");
-}
-
-/**
- * Cleans the data-mathml attribute of an image, removing handwritten semantics.
- * @param {string} imgTag - The <img> tag string.
- * @returns {string} The image tag with cleaned data-mathml.
- */
-function cleanMathMLAttribute(imgTag) {
-  const mathmlMatch = imgTag.match(/data-mathml="([^"]*)"/);
-  if (!mathmlMatch) {
-    return imgTag;
-  }
-
-  const decodedMathML = MathML.safeXmlDecode(mathmlMatch[1]);
-  const cleanedMathML = MathML.removeSafeXMLSemantics(decodedMathML);
-  const encodedMathML = MathML.safeXmlEncode(cleanedMathML);
-
-  return imgTag.replace(/data-mathml="[^"]*"/, `data-mathml="${encodedMathML}"`);
-}
-
-/**
- * Wraps an image tag with Track Changes suggestion/comment markers.
- * @param {string} imgTag - The <img> tag string.
- * @param {Object} attrs - The extracted Track Changes attributes.
- * @returns {string} The image wrapped with appropriate markers.
- */
-function wrapWithTrackChangesMarkers(imgTag, attrs) {
-  const createMarker = (type, name) => `<${type} name="${name}"></${type}>`;
-
-  const getMarkers = (position) => {
-    let markers = "";
-    if (attrs[`suggestion-start-${position}`]) {
-      markers += createMarker("suggestion-start", attrs[`suggestion-start-${position}`]);
-    }
-    if (attrs[`comment-start-${position}`]) {
-      markers += createMarker("comment-start", attrs[`comment-start-${position}`]);
-    }
-    if (attrs[`suggestion-end-${position}`]) {
-      markers += createMarker("suggestion-end", attrs[`suggestion-end-${position}`]);
-    }
-    if (attrs[`comment-end-${position}`]) {
-      markers += createMarker("comment-end", attrs[`comment-end-${position}`]);
-    }
-    return markers;
-  };
-
-  return getMarkers("before") + imgTag + getMarkers("after");
-}
-
-/**
- * Processes Wiris formula images for Track Changes Preview Mode.
- *
- * This function handles the visual representation of formulas in the preview:
- * - Strips deleted formulas (images with deletion suggestion attributes).
- * - Preserves Track Changes attributes for insertions (wraps images with suggestion markers).
- * - Cleans the data-mathml attribute to remove handwritten semantics.
- *
- * @param {string} html - The HTML content containing Wiris formula images.
- * @returns {string} The processed HTML ready for preview display.
- */
-function processImagesForPreview(html) {
-  return html.replaceAll(/<img[^>]*>/g, (imgTag) => {
-    // Skip non-Wiris images.
-    if (!imgTag.includes('class="Wirisformula"')) {
-      return imgTag;
-    }
-
-    // Extract Track Changes attributes (data-suggestion-*, data-comment-*).
-    const trackChangesAttrs = extractTrackChangesAttributes(imgTag);
-
-    // Hide deleted formulas in preview.
-    if (isMarkedAsDeleted(trackChangesAttrs)) {
-      return "";
-    }
-
-    // Clean the MathML data to remove handwritten semantics.
-    let processedTag = cleanMathMLAttribute(imgTag);
-
-    // Wrap with suggestion markers if this image has Track Changes attributes.
-    if (Object.keys(trackChangesAttrs).length > 0) {
-      processedTag = wrapWithTrackChangesMarkers(processedTag, trackChangesAttrs);
-    }
-
-    return processedTag;
-  });
-}
-
 export default class MathType extends Plugin {
   static get requires() {
     return [Widget];
@@ -655,29 +533,38 @@ export default class MathType extends Plugin {
     /**
      * Listener for getData() that handles Track Changes and semantics cleanup.
      *
-     * - Preview Mode: Preserves images with Track Changes visibility, cleans <math> semantics.
-     * - Save Mode: Converts formulas to clean MathML (removes handwritten semantics).
+     * This listener intercepts the getData() call and processes the output differently
+     * depending on whether we're generating a preview or performing a save operation:
+     *
+     * - Preview Mode: Removes deleted formulas (marked with Track Changes deletion attributes)
+     *   while preserving formula images for visual representation.
+     * - Save Mode: Converts formulas to clean MathML by removing semantic annotations
+     *   and handwritten data, ensuring clean storage format.
      */
     editor.data.on(
       "get",
       (e) => {
-        const htmlOutput = e.return;
+        const output = e.return;
 
-        const isPreviewMode = localStorage.getItem("isGeneratingPreview") === "true";
+        // Check if we're in preview mode (flag set by previewFinalContent command)
+        const isGeneratingPreview = localStorage.getItem("isGeneratingPreview");
 
-        if (isPreviewMode) {
-          // Preview: Keep images, apply Track Changes visibility, clean raw <math> elements.
-          let previewContent = processImagesForPreview(htmlOutput);
+        if (isGeneratingPreview === "true") {
+          // In preview mode, filter out deleted formulas to match Track Changes visual state.
+          // The regex matches any <img> tag that has a Track Changes deletion marker attribute.
+          // This ensures deleted formulas don't appear in the preview content.
+          const TRACK_CHANGES_DELETION_REGEX = /<img[^>]*data-suggestion-end-after="deletion:[^"]*"[^>]*>/g;
+          e.return = output.replaceAll(TRACK_CHANGES_DELETION_REGEX, "");
 
-          previewContent = cleanRawMathElements(previewContent);
-
-          e.return = previewContent;
-        } else {
-          // Save: Convert to clean MathML (removes semantics and handwritten data).
-          const cleanMathML = MathML.removeSafeXMLSemantics(Parser.endParse(htmlOutput));
-
-          e.return = cleanMathML;
+          return;
         }
+
+        // In save mode, convert formula images back to clean MathML
+        const parsedResult = Parser.endParse(output);
+
+        // Remove all semantic annotations (including handwritten data points)
+        // to ensure clean, standard MathML format for storage
+        e.return = MathML.removeSafeXMLSemantics(parsedResult);
       },
       { priority: "low" },
     );
@@ -757,7 +644,7 @@ export default class MathType extends Plugin {
       trackChangesEditing.descriptionFactory.registerElementLabel(
         "mathml",
         (quantity) =>
-          (quantity > 1 ? quantity + " " : "") +
+          (quantity > 1 ? `${quantity} ` : "") +
           StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()),
       );
     }

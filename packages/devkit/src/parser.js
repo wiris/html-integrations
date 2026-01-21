@@ -60,6 +60,32 @@ export default class Parser {
       imgObject.setAttribute(Configuration.get("imageCustomEditorName"), mathmlSubstring);
     }
 
+    // Preserve Track Changes attributes (suggestions and comments) when converting MathML to image.
+    // These attributes are needed to maintain change tracking information in collaborative editing scenarios.
+    // They are extracted from the input MathML and transferred to the output image element.
+    const TRACK_CHANGES_ATTRIBUTE_PREFIXES = ["data-suggestion-", "data-comment-"];
+    const attributePattern = /([\w-]+)="([^"]*)"/g;
+    let attributeMatch;
+
+    // Parse only the opening <math> tag to extract attributes
+    const mathOpeningTagEnd = mathml.indexOf(">");
+    if (mathOpeningTagEnd !== -1) {
+      const mathOpeningTag = mathml.substring(0, mathOpeningTagEnd);
+
+      while ((attributeMatch = attributePattern.exec(mathOpeningTag)) !== null) {
+        const [, attributeName, attributeValue] = attributeMatch;
+
+        // Transfer Track Changes attributes from MathML to image
+        const isTrackChangesAttribute = TRACK_CHANGES_ATTRIBUTE_PREFIXES.some((prefix) =>
+          attributeName.startsWith(prefix),
+        );
+
+        if (isTrackChangesAttribute) {
+          imgObject.setAttribute(attributeName, Util.htmlEntitiesDecode(attributeValue));
+        }
+      }
+    }
+
     // Performance enabled.
     if (
       Configuration.get("wirisPluginPerformance") &&
