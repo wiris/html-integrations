@@ -702,6 +702,7 @@ export default class Util {
           mathML = imgObject.getAttribute("alt");
         }
 
+        // WARNING: This code is needed for CKEditor 5 Track Changes compatibility.
         // Preserve Track Changes attributes when converting image back to MathML.
         // This ensures change tracking information is maintained during the roundtrip conversion
         // (MathML → Image → MathML) in collaborative editing scenarios.

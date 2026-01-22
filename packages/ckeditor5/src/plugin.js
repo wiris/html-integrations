@@ -550,11 +550,30 @@ export default class MathType extends Plugin {
         const isGeneratingPreview = localStorage.getItem("isGeneratingPreview");
 
         if (isGeneratingPreview === "true") {
-          // In preview mode, filter out deleted formulas to match Track Changes visual state.
-          // The regex matches any <img> tag that has a Track Changes deletion marker attribute.
-          // This ensures deleted formulas don't appear in the preview content.
-          const TRACK_CHANGES_DELETION_REGEX = /<img[^>]*data-suggestion-end-after="deletion:[^"]*"[^>]*>/g;
-          e.return = output.replaceAll(TRACK_CHANGES_DELETION_REGEX, "");
+          // Wrap a <span> around all img elements to preserve Track Changes visibility for formulas.
+          // Span must contain all the img attributes to avoid render issues.
+          const attributesToPreserve = ["data-suggestion-", "data-comment-"];
+
+          const previewOutput = output.replace(/<img([^>]*class="Wirisformula"[^>]*)>/g, (match, attributes) => {
+            // Extract Track Changes attributes
+            const trackChangesAttrs = [];
+            
+            attributesToPreserve.forEach((prefix) => {
+              const regex = new RegExp(`(${prefix}[^=]*="[^"]*")`, "g");
+              let attrMatch;
+
+              while ((attrMatch = regex.exec(attributes)) !== null) {
+                trackChangesAttrs.push(attrMatch[1]);
+              }
+            });
+
+            const spanAttrs = trackChangesAttrs.length > 0 ? ` ${trackChangesAttrs.join(" ")}` : "";
+            return `<span${spanAttrs}>${match}</span>`;
+          });
+
+          // Cleans all the semantics tag for safexml
+          // including the handwritten data points
+          e.return = MathML.removeSafeXMLSemantics(previewOutput);
 
           return;
         }

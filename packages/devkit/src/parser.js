@@ -60,6 +60,7 @@ export default class Parser {
       imgObject.setAttribute(Configuration.get("imageCustomEditorName"), mathmlSubstring);
     }
 
+    // WARNING: This code is needed for CKEditor 5 Track Changes compatibility.
     // Preserve Track Changes attributes (suggestions and comments) when converting MathML to image.
     // These attributes are needed to maintain change tracking information in collaborative editing scenarios.
     // They are extracted from the input MathML and transferred to the output image element.
@@ -69,6 +70,7 @@ export default class Parser {
 
     // Parse only the opening <math> tag to extract attributes
     const mathOpeningTagEnd = mathml.indexOf(">");
+
     if (mathOpeningTagEnd !== -1) {
       const mathOpeningTag = mathml.substring(0, mathOpeningTagEnd);
 
