@@ -664,7 +664,7 @@ export default class MathType extends Plugin {
         "mathml",
         (quantity) =>
           (quantity > 1 ? `${quantity} ` : "") +
-          StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()),
+          StringManager.get(quantity > 1 ? "formulas" : "formula", integration?.getLanguage() || "en"),
       );
     }
   }
