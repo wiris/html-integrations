@@ -4032,6 +4032,27 @@
                   if (mathML == null) {
                       mathML = imgObject.getAttribute("alt");
                   }
+                  // WARNING: This code is needed for CKEditor 5 Track Changes compatibility.
+                  // Preserve Track Changes attributes when converting image back to MathML.
+                  // This ensures change tracking information is maintained during the roundtrip conversion
+                  // (MathML → Image → MathML) in collaborative editing scenarios.
+                  const TRACK_CHANGES_ATTRIBUTE_PREFIXES = [
+                      "data-suggestion-",
+                      "data-comment-"
+                  ];
+                  const preservedAttributes = {};
+                  // Extract Track Changes attributes from the image element
+                  for (const { name: attributeName, value: attributeValue } of imgObject.attributes){
+                      const isTrackChangesAttribute = TRACK_CHANGES_ATTRIBUTE_PREFIXES.some((prefix)=>attributeName.startsWith(prefix));
+                      if (isTrackChangesAttribute) {
+                          preservedAttributes[attributeName] = attributeValue;
+                      }
+                  }
+                  // If Track Changes attributes were found, inject them into the MathML opening tag
+                  if (Object.keys(preservedAttributes).length > 0) {
+                      const attributesString = Object.keys(preservedAttributes).map((name)=>` ${name}="${Util.htmlEntities(preservedAttributes[name])}"`).join("");
+                      mathML = mathML.replace(/(<math)/i, `$1${attributesString}`);
+                  }
                   if (convertToSafeXml) {
                       const safeMathML = MathML.safeXmlEncode(mathML);
                       return safeMathML;
@@ -4777,6 +4798,29 @@
               mathmlSubstring = mathmlSubstring.substring(0, mathmlSubstring.indexOf('"'));
               mathmlSubstring = mathmlSubstring.substring(4, mathmlSubstring.length);
               imgObject.setAttribute(Configuration.get("imageCustomEditorName"), mathmlSubstring);
+          }
+          // WARNING: This code is needed for CKEditor 5 Track Changes compatibility.
+          // Preserve Track Changes attributes (suggestions and comments) when converting MathML to image.
+          // These attributes are needed to maintain change tracking information in collaborative editing scenarios.
+          // They are extracted from the input MathML and transferred to the output image element.
+          const TRACK_CHANGES_ATTRIBUTE_PREFIXES = [
+              "data-suggestion-",
+              "data-comment-"
+          ];
+          const attributePattern = /([\w-]+)="([^"]*)"/g;
+          let attributeMatch;
+          // Parse only the opening <math> tag to extract attributes
+          const mathOpeningTagEnd = mathml.indexOf(">");
+          if (mathOpeningTagEnd !== -1) {
+              const mathOpeningTag = mathml.substring(0, mathOpeningTagEnd);
+              while((attributeMatch = attributePattern.exec(mathOpeningTag)) !== null){
+                  const [, attributeName, attributeValue] = attributeMatch;
+                  // Transfer Track Changes attributes from MathML to image
+                  const isTrackChangesAttribute = TRACK_CHANGES_ATTRIBUTE_PREFIXES.some((prefix)=>attributeName.startsWith(prefix));
+                  if (isTrackChangesAttribute) {
+                      imgObject.setAttribute(attributeName, Util.htmlEntitiesDecode(attributeValue));
+                  }
+              }
           }
           // Performance enabled.
           if (Configuration.get("wirisPluginPerformance") && (Configuration.get("saveMode") === "xml" || Configuration.get("saveMode") === "safeXml")) {
@@ -11496,49 +11540,6 @@
 
   // CKEditor imports
   let currentInstance = null; // eslint-disable-line import/no-mutable-exports
-  /**
-   * Extracts track changes attributes from Wirisformula images.
-   * @param {string} html - The HTML content
-   * @returns {Map} Map of MathML content to track changes attributes
-   */ function extractTrackChangesFromImages(html) {
-      const trackChanges = new Map();
-      const images = html.match(/<img[^>]*class="Wirisformula"[^>]*data-suggestion[^>]*>/g) || [];
-      for (const img of images){
-          const start = img.match(/data-(suggestion|comment)-start-before="([^"]*)"/);
-          const end = img.match(/data-(suggestion|comment)-end-after="([^"]*)"/);
-          const mathml = img.match(/data-mathml="([^"]*)"/);
-          if (start && end && mathml) {
-              trackChanges.set(MathML.safeXmlDecode(mathml[1]), {
-                  group: start[1],
-                  startName: start[2],
-                  endName: end[2]
-              });
-          }
-      }
-      return trackChanges;
-  }
-  /**
-   * Wraps MathML formulas with suggestion/comment tags if they have track changes.
-   * @param {string} html - The HTML with MathML
-   * @param {Map} trackChanges - Map of MathML to track changes data
-   * @returns {string} HTML with wrapped MathML
-   */ function wrapMathMLWithSuggestionTags(html, trackChanges) {
-      let result = html;
-      if (trackChanges.size > 0) {
-          result = html.replaceAll(/<math[^>]*>[\s\S]*?<\/math>/g, (mathTag)=>{
-              let wrappedTag = mathTag;
-              for (const [mathml, attrs] of trackChanges){
-                  if (mathTag.includes(mathml.slice(6, 50)) || mathml.includes(mathTag.slice(6, 50))) {
-                      trackChanges.delete(mathml);
-                      wrappedTag = `<${attrs.group}-start name="${attrs.startName}"></${attrs.group}-start>${mathTag}<${attrs.group}-end name="${attrs.endName}"></${attrs.group}-end>`;
-                      break;
-                  }
-              }
-              return wrappedTag;
-          });
-      }
-      return result;
-  }
   class MathType extends ckeditor5.Plugin {
       static get requires() {
           return [
@@ -11875,7 +11876,7 @@
                   imgElement = htmlDataProcessor.toView(htmlContent).getChild(0);
               } else if (formula) {
                   const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
-                  const lang = integration.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
+                  const lang = integration?.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
                   const imgHtml = Parser.initParse(mathString, lang);
                   imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
                   // Add HTML element (<img>) to model
@@ -11949,27 +11950,49 @@
               });
           }
           /**
-       * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
-       * Also preserves track changes markers by wrapping MathML in suggestion tags.
+       * Listener for getData() that handles Track Changes and semantics cleanup.
+       *
+       * This listener intercepts the getData() call and processes the output differently
+       * depending on whether we're generating a preview or performing a save operation:
+       *
+       * - Preview Mode: Removes deleted formulas (marked with Track Changes deletion attributes)
+       *   while preserving formula images for visual representation.
+       * - Save Mode: Converts formulas to clean MathML by removing semantic annotations
+       *   and handwritten data, ensuring clean storage format.
        */ editor.data.on("get", (e)=>{
-              // Skip conversion if we are generating the preview, we need the formula images.
+              const output = e.return;
+              // Check if we're in preview mode (flag set by previewFinalContent command)
               const isGeneratingPreview = localStorage.getItem("isGeneratingPreview");
               if (isGeneratingPreview === "true") {
+                  // Wrap a <span> around all img elements to preserve Track Changes visibility for formulas.
+                  // Span must contain all the img attributes to avoid render issues.
+                  const attributesToPreserve = [
+                      "data-suggestion-",
+                      "data-comment-"
+                  ];
+                  const previewOutput = output.replace(/<img([^>]*class="Wirisformula"[^>]*)>/g, (match, attributes)=>{
+                      // Extract Track Changes attributes
+                      const trackChangesAttrs = [];
+                      attributesToPreserve.forEach((prefix)=>{
+                          const regex = new RegExp(`(${prefix}[^=]*="[^"]*")`, "g");
+                          let attrMatch;
+                          while((attrMatch = regex.exec(attributes)) !== null){
+                              trackChangesAttrs.push(attrMatch[1]);
+                          }
+                      });
+                      const spanAttrs = trackChangesAttrs.length > 0 ? ` ${trackChangesAttrs.join(" ")}` : "";
+                      return `<span${spanAttrs}>${match}</span>`;
+                  });
+                  // Cleans all the semantics tag for safexml
+                  // including the handwritten data points
+                  e.return = MathML.removeSafeXMLSemantics(previewOutput);
                   return;
               }
-              const output = e.return;
-              const isPreview = localStorage.getItem("isGeneratingPreview") === "true";
-              // Cleans all the semantics tag for safexml
-              // including the handwritten data points
-              // Preview mode: just filter out deletion images
-              if (isPreview) {
-                  e.return = output.replace(/<img[^>]*data-suggestion-start-before="deletion:[^"]*"[^>]*>/g, "");
-                  return;
-              }
-              // Normal mode: convert to MathML preserving track changes
-              const trackChangesData = extractTrackChangesFromImages(output);
-              const mathmlOutput = MathML.removeSafeXMLSemantics(Parser.endParse(output));
-              e.return = wrapMathMLWithSuggestionTags(mathmlOutput, trackChangesData);
+              // In save mode, convert formula images back to clean MathML
+              const parsedResult = Parser.endParse(output);
+              // Remove all semantic annotations (including handwritten data points)
+              // to ensure clean, standard MathML format for storage
+              e.return = MathML.removeSafeXMLSemantics(parsedResult);
           }, {
               priority: "low"
           });
@@ -12033,7 +12056,7 @@
               trackChangesEditing.enableCommand("ChemType");
               // Adds custom label replacing the default 'mathml'.
               // Handles both singular and plural forms.
-              trackChangesEditing.descriptionFactory.registerElementLabel("mathml", (quantity)=>(quantity > 1 ? quantity + " " : "") + StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()));
+              trackChangesEditing.descriptionFactory.registerElementLabel("mathml", (quantity)=>(quantity > 1 ? `${quantity} ` : "") + StringManager.get(quantity > 1 ? "formulas" : "formula", integration?.getLanguage() || "en"));
           }
       }
   }
