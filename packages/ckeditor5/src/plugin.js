@@ -432,7 +432,7 @@ export default class MathType extends Plugin {
       } else if (formula) {
         const mathString = formula.replaceAll('ref="<"', 'ref="&lt;"');
 
-        const lang = integration.getLanguage() || 'en'; // Safe fallback to 'en' in case integration is undefined.
+        const lang = integration?.getLanguage() || "en"; // Safe fallback to 'en' in case integration is undefined.
         const imgHtml = Parser.initParse(mathString, lang);
 
         imgElement = htmlDataProcessor.toView(imgHtml).getChild(0);
@@ -513,36 +513,76 @@ export default class MathType extends Plugin {
     // Listen to the preview command execution to set a flag in localStorage.
     // This flag will be used in the getData() to prevent converting formulas while generating the preview.
     // This is necessary because the preview command uses editor.getData() multiple times internally.
-    const previewCommand = editor.commands.get('previewFinalContent');
+    const previewCommand = editor.commands.get("previewFinalContent");
 
     if (previewCommand) {
-      this.listenTo(previewCommand, 'execute', () => {
-        localStorage.setItem("isGeneratingPreview", true);
+      this.listenTo(
+        previewCommand,
+        "execute",
+        () => {
+          localStorage.setItem("isGeneratingPreview", true);
 
-        setTimeout(() => {
-          localStorage.setItem("isGeneratingPreview", false);
-        }, 1000);
-      }, { priority: 'high' });
+          setTimeout(() => {
+            localStorage.setItem("isGeneratingPreview", false);
+          }, 1000);
+        },
+        { priority: "high" },
+      );
     }
 
     /**
-     * Hack to transform $$latex$$ into <math> in editor.getData()'s output.
+     * Listener for getData() that handles Track Changes and semantics cleanup.
+     *
+     * This listener intercepts the getData() call and processes the output differently
+     * depending on whether we're generating a preview or performing a save operation:
+     *
+     * - Preview Mode: Removes deleted formulas (marked with Track Changes deletion attributes)
+     *   while preserving formula images for visual representation.
+     * - Save Mode: Converts formulas to clean MathML by removing semantic annotations
+     *   and handwritten data, ensuring clean storage format.
      */
     editor.data.on(
       "get",
       (e) => {
-        // Skip conversion if we are generating the preview, we need the formula images.
+        const output = e.return;
+
+        // Check if we're in preview mode (flag set by previewFinalContent command)
         const isGeneratingPreview = localStorage.getItem("isGeneratingPreview");
 
         if (isGeneratingPreview === "true") {
+          // Wrap a <span> around all img elements to preserve Track Changes visibility for formulas.
+          // Span must contain all the img attributes to avoid render issues.
+          const attributesToPreserve = ["data-suggestion-", "data-comment-"];
+
+          const previewOutput = output.replace(/<img([^>]*class="Wirisformula"[^>]*)>/g, (match, attributes) => {
+            // Extract Track Changes attributes
+            const trackChangesAttrs = [];
+            
+            attributesToPreserve.forEach((prefix) => {
+              const regex = new RegExp(`(${prefix}[^=]*="[^"]*")`, "g");
+              let attrMatch;
+
+              while ((attrMatch = regex.exec(attributes)) !== null) {
+                trackChangesAttrs.push(attrMatch[1]);
+              }
+            });
+
+            const spanAttrs = trackChangesAttrs.length > 0 ? ` ${trackChangesAttrs.join(" ")}` : "";
+            return `<span${spanAttrs}>${match}</span>`;
+          });
+
+          // Cleans all the semantics tag for safexml
+          // including the handwritten data points
+          e.return = MathML.removeSafeXMLSemantics(previewOutput);
+
           return;
         }
 
-        const output = e.return;
+        // In save mode, convert formula images back to clean MathML
         const parsedResult = Parser.endParse(output);
 
-        // Cleans all the semantics tag for safexml
-        // including the handwritten data points
+        // Remove all semantic annotations (including handwritten data points)
+        // to ensure clean, standard MathML format for storage
         e.return = MathML.removeSafeXMLSemantics(parsedResult);
       },
       { priority: "low" },
@@ -622,8 +662,9 @@ export default class MathType extends Plugin {
       // Handles both singular and plural forms.
       trackChangesEditing.descriptionFactory.registerElementLabel(
         "mathml",
-        quantity => (quantity > 1 ? quantity + ' ' : '') +
-          StringManager.get(quantity > 1 ? "formulas" : "formula", integration.getLanguage()),
+        (quantity) =>
+          (quantity > 1 ? `${quantity} ` : "") +
+          StringManager.get(quantity > 1 ? "formulas" : "formula", integration?.getLanguage() || "en"),
       );
     }
   }

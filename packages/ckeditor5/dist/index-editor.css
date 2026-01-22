@@ -1,0 +1,15 @@
+.ck-widget.ck-math-widget.ck-suggestion-marker{
+  border:none;
+}
+.ck-widget.ck-math-widget.ck-suggestion-marker.ck-suggestion-marker-insertion .Wirisformula{
+      border:3px solid var(--ck-color-suggestion-marker-insertion-border);
+    }
+.ck-widget.ck-math-widget.ck-suggestion-marker.ck-suggestion-marker-insertion.ck-suggestion-marker--active .Wirisformula{
+        border:3px solid var(--ck-color-suggestion-marker-insertion-border-active);
+      }
+.ck-widget.ck-math-widget.ck-suggestion-marker.ck-suggestion-marker-deletion .Wirisformula{
+      border:3px solid var(--ck-color-suggestion-marker-deletion-border);
+    }
+.ck-widget.ck-math-widget.ck-suggestion-marker.ck-suggestion-marker-deletion.ck-suggestion-marker--active .Wirisformula{
+        border:3px solid var(--ck-color-suggestion-marker-deletion-border-active);
+      }

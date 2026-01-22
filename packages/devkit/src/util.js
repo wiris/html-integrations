@@ -702,6 +702,33 @@ export default class Util {
           mathML = imgObject.getAttribute("alt");
         }
 
+        // WARNING: This code is needed for CKEditor 5 Track Changes compatibility.
+        // Preserve Track Changes attributes when converting image back to MathML.
+        // This ensures change tracking information is maintained during the roundtrip conversion
+        // (MathML → Image → MathML) in collaborative editing scenarios.
+        const TRACK_CHANGES_ATTRIBUTE_PREFIXES = ["data-suggestion-", "data-comment-"];
+        const preservedAttributes = {};
+
+        // Extract Track Changes attributes from the image element
+        for (const { name: attributeName, value: attributeValue } of imgObject.attributes) {
+          const isTrackChangesAttribute = TRACK_CHANGES_ATTRIBUTE_PREFIXES.some((prefix) =>
+            attributeName.startsWith(prefix),
+          );
+
+          if (isTrackChangesAttribute) {
+            preservedAttributes[attributeName] = attributeValue;
+          }
+        }
+
+        // If Track Changes attributes were found, inject them into the MathML opening tag
+        if (Object.keys(preservedAttributes).length > 0) {
+          const attributesString = Object.keys(preservedAttributes)
+            .map((name) => ` ${name}="${Util.htmlEntities(preservedAttributes[name])}"`)
+            .join("");
+
+          mathML = mathML.replace(/(<math)/i, `$1${attributesString}`);
+        }
+
         if (convertToSafeXml) {
           const safeMathML = MathML.safeXmlEncode(mathML);
           return safeMathML;
