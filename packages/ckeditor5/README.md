@@ -47,6 +47,7 @@ Easily include quality math equations in your documents and digital content.
    ```js
    import { ClassicEditor } from 'ckeditor5';
    import MathType from '@wiris/mathtype-ckeditor5/dist/index.js';
+   import "@wiris/mathtype-ckeditor5/dist/index.css";
 
    ...
 
