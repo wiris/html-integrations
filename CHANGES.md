@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### 8.15.1 2026-01-27
+
+- feat: Detect and render Math XML. #KB-61551
+- fix: CK5 Improve track changes markers styling. #KB-62901
+- fix: CK5 Preview track changes. #KB-62983
+- fix: CK5 get Data with track changes. #KB-63220
+
 ### 8.15.0 2026-01-07
 
 - feat: Add TrackChanges compatibility. #KB-62491
@@ -272,7 +279,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ADR 005. Use HTML sanitizer to avoid XSS attacks.
 
 - Solve Parser not working on Generic Integrations (Issue - #450)
-
   - Modify the generic package to use properly the parser functions.
   - Modify the demo to initialyze the editor exposing it to the window, so it can have the necessary configurations to use the Parser class.
 
@@ -282,13 +288,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Added this tag on the Latex formula generation.
 
 - Fix Angular + Froala (v3 & v4) treting Wiris formulas as images.
-
   - Update Webpack to V5 and remove jQuery, on mathtype-froala3 and its demos.
 
 - Accept non standard ports for host.
 
 - doc: Update Generic integration instructions with a missing step (#KB-19571)
-
   - On `mathtype-generic` and `mathtype-html-integration-devkit` pacakges
 
 - Start sending data to Cypress Dashboard with the published packages (KB-18683)
@@ -336,7 +340,6 @@ See: https://github.com/wiris/html-integrations/issues/134#issuecomment-90544864
 - Package level
   - Modify the MathType for Froala 3 plugin to support the latest Froala version (4).
 - README level
-
   - Improve MathType Froala packages and demos README.
   - Modify project README in order to take into account the new changes on the Froala plugin and demos.
   - Created ADR draft 004.
