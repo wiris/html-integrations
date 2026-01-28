@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-ckeditor5",
-  "version": "8.15.0",
+  "version": "8.15.1",
   "description": "MathType Web for CKEditor5 editor",
   "keywords": [
     "chem",
