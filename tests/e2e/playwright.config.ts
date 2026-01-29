@@ -22,7 +22,7 @@ const editorPortMap = {
   'tinymce6': 8005,
   'tinymce7': 8006,
   'tinymce8': 8007,
-  'generic': 8008,
+  'generic': 8007,
 }
 
 // Creates web servers only for enabled editors in the HTML_EDITOR env variable
@@ -47,7 +47,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  webServer: webServers,
+  webServer: process.env.USE_STAGING === 'true' ? undefined : webServers,
   projects: [
     {
       name: 'chromium',

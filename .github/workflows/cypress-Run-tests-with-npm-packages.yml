@@ -37,7 +37,7 @@ jobs:
           yarn install
           yarn playwright install --with-deps
 
-      - name: Build ${{ matrix.editor }} packages
+      - name: Build ${{ matrix.editor }} packages # TODO: check if build html-${{ matrix.editor }} is needed
         run: |
           yarn nx build ${{ matrix.editor }}
           yarn nx build html-${{ matrix.editor }}
