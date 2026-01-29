@@ -44,18 +44,17 @@ tests/e2e/
 ## Supported Editors and Packages
 
 The testing framework supports the following HTML editors with their corresponding localhost ports:
-
 | Editor     | Port | Status |
 |------------|------|--------|
 | ckeditor4  | 8001 | ✅ Active |
 | ckeditor5  | 8002 | ✅ Active |
-| froala     | 8003 | ✅ Active |
-| tinymce5   | 8004 | ✅ Active |
-| tinymce6   | 8005 | ✅ Active |
-| tinymce7   | 8006 | ✅ Active |
-| tinymce8   | 8007 | ✅ Active |
-| generic    | 8008 | ✅ Active |
-| viewer     | 8009 | 📋 TODO |
+| froala     | 8004 | ✅ Active |
+| tinymce5   | 8006 | ✅ Active |
+| tinymce6   | 8008 | ✅ Active |
+| tinymce7   | 8009 | ✅ Active |
+| tinymce8   | ? | 📋 TODO |
+| generic    | 8007 | ✅ Active |
+| viewer     | ? | 📋 TODO |
 
 
 ## Environment Configuration
