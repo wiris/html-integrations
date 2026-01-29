@@ -37,15 +37,17 @@ jobs:
           yarn install
           yarn playwright install --with-deps
 
-      - name: Build ${{ matrix.editor }} packages
+      - name: Build ${{ matrix.editor }} package
+        if: matrix.editor != 'tinymce8'
         run: |
-          {% if matrix.editor == 'tinymce8' %}
-                yarn nx build tinymce7
-                yarn nx build html-tinymce8
-          {% else %}
-                yarn nx build ${{ matrix.editor }}
-                yarn nx build html-${{ matrix.editor }}
-          {% endif %}
+          yarn nx build ${{ matrix.editor }}
+          yarn nx build html-${{ matrix.editor }}
+
+      - name: Build tinymce8 packages
+        if: matrix.editor == 'tinymce8'
+        run: |
+          yarn nx build tinymce7
+          yarn nx build html-tinymce8
 
       - name: Run E2E tests for ${{ matrix.editor }}
         id: e2e
