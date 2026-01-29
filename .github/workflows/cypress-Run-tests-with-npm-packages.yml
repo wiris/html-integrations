@@ -12,6 +12,7 @@ jobs:
   e2e-tests:
     name: E2E Tests - ${{ matrix.editor }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false # Continue other jobs even if one fails
       matrix:

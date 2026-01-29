@@ -52,7 +52,7 @@ The testing framework supports the following HTML editors with their correspondi
 | tinymce5   | 8006 | ✅ Active |
 | tinymce6   | 8008 | ✅ Active |
 | tinymce7   | 8009 | ✅ Active |
-| tinymce8   | ? | 📋 TODO |
+| tinymce8   | 8010 | ✅ Active |
 | generic    | 8007 | ✅ Active |
 | viewer     | ? | 📋 TODO |
 
@@ -96,7 +96,7 @@ You can configure your environment using an optional `.env` file or by setting v
 
 ```bash
 # Install dependencies
-yarn install --frozen-lockfile
+yarn install
 
 # Install Playwright browsers
 yarn playwright install --with-deps
@@ -106,7 +106,7 @@ yarn playwright install --with-deps
 The `yarn test:e2e` script is defined in the main package.json and runs the E2E tests.
 
 Playwright is configured to pre-build both the package and test site (`demos` folder) for the configured
-editors and deploy them in order to run the test. If the test page is already deployed, it will skip this step.
+editors and deploy them in order to run the test. Don't pre-deploy the test page, Playwright will do it by itself.
 
 ```bash
 # Run tests for specific editors
@@ -122,7 +122,7 @@ yarn test:e2e
 USE_STAGING=true yarn test:e2e
 
 # Run specific browser
-yarn test:e2e --project=firefox
+yarn test:e2e --project=webkit
 
 # Run in headed mode
 yarn test:e2e --headed
@@ -143,28 +143,19 @@ HTML_EDITOR=ckeditor5 yarn test:e2e
 ## Playwright Configuration
 See ([`playwright.config.ts`](../../../tests/e2e/playwright.config.ts)).
 
-### Key Features
-
-- **Conditional Server Startup**: Only starts servers for enabled editors via `HTML_EDITOR`
-- **Server Reuse**: `reuseExistingServer: true` for faster local development
-- **Environment Flexibility**: Supports both localhost and staging environments
-- **Parallel Execution**: Tests run in parallel across different editors and browsers
-- **Multiple Browsers**: Supports Chromium, Firefox, and WebKit. All three browsers are executed simultaneously by default
-- **Comprehensive Reporting**: HTML and JUnit reports with artifacts. Screenshots and videos are attached to failed runs
-
 
 ## CI/CD Integration
 
 ### GitHub Actions Workflow
 
-The E2E tests are automated via GitHub Actions ([`cypress-Run-tests-with-npm-packages.yml`](../../../.github/workflows/cypress-Run-tests-with-npm-packages.yml)):
+The E2E tests are automated via GitHub Actions ([`run-e2e-tests.yml`](../../../.github/workflows/cypress-Run-tests-with-npm-packages.yml)):
 
 - **When tests run**: On pushes to `main`, pull requests, and manual workflow dispatch
 - **Parallelization**: Each editor runs in a separate job using matrix strategy for maximum parallel execution
 - **Reports**:
   - Github reports appear in the GitHub Actions **Checks** tab
   - Failed tests create GitHub Actions annotations with direct links for quick debugging.
-  - HTML reports and artifacts are available in the **Actions** tab under each workflow run
+  - HTML reports and artifacts are attached to the workflow run.
 
 ## Test Coverage
 
