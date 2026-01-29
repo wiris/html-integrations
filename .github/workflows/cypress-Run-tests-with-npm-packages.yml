@@ -37,10 +37,15 @@ jobs:
           yarn install
           yarn playwright install --with-deps
 
-      - name: Build ${{ matrix.editor }} packages # TODO: check if build html-${{ matrix.editor }} is needed
+      - name: Build ${{ matrix.editor }} packages
         run: |
-          yarn nx build ${{ matrix.editor }}
-          yarn nx build html-${{ matrix.editor }}
+          {% if matrix.editor == 'tinymce8' %}
+                yarn nx build tinymce7
+                yarn nx build html-tinymce8
+          {% else %}
+                yarn nx build ${{ matrix.editor }}
+                yarn nx build html-${{ matrix.editor }}
+          {% endif %}
 
       - name: Run E2E tests for ${{ matrix.editor }}
         id: e2e
