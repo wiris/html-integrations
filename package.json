@@ -28,12 +28,12 @@
     "dotenv": "^16.3.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-jsdoc": "^48.2.3",
+    "eslint-plugin-prettier": "^5.2.3",
     "html-validate": "^8.18.1",
     "nx": "18.2.2",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
     "prettier": "3.5.2",
     "typescript": "~5.4.4"
   },
@@ -43,5 +43,8 @@
     "packages/**",
     "demos/**"
   ],
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "dependencies": {
+    "serve": "^14.2.5"
+  }
 }

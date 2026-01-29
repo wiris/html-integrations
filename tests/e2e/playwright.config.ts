@@ -7,7 +7,7 @@ dotenv.config({path: path.resolve(__dirname, '.env')})
 const enabledEditors = (process.env.HTML_EDITOR || '').split('|').filter(Boolean)
 
 const createWebServer = (editor: string, port: number) => ({
-  command: `yarn nx start html-${editor}`,
+  command: `yarn nx serve-static html-${editor}`,
   port,
   reuseExistingServer: true,
   setTimeout: 30_000
@@ -21,7 +21,7 @@ const editorPortMap = {
   'tinymce5': 8006,
   'tinymce6': 8008,
   'tinymce7': 8009,
-  'tinymce8': 8007,
+  'tinymce8': 8010,
   'generic': 8007,
 }
 
@@ -35,7 +35,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? '90%' : undefined,
   reporter: [
     ['html', { open: process.env.CI ? 'never' : 'on-failure', outputFolder: 'playwright-report/html' }],
     ['junit', { outputFile: 'test-results/results.xml' }],

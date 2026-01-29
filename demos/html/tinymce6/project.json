@@ -51,6 +51,12 @@
         "lintFilePatterns": ["demos/html/tinymce6/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn serve -s demos/html/tinymce6 -l 8008"
+      }
     }
   }
 }
