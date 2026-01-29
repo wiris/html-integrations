@@ -3,7 +3,7 @@ name: E2E Tests - All Editors
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
   workflow_dispatch:
 
@@ -31,7 +31,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '23.x'
+          node-version: "23.x"
 
       - name: Install dependencies
         run: |
