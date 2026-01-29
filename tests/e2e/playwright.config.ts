@@ -17,10 +17,10 @@ const createWebServer = (editor: string, port: number) => ({
 const editorPortMap = {
   'ckeditor4': 8001,
   'ckeditor5': 8002,
-  'froala': 8003,
-  'tinymce5': 8004,
-  'tinymce6': 8005,
-  'tinymce7': 8006,
+  'froala': 8004,
+  'tinymce5': 8006,
+  'tinymce6': 8008,
+  'tinymce7': 8009,
   'tinymce8': 8007,
   'generic': 8007,
 }

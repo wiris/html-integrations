@@ -42,11 +42,12 @@ export default abstract class BaseEditor extends BasePage {
       const editorPortMap = {
         'ckeditor4': 8001,
         'ckeditor5': 8002,
-        'froala': 8003,
-        'tinymce5': 8004,
-        'tinymce6': 8005,
-        'tinymce7': 8006,
-        'generic': 8008,
+        'froala': 8004,
+        'tinymce5': 8006,
+        'tinymce6': 8008,
+        'tinymce7': 8009,
+        'tinymce8': 8007,
+        'generic': 8007,
       }
 
       const port = editorPortMap[this.getName() as keyof typeof editorPortMap]
