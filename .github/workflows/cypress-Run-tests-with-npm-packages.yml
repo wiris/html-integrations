@@ -49,7 +49,6 @@ jobs:
 
       - name: Publish test results for ${{ matrix.editor }}
         uses: dorny/test-reporter@d61b558e8df85cb60d09ca3e5b09653b4477cea7 # v2.0.0
-        if: always()
         with:
           name: E2E Tests - ${{ matrix.editor }}
           path: tests/e2e/test-results/results.xml
@@ -59,7 +58,6 @@ jobs:
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: test-results-${{ matrix.editor }}
           path: tests/e2e/playwright-report/
