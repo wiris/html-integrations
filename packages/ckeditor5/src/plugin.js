@@ -557,7 +557,7 @@ export default class MathType extends Plugin {
           const previewOutput = output.replace(/<img([^>]*class="Wirisformula"[^>]*)>/g, (match, attributes) => {
             // Extract Track Changes attributes
             const trackChangesAttrs = [];
-            
+
             attributesToPreserve.forEach((prefix) => {
               const regex = new RegExp(`(${prefix}[^=]*="[^"]*")`, "g");
               let attrMatch;
@@ -578,8 +578,11 @@ export default class MathType extends Plugin {
           return;
         }
 
-        // In save mode, convert formula images back to clean MathML
-        const parsedResult = Parser.endParse(output);
+        // Clean track changes markers only from LaTeX content before converting to MathML.
+        const latexParsedOutput = this._endParseEditModeWithTrackChangesSupport(output);
+
+        // Convert formula images to MathML. It's important to use the save mode to prevent issues.
+        const parsedResult = Parser.endParseSaveMode(latexParsedOutput);
 
         // Remove all semantic annotations (including handwritten data points)
         // to ensure clean, standard MathML format for storage
@@ -630,6 +633,44 @@ export default class MathType extends Plugin {
   }
 
   /**
+   * When Track Changes markers are present inside a LaTeX block:
+   * - The LaTeX is preserved as text (not converted to MathML) to maintain suggestions.
+   * - It also prevents the issue where the suggestions were placed as MathML tags.
+   *
+   * When NO Track Changes markers are inside a LaTeX block:
+   * - The LaTeX is converted to MathML normally. (previous default behavior)
+   *
+   * This is to ensure that:
+   * 1. LaTeX without suggestions gets converted to MathML for final output.
+   * 2. LaTeX with pending suggestions is preserved so setData(getData()) works correctly.
+   */
+  _endParseEditModeWithTrackChangesSupport(code) {
+    if (!Configuration.get("parseModes").includes("latex")) {
+      return code;
+    }
+
+    const latexBlockRegex = /\$\$([\s\S]*?)\$\$/g;
+    const trackChangesRegex = /<(suggestion|comment)-(start|end)/i;
+
+    return code.replace(latexBlockRegex, (fullMatch, latexContent) => {
+      // Check if this LaTeX contains Track Changes markers to prevent conversion.
+      if (trackChangesRegex.test(latexContent)) {
+        return fullMatch;
+      }
+
+      // When LaTeX has no suggestion, it can be converted to MathML.
+      const decodedLatex = Util.htmlEntitiesDecode(latexContent);
+      let mathml = Util.htmlSanitize(Latex.getMathMLFromLatex(decodedLatex, true));
+
+      if (!Configuration.get("saveHandTraces")) {
+        mathml = MathML.removeAnnotation(mathml, "application/json");
+      }
+
+      return mathml;
+    });
+  }
+
+  /**
    * Expose the WirisPlugin variable to the window
    */
   // eslint-disable-next-line class-methods-use-this
@@ -666,6 +707,24 @@ export default class MathType extends Plugin {
           (quantity > 1 ? `${quantity} ` : "") +
           StringManager.get(quantity > 1 ? "formulas" : "formula", integration?.getLanguage() || "en"),
       );
+
+      this._registerLatexTrackChangesAdapter(integration);
     }
+  }
+
+  /**
+   * Register a custom adapter for handling LaTeX text changes.
+   * This ensures that LaTeX formulas ($$...$$) are treated as atomic units
+   * when tracked by the Track Changes feature and avoid partial edits.
+   */
+  _registerLatexTrackChangesAdapter(integration) {
+    const { editor } = this;
+
+    editor.model.document.on("change:data", () => {
+      if (integration) {
+        integration._trackChangesEnabled =
+          editor.commands.get("trackChanges")?.value ?? false;
+      }
+    });
   }
 }
