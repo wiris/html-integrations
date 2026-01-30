@@ -633,11 +633,11 @@ export default class MathType extends Plugin {
   }
 
   /**
-   * When Track Changes markers are present inside a LaTeX block:
+   * When track changes markers are present inside a LaTeX block:
    * - The LaTeX is preserved as text (not converted to MathML) to maintain suggestions.
    * - It also prevents the issue where the suggestions were placed as MathML tags.
    *
-   * When NO Track Changes markers are inside a LaTeX block:
+   * When no track changes markers are inside a LaTeX block:
    * - The LaTeX is converted to MathML normally. (previous default behavior)
    *
    * This is to ensure that:
@@ -652,8 +652,9 @@ export default class MathType extends Plugin {
     const latexBlockRegex = /\$\$([\s\S]*?)\$\$/g;
     const trackChangesRegex = /<(suggestion|comment)-(start|end)/i;
 
+    //TODO: Validate if replace all is needed instead of just replace when it is all implemented.
     return code.replace(latexBlockRegex, (fullMatch, latexContent) => {
-      // Check if this LaTeX contains Track Changes markers to prevent conversion.
+      // Check if this LaTeX contains track changes markers to prevent conversion.
       if (trackChangesRegex.test(latexContent)) {
         return fullMatch;
       }
@@ -715,7 +716,7 @@ export default class MathType extends Plugin {
   /**
    * Register a custom adapter for handling LaTeX text changes.
    * This ensures that LaTeX formulas ($$...$$) are treated as atomic units
-   * when tracked by the Track Changes feature and avoid partial edits.
+   * when used by the track changes feature and avoid partial edits.
    */
   _registerLatexTrackChangesAdapter(integration) {
     const { editor } = this;
