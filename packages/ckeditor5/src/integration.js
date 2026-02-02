@@ -620,10 +620,10 @@ export default class CKEditor5Integration extends IntegrationModel {
    * Necessary for track changes handling, to find the full LaTeX even with the suggestions.
    */
   findLatexContainerElement(textNode) {
-    const MAX_ANCESTORS = 10; // Prevent excessive loops.
+    const MAX_DEPTH = 10; // Prevent excessive loops.
     let element = textNode.parentElement;
 
-    for (let i = 0; i < MAX_ANCESTORS && element; i++) {
+    for (let i = 0; i < MAX_DEPTH && element; i++) {
       const text = element.textContent || "";
       const openDelim = text.indexOf("$$");
 
