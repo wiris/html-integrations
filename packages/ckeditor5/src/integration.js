@@ -164,7 +164,9 @@ export default class CKEditor5Integration extends IntegrationModel {
    * Inserts a new formula at the current selection position.
    */
   insertNewFormula(writer, mathml, modelElement) {
-    if (!mathml) return;
+    if (!mathml) {
+      return;
+    }
 
     const viewSelection =
       this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
@@ -181,7 +183,9 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   deleteViewSelection(viewSelection) {
-    if (viewSelection.isCollapsed) return;
+    if (viewSelection.isCollapsed) {
+      return;
+    }
 
     for (const range of viewSelection.getRanges()) {
       const modelRange = this.editorObject.editing.mapper.toModelRange(range);
@@ -213,9 +217,12 @@ export default class CKEditor5Integration extends IntegrationModel {
     }
 
     // Otherwise it's LaTeX editing, so we insert at current selection
-    if (!mathml) return;
+    if (!mathml) {
+      return;
+    }
 
     this.editorObject.model.insertContent(modelElement);
+
     return modelElement;
   }
 
@@ -384,17 +391,23 @@ export default class CKEditor5Integration extends IntegrationModel {
   findLatexBlockNearSelection() {
     const position = this.editorObject.model.document.selection.getFirstPosition();
 
-    if (!position?.parent) return null;
+    if (!position?.parent) {
+      return;
+    }
 
     // Build LaTeX with track changes accepted suggestions, if any.
     const { textParts, acceptedText } = this.collectTextParts(position.parent);
 
-    if (!acceptedText.includes("$$")) return null;
+    if (!acceptedText.includes("$$")) {
+      return;
+    }
 
     const openDelimIndex = acceptedText.indexOf("$$");
     const closeDelimIndex = acceptedText.indexOf("$$", openDelimIndex + 2);
 
-    if (openDelimIndex === -1 || closeDelimIndex === -1) return null;
+    if (openDelimIndex === -1 || closeDelimIndex === -1) {
+      return;
+    }
 
     const latexBoundaries = { start: openDelimIndex, end: closeDelimIndex + 2 };
 
@@ -456,7 +469,9 @@ export default class CKEditor5Integration extends IntegrationModel {
       }
     }
 
-    if (startPartIndex === -1 || endPartIndex === -1) return null;
+    if (startPartIndex === -1 || endPartIndex === -1) {
+      return;
+    }
 
     // Extend range to include any consecutive deleted parts after the block.
     let finalEndIndex = endPartIndex;
@@ -532,11 +547,13 @@ export default class CKEditor5Integration extends IntegrationModel {
       ? acceptedLatex
       : standardResult?.latex;
 
-    if (!latex && !acceptedLatex) return null;
+    if (!latex && !acceptedLatex) {
+      return;
+    }
 
     // Verify caret is inside LaTeX block for track changes edge cases.
     if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode)) {
-      return null;
+      return;
     }
 
     this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
@@ -547,12 +564,16 @@ export default class CKEditor5Integration extends IntegrationModel {
   isCaretInsideLatexBlock(textNode) {
     const container = this.findLatexContainerElement(textNode);
 
-    if (!container) return false;
+    if (!container) {
+      return false;
+    }
 
     const fullText = container.textContent || "";
     const openDelim = fullText.indexOf("$$");
     const closeDelim = fullText.indexOf("$$", openDelim + 2);
-    if (openDelim === -1 || closeDelim === -1) return false;
+    if (openDelim === -1 || closeDelim === -1) {
+      return false;
+    }
 
     // Calculate text Node position within container.
     let textPosition = 0;
@@ -575,7 +596,9 @@ export default class CKEditor5Integration extends IntegrationModel {
   storeLatexRangeWithFallback(textNode, caretPosition, latex) {
     const parentTag = textNode.parentElement?.tagName?.toLowerCase();
 
-    if (!textNode.parentElement || parentTag === "textarea") return;
+    if (!textNode.parentElement || parentTag === "textarea") {
+      return;
+    }
 
     const latexResult = Latex.getLatexFromTextNode(textNode, caretPosition);
 
@@ -620,12 +643,16 @@ export default class CKEditor5Integration extends IntegrationModel {
   extractAcceptedLatexFromDOM(textNode) {
     const container = this.findLatexContainerElement(textNode);
 
-    if (!container) return null;
+    if (!container) {
+      return;
+    }
 
     const acceptedText = this.getAcceptedTextContent(container);
     const openDelim = acceptedText.indexOf("$$");
     const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
-    if (openDelim === -1 || closeDelim === -1) return null;
+    if (openDelim === -1 || closeDelim === -1) {
+      return;
+    }
 
     return acceptedText.substring(openDelim + 2, closeDelim);
   }
