@@ -146,58 +146,77 @@ export default class CKEditor5Integration extends IntegrationModel {
    * @returns {module:engine/model/element~Element} The model element corresponding to the inserted image
    */
   insertMathml(mathml) {
-    // This returns the value returned by the callback function (writer => {...})
     return this.editorObject.model.change((writer) => {
-      const core = this.getCore();
+      const { isNewElement, temporalImage } = this.getCore().editionProperties;
       const selection = this.editorObject.model.document.selection;
+      const attributes = Object.fromEntries(selection.getAttributes());
+      const modelElementNew = writer.createElement("mathml", { formula: mathml, ...attributes });
 
-      const modelElementNew = writer.createElement("mathml", {
-        formula: mathml,
-        ...Object.fromEntries(selection.getAttributes()), // To keep the format, such as style and font
-      });
-
-      // Obtain the DOM <span><img ... /></span> object corresponding to the formula
-      if (core.editionProperties.isNewElement) {
-        // Don't bother inserting anything at all if the MathML is empty.
-        if (!mathml) return;
-
-        const viewSelection =
-          this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
-        const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
-
-        this.editorObject.model.insertObject(modelElementNew, modelPosition);
-
-        // Remove selection
-        if (!viewSelection.isCollapsed) {
-          for (const range of viewSelection.getRanges()) {
-            const modelRange = this.editorObject.editing.mapper.toModelRange(range);
-            const modelSelection = this.editorObject.model.createSelection(modelRange);
-
-            this.editorObject.model.deleteContent(modelSelection);
-          }
-        }
-
-        // Set carret after the formula
-        const position = this.editorObject.model.createPositionAfter(modelElementNew);
-        writer.setSelection(position);
-      } else {
-        const img = core.editionProperties.temporalImage;
-        const viewElement = this.editorObject.editing.view.domConverter.domToView(img).parent;
-        const modelElementOld = this.editorObject.editing.mapper.toModelElement(viewElement);
-
-        // Insert the new <mathml> and remove the old one
-        const position = this.editorObject.model.createPositionBefore(modelElementOld);
-
-        // If the given MathML is empty, don't insert a new formula.
-        if (mathml) {
-          this.editorObject.model.insertObject(modelElementNew, position);
-        }
-        this.editorObject.model.deleteContent(this.editorObject.model.createSelection(modelElementOld,'on'));
+      if (isNewElement) {
+        return this.insertNewFormula(writer, mathml, modelElementNew);
       }
 
-      // eslint-disable-next-line consistent-return
-      return modelElementNew;
+      return this.replaceExistingFormula(mathml, modelElementNew, temporalImage);
     });
+  }
+
+  /**
+   * Inserts a new formula at the current selection position.
+   */
+  insertNewFormula(writer, mathml, modelElement) {
+    if (!mathml) return;
+
+    const viewSelection =
+      this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
+    const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
+
+    this.editorObject.model.insertObject(modelElement, modelPosition);
+    this.deleteViewSelection(viewSelection);
+
+    // Set carret after the formula.
+    const position = this.editorObject.model.createPositionAfter(modelElement);
+    writer.setSelection(position);
+
+    return modelElement;
+  }
+
+  deleteViewSelection(viewSelection) {
+    if (viewSelection.isCollapsed) return;
+
+    for (const range of viewSelection.getRanges()) {
+      const modelRange = this.editorObject.editing.mapper.toModelRange(range);
+      const modelSelection = this.editorObject.model.createSelection(modelRange);
+
+      this.editorObject.model.deleteContent(modelSelection);
+    }
+  }
+
+  /**
+   * Replaces an existing formula with updated MathML.
+   */
+  replaceExistingFormula(mathml, modelElement, temporalImage) {
+    const viewNode = this.editorObject.editing.view.domConverter.domToView(temporalImage);
+
+    // Check if image exists in view to do standard formula editing
+    if (viewNode?.parent) {
+      const modelElementOld = this.editorObject.editing.mapper.toModelElement(viewNode.parent);
+
+      // Insert the new <mathml> and remove the old one
+      const position = this.editorObject.model.createPositionBefore(modelElementOld);
+
+      if (mathml) {
+        this.editorObject.model.insertObject(modelElement, position);
+      }
+
+      this.editorObject.model.deleteContent(this.editorObject.model.createSelection(modelElementOld, "on"));
+      return modelElement;
+    }
+
+    // Otherwise it's LaTeX editing, so we insert at current selection
+    if (!mathml) return;
+
+    this.editorObject.model.insertContent(modelElement);
+    return modelElement;
   }
 
   /**
@@ -233,101 +252,30 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /** @inheritdoc */
-  insertFormula(focusElement, windowTarget, mathml, wirisProperties) {
+  insertFormula(_focusElement, windowTarget, mathml, _wirisProperties) {
     // eslint-disable-line no-unused-vars
     const returnObject = {};
-
     let mathmlOrigin;
+
     if (!mathml) {
       this.insertMathml("");
     } else if (this.core.editMode === "latex") {
-      returnObject.latex = Latex.getLatexFromMathML(mathml);
-      returnObject.node = windowTarget.document.createTextNode(`$$${returnObject.latex}$$`);
-
-      this.editorObject.model.change((writer) => {
-        const { latexRange } = this.core.editionProperties;
-
-        // Add null check for latexRange.
-        // When the editor is initialized in a textarea element, latexRange may not be set on initial load.
-        // This check ensures formulas can still be inserted by falling back to MathML insertion if latexRange is not available.
-        if (!latexRange) {
-          // Fallback to regular MathML insertion if latexRange is not available
-          this.insertMathml(mathml);
-          return;
-        }
-
-        const startNode = this.findText(latexRange.startContainer);
-        const endNode = this.findText(latexRange.endContainer);
-
-        let startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexRange.startOffset);
-        let endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + latexRange.endOffset);
-
-        let range = writer.createRange(startPosition, endPosition);
-
-        // When Latex is next to image/formula.
-        if (latexRange.startContainer.nodeType === 3 && latexRange.startContainer.previousSibling?.nodeType === 1) {
-          // Get the position of the latex to be replaced.
-          const latexEdited = `$$${Latex.getLatexFromMathML(
-            MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml),
-          )}$$`;
-          let data = latexRange.startContainer.data;
-
-          // Remove invisible characters.
-          data = data.replaceAll(String.fromCharCode(8288), "");
-
-          // Get to the start of the latex we are editing.
-          const offset = data.indexOf(latexEdited);
-          const dataOffset = data.substring(offset);
-          const second$ = dataOffset.substring(2).indexOf("$$") + 4;
-          const substring = dataOffset.substr(0, second$);
-          data = data.replace(substring, "");
-
-          if (!data) {
-            startPosition = writer.createPositionBefore(startNode);
-            range = startNode;
-          } else {
-            startPosition = startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + offset);
-            endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + second$ + offset);
-            range = writer.createRange(startPosition, endPosition);
-          }
-        }
-
-        const modelSelection = this.editorObject.model.createSelection(range);
-
-        this.editorObject.model.deleteContent(modelSelection);
-        writer.insertText(`$$${returnObject.latex}$$`, startNode.getAttributes(), startPosition);
-      });
+      this.handleLatexInsertion(returnObject, windowTarget, mathml);
     } else {
-      mathmlOrigin = this.core.editionProperties.temporalImage?.dataset.mathml;
-      try {
-        returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(
-          this.editorObject.editing.mapper.toViewElement(this.insertMathml(mathml)),
-          windowTarget.document,
-        );
-      } catch (e) {
-        const x = e.toString();
-        if (x.includes("CKEditorError: Cannot read property 'parent' of undefined")) {
-          this.core.modalDialog.cancelAction();
-        }
-      }
+      mathmlOrigin = this.handleMathmlInsertion(returnObject, windowTarget, mathml);
     }
 
-    // Build the telemeter payload separated to delete null/undefined entries.
     const payload = {
-      mathml_origin: mathmlOrigin ? MathML.safeXmlDecode(mathmlOrigin) : mathmlOrigin,
-      mathml: mathml ? MathML.safeXmlDecode(mathml) : mathml,
+      mathml: mathml ? MathML.safeXmlDecode(mathml) : undefined,
       elapsed_time: Date.now() - this.core.editionProperties.editionStartTime,
-      editor_origin: null, // TODO read formula to find out whether it comes from Oxygen Desktop
       toolbar: this.core.modalDialog.contentManager.toolbar,
       size: mathml?.length,
     };
 
-    // Remove desired null keys.
-    Object.keys(payload).forEach((key) => {
-      if (key === "mathml_origin" || key === "editor_origin") !payload[key] ? delete payload[key] : {};
-    });
+    if (mathmlOrigin) {
+      payload.mathml_origin = MathML.safeXmlDecode(mathmlOrigin);
+    }
 
-    // Call Telemetry service to track the event.
     try {
       Telemeter.telemeter.track("INSERTED_FORMULA", {
         ...payload,
@@ -336,19 +284,372 @@ export default class CKEditor5Integration extends IntegrationModel {
       console.error("Error tracking INSERTED_FORMULA", error);
     }
 
-    /* Due to PLUGINS-1329, we add the onChange event to the CK4 insertFormula.
-        We probably should add it here as well, but we should look further into how */
-    // this.editorObject.fire('change');
-
-    // Remove temporal image of inserted formula
     this.core.editionProperties.temporalImage = null;
 
     return returnObject;
   }
 
+  handleLatexInsertion(returnObject, windowTarget, mathml) {
+    returnObject.latex = Latex.getLatexFromMathML(mathml);
+    returnObject.node = windowTarget.document.createTextNode(`$$${returnObject.latex}$$`);
+
+    const { latexRange } = this.core.editionProperties;
+
+    // When latexRange exists (meaning the whole LaTeX was selected or the editor was opened),
+    // find the node contaning the LaTeX and replace it fully.
+    if (latexRange) {
+      const startNode = this.findText(latexRange.startContainer);
+      const endNode = this.findText(latexRange.endContainer);
+
+      // If nodes found, use standard replacement.
+      if (startNode && endNode) {
+        this.replaceLatexWithNodes(startNode, endNode, latexRange, returnObject.latex);
+        return;
+      }
+    }
+
+    this.replaceLatexUsingModelSearch(returnObject.latex);
+  }
+
+  handleMathmlInsertion(returnObject, windowTarget, mathml) {
+    const mathmlOrigin = this.core.editionProperties.temporalImage?.dataset.mathml;
+
+    try {
+      const modelElement = this.insertMathml(mathml);
+      const viewElement = this.editorObject.editing.mapper.toViewElement(modelElement);
+
+      returnObject.node = this.editorObject.editing.view.domConverter.viewToDom(viewElement, windowTarget.document);
+    } catch (error) {
+      if (error.toString().includes("Cannot read property 'parent' of undefined")) {
+        this.core.modalDialog.cancelAction();
+      }
+    }
+
+    return mathmlOrigin;
+  }
+
   /**
-   * Function called when the content submits an action.
+   * Gets selection attributes excluding track changes tags.
    */
+  getCleanSelectionAttributes() {
+    const attributes = {};
+
+    for (const [key, value] of this.editorObject.model.document.selection.getAttributes()) {
+      if (!key.startsWith("suggestion:") && !key.startsWith("comment:")) {
+        attributes[key] = value;
+      }
+    }
+
+    return attributes;
+  }
+
+  /**
+   * Searches for the original LaTeX in the model and replaces it.
+   * Fallback when findText() cannot locate DOM nodes (like when there are track changes modifications).
+   */
+  replaceLatexUsingModelSearch(newLatex) {
+    const foundRange = this.findLatexBlockNearSelection();
+
+    if (foundRange) {
+      this.editorObject.model.change((writer) => writer.setSelection(foundRange));
+      this.replaceRangeWithLatex(newLatex);
+    } else {
+      // Insert at current position as a last resort.
+      this.editorObject.model.change((writer) => {
+        const newLatexText = writer.createText(`$$${newLatex}$$`, this.getCleanSelectionAttributes());
+        this.editorObject.model.insertContent(newLatexText);
+      });
+    }
+
+    this.core.editionProperties.extractedLatex = null;
+  }
+
+  /**
+   * Checks if a text proxy has a track changes deletion marker.
+   */
+  isDeletedText(text) {
+    for (const [key, value] of text.getAttributes()) {
+      if (key.startsWith("suggestion:") && value === "deletion") {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Finds a LaTeX block ($$...$$) near the current selection.
+   * Handles track changes by considering the "accepted" version of text.
+   */
+  findLatexBlockNearSelection() {
+    const position = this.editorObject.model.document.selection.getFirstPosition();
+
+    if (!position?.parent) return null;
+
+    // Build LaTeX with track changes accepted suggestions, if any.
+    const { textParts, acceptedText } = this.collectTextParts(position.parent);
+
+    if (!acceptedText.includes("$$")) return null;
+
+    const openDelimIndex = acceptedText.indexOf("$$");
+    const closeDelimIndex = acceptedText.indexOf("$$", openDelimIndex + 2);
+
+    if (openDelimIndex === -1 || closeDelimIndex === -1) return null;
+
+    const latexBoundaries = { start: openDelimIndex, end: closeDelimIndex + 2 };
+
+    return this.convertAcceptedOffsetsToModelRange(textParts, latexBoundaries);
+  }
+
+  /**
+   * Collects all text fragments from a paragraph, tracking both model and accepted text positions.
+   * This is necessary to handle track changes where some LaTeX may have suggestions.
+   */
+  collectTextParts(paragraph) {
+    const textParts = [];
+    let acceptedTextOffset = 0;
+    let acceptedText = "";
+
+    for (const item of this.editorObject.model.createRangeIn(paragraph).getItems()) {
+      if (item.is("$textProxy")) {
+        const isDeleted = this.isDeletedText(item);
+
+        textParts.push({
+          text: item.data,
+          startOffset: item.startOffset,
+          endOffset: item.startOffset + item.data.length,
+          parent: item.textNode.parent,
+          acceptedStart: isDeleted ? null : acceptedTextOffset,
+          acceptedEnd: isDeleted ? null : acceptedTextOffset + item.data.length,
+          isDeleted
+        });
+
+        if (!isDeleted) {
+          acceptedText += item.data;
+          acceptedTextOffset += item.data.length;
+        }
+      }
+    }
+    return { textParts, acceptedText };
+  }
+
+  /**
+   * Converts LaTeX with track changes accepted suggestions to a CKEditor model Range.
+   */
+  convertAcceptedOffsetsToModelRange(textParts, latexBoundaries) {
+    let startPartIndex = -1, endPartIndex = -1;
+    let startOffsetInPart = 0, endOffsetInPart = 0;
+
+    // Find which text parts contain the LaTeX block boundaries
+    for (let i = 0; i < textParts.length; i++) {
+      const part = textParts[i];
+      if (part.isDeleted) continue;
+
+      if (startPartIndex === -1 && latexBoundaries.start >= part.acceptedStart && latexBoundaries.start <= part.acceptedEnd) {
+        startPartIndex = i;
+        startOffsetInPart = latexBoundaries.start - part.acceptedStart;
+      }
+
+      if (latexBoundaries.end >= part.acceptedStart && latexBoundaries.end <= part.acceptedEnd) {
+        endPartIndex = i;
+        endOffsetInPart = latexBoundaries.end - part.acceptedStart;
+      }
+    }
+
+    if (startPartIndex === -1 || endPartIndex === -1) return null;
+
+    // Extend range to include any consecutive deleted parts after the block.
+    let finalEndIndex = endPartIndex;
+    let finalEndOffset = endOffsetInPart;
+
+    for (let i = endPartIndex + 1; i < textParts.length && textParts[i].isDeleted; i++) {
+      finalEndIndex = i;
+      finalEndOffset = textParts[i].text.length;
+    }
+
+    const startPart = textParts[startPartIndex];
+    const endPart = textParts[finalEndIndex];
+
+    return this.editorObject.model.createRange(
+      this.editorObject.model.createPositionAt(startPart.parent, startPart.startOffset + startOffsetInPart),
+      this.editorObject.model.createPositionAt(endPart.parent, endPart.startOffset + finalEndOffset)
+    );
+  }
+
+  replaceRangeWithLatex(newLatex) {
+    this.editorObject.model.change((writer) => {
+      this.editorObject.model.deleteContent(this.editorObject.model.document.selection);
+
+      const newLatexText = writer.createText(`$$${newLatex}$$`, this.getCleanSelectionAttributes());
+      this.editorObject.model.insertContent(newLatexText);
+    });
+  }
+
+  /**
+   * Replaces the whole LaTeX in the CKEditor5 model.
+   */
+  replaceLatexWithNodes(startNode, endNode, latexRange, newLatex) {
+    this.editorObject.model.change((writer) => {
+      const startOffset = startNode.startOffset + latexRange.startOffset;
+      const endOffset = endNode.startOffset + latexRange.endOffset;
+
+      let startPosition = writer.createPositionAt(startNode.parent, startOffset);
+      let endPosition = writer.createPositionAt(endNode.parent, endOffset);
+
+      // Adjust positions when LaTeX is adjacent to a formula.
+      const startContainer = latexRange.startContainer;
+      if (startContainer.nodeType === Node.TEXT_NODE && startContainer.previousSibling?.nodeType === Node.ELEMENT_NODE) {
+        const originalLatex = `$$${Latex.getLatexFromMathML(
+          MathML.safeXmlDecode(this.core.editionProperties.temporalImage.dataset.mathml),
+        )}$$`;
+        const textData = startContainer.data.replaceAll(String.fromCodePoint(8288), "");
+        const latexOffset = textData.indexOf(originalLatex);
+
+        if (latexOffset !== -1) {
+          const closingDelimiterOffset = textData.substring(latexOffset + 2).indexOf("$$") + 4;
+          startPosition = writer.createPositionAt(startNode.parent, startNode.startOffset + latexOffset);
+          endPosition = writer.createPositionAt(endNode.parent, endNode.startOffset + closingDelimiterOffset + latexOffset);
+        }
+      }
+
+      writer.setSelection(writer.createRange(startPosition, endPosition));
+    });
+
+    this.replaceRangeWithLatex(newLatex);
+  }
+
+  /**
+   * Inherited method from IntegrationModel.
+   * Gets the MathML from a text node containing LaTeX.
+   * Handles track changes by simulating "accept all changes" before conversion.
+   */
+  getMathmlFromTextNode(textNode, caretPosition) {
+    const standardResult = Latex.getLatexFromTextNode(textNode, caretPosition);
+    const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode);
+
+    // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
+    const latex = (acceptedLatex && acceptedLatex !== standardResult?.latex)
+      ? acceptedLatex
+      : standardResult?.latex;
+
+    if (!latex && !acceptedLatex) return null;
+
+    // Verify caret is inside LaTeX block for track changes edge cases.
+    if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode)) {
+      return null;
+    }
+
+    this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
+
+    return Latex.getMathMLFromLatex(latex || acceptedLatex);
+  }
+
+  isCaretInsideLatexBlock(textNode) {
+    const container = this.findLatexContainerElement(textNode);
+
+    if (!container) return false;
+
+    const fullText = container.textContent || "";
+    const openDelim = fullText.indexOf("$$");
+    const closeDelim = fullText.indexOf("$$", openDelim + 2);
+    if (openDelim === -1 || closeDelim === -1) return false;
+
+    // Calculate text Node position within container.
+    let textPosition = 0;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let node;
+
+    while ((node = walker.nextNode())) {
+      if (node === textNode) {
+        return textPosition >= openDelim && textPosition <= closeDelim + 2;
+      }
+      textPosition += node.textContent?.length || 0;
+    }
+
+    return false;
+  }
+
+  /**
+   * Stores the LaTeX range for its replacement later.
+   */
+  storeLatexRangeWithFallback(textNode, caretPosition, latex) {
+    const parentTag = textNode.parentElement?.tagName?.toLowerCase();
+
+    if (!textNode.parentElement || parentTag === "textarea") return;
+
+    const latexResult = Latex.getLatexFromTextNode(textNode, caretPosition);
+
+    if (latexResult) {
+      const range = document.createRange();
+
+      range.setStart(latexResult.startNode, latexResult.startPosition);
+      range.setEnd(latexResult.endNode, latexResult.endPosition);
+      this.core.editionProperties.latexRange = range;
+    } else {
+      this.core.editionProperties.latexRange = null;
+    }
+
+    this.core.editionProperties.extractedLatex = latex;
+  }
+
+  /**
+   * Finds a container element containing a complete LaTeX block.
+   * Necessary for track changes handling, to find the full LaTeX even with the suggestions.
+   */
+  findLatexContainerElement(textNode) {
+    const MAX_ANCESTORS = 10; // Prevent excessive loops.
+    let element = textNode.parentElement;
+
+    for (let i = 0; i < MAX_ANCESTORS && element; i++) {
+      const text = element.textContent || "";
+      const openDelim = text.indexOf("$$");
+
+      if (openDelim !== -1 && text.includes("$$", openDelim + 2)) {
+        return element;
+      }
+
+      element = element.parentElement;
+    }
+
+    return null;
+  }
+
+  /**
+   * Extracts LaTeX from DOM, skipping track changes deletion markers.
+   */
+  extractAcceptedLatexFromDOM(textNode) {
+    const container = this.findLatexContainerElement(textNode);
+
+    if (!container) return null;
+
+    const acceptedText = this.getAcceptedTextContent(container);
+    const openDelim = acceptedText.indexOf("$$");
+    const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
+    if (openDelim === -1 || closeDelim === -1) return null;
+
+    return acceptedText.substring(openDelim + 2, closeDelim);
+  }
+
+  /**
+   * Recursively extracts text content, skipping track changes tags.
+   */
+  getAcceptedTextContent(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return node.textContent || "";
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.classList?.contains("ck-suggestion-marker-deletion")) {
+        return "";
+      }
+
+      return Array.from(node.childNodes).map((child) => this.getAcceptedTextContent(child)).join("");
+    }
+
+    return "";
+  }
+
+  /** Called when the modal window is closed. */
   notifyWindowClosed() {
     this.editorObject.editing.view.focus();
   }
