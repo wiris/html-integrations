@@ -23,6 +23,7 @@ For that reason, you'll need to create an `env` file with those keys or add them
 
 ```bash
 CKEDITOR4_API_KEY=XXXXXX
+CK5_LICENSE_KEY=XXXXXX
 froala_API_KEY=XXXXXX
 ```
 
