@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = (config, context) => {
   return {
@@ -25,6 +26,14 @@ module.exports = (config, context) => {
     },
     // Set watch to true for dev purposes.
     watch: false,
+    plugins: [
+      // Add the DefinePlugin to define process.env variable
+      new webpack.DefinePlugin({
+        "process.env": {
+          CK5_LICENSE_KEY: JSON.stringify(process.env.CK5_LICENSE_KEY),
+        },
+      }),
+    ],
     mode: "none",
     module: {
       rules: [

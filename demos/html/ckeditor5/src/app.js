@@ -1,5 +1,6 @@
 // Load scripts.
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Alignment, SourceEditing } from "ckeditor5";
+import { TrackChanges, Comments, TrackChangesPreview } from "ckeditor5-premium-features";
 import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 
 // import coreTranslations from 'ckeditor5/translations/de.js';
@@ -7,6 +8,8 @@ import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 // Load styles.
 import "./static/style.css";
 import "ckeditor5/ckeditor5.css";
+import "ckeditor5-premium-features/ckeditor5-premium-features.css";
+import "@wiris/mathtype-ckeditor5/dist/index.css";
 
 import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 
@@ -28,8 +31,8 @@ window.editor = null;
 
 // Create the CKEditor 5.
 ClassicEditor.create(document.querySelector("#editor"), {
-  licenseKey: "GPL",
-  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing],
+  licenseKey: process.env.CK5_LICENSE_KEY || "GPL",
+  plugins: [Essentials, Paragraph, Bold, Italic, MathType, Alignment, SourceEditing, TrackChanges, Comments, TrackChangesPreview],
   toolbar: [
     "bold",
     "italic",
@@ -38,6 +41,8 @@ ClassicEditor.create(document.querySelector("#editor"), {
     "alignment:left",
     "alignment:center",
     "alignment:right",
+    "trackChanges",
+    "comment",
     "sourceEditing",
   ],
   // translations: [
@@ -53,6 +58,16 @@ ClassicEditor.create(document.querySelector("#editor"), {
 })
   .then((editor) => {
     window.editor = editor;
+
+    // Attribute suggestions/comments to a user.
+    const users = editor.plugins.get("Users");
+    users.addUser({ id: "u1", name: "Editor User", initials: "EU", color: "#4a8cff" });
+    users.defineMe("u1");
+
+    // Disable suggestions mode by default.
+    editor.execute("trackChanges");
+    editor.execute('trackChanges', { forceValue: false });
+
     // Add listener on click button to launch updateContent function.
     // document.getElementById('btn_update').addEventListener('click', (e) => {
     //   e.preventDefault();

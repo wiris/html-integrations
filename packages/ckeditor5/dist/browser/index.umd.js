@@ -11314,7 +11314,9 @@
       /**
      * Inserts a new formula at the current selection position.
      */ insertNewFormula(writer, mathml, modelElement) {
-          if (!mathml) return;
+          if (!mathml) {
+              return;
+          }
           const viewSelection = this.core.editionProperties.selection || this.editorObject.editing.view.document.selection;
           const modelPosition = this.editorObject.editing.mapper.toModelPosition(viewSelection.getLastPosition());
           this.editorObject.model.insertObject(modelElement, modelPosition);
@@ -11325,7 +11327,9 @@
           return modelElement;
       }
       deleteViewSelection(viewSelection) {
-          if (viewSelection.isCollapsed) return;
+          if (viewSelection.isCollapsed) {
+              return;
+          }
           for (const range of viewSelection.getRanges()){
               const modelRange = this.editorObject.editing.mapper.toModelRange(range);
               const modelSelection = this.editorObject.model.createSelection(modelRange);
@@ -11348,7 +11352,9 @@
               return modelElement;
           }
           // Otherwise it's LaTeX editing, so we insert at current selection
-          if (!mathml) return;
+          if (!mathml) {
+              return;
+          }
           this.editorObject.model.insertContent(modelElement);
           return modelElement;
       }
@@ -11482,13 +11488,19 @@
      * Handles track changes by considering the "accepted" version of text.
      */ findLatexBlockNearSelection() {
           const position = this.editorObject.model.document.selection.getFirstPosition();
-          if (!position?.parent) return null;
+          if (!position?.parent) {
+              return;
+          }
           // Build LaTeX with track changes accepted suggestions, if any.
           const { textParts, acceptedText } = this.collectTextParts(position.parent);
-          if (!acceptedText.includes("$$")) return null;
+          if (!acceptedText.includes("$$")) {
+              return;
+          }
           const openDelimIndex = acceptedText.indexOf("$$");
           const closeDelimIndex = acceptedText.indexOf("$$", openDelimIndex + 2);
-          if (openDelimIndex === -1 || closeDelimIndex === -1) return null;
+          if (openDelimIndex === -1 || closeDelimIndex === -1) {
+              return;
+          }
           const latexBoundaries = {
               start: openDelimIndex,
               end: closeDelimIndex + 2
@@ -11543,7 +11555,9 @@
                   endOffsetInPart = latexBoundaries.end - part.acceptedStart;
               }
           }
-          if (startPartIndex === -1 || endPartIndex === -1) return null;
+          if (startPartIndex === -1 || endPartIndex === -1) {
+              return;
+          }
           // Extend range to include any consecutive deleted parts after the block.
           let finalEndIndex = endPartIndex;
           let finalEndOffset = endOffsetInPart;
@@ -11595,21 +11609,27 @@
           const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode);
           // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
           const latex = acceptedLatex && acceptedLatex !== standardResult?.latex ? acceptedLatex : standardResult?.latex;
-          if (!latex && !acceptedLatex) return null;
+          if (!latex && !acceptedLatex) {
+              return;
+          }
           // Verify caret is inside LaTeX block for track changes edge cases.
           if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode)) {
-              return null;
+              return;
           }
           this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
           return Latex.getMathMLFromLatex(latex || acceptedLatex);
       }
       isCaretInsideLatexBlock(textNode) {
           const container = this.findLatexContainerElement(textNode);
-          if (!container) return false;
+          if (!container) {
+              return false;
+          }
           const fullText = container.textContent || "";
           const openDelim = fullText.indexOf("$$");
           const closeDelim = fullText.indexOf("$$", openDelim + 2);
-          if (openDelim === -1 || closeDelim === -1) return false;
+          if (openDelim === -1 || closeDelim === -1) {
+              return false;
+          }
           // Calculate text Node position within container.
           let textPosition = 0;
           const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
@@ -11626,7 +11646,9 @@
      * Stores the LaTeX range for its replacement later.
      */ storeLatexRangeWithFallback(textNode, caretPosition, latex) {
           const parentTag = textNode.parentElement?.tagName?.toLowerCase();
-          if (!textNode.parentElement || parentTag === "textarea") return;
+          if (!textNode.parentElement || parentTag === "textarea") {
+              return;
+          }
           const latexResult = Latex.getLatexFromTextNode(textNode, caretPosition);
           if (latexResult) {
               const range = document.createRange();
@@ -11642,9 +11664,9 @@
      * Finds a container element containing a complete LaTeX block.
      * Necessary for track changes handling, to find the full LaTeX even with the suggestions.
      */ findLatexContainerElement(textNode) {
-          const MAX_ANCESTORS = 10; // Prevent excessive loops.
+          const MAX_DEPTH = 10; // Prevent excessive loops.
           let element = textNode.parentElement;
-          for(let i = 0; i < MAX_ANCESTORS && element; i++){
+          for(let i = 0; i < MAX_DEPTH && element; i++){
               const text = element.textContent || "";
               const openDelim = text.indexOf("$$");
               if (openDelim !== -1 && text.includes("$$", openDelim + 2)) {
@@ -11658,11 +11680,15 @@
      * Extracts LaTeX from DOM, skipping track changes deletion markers.
      */ extractAcceptedLatexFromDOM(textNode) {
           const container = this.findLatexContainerElement(textNode);
-          if (!container) return null;
+          if (!container) {
+              return;
+          }
           const acceptedText = this.getAcceptedTextContent(container);
           const openDelim = acceptedText.indexOf("$$");
           const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
-          if (openDelim === -1 || closeDelim === -1) return null;
+          if (openDelim === -1 || closeDelim === -1) {
+              return;
+          }
           return acceptedText.substring(openDelim + 2, closeDelim);
       }
       /**
