@@ -156,6 +156,7 @@ jobs:
       - name: Build the demos
         env:
           CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+          CK5_LICENSE_KEY: ${{ secrets.CK5_LICENSE_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
         # We build tinymce7 package for tinymce8 editor as they use the same package
