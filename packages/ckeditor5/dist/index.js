@@ -331,7 +331,7 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
         if (!acceptedText.includes("$$")) {
             return;
         }
-        // Use the stored LaTeX to find the correct block (handles multiple LaTeX on same line)
+        // To handle multiple LaTeX on same line.
         const targetLatex = this.core.editionProperties.extractedLatex;
         const fullLatex = `$$${targetLatex}$$`;
         const startIndex = acceptedText.indexOf(fullLatex);
@@ -496,7 +496,6 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
     }
     /**
    * Extracts LaTeX from DOM, skipping track changes deletion markers.
-   * Finds the LaTeX block containing the caret position.
    */ extractAcceptedLatexFromDOM(textNode) {
         const container = this.findLatexContainerElement(textNode);
         if (!container) {
@@ -504,9 +503,9 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
         }
         const acceptedText = this.getAcceptedTextContent(container);
         // Calculate caret offset by summing text lengths before the caret's text node
-        let caretOffset = 0;
         const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
         let node = walker.nextNode();
+        let caretOffset = 0;
         while(node && node !== textNode){
             if (!node.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
                 caretOffset += node.textContent?.length || 0;
@@ -517,9 +516,13 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
         let searchStart = 0;
         while(searchStart < acceptedText.length){
             const openDelim = acceptedText.indexOf("$$", searchStart);
-            if (openDelim === -1) break;
+            if (openDelim === -1) {
+                break;
+            }
             const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
-            if (closeDelim === -1) break;
+            if (closeDelim === -1) {
+                break;
+            }
             if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
                 return acceptedText.substring(openDelim + 2, closeDelim);
             }

@@ -628,9 +628,9 @@ export default class CKEditor5Integration extends IntegrationModel {
     const acceptedText = this.getAcceptedTextContent(container);
 
     // Calculate caret offset by summing text lengths before the caret's text node
-    let caretOffset = 0;
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
     let node = walker.nextNode();
+    let caretOffset = 0;
 
     while (node && node !== textNode) {
       if (!node.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
@@ -642,12 +642,19 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     // Find the LaTeX block that contains the caret
     let searchStart = 0;
+
     while (searchStart < acceptedText.length) {
       const openDelim = acceptedText.indexOf("$$", searchStart);
-      if (openDelim === -1) break;
+
+      if (openDelim === -1) {
+        break;
+      }
 
       const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
-      if (closeDelim === -1) break;
+
+      if (closeDelim === -1) {
+        break;
+      }
 
       if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
         return acceptedText.substring(openDelim + 2, closeDelim);
