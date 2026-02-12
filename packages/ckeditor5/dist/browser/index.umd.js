@@ -11496,14 +11496,16 @@
           if (!acceptedText.includes("$$")) {
               return;
           }
-          const openDelimIndex = acceptedText.indexOf("$$");
-          const closeDelimIndex = acceptedText.indexOf("$$", openDelimIndex + 2);
-          if (openDelimIndex === -1 || closeDelimIndex === -1) {
+          // Use the stored LaTeX to find the correct block (handles multiple LaTeX on same line)
+          const targetLatex = this.core.editionProperties.extractedLatex;
+          const fullLatex = `$$${targetLatex}$$`;
+          const startIndex = acceptedText.indexOf(fullLatex);
+          if (startIndex === -1) {
               return;
           }
           const latexBoundaries = {
-              start: openDelimIndex,
-              end: closeDelimIndex + 2
+              start: startIndex,
+              end: startIndex + fullLatex.length
           };
           return this.convertAcceptedOffsetsToModelRange(textParts, latexBoundaries);
       }
@@ -11620,27 +11622,8 @@
           return Latex.getMathMLFromLatex(latex || acceptedLatex);
       }
       isCaretInsideLatexBlock(textNode) {
-          const container = this.findLatexContainerElement(textNode);
-          if (!container) {
-              return false;
-          }
-          const fullText = container.textContent || "";
-          const openDelim = fullText.indexOf("$$");
-          const closeDelim = fullText.indexOf("$$", openDelim + 2);
-          if (openDelim === -1 || closeDelim === -1) {
-              return false;
-          }
-          // Calculate text Node position within container.
-          let textPosition = 0;
-          const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-          let node;
-          while(node = walker.nextNode()){
-              if (node === textNode) {
-                  return textPosition >= openDelim && textPosition <= closeDelim + 2;
-              }
-              textPosition += node.textContent?.length || 0;
-          }
-          return false;
+          // If extractAcceptedLatexFromDOM finds a LaTeX, the caret is inside one
+          return !!this.extractAcceptedLatexFromDOM(textNode);
       }
       /**
      * Stores the LaTeX range for its replacement later.
@@ -11678,18 +11661,35 @@
       }
       /**
      * Extracts LaTeX from DOM, skipping track changes deletion markers.
+     * Finds the LaTeX block containing the caret position.
      */ extractAcceptedLatexFromDOM(textNode) {
           const container = this.findLatexContainerElement(textNode);
           if (!container) {
               return;
           }
           const acceptedText = this.getAcceptedTextContent(container);
-          const openDelim = acceptedText.indexOf("$$");
-          const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
-          if (openDelim === -1 || closeDelim === -1) {
-              return;
+          // Calculate caret offset by summing text lengths before the caret's text node
+          let caretOffset = 0;
+          const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+          let node = walker.nextNode();
+          while(node && node !== textNode){
+              if (!node.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
+                  caretOffset += node.textContent?.length || 0;
+              }
+              node = walker.nextNode();
           }
-          return acceptedText.substring(openDelim + 2, closeDelim);
+          // Find the LaTeX block that contains the caret
+          let searchStart = 0;
+          while(searchStart < acceptedText.length){
+              const openDelim = acceptedText.indexOf("$$", searchStart);
+              if (openDelim === -1) break;
+              const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
+              if (closeDelim === -1) break;
+              if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
+                  return acceptedText.substring(openDelim + 2, closeDelim);
+              }
+              searchStart = closeDelim + 2;
+          }
       }
       /**
      * Recursively extracts text content, skipping track changes tags.
