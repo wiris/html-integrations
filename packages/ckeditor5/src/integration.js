@@ -647,10 +647,10 @@ export default class CKEditor5Integration extends IntegrationModel {
     }
 
     // Find the LaTeX block that contains the caret.
-    let searchStart = 0;
+    let nextSearchIndex = 0;
 
-    while (searchStart < acceptedText.length) {
-      const openDelim = acceptedText.indexOf("$$", searchStart);
+    while (nextSearchIndex < acceptedText.length) {
+      const openDelim = acceptedText.indexOf("$$", nextSearchIndex);
 
       if (openDelim === -1) {
         break;
@@ -666,7 +666,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         return acceptedText.substring(openDelim + 2, closeDelim);
       }
 
-      searchStart = closeDelim + 2;
+      nextSearchIndex = closeDelim + 2;
     }
   }
 
