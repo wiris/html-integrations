@@ -542,7 +542,7 @@ export default class CKEditor5Integration extends IntegrationModel {
    */
   getMathmlFromTextNode(textNode, caretPosition) {
     const standardResult = Latex.getLatexFromTextNode(textNode, caretPosition);
-    const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode);
+    const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode, caretPosition);
 
     // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
     const latex = (acceptedLatex && acceptedLatex !== standardResult?.latex)
@@ -554,7 +554,7 @@ export default class CKEditor5Integration extends IntegrationModel {
     }
 
     // Verify caret is inside LaTeX block for track changes edge cases.
-    if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode)) {
+    if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
       return;
     }
 
@@ -563,9 +563,9 @@ export default class CKEditor5Integration extends IntegrationModel {
     return Latex.getMathMLFromLatex(latex || acceptedLatex);
   }
 
-  isCaretInsideLatexBlock(textNode) {
+  isCaretInsideLatexBlock(textNode, caretPosition = 0) {
     // If LaTeX is found, the caret is inside one.
-    return !!this.extractAcceptedLatexFromDOM(textNode);
+    return !!this.extractAcceptedLatexFromDOM(textNode, caretPosition);
   }
 
   /**
@@ -618,7 +618,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   /**
    * Extracts LaTeX from DOM, skipping track changes deletion markers.
    */
-  extractAcceptedLatexFromDOM(textNode) {
+  extractAcceptedLatexFromDOM(textNode, caretPositionInNode = 0) {
     const container = this.findLatexContainerElement(textNode);
 
     if (!container) {
@@ -628,6 +628,7 @@ export default class CKEditor5Integration extends IntegrationModel {
     const acceptedText = this.getAcceptedTextContent(container);
 
     // Calculate caret offset that will be used later to find the correct LaTeX block.
+    // This includes all accepted text before textNode, plus the caret position within textNode.
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
     let node = walker.nextNode();
     let caretOffset = 0;
@@ -638,6 +639,11 @@ export default class CKEditor5Integration extends IntegrationModel {
       }
 
       node = walker.nextNode();
+    }
+
+    // Add the caret position within the text node, only if textNode is not deleted by Track Changes.
+    if (node === textNode && !textNode.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
+      caretOffset += caretPositionInNode;
     }
 
     // Find the LaTeX block that contains the caret.

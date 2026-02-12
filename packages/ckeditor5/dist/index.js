@@ -443,22 +443,22 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
    * Handles track changes by simulating "accept all changes" before conversion.
    */ getMathmlFromTextNode(textNode, caretPosition) {
         const standardResult = Latex.getLatexFromTextNode(textNode, caretPosition);
-        const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode);
+        const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode, caretPosition);
         // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
         const latex = acceptedLatex && acceptedLatex !== standardResult?.latex ? acceptedLatex : standardResult?.latex;
         if (!latex && !acceptedLatex) {
             return;
         }
         // Verify caret is inside LaTeX block for track changes edge cases.
-        if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode)) {
+        if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
             return;
         }
         this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
         return Latex.getMathMLFromLatex(latex || acceptedLatex);
     }
-    isCaretInsideLatexBlock(textNode) {
-        // If extractAcceptedLatexFromDOM finds a LaTeX, the caret is inside one
-        return !!this.extractAcceptedLatexFromDOM(textNode);
+    isCaretInsideLatexBlock(textNode, caretPosition = 0) {
+        // If LaTeX is found, the caret is inside one.
+        return !!this.extractAcceptedLatexFromDOM(textNode, caretPosition);
     }
     /**
    * Stores the LaTeX range for its replacement later.
@@ -496,13 +496,16 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
     }
     /**
    * Extracts LaTeX from DOM, skipping track changes deletion markers.
-   */ extractAcceptedLatexFromDOM(textNode) {
+   * @param {Node} textNode - The text node where the caret is located.
+   * @param {number} [caretPositionInNode=0] - The caret offset within the text node.
+   */ extractAcceptedLatexFromDOM(textNode, caretPositionInNode = 0) {
         const container = this.findLatexContainerElement(textNode);
         if (!container) {
             return;
         }
         const acceptedText = this.getAcceptedTextContent(container);
-        // Calculate caret offset by summing text lengths before the caret's text node
+        // Calculate caret offset that will be used later to find the correct LaTeX block.
+        // This includes all accepted text before textNode, plus the caret position within textNode.
         const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
         let node = walker.nextNode();
         let caretOffset = 0;
@@ -512,7 +515,11 @@ import Telemeter from '@wiris/mathtype-html-integration-devkit/src/telemeter.js'
             }
             node = walker.nextNode();
         }
-        // Find the LaTeX block that contains the caret
+        // Add the caret position within the text node (only if textNode is not deleted).
+        if (node === textNode && !textNode.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
+            caretOffset += caretPositionInNode;
+        }
+        // Find the LaTeX block that contains the caret.
         let searchStart = 0;
         while(searchStart < acceptedText.length){
             const openDelim = acceptedText.indexOf("$$", searchStart);
