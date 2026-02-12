@@ -564,7 +564,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   isCaretInsideLatexBlock(textNode) {
-    // If extractAcceptedLatexFromDOM finds a LaTeX, the caret is inside one
+    // If LaTeX is found, the caret is inside one.
     return !!this.extractAcceptedLatexFromDOM(textNode);
   }
 
@@ -627,7 +627,7 @@ export default class CKEditor5Integration extends IntegrationModel {
 
     const acceptedText = this.getAcceptedTextContent(container);
 
-    // Calculate caret offset by summing text lengths before the caret's text node
+    // Calculate caret offset that will be used later to find the correct LaTeX block.
     const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
     let node = walker.nextNode();
     let caretOffset = 0;
@@ -640,7 +640,7 @@ export default class CKEditor5Integration extends IntegrationModel {
       node = walker.nextNode();
     }
 
-    // Find the LaTeX block that contains the caret
+    // Find the LaTeX block that contains the caret.
     let searchStart = 0;
 
     while (searchStart < acceptedText.length) {
