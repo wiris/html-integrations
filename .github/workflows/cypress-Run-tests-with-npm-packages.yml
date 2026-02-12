@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
-      fail-fast: false # Continue other jobs even if one fails
+      fail-fast: false
       matrix:
         editor:
           - generic
@@ -51,8 +51,9 @@ jobs:
           yarn nx build html-tinymce8
 
       - name: Run E2E tests for ${{ matrix.editor }}
+        if: matrix.editor != 'ckeditor4' # CKEditor 4 tests are currently disabled due to licensing issues
         id: e2e
-        run: HTML_EDITOR=${{ matrix.editor }} yarn test:e2e
+        run: HTML_EDITOR=${{ matrix.editor }} PLAYWRIGHT_BLOB_OUTPUT_NAME=report-${{ matrix.editor }}.zip yarn test:e2e
         continue-on-error: true
 
       - name: Publish test results for ${{ matrix.editor }}
@@ -64,10 +65,42 @@ jobs:
           fail-on-error: ${{ steps.e2e.outcome == 'failure' }}
         continue-on-error: true
 
-      - name: Upload test results
+      - name: Upload blob report for ${{ matrix.editor }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.editor }}
-          path: tests/e2e/playwright-report/
-          retention-days: 2 # TODO: adjust retention if needed. Be careful with storage limits.
+          name: blob-report-${{ matrix.editor }}
+          path: blob-report
+          retention-days: 1
 
+  merge-reports:
+    if: always()
+    needs: [e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "23.x"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Download all blobs
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: List downloaded blob reports
+        run: ls -R all-blob-reports
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload Final HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-playwright-report
+          path: playwright-report/
+          retention-days: 2

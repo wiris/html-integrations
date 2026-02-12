@@ -4,6 +4,8 @@ import path from 'path'
 
 dotenv.config({path: path.resolve(__dirname, '.env')})
 
+const isCI = !!process.env.CI;
+
 const enabledEditors = (process.env.HTML_EDITOR || '').split('|').filter(Boolean)
 
 const createWebServer = (editor: string, port: number) => ({
@@ -33,19 +35,20 @@ const webServers = enabledEditors
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? '90%' : undefined,
+  forbidOnly: isCI,
+  retries: isCI ? 1 : 0,
+  workers: isCI ? '90%' : undefined,
   reporter: [
-    ['html', { open: process.env.CI ? 'never' : 'on-failure', outputFolder: 'playwright-report/html' }],
+    ['html', { open: isCI ? 'never' : 'on-failure', outputFolder: 'playwright-report/html' }],
     ['junit', { outputFile: 'test-results/results.xml' }],
-    process.env.CI ? ['github'] : ['list'],
+    isCI ? ['blob']: ['list'],
+    isCI ? ['github'] : ['list'],
   ],
   use: {
     baseURL: process.env.USE_STAGING === 'true' ? 'https://integrations.wiris.kitchen' : '',
-    trace: 'on-first-retry',
+    trace: isCI ? 'retain-on-failure' : 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video:  isCI ? 'off' : 'on-first-retry',
   },
   webServer: process.env.USE_STAGING === 'true' ? undefined : webServers,
   projects: [
