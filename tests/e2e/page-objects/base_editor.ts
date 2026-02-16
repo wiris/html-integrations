@@ -46,7 +46,7 @@ export default abstract class BaseEditor extends BasePage {
         'tinymce5': 8006,
         'tinymce6': 8008,
         'tinymce7': 8009,
-        'tinymce8': 8007,
+        'tinymce8': 8010,
         'generic': 8007,
       }
 
