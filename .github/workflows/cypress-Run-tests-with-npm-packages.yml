@@ -40,12 +40,12 @@ jobs:
 
       - name: Build ${{ matrix.editor }} package
         if: matrix.editor != 'tinymce8'
-        env:
-          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
-          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
         run: |
           yarn nx build ${{ matrix.editor }}
           yarn nx build html-${{ matrix.editor }}
+        env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
 
       - name: Build tinymce8 packages
         if: matrix.editor == 'tinymce8'
@@ -57,6 +57,9 @@ jobs:
         id: e2e
         run: HTML_EDITOR=${{ matrix.editor }} PLAYWRIGHT_BLOB_OUTPUT_NAME=report-${{ matrix.editor }}.zip yarn test:e2e
         continue-on-error: true
+        env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
 
       - name: Publish test results for ${{ matrix.editor }}
         uses: dorny/test-reporter@d61b558e8df85cb60d09ca3e5b09653b4477cea7 # v2.0.0
@@ -93,9 +96,6 @@ jobs:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-
-      - name: List downloaded blob reports
-        run: ls -R all-blob-reports
 
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
