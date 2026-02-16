@@ -53,9 +53,13 @@
       "outputs": ["{options.outputFile}"]
     },
     "serve-static": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
       "options": {
-        "command": "yarn serve -s demos/html/tinymce7 -l 8009"
+        "staticFilePath": "demos/html/tinymce7/",
+        "port": 8009,
+        "spa": false,
+        "watch": false
       }
     }
   }

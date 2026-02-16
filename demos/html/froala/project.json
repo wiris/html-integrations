@@ -53,9 +53,13 @@
       "outputs": ["{options.outputFile}"]
     },
     "serve-static": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
       "options": {
-        "command": "yarn serve -s demos/html/froala -l 8004"
+        "staticFilePath": "demos/html/froala/",
+        "port": 8004,
+        "spa": false,
+        "watch": false
       }
     }
   }
