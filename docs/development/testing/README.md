@@ -79,6 +79,10 @@ You can configure your environment using an optional `.env` file or by setting v
 
    # Branch for staging tests
    TEST_BRANCH=master
+
+   # API Keys for commercial editors. Required to deploy the test page.
+   CKEDITOR4_API_KEY=
+   FROALA_API_KEY=
    ```
 
 ### Environment Variables
@@ -88,6 +92,8 @@ You can configure your environment using an optional `.env` file or by setting v
 | `HTML_EDITOR` | Pipe-separated list of editors to test | All editors | `generic\|ckeditor5` | Yes |
 | `USE_STAGING` | Use staging environment vs localhost | `false` | `true\|false` | No |
 | `TEST_BRANCH` | Git branch for staging tests | `master` | `feature-branch` | No |
+| `CKEDITOR4_API_KEY` | API key for CKEditor 4 commercial features | None | `your-ckeditor4-key` | For all CKEditor 4 tests |
+| `FROALA_API_KEY` | API key for Froala Editor commercial features | None | `your-froala-key` | For Froala licensed features only |
 
 
 ## Running Tests
@@ -105,7 +111,7 @@ yarn playwright install --with-deps
 ### Local Development
 The `yarn test:e2e` script is defined in the main package.json and runs the E2E tests.
 
-Playwright is configured to pre-build both the package and test site (`demos` folder) for the configured
+Playwright is configured to pre-build and deploy both the package and test site (`demos` folder) for the configured
 editors and deploy them in order to run the test. Don't pre-deploy the test page, Playwright will do it by itself.
 
 ```bash
@@ -155,7 +161,7 @@ The E2E tests are automated via GitHub Actions ([`run-e2e-tests.yml`](../../../.
 - **Reports**:
   - Github reports appear in the GitHub Actions **Checks** tab
   - Failed tests create GitHub Actions annotations with direct links for quick debugging.
-  - HTML reports and artifacts are attached to the workflow run.
+  - A single HTML report is generated and attached to the workflow run. Contains results for all Editors.
 
 ## Test Coverage
 
