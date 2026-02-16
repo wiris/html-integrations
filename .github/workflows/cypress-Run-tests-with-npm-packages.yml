@@ -51,10 +51,12 @@ jobs:
           yarn nx build html-tinymce8
 
       - name: Run E2E tests for ${{ matrix.editor }}
-        if: matrix.editor != 'ckeditor4' # CKEditor 4 tests are currently disabled due to licensing issues
         id: e2e
         run: HTML_EDITOR=${{ matrix.editor }} PLAYWRIGHT_BLOB_OUTPUT_NAME=report-${{ matrix.editor }}.zip yarn test:e2e
         continue-on-error: true
+        env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+
 
       - name: Publish test results for ${{ matrix.editor }}
         uses: dorny/test-reporter@d61b558e8df85cb60d09ca3e5b09653b4477cea7 # v2.0.0
