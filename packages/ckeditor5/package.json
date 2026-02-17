@@ -48,7 +48,7 @@
     "prepare": "npm run build:dist"
   },
   "dependencies": {
-    "@wiris/mathtype-html-integration-devkit": "1.17.14"
+    "@wiris/mathtype-html-integration-devkit": "1.17.15"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-dev-build-tools": "^42.1.0"
