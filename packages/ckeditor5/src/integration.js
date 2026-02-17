@@ -545,27 +545,30 @@ export default class CKEditor5Integration extends IntegrationModel {
     const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode, caretPosition);
 
     // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
-    const latex = (acceptedLatex && acceptedLatex !== standardResult?.latex)
+    // Important node: use explicit undefined check to allow empty LaTeX strings, otherwise it would not detect $$$$ as valid LaTeX.
+    const latex = (acceptedLatex !== undefined && acceptedLatex !== standardResult?.latex)
       ? acceptedLatex
       : standardResult?.latex;
 
-    if (!latex && !acceptedLatex) {
+    if (latex === undefined && acceptedLatex === undefined) {
       return;
     }
 
     // Verify caret is inside LaTeX block for track changes edge cases.
-    if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
+    if (!standardResult && acceptedLatex !== undefined && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
       return;
     }
 
-    this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
+    const finalLatex = latex === undefined ? acceptedLatex : latex;
 
-    return Latex.getMathMLFromLatex(latex || acceptedLatex);
+    this.storeLatexRangeWithFallback(textNode, caretPosition, finalLatex);
+
+    return Latex.getMathMLFromLatex(finalLatex);
   }
 
   isCaretInsideLatexBlock(textNode, caretPosition = 0) {
     // If LaTeX is found, the caret is inside one.
-    return !!this.extractAcceptedLatexFromDOM(textNode, caretPosition);
+    return this.extractAcceptedLatexFromDOM(textNode, caretPosition) !== undefined;
   }
 
   /**
