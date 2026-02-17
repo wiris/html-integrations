@@ -11608,20 +11608,24 @@ delete Array.prototype.__class__; // @codingStandardsIgnoreEnd
         const standardResult = Latex.getLatexFromTextNode(textNode, caretPosition);
         const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode, caretPosition);
         // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
-        const latex = acceptedLatex && acceptedLatex !== standardResult?.latex ? acceptedLatex : standardResult?.latex;
-        if (!latex && !acceptedLatex) {
+        // Use explicit undefined check to allow empty LaTeX strings.
+        const latex = acceptedLatex !== undefined && acceptedLatex !== standardResult?.latex ? acceptedLatex : standardResult?.latex;
+        if (latex === undefined && acceptedLatex === undefined) {
             return;
         }
         // Verify caret is inside LaTeX block for track changes edge cases.
-        if (!standardResult && acceptedLatex && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
+        // Use explicit undefined check to allow empty LaTeX strings.
+        if (!standardResult && acceptedLatex !== undefined && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
             return;
         }
-        this.storeLatexRangeWithFallback(textNode, caretPosition, latex || acceptedLatex);
-        return Latex.getMathMLFromLatex(latex || acceptedLatex);
+        const finalLatex = latex === undefined ? acceptedLatex : latex;
+        this.storeLatexRangeWithFallback(textNode, caretPosition, finalLatex);
+        return Latex.getMathMLFromLatex(finalLatex);
     }
     isCaretInsideLatexBlock(textNode, caretPosition = 0) {
         // If LaTeX is found, the caret is inside one.
-        return !!this.extractAcceptedLatexFromDOM(textNode, caretPosition);
+        // Use explicit undefined check to allow empty LaTeX strings.
+        return this.extractAcceptedLatexFromDOM(textNode, caretPosition) !== undefined;
     }
     /**
    * Stores the LaTeX range for its replacement later.
@@ -11659,8 +11663,6 @@ delete Array.prototype.__class__; // @codingStandardsIgnoreEnd
     }
     /**
    * Extracts LaTeX from DOM, skipping track changes deletion markers.
-   * @param {Node} textNode - The text node where the caret is located.
-   * @param {number} [caretPositionInNode=0] - The caret offset within the text node.
    */ extractAcceptedLatexFromDOM(textNode, caretPositionInNode = 0) {
         const container = this.findLatexContainerElement(textNode);
         if (!container) {
@@ -11678,14 +11680,14 @@ delete Array.prototype.__class__; // @codingStandardsIgnoreEnd
             }
             node = walker.nextNode();
         }
-        // Add the caret position within the text node (only if textNode is not deleted).
+        // Add the caret position within the text node, only if textNode is not deleted by Track Changes.
         if (node === textNode && !textNode.parentElement?.classList?.contains("ck-suggestion-marker-deletion")) {
             caretOffset += caretPositionInNode;
         }
         // Find the LaTeX block that contains the caret.
-        let searchStart = 0;
-        while(searchStart < acceptedText.length){
-            const openDelim = acceptedText.indexOf("$$", searchStart);
+        let nextSearchIndex = 0;
+        while(nextSearchIndex < acceptedText.length){
+            const openDelim = acceptedText.indexOf("$$", nextSearchIndex);
             if (openDelim === -1) {
                 break;
             }
@@ -11696,7 +11698,7 @@ delete Array.prototype.__class__; // @codingStandardsIgnoreEnd
             if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
                 return acceptedText.substring(openDelim + 2, closeDelim);
             }
-            searchStart = closeDelim + 2;
+            nextSearchIndex = closeDelim + 2;
         }
     }
     /**
