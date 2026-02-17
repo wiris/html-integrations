@@ -550,6 +550,8 @@ export default class CKEditor5Integration extends IntegrationModel {
       ? acceptedLatex
       : standardResult?.latex;
 
+    // Do not continue if no LaTeX found by either method.
+    // This is necessary since both parameters can be independently undefined in some edge cases.
     if (latex === undefined && acceptedLatex === undefined) {
       return;
     }
