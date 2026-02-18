@@ -41,7 +41,7 @@ export default defineConfig({
   reporter: [
     ['html', { open: isCI ? 'never' : 'on-failure', outputFolder: 'playwright-report/html' }],
     ['junit', { outputFile: 'test-results/results.xml' }],
-    isCI ? ['blob']: ['list'],
+    isCI ? ['blob']: ['null'],
     isCI ? ['github'] : ['list'],
   ],
   use: {
