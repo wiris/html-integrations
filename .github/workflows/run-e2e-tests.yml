@@ -1,0 +1,108 @@
+name: E2E Tests - All Editors
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Matrix strategy to enable per html editor parallelization
+  e2e-tests:
+    name: E2E Tests - ${{ matrix.editor }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        editor:
+          - generic
+          - ckeditor4
+          - ckeditor5
+          - froala
+          - tinymce5
+          - tinymce6
+          - tinymce7
+          - tinymce8
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "23.x"
+
+      - name: Install dependencies
+        run: |
+          yarn install
+          yarn playwright install --with-deps
+
+      - name: Build ${{ matrix.editor }} package
+        if: matrix.editor != 'tinymce8'
+        run: |
+          yarn nx build ${{ matrix.editor }}
+          yarn nx build html-${{ matrix.editor }}
+        env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+
+      - name: Build tinymce8 packages
+        if: matrix.editor == 'tinymce8'
+        run: |
+          yarn nx build tinymce7
+          yarn nx build html-tinymce8
+
+      - name: Run E2E tests for ${{ matrix.editor }}
+        id: e2e
+        run: HTML_EDITOR=${{ matrix.editor }} PLAYWRIGHT_BLOB_OUTPUT_NAME=report-${{ matrix.editor }}.zip yarn test:e2e
+        continue-on-error: true
+        env:
+          CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
+          FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+
+      - name: Publish test results for ${{ matrix.editor }}
+        uses: dorny/test-reporter@d61b558e8df85cb60d09ca3e5b09653b4477cea7 # v2.0.0
+        with:
+          name: E2E Tests - ${{ matrix.editor }}
+          path: tests/e2e/test-results/results.xml
+          reporter: java-junit
+          fail-on-error: ${{ steps.e2e.outcome == 'failure' }}
+        continue-on-error: true
+
+      - name: Upload blob report for ${{ matrix.editor }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.editor }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    if: always()
+    needs: [e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "23.x"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Download all blobs
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload Final HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-playwright-report
+          path: playwright-report/
+          retention-days: 2

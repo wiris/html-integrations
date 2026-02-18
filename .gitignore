@@ -7,10 +7,6 @@
 package-lock.json
 packages/*/yarn.lock
 
-# Cypress
-cypress/screenshots
-cypress/videos
-
 node_modules
 
 # Verdaccio
