@@ -407,7 +407,7 @@ export default class CKEditor5Integration extends IntegrationModel {
     const fullLatex = `$$${targetLatex}$$`;
     let startIndex = acceptedText.indexOf(fullLatex);
 
-    // If exact match not found, try to find LaTeX boundaries using caret position
+    // If exact match not found, try to find LaTeX delimiters using the caret position.
     if (startIndex === -1) {
       const latexBoundaries = this.findLatexBoundariesNearCaret(acceptedText, position);
 
@@ -428,17 +428,15 @@ export default class CKEditor5Integration extends IntegrationModel {
     return this.convertAcceptedOffsetsToModelRange(textParts, latexBoundaries);
   }
 
-  /**
-   * Finds LaTeX boundaries around the caret position when exact match fails.
-   */
   findLatexBoundariesNearCaret(acceptedText, position) {
-    // Calculate approximate caret position in accepted text
+    // Calculate approximate caret position in accepted text.
     const caretOffset = this.calculateCaretOffsetInAcceptedText(position);
 
-    // Find the LaTeX block containing the caret
+    // Find the LaTeX block containing the caret.
     let searchIndex = 0;
     while (searchIndex < acceptedText.length) {
       const openDelim = acceptedText.indexOf("$$", searchIndex);
+
       if (openDelim === -1) {
         break;
       }
@@ -459,9 +457,6 @@ export default class CKEditor5Integration extends IntegrationModel {
     return null;
   }
 
-  /**
-   * Calculates the caret offset within the accepted text.
-   */
   calculateCaretOffsetInAcceptedText(position) {
     let offset = 0;
     const range = this.editorObject.model.createRangeIn(position.parent);
@@ -520,6 +515,7 @@ export default class CKEditor5Integration extends IntegrationModel {
    */
   convertAcceptedOffsetsToModelRange(textParts, latexBoundaries) {
     const boundaries = this.findLatexBoundariesInTextParts(textParts, latexBoundaries);
+
     if (!boundaries) {
       return;
     }
@@ -529,16 +525,16 @@ export default class CKEditor5Integration extends IntegrationModel {
     return this.createModelRangeFromBoundaries(textParts, expandedBoundaries);
   }
 
-  /**
-   * Finds which text parts contain the LaTeX block boundaries.
-   */
   findLatexBoundariesInTextParts(textParts, latexBoundaries) {
     let startPartIndex = -1, endPartIndex = -1;
     let startOffsetInPart = 0, endOffsetInPart = 0;
 
     for (let i = 0; i < textParts.length; i++) {
       const part = textParts[i];
-      if (part.isDeleted) continue;
+
+      if (part.isDeleted) {
+        continue;
+      }
 
       if (startPartIndex === -1 && this.isOffsetInPart(latexBoundaries.start, part)) {
         startPartIndex = i;
@@ -563,32 +559,30 @@ export default class CKEditor5Integration extends IntegrationModel {
     return offset >= part.acceptedStart && offset <= part.acceptedEnd;
   }
 
-  /**
-   * Expands range to include deleted LaTeX parts (like $ delimiters).
-   */
   expandRangeToIncludeLatexDeletions(textParts, boundaries) {
     let { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart } = boundaries;
 
-    // Extend backwards for deleted LaTeX delimiters
+    // Extend backwards for deleted LaTeX delimiters.
     const backwardExpansion = this.findBackwardLatexDeletions(textParts, startPartIndex);
     if (backwardExpansion.found) {
       startPartIndex = backwardExpansion.index;
       startOffsetInPart = 0;
     }
 
-    // Extend forwards for deleted LaTeX delimiters
+    // Extend forwards for deleted LaTeX delimiters.
     const forwardExpansion = this.findForwardLatexDeletions(textParts, endPartIndex);
     if (forwardExpansion.found) {
       endPartIndex = forwardExpansion.index;
       endOffsetInPart = textParts[forwardExpansion.index].text.length;
     }
 
-    // Include any deleted parts within the range
+    // Include any deleted parts within the range.
     const internalExpansion = this.findInternalLatexDeletions(textParts, startPartIndex, endPartIndex);
     if (internalExpansion.startFound) {
       startPartIndex = internalExpansion.startIndex;
       startOffsetInPart = 0;
     }
+
     if (internalExpansion.endFound) {
       endPartIndex = internalExpansion.endIndex;
       endOffsetInPart = textParts[internalExpansion.endIndex].text.length;
@@ -598,7 +592,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-   * Finds deleted LaTeX parts before the start boundary.
+   * Finds deleted LaTeX parts before the start $$.
    */
   findBackwardLatexDeletions(textParts, startIndex) {
     for (let i = startIndex - 1; i >= 0 && textParts[i].isDeleted; i--) {
@@ -610,7 +604,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   }
 
   /**
-   * Finds deleted LaTeX parts after the end boundary.
+   * Finds deleted LaTeX parts after the end $$.
    */
   findForwardLatexDeletions(textParts, endIndex) {
     for (let i = endIndex + 1; i < textParts.length && textParts[i].isDeleted; i++) {
@@ -618,6 +612,7 @@ export default class CKEditor5Integration extends IntegrationModel {
         return { found: true, index: i };
       }
     }
+
     return { found: false };
   }
 
@@ -634,6 +629,7 @@ export default class CKEditor5Integration extends IntegrationModel {
           startExpandIndex = i;
           startFound = true;
         }
+
         if (i > endIndex && !endFound) {
           endExpandIndex = i;
           endFound = true;
