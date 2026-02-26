@@ -405,15 +405,82 @@ export default class CKEditor5Integration extends IntegrationModel {
     // To handle multiple LaTeX on same line.
     const targetLatex = this.core.editionProperties.extractedLatex;
     const fullLatex = `$$${targetLatex}$$`;
-    const startIndex = acceptedText.indexOf(fullLatex);
+    let startIndex = acceptedText.indexOf(fullLatex);
 
+    // If exact match not found, try to find LaTeX boundaries using caret position
     if (startIndex === -1) {
+      const latexBoundaries = this.findLatexBoundariesNearCaret(acceptedText, position);
+
+      if (latexBoundaries) {
+        startIndex = latexBoundaries.start;
+
+        return this.convertAcceptedOffsetsToModelRange(textParts, {
+          start: startIndex,
+          end: latexBoundaries.end
+        });
+      }
+
       return;
     }
 
     const latexBoundaries = { start: startIndex, end: startIndex + fullLatex.length };
 
     return this.convertAcceptedOffsetsToModelRange(textParts, latexBoundaries);
+  }
+
+  /**
+   * Finds LaTeX boundaries around the caret position when exact match fails.
+   */
+  findLatexBoundariesNearCaret(acceptedText, position) {
+    // Calculate approximate caret position in accepted text
+    const caretOffset = this.calculateCaretOffsetInAcceptedText(position);
+
+    // Find the LaTeX block containing the caret
+    let searchIndex = 0;
+    while (searchIndex < acceptedText.length) {
+      const openDelim = acceptedText.indexOf("$$", searchIndex);
+      if (openDelim === -1) {
+        break;
+      }
+
+      const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
+      if (closeDelim === -1) {
+        break;
+      }
+
+      // Check if caret is within this LaTeX block
+      if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
+        return { start: openDelim, end: closeDelim + 2 };
+      }
+
+      searchIndex = closeDelim + 2;
+    }
+
+    return null;
+  }
+
+  /**
+   * Calculates the caret offset within the accepted text.
+   */
+  calculateCaretOffsetInAcceptedText(position) {
+    let offset = 0;
+    const range = this.editorObject.model.createRangeIn(position.parent);
+
+    for (const item of range.getItems()) {
+      if (item.is("$textProxy")) {
+        const itemPosition = this.editorObject.model.createPositionAt(item.textNode.parent, item.startOffset);
+
+        if (itemPosition.isAfter(position)) {
+          break;
+        }
+
+        if (!this.isDeletedText(item)) {
+          offset += item.data.length;
+        }
+      }
+    }
+
+    return offset;
   }
 
   /**
@@ -452,44 +519,142 @@ export default class CKEditor5Integration extends IntegrationModel {
    * Converts LaTeX with track changes accepted suggestions to a CKEditor model Range.
    */
   convertAcceptedOffsetsToModelRange(textParts, latexBoundaries) {
+    const boundaries = this.findLatexBoundariesInTextParts(textParts, latexBoundaries);
+    if (!boundaries) {
+      return;
+    }
+
+    const expandedBoundaries = this.expandRangeToIncludeLatexDeletions(textParts, boundaries);
+
+    return this.createModelRangeFromBoundaries(textParts, expandedBoundaries);
+  }
+
+  /**
+   * Finds which text parts contain the LaTeX block boundaries.
+   */
+  findLatexBoundariesInTextParts(textParts, latexBoundaries) {
     let startPartIndex = -1, endPartIndex = -1;
     let startOffsetInPart = 0, endOffsetInPart = 0;
 
-    // Find which text parts contain the LaTeX block boundaries
     for (let i = 0; i < textParts.length; i++) {
       const part = textParts[i];
       if (part.isDeleted) continue;
 
-      if (startPartIndex === -1 && latexBoundaries.start >= part.acceptedStart && latexBoundaries.start <= part.acceptedEnd) {
+      if (startPartIndex === -1 && this.isOffsetInPart(latexBoundaries.start, part)) {
         startPartIndex = i;
         startOffsetInPart = latexBoundaries.start - part.acceptedStart;
       }
 
-      if (latexBoundaries.end >= part.acceptedStart && latexBoundaries.end <= part.acceptedEnd) {
+      if (this.isOffsetInPart(latexBoundaries.end, part)) {
         endPartIndex = i;
         endOffsetInPart = latexBoundaries.end - part.acceptedStart;
       }
     }
 
-    if (startPartIndex === -1 || endPartIndex === -1) {
-      return;
+    return startPartIndex !== -1 && endPartIndex !== -1
+      ? { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart }
+      : null;
+  }
+
+  /**
+   * Checks if an offset falls within a text part's accepted range.
+   */
+  isOffsetInPart(offset, part) {
+    return offset >= part.acceptedStart && offset <= part.acceptedEnd;
+  }
+
+  /**
+   * Expands range to include deleted LaTeX parts (like $ delimiters).
+   */
+  expandRangeToIncludeLatexDeletions(textParts, boundaries) {
+    let { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart } = boundaries;
+
+    // Extend backwards for deleted LaTeX delimiters
+    const backwardExpansion = this.findBackwardLatexDeletions(textParts, startPartIndex);
+    if (backwardExpansion.found) {
+      startPartIndex = backwardExpansion.index;
+      startOffsetInPart = 0;
     }
 
-    // Extend range to include any consecutive deleted parts after the block.
-    let finalEndIndex = endPartIndex;
-    let finalEndOffset = endOffsetInPart;
-
-    for (let i = endPartIndex + 1; i < textParts.length && textParts[i].isDeleted; i++) {
-      finalEndIndex = i;
-      finalEndOffset = textParts[i].text.length;
+    // Extend forwards for deleted LaTeX delimiters
+    const forwardExpansion = this.findForwardLatexDeletions(textParts, endPartIndex);
+    if (forwardExpansion.found) {
+      endPartIndex = forwardExpansion.index;
+      endOffsetInPart = textParts[forwardExpansion.index].text.length;
     }
 
+    // Include any deleted parts within the range
+    const internalExpansion = this.findInternalLatexDeletions(textParts, startPartIndex, endPartIndex);
+    if (internalExpansion.startFound) {
+      startPartIndex = internalExpansion.startIndex;
+      startOffsetInPart = 0;
+    }
+    if (internalExpansion.endFound) {
+      endPartIndex = internalExpansion.endIndex;
+      endOffsetInPart = textParts[internalExpansion.endIndex].text.length;
+    }
+
+    return { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart };
+  }
+
+  /**
+   * Finds deleted LaTeX parts before the start boundary.
+   */
+  findBackwardLatexDeletions(textParts, startIndex) {
+    for (let i = startIndex - 1; i >= 0 && textParts[i].isDeleted; i--) {
+      if (textParts[i].text.includes('$')) {
+        return { found: true, index: i };
+      }
+    }
+    return { found: false };
+  }
+
+  /**
+   * Finds deleted LaTeX parts after the end boundary.
+   */
+  findForwardLatexDeletions(textParts, endIndex) {
+    for (let i = endIndex + 1; i < textParts.length && textParts[i].isDeleted; i++) {
+      if (textParts[i].text.includes('$')) {
+        return { found: true, index: i };
+      }
+    }
+    return { found: false };
+  }
+
+  /**
+   * Finds deleted LaTeX parts within the current range.
+   */
+  findInternalLatexDeletions(textParts, startIndex, endIndex) {
+    let startFound = false, endFound = false;
+    let startExpandIndex = startIndex, endExpandIndex = endIndex;
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (textParts[i].isDeleted) {
+        if (i < startIndex && !startFound) {
+          startExpandIndex = i;
+          startFound = true;
+        }
+        if (i > endIndex && !endFound) {
+          endExpandIndex = i;
+          endFound = true;
+        }
+      }
+    }
+
+    return { startFound, endFound, startIndex: startExpandIndex, endIndex: endExpandIndex };
+  }
+
+  /**
+   * Creates a CKEditor model range from the calculated boundaries.
+   */
+  createModelRangeFromBoundaries(textParts, boundaries) {
+    const { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart } = boundaries;
     const startPart = textParts[startPartIndex];
-    const endPart = textParts[finalEndIndex];
+    const endPart = textParts[endPartIndex];
 
     return this.editorObject.model.createRange(
       this.editorObject.model.createPositionAt(startPart.parent, startPart.startOffset + startOffsetInPart),
-      this.editorObject.model.createPositionAt(endPart.parent, endPart.startOffset + finalEndOffset)
+      this.editorObject.model.createPositionAt(endPart.parent, endPart.startOffset + endOffsetInPart)
     );
   }
 
