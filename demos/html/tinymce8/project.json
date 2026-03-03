@@ -51,6 +51,16 @@
         "lintFilePatterns": ["demos/html/tinymce8/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "staticFilePath": "demos/html/tinymce8/",
+        "port": 8010,
+        "spa": false,
+        "watch": false
+      }
     }
   }
 }
