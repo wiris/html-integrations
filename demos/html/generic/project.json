@@ -51,6 +51,16 @@
         "lintFilePatterns": ["demos/html/generic/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "staticFilePath": "demos/html/generic/",
+        "port": 8007,
+        "spa": false,
+        "watch": false
+      }
     }
   }
 }

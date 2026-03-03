@@ -15,28 +15,27 @@ This project uses [GitHub actions](https://github.com/features/actions) for the 
 
 This job uses JSDoc library to generate a static site as an artifact called `mathtype-html-integration-devkit-docs.zip`, from the comments on the library code.
 
-### Run Cypress tests with npm packages
+### Run E2E tests
+This workflow runs end-to-end tests across all supported HTML editors using Playwright. The tests are executed in a matrix strategy to enable parallel execution for each editor. See [docs/testing/README.md](../testing/README.md) for further details.
 
-**[Deprecated]**
+**Supported editors:**
+- Generic HTML
+- CKEditor 4 & 5
+- Froala
+- TinyMCE 5, 6, 7 & 8
 
-Builds the packages using the source code available at npmjs and runs all available Cypress tests.
+**Key features:**
+- **Parallel execution**: Each editor runs in its own job for faster feedback
+- **Multi-browser testing**: Tests run on Chromium, Firefox, and WebKit
+- **Timeout protection**: Each job has a 30-minute timeout to prevent hanging
+- **Test reporting**: Results are published using JUnit format with detailed reports
+- **Artifact collection**: Test reports are collected as downloadable artifacts
 
-- **On schedule**: every Monday at 1AM. It sends the test data to [Cypress Dashboard][cypress-dashboard]. It can be run on any branch.
+**Workflow triggers:**
+- Push to master branch
+- Pull requests
+- Manual dispatch
 
-- **On demand**: a manual trigger that allows the user to send data to [Cypress Dashboard][cypress-dashboard], optionally.
+The workflow builds the necessary packages, starts static file servers for each editor demo, and runs the Playwright test suite against them.
 
-## Actions secrets
 
-Secrets are GitHub environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
-
-| Name               | Description                                                                                                 |
-| ------------------ | ----------------------------------------------------------------------------------------------------------- |
-| GH_CICD_TOKEN      | A GitHub token to allow detecting a build vs a re-run build. [More][cypress-action]                         |
-| CYPRESS_PROJECT_ID | A 6 character string unique identifier for the project.                                                     |
-| CYPRESS_RECORD_KEY | Cypress record key is an authentication key that allows to send record tests data to the Dashboard Service. |
-
-[Visit Secrets page at GitHub][secrets].
-
-[secrets]: https://github.com/wiris/html-integrations/settings/secrets
-[cypress-dashboard]: (https://cypress.io/dashboard/)
-[cypress-action]: https://github.com/cypress-io/github-action
