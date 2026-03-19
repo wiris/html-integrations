@@ -46,6 +46,7 @@ jobs:
         env:
           CKEDITOR4_API_KEY: ${{ secrets.CKEDITOR4_API_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
+          CK5_LICENSE_KEY: ${{ secrets.CK5_LICENSE_KEY }}
 
       - name: Build tinymce8 packages
         if: matrix.editor == 'tinymce8'
