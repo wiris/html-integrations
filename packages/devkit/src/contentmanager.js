@@ -203,7 +203,7 @@ export default class ContentManager {
     };
 
     // Create the SDK instance and the SDK Editor.
-    const sdkInstance = new SDK({ url: "patata" });
+    const sdkInstance = new SDK({ url: editorUrl });
     console.log("Creating SDK Editor with config:", sdkEditorConfig);
     this.editor = sdkInstance.createEditor(sdkEditorConfig);
 
