@@ -1,10 +1,10 @@
 import Configuration from "./configuration";
 import Core from "./core.src";
-import EditorListener from "./editorlistener";
 import Listeners from "./listeners";
 import MathML from "./mathml";
 import Util from "./util";
 import Telemeter from "./telemeter";
+import SDK from "@wiris/mathtype.integrations.sdk";
 
 export default class ContentManager {
   /**
@@ -69,14 +69,22 @@ export default class ContentManager {
     }
 
     /**
-     * {@link EditorListener} instance. Manages the changes inside the editor.
-     * @type {EditorListener}
+     * Tracks whether the editor content has been changed by the user.
+     * Replaces the old EditorListener class.
+     * @type {Boolean}
      */
-    this.editorListener = new EditorListener();
+    this.isContentChanged = false;
 
     /**
-     * MathType editor instance.
-     * @type {JsEditor}
+     * Whether the content manager is waiting for changes from the editor.
+     * @type {Boolean}
+     */
+    this.waitingForChanges = false;
+
+    /**
+     * SDK Editor instance. This is the only editor reference needed.
+     * Created via the SDK's createEditor() factory method.
+     * @type {import("@wiris/mathtype.integrations.sdk").Editor}
      */
     this.editor = null;
 
@@ -174,77 +182,93 @@ export default class ContentManager {
   }
 
   /**
-   * Inserts MathType editor into the {@link ModalDialog.contentContainer}. It waits until
-   * editor's JavaScript is loaded.
+   * Inserts MathType editor into the {@link ModalDialog.contentContainer} using the SDK Editor.
+   * The SDK handles script loading and JsEditor instantiation internally.
    */
   insertEditor() {
-    if (ContentManager.isEditorLoaded()) {
-      this.editor = window.com.wiris.jsEditor.JsEditor.newInstance(this.editorAttributes);
-      this.editor.insertInto(this.modalDialogInstance.contentContainer);
-      this.editor.focus();
+    const container = this.modalDialogInstance.contentContainer;
 
-      // `editor.action("rtl");` toggles the RTL mode based on the current state, it doesn't just switch to RTL.
-      if (this.modalDialogInstance.rtl && !this.editor.getEditorModel().isRTL()) {
-        this.editor.action("rtl");
+    // Ensure the container has an id so the SDK Editor can find it.
+    if (!container.id) {
+      container.id = "wrs_sdk_editor_container";
+    }
+
+    // Derive the SDK base URL from the configured editorUrl.
+    const editorUrl = ContentManager.getEditorBaseUrl();
+
+    // Map the current editorAttributes to the SDK EditorConfig.
+    const sdkEditorConfig = {
+      language: this.editorAttributes.language || this.language,
+      toolbar: this.editorAttributes.toolbar || "general",
+    };
+
+    // Create the SDK instance and the SDK Editor.
+    const sdkInstance = new SDK({ url: "patata" });
+    console.log("Creating SDK Editor with config:", sdkEditorConfig);
+    this.editor = sdkInstance.createEditor(sdkEditorConfig);
+
+    // Use the SDK's ContentChanged event to track changes
+    // (replaces the old EditorListener pattern).
+    this.editor.on("ContentChanged", () => {
+      if (this.waitingForChanges && !this.isContentChanged) {
+        this.isContentChanged = true;
       }
-      // Setting div in rtl in case of it's activated.
-      if (this.editor.getEditorModel().isRTL()) {
-        this.editor.element.style.direction = "rtl";
-      }
+    });
 
-      // Editor listener: this object manages the changes logic of editor.
-      this.editor.getEditorModel().addEditorListener(this.editorListener);
-
+    // Listen for the EditorReady event to perform post-init setup.
+    this.editor.on("EditorReady", () => {
       // iOS events.
-      if (this.modalDialogInstance.deviceProperties.isIOS) {
+      if (this.modalDialogInstance.deviceProperties?.isIOS) {
         setTimeout(function () {
-          // Make sure the modalDialogInstance is available when the timeout is over
-          // to avoid throw errors and stop execution.
           if (this.hasOwnProperty("modalDialogInstance")) this.modalDialogInstance.hideKeyboard(); // eslint-disable-line no-prototype-builtins
         }, 400);
 
         const formulaDisplayDiv = document.getElementsByClassName("wrs_formulaDisplay")[0];
-        Util.addEvent(formulaDisplayDiv, "focus", this.modalDialogInstance.handleOpenedIosSoftkeyboard);
-        Util.addEvent(formulaDisplayDiv, "blur", this.modalDialogInstance.handleClosedIosSoftkeyboard);
+        if (formulaDisplayDiv) {
+          Util.addEvent(formulaDisplayDiv, "focus", this.modalDialogInstance.handleOpenedIosSoftkeyboard);
+          Util.addEvent(formulaDisplayDiv, "blur", this.modalDialogInstance.handleClosedIosSoftkeyboard);
+        }
       }
-      // Fire onLoad event. Necessary to set the MathML into the editor
-      // after is loaded.
+
+      // Fire onLoad event. Necessary to set the MathML into the editor after it is loaded.
       this.listeners.fire("onLoad", {});
-    } else {
-      setTimeout(ContentManager.prototype.insertEditor.bind(this), 100);
-    }
+    });
+
+    // Kick off the SDK Editor initialization (loads script + creates editor in the container).
+    this.editor.init(container.id);
   }
 
   /**
-   * Initializes the current class by loading MathType script.
+   * Returns the base URL for the SDK from the configured editorUrl.
+   * Strips the trailing "/editor" segment if present.
+   * @returns {String} The SDK-compatible base URL.
    */
-  init() {
-    if (!ContentManager.isEditorLoaded()) {
-      this.addEditorAsExternalDependency();
-    }
-  }
-
-  /**
-   * Adds script element to the DOM to include editor externally.
-   */
-  addEditorAsExternalDependency() {
-    const script = document.createElement("script");
-    script.type = "text/javascript";
+  static getEditorBaseUrl() {
     let editorUrl = Configuration.get("editorUrl");
 
-    // We create an object url for parse url string and work more efficiently.
+    // Normalize protocol.
     const anchorElement = document.createElement("a");
-
     ContentManager.setHrefToAnchorElement(anchorElement, editorUrl);
     ContentManager.setProtocolToAnchorElement(anchorElement);
-
     editorUrl = ContentManager.getURLFromAnchorElement(anchorElement);
 
-    // Load editor URL. We add stats as GET params.
-    const stats = this.getEditorStats();
-    script.src = `${editorUrl}?lang=${this.language}&stats-editor=${stats.editor}&stats-mode=${stats.mode}&stats-version=${stats.version}`;
+    // The SDK appends "/editor" internally, so strip it from the configured URL.
+    if (editorUrl.endsWith("/editor")) {
+      editorUrl = editorUrl.slice(0, -"/editor".length);
+    }
 
-    document.getElementsByTagName("head")[0].appendChild(script);
+    return editorUrl;
+  }
+
+  /**
+   * Initializes the current class.
+   * With the SDK, script loading is handled by the SDK Editor's init() method,
+   * so this method is now a no-op. The SDK will load the editor script
+   * when insertEditor() calls sdkEditor.init().
+   */
+  init() {
+    // Script loading is now deferred to insertEditor() via the SDK.
+    // No pre-loading is needed.
   }
 
   /**
@@ -338,18 +362,13 @@ export default class ContentManager {
 
   /**
    * Returns true if editor is loaded. Otherwise, false.
+   * With the SDK, the editor script loading is handled internally by the SDK Editor.
+   * This always returns false since the SDK uses async init — callers should
+   * rely on the 'onLoad' listener event instead.
    * @returns {Boolean}
    */
   static isEditorLoaded() {
-    // To know if editor JavaScript is loaded we need to wait until
-    // window.com.wiris.jsEditor.JsEditor.newInstance is ready.
-    return (
-      window.com &&
-      window.com.wiris &&
-      window.com.wiris.jsEditor &&
-      window.com.wiris.jsEditor.JsEditor &&
-      window.com.wiris.jsEditor.JsEditor.newInstance
-    );
+    return false;
   }
 
   /**
@@ -362,28 +381,26 @@ export default class ContentManager {
   }
 
   /**
-   * Sets a MathML into {@link ContentManager.editor} instance.
+   * Sets a MathML into the SDK Editor instance.
    * @param {String} mathml - MathML string.
-   * @param {Boolean} focusDisabled - If true editor don't get focus after the MathML is set.
+   * @param {Boolean} focusDisabled - If true editor doesn't get focus after the MathML is set.
    * False by default.
    */
   setMathML(mathml, focusDisabled) {
-    // By default focus is enabled.
     if (typeof focusDisabled === "undefined") {
       focusDisabled = false;
     }
-    // Using setMathML method is not a change produced by the user but for the API
-    // so we set to false the contentChange property of editorListener.
-    this.editor.setMathMLWithCallback(mathml, () => {
-      this.editorListener.setWaitingForChanges(true);
-    });
+    // The SDK Editor's setMathML is synchronous.
+    // We manage the change tracking state directly.
+    this.editor.setMathML(mathml);
+    this.waitingForChanges = true;
 
-    // We need to wait a little until the callback finish.
+    // We need to wait a little to allow the editor to settle before
+    // resetting the content changed flag (same timing as the original).
     setTimeout(() => {
-      this.editorListener.setIsContentChanged(false);
+      this.isContentChanged = false;
     }, 500);
 
-    // In some scenarios - like closing modal object - editor mustn't be focused.
     if (!focusDisabled) {
       this.onFocus();
     }
@@ -410,7 +427,7 @@ export default class ContentManager {
    * Triggered by {@link ModalDialog.submitAction}.
    */
   submitAction() {
-    if (!this.editor.isFormulaEmpty()) {
+    if (!this.editor.isEmpty()) {
       let mathML = this.editor.getMathMLWithSemantics();
       // Add class for custom editors.
       if (this.customEditors.getActiveEditor() !== null) {
@@ -438,13 +455,14 @@ export default class ContentManager {
   }
 
   /**
-   * Sets an empty MathML as {@link ContentManager.editor} content.
+   * Sets an empty MathML as editor content.
    * This will open the MT/CT editor with the hand mode.
    * It adds dir rtl in case of it's activated.
    */
   setEmptyMathML() {
     const isMobile = this.deviceProperties.isAndroid || this.deviceProperties.isIOS;
-    const isRTL = this.editor.getEditorModel().isRTL();
+    // Use the RTL flag from the modal dialog instance (set during integration init).
+    const isRTL = this.modalDialogInstance?.rtl || false;
 
     if (isMobile || this.integrationModel.forcedHandMode) {
       // For mobile devices or forced hand mode, set an empty annotation MATHML to maintain the editor in Hand mode.
@@ -563,34 +581,36 @@ export default class ContentManager {
    * It will open any formula written in Keyboard mode with the hand mode with the default hand trace.
    *
    * @param {String} mathml The original KeyBoard MathML
-   * @param {Object} editor The editor object.
+   * @param {Object} editor The SDK Editor instance.
    */
   async openHandOnKeyboardMathML(mathml, editor) {
-    // First, as an editor requirement, we need to update the editor object with the current MathML formula.
-    // Once the MathML formula is updated to the one we want to open with handMode, we will be able to proceed.
-    await new Promise((resolve) => {
-      editor.setMathMLWithCallback(mathml, resolve);
-    });
+    // Set the MathML first via the SDK Editor (synchronous).
+    editor.setMathML(mathml);
 
-    // We wait until the hand editor object exists.
-    await this.waitForHand(editor);
+    // Use the SDK's getHand() to access the hand editor.
+    const handAccessor = editor.getHand();
+    if (!handAccessor) {
+      // Wait for the hand editor to become available.
+      await new Promise((resolve) => {
+        const interval = setInterval(() => {
+          if (editor.getHand()) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 100);
+      });
+    }
 
-    // Logic to get the hand traces and open the formula in hand mode.
-    // This logic comes from the editor.
-    const handEditor = editor.hand;
-    editor.handTemporalMathML = editor.getMathML();
-    const handCoordinates = editor.editorModel.getHandStrokes();
-    handEditor.setStrokes(handCoordinates);
-    handEditor.fitStrokes(true);
-    editor.openHand();
+    // Switch to handwriting input mode via the SDK.
+    editor.setInputMode("handwriting");
   }
 
   /**
    * Waits until the hand editor object exists.
-   * @param {Obect} editor The editor object.
+   * @param {Object} editor The SDK Editor instance.
    */
   async waitForHand(editor) {
-    while (!editor.hand) {
+    while (!editor.getHand()) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
@@ -656,16 +676,22 @@ export default class ContentManager {
   }
 
   /**
-   * Sets the current {@link ContentManager.editor} instance toolbar.
+   * Sets the current editor toolbar.
+   * Note: With the SDK Editor, the toolbar is set at creation time via EditorConfig.
+   * Runtime toolbar changes require re-creating the editor. For now, we store the value
+   * for reference but it will only take effect on the next editor creation.
    * @param {String} toolbar - The toolbar name.
    */
   setToolbar(toolbar) {
     this.toolbar = toolbar;
-    this.editor.setParams({ toolbar: this.toolbar });
+    // The SDK Editor does not support runtime toolbar changes via setParams.
+    // The toolbar is applied when the editor is created in insertEditor().
+    console.warn("ContentManager.setToolbar: Runtime toolbar change is not supported by the SDK Editor. It will take effect on next editor open.");
   }
 
   /**
    * Sets the custom headers added on editor requests.
+   * Note: With the SDK Editor, custom headers are not supported via setParams.
    * @returns {Object} headers - key value headers.
    */
   setCustomHeaders(headers) {
@@ -678,17 +704,18 @@ export default class ContentManager {
       headersObj = Util.convertStringToObject(headers);
     }
 
-    this.editor.setParams({ customHeaders: headersObj });
+    // The SDK Editor does not support setParams for custom headers.
+    console.warn("ContentManager.setCustomHeaders: Custom headers are not supported by the SDK Editor.");
     return headersObj;
   }
 
   /**
    * Returns true if the content of the editor has been changed. The logic of the changes
-   * is delegated to {@link EditorListener} class.
+   * is tracked via the SDK Editor's ContentChanged event.
    * @returns {Boolean} True if the editor content has been changed. False otherwise.
    */
   hasChanges() {
-    return !this.editor.isFormulaEmpty() && this.editorListener.getIsContentChanged();
+    return !this.editor.isEmpty() && this.isContentChanged;
   }
 
   /**
