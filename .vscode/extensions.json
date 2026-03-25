@@ -20,6 +20,7 @@
     "ms-vsliveshare.vsliveshare", // Live Share
     "visualstudioexptteam.vscodeintellicode", // IntelliCode
     "thundergang.thunder-client", // Thunder Client
+    "ms-playwright.playwright", // Playwright
 
     // GITHUB
     "eamodio.gitlens", // GitLens

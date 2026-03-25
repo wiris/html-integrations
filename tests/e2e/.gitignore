@@ -1,0 +1,9 @@
+# Ignore node modules and environment files
+node_modules
+.env
+.tmp
+
+# Ignore Playwright test reports and results
+playwright-report
+test-results
+screenshots

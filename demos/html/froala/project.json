@@ -51,6 +51,16 @@
         "lintFilePatterns": ["demos/html/froala/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "staticFilePath": "demos/html/froala/",
+        "port": 8004,
+        "spa": false,
+        "watch": false
+      }
     }
   }
 }
