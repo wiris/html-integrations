@@ -14,7 +14,7 @@ for (const editorName of editors) {
   }, () => {
       test(`MTHTML-80 Insert styled equation: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.openWirisEditor(toolbar)
         await wirisEditor.waitUntilLoaded()
@@ -29,7 +29,7 @@ for (const editorName of editors) {
 
       test(`MTHTML-68 Insert equation with special characters: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         await editor.open()
         await editor.openWirisEditor(toolbar)
         await wirisEditor.waitUntilLoaded()
@@ -44,16 +44,17 @@ for (const editorName of editors) {
 
       test(`MTHTML-90 User inserts a formula when the editor input doesn't have focus: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
-        
+
         // Insert a formula using only the keyboard (click MT button > type > tab to insert > enter) and keep writing
         await editor.open()
         await editor.openWirisEditor(toolbar)
         await wirisEditor.waitUntilLoaded()
 
         await wirisEditor.typeEquationViaKeyboard('1+1')
-        await page.keyboard.press('Tab')
+        await editor.focus()
         await wirisEditor.pause(500)
-        await page.keyboard.press('Enter')
+        await wirisEditor.insertButton.click()
+        await wirisEditor.waitUntilClosed()
 
         await editor.waitForEquation(Equations.OnePlusOne)
 

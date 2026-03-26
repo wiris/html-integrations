@@ -72,6 +72,10 @@ class WirisEditor extends BasePage {
     return this.page.locator('canvas.wrs_canvas')
   }
 
+  get handPreview(): Locator {
+    return this.page.locator('.wrs_previewImage')
+  }
+
   /**
    * Checks if the wiris editor modal is open by checking for the presence of the modal window, cancel and insert buttons.
    */
@@ -204,9 +208,39 @@ class WirisEditor extends BasePage {
 
   public async getMode(): Promise<TypingMode> {
     const title = await this.handModeButton.getAttribute('title')
-    return title === 'Go to handwritten mode' ? TypingMode.KEYBOARD : 
-           title === 'Use keyboard' ? TypingMode.HAND : 
+    return title === 'Go to handwritten mode' ? TypingMode.KEYBOARD :
+           title === 'Use keyboard' ? TypingMode.HAND :
            TypingMode.UNKNOWN
+  }
+
+  /**
+   * Draws a stroke on the hand canvas by simulating mouse movements.
+   * @param {Array<{x: number, y: number}>} points - Array of points to draw through (relative to canvas top-left corner)
+   */
+  public async drawStroke(points: Array<{x: number, y: number}>): Promise<void> {
+    if (points.length < 2) {
+      throw new Error('Need at least 2 points to draw a stroke')
+    }
+
+    const canvas = this.handCanvas
+    const box = await canvas.boundingBox()
+
+    if (!box) {
+      throw new Error('Canvas not found or not visible')
+    }
+
+    // Move to first point and start drawing
+    await this.page.mouse.move(box.x + points[0].x, box.y + points[0].y)
+    await this.page.mouse.down()
+
+    // Draw through each point
+    for (let i = 1; i < points.length; i++) {
+      await this.page.mouse.move(box.x + points[i].x, box.y + points[i].y)
+      await this.pause(10) // Small pause for smoother drawing
+    }
+
+    // Release mouse
+    await this.page.mouse.up()
   }
 }
 

@@ -400,8 +400,8 @@ export default abstract class BaseEditor extends BasePage {
       await this.page.mouse.move(box.x - 10, box.y - 10)
       await this.pause(500)
       await this.page.mouse.up()
-      }
     }
+  }
 
   public async applyStyle(): Promise<void> {
     await this.focus()
