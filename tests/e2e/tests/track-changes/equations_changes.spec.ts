@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import { setupEditor, getEditorsFromEnv } from '../../helpers/test-setup'
 import Equations from '../../enums/equations'
 import Toolbar from '../../enums/toolbar'
-import Equation from '../../interfaces/equation'
 
 const editors = getEditorsFromEnv()
 const toolbars = Object.values(Toolbar)
@@ -12,7 +11,7 @@ for (const editorName of editors) {
     test.describe(`Track Changes - ${editorName} editor`, {
       tag: [`@${editorName}`, '@regression'],
     }, () => {
-      test(`Insert equation with track changes - ${toolbar} toolbar`, async ({ page }) => {
+      test(`Insert equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -34,7 +33,7 @@ for (const editorName of editors) {
         })
       })
 
-      test(`Delete equation with track changes - ${toolbar} toolbar`, async ({ page }) => {
+      test(`Delete equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -58,7 +57,7 @@ for (const editorName of editors) {
         })
       })
 
-      test(`Edit equation with track changes - ${toolbar} toolbar`, async ({ page }) => {
+      test(`Edit equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;

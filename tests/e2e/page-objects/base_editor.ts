@@ -449,7 +449,7 @@ export default abstract class BaseEditor extends BasePage {
       frameOrPage = this.page
     }
 
-    const textContents = await frameOrPage.locator(this.editField).textContent()
+    const textContents = await frameOrPage.locator(this.editField).first().textContent()
 
     if (!textContents) {
       return undefined

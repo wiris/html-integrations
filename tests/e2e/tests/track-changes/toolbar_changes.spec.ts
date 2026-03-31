@@ -10,7 +10,7 @@ const toolbars = Object.values(Toolbar)
 
 for (const editorName of editors) {
   for (const toolbar of toolbars) {
-    test.describe(`Track Changes - ${editorName} editor`, {
+    test.describe(`Track Changes Options - ${editorName} editor`, {
       tag: [`@${editorName}`, '@regression'],
     }, () => {
       test(`Accept all suggestions - ${toolbar} toolbar`, async ({ page }) => {
