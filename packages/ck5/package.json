@@ -1,0 +1,33 @@
+{
+  "name": "@wiris/mathtype-ck5",
+  "version": "0.1.0",
+  "description": "MathType SDK integration for CKEditor5",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "math",
+    "mathtype",
+    "wiris"
+  ],
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ck5",
+  "homepage": "https://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "main": "src/plugin.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/plugin.js",
+    "./src/*": "./src/*",
+    "./theme/*": "./theme/*",
+    "./package.json": "./package.json"
+  },
+"dependencies": {
+  "@wiris/mathtype.integrations.sdk": "1.2.0-rc2"
+},
+  "peerDependencies": {
+    "ckeditor5": ">=46.0.0"
+  }
+}
