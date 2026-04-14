@@ -1,0 +1,8 @@
+/* MathType CKEditor5 SDK widget styles */
+.ck-widget.ck-math-widget {
+  display: inline-block;
+}
+
+.ck-widget.ck-math-widget img {
+  display: block;
+}

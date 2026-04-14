@@ -1,0 +1,54 @@
+{
+  "name": "@wiris/mathtype-ckeditor5-sdk",
+  "version": "1.0.0",
+  "description": "MathType Web for CKEditor5 editor (SDK-based)",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "editor",
+    "equation",
+    "latex",
+    "math",
+    "mathml",
+    "maths",
+    "mathtype",
+    "wiris",
+    "sdk"
+  ],
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5-sdk",
+  "homepage": "https://www.wiris.com/",
+  "bugs": {
+    "email": "support@wiris.com"
+  },
+  "license": "MIT",
+  "author": "WIRIS Team (http://www.wiris.com)",
+  "files": [
+    "dist",
+    "src",
+    "theme"
+  ],
+  "main": "src/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./dist/*": "./dist/*",
+    "./browser/*": null,
+    "./src/*": "./src/*",
+    "./theme/*": "./theme/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node ./scripts/build-dist.mjs",
+    "build:dist": "node ./scripts/build-dist.mjs",
+    "prepare": "npm run build:dist"
+  },
+  "dependencies": {
+    "@wiris/mathtype.integrations.sdk": "v1.2.0-rc2"
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "^42.1.0"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=46.0.0"
+  }
+}
