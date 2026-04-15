@@ -1,5 +1,5 @@
 {
-  "name": "html-ck5",
+  "name": "html-ckeditor5-sdk",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "demos/html/ckeditor5-sdk/src",
   "targets": {
@@ -32,7 +32,7 @@
       "executor": "@nx/webpack:dev-server",
       "dependsOn": ["prestart"],
       "options": {
-        "buildTarget": "html-ck5:build",
+        "buildTarget": "html-ckeditor5-sdk:build",
         "webpackConfig": "demos/html/ckeditor5-sdk/webpack.config.js"
       }
     },
@@ -40,7 +40,7 @@
       "executor": "@nx/webpack:dev-server",
       "dependsOn": ["prestart-remote"],
       "options": {
-        "buildTarget": "html-ck5:build",
+        "buildTarget": "html-ckeditor5-sdk:build",
         "webpackConfig": "demos/html/ckeditor5-sdk/webpack.config.js"
       }
     },

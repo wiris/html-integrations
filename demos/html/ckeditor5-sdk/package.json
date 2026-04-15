@@ -1,18 +1,18 @@
 {
-  "name": "demo-html-ck5",
+  "name": "demo-html-ckeditor5-sdk",
   "version": "1.0.0",
   "private": true,
   "description": "A simple html App integrating WIRIS MathType SDK in a CKEditor5 rich text editor.",
   "main": "app.js",
   "scripts": {
-    "prestart-remote": "yarn --ignore-engines && yarn unlink @wiris/mathtype-ck5 && yarn install --force --ignore-engines",
-    "prestart": "yarn --ignore-engines && yarn link @wiris/mathtype-ck5"
+    "prestart-remote": "yarn --ignore-engines && yarn unlink @wiris/mathtype-ckeditor5-sdk && yarn install --force --ignore-engines",
+    "prestart": "yarn --ignore-engines && yarn link @wiris/mathtype-ckeditor5-sdk"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
     "ckeditor5": ">=46.0.0",
-    "@wiris/mathtype-ck5": "*",
+    "@wiris/mathtype-ckeditor5-sdk": "*",
     "@wiris/mathtype.integrations.sdk": "1.2.0-rc2"
   },
   "devDependencies": {

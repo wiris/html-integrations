@@ -1,5 +1,5 @@
 {
-  "name": "@wiris/mathtype-ck5",
+  "name": "@wiris/mathtype-ckeditor5-sdk",
   "version": "0.1.0",
   "description": "MathType SDK integration for CKEditor5",
   "keywords": [

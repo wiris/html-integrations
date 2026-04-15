@@ -2,10 +2,6 @@
 
 yarn install
 
-# To start the demo, first build ck5
+# To start the demo, execute
 
-nx build ck5
-
-# Now, start the demo with
-
-nx start html-ck5
+nx start html-ckeditor5-sdk

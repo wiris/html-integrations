@@ -1,5 +1,5 @@
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic } from "ckeditor5";
-import MathType from "@wiris/mathtype-ck5";
+import MathType from "@wiris/mathtype-ckeditor5-sdk";
 import "ckeditor5/ckeditor5.css";
 
 ClassicEditor.create(document.querySelector("#editor"), {
