@@ -16,7 +16,7 @@ export default class MathType extends Plugin {
       const view = new ButtonView(locale);
 
       view.set({
-        label: "MathType",
+        label: "Insert a math equation - MathType",
         icon: mathIcon,
         tooltip: true,
       });
