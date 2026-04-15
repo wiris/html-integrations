@@ -164,6 +164,7 @@ jobs:
         # We build tinymce7 package for tinymce8 editor as they use the same package
         run: |
           unset NODE_OPTIONS
+          echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
           yarn
           if [ "${{ matrix.editor }}" == "tinymce8" ]; then
             echo "Building editor: ${{ matrix.editor }}"
