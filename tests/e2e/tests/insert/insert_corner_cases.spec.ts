@@ -51,7 +51,7 @@ for (const editorName of editors) {
         await wirisEditor.waitUntilLoaded()
 
         await wirisEditor.typeEquationViaKeyboard('1+1')
-        await editor.focus()
+        await editor.clickElement(await page.getByText('UPDATE')) // Click the update button to move the focus away from the editor
         await wirisEditor.pause(500)
         await wirisEditor.insertButton.click()
         await wirisEditor.waitUntilClosed()

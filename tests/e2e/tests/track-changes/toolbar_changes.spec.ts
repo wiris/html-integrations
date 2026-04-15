@@ -13,7 +13,7 @@ for (const editorName of editors) {
     test.describe(`Track Changes Options - ${editorName} editor`, {
       tag: [`@${editorName}`, '@regression'],
     }, () => {
-      test(`Accept all suggestions - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-117 Accept all suggestions - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -67,7 +67,7 @@ for (const editorName of editors) {
         expect(await editor.getTrackChangesItems()).toEqual([])
       })
 
-      test(`Discard all suggestions - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-118 Discard all suggestions - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -249,7 +249,7 @@ for (const editorName of editors) {
         })
       })
 
-      test(`Preview final result - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-116 Preview final result - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;

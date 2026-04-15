@@ -2,8 +2,6 @@ import { test, expect } from '@playwright/test'
 import { setupEditor, getEditorsFromEnv } from '../../helpers/test-setup'
 import Equations from '../../enums/equations'
 import Toolbar from '../../enums/toolbar'
-import Equation from '../../interfaces/equation'
-import TrackChangesOptions from '../../enums/track_changes_options'
 
 const editors = getEditorsFromEnv()
 const toolbars = Object.values(Toolbar)
@@ -13,7 +11,7 @@ for (const editorName of editors) {
     test.describe(`Track Changes Latex - ${editorName} editor`, {
       tag: [`@${editorName}`, '@regression'],
     }, () => {
-      test(`Edit existing latex equation via MT/CT - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-119 Edit existing latex equation via MT/CT - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -36,14 +34,12 @@ for (const editorName of editors) {
 
           if (latexEquations) {
             hasEditedEquationInTrackChanges = latexEquations.some((latex) => latex.includes(Equations.squareRootYPlusFive.latex!));
-          } else {
-            hasEditedEquationInTrackChanges = false;
           }
           expect(hasEditedEquationInTrackChanges).toBeTruthy()
         })
       })
 
-      test(`Edit existing latex equation manually and via MT/CT - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-120 Edit existing latex equation manually and via MT/CT - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;

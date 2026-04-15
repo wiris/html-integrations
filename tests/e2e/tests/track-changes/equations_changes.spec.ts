@@ -11,7 +11,7 @@ for (const editorName of editors) {
     test.describe(`Track Changes - ${editorName} editor`, {
       tag: [`@${editorName}`, '@regression'],
     }, () => {
-      test(`Insert equation - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-113 Insert equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -33,7 +33,7 @@ for (const editorName of editors) {
         })
       })
 
-      test(`Delete equation - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-115 Delete equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
@@ -57,7 +57,7 @@ for (const editorName of editors) {
         })
       })
 
-      test(`Edit equation - ${toolbar} toolbar`, async ({ page }) => {
+      test(`MTHTML-114 Edit equation - ${toolbar} toolbar`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName);
 
         const hasTrackChanges = editor.getTrackChangesButton !== undefined;
