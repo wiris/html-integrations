@@ -159,6 +159,7 @@ jobs:
           CK5_LICENSE_KEY: ${{ secrets.CK5_LICENSE_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         # We build tinymce7 package for tinymce8 editor as they use the same package
         run: |
           unset NODE_OPTIONS
