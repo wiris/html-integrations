@@ -24,9 +24,9 @@
     "./theme/*": "./theme/*",
     "./package.json": "./package.json"
   },
-"dependencies": {
-  "@wiris/mathtype.integrations.sdk": "1.2.0-rc2"
-},
+  "dependencies": {
+    "@wiris/mathtype.integrations.sdk": "1.2.0-rc2"
+  },
   "peerDependencies": {
     "ckeditor5": ">=46.0.0"
   }
