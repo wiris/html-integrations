@@ -69,11 +69,10 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -142,10 +141,11 @@ jobs:
           - framework: vue
             editor: ckeditor4
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
+          # registry-url: 'https://registry.npmjs.org'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -160,11 +160,10 @@ jobs:
           CK5_LICENSE_KEY: ${{ secrets.CK5_LICENSE_KEY }}
           FROALA_API_KEY: ${{ secrets.FROALA_API_KEY }}
           NODE_OPTIONS: "--openssl-legacy-provider"
-          # NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         # We build tinymce7 package for tinymce8 editor as they use the same package
         run: |
           unset NODE_OPTIONS
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
           yarn
           if [ "${{ matrix.editor }}" == "tinymce8" ]; then
             echo "Building editor: ${{ matrix.editor }}"
