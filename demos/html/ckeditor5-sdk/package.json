@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "ckeditor5": ">=46.0.0",
-    "@wiris/mathtype-ckeditor5-sdk": "workspace:*",
+    "@wiris/mathtype-ckeditor5-sdk": "9.0.0-beta",
     "@wiris/mathtype.integrations.sdk": "1.2.0-rc2"
   },
   "devDependencies": {
