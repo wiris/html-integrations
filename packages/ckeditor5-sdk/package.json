@@ -9,7 +9,7 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ck5",
+  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5-sdk",
   "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"

@@ -1,7 +1,7 @@
 {
   "name": "html-ck5",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "demos/html/ck5/src",
+  "sourceRoot": "demos/html/ckeditor5-sdk/src",
   "targets": {
     "prestart": {
       "executor": "nx:run-script",
@@ -20,12 +20,12 @@
       "dependsOn": ["prestart"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "main": "demos/html/ck5/src/app.js",
+        "main": "demos/html/ckeditor5-sdk/src/app.js",
         "outputPath": "dist",
         "tsConfig": "tsconfig.app.json",
         "generateIndexHtml": false,
-        "index": "demos/html/ck5/index.html",
-        "webpackConfig": "demos/html/ck5/webpack.config.js"
+        "index": "demos/html/ckeditor5-sdk/index.html",
+        "webpackConfig": "demos/html/ckeditor5-sdk/webpack.config.js"
       }
     },
     "start": {
@@ -33,7 +33,7 @@
       "dependsOn": ["prestart"],
       "options": {
         "buildTarget": "html-ck5:build",
-        "webpackConfig": "demos/html/ck5/webpack.config.js"
+        "webpackConfig": "demos/html/ckeditor5-sdk/webpack.config.js"
       }
     },
     "start-remote": {
@@ -41,14 +41,14 @@
       "dependsOn": ["prestart-remote"],
       "options": {
         "buildTarget": "html-ck5:build",
-        "webpackConfig": "demos/html/ck5/webpack.config.js"
+        "webpackConfig": "demos/html/ckeditor5-sdk/webpack.config.js"
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "options": {
         "eslintConfig": "./.eslintrc.js",
-        "lintFilePatterns": ["demos/html/ck5/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["demos/html/ckeditor5-sdk/**/*.{ts,tsx,js,jsx}"]
       },
       "outputs": ["{options.outputFile}"]
     }
