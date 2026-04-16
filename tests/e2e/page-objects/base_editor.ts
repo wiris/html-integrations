@@ -368,7 +368,7 @@ export default abstract class BaseEditor extends BasePage {
    */
   public async openWirisEditorForLastInsertedFormula(toolbar: Toolbar, equation?: Equation): Promise<void> {
     const isFroala = this.getName() === 'froala'
-    if (isFroala && !equation) {
+    if (isFroala) {
       if (!equation) {
         throw new Error('Equation must be provided for Froala editor')
       }
@@ -390,9 +390,11 @@ export default abstract class BaseEditor extends BasePage {
     const equationElement = this.getEquationElement(equation)
     if (isFroala) {
       await equationElement.click()
-      const mathTypeButton = this.getContextualToolbarMathTypeButton?.()
-      if (mathTypeButton) {
-        await this.page.locator(mathTypeButton).click()
+      const buttonSelector = toolbar === Toolbar.MATH
+        ? this.getContextualToolbarMathTypeButton?.()
+        : this.getContextualToolbarChemTypeButton?.()
+      if (buttonSelector) {
+        await this.page.locator(buttonSelector).click()
       }
     } else {
       await equationElement.click()

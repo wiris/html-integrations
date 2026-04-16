@@ -19,10 +19,11 @@ for (const editorName of editors) {
         await editor.clear()
         await editor.openWirisEditor(toolbar)
         await wirisEditor.waitUntilLoaded()
+
         await wirisEditor.typeEquationUsingEntryForm(Equations.singleNumber.mathml)
         await wirisEditor.pause(1000) // Wait for the equation to be processed
         await wirisEditor.handModeButton.click()
-        await wirisEditor.pause(500)
+        await wirisEditor.pause(500) // Wait for the mode to switch
         await wirisEditor.drawStroke([
           { x: 300, y: 135 },
           { x: 350, y: 135 },
@@ -32,12 +33,20 @@ for (const editorName of editors) {
           { x: 325, y: 110 },
           { x: 325, y: 160 },
         ]);
-        await wirisEditor.pause(100)
+        await wirisEditor.waitForHandwritingRecognition()
+        await wirisEditor.insertButton.click()
+        await wirisEditor.waitUntilClosed()
+        await editor.waitForEquation(Equations.onePlus)
+
+        await editor.openWirisEditorForLastInsertedFormula(toolbar, Equations.onePlus)
+        await wirisEditor.waitUntilLoaded(TypingMode.HAND)
+        await wirisEditor.pause(500) // Wait for the editor to be fully ready for input
         await wirisEditor.drawStroke([
           { x: 380, y: 60 },
           { x: 380, y: 185 },
         ]);
-        await wirisEditor.pause(2000) // Wait for handwriting recognition to process the input, may neet to be improved
+        await wirisEditor.pause(500) // Wait for the model to start processing the input
+        await wirisEditor.waitForHandwritingRecognition()
         await wirisEditor.insertButton.click()
         await wirisEditor.waitUntilClosed()
         await editor.waitForEquation(Equations.OnePlusOne)

@@ -242,6 +242,17 @@ class WirisEditor extends BasePage {
     // Release mouse
     await this.page.mouse.up()
   }
+
+  /**
+   * Waits for the handwriting recognition to process the input by waiting for the hand preview image to be visible and have a src attribute that starts with 'blob:'
+   */
+  public async waitForHandwritingRecognition(): Promise<void> {
+    await this.handPreview.waitFor({ state: 'visible' })
+    await this.page.waitForFunction(
+      (el) => el?.getAttribute('src')?.startsWith('blob:') ?? false,
+      await this.handPreview.elementHandle(),
+    )
+  }
 }
 
 export default WirisEditor
