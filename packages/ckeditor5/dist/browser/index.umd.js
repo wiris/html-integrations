@@ -11499,8 +11499,17 @@
           // To handle multiple LaTeX on same line.
           const targetLatex = this.core.editionProperties.extractedLatex;
           const fullLatex = `$$${targetLatex}$$`;
-          const startIndex = acceptedText.indexOf(fullLatex);
+          let startIndex = acceptedText.indexOf(fullLatex);
+          // If exact match not found, try to find LaTeX boundaries using caret position
           if (startIndex === -1) {
+              const latexBoundaries = this.findLatexBoundariesNearCaret(acceptedText, position);
+              if (latexBoundaries) {
+                  startIndex = latexBoundaries.start;
+                  return this.convertAcceptedOffsetsToModelRange(textParts, {
+                      start: startIndex,
+                      end: latexBoundaries.end
+                  });
+              }
               return;
           }
           const latexBoundaries = {
@@ -11508,6 +11517,51 @@
               end: startIndex + fullLatex.length
           };
           return this.convertAcceptedOffsetsToModelRange(textParts, latexBoundaries);
+      }
+      /**
+     * Finds LaTeX boundaries around the caret position when exact match fails.
+     */ findLatexBoundariesNearCaret(acceptedText, position) {
+          // Calculate approximate caret position in accepted text
+          const caretOffset = this.calculateCaretOffsetInAcceptedText(position);
+          // Find the LaTeX block containing the caret
+          let searchIndex = 0;
+          while(searchIndex < acceptedText.length){
+              const openDelim = acceptedText.indexOf("$$", searchIndex);
+              if (openDelim === -1) {
+                  break;
+              }
+              const closeDelim = acceptedText.indexOf("$$", openDelim + 2);
+              if (closeDelim === -1) {
+                  break;
+              }
+              // Check if caret is within this LaTeX block
+              if (caretOffset >= openDelim && caretOffset <= closeDelim + 2) {
+                  return {
+                      start: openDelim,
+                      end: closeDelim + 2
+                  };
+              }
+              searchIndex = closeDelim + 2;
+          }
+          return null;
+      }
+      /**
+     * Calculates the caret offset within the accepted text.
+     */ calculateCaretOffsetInAcceptedText(position) {
+          let offset = 0;
+          const range = this.editorObject.model.createRangeIn(position.parent);
+          for (const item of range.getItems()){
+              if (item.is("$textProxy")) {
+                  const itemPosition = this.editorObject.model.createPositionAt(item.textNode.parent, item.startOffset);
+                  if (itemPosition.isAfter(position)) {
+                      break;
+                  }
+                  if (!this.isDeletedText(item)) {
+                      offset += item.data.length;
+                  }
+              }
+          }
+          return offset;
       }
       /**
      * Collects all text fragments from a paragraph, tracking both model and accepted text positions.
@@ -11542,34 +11596,136 @@
       /**
      * Converts LaTeX with track changes accepted suggestions to a CKEditor model Range.
      */ convertAcceptedOffsetsToModelRange(textParts, latexBoundaries) {
+          const boundaries = this.findLatexBoundariesInTextParts(textParts, latexBoundaries);
+          if (!boundaries) {
+              return;
+          }
+          const expandedBoundaries = this.expandRangeToIncludeLatexDeletions(textParts, boundaries);
+          return this.createModelRangeFromBoundaries(textParts, expandedBoundaries);
+      }
+      /**
+     * Finds which text parts contain the LaTeX block boundaries.
+     */ findLatexBoundariesInTextParts(textParts, latexBoundaries) {
           let startPartIndex = -1, endPartIndex = -1;
           let startOffsetInPart = 0, endOffsetInPart = 0;
-          // Find which text parts contain the LaTeX block boundaries
           for(let i = 0; i < textParts.length; i++){
               const part = textParts[i];
               if (part.isDeleted) continue;
-              if (startPartIndex === -1 && latexBoundaries.start >= part.acceptedStart && latexBoundaries.start <= part.acceptedEnd) {
+              if (startPartIndex === -1 && this.isOffsetInPart(latexBoundaries.start, part)) {
                   startPartIndex = i;
                   startOffsetInPart = latexBoundaries.start - part.acceptedStart;
               }
-              if (latexBoundaries.end >= part.acceptedStart && latexBoundaries.end <= part.acceptedEnd) {
+              if (this.isOffsetInPart(latexBoundaries.end, part)) {
                   endPartIndex = i;
                   endOffsetInPart = latexBoundaries.end - part.acceptedStart;
               }
           }
-          if (startPartIndex === -1 || endPartIndex === -1) {
-              return;
+          return startPartIndex !== -1 && endPartIndex !== -1 ? {
+              startPartIndex,
+              endPartIndex,
+              startOffsetInPart,
+              endOffsetInPart
+          } : null;
+      }
+      /**
+     * Checks if an offset falls within a text part's accepted range.
+     */ isOffsetInPart(offset, part) {
+          return offset >= part.acceptedStart && offset <= part.acceptedEnd;
+      }
+      /**
+     * Expands range to include deleted LaTeX parts (like $ delimiters).
+     */ expandRangeToIncludeLatexDeletions(textParts, boundaries) {
+          let { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart } = boundaries;
+          // Extend backwards for deleted LaTeX delimiters
+          const backwardExpansion = this.findBackwardLatexDeletions(textParts, startPartIndex);
+          if (backwardExpansion.found) {
+              startPartIndex = backwardExpansion.index;
+              startOffsetInPart = 0;
           }
-          // Extend range to include any consecutive deleted parts after the block.
-          let finalEndIndex = endPartIndex;
-          let finalEndOffset = endOffsetInPart;
-          for(let i = endPartIndex + 1; i < textParts.length && textParts[i].isDeleted; i++){
-              finalEndIndex = i;
-              finalEndOffset = textParts[i].text.length;
+          // Extend forwards for deleted LaTeX delimiters
+          const forwardExpansion = this.findForwardLatexDeletions(textParts, endPartIndex);
+          if (forwardExpansion.found) {
+              endPartIndex = forwardExpansion.index;
+              endOffsetInPart = textParts[forwardExpansion.index].text.length;
           }
+          // Include any deleted parts within the range
+          const internalExpansion = this.findInternalLatexDeletions(textParts, startPartIndex, endPartIndex);
+          if (internalExpansion.startFound) {
+              startPartIndex = internalExpansion.startIndex;
+              startOffsetInPart = 0;
+          }
+          if (internalExpansion.endFound) {
+              endPartIndex = internalExpansion.endIndex;
+              endOffsetInPart = textParts[internalExpansion.endIndex].text.length;
+          }
+          return {
+              startPartIndex,
+              endPartIndex,
+              startOffsetInPart,
+              endOffsetInPart
+          };
+      }
+      /**
+     * Finds deleted LaTeX parts before the start boundary.
+     */ findBackwardLatexDeletions(textParts, startIndex) {
+          for(let i = startIndex - 1; i >= 0 && textParts[i].isDeleted; i--){
+              if (textParts[i].text.includes('$')) {
+                  return {
+                      found: true,
+                      index: i
+                  };
+              }
+          }
+          return {
+              found: false
+          };
+      }
+      /**
+     * Finds deleted LaTeX parts after the end boundary.
+     */ findForwardLatexDeletions(textParts, endIndex) {
+          for(let i = endIndex + 1; i < textParts.length && textParts[i].isDeleted; i++){
+              if (textParts[i].text.includes('$')) {
+                  return {
+                      found: true,
+                      index: i
+                  };
+              }
+          }
+          return {
+              found: false
+          };
+      }
+      /**
+     * Finds deleted LaTeX parts within the current range.
+     */ findInternalLatexDeletions(textParts, startIndex, endIndex) {
+          let startFound = false, endFound = false;
+          let startExpandIndex = startIndex, endExpandIndex = endIndex;
+          for(let i = startIndex; i <= endIndex; i++){
+              if (textParts[i].isDeleted) {
+                  if (i < startIndex && !startFound) {
+                      startExpandIndex = i;
+                      startFound = true;
+                  }
+                  if (i > endIndex && !endFound) {
+                      endExpandIndex = i;
+                      endFound = true;
+                  }
+              }
+          }
+          return {
+              startFound,
+              endFound,
+              startIndex: startExpandIndex,
+              endIndex: endExpandIndex
+          };
+      }
+      /**
+     * Creates a CKEditor model range from the calculated boundaries.
+     */ createModelRangeFromBoundaries(textParts, boundaries) {
+          const { startPartIndex, endPartIndex, startOffsetInPart, endOffsetInPart } = boundaries;
           const startPart = textParts[startPartIndex];
-          const endPart = textParts[finalEndIndex];
-          return this.editorObject.model.createRange(this.editorObject.model.createPositionAt(startPart.parent, startPart.startOffset + startOffsetInPart), this.editorObject.model.createPositionAt(endPart.parent, endPart.startOffset + finalEndOffset));
+          const endPart = textParts[endPartIndex];
+          return this.editorObject.model.createRange(this.editorObject.model.createPositionAt(startPart.parent, startPart.startOffset + startOffsetInPart), this.editorObject.model.createPositionAt(endPart.parent, endPart.startOffset + endOffsetInPart));
       }
       replaceRangeWithLatex(newLatex) {
           this.editorObject.model.change((writer)=>{
@@ -11610,13 +11766,14 @@
           const standardResult = Latex.getLatexFromTextNode(textNode, caretPosition);
           const acceptedLatex = this.extractAcceptedLatexFromDOM(textNode, caretPosition);
           // Prioritize accepted LaTeX if it differs from standard extraction (for track changes compatibility).
-          // Use explicit undefined check to allow empty LaTeX strings.
+          // Important node: use explicit undefined check to allow empty LaTeX strings, otherwise it would not detect $$$$ as valid LaTeX.
           const latex = acceptedLatex !== undefined && acceptedLatex !== standardResult?.latex ? acceptedLatex : standardResult?.latex;
+          // Do not continue if no LaTeX found by either method.
+          // This is necessary since both parameters can be independently undefined in some edge cases.
           if (latex === undefined && acceptedLatex === undefined) {
               return;
           }
           // Verify caret is inside LaTeX block for track changes edge cases.
-          // Use explicit undefined check to allow empty LaTeX strings.
           if (!standardResult && acceptedLatex !== undefined && !this.isCaretInsideLatexBlock(textNode, caretPosition)) {
               return;
           }
@@ -11626,7 +11783,6 @@
       }
       isCaretInsideLatexBlock(textNode, caretPosition = 0) {
           // If LaTeX is found, the caret is inside one.
-          // Use explicit undefined check to allow empty LaTeX strings.
           return this.extractAcceptedLatexFromDOM(textNode, caretPosition) !== undefined;
       }
       /**
@@ -11795,7 +11951,7 @@
 
   var chemIcon = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\n<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n\t viewBox=\"0 0 40.3 49.5\" style=\"enable-background:new 0 0 40.3 49.5;\" xml:space=\"preserve\">\n<style type=\"text/css\">\n\t.st0{fill:#A4CF61;}\n</style>\n<path class=\"st0\" d=\"M39.2,12.1c0-1.9-1.1-3.6-2.7-4.4L24.5,0.9l0,0c-0.7-0.4-1.5-0.6-2.4-0.6c-0.9,0-1.7,0.2-2.4,0.6l0,0L2.3,10.8\n\tl0,0C0.9,11.7,0,13.2,0,14.9h0v19.6h0c0,1.7,0.9,3.3,2.3,4.1l0,0l17.4,9.9l0,0c0.7,0.4,1.5,0.6,2.4,0.6c0.9,0,1.7-0.2,2.4-0.6l0,0\n\tl12.2-6.9h0c1.5-0.8,2.6-2.5,2.6-4.3c0-2.7-2.2-4.9-4.9-4.9c-0.9,0-1.8,0.3-2.5,0.7l0,0l-9.7,5.6l-12.3-7V17.8l12.3-7l9.9,5.7l0,0\n\tc0.7,0.4,1.5,0.6,2.4,0.6C37,17,39.2,14.8,39.2,12.1\"/>\n</svg>\n";
 
-  var version = "8.15.1";
+  var version = "8.15.2";
   var packageInfo = {
   	version: version};
 
