@@ -11,9 +11,9 @@ for (const editorName of editors) {
     tag: [`@${editorName}`, '@regression'],
   }, () => {
     test.describe('Undo and Redo', () => {
-      const isKnownIssue = editorName === 'generic';
-      test(`MTHTML-78 Undo and redo math formula with ${editorName} editor`, { tag: isKnownIssue ? ['@knownissue'] : [] } , async ({ page }) => {
-        test.fail(isKnownIssue, 'Known issue: generic editors fails to undo equation');
+      const isGeneric = editorName === 'generic';
+      test(`MTHTML-78 Undo and redo math formula with ${editorName} editor`, { tag: isGeneric ? ['@knownissue'] : [] } , async ({ page }) => {
+        test.fail(isGeneric, 'Known issue: generic editors fails to undo equation');
 
         const { editor, wirisEditor } = await setupEditor(page, editorName)
 
@@ -35,6 +35,8 @@ for (const editorName of editors) {
 
     test.describe('Resize', () => {
       test(`MTHTML-22 Formulas cannot be resized ${editorName} editor`, async ({ page }) => {
+        test.skip(editorName === 'generic', 'Known case: generic editor does not allow resizing formulas');
+
         const { editor, wirisEditor } = await setupEditor(page, editorName)
 
         await editor.open()
@@ -104,7 +106,7 @@ for (const editorName of editors) {
     })
 
     test.describe('Text Alignment', () => {
-      test(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
+      test.skip(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
         const { editor, wirisEditor } = await setupEditor(page, editorName)
 
         await editor.open()

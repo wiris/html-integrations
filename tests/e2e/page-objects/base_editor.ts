@@ -1,6 +1,7 @@
 import { Page, Locator, expect, FrameLocator } from '@playwright/test'
 import Toolbar from '../enums/toolbar'
 import type Equation from '../interfaces/equation'
+import TrackChangesOptions from '../enums/track_changes_options'
 import BasePage from './page'
 const path = require('path')
 
@@ -105,6 +106,150 @@ export default abstract class BaseEditor extends BasePage {
     await this.page.keyboard.type(text)
   }
 
+  public async getSourceCodeEditFieldValue(): Promise<string> {
+    const sourceCodeEditField = this.getSourceCodeEditField?.()
+    if (!sourceCodeEditField) {
+      throw new Error('Source code edit field selector is not defined.')
+    }
+    await this.page.locator(sourceCodeEditField).waitFor({ state: 'visible' })
+    return await this.page.locator(sourceCodeEditField).inputValue()
+  }
+
+  public async clickTrackChanges(): Promise<void> {
+    const trackChangesButton = this.getTrackChangesButton?.()
+    if (trackChangesButton) {
+      await this.page.locator(trackChangesButton).first().waitFor({ state: 'visible' })
+      await this.page.locator(trackChangesButton).first().click()
+    }
+  }
+
+    /**
+   * Retrieves all track change suggestion markers from the editor area.
+   * Each item includes its type (insertion or deletion), the equation data, and the suggestion ID.
+   * @returns {Promise<Array<{ type: 'insertion' | 'deletion'; altText: string; mathml: string; suggestionId: string; authorId: string }>>}
+   */
+  public async getTrackChangesItems(): Promise<
+    Array<{
+      type: 'insertion' | 'deletion'
+      altText: string
+      mathml: string
+      suggestionId: string
+      authorId: string
+    }>
+  > {
+    let frameOrPage: Page | FrameLocator
+    if (this.iframe) {
+      frameOrPage = this.page.frameLocator(this.iframe)
+    } else {
+      frameOrPage = this.page
+    }
+
+    await this.page.waitForTimeout(500)
+
+    const suggestionMarkers = frameOrPage.locator(
+      `${this.editField} span.ck-suggestion-marker`
+    )
+    const count = await suggestionMarkers.count()
+    const items: Array<{
+      type: 'insertion' | 'deletion'
+      altText: string
+      mathml: string
+      suggestionId: string
+      authorId: string
+    }> = []
+
+    for (let i = 0; i < count; i++) {
+      const marker = suggestionMarkers.nth(i)
+      const classList = await marker.getAttribute('class') || ''
+      const suggestionId = await marker.getAttribute('data-suggestion') || ''
+      const authorId = await marker.getAttribute('data-author-id') || ''
+
+      let type: 'insertion' | 'deletion'
+      if (classList.includes('ck-suggestion-marker-deletion')) {
+        type = 'deletion'
+      } else if (classList.includes('ck-suggestion-marker-insertion')) {
+        type = 'insertion'
+      } else {
+        // Default to insertion if neither specific class is found
+        type = 'insertion'
+      }
+
+      // Get equation data from the img inside the marker
+      const img = marker.locator('img.Wirisformula')
+      const imgCount = await img.count()
+
+      if (imgCount > 0) {
+        const altText = await img.first().getAttribute('alt') || ''
+        const mathml = await img.first().getAttribute('data-mathml') || ''
+        items.push({ type, altText, mathml, suggestionId, authorId })
+      } else {
+        // Marker exists but has no equation image (could be text-only change)
+        const textContent = await marker.textContent() || ''
+        items.push({ type, altText: textContent, mathml: '', suggestionId, authorId })
+      }
+    }
+
+    return items
+  }
+
+  /**
+   * Gets only the track change insertions from the editor.
+   */
+  public async getTrackChangeInsertions() {
+    const items = await this.getTrackChangesItems()
+    return items.filter((item) => item.type === 'insertion')
+  }
+
+  /**
+   * Gets only the track change deletions from the editor.
+   */
+  public async getTrackChangeDeletions() {
+    const items = await this.getTrackChangesItems()
+    return items.filter((item) => item.type === 'deletion')
+  }
+
+  /**
+   * Retrieves all equations from the track changes preview container.
+   * @returns {Promise<Equation[]>} Array of equations found in the preview.
+   */
+  public async getTrackChangesPreviewEquations(): Promise<Equation[]> {
+    const previewContainer = this.getTrackChangesPreviewContainer?.()
+    if (!previewContainer) {
+      throw new Error('Track changes preview container selector is not defined.')
+    }
+
+    await this.page.locator(previewContainer).waitFor({ state: 'visible' })
+
+    const images = this.page.locator(`${previewContainer} img.Wirisformula`)
+    const count = await images.count()
+    const equations: Equation[] = []
+
+    for (let i = 0; i < count; i++) {
+      const img = images.nth(i)
+      const altText = await img.getAttribute('alt') || ''
+      const mathml = await img.getAttribute('data-mathml') || ''
+      equations.push({ altText, mathml })
+    }
+
+    return equations
+  }
+
+  /**
+   * Clicks on a specific track change option in the editor.
+   * @param option - The track change option to click, such as accepting or discarding suggestions.
+   */
+  public async clickTrackChangeOption(option: TrackChangesOptions): Promise<void> {
+    const trackChangesDropdown = this.getTrackChangesDropdown?.()
+    if (trackChangesDropdown) {
+      await this.page.locator(trackChangesDropdown).click()
+    }
+
+    const trackChangeOptionButton = this.page.getByRole('menuitem', { name: option })
+    if (trackChangeOptionButton) {
+      await trackChangeOptionButton.click()
+    }
+  }
+
   /**
    * Retrieves all equations from the editor using the alt text and data-mathml DOM attributes.
    * @returns {Promise<Equation[]>} Array of equation interface.
@@ -154,7 +299,17 @@ export default abstract class BaseEditor extends BasePage {
       return this.page.frameLocator(this.iframe).locator(`${this.editField} img[alt="${equation.altText}"]`)
     }
 
-    return this.page.locator(`${this.editField} img[alt="${equation.altText}"]`)
+    return this.page.locator(`${this.editField} img[alt="${equation.altText}"]`).first()
+  }
+
+  /**
+   * Deletes a specific equation from the editor.
+   * @param {Equation} equation - The equation to delete.
+   */
+  public async deleteEquation(equation: Equation): Promise<void> {
+    const equationElement = this.getEquationElement(equation)
+    await equationElement.click()
+    await this.page.keyboard.press('Delete')
   }
 
   /**
@@ -203,7 +358,7 @@ export default abstract class BaseEditor extends BasePage {
 
     await this.page.keyboard.press('Control+End')
     await this.pause(500)
-    await this.page.keyboard.type(textToInsert)
+    await this.type(textToInsert)
   }
 
   /**
@@ -211,21 +366,49 @@ export default abstract class BaseEditor extends BasePage {
    * Uses selectItemAtCursor, but that's not compatible with froala, so in that case does a click in the contextual toolbar
    * @param {Toolbar} toolbar - toolbar of the test
    */
-  public async openWirisEditorForLastInsertedFormula(toolbar: Toolbar, equation: Equation): Promise<void> {
+  public async openWirisEditorForLastInsertedFormula(toolbar: Toolbar, equation?: Equation): Promise<void> {
     const isFroala = this.getName() === 'froala'
-
     if (isFroala) {
-      const equationElement = this.getEquationElement(equation)
-      await equationElement.click()
-
-      const mathTypeButton = this.getContextualToolbarMathTypeButton?.()
-      if (mathTypeButton) {
-        await this.page.locator(mathTypeButton).click()
+      if (!equation) {
+        throw new Error('Equation must be provided for Froala editor')
       }
+
+      await this.openWirisEditorForFormula(toolbar, equation)
     } else {
       await this.selectItemAtCursor()
       await this.openWirisEditor(toolbar)
     }
+  }
+
+  /**
+   * Open the wiris Editor to edit a specific formula by clicking on it and opening the wiris editor.
+   * @param {Toolbar} toolbar - toolbar of the test
+   * @param {Equation} equation - The equation to edit
+   */
+  public async openWirisEditorForFormula(toolbar: Toolbar, equation: Equation): Promise<void> {
+    const isFroala = this.getName() === 'froala'
+    const equationElement = this.getEquationElement(equation)
+    if (isFroala) {
+      await equationElement.click()
+      const buttonSelector = toolbar === Toolbar.MATH
+        ? this.getContextualToolbarMathTypeButton?.()
+        : this.getContextualToolbarChemTypeButton?.()
+      if (buttonSelector) {
+        await this.page.locator(buttonSelector).click()
+      }
+    } else {
+      await equationElement.click()
+      await this.openWirisEditor(toolbar)
+    }
+  }
+
+  /**
+   * Selects a formula in the editor by clicking on it.
+   * @param equation - The equation to select.
+   */
+  public async selectFormula(equation: Equation): Promise<void> {
+    const equationElement = this.getEquationElement(equation)
+    await equationElement.click()
   }
 
   /**
@@ -268,7 +451,7 @@ export default abstract class BaseEditor extends BasePage {
       frameOrPage = this.page
     }
 
-    const textContents = await frameOrPage.locator(this.editField).textContent()
+    const textContents = await frameOrPage.locator(this.editField).first().textContent()
 
     if (!textContents) {
       return undefined
@@ -400,8 +583,8 @@ export default abstract class BaseEditor extends BasePage {
       await this.page.mouse.move(box.x - 10, box.y - 10)
       await this.pause(500)
       await this.page.mouse.up()
-      }
     }
+  }
 
   public async applyStyle(): Promise<void> {
     await this.focus()
@@ -477,4 +660,10 @@ export default abstract class BaseEditor extends BasePage {
   public getSourceCodeEditorButton?(): string
 
   public getSourceCodeEditField?(): string
+
+  public getTrackChangesButton?(): string
+
+  public getTrackChangesDropdown?(): string
+
+  public getTrackChangesPreviewContainer?(): string
 }
