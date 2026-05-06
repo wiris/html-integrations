@@ -5,6 +5,10 @@ const Equations: Record<string, Equation> = {
     altText: '1',
     mathml: '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>'
   },
+  onePlus: {
+    altText: '1 plus',
+    mathml: '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo></math>'
+  },
   styledSingleNumber: {
     altText: 'bold italic 1',
     mathml: '<math style="font-family:Arial" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathsize="72px"><mn mathvariant="bold-italic" mathcolor="#FF0000">1</mn></mstyle></math>'

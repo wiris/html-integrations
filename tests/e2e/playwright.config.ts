@@ -46,9 +46,9 @@ export default defineConfig({
   ],
   use: {
     baseURL: process.env.USE_STAGING === 'true' ? 'https://integrations.wiris.kitchen' : '',
-    trace: isCI ? 'retain-on-failure' : 'on-first-retry',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    video:  isCI ? 'off' : 'on-first-retry',
+    video:  isCI ? 'off' : 'retain-on-failure',
   },
   webServer: process.env.USE_STAGING === 'true' ? undefined : webServers,
   projects: [
