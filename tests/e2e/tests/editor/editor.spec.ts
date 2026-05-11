@@ -104,24 +104,5 @@ for (const editorName of editors) {
         expect(isTextEndBoldAndItalic).toBeTruthy()
       })
     })
-
-    test.describe('Text Alignment', () => {
-      test.skip(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
-        const { editor, wirisEditor } = await setupEditor(page, editorName)
-
-        await editor.open()
-        await editor.clear()
-        await page.keyboard.type('___')
-        await editor.openWirisEditor(Toolbar.MATH)
-        await wirisEditor.waitUntilLoaded()
-        await wirisEditor.insertEquationUsingEntryForm(Equations.OnePlusOne.mathml)
-        await editor.waitForEquation(Equations.OnePlusOne)
-        await page.keyboard.type('___')
-
-        await editor.checkElementAlignment()
-        // Note: Playwright doesn't have a direct equivalent to visual comparison
-        // TODO: This would need to be implemented using screenshot comparison libraries
-      })
-    })
   })
 }

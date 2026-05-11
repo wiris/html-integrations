@@ -73,7 +73,7 @@ for (const editorName of editors) {
         await wirisEditor.waitUntilLoaded()
         await wirisEditor.insertEquationUsingEntryForm(Equations.singleNumber.mathml)
         await editor.waitForEquation(Equations.singleNumber)
-        await editor.type('11')
+        await editor.type('12')
 
         const equationsInHTMLEditor = await editor.getEquations()
         const isEquationPresent = equationsInHTMLEditor.some((equation: Equation) => equation.altText === Equations.singleNumber.altText)
@@ -83,8 +83,8 @@ for (const editorName of editors) {
         // vertical misalignment between the formula image and the surrounding text.
         const editArea = editor.getEditAreaLocator()
         await expect(editArea).toHaveScreenshot(`alignment-${editorName}-${toolbar}.png`, {
-          // Allow up to 1 % of pixels to differ (sub-pixel rendering, font hinting, etc.)
-          maxDiffPixelRatio: 0.01,
+          // Allow up to 0.1 % of pixels to differ (sub-pixel rendering, font hinting, etc.)
+          maxDiffPixelRatio: 0.001,
         })
       })
     })
