@@ -62,6 +62,31 @@ for (const editorName of editors) {
         const isEquationPresent = equationsInHTMLEditor.some((equation: Equation) => equation.altText === Equations.OnePlusOne.altText)
         expect(isEquationPresent).toBeTruthy()
       })
+
+      test(`MTHTML-23 Validate formula alignment: ${editorName} editor`, async ({ page }) => {
+        const { editor, wirisEditor } = await setupEditor(page, editorName)
+
+        await editor.open()
+        await editor.clear()
+        await editor.type('11')
+        await editor.openWirisEditor(toolbar)
+        await wirisEditor.waitUntilLoaded()
+        await wirisEditor.insertEquationUsingEntryForm(Equations.singleNumber.mathml)
+        await editor.waitForEquation(Equations.singleNumber)
+        await editor.type('12')
+
+        const equationsInHTMLEditor = await editor.getEquations()
+        const isEquationPresent = equationsInHTMLEditor.some((equation: Equation) => equation.altText === Equations.singleNumber.altText)
+        expect(isEquationPresent).toBeTruthy()
+
+        // Visual regression: compare the editor area against a stored baseline to catch
+        // vertical misalignment between the formula image and the surrounding text.
+        const editArea = editor.getEditAreaLocator()
+        await expect(editArea).toHaveScreenshot(`alignment-${editorName}-${toolbar}.png`, {
+          // Allow up to 0.1 % of pixels to differ (sub-pixel rendering, font hinting, etc.)
+          maxDiffPixelRatio: 0.001,
+        })
+      })
     })
   }
 }

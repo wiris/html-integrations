@@ -34,6 +34,7 @@ const webServers = enabledEditors
 
 export default defineConfig({
   testDir: './tests',
+  snapshotDir: './fixtures',
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,
