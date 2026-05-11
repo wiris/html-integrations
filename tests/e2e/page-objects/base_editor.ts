@@ -28,6 +28,17 @@ export default abstract class BaseEditor extends BasePage {
   }
 
   /**
+   * Returns a Locator for the editor's editable area, handling iframe-embedded editors transparently.
+   * Useful for taking screenshots of just the editing region (e.g. for visual regression tests).
+   */
+  public getEditAreaLocator(): Locator {
+    if (this.iframe) {
+      return this.page.frameLocator(this.iframe).locator(this.editField)
+    }
+    return this.page.locator(this.editField)
+  }
+
+  /**
    * Constructs the URL for the specific editor and opens it in the browser.
    * @returns {Promise<string>} The URL of the opened editor. **/
   public async open(): Promise<string> {
