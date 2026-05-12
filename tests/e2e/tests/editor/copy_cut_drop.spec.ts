@@ -12,7 +12,7 @@ for (const editorName of editors) { // TODO: review some flaky tests
   }, () => {
     test(`MTHTML-95 Copy-paste math formula with ${editorName} editor`, async ({ page }) => {
       const { editor, wirisEditor } = await setupEditor(page, editorName)
-      
+
       await editor.open()
       await editor.clear()
       await editor.openWirisEditor(Toolbar.MATH)
@@ -24,7 +24,7 @@ for (const editorName of editors) { // TODO: review some flaky tests
       await editor.copyAllEditorContent()
       await editor.clear()
       await editor.paste()
-      
+
       const equationsInHTMLEditor = await editor.getEquations()
       const isEquationCopied = equationsInHTMLEditor.every((equation: Equation) => equation.altText === Equations.singleNumber.altText) && (equationsInHTMLEditor.length === 1)
       expect(isEquationCopied).toBeTruthy()
@@ -32,7 +32,7 @@ for (const editorName of editors) { // TODO: review some flaky tests
 
     test(`MTHTML-96 Cut-paste math formula with ${editorName} editor`, async ({ page }) => {
       const { editor, wirisEditor } = await setupEditor(page, editorName)
-      
+
       await editor.open()
       await editor.clear()
       await editor.openWirisEditor(Toolbar.MATH)
@@ -43,22 +43,15 @@ for (const editorName of editors) { // TODO: review some flaky tests
 
       await editor.cutAllEditorContent()
       await editor.paste()
-      
+
       const equationsInHTMLEditor = await editor.getEquations()
       const isEquationCut = equationsInHTMLEditor.every((equation: Equation) => equation.altText === Equations.singleNumber.altText) && (equationsInHTMLEditor.length === 1)
       expect(isEquationCut).toBeTruthy()
     })
 
     test(`MTHTML-86 Drag-drop math formula with ${editorName} editor`, async ({ page }) => {
-      test.fixme((editorName === 'ckeditor5' || editorName === 'generic') && test.info().project.name === 'firefox', `Drag and drop not working for ${editorName} in Firefox`) // TODO: fix drag and drop in Firefox for ckeditor5 and generic editor
-
-      const unsupportedEditors = ['ckeditor4', 'tinymce5', 'tinymce6', 'tinymce7', 'tinymce8'] // WIP
-      
-      // Skip test for unsupported editors
-      test.skip(unsupportedEditors.includes(editorName), `Drag and drop not supported for ${editorName}`)
-      
       const { editor, wirisEditor } = await setupEditor(page, editorName)
-      
+
       await editor.open()
       await editor.clear()
       const textToType = 'The equation will be relocated from after this text to before it'

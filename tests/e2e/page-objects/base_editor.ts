@@ -1,4 +1,4 @@
-import { Page, Locator, expect, FrameLocator } from '@playwright/test'
+import { Page, Locator, test, expect, FrameLocator } from '@playwright/test'
 import Toolbar from '../enums/toolbar'
 import type Equation from '../interfaces/equation'
 import TrackChangesOptions from '../enums/track_changes_options'
@@ -507,6 +507,7 @@ export default abstract class BaseEditor extends BasePage {
 
     const equationElement = this.getEquationElement(equation)
     let editDivElement: Locator
+    const isCkeditor5Firefox = this.getName() === 'ckeditor5' && test.info().project.name === 'firefox'
 
     if (this.iframe) {
       editDivElement = this.page.frameLocator(this.iframe).locator(this.editField)
@@ -519,11 +520,13 @@ export default abstract class BaseEditor extends BasePage {
 
     if (equationBox && editDivBox) {
       await this.page.mouse.move(equationBox.x + equationBox.width / 2, equationBox.y + equationBox.height / 2)
-      //await this.page.mouse.click(equationBox.x + equationBox.width / 2, equationBox.y + equationBox.height / 2)
       await this.pause(500)
       await this.page.mouse.down()
       await this.pause(500)
-      await this.page.mouse.move(editDivBox.x, editDivBox.y)
+      await this.page.mouse.move(
+        isCkeditor5Firefox ? editDivBox.x + 5 : editDivBox.x,
+        isCkeditor5Firefox ? editDivBox.y + 5 : editDivBox.y
+      )
       await this.pause(500)
       await this.page.mouse.up()
     }
