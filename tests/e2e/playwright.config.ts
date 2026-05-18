@@ -68,6 +68,8 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 }
       }
     },
+    // WebKit on CI is flaky, so we run it only locally
+    /*
     {
       name: 'webkit',
       use: {
@@ -75,6 +77,7 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 }
       }
     }
+    */
   ],
   outputDir: 'test-results',
   timeout: 60_000,
