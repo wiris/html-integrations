@@ -32,6 +32,8 @@ for (const editorName of editors) {
     })
 
     test(`MTHTML-97 Validate formula edition on styled text blocks: ${editorName} editor`, async ({ page }) => {
+      test.skip(editorName === 'generic' && test.info().project.name === 'firefox', 'Not possible to apply styles with shortcuts in generic editor on Firefox')
+
       const { editor, wirisEditor } = await setupEditor(page, editorName)
 
       await editor.open()
@@ -83,7 +85,9 @@ for (const editorName of editors) {
       expect(isTextAfterEquation).toBeTruthy()
     })
 
-    test(`MTHTML-100 User edits a formula deleted during edition: ${editorName} editor`, async ({ page }) => {
+    test(`MTHTML-100 User edits a formula deleted during edition: ${editorName} editor`, {tag: editorName === 'ckeditor5' ? ['@knownIssue'] : []}, async ({ page }) => {
+      test.fail(editorName === 'ckeditor5', 'Known issue in CKEditor5')
+
       const { editor, wirisEditor } = await setupEditor(page, editorName)
 
       await editor.open()
