@@ -69,10 +69,10 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -121,7 +121,8 @@ jobs:
       fail-fast: false
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
-        editor: ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "tinymce7", "tinymce8", "viewer"]
+        editor:
+          ["ckeditor4", "ckeditor5", "froala", "generic", "tinymce5", "tinymce6", "tinymce7", "tinymce8", "viewer"]
         framework: ["html", "vue"]
         exclude:
           - framework: vue
@@ -141,10 +142,10 @@ jobs:
           - framework: vue
             editor: ckeditor4
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

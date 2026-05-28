@@ -57,9 +57,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@v4
