@@ -37,13 +37,13 @@ jobs:
     steps:
       # 01. Checkout the repository.
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # 02. Install a specific version of Node using.
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: ${{ vars.NODE_VERSION }}
 
       # 03. Install dependencies and verify Cypress
       - name: Install dependencies and verify Cypress
@@ -79,13 +79,13 @@ jobs:
     steps:
       # 01. Checkout the repository.
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # 02. Install a specific version of Node.
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: ${{ vars.NODE_VERSION }}
 
       # 03a. Decide whether to send data to Cypress Dashboard, or not, for workflow_dispatch and schedule.
       - name: Decide if we send data to Cypress 2

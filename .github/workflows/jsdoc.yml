@@ -24,14 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # 01. install a specific version of Node using
       # https://github.com/actions/setup-node
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: ${{ vars.NODE_VERSION }}
 
       # 02. Install html-integrations dependencies
       - name: Install dependencies
