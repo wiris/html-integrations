@@ -73,7 +73,7 @@ for (const editorName of editors) {
         await wirisEditor.waitUntilLoaded()
         await wirisEditor.insertEquationUsingEntryForm(Equations.singleNumber.mathml)
         await editor.waitForEquation(Equations.singleNumber)
-        await editor.type('12')
+        await editor.type('11')
 
         const equationsInHTMLEditor = await editor.getEquations()
         const isEquationPresent = equationsInHTMLEditor.some((equation: Equation) => equation.altText === Equations.singleNumber.altText)

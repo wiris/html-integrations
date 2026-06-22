@@ -1,0 +1,62 @@
+# Generates Playwright visual baseline images in CI and uploads them to S3
+#
+# This workflow builds the project, runs Playwright to produce fresh baselines,
+# and pushes them to S3. Use this when baselines need to be regenerated from
+# scratch in a clean CI environment.
+#
+name: CI Baselines Generate & Upload
+
+on:
+  workflow_dispatch:
+  workflow_call:
+env:
+  NPM_AUTH_TOKEN: ${{ secrets.NPM_READONLY_TOKEN }}
+  CKEDITOR5_LICENSE_KEY: ${{ secrets.CKEDITOR5_LICENSE_KEY }}
+
+jobs:
+  upload:
+    name: Generate and upload baselines to S3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Install E2E test dependencies
+        run: |
+          npm install
+          npx playwright install --with-deps
+        working-directory: ./tests
+
+      - name: Generate baseline images
+        run: npx playwright test -g "MTHTML-23 Validate formula alignment" --update-snapshots
+        working-directory: ./tests
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGING }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGING }}
+          aws-region: eu-west-2
+
+      - name: Upload baselines to S3
+        run: |
+          aws s3 sync tests/fixtures/ s3://wiris-integrations-staging-html/html/baselines/ci \
+            --delete \
+            --exclude "*" \
+            --include "*.png"
+          echo "Baselines uploaded successfully"
+
+      - name: Generate and upload manifest
+        run: |
+          find tests/fixtures/ -name "*.png" -printf "%P\n" | sort > manifest.txt
+          aws s3 cp manifest.txt s3://wiris-integrations-staging-html/html/baselines/ci/manifest.txt
+          echo "Manifest uploaded successfully"
