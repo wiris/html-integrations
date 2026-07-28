@@ -9,7 +9,7 @@ import MathType from "@wiris/mathtype-ckeditor5/dist/index.js";
 import "./static/style.css";
 import "ckeditor5/ckeditor5.css";
 import "ckeditor5-premium-features/ckeditor5-premium-features.css";
-import "@wiris/mathtype-ckeditor5/dist/index.css";
+import "@wiris/mathtype-ckeditor5/theme/styles.css";
 
 import packageInfo from "@wiris/mathtype-ckeditor5/package.json";
 
@@ -48,13 +48,14 @@ ClassicEditor.create(document.querySelector("#editor"), {
   // translations: [
   //   coreTranslations,
   // ],
-  // language: {
-  //   ui: 'de',
-  //   content: 'de'
-  // },
-  // mathTypeParameters: {
-  //   editorParameters: { language: 'es' }, // MathType config, including language
-  // },
+  language: {
+    ui: 'es',
+    content: 'es'
+  },
+  mathTypeParameters: {
+    "editor": "modern",
+    editorParameters: { language: 'es',  gui: {color: 'red', hand: false } }, // MathType config, including language
+  },
 })
   .then((editor) => {
     window.editor = editor;

@@ -6,15 +6,14 @@
   "main": "app.js",
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-ckeditor5 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
-    "prestart": "yarn && yarn link @wiris/mathtype-ckeditor5 && yarn link @wiris/mathtype-html-integration-devkit"
+    "start": "webpack serve --config webpack.config.js"
   },
   "author": "WIRIS Team (http://www.wiris.com)",
   "license": "MIT",
   "dependencies": {
     "ckeditor5": ">=46.0.0",
     "ckeditor5-premium-features": ">=46.0.0",
-    "@wiris/mathtype-ckeditor5": "*",
-    "@wiris/mathtype-html-integration-devkit": "*"
+    "@wiris/mathtype-ckeditor5": "file:../../../../mathtype.integrations.ckeditor/wiris-mathtype-ckeditor5-9.0.1-beta.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",

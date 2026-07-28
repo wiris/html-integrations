@@ -6,7 +6,8 @@
   "main": "app.js",
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-generic && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
-    "prestart": "yarn && yarn link @wiris/mathtype-generic && yarn link @wiris/mathtype-html-integration-devkit"
+    "prestart": "yarn && yarn link @wiris/mathtype-generic && yarn link @wiris/mathtype-html-integration-devkit",
+    "start": "webpack serve --config webpack.config.js"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
   "license": "MIT",

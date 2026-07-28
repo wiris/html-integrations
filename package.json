@@ -7,7 +7,7 @@
   },
   "scripts": {
     "preinstall": "node packages/res/git-data.mjs",
-    "postinstall": "rm -rf ~/.config/yarn/link/* && for d in packages/*/ ; do (cd $d && yarn link); done",
+    "postinstall": "rm -rf ~/.config/yarn/link/*",
     "test-old": "node scripts/services/executeTests.js",
     "test": "nx run-many --target=test --all --parallel",
     "test:ci": "docker run -v $PWD:/cypress --net=host -w /cypress -e CYPRESS_PROJECT_ID --entrypoint=cypress cypress/included:7.5.0 run  --project .",
@@ -32,7 +32,7 @@
     "eslint-plugin-jsdoc": "^48.2.3",
     "html-validate": "^8.18.1",
     "nx": "18.2.2",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "3.5.2",
     "typescript": "~5.4.4"

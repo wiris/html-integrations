@@ -3,12 +3,6 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "demos/html/ckeditor5/src",
   "targets": {
-    "prestart": {
-      "executor": "nx:run-script",
-      "options": {
-        "script": "prestart"
-      }
-    },
     "prestart-remote": {
       "executor": "nx:run-script",
       "options": {
@@ -17,7 +11,6 @@
     },
     "build": {
       "executor": "@nx/webpack:webpack",
-      "dependsOn": ["prestart"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "main": "demos/html/ckeditor5/src/app.js",
@@ -30,7 +23,6 @@
     },
     "start": {
       "executor": "@nx/webpack:dev-server",
-      "dependsOn": ["prestart"],
       "options": {
         "buildTarget": "html-ckeditor5:build",
         "webpackConfig": "demos/html/ckeditor5/webpack.config.js"
