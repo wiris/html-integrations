@@ -69,7 +69,7 @@ jobs:
       matrix:
         branch: ${{ fromJson(needs.prepare.outputs.branches) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
@@ -142,10 +142,17 @@ jobs:
           - framework: vue
             editor: ckeditor4
     steps:
+<<<<<<< HEAD
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
+=======
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+>>>>>>> 17ee6919 (chore: Update GH actions versions)
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
