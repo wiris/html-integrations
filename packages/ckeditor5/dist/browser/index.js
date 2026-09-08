@@ -5150,7 +5150,7 @@ var translations = {
    * @returns {string} html sanitized.
    * @static
    */ static htmlSanitize(html) {
-        const annotationRegex = /\<annotation.+\<\/annotation\>/;
+        const annotationRegex = /(<annotation [^>]*>)([\s\S]*?)(<\/annotation>)/i;
         // Get all the annotation content including the tags.
         const annotation = html.match(annotationRegex);
         // Sanitize html code without removing our supported MathML tags and attributes.
@@ -5169,8 +5169,17 @@ var translations = {
                 "stackalign"
             ]
         });
-        // Readd old annotation content.
-        return html.replace(annotationRegex, annotation);
+        if (annotation) {
+            const startTag = annotation[1];
+            const content = annotation[2];
+            const endTag = annotation[3];
+            // Encode strictly <, >, and & to their HTML entities to force the browser to render any HTML as text.
+            const safeContent = content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const safeAnnotation = startTag + safeContent + endTag;
+            // Re-insert the safely encoded annotation content.
+            html = html.replace(annotationRegex, safeAnnotation);
+        }
+        return html;
     }
     /**
    * Parses a text and replaces all the HTML entities by their characters.
