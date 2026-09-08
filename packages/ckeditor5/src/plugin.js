@@ -446,9 +446,7 @@ export default class MathType extends Plugin {
        *  DataProcessor being used by this editor instance
        */
       if (imgElement) {
-        return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
-          renderUnsafeAttributes: ["src"],
-        });
+        return viewWriter.createEmptyElement("img", imgElement.getAttributes());
       }
 
       return null;

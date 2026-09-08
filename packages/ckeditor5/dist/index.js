@@ -982,11 +982,7 @@ class MathType extends Plugin {
        *  we must create a new EmptyElement which is independent of the
        *  DataProcessor being used by this editor instance
        */ if (imgElement) {
-                return viewWriter.createEmptyElement("img", imgElement.getAttributes(), {
-                    renderUnsafeAttributes: [
-                        "src"
-                    ]
-                });
+                return viewWriter.createEmptyElement("img", imgElement.getAttributes());
             }
             return null;
         }
