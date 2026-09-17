@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+const { exec, execFile } = require("child_process");
 const { emitWarning } = require("process");
 
 const pack = () =>
@@ -15,8 +15,10 @@ const pack = () =>
 
 const installMathtype = (path) =>
   new Promise((resolve, reject) => {
-    exec(
-      `cd demos/html/ckeditor5 && npm install ../../../packages/mathtype-ckeditor5/${path}`,
+    execFile(
+      "npm",
+      ["install", `../../../packages/mathtype-ckeditor5/${path.trim()}`],
+      { cwd: "demos/html/ckeditor5", shell: false },
       (err, stdout, stderr) => {
         if (err) {
           reject(err);
