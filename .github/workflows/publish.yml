@@ -44,7 +44,7 @@ jobs:
         run: |
 
           # Add the token to publish to the npm registry
-          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_TOKEN }}
+          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_AUTOMATION_TOKEN }}
 
           # Call the script that interacts with the yarn CLI
           ./scripts/publish.mjs ${{ github.event.inputs.versions }}
