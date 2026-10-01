@@ -23,6 +23,8 @@ export default class CKEditor5Integration extends IntegrationModel {
      */
     super(ckeditorIntegrationModelProperties);
 
+    this.insertionSelection = null;
+
     /**
      * Folder name used for the integration inside CKEditor plugins folder.
      */
@@ -133,6 +135,7 @@ export default class CKEditor5Integration extends IntegrationModel {
   openNewFormulaEditor() {
     // Store the editor selection as it will be lost upon opening the modal
     this.core.editionProperties.selection = this.editorObject.editing.view.document.selection;
+    this.insertionSelection = this.editorObject.model.createSelection(this.editorObject.model.document.selection);
 
     // Focus on the selected editor when multiple editor instances are present
     WirisPlugin.currentInstance = this;
@@ -146,6 +149,16 @@ export default class CKEditor5Integration extends IntegrationModel {
    * @returns {module:engine/model/element~Element} The model element corresponding to the inserted image
    */
   insertMathml(mathml) {
+    const { isNewElement } = this.getCore().editionProperties;
+    const insertionSelection = this.insertionSelection;
+    this.insertionSelection = null;
+
+    if (isNewElement && insertionSelection) {
+      this.editorObject.model.change((writer) => {
+        writer.setSelection(insertionSelection);
+      });
+    }
+
     return this.editorObject.model.change((writer) => {
       const { isNewElement, temporalImage } = this.getCore().editionProperties;
       const selection = this.editorObject.model.document.selection;
