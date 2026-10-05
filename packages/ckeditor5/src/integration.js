@@ -68,6 +68,12 @@ export default class CKEditor5Integration extends IntegrationModel {
   addEditorListeners() {
     const editor = this.editorObject;
 
+    editor.listenTo(editor.model.document.selection, "change:range", () => {
+      if (this.insertionSelection && editor.editing.view.document.isFocused) {
+        this.insertionSelection = editor.model.createSelection(editor.model.document.selection);
+      }
+    });
+
     if (typeof editor.config.wirislistenersdisabled === "undefined" || !editor.config.wirislistenersdisabled) {
       this.checkElement();
     }
