@@ -75,7 +75,6 @@ export default class CKEditor5Integration extends IntegrationModel {
     };
 
     editor.listenTo(editor.model.document, "change:data", updateInsertionSelection);
-    editor.listenTo(editor.editing.view.document, "selectionChangeDone", updateInsertionSelection);
 
     if (typeof editor.config.wirislistenersdisabled === "undefined" || !editor.config.wirislistenersdisabled) {
       this.checkElement();
