@@ -1,6 +1,6 @@
 {
   "name": "@wiris/mathtype-viewer",
-  "version": "8.15.3",
+  "version": "8.15.4",
   "description": "",
   "main": "app.js",
   "scripts": {
