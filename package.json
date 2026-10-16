@@ -19,7 +19,7 @@
     "@nrwl/tao": "18.2.2",
     "@nx/eslint-plugin": "18.2.2",
     "@nx/linter": "18.2.2",
-    "@nx/web": "18.2.2",
+    "@nx/web": "20.3.0",
     "@nx/webpack": "18.2.2",
     "@nx/workspace": "18.2.2",
     "@playwright/test": "^1.40.0",
