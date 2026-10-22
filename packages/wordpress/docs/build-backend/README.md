@@ -4,13 +4,13 @@ The WordPress MathType plugin can be build with a php back-end service.
 
 ## Add the server-side code
 
-1. Navigate to https://store.wiris.com/en/products/downloads/mathtype/integrations.
-2. Go to the `MathType MathType for TinyMCE 5` section.
-3. Download the integration for the `PHP Servers`.
-4. Unzip the downloaded file.
+1. Navigate to the [MathType Store downloads page](https://store.wiris.com/en/products/downloads/mathtype/integrations)
+2. Go to the `MathType MathType for TinyMCE 5` section
+3. Download the integration for the `PHP Servers`
+4. Unzip the downloaded file
 5. Copy to `wp-includes/js/tinymce/plugins/tiny_mce_wiris`:
-   - The integration folder.
-   - The configuration.ini file.
+   - The integration folder
+   - The configuration.ini file
 
 ## Update the server-side code
 
