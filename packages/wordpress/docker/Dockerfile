@@ -11,6 +11,8 @@ FROM wordpress:php8.0-apache
 
 # Copy the faux apache2-foreground into the image
 COPY apache2-foreground-custom /bin/apache2-foreground-custom
+# Windows checkouts may use CRLF, which breaks the script's bash shebang.
+RUN sed -i 's/\r$//' /bin/apache2-foreground-custom
 
 # Tell docker to run apache2-foreground-custom instead of apache2-foreground
 CMD ["apache2-foreground-custom"]
