@@ -6,7 +6,7 @@ Wiris WordPress plugin allows WordPress pages to render MathML using MathType.
 
 ## Table of contents
 
-- [Requirements](#requirement)
+- [Requirements](#requirements)
 - [Structure](#structure)
 - [Next Steps](#next-steps)
 
