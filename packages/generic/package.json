@@ -15,7 +15,11 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/generic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiris/html-integrations.git",
+    "directory": "packages/generic"
+  },
   "homepage": "http://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"
