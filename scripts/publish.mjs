@@ -39,7 +39,7 @@ const data = argv
 // easy for the developer to restore the previous state
 for (const { shortPackageName, fullPackageName, version } of data) {
   console.log(`> Versioning ${fullPackageName}@${version}`);
-  execSync(`yarn version --no-git-tag-version --new-version ${version}`, {
+  execSync(`npm version ${version} --no-git-tag-version`, {
     cwd: resolve(`packages/${shortPackageName}`),
     stdio: "inherit",
   });
@@ -52,7 +52,7 @@ for (const { shortPackageName, fullPackageName, version } of data) {
     cwd: resolve(`packages/${shortPackageName}`),
     stdio: "inherit",
   };
-  execSync(`yarn publish --new-version ${version}`, options);
+  execSync("npm publish", options);
   execSync("git add package.json", options);
 }
 

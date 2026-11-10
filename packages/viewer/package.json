@@ -1,5 +1,10 @@
 {
   "name": "@wiris/mathtype-viewer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiris/html-integrations.git",
+    "directory": "packages/viewer"
+  },
   "version": "8.15.4",
   "description": "",
   "main": "app.js",

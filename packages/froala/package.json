@@ -18,7 +18,11 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/froala",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiris/html-integrations.git",
+    "directory": "packages/froala"
+  },
   "homepage": "https://www.wiris.com/?utm_source=npmjs&utm_medium=referral",
   "bugs": {
     "email": "support@wiris.com"

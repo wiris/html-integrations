@@ -17,7 +17,11 @@
     "mathtype",
     "wiris"
   ],
-  "repository": "https://github.com/wiris/html-integrations/tree/master/packages/ckeditor5",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiris/html-integrations.git",
+    "directory": "packages/ckeditor5"
+  },
   "homepage": "https://www.wiris.com/",
   "bugs": {
     "email": "support@wiris.com"
