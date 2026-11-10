@@ -28,8 +28,8 @@ on:
         default: ""
 
 permissions:
-  contents: read
-  id-token: write # Required for the NPM OIDC authentication
+  contents: write # To push the version commit and tags
+  id-token: write # Required for the npm OIDC authentication
 
 # Array of jobs to run in this workflow
 jobs:
@@ -42,11 +42,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Publish to NPM
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Publish to npm
         run: |
-          # Call the script that interacts with the yarn CLI
+          # Call the publishing script that interacts with the handles npm publishing.
           ./scripts/publish.mjs ${{ github.event.inputs.versions }}
 
   publish-wordpress:
@@ -61,8 +66,6 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
-      - name: Checkout
-        uses: actions/checkout@v4
 
       # Install dependencies and create compiled files
       - name: Build the JavaScript
