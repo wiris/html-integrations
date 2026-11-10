@@ -39,10 +39,14 @@ const data = argv
 // easy for the developer to restore the previous state
 for (const { shortPackageName, fullPackageName, version } of data) {
   console.log(`> Versioning ${fullPackageName}@${version}`);
-  execSync(`npm version ${version} --no-git-tag-version`, {
-    cwd: resolve(`packages/${shortPackageName}`),
-    stdio: "inherit",
-  });
+  // Do not let npm re-resolve dependencies managed by Yarn (this project uses yarn, and because npm and yarn handle dependencies differently, the version command is prone to fail).
+  execSync(
+    `npm version ${version} --no-git-tag-version --workspaces-update=false`,
+    {
+      cwd: resolve(`packages/${shortPackageName}`),
+      stdio: "inherit",
+    },
+  );
 }
 
 // Now publish every package and add the changes to the new commit
