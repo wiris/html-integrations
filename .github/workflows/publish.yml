@@ -27,6 +27,10 @@ on:
         required: false
         default: ""
 
+permissions:
+  contents: read
+  id-token: write # Required for the NPM OIDC authentication
+
 # Array of jobs to run in this workflow
 jobs:
   publish:
@@ -40,12 +44,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up a private npm registry and publish
+      - name: Publish to NPM
         run: |
-
-          # Add the token to publish to the npm registry
-          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_AUTOMATION_TOKEN_PUBLIC_REPOSITORIES }}
-
           # Call the script that interacts with the yarn CLI
           ./scripts/publish.mjs ${{ github.event.inputs.versions }}
 
