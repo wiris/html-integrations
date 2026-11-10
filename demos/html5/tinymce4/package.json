@@ -7,7 +7,7 @@
   "scripts": {
     "prestart-remote": "yarn && yarn unlink @wiris/mathtype-tinymce4 && yarn unlink @wiris/mathtype-html-integration-devkit && yarn install --force",
     "start-remote": "webpack-dev-server --open",
-    "prestart": "yarn && yarn link @wiris/mathtype-tinymce 4 && yarn link @wiris/mathtype-html-integration-devkit",
+    "prestart": "yarn && yarn link @wiris/mathtype-tinymce4 && yarn link @wiris/mathtype-html-integration-devkit",
     "start": "webpack-dev-server --open"
   },
   "author": "WIRIS Team (https://www.wiris.com)",
