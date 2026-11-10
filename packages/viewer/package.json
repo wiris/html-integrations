@@ -5,7 +5,7 @@
     "url": "git+https://github.com/wiris/html-integrations.git",
     "directory": "packages/viewer"
   },
-  "version": "8.15.4",
+  "version": "8.15.5",
   "description": "",
   "main": "app.js",
   "scripts": {
