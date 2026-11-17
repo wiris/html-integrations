@@ -21,11 +21,15 @@ on:
         default: ""
       versions:
         description: |
-          Space-separated list of versions to publish, e.g.: "ckeditor5=7.27.0 devkit=1.6.1"
+          Space-separated list of versions to publish, e.g.: "ckeditor5=7.27.0 devkit=1.6.1 viewer=1.1.0"
           Packages not mentioned in the list will stay at their current version and will not be published.
           Packages will be published in the order they are given.
         required: false
         default: ""
+
+permissions:
+  contents: write # To push the version commit and tags
+  id-token: write # Required for the npm OIDC authentication
 
 # Array of jobs to run in this workflow
 jobs:
@@ -38,13 +42,59 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
-      - name: Set up a private npm registry and publish
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Publish to npm
         run: |
-
-          # Add the token to publish to the npm registry
-          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_AUTOMATION_TOKEN_PUBLIC_REPOSITORIES }}
-
-          # Call the script that interacts with the yarn CLI
+          # Call the publishing script that interacts with the handles npm publishing.
           ./scripts/publish.mjs ${{ github.event.inputs.versions }}
+
+  publish-wordpress:
+    runs-on: ubuntu-latest
+
+    # If we want to publish the WordPress plugin, which is not needed on npm.
+    if: contains(github.event.inputs, 'wordpress')
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+
+      # Install dependencies and create compiled files
+      - name: Build the JavaScript
+        run: |
+          yarn install
+          nx build wordpress
+      - name: Create Icons folder inside the build one
+        run: |
+          cp -a packages/wordpress/src/icons/ packages/wordpress/build/icons/
+
+      # Create a zip file with the files needed to integrate
+      # Mathtype for WordPress
+      - name: Zip integration
+        uses: vimtor/action-zip@v1
+        with:
+          files: build/ VERSION
+          dest: "mathtype-tinymce-wordpress_${{ github.event.inputs.version }}.zip"
+      - uses: vimtor/action-zip@v1
+        with:
+          files: wordpress-wiris-plugin/tiny_mce_wiris.php
+          dest: "wordpress-wiris_${{ github.event.inputs.version }}.zip"
+
+      # Release WordPress plugin
+      - name: Release on GitHub
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "CI"
+          files: |
+            *.zip
